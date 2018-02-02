@@ -4,7 +4,13 @@ public interface Weapon extends Item {
 
     Weapon clone();
 
-    WeaponType getType();
+    WeaponAttribute getAttribute(String attribute);
+
+    Iterable<WeaponAttribute> getAttributes();
+
+    String getDescription();
+
+    WeaponType getWeaponType();
 
     void refillAmmo();
 

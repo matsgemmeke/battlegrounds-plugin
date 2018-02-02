@@ -4,11 +4,7 @@ import com.matsg.battlegrounds.api.util.Hitbox;
 
 public interface Projectile {
 
-    double getAccuracy();
-
     double getDamage(Hitbox hitbox, double distance);
-
-    double getHeadshotMultiplier();
 
     double getLongDamage();
 
@@ -22,21 +18,15 @@ public interface Projectile {
 
     double getShortRange();
 
-    void setAccuracy(double accuracy);
+    void setLongDamage(double longDamage);
 
-    void setHeadshotMultiplier(double headshotMultiplier);
+    void setLongRange(double longRange);
 
-    void setLongDamage(int longDamage);
+    void setMidDamage(double midDamage);
 
-    void setLongRange(int longRange);
+    void setMidRange(double midRange);
 
-    void setMidDamage(int midDamage);
+    void setShortDamage(double shortDamage);
 
-    void setMidRange(int midRange);
-
-    void setPierce(boolean pierce);
-
-    void setShortDamage(int shortDamage);
-
-    void setShortRange(int shortRange);
+    void setShortRange(double shortRange);
 }

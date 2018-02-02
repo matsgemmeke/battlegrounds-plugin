@@ -1,18 +1,20 @@
 package com.matsg.battlegrounds;
+import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GamePlayer;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameManager {
+public class BattleGameManager implements GameManager {
 
     private List<Game> games;
 
-    public GameManager() {
+    public BattleGameManager() {
         this.games = new ArrayList<>();
     }
 
@@ -78,6 +80,16 @@ public class GameManager {
         for (Game game : games) {
             if (game.getGamePlayer(player) != null) {
                 return game;
+            }
+        }
+        return null;
+    }
+
+    public GamePlayer getGamePlayer(Player player) {
+        for (Game game : games) {
+            GamePlayer gamePlayer = game.getGamePlayer(player);
+            if (gamePlayer != null) {
+                return gamePlayer;
             }
         }
         return null;

@@ -4,7 +4,6 @@ import com.matsg.battlegrounds.api.config.CacheYaml;
 import com.matsg.battlegrounds.api.util.Message;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 
 import java.util.List;
 
@@ -16,8 +15,6 @@ public interface Game {
 
     void broadcastMessage(String message);
 
-    void emitEvent(Event event);
-
     GamePlayer[] getActivePlayers();
 
     Arena getArena();
@@ -27,6 +24,8 @@ public interface Game {
     GameConfiguration getConfiguration();
 
     CacheYaml getDataFile();
+
+    EventHandler getEventHandler();
 
     GamePlayer getGamePlayer(Player player);
 

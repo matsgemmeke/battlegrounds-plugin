@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.config.BattlegroundsConfig;
 import com.matsg.battlegrounds.api.config.CacheYaml;
@@ -133,7 +134,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         }
 
         //this.channelMessenger = new PluginChannelMessenger(this);
-        this.gameManager = new GameManager();
+        this.gameManager = new BattleGameManager();
 
         //new DataLoader(this);
 

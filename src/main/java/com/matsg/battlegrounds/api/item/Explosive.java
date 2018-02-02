@@ -1,22 +1,31 @@
 package com.matsg.battlegrounds.api.item;
 
-public interface Explosive extends Weapon {
+import com.matsg.battlegrounds.api.util.Sound;
+import org.bukkit.Location;
+
+public interface Explosive extends Weapon, Explodable, Projectile {
 
     Explosive clone();
 
     int getAmount();
 
-    int getMaxAmount();
+    Iterable<Item> getDroppedItems();
 
-    double getRange();
+    Sound[] getExplodeSound();
+
+    int getIgnitionTime();
+
+    int getMaxAmount();
 
     double getVelocity();
 
-    void setAmount(int amount);
+    boolean isBeingThrown();
 
-    void setRange(double range);
+    void setAmount(int amount);
 
     void setVelocity(double velocity);
 
     void throwExplosive();
+
+    void throwExplosive(double velocity);
 }

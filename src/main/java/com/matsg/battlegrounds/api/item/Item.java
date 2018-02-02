@@ -18,6 +18,8 @@ public interface Item extends Cloneable, Comparable<Item> {
 
     String getName();
 
+    void onDrop();
+
     void onLeftClick();
 
     void onPickUp();

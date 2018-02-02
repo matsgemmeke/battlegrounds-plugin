@@ -1,6 +1,5 @@
 package com.matsg.battlegrounds.api;
 
-import com.matsg.battlegrounds.GameManager;
 import com.matsg.battlegrounds.api.config.BattlegroundsConfig;
 import com.matsg.battlegrounds.api.config.CacheYaml;
 import com.matsg.battlegrounds.api.config.WeaponConfig;

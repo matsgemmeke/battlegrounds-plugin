@@ -4,8 +4,9 @@ public interface Tactical extends Explosive {
 
     Tactical clone();
 
-    enum TacticalEffect {
+    int getDuration();
 
-        BAIT, DISORIENTATION, SLOWNESS;
-    }
+    TacticalEffect getEffect();
+
+    void setEffect(TacticalEffect effect);
 }
