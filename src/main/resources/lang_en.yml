@@ -1,0 +1,6 @@
+game-player-join: "&f%player_name% &ahas joined the game. &f[&a%zombies_players%&f/&a%zombies_maxplayers%&f]"
+game-player-leave: "&f%player_name% &ahas left the game. &f[&a%zombies_players%&f/&a%zombies_maxplayers%&f]"
+game-player-message: "&f%player_name%: &7%zombies_message%"
+
+setup-reload-failed: "&cFailed to reload configuration files."
+setup-reload-success: "&aSuccesfully reloaded all configuration files."

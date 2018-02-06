@@ -6,4 +6,6 @@ import org.bukkit.event.Listener;
 public interface EventHandler extends Listener {
 
     void callEvent(Event event);
+
+    Iterable<Class<? extends Event>> getEventClasses();
 }

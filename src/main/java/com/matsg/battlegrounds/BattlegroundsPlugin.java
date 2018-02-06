@@ -1,15 +1,18 @@
 package com.matsg.battlegrounds;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.EventManager;
 import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.config.BattlegroundsConfig;
 import com.matsg.battlegrounds.api.config.CacheYaml;
 import com.matsg.battlegrounds.api.config.WeaponConfig;
+import com.matsg.battlegrounds.api.dao.PlayerDAOFactory;
 import com.matsg.battlegrounds.api.item.Explosive;
 import com.matsg.battlegrounds.api.item.FireArm;
 import com.matsg.battlegrounds.api.item.Knife;
-import com.matsg.battlegrounds.config.BattlegroundsCacheYaml;
+import com.matsg.battlegrounds.config.BattleCacheYaml;
+import com.matsg.battlegrounds.listener.BattleEventManager;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -22,6 +25,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
     private static BattlegroundsPlugin plugin;
     private BattlegroundsConfig config;
     private CacheYaml cache;
+    private EventManager eventManager;
     //private ExplosiveConfig explosiveConfig;
     //private FireArmConfig fireArmConfig;
     private GameManager gameManager;
@@ -69,6 +73,10 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         return config;
     }
 
+    public EventManager getEventManager() {
+        return eventManager;
+    }
+
     public WeaponConfig<Explosive> getExplosiveConfig() {
         return null;
     }
@@ -85,13 +93,17 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         return null;
     }
 
+    public PlayerDAOFactory getPlayerStorage() {
+        return null;
+    }
+
     public Translator getTranslator() {
         return translator;
     }
 
     public boolean loadConfigs() {
         try {
-            cache = new BattlegroundsCacheYaml(this, "cache.yml");
+            cache = new BattleCacheYaml(this, "cache.yml");
             config = new BattlegroundsConfig(this);
             //explosiveConfig = new ExplosiveConfig(this);
             //fireArmConfig = new FireArmConfig(this);
@@ -107,7 +119,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
 
     private void startPlugin() throws StartupFailedException {
         try {
-            cache = new BattlegroundsCacheYaml(this, "cache.yml");
+            cache = new BattleCacheYaml(this, "cache.yml");
             config = new BattlegroundsConfig(this);
             //playerData = new PlayerData(this);
             //sqlConfig = new SQLConfig(this);
@@ -134,6 +146,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         }
 
         //this.channelMessenger = new PluginChannelMessenger(this);
+        this.eventManager = new BattleEventManager();
         this.gameManager = new BattleGameManager();
 
         //new DataLoader(this);

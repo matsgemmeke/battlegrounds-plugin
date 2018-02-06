@@ -1,7 +1,6 @@
 package com.matsg.battlegrounds.api.item;
 
 import com.matsg.battlegrounds.api.util.Sound;
-import org.bukkit.Location;
 
 public interface Explosive extends Weapon, Explodable, Projectile {
 

@@ -6,13 +6,13 @@ import org.bukkit.Location;
 
 import java.io.IOException;
 
-public class BattlegroundsCacheYaml extends AbstractYaml implements CacheYaml {
+public class BattleCacheYaml extends AbstractYaml implements CacheYaml {
 
-    public BattlegroundsCacheYaml(Battlegrounds plugin, String resource) throws IOException {
+    public BattleCacheYaml(Battlegrounds plugin, String resource) throws IOException {
         super(plugin, plugin.getDataFolder().getPath(), resource, false);
     }
 
-    public BattlegroundsCacheYaml(Battlegrounds plugin, String path, String resource) throws IOException {
+    public BattleCacheYaml(Battlegrounds plugin, String path, String resource) throws IOException {
         super(plugin, path, resource, false);
     }
 

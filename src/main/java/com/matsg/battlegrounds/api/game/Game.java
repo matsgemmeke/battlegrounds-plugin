@@ -15,8 +15,6 @@ public interface Game {
 
     void broadcastMessage(String message);
 
-    GamePlayer[] getActivePlayers();
-
     Arena getArena();
 
     List<Arena> getArenaList();
@@ -34,6 +32,8 @@ public interface Game {
     int getId();
 
     ItemRegistry getItemRegistry();
+
+    GamePlayer[] getLivingPlayers();
 
     GamePlayer getNearestPlayer(Location location);
 
