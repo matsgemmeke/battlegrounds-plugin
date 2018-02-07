@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 
 public enum EnumMessage implements Message {
 
+    COUNTDOWN_NOTE("game-countdown-note", true),
     PLAYER_JOIN("game-player-join", true),
     PLAYER_LEAVE("game-player-leave", true),
     PLAYER_MESSAGE("game-player-message", true),

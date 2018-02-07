@@ -13,6 +13,4 @@ public interface Arena extends Region {
     boolean isActive();
 
     void setActive(boolean active);
-
-    void spawnPlayers(GamePlayer... players);
 }

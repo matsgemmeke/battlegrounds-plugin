@@ -1,11 +1,8 @@
 package com.matsg.battlegrounds.api.game;
 
 import org.bukkit.event.Event;
-import org.bukkit.event.Listener;
 
-public interface EventHandler extends Listener {
+public @interface EventHandler {
 
-    void callEvent(Event event);
-
-    Iterable<Class<? extends Event>> getEventClasses();
+    Class<? extends Event>[] events();
 }

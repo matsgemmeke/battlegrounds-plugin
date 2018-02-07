@@ -10,16 +10,7 @@ import java.lang.reflect.Constructor;
 
 public enum Title implements Message {
 
-    BEING_REVIVED("title-being-revived"),
-    COUNTDOWN("title-countdown"),
-    GAME_OVER("title-game-over"),
-    GAME_START("title-game-start"),
-    NEW_ROUND("title-new-round"),
-    PLAYER_DOWNED("title-player-downed"),
-    POWER_ACTIVATE("title-power-activate"),
-    POWERUP_ACTIVATE("title-powerup-activate"),
-    POWERUP_DEACTIVATE("title-powerup-deactivate"),
-    QUICK_REVIVE("title-quick-revive");
+    COUNTDOWN("title-countdown");
 
     private int fadeIn, fadeOut, time;
     private String path, subTitle, title;

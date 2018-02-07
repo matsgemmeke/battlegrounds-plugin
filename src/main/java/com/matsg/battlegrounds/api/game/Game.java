@@ -25,6 +25,8 @@ public interface Game {
 
     EventHandler getEventHandler();
 
+    GameMode getGameMode();
+
     GamePlayer getGamePlayer(Player player);
 
     GameSign getGameSign();
@@ -48,8 +50,6 @@ public interface Game {
     void setArena(Arena arena);
 
     void setConfiguration(GameConfiguration configuration);
-
-    void setDefaultLoadout(GamePlayer gamePlayer);
 
     void setGameSign(GameSign gameSign);
 

@@ -2,21 +2,22 @@ package com.matsg.battlegrounds.game;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.config.CacheYaml;
-import com.matsg.battlegrounds.api.dao.PlayerDAO;
-import com.matsg.battlegrounds.api.dao.PlayerDAOFactory;
 import com.matsg.battlegrounds.api.game.*;
+import com.matsg.battlegrounds.api.game.GameMode;
 import com.matsg.battlegrounds.api.util.Message;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.config.BattleCacheYaml;
 import com.matsg.battlegrounds.util.ActionBar;
+import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.EnumMessage;
 import com.matsg.battlegrounds.util.Title;
-import org.bukkit.Location;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class BattleGame implements Game {
 
@@ -25,6 +26,7 @@ public class BattleGame implements Game {
     private CacheYaml dataFile;
     private EventHandler eventHandler;
     private GameConfiguration configuration;
+    private GameMode gameMode;
     private GameSign gameSign;
     private GameState state;
     private ItemRegistry itemRegistry;
@@ -35,7 +37,7 @@ public class BattleGame implements Game {
         this.plugin = plugin;
         this.id = id;
         this.arenaList = new ArrayList<>();
-        //this.itemRegistry = new ZombiesItemRegistry();
+        this.itemRegistry = new BattleItemRegistry();
         this.players = new ArrayList<>();
         this.state = GameState.WAITING;
 
@@ -64,6 +66,10 @@ public class BattleGame implements Game {
 
     public EventHandler getEventHandler() {
         return eventHandler;
+    }
+
+    public GameMode getGameMode() {
+        return gameMode;
     }
 
     public GameSign getGameSign() {
@@ -99,7 +105,7 @@ public class BattleGame implements Game {
     }
 
     public GamePlayer addPlayer(Player player) {
-        GamePlayer gamePlayer = new ZombiesGamePlayer(player);
+        GamePlayer gamePlayer = new BattleGamePlayer(player);
         Location lobby = dataFile.getLocation("lobby");
 
         players.add(gamePlayer);
@@ -137,6 +143,28 @@ public class BattleGame implements Game {
         for (GamePlayer gamePlayer : players) {
             title.send(gamePlayer.getPlayer(), placeholders);
         }
+    }
+
+    private void clearGameData() {
+        new BattleRunnable() {
+            public void run() {
+                if (arenaList.size() >= 2) {
+                    Random random = new Random();
+                    Arena arena;
+                    do {
+                        arena = arenaList.get(random.nextInt(arenaList.size()));
+                    } while (getActiveArena() == arena);
+                    setArena(arena);
+                }
+                rollback();
+
+                itemRegistry.clear();
+                players.clear();
+
+                state = GameState.WAITING;
+                updateSign();
+            }
+        }.runTaskLater(240);
     }
 
     private Arena getActiveArena() {
@@ -201,33 +229,16 @@ public class BattleGame implements Game {
 
         broadcastMessage(EnumMessage.PREFIX.getMessage() + " " + EnumMessage.PLAYER_LEAVE.getMessage(
                 new Placeholder("player_name", player.getName()),
-                new Placeholder("zombies_players", players.size()),
-                new Placeholder("zombies_maxplayers", configuration.getMaxPlayers())));
+                new Placeholder("bg_players", players.size()),
+                new Placeholder("bg_maxplayers", configuration.getMaxPlayers())));
 
         gamePlayer.getPlayer().teleport(getLeavingLocation());
         gamePlayer.getSavedInventory().restore(player);
         gamePlayer.setStatus(PlayerStatus.ALIVE).apply(this, gamePlayer);
 
-        if (!state.isJoinable()) {
-            addStats(gamePlayer);
-        }
-        if (plugin.getZombiesConfig().useBungeecord && plugin.isEnabled()) {
-            BungeeHelper.getInstance().handlePlayerLeave(player);
-        }
         if (getLivingPlayers().length <= 0) {
             stop();
         }
-    }
-
-    private void resetPlayer(GamePlayer gamePlayer) {
-        Weapon weapon = gamePlayer.getWeaponInHand();
-
-        if (weapon instanceof Gun && ((Gun) weapon).isScoped()) {
-            ((Gun) weapon).setScoped(false);
-        }
-
-        gamePlayer.removePerks();
-        gamePlayer.setDowns(gamePlayer.getDowns() + 1);
     }
 
     public void rollback() {
@@ -235,35 +246,12 @@ public class BattleGame implements Game {
         if (arena == null) {
             return;
         }
-        for (Entity entity : arena.getWorld().getEntities()) {
-            Monster monster = monsterManager.getMonster(entity);
-            if (monster != null) {
-                monster.remove();
-            } else if ((getArena().contains(entity.getLocation())) && (!(entity instanceof Player))) {
-                entity.remove();
-            }
-        }
         for (GamePlayer gamePlayer : players) {
             Player player = gamePlayer.getPlayer();
 
             gamePlayer.getPlayer().teleport(getLeavingLocation());
             gamePlayer.getSavedInventory().restore(player);
-            gamePlayer.removePerks();
             gamePlayer.setStatus(PlayerStatus.ALIVE).apply(this, gamePlayer);
-
-            player.setGameMode(GameMode.valueOf(plugin.getZombiesConfig().leaveGamemode));
-
-            if (plugin.getZombiesConfig().useBungeecord && plugin.isEnabled()) {
-                BungeeHelper.getInstance().handlePlayerLeave(player);
-            }
-
-            new StatsScoreboard(plugin.getZombiesConfig().getStatsScoreboardLayout(), player,
-                    plugin.getPlayerStorage().getPlayerDAO(player.getUniqueId())).set(null);
-        }
-        for (Section section : arena.getSections()) {
-            for (SectionComponent sc : section.getComponents()) {
-                sc.close();
-            }
         }
     }
 
@@ -274,41 +262,6 @@ public class BattleGame implements Game {
             }
         }
         arena.setActive(true);
-    }
-
-    public void setDefaultLoadout(GamePlayer gamePlayer) {
-        FireArm primary = plugin.getFireArmConfig().get(plugin.getZombiesConfig().defaultGun);
-        Explosive explosive = plugin.getExplosiveConfig().get(plugin.getZombiesConfig().defaultExplosive);
-        Knife knife = plugin.getKnifeConfig().get(plugin.getZombiesConfig().defaultKnife);
-
-        primary.setAmmo(plugin.getZombiesConfig().defaultAmmo);
-        primary.setGame(this);
-        primary.setGamePlayer(gamePlayer);
-        primary.setItemSlot(ItemSlot.FIREARM_PRIMARY);
-        primary.update();
-
-        explosive.setAmount(explosive.getMaxAmount());
-        explosive.setGame(this);
-        explosive.setGamePlayer(gamePlayer);
-        explosive.setItemSlot(ItemSlot.EXPLOSIVE);
-        explosive.update();
-
-        knife.setAmount(knife.getMaxAmount());
-        knife.setGame(this);
-        knife.setGamePlayer(gamePlayer);
-        knife.setItemSlot(ItemSlot.KNIFE);
-        knife.update();
-
-        itemRegistry.addItem(primary);
-        itemRegistry.addItem(explosive);
-        itemRegistry.addItem(knife);
-
-        gamePlayer.setPoints(plugin.getZombiesConfig().defaultPoints);
-        gamePlayer.setPrimary(primary);
-        gamePlayer.setSecondary(null);
-        gamePlayer.setExplosive(explosive);
-        gamePlayer.setKnife(knife);
-        gamePlayer.getPlayer().getInventory().setItem(ItemSlot.BUILDER.getSlot(), new ItemStackBuilder(Material.FENCE).setDisplayName("ยงf" + EnumMessage.BUILDING_TOOL.getMessage()).build());
     }
 
     public void setVisible(GamePlayer gamePlayer, boolean visible) {
@@ -327,16 +280,11 @@ public class BattleGame implements Game {
             updateSign();
             return;
         }
-        state = GameState.RESETTING;
-        broadcastTitle(Title.GAME_OVER, new Placeholder("zombies_round", waveManager.getRound()));
-        updateSign();
-        for (int i = 0; i <= 120; i += 40) {
-            new ZombiesSound(Sound.ENTITY_LIGHTNING_THUNDER, 20, 1, i).play(this);
-        }
+
         for (GamePlayer gamePlayer : getPlayers()) {
             Player player = gamePlayer.getPlayer();
             player.setAllowFlight(true);
-            player.setGameMode(GameMode.CREATIVE);
+            player.setGameMode(org.bukkit.GameMode.CREATIVE);
             player.setMaxHealth(20.0);
             player.setHealth(20.0);
 
@@ -346,37 +294,18 @@ public class BattleGame implements Game {
             if (gamePlayer.getSecondary() != null) {
                 gamePlayer.getSecondary().setReloadCancelled(true);
             }
-            addStats(gamePlayer);
             setVisible(gamePlayer, true);
         }
+
         plugin.getPlayerStorage().save();
-        plugin.getServer().getPluginManager().callEvent(new GameStopEvent(this));
+        state = GameState.RESETTING;
 
-        new ZombiesRunnable() {
-            public void run() {
-                if (arenaList.size() >= 2) {
-                    Random random = new Random();
-                    Arena arena;
-                    do {
-                        arena = arenaList.get(random.nextInt(arenaList.size()));
-                    } while (getActiveArena() == arena);
-                    setArena(arena);
-                }
-                state = GameState.WAITING;
-                updateSign();
-                rollback();
-
-                itemRegistry.clear();
-                monsterManager.getMonsters().clear();
-                players.clear();
-                powerUpManager.clear();
-
-            }
-        }.runTaskLater(240);
+        clearGameData();
+        updateSign();
     }
 
     public void updateScoreboard() {
-        new GameScoreboard(plugin.getZombiesConfig().getGameScoreboardLayout()).set(this);
+        //new GameScoreboard(plugin.getZombiesConfig().getGameScoreboardLayout()).set(this);
     }
 
     public boolean updateSign() {

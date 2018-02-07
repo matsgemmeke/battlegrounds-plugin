@@ -1,11 +1,7 @@
 package com.matsg.battlegrounds.listener;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
-import org.bukkit.event.Event;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.event.*;
 import org.bukkit.plugin.RegisteredListener;
 
 public class EventListener implements Listener {

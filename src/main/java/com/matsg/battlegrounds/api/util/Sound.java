@@ -8,9 +8,9 @@ public interface Sound {
 
     long getDelay();
 
-    float getPitch();
+    org.bukkit.Sound getEnumSound();
 
-    org.bukkit.Sound getSound();
+    float getPitch();
 
     float getVolume();
 

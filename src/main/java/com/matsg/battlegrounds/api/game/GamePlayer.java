@@ -10,6 +10,10 @@ import java.util.UUID;
 
 public interface GamePlayer {
 
+    int getDeaths();
+
+    int getHeadshots();
+
     int getKills();
 
     Knife getKnife();
@@ -47,6 +51,10 @@ public interface GamePlayer {
     void sendMessage(Message message);
 
     void sendMessage(String message);
+
+    void setDeaths(int deaths);
+
+    void setHeadshots(int headshots);
 
     void setKills(int kills);
 
