@@ -5,6 +5,7 @@ import com.matsg.battlegrounds.api.game.PlayerStatus;
 import com.matsg.battlegrounds.api.game.SavedInventory;
 import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.util.Message;
+import com.matsg.battlegrounds.di.DIFactory;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -29,7 +30,7 @@ public class BattleGamePlayer implements GamePlayer {
         this.kills = 0;
         this.playerStatus = PlayerStatus.ALIVE;
         this.points = 0;
-        this.savedInventory = new BattleSavedInventory(player);
+        this.savedInventory = (SavedInventory) DIFactory.createInstance(SavedInventory.class, player);
     }
 
     public int getDeaths() {

@@ -1,7 +1,10 @@
 package com.matsg.battlegrounds.game.gamemode;
 
 import com.matsg.battlegrounds.api.game.GameMode;
+import com.matsg.battlegrounds.api.game.GamePlayer;
 import com.matsg.battlegrounds.api.game.Team;
+import com.matsg.battlegrounds.di.DIContainer;
+import com.matsg.battlegrounds.game.BattleGamePlayer;
 
 import java.util.ArrayList;
 import java.util.List;

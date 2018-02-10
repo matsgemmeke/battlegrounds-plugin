@@ -8,8 +8,19 @@ import org.bukkit.entity.Player;
 
 public interface GameManager {
 
+    /**
+     * Gets if a game by a particular id exists.
+     *
+     * @param id The id to check
+     * @return Whether a game by this id exists
+     */
     boolean exists(int id);
 
+    /**
+     * Gets all online players who are currently in a game.
+     *
+     * @return All players who are in a game
+     */
     Iterable<GamePlayer> getAllPlayers();
 
     Arena getArena(Game game, String name);

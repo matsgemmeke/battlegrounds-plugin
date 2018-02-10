@@ -7,6 +7,7 @@ import com.matsg.battlegrounds.api.game.GameMode;
 import com.matsg.battlegrounds.api.util.Message;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.config.BattleCacheYaml;
+import com.matsg.battlegrounds.di.DIFactory;
 import com.matsg.battlegrounds.util.ActionBar;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.EnumMessage;
@@ -37,7 +38,7 @@ public class BattleGame implements Game {
         this.plugin = plugin;
         this.id = id;
         this.arenaList = new ArrayList<>();
-        this.itemRegistry = new BattleItemRegistry();
+        this.itemRegistry = (ItemRegistry) DIFactory.createInstance(ItemRegistry.class);
         this.players = new ArrayList<>();
         this.state = GameState.WAITING;
 
@@ -105,7 +106,7 @@ public class BattleGame implements Game {
     }
 
     public GamePlayer addPlayer(Player player) {
-        GamePlayer gamePlayer = new BattleGamePlayer(player);
+        GamePlayer gamePlayer = (GamePlayer) DIFactory.createInstance(GamePlayer.class, player);
         Location lobby = dataFile.getLocation("lobby");
 
         players.add(gamePlayer);
