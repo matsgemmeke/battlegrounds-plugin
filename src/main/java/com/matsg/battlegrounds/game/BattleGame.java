@@ -7,10 +7,8 @@ import com.matsg.battlegrounds.api.game.GameMode;
 import com.matsg.battlegrounds.api.util.Message;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.config.BattleCacheYaml;
-import com.matsg.battlegrounds.di.DIFactory;
 import com.matsg.battlegrounds.util.ActionBar;
 import com.matsg.battlegrounds.util.BattleRunnable;
-import com.matsg.battlegrounds.util.EnumMessage;
 import com.matsg.battlegrounds.util.Title;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -32,15 +30,18 @@ public class BattleGame implements Game {
     private GameState state;
     private ItemRegistry itemRegistry;
     private List<Arena> arenaList;
-    private List<GamePlayer> players;
+    private PlayerManager playerManager;
 
     public BattleGame(Battlegrounds plugin, int id) {
         this.plugin = plugin;
         this.id = id;
         this.arenaList = new ArrayList<>();
-        this.itemRegistry = (ItemRegistry) DIFactory.createInstance(ItemRegistry.class);
-        this.players = new ArrayList<>();
+        this.eventHandler = new GameEventHandler();
+        this.itemRegistry = new BattleItemRegistry();
+        this.playerManager = new BattlePlayerManager(this);
         this.state = GameState.WAITING;
+
+        plugin.getEventManager().registerEventHandler(eventHandler);
 
         try {
             this.dataFile = new BattleCacheYaml(plugin, plugin.getDataFolder().getPath() + "/data", "game_" + id + ".yml");
@@ -85,8 +86,8 @@ public class BattleGame implements Game {
         return itemRegistry;
     }
 
-    public List<GamePlayer> getPlayers() {
-        return players;
+    public PlayerManager getPlayerManager() {
+        return playerManager;
     }
 
     public GameState getState() {
@@ -105,43 +106,20 @@ public class BattleGame implements Game {
         this.state = state;
     }
 
-    public GamePlayer addPlayer(Player player) {
-        GamePlayer gamePlayer = (GamePlayer) DIFactory.createInstance(GamePlayer.class, player);
-        Location lobby = dataFile.getLocation("lobby");
-
-        players.add(gamePlayer);
-
-        broadcastMessage(EnumMessage.PREFIX.getMessage() + " " + EnumMessage.PLAYER_JOIN.getMessage(
-                new Placeholder("player_name", player.getName()),
-                new Placeholder("zombies_players", players.size()),
-                new Placeholder("zombies_maxplayers", configuration.getMaxPlayers())));
-        updateSign();
-
-        gamePlayer.setStatus(PlayerStatus.ALIVE).apply(this, gamePlayer);
-
-        if (lobby != null) {
-            player.teleport(lobby);
-        }
-        if (players.size() == configuration.getMinPlayers()) {
-            new Countdown(this, configuration.getCountdownLength(), 60, 45, 30, 15, 10).run();
-        }
-        return gamePlayer;
-    }
-
     public void broadcastMessage(Message message) {
-        for (GamePlayer gamePlayer : players) {
+        for (GamePlayer gamePlayer : playerManager.getPlayers()) {
             gamePlayer.sendMessage(message);
         }
     }
 
     public void broadcastMessage(String message) {
-        for (GamePlayer gamePlayer : players) {
+        for (GamePlayer gamePlayer : playerManager.getPlayers()) {
             gamePlayer.sendMessage(message);
         }
     }
 
     private void broadcastTitle(Title title, Placeholder... placeholders) {
-        for (GamePlayer gamePlayer : players) {
+        for (GamePlayer gamePlayer : playerManager.getPlayers()) {
             title.send(gamePlayer.getPlayer(), placeholders);
         }
     }
@@ -160,7 +138,7 @@ public class BattleGame implements Game {
                 rollback();
 
                 itemRegistry.clear();
-                players.clear();
+                playerManager.getPlayers().clear();
 
                 state = GameState.WAITING;
                 updateSign();
@@ -177,45 +155,9 @@ public class BattleGame implements Game {
         return null;
     }
 
-    public GamePlayer getGamePlayer(Player player) {
-        for (GamePlayer gamePlayer : players) {
-            if (gamePlayer.getPlayer() == player) {
-                return gamePlayer;
-            }
-        }
-        return null;
-    }
-
-    private Location getLeavingLocation() {
+    public Location getSpawnPoint() {
         Location mainLobby = plugin.getBattlegroundsCache().getLocation("mainlobby");
         return mainLobby != null ? mainLobby : plugin.getServer().getWorlds().get(0).getSpawnLocation(); // Return the main lobby, otherwise the world spawn
-    }
-
-    public GamePlayer[] getLivingPlayers() {
-        List<GamePlayer> list = new ArrayList<>();
-        for (GamePlayer gamePlayer : players) {
-            if (gamePlayer.getStatus().canInteract()) {
-                list.add(gamePlayer);
-            }
-        }
-        return list.toArray(new GamePlayer[list.size()]);
-    }
-
-    public GamePlayer getNearestPlayer(Location location) {
-        return getNearestPlayer(location, Double.MAX_VALUE);
-    }
-
-    public GamePlayer getNearestPlayer(Location location, double range) {
-        double distance = range;
-        GamePlayer nearestPlayer = null;
-        for (GamePlayer gamePlayer : getLivingPlayers()) {
-            if (gamePlayer != null && gamePlayer.getStatus().canInteract() && location.getWorld() == gamePlayer.getPlayer().getWorld()
-                    && location.distanceSquared(gamePlayer.getPlayer().getLocation()) < distance) {
-                distance = location.distanceSquared(gamePlayer.getPlayer().getLocation());
-                nearestPlayer = gamePlayer;
-            }
-        }
-        return nearestPlayer;
     }
 
     public void givePoints(GamePlayer gamePlayer, int points) {
@@ -223,36 +165,17 @@ public class BattleGame implements Game {
         gamePlayer.setPoints(gamePlayer.getPoints() + points);
     }
 
-    public void removePlayer(Player player) {
-        GamePlayer gamePlayer = getGamePlayer(player);
-
-        players.remove(gamePlayer);
-
-        broadcastMessage(EnumMessage.PREFIX.getMessage() + " " + EnumMessage.PLAYER_LEAVE.getMessage(
-                new Placeholder("player_name", player.getName()),
-                new Placeholder("bg_players", players.size()),
-                new Placeholder("bg_maxplayers", configuration.getMaxPlayers())));
-
-        gamePlayer.getPlayer().teleport(getLeavingLocation());
-        gamePlayer.getSavedInventory().restore(player);
-        gamePlayer.setStatus(PlayerStatus.ALIVE).apply(this, gamePlayer);
-
-        if (getLivingPlayers().length <= 0) {
-            stop();
-        }
-    }
-
     public void rollback() {
         Arena arena = getArena();
         if (arena == null) {
             return;
         }
-        for (GamePlayer gamePlayer : players) {
+        for (GamePlayer gamePlayer : playerManager.getPlayers()) {
             Player player = gamePlayer.getPlayer();
 
-            gamePlayer.getPlayer().teleport(getLeavingLocation());
+            gamePlayer.getPlayer().teleport(getSpawnPoint());
             gamePlayer.getSavedInventory().restore(player);
-            gamePlayer.setStatus(PlayerStatus.ALIVE).apply(this, gamePlayer);
+            gamePlayer.setStatus(PlayerStatus.ACTIVE).apply(this, gamePlayer);
         }
     }
 
@@ -265,16 +188,6 @@ public class BattleGame implements Game {
         arena.setActive(true);
     }
 
-    public void setVisible(GamePlayer gamePlayer, boolean visible) {
-        for (GamePlayer other : players) {
-            if (visible) {
-                other.getPlayer().showPlayer(gamePlayer.getPlayer());
-            } else {
-                other.getPlayer().hidePlayer(gamePlayer.getPlayer());
-            }
-        }
-    }
-
     public void stop() {
         if (!state.isInProgress()) {
             state = GameState.WAITING;
@@ -282,7 +195,7 @@ public class BattleGame implements Game {
             return;
         }
 
-        for (GamePlayer gamePlayer : getPlayers()) {
+        for (GamePlayer gamePlayer : playerManager.getPlayers()) {
             Player player = gamePlayer.getPlayer();
             player.setAllowFlight(true);
             player.setGameMode(org.bukkit.GameMode.CREATIVE);
@@ -295,7 +208,7 @@ public class BattleGame implements Game {
             if (gamePlayer.getSecondary() != null) {
                 gamePlayer.getSecondary().setReloadCancelled(true);
             }
-            setVisible(gamePlayer, true);
+            playerManager.setVisible(gamePlayer, true);
         }
 
         plugin.getPlayerStorage().save();

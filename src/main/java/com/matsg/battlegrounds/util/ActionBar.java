@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.util;
 
 import com.matsg.battlegrounds.BattlegroundsPlugin;
+import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.util.Message;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.util.ReflectionUtils.EnumVersion;
@@ -22,11 +23,13 @@ public enum ActionBar implements Message {
     POINTS_INCREASE("actionbar-points-increase"),
     POWERSWITCH("actionbar-powerswitch");
 
+    private Battlegrounds plugin;
     private EnumVersion version;
     private String message, path;
 
     ActionBar(String path) {
-        this.message = BattlegroundsPlugin.getPlugin().getTranslator().getTranslation(path);
+        this.plugin = BattlegroundsPlugin.getPlugin();
+        this.message = plugin.getTranslator().getTranslation(path);
         this.path = path;
         this.version = ReflectionUtils.ENUM_VERSION;
     }

@@ -19,12 +19,12 @@ public class BattleEventManager implements EventManager {
 
     public void callEvent(Event event) {
         for (EventHandler eventHandler : eventHandlers) {
-            for (Class<? extends Event> eventClass : eventHandler.events()) {
-                if (event.getClass() == eventClass) {
-                    executeEvent(event, eventHandler);
-                }
-            }
+            executeEvent(event, eventHandler);
         }
+    }
+
+    public void deregisterEventHandler(EventHandler eventHandler) {
+        eventHandlers.remove(eventHandler);
     }
 
     private void executeEvent(Event event, EventHandler handler) {

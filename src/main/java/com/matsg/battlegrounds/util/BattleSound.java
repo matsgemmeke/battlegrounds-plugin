@@ -104,7 +104,7 @@ public class BattleSound implements com.matsg.battlegrounds.api.util.Sound {
     public void play(final Game game) {
         new BattleRunnable() {
             public void run() {
-                for (GamePlayer gamePlayer : game.getPlayers()) {
+                for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
                     gamePlayer.getPlayer().playSound(gamePlayer.getPlayer().getLocation(), sound, volume, pitch);
                 }
             }
@@ -114,7 +114,7 @@ public class BattleSound implements com.matsg.battlegrounds.api.util.Sound {
     public void play(final Game game, final Entity entity) {
         new BattleRunnable() {
             public void run() {
-                for (GamePlayer gamePlayer : game.getPlayers()) {
+                for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
                     gamePlayer.getPlayer().playSound(entity.getLocation(), sound, volume, pitch);
                 }
             }
@@ -124,7 +124,7 @@ public class BattleSound implements com.matsg.battlegrounds.api.util.Sound {
     public void play(final Game game, final Location location) {
         new BattleRunnable() {
             public void run() {
-                for (GamePlayer gamePlayer : game.getPlayers()) {
+                for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
                     gamePlayer.getPlayer().playSound(location, sound, volume, pitch);
                 }
             }
@@ -134,7 +134,7 @@ public class BattleSound implements com.matsg.battlegrounds.api.util.Sound {
     public void play(final Game game, final Location location, final float pitch) {
         new BattleRunnable() {
             public void run() {
-                for (GamePlayer gamePlayer : game.getPlayers()) {
+                for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
                     gamePlayer.getPlayer().playSound(location, sound, volume, pitch);
                 }
             }

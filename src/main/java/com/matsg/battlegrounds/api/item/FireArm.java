@@ -20,15 +20,19 @@ public interface FireArm extends Weapon {
 
     Projectile getProjectile();
 
+    int getReloadDuration();
+
     Sound[] getReloadSound();
 
-    int getReloadTime();
-
     Sound[] getShootSound();
+
+    int getStartAmmo();
 
     boolean isReloading();
 
     boolean isShooting();
+
+    void playReloadSound();
 
     void reload();
 
@@ -38,9 +42,9 @@ public interface FireArm extends Weapon {
 
     void setReloadCancelled(boolean reloadCancelled);
 
-    void setReloading(boolean reloading);
+    void setReloadDuration(int reloadDuration);
 
-    void setReloadTime(int reloadTime);
+    void setReloading(boolean reloading);
 
     void setShooting(boolean shooting);
 

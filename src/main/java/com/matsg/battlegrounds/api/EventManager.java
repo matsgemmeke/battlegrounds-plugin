@@ -7,5 +7,7 @@ public interface EventManager {
 
     void callEvent(Event event);
 
+    void deregisterEventHandler(EventHandler eventHandler);
+
     void registerEventHandler(EventHandler eventHandler);
 }

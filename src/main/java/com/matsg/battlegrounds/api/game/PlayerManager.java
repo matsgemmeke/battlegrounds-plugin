@@ -1,0 +1,40 @@
+package com.matsg.battlegrounds.api.game;
+
+import com.matsg.battlegrounds.api.util.Hitbox;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+
+import java.util.Collection;
+
+public interface PlayerManager {
+
+    GamePlayer addPlayer(Player player);
+
+    void damagePlayer(GamePlayer gamePlayer, double damage);
+
+    GamePlayer getGamePlayer(Player player);
+
+    GamePlayer[] getLivingPlayers();
+
+    GamePlayer[] getLivingPlayers(Team team);
+
+    GamePlayer[] getNearbyPlayers(Location location, double range);
+
+    GamePlayer getNearestPlayer(Location location);
+
+    GamePlayer getNearestPlayer(Location location, double range);
+
+    GamePlayer getNearestPlayer(Location location, Team team);
+
+    GamePlayer getNearestPlayer(Location location, Team team, double range);
+
+    Collection<GamePlayer> getPlayers();
+
+    Team getTeam(Player player);
+
+    void removePlayer(Player player);
+
+    void setVisible(GamePlayer gamePlayer, boolean visible);
+
+    void setVisible(GamePlayer gamePlayer, Team team, boolean visible);
+}

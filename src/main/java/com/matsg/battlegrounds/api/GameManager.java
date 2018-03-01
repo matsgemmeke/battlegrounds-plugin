@@ -6,6 +6,8 @@ import com.matsg.battlegrounds.api.game.GamePlayer;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import java.util.Collection;
+
 public interface GameManager {
 
     /**
@@ -37,7 +39,7 @@ public interface GameManager {
 
     GamePlayer getGamePlayer(Player player);
 
-    Iterable<Game> getGames();
+    Collection<Game> getGames();
 
     void shutdown();
 }

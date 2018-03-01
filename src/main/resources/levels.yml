@@ -1,0 +1,7 @@
+level:
+  '1':
+    exp: 0
+    unlockables:
+      weapons: M1911
+  '2':
+    exp: 100

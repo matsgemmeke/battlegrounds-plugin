@@ -1,2 +1,65 @@
 # Do not touch
 version: 1.0.0
+
+# The language locale which the plugin will translate its messages to
+locale: en
+
+# A list of commands which are allowed to use ingame
+# Commands not included in this list won't be allowed to use while playing
+# Adding an '*' (including quotes) will allow players to dispatch any command
+game-allowed-commands:
+- bg
+- battlegrouds
+- leave
+
+# Arenas are protection from construct and destruction modifications
+game-arena-protection: true
+
+# Broadcast in-game chat message to the console
+game-broadcast-chat: false
+
+# The gamemode players get set to when joining and leaving a game
+game-default-join-gamemode: SURVIVAL
+game-default-leave-gamemode: SURVIVAL
+
+# The display names of different weapon types
+game-display-name:
+  explosive: "&f%bg_weapon%"
+  firearm: "&f%bg_weapon%  %bg_magazine%/%bg_ammo%"
+  knife: "&f%bg_weapon%"
+
+# Explosive throwing cooldown in ticks
+game-explosive-cooldown: 20
+
+# The general accuracy of firearms in the game
+# Change to higher number for lower accuracy, change to lower number for higher accuracy
+game-firearm-accuracy: 10.0
+
+# The velocity of grenade launchers' projectiles
+# Higher values than 3.0 may cause the projectile to not launch accurately
+game-launcher-velocity: 2.0
+
+# Item materials of different weapon types
+game-material:
+  explosive: IRON_HELMET
+  firearm: IRON_HOE
+  knife: IRON_SWORD
+
+# Some projectiles are able to pierce through certain blocks. Add their materials here
+game-pierceable-blocks:
+- AIR
+- BARRIER
+- CARPET
+- IRON_FENCE
+- LEAVES
+- LONG_GRASS
+- REDSTONE_WIRE
+- SIGN_POST
+- WALL_SIGN
+
+# The layout of the game joining signs
+game-sign-layout:
+  line-0: "%bg_state%"
+  line-1: "&lGame %bg_game%"
+  line-2: "%bg_arena%"
+  line-3: "&8&l%bg_players%/%bg_maxplayers%"

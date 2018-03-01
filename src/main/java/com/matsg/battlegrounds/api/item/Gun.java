@@ -11,4 +11,6 @@ public interface Gun extends FireArm {
     int getFireRate();
 
     WeaponType getType();
+
+    void setScoped(boolean scoped);
 }

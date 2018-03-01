@@ -22,7 +22,7 @@ public interface Item extends Cloneable, Comparable<Item> {
 
     void onLeftClick();
 
-    void onPickUp();
+    void onPickUp(GamePlayer gamePlayer, org.bukkit.entity.Item itemEntity);
 
     void onRightClick();
 
@@ -33,6 +33,8 @@ public interface Item extends Cloneable, Comparable<Item> {
     void setGamePlayer(GamePlayer gamePlayer);
 
     void setItemSlot(ItemSlot itemSlot);
+
+    void setItemStack(ItemStack itemStack);
 
     boolean update();
 }

@@ -6,6 +6,8 @@ public interface GameConfiguration {
 
     int getCountdownLength();
 
+    GameMode[] getGameModes();
+
     int getMaxPlayers();
 
     int getMinPlayers();

@@ -3,13 +3,10 @@ package com.matsg.battlegrounds.api.game;
 import com.matsg.battlegrounds.api.config.CacheYaml;
 import com.matsg.battlegrounds.api.util.Message;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 
 import java.util.List;
 
 public interface Game {
-
-    GamePlayer addPlayer(Player player);
 
     void broadcastMessage(Message message);
 
@@ -27,23 +24,17 @@ public interface Game {
 
     GameMode getGameMode();
 
-    GamePlayer getGamePlayer(Player player);
-
     GameSign getGameSign();
 
     int getId();
 
     ItemRegistry getItemRegistry();
 
-    GamePlayer[] getLivingPlayers();
+    PlayerManager getPlayerManager();
 
-    GamePlayer getNearestPlayer(Location location);
-
-    List<GamePlayer> getPlayers();
+    Location getSpawnPoint();
 
     GameState getState();
-
-    void removePlayer(Player player);
 
     void rollback();
 
@@ -54,8 +45,6 @@ public interface Game {
     void setGameSign(GameSign gameSign);
 
     void setState(GameState state);
-
-    void setVisible(GamePlayer gamePlayer, boolean visible);
 
     void stop();
 

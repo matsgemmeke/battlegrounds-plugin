@@ -5,16 +5,14 @@ import com.matsg.battlegrounds.api.config.BattlegroundsConfig;
 import com.matsg.battlegrounds.api.config.CacheYaml;
 import com.matsg.battlegrounds.api.config.WeaponConfig;
 import com.matsg.battlegrounds.api.dao.PlayerDAOFactory;
-import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.item.Explosive;
 import com.matsg.battlegrounds.api.item.FireArm;
 import com.matsg.battlegrounds.api.item.Knife;
+import com.matsg.battlegrounds.command.BattlegroundsCommand;
 import com.matsg.battlegrounds.config.BattleCacheYaml;
-import com.matsg.battlegrounds.di.DIContainer;
-import com.matsg.battlegrounds.di.DIFactory;
-import com.matsg.battlegrounds.game.*;
 import com.matsg.battlegrounds.listener.BattleEventManager;
 import com.matsg.battlegrounds.listener.EventListener;
+import com.matsg.battlegrounds.util.EnumMessage;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -26,7 +24,7 @@ import java.util.List;
 
 public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
 
-    private static BattlegroundsPlugin plugin;
+    private static Battlegrounds plugin;
     private BattlegroundsConfig config;
     private CacheYaml cache;
     private EventManager eventManager;
@@ -58,7 +56,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         gameManager.shutdown();
     }
 
-    public static BattlegroundsPlugin getPlugin() {
+    public static Battlegrounds getPlugin() {
         return plugin;
     }
 
@@ -132,17 +130,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         return list;
     }
 
-    private void registerDIContainers() {
-        DIFactory.registerContainer(Arena.class, new DIContainer<>(BattleArena.class));
-        DIFactory.registerContainer(Game.class, new DIContainer<>(BattleGame.class));
-        DIFactory.registerContainer(GameConfiguration.class, new DIContainer<>(BattleGameConfiguration.class));
-        DIFactory.registerContainer(GamePlayer.class, new DIContainer<>(BattleGamePlayer.class));
-        DIFactory.registerContainer(SavedInventory.class, new DIContainer<>(BattleSavedInventory.class));
-    }
-
     private void startPlugin() throws StartupFailedException {
-        registerDIContainers();
-
         extensions = loadExtensions();
 
         for (BattlegroundsExtension extension : extensions) {
@@ -182,13 +170,14 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
 
         //new DataLoader(this);
 
-        //new WeaponsCommand(this);
-        //new ZombiesCommand(this);
+        new BattlegroundsCommand(this);
 
         new EventListener(this);
 
         //DAOFactory.init(this, sqlConfig);
         //WeaponsView.getInstance(this);
+
+        System.out.print(EnumMessage.PREFIX.getMessage());
 
         for (BattlegroundsExtension extension : extensions) {
             extension.onPostInit();

@@ -25,7 +25,7 @@ public class BattleGameManager implements GameManager {
     public List<GamePlayer> getAllPlayers() {
         List<GamePlayer> list = new ArrayList<>();
         for (Game game : games) {
-            list.addAll(game.getPlayers());
+            list.addAll(game.getPlayerManager().getPlayers());
         }
         return list;
     }
@@ -78,7 +78,7 @@ public class BattleGameManager implements GameManager {
 
     public Game getGame(Player player) {
         for (Game game : games) {
-            if (game.getGamePlayer(player) != null) {
+            if (game.getPlayerManager().getGamePlayer(player) != null) {
                 return game;
             }
         }
@@ -87,7 +87,7 @@ public class BattleGameManager implements GameManager {
 
     public GamePlayer getGamePlayer(Player player) {
         for (Game game : games) {
-            GamePlayer gamePlayer = game.getGamePlayer(player);
+            GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
             if (gamePlayer != null) {
                 return gamePlayer;
             }

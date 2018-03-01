@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.game;
 
 import com.matsg.battlegrounds.api.game.Arena;
+import com.matsg.battlegrounds.api.game.Spawn;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -11,7 +12,7 @@ public class BattleArena implements Arena {
 
     private boolean active;
     private List<Block> boundingBlocks;
-    private List<Location> spawns;
+    private List<Spawn> spawns;
     private Location max, min;
     private String name;
     private World world;
@@ -37,7 +38,7 @@ public class BattleArena implements Arena {
         return name;
     }
 
-    public List<Location> getSpawns() {
+    public List<Spawn> getSpawns() {
         return spawns;
     }
 

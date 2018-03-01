@@ -2,10 +2,10 @@ package com.matsg.battlegrounds.game.gamemode;
 
 import com.matsg.battlegrounds.api.game.GamePlayer;
 
-public class FreeForAll extends AbstractGameMode {
+public class TeamDeathmatch extends AbstractGameMode {
 
-    public FreeForAll() {
-        super("Free-for-all", "FFA");
+    public TeamDeathmatch() {
+        super("Team Deathmatch", "Team DM");
     }
 
     public void spawnPlayers(GamePlayer... players) {

@@ -4,8 +4,15 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.config.AbstractYaml;
 
 import java.io.IOException;
+import java.util.List;
 
 public final class BattlegroundsConfig extends AbstractYaml {
+
+    public final boolean arenaProtection = getBoolean("game-arena-protection");
+    public final boolean broadcastChat = getBoolean("game-broadcast-chat");
+    public final double gunAccuracy = getDouble("game-gun-accuracy");
+    public final double launcherVelocity = getDouble("game-launcher-velocity");
+    public final List<String> pierceableBlocks = getStringList("game-pierceable-blocks");
 
     public BattlegroundsConfig(Battlegrounds plugin) throws IOException {
         super(plugin, "config.yml", false);
@@ -13,5 +20,13 @@ public final class BattlegroundsConfig extends AbstractYaml {
             removeFile();
             createFile(plugin.getDataFolder().getPath(), "config.yml");
         }
+    }
+
+    public String getWeaponDisplayName(String weaponType) {
+        return getString("game-display-name." + weaponType);
+    }
+
+    public String getWeaponMaterial(String weaponType) {
+        return getString("game-material." + weaponType);
     }
 }

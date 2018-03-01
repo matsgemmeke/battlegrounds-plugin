@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.util;
 
 import com.matsg.battlegrounds.BattlegroundsPlugin;
+import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.util.Message;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import org.bukkit.ChatColor;
@@ -12,14 +13,16 @@ public enum Title implements Message {
 
     COUNTDOWN("title-countdown");
 
+    private Battlegrounds plugin;
     private int fadeIn, fadeOut, time;
     private String path, subTitle, title;
 
     Title(String path) {
+        this.plugin = BattlegroundsPlugin.getPlugin();
         if (path == null || path.length() <= 0) {
             throw new TitleFormatException("Title argument cannot be null");
         }
-        String string = BattlegroundsPlugin.getPlugin().getTranslator().getTranslation(path);
+        String string = plugin.getTranslator().getTranslation(path);
         String[] split = string.split(",");
         if (split.length <= 4) {
             throw new TitleFormatException("Invalid title format \"" + string + "\"");

@@ -6,7 +6,7 @@ public interface WeaponAttribute {
 
     String getIdentifier();
 
-    double getValue();
+    Object getValue();
 
-    void setValue(double value);
+    void setValue(Object value);
 }

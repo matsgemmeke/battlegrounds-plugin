@@ -1,0 +1,1215 @@
+# For a list of sounds visit: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Sound.html
+#
+# Gun format
+#
+# <Name>:
+#   Accuracy: Represents how accurate the gun fires onto the proposed target
+#   Ammo:
+#     Magazine: Magazine size
+#     Max: Max ammo
+#   Description: Description of the gun
+#   DisplayName: The name of the gun
+#   Durability: The durability of the gun (optional for if you want a unique texture)
+#   FireMode: AUTOMATIC, BURST, SEMI_AUTOMATIC
+#     Burst: Amount of rounds fired with a single pull on the trigger. This option only affects guns using burst mode
+#     Cooldown: The amount of ticks the gun needs to wait to be able to shoot again
+#     FireRate: Amount of rounds fired per second. Semi-automatic guns always fire only one projectile at a time
+#     LaunchType: GRENADE, ROCKET (Only required for launcher firearms)
+#     ShootSound: Array of sounds which play when the gun shoots
+#     Type: AUTOMATIC, BURST, SEMI_AUTOMATIC
+#   GunType: ASSAULT_RIFLE, LIGHT_MACHINE_GUN, PISTOL, SHOTGUN, SNIPER_RIFLE, SUBMACHINE_GUN
+#   HeadshotMultiplier: When the gun hits a zombie in the head, the damage gets multiplied with this number
+#   Range:
+#     Long:
+#       Damage: Long-range damage
+#       Distance: Distance where the long range ends and the projectile gets removed
+#     Medium:
+#       Damage: Medium-range damage
+#       Distance: Distance where medium range ends and long range starts
+#     Short:
+#       Damage: Short-range damage
+#       Distance: Distance where short range ends and medium range starts
+#   Reload:
+#     Duration: Reload time in ticks
+#     Sound:
+#       Reload: Array of sounds which play when adding ammo or replacing the magazine of the gun
+#       Start: Array of sounds which play at the start of a reload. This options only guns using shell reloading
+#       Stop: Array of sounds which play at the end of a reload. This options only guns using shell reloading
+#     Type: MAGAZINE, SHELL
+
+BERETTA_93R:
+  Accuracy: 0.5
+  Ammo:
+    Magazine: 15
+    Max: 120
+    Start: 45
+  DisplayName: Beretta 93R
+  Durability: 1
+  FireMode:
+    Burst: 3
+    Cooldown: 2
+    FireRate: 20
+    ShootSound: ENTITY_BLAZE_HURT-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
+    Type: BURST
+  GunType: PISTOL
+  HeadshotMultiplier: 1.5
+  Range:
+    Long:
+      Damage: 19.0
+      Distance: 50.0
+    Medium:
+      Damage: 33.0
+      Distance: 30.0
+    Short:
+      Damage: 45.0
+      Distance: 10.0
+  Reload:
+    Duration: 36
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_CLOSE-1-2-4, BLOCK_WOODEN_DOOR_OPEN-1-2-27, BLOCK_WOODEN_DOOR_CLOSE-1-2-30
+    Type: MAGAZINE
+
+FIVE-SEVEN:
+  Accuracy: 0.7
+  Ammo:
+    Magazine: 20
+    Max: 160
+    Start: 60
+  DisplayName: Five-seven
+  Durability: 2
+  FireMode:
+    Burst: 0
+    Cooldown: 2
+    FireRate: 1
+    ShootSound: ENTITY_IRONGOLEM_HURT-3-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
+    Type: SEMI_AUTOMATIC
+  GunType: PISTOL
+  HeadshotMultiplier: 1.4
+  Range:
+    Long:
+      Damage: 19.0
+      Distance: 50.0
+    Medium:
+      Damage: 33.0
+      Distance: 30.0
+    Short:
+      Damage: 45.0
+      Distance: 10.0
+  Reload:
+    Duration: 36
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_CLOSE-1-2-4, BLOCK_WOODEN_DOOR_OPEN-1-2-27, BLOCK_WOODEN_DOOR_CLOSE-1-2-30
+    Type: MAGAZINE
+
+GLOCK_17:
+  Accuracy: 0.6
+  Ammo:
+    Magazine: 17
+    Max: 102
+    Start: 51
+  DisplayName: Glock 17
+  Durability: 3
+  FireMode:
+    Burst: 0
+    Cooldown: 2
+    FireRate: 1
+    ShootSound: ENTITY_IRONGOLEM_HURT-3-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
+    Type: SEMI_AUTOMATIC
+  GunType: PISTOL
+  HeadshotMultiplier: 1.5
+  Range:
+    Long:
+      Damage: 17.0
+      Distance: 50.0
+    Medium:
+      Damage: 30.0
+      Distance: 30.0
+    Short:
+      Damage: 42.0
+      Distance: 10.0
+  Reload:
+    Duration: 36
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_CLOSE-1-2-4, BLOCK_WOODEN_DOOR_OPEN-1-2-27, BLOCK_WOODEN_DOOR_CLOSE-1-2-30
+    Type: MAGAZINE
+
+M1911:
+  Accuracy: 0.6
+  Ammo:
+    Magazine: 7
+    Max: 70
+    Start: 21
+  DisplayName: M1911
+  Durability: 4
+  FireMode:
+    Burst: 0
+    Cooldown: 2
+    FireRate: 1
+    ShootSound: ENTITY_IRONGOLEM_HURT-3-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
+    Type: SEMI_AUTOMATIC
+  GunType: PISTOL
+  HeadshotMultiplier: 1.5
+  Range:
+    Long:
+      Damage: 20.0
+      Distance: 50.0
+    Medium:
+      Damage: 30.0
+      Distance: 30.0
+    Short:
+      Damage: 40.0
+      Distance: 10.0
+  Reload:
+    Duration: 36
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_CLOSE-1-2-4, BLOCK_WOODEN_DOOR_OPEN-1-2-27, BLOCK_WOODEN_DOOR_CLOSE-1-2-30
+    Type: MAGAZINE
+
+PYTHON:
+  Accuracy: 0.5
+  Ammo:
+    Magazine: 6
+    Max: 54
+    Start: 18
+  DisplayName: Python
+  Durability: 5
+  FireMode:
+    Burst: 0
+    Cooldown: 2
+    FireRate: 1
+    ShootSound: ENTITY_IRONGOLEM_HURT-3-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
+    Type: SEMI_AUTOMATIC
+  GunType: PISTOL
+  HeadshotMultiplier: 1.5
+  Range:
+    Long:
+      Damage: 30.0
+      Distance: 50.0
+    Medium:
+      Damage: 40.0
+      Distance: 30.0
+    Short:
+      Damage: 50.0
+      Distance: 10.0
+  Reload:
+    Duration: 16
+    Sound:
+      Reload: BLOCK_STONE_BUTTON_CLICK_OFF-1-2-12
+    Type: SHELL
+
+AKS-74U:
+  Accuracy: 0.4
+  Ammo:
+    Magazine: 30
+    Max: 240
+    Start: 90
+  DisplayName: AKS-74u
+  Durability: 6
+  FireMode:
+    Burst: 0
+    Cooldown: 0
+    FireRate: 10
+    ShootSound: BLOCK_PISTON_EXTEND-3-2-0, ENTITY_BLAZE_HURT-3-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
+    Type: AUTOMATIC
+  GunType: SUBMACHINE_GUN
+  HeadshotMultiplier: 1.4
+  Range:
+    Long:
+      Damage: 20.0
+      Distance: 50.0
+    Medium:
+      Damage: 28.0
+      Distance: 35.0
+    Short:
+      Damage: 35.0
+      Distance: 20.0
+  Reload:
+    Duration: 48
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-0, ENTITY_SKELETON_AMBIENT-1-0-3, BLOCK_WOODEN_DOOR_CLOSE-1-2-6, ENTITY_SKELETON_STEP-1-0-38, BLOCK_WOODEN_DOOR_CLOSE-1-2-42, BLOCK_STONE_BUTTON_CLICK_ON-1-1-44, BLOCK_WOODEN_DOOR_CLOSE-1-2-44
+    Type: MAGAZINE
+
+MAC-11:
+  Accuracy: 0.4
+  Ammo:
+    Magazine: 20
+    Max: 160
+    Start: 60
+  DisplayName: MAC-11
+  Durability: 7
+  FireMode:
+    Burst: 0
+    Cooldown: 0
+    FireRate: 10
+    ShootSound: BLOCK_PISTON_EXTEND-3-2-0, ENTITY_BLAZE_HURT-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0
+    Type: AUTOMATIC
+  GunType: SUBMACHINE_GUN
+  HeadshotMultiplier: 1.4
+  Range:
+    Long:
+      Damage: 20.0
+      Distance: 50.0
+    Medium:
+      Damage: 25.0
+      Distance: 35.0
+    Short:
+      Damage: 30.0
+      Distance: 20.0
+  Reload:
+    Duration: 40
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-0, BLOCK_WOODEN_DOOR_CLOSE-1-2-18, BLOCK_PISTON_EXTEND-1-2-22, BLOCK_WOODEN_DOOR_CLOSE-1-2-32, BLOCK_WOODEN_DOOR_CLOSE-1-2-36
+    Type: MAGAZINE
+
+MP5:
+  Accuracy: 0.5
+  Ammo:
+    Magazine: 30
+    Max: 240
+    Start: 90
+  DisplayName: MP5
+  Durability: 8
+  FireMode:
+    Burst: 0
+    Cooldown: 0
+    FireRate: 10
+    ShootSound: BLOCK_PISTON_EXTEND-3-2-0, ENTITY_BLAZE_HURT-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0
+    Type: AUTOMATIC
+  GunType: SUBMACHINE_GUN
+  HeadshotMultiplier: 1.4
+  Range:
+    Long:
+      Damage: 20.0
+      Distance: 50.0
+    Medium:
+      Damage: 28.0
+      Distance: 35.0
+    Short:
+      Damage: 35.0
+      Distance: 20.0
+  Reload:
+    Duration: 48
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-0, ENTITY_SKELETON_AMBIENT-1-0-3, BLOCK_WOODEN_DOOR_CLOSE-1-2-6, ENTITY_SKELETON_STEP-1-0-38, BLOCK_WOODEN_DOOR_CLOSE-1-2-42, BLOCK_STONE_BUTTON_CLICK_ON-1-1-44, BLOCK_WOODEN_DOOR_CLOSE-1-2-44
+    Type: MAGAZINE
+
+MP7:
+  Accuracy: 0.6
+  Ammo:
+    Magazine: 40
+    Max: 240
+    Start: 80
+  DisplayName: MP7
+  Durability: 9
+  FireMode:
+    Burst: 0
+    Cooldown: 0
+    FireRate: 10
+    ShootSound: BLOCK_PISTON_EXTEND-3-2-0, ENTITY_BLAZE_HURT-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0
+    Type: AUTOMATIC
+  GunType: SUBMACHINE_GUN
+  HeadshotMultiplier: 1.4
+  Range:
+    Long:
+      Damage: 18.0
+      Distance: 50.0
+    Medium:
+      Damage: 25.0
+      Distance: 35.0
+    Short:
+      Damage: 33.0
+      Distance: 20.0
+  Reload:
+    Duration: 40
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-0, BLOCK_WOODEN_DOOR_CLOSE-1-2-18, BLOCK_PISTON_EXTEND-1-2-22, BLOCK_WOODEN_DOOR_CLOSE-1-2-32, BLOCK_WOODEN_DOOR_CLOSE-1-2-36
+    Type: MAGAZINE
+
+QCW-05:
+  Accuracy: 0.6
+  Ammo:
+    Magazine: 36
+    Max: 288
+    Start: 108
+  DisplayName: QCW-05
+  Durability: 10
+  FireMode:
+    Burst: 3
+    Cooldown: 4
+    FireRate: 20
+    ShootSound: BLOCK_PISTON_EXTEND-3-2-0, ENTITY_BLAZE_HURT-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0
+    Type: BURST
+  GunType: SUBMACHINE_GUN
+  HeadshotMultiplier: 1.4
+  Range:
+    Long:
+      Damage: 18.0
+      Distance: 50.0
+    Medium:
+      Damage: 25.0
+      Distance: 35.0
+    Short:
+      Damage: 33.0
+      Distance: 20.0
+  Reload:
+    Duration: 48
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-0, ENTITY_SKELETON_AMBIENT-1-0-3, BLOCK_WOODEN_DOOR_CLOSE-1-2-6, ENTITY_SKELETON_STEP-1-0-38, BLOCK_WOODEN_DOOR_CLOSE-1-2-42, BLOCK_STONE_BUTTON_CLICK_ON-1-1-44, BLOCK_WOODEN_DOOR_CLOSE-1-2-44
+    Type: MAGAZINE
+
+VECTOR:
+  Accuracy: 0.5
+  Ammo:
+    Magazine: 25
+    Max: 200
+    Start: 75
+  DisplayName: Vector
+  Durability: 11
+  FireMode:
+    Burst: 0
+    Cooldown: 0
+    FireRate: 10
+    ShootSound: BLOCK_PISTON_EXTEND-3-2-0, ENTITY_BLAZE_HURT-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0
+    Type: AUTOMATIC
+  GunType: SUBMACHINE_GUN
+  HeadshotMultiplier: 1.4
+  Range:
+    Long:
+      Damage: 18.0
+      Distance: 50.0
+    Medium:
+      Damage: 25.0
+      Distance: 35.0
+    Short:
+      Damage: 33.0
+      Distance: 20.0
+  Reload:
+    Duration: 48
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-0, ENTITY_SKELETON_AMBIENT-1-0-3, BLOCK_WOODEN_DOOR_CLOSE-1-2-6, ENTITY_SKELETON_STEP-1-0-38, BLOCK_WOODEN_DOOR_CLOSE-1-2-42, BLOCK_STONE_BUTTON_CLICK_ON-1-1-44, BLOCK_WOODEN_DOOR_CLOSE-1-2-44
+    Type: MAGAZINE
+
+UZI:
+  Accuracy: 0.4
+  Ammo:
+    Magazine: 25
+    Max: 200
+    Start: 75
+  DisplayName: Uzi
+  Durability: 12
+  FireMode:
+    Burst: 0
+    Cooldown: 0
+    FireRate: 10
+    ShootSound: BLOCK_PISTON_EXTEND-3-2-0, ENTITY_BLAZE_HURT-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0
+    Type: AUTOMATIC
+  GunType: SUBMACHINE_GUN
+  HeadshotMultiplier: 1.4
+  Range:
+    Long:
+      Damage: 20.0
+      Distance: 50.0
+    Medium:
+      Damage: 25.0
+      Distance: 35.0
+    Short:
+      Damage: 30.0
+      Distance: 20.0
+  Reload:
+    Duration: 40
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-0, BLOCK_WOODEN_DOOR_CLOSE-1-2-18, BLOCK_PISTON_EXTEND-1-2-22, BLOCK_WOODEN_DOOR_CLOSE-1-2-32, BLOCK_WOODEN_DOOR_CLOSE-1-2-36
+    Type: MAGAZINE
+
+AK-47:
+  Accuracy: 0.6
+  Ammo:
+    Magazine: 30
+    Max: 240
+    Start: 90
+  DisplayName: AK-47
+  Durability: 13
+  FireMode:
+    Burst: 0
+    Cooldown: 0
+    FireRate: 10
+    ShootSound: BLOCK_PISTON_CONTRACT-3-2-0, ENTITY_BLAZE_HURT-3-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
+    Type: AUTOMATIC
+  GunType: ASSAULT_RIFLE
+  HeadshotMultiplier: 1.5
+  Range:
+    Long:
+      Damage: 30.0
+      Distance: 80.0
+    Medium:
+      Damage: 35.0
+      Distance: 50.0
+    Short:
+      Damage: 40.0
+      Distance: 20.0
+  Reload:
+    Duration: 54
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-0, BLOCK_WOODEN_DOOR_CLOSE-1-2-5, BLOCK_WOODEN_DOOR_OPEN-1-2-46, BLOCK_PISTON_EXTEND-1-2-46, BLOCK_WOODEN_DOOR_OPEN-1-2-50, BLOCK_PISTON_CONTRACT-1-2-50
+    Type: MAGAZINE
+
+AUG:
+  Accuracy: 0.6
+  Ammo:
+    Magazine: 30
+    Max: 240
+    Start: 90
+  DisplayName: AUG
+  Durability: 14
+  FireMode:
+    Burst: 0
+    Cooldown: 0
+    FireRate: 10
+    ShootSound: BLOCK_PISTON_CONTRACT-3-2-0, ENTITY_BLAZE_HURT-3-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
+    Type: AUTOMATIC
+  FireRate: 10
+  GunType: ASSAULT_RIFLE
+  HeadshotMultiplier: 1.5
+  Range:
+    Long:
+      Damage: 25.0
+      Distance: 80.0
+    Medium:
+      Damage: 30.0
+      Distance: 50.0
+    Short:
+      Damage: 35.0
+      Distance: 20.0
+  Reload:
+    Duration: 54
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-0, BLOCK_WOODEN_DOOR_CLOSE-1-2-5, BLOCK_WOODEN_DOOR_OPEN-1-2-46, BLOCK_PISTON_EXTEND-1-2-46, BLOCK_WOODEN_DOOR_OPEN-1-2-50, BLOCK_PISTON_CONTRACT-1-2-50
+    Type: MAGAZINE
+
+FAL:
+  Accuracy: 0.7
+  Ammo:
+    Magazine: 20
+    Max: 160
+    Start: 60
+  DisplayName: FAL
+  Durability: 15
+  FireMode:
+    Burst: 0
+    Cooldown: 0
+    FireRate: 10
+    ShootSound: BLOCK_PISTON_EXTEND-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
+    Type: SEMI_AUTOMATIC
+  GunType: ASSAULT_RIFLE
+  HeadshotMultiplier: 1.5
+  Range:
+    Long:
+      Damage: 40.0
+      Distance: 80.0
+    Medium:
+      Damage: 45.0
+      Distance: 50.0
+    Short:
+      Damage: 50.0
+      Distance: 20.0
+  Reload:
+    Duration: 54
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-0, BLOCK_WOODEN_DOOR_CLOSE-1-2-5, BLOCK_WOODEN_DOOR_OPEN-1-2-46, BLOCK_PISTON_EXTEND-1-2-46, BLOCK_WOODEN_DOOR_OPEN-1-2-50, BLOCK_PISTON_CONTRACT-1-2-50
+    Type: MAGAZINE
+
+FAMAS:
+  Accuracy: 0.6
+  Ammo:
+    Magazine: 30
+    Max: 240
+    Start: 90
+  DisplayName: FAMAS
+  Durability: 16
+  FireMode:
+    Burst: 0
+    Cooldown: 0
+    FireRate: 10
+    ShootSound: BLOCK_PISTON_EXTEND-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
+    Type: AUTOMATIC
+  GunType: ASSAULT_RIFLE
+  HeadshotMultiplier: 1.5
+  Range:
+    Long:
+      Damage: 25.0
+      Distance: 80.0
+    Medium:
+      Damage: 30.0
+      Distance: 50.0
+    Short:
+      Damage: 35.0
+      Distance: 20.0
+  Reload:
+    Duration: 54
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-0, BLOCK_WOODEN_DOOR_CLOSE-1-2-5, BLOCK_WOODEN_DOOR_OPEN-1-2-46, BLOCK_PISTON_EXTEND-1-2-46, BLOCK_WOODEN_DOOR_OPEN-1-2-50, BLOCK_PISTON_CONTRACT-1-2-50
+    Type: MAGAZINE
+
+GALIL:
+  Accuracy: 0.6
+  Ammo:
+    Magazine: 35
+    Max: 280
+    Start: 105
+  DisplayName: Galil
+  Durability: 17
+  FireMode:
+    Burst: 0
+    Cooldown: 0
+    FireRate: 10
+    ShootSound: BLOCK_PISTON_EXTEND-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
+    Type: AUTOMATIC
+  GunType: ASSAULT_RIFLE
+  HeadshotMultiplier: 1.5
+  Range:
+    Long:
+      Damage: 30.0
+      Distance: 80.0
+    Medium:
+      Damage: 35.0
+      Distance: 50.0
+    Short:
+      Damage: 40.0
+      Distance: 20.0
+  Reload:
+    Duration: 54
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-0, BLOCK_WOODEN_DOOR_CLOSE-1-2-5, BLOCK_WOODEN_DOOR_OPEN-1-2-46, BLOCK_PISTON_EXTEND-1-2-46, BLOCK_WOODEN_DOOR_OPEN-1-2-50, BLOCK_PISTON_CONTRACT-1-2-50
+    Type: MAGAZINE
+
+M14:
+  Accuracy: 0.7
+  Ammo:
+    Magazine: 20
+    Max: 160
+    Start: 60
+  DisplayName: M14
+  Durability: 18
+  FireMode:
+    Burst: 0
+    Cooldown: 0
+    FireRate: 10
+    ShootSound: BLOCK_PISTON_EXTEND-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
+    Type: SEMI_AUTOMATIC
+  GunType: ASSAULT_RIFLE
+  HeadshotMultiplier: 1.5
+  Range:
+    Long:
+      Damage: 40.0
+      Distance: 80.0
+    Medium:
+      Damage: 45.0
+      Distance: 50.0
+    Short:
+      Damage: 50.0
+      Distance: 20.0
+  Reload:
+    Duration: 48
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-0, BLOCK_WOODEN_DOOR_CLOSE-1-2-5, BLOCK_WOODEN_DOOR_OPEN-1-2-40, BLOCK_PISTON_EXTEND-1-2-40, BLOCK_WOODEN_DOOR_OPEN-1-2-44, BLOCK_PISTON_CONTRACT-1-2-44
+    Type: MAGAZINE
+
+M16:
+  Accuracy: 0.7
+  Ammo:
+    Magazine: 30
+    Max: 240
+    Start: 90
+  DisplayName: M16
+  Durability: 19
+  FireMode:
+    Burst: 3
+    Cooldown: 2
+    FireRate: 10
+    ShootSound: BLOCK_PISTON_EXTEND-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
+    Type: BURST
+  GunType: ASSAULT_RIFLE
+  HeadshotMultiplier: 1.5
+  Range:
+    Long:
+      Damage: 30.0
+      Distance: 80.0
+    Medium:
+      Damage: 35.0
+      Distance: 50.0
+    Short:
+      Damage: 40.0
+      Distance: 20.0
+  Reload:
+    Duration: 48
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-0, BLOCK_WOODEN_DOOR_CLOSE-1-2-5, BLOCK_WOODEN_DOOR_OPEN-1-2-40, BLOCK_PISTON_EXTEND-1-2-40, BLOCK_WOODEN_DOOR_OPEN-1-2-44, BLOCK_PISTON_CONTRACT-1-2-44
+    Type: MAGAZINE
+
+QBZ-95:
+  Accuracy: 0.6
+  Ammo:
+    Magazine: 30
+    Max: 240
+    Start: 90
+  DisplayName: QBZ-95
+  Durability: 20
+  FireMode:
+    Burst: 3
+    Cooldown: 2
+    FireRate: 20
+    ShootSound: BLOCK_PISTON_EXTEND-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
+    Type: BURST
+  GunType: ASSAULT_RIFLE
+  HeadshotMultiplier: 1.4
+  Range:
+    Long:
+      Damage: 24.0
+      Distance: 80.0
+    Medium:
+      Damage: 29.0
+      Distance: 50.0
+    Short:
+      Damage: 33.0
+      Distance: 20.0
+  Reload:
+    Duration: 54
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-0, BLOCK_WOODEN_DOOR_CLOSE-1-2-5, BLOCK_WOODEN_DOOR_OPEN-1-2-46, BLOCK_PISTON_EXTEND-1-2-46, BLOCK_WOODEN_DOOR_OPEN-1-2-50, BLOCK_PISTON_CONTRACT-1-2-50
+    Type: MAGAZINE
+
+SCAR-H:
+  Accuracy: 0.6
+  Ammo:
+    Magazine: 20
+    Max: 180
+    Start: 60
+  DisplayName: SCAR-H
+  Durability: 21
+  FireMode:
+    Burst: 0
+    Cooldown: 0
+    FireRate: 10
+    ShootSound: BLOCK_PISTON_EXTEND-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
+    Type: AUTOMATIC
+  GunType: ASSAULT_RIFLE
+  HeadshotMultiplier: 1.4
+  Range:
+    Long:
+      Damage: 24.0
+      Distance: 80.0
+    Medium:
+      Damage: 29.0
+      Distance: 50.0
+    Short:
+      Damage: 33.0
+      Distance: 20.0
+  Reload:
+    Duration: 54
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-0, BLOCK_WOODEN_DOOR_CLOSE-1-2-5, BLOCK_WOODEN_DOOR_OPEN-1-2-46, BLOCK_PISTON_EXTEND-1-2-46, BLOCK_WOODEN_DOOR_OPEN-1-2-50, BLOCK_PISTON_CONTRACT-1-2-50
+    Type: MAGAZINE
+
+ITHACA_37:
+  Accuracy: 0.7
+  Ammo:
+    Magazine: 5
+    Max: 40
+    Start: 15
+  DisplayName: Ithaca 37
+  Durability: 22
+  FireMode:
+    Burst: 0
+    Cooldown: 6
+    FireRate: 1
+    ShootSound: ENTITY_BLAZE_HURT-3-2-0, ENTITY_GENERIC_EXPLODE-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0
+    Type: SEMI_AUTOMATIC
+  GunType: SHOTGUN
+  HeadshotMultiplier: 1.1
+  Range:
+    Long:
+      Damage: 10.0
+      Distance: 50.0
+    Medium:
+      Damage: 25.0
+      Distance: 20.0
+    Short:
+      Damage: 40.0
+      Distance: 10.0
+  Reload:
+    Duration: 12
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-6, BLOCK_PISTON_EXTEND-1-2-6, BLOCK_WOODEN_DOOR_OPEN-1-2-8, BLOCK_PISTON_CONTRACT-1-2-8
+    Type: SHELL
+
+OLYMPIA:
+  Accuracy: 0.6
+  Ammo:
+    Magazine: 2
+    Max: 38
+    Start: 18
+  DisplayName: Olympia
+  Durability: 23
+  FireMode:
+    Burst: 0
+    Cooldown: 4
+    FireRate: 1
+    ShootSound: ENTITY_BLAZE_HURT-3-2-0, ENTITY_GENERIC_EXPLODE-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0
+    Type: SEMI_AUTOMATIC
+  GunType: SHOTGUN
+  HeadshotMultiplier: 1.1
+  Range:
+    Long:
+      Damage: 10.0
+      Distance: 50.0
+    Medium:
+      Damage: 25.0
+      Distance: 20.0
+    Short:
+      Damage: 40.0
+      Distance: 10.0
+  Reload:
+    Duration: 25
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-12, BLOCK_PISTON_EXTEND-1-2-12, BLOCK_WOODEN_DOOR_OPEN-1-2-16, BLOCK_PISTON_CONTRACT-1-2-16
+    Type: SHELL
+
+REMINGTON_870:
+  Accuracy: 0.7
+  Ammo:
+    Magazine: 8
+    Max: 64
+    Start: 24
+  DisplayName: Remington 870
+  Durability: 24
+  FireMode:
+    Burst: 0
+    Cooldown: 12
+    FireRate: 1
+    ShootSound: ENTITY_BLAZE_HURT-3-2-0, ENTITY_GENERIC_EXPLODE-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0, BLOCK_IRON_DOOR_CLOSE-1-2-9, BLOCK_WOODEN_DOOR_OPEN-1-2-9
+    Type: SEMI_AUTOMATIC
+  GunType: SHOTGUN
+  HeadshotMultiplier: 1.2
+  Range:
+    Long:
+      Damage: 10.0
+      Distance: 50.0
+    Medium:
+      Damage: 25.0
+      Distance: 20.0
+    Short:
+      Damage: 40.0
+      Distance: 10.0
+  Reload:
+    Duration: 12
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-8, BLOCK_PISTON_EXTEND-1-2-8, BLOCK_WOODEN_DOOR_OPEN-1-2-10, BLOCK_PISTON_CONTRACT-1-2-10
+    Type: SHELL
+
+SAIGA-12K:
+  Accuracy: 0.6
+  Ammo:
+    Magazine: 5
+    Max: 40
+    Start: 15
+  DisplayName: Saiga-12K
+  Durability: 25
+  FireMode:
+    Burst: 0
+    Cooldown: 6
+    FireRate: 1
+    ShootSound: ENTITY_BLAZE_HURT-3-2-0, ENTITY_GENERIC_EXPLODE-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0
+    Type: SEMI_AUTOMATIC
+  GunType: SHOTGUN
+  HeadshotMultiplier: 1.2
+  Range:
+    Long:
+      Damage: 10.0
+      Distance: 50.0
+    Medium:
+      Damage: 25.0
+      Distance: 20.0
+    Short:
+      Damage: 40.0
+      Distance: 10.0
+  Reload:
+    Duration: 54
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-0, BLOCK_WOODEN_DOOR_CLOSE-1-2-5, BLOCK_WOODEN_DOOR_OPEN-1-2-46, BLOCK_PISTON_EXTEND-1-2-46, BLOCK_WOODEN_DOOR_OPEN-1-2-50, BLOCK_PISTON_CONTRACT-1-2-50
+    Type: MAGAZINE
+
+SPAS-12:
+  Accuracy: 0.6
+  Ammo:
+    Magazine: 8
+    Max: 64
+    Start: 24
+  DisplayName: SPAS-12
+  Durability: 26
+  FireMode:
+    Burst: 0
+    Cooldown: 6
+    FireRate: 1
+    ShootSound: ENTITY_BLAZE_HURT-3-2-0, ENTITY_GENERIC_EXPLODE-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0
+    Type: SEMI_AUTOMATIC
+  GunType: SHOTGUN
+  HeadshotMultiplier: 1.2
+  Range:
+    Long:
+      Damage: 15.0
+      Distance: 50.0
+    Medium:
+      Damage: 30.0
+      Distance: 20.0
+    Short:
+      Damage: 50.0
+      Distance: 10.0
+  Reload:
+    Duration: 15
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-8, BLOCK_PISTON_EXTEND-1-2-8, BLOCK_WOODEN_DOOR_OPEN-1-2-10, BLOCK_PISTON_CONTRACT-1-2-10
+    Type: SHELL
+
+HK21:
+  Accuracy: 0.9
+  Ammo:
+    Magazine: 50
+    Max: 250
+    Start: 100
+  DisplayName: HK21
+  Durability: 27
+  FireMode:
+    Burst: 0
+    Cooldown: 0
+    FireRate: 10
+    ShootSound: ENTITY_BLAZE_HURT-3-2-0, ENTITY_ZOMBIE_ATTACK_DOOR_WOOD-3-2-0
+    Type: AUTOMATIC
+  GunType: LIGHT_MACHINE_GUN
+  HeadshotMultiplier: 1.4
+  Range:
+    Long:
+      Damage: 30.0
+      Distance: 80.0
+    Medium:
+      Damage: 35.0
+      Distance: 50.0
+    Short:
+      Damage: 40.0
+      Distance: 20.0
+  Reload:
+    Duration: 90
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-2, BLOCK_PISTON_EXTEND-1-2-17, ENTITY_SKELETON_STEP-1-0-19, BLOCK_PISTON_CONTRACT-1-2-27, BLOCK_WOODEN_DOOR_OPEN-1-2-34, ENTITY_SKELETON_AMBIENT-1-2-54, BLOCK_PISTON_EXTEND-1-2-72, ENTITY_SKELETON_STEP-1-0-74, BLOCK_PISTON_CONTRACT-1-2-80, BLOCK_WOODEN_DOOR_CLOSE-1-2-82, BLOCK_PISTON_CONTRACT-1-2-86
+    Type: MAGAZINE
+
+M60:
+  Accuracy: 0.9
+  Ammo:
+    Magazine: 100
+    Max: 300
+    Start: 100
+  DisplayName: M60
+  Durability: 28
+  FireMode:
+    Burst: 0
+    Cooldown: 0
+    FireRate: 10
+    ShootSound: ENTITY_BLAZE_HURT-3-2-0, ENTITY_ZOMBIE_ATTACK_DOOR_WOOD-3-2-0
+    Type: AUTOMATIC
+  GunType: LIGHT_MACHINE_GUN
+  HeadshotMultiplier: 1.4
+  Range:
+    Long:
+      Damage: 30.0
+      Distance: 80.0
+    Medium:
+      Damage: 35.0
+      Distance: 50.0
+    Short:
+      Damage: 40.0
+      Distance: 20.0
+  Reload:
+    Duration: 90
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-2, BLOCK_PISTON_EXTEND-1-2-17, ENTITY_SKELETON_STEP-1-0-19, BLOCK_PISTON_CONTRACT-1-2-27, BLOCK_WOODEN_DOOR_OPEN-1-2-34, ENTITY_SKELETON_AMBIENT-1-2-54, BLOCK_PISTON_EXTEND-1-2-72, ENTITY_SKELETON_STEP-1-0-74, BLOCK_PISTON_CONTRACT-1-2-80, BLOCK_WOODEN_DOOR_CLOSE-1-2-82, BLOCK_PISTON_CONTRACT-1-2-86
+    Type: MAGAZINE
+
+RPK:
+  Accuracy: 0.8
+  Ammo:
+    Magazine: 40
+    Max: 320
+    Start: 120
+  DisplayName: RPK
+  Durability: 29
+  FireMode:
+    Burst: 0
+    Cooldown: 0
+    FireRate: 10
+    ShootSound: ENTITY_BLAZE_HURT-3-2-0, ENTITY_ZOMBIE_ATTACK_DOOR_WOOD-3-2-0
+    Type: AUTOMATIC
+  GunType: LIGHT_MACHINE_GUN
+  HeadshotMultiplier: 1.4
+  Range:
+    Long:
+      Damage: 24.0
+      Distance: 50.0
+    Medium:
+      Damage: 30.0
+      Distance: 30.0
+    Short:
+      Damage: 40.0
+      Distance: 15.0
+  Reload:
+    Duration: 90
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-2, BLOCK_PISTON_EXTEND-1-2-17, ENTITY_SKELETON_STEP-1-0-19, BLOCK_PISTON_CONTRACT-1-2-27, BLOCK_WOODEN_DOOR_OPEN-1-2-34, ENTITY_SKELETON_AMBIENT-1-2-54, BLOCK_PISTON_EXTEND-1-2-72, ENTITY_SKELETON_STEP-1-0-74, BLOCK_PISTON_CONTRACT-1-2-80, BLOCK_WOODEN_DOOR_CLOSE-1-2-82, BLOCK_PISTON_CONTRACT-1-2-86
+    Type: MAGAZINE
+
+DRAGUNOV:
+  Accuracy: 1.0
+  Ammo:
+    Magazine: 10
+    Max: 80
+    Start: 30
+  DisplayName: Dragunov
+  Durability: 30
+  FireMode:
+    Burst: 0
+    Cooldown: 12
+    FireRate: 1
+    ShootSound: ENTITY_BLAZE_HURT-3-1-0, ENTITY_GENERIC_EXPLODE-3-1.5-0, ENTITY_GENERIC_EXPLODE-0.25-0.5-0
+    Type: SEMI_AUTOMATIC
+  GunType: SNIPER_RIFLE
+  HeadshotMultiplier: 2.0
+  Range:
+    Long:
+      Damage: 70.0
+      Distance: 200.0
+    Medium:
+      Damage: 70.0
+      Distance: 190.0
+    Short:
+      Damage: 70.0
+      Distance: 180.0
+  Reload:
+    Duration: 60
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-2, BLOCK_WOODEN_DOOR_CLOSE-1-2-46, BLOCK_PISTON_EXTEND-1-2-48, BLOCK_WOODEN_DOOR_CLOSE-1-1.8-54
+    Type: MAGAZINE
+
+M82A1:
+  Accuracy: 1.0
+  Ammo:
+    Magazine: 10
+    Max: 80
+    Start: 30
+  DisplayName: M82A1
+  Durability: 31
+  FireMode:
+    Burst: 0
+    Cooldown: 12
+    FireRate: 1
+    ShootSound: ENTITY_BLAZE_HURT-3-1-0, ENTITY_GENERIC_EXPLODE-3-1.5-0, ENTITY_GENERIC_EXPLODE-0.25-0.5-0
+    Type: SEMI_AUTOMATIC
+  GunType: SNIPER_RIFLE
+  HeadshotMultiplier: 2.0
+  Range:
+    Long:
+      Damage: 98.0
+      Distance: 200.0
+    Medium:
+      Damage: 98.0
+      Distance: 190.0
+    Short:
+      Damage: 98.0
+      Distance: 180.0
+  Reload:
+    Duration: 60
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-2, BLOCK_WOODEN_DOOR_CLOSE-1-2-46, BLOCK_PISTON_EXTEND-1-2-48, BLOCK_WOODEN_DOOR_CLOSE-1-1.8-54
+    Type: MAGAZINE
+
+SV-98:
+  Accuracy: 1.0
+  Ammo:
+    Magazine: 10
+    Max: 80
+    Start: 30
+  DisplayName: SV-98
+  Durability: 32
+  FireMode:
+    Burst: 0
+    Cooldown: 12
+    FireRate: 1
+    ShootSound: ENTITY_BLAZE_HURT-3-1-0, ENTITY_GENERIC_EXPLODE-3-1.5-0, ENTITY_GENERIC_EXPLODE-0.25-0.5-0
+    Type: SEMI_AUTOMATIC
+  GunType: SNIPER_RIFLE
+  HeadshotMultiplier: 2.0
+  Range:
+    Long:
+      Damage: 98.0
+      Distance: 200.0
+    Medium:
+      Damage: 98.0
+      Distance: 190.0
+    Short:
+      Damage: 98.0
+      Distance: 180.0
+  Reload:
+    Duration: 60
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-2, BLOCK_WOODEN_DOOR_CLOSE-1-2-46, BLOCK_PISTON_EXTEND-1-2-48, BLOCK_WOODEN_DOOR_CLOSE-1-1.8-54
+    Type: MAGAZINE
+
+CHINA_LAKE:
+  Accuracy: 0.6
+  Ammo:
+    Magazine: 3
+    Max: 6
+    Start: 3
+  DisplayName: China Lake
+  Durability: 33
+  FireMode:
+    Cooldown: 20
+    LaunchType: GRENADE
+    ShootSound: BLOCK_WOODEN_DOOR_CLOSE-3-2-0, ENTITY_ARROW_SHOOT-3-1-1
+  GunType: LAUNCHER
+  HeadshotMultiplier: 1.0
+  Range:
+    Long:
+      Damage: 20.0
+      Distance: 6.0
+    Medium:
+      Damage: 90.0
+      Distance: 3.0
+    Short:
+      Damage: 200.0
+      Distance: 1.0
+  Reload:
+    Duration: 20
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-16, BLOCK_PISTON_EXTEND-1-2-16, BLOCK_WOODEN_DOOR_OPEN-1-2-18, BLOCK_PISTON_CONTRACT-1-2-18
+      Start: BLOCK_PISTON_EXTEND-1-2-2
+      Stop: BLOCK_PISTON_CONTRACT-1-2-2
+    Type: SHELL
+
+CROSSBOW:
+  Accuracy: 0.8
+  Ammo:
+    Magazine: 3
+    Max: 9
+    Start: 3
+  DisplayName: Crossbow
+  Durability: 34
+  FireMode:
+    Cooldown: 20
+    LaunchType: ROCKET
+    ShootSound: BLOCK_WOODEN_DOOR_CLOSE-3-2-0, ENTITY_ARROW_SHOOT-3-1-1
+  GunType: LAUNCHER
+  HeadshotMultiplier: 1.0
+  Range:
+    Long:
+      Damage: 20.0
+      Distance: 6.0
+    Medium:
+      Damage: 90.0
+      Distance: 3.0
+    Short:
+      Damage: 200.0
+      Distance: 1.0
+  Reload:
+    Duration: 60
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-0, BLOCK_PISTON_EXTEND-1-2-6, BLOCK_WOODEN_DOOR_CLOSE-1-2-8, BLOCK_WOODEN_DOOR_OPEN-1-2-34, BLOCK_WOODEN_DOOR_CLOSE-1-2-52, BLOCK_PISTON_CONTRACT-1-2-56
+    Type: MAGAZINE
+
+MGL:
+  Accuracy: 0.6
+  Ammo:
+    Magazine: 6
+    Max: 12
+    Start: 6
+  DisplayName: MGL
+  Durability: 35
+  FireMode:
+    Cooldown: 10
+    LaunchType: GRENADE
+    ShootSound: BLOCK_WOODEN_DOOR_CLOSE-3-2-0, ENTITY_ARROW_SHOOT-3-1-1
+  GunType: LAUNCHER
+  HeadshotMultiplier: 1.0
+  Range:
+    Long:
+      Damage: 15.0
+      Distance: 6.0
+    Medium:
+      Damage: 90.0
+      Distance: 3.0
+    Short:
+      Damage: 150.0
+      Distance: 1.0
+  Reload:
+    Duration: 20
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_CLOSE-1-0-10, ENTITY_SKELETON_STEP-1-0-12
+    Type: SHELL
+
+RPG-7:
+  Accuracy: 0.8
+  Ammo:
+    Magazine: 1
+    Max: 2
+    Start: 1
+  DisplayName: RPG-7
+  Durability: 36
+  FireMode:
+    Cooldown: 20
+    LaunchType: ROCKET
+    ShootSound: BLOCK_FIRE_EXTINGUISH-3-1-0, ENTITY_ZOMBIE_ATTACK_DOOR_WOOD-3-0-0
+  GunType: LAUNCHER
+  HeadshotMultiplier: 1.0
+  Range:
+    Long:
+      Damage: 30.0
+      Distance: 3.0
+    Medium:
+      Damage: 150.0
+      Distance: 2.0
+    Short:
+      Damage: 300.0
+      Distance: 1.0
+  Reload:
+    Duration: 66
+    Sound:
+      Reload: ENTITY_SKELETON_AMBIENT-1-0-10, BLOCK_PISTON_EXTEND-1-0-30, BLOCK_WOODEN_DOOR_CLOSE-1-0-42, ENTITY_SKELETON_STEP-1-0-54
+    Type: MAGAZINE
+
+SMAW:
+  Accuracy: 0.8
+  Ammo:
+    Magazine: 1
+    Max: 2
+    Start: 1
+  DisplayName: SMAW
+  Durability: 37
+  FireMode:
+    Cooldown: 20
+    LaunchType: ROCKET
+    ShootSound: BLOCK_FIRE_EXTINGUISH-3-1-0, ENTITY_ZOMBIE_ATTACK_DOOR_WOOD-3-0-0
+  GunType: LAUNCHER
+  HeadshotMultiplier: 1.0
+  Range:
+    Long:
+      Damage: 30.0
+      Distance: 3.0
+    Medium:
+      Damage: 100.0
+      Distance: 2.0
+    Short:
+      Damage: 200.0
+      Distance: 1.0
+  Reload:
+    Duration: 66
+    Sound:
+      Reload: ENTITY_SKELETON_AMBIENT-1-0-10, BLOCK_PISTON_EXTEND-1-0-30, BLOCK_WOODEN_DOOR_CLOSE-1-0-42, ENTITY_SKELETON_STEP-1-0-54
+    Type: MAGAZINE

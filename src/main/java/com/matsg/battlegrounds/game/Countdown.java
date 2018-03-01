@@ -38,14 +38,14 @@ public class Countdown extends BattleRunnable {
         id = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
             int countdown = time;
             public void run() {
-                if (game.getArena() == null || game.getPlayers().size() <= 0) {
+                if (game.getArena() == null || game.getPlayerManager().getPlayers().size() <= 0) {
                     game.setState(GameState.WAITING);
                     game.updateSign();
                     cancel();
                     return;
                 }
                 if (countdown == 0) {
-                    for (GamePlayer gamePlayer : game.getPlayers()) {
+                    for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
                         Player player = gamePlayer.getPlayer();
                         player.setFoodLevel(20);
                         player.setGameMode(GameMode.SURVIVAL);
@@ -53,7 +53,7 @@ public class Countdown extends BattleRunnable {
                         player.setSaturation((float) 10);
                     }
 
-                    game.getGameMode().spawnPlayers(game.getPlayers().toArray(new GamePlayer[game.getPlayers().size()]));
+                    game.getGameMode().spawnPlayers(game.getPlayerManager().getPlayers().toArray(new GamePlayer[game.getPlayerManager().getPlayers().size()]));
                     game.setState(GameState.IN_GAME);
                     game.updateSign();
 
@@ -65,7 +65,7 @@ public class Countdown extends BattleRunnable {
                     BattleSound.COUNTDOWN_NOTE.play(game);
                 }
                 if (countdown <= 5) {
-                    for (GamePlayer gamePlayer : game.getPlayers()) {
+                    for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
                         Title.COUNTDOWN.send(gamePlayer.getPlayer(), new Placeholder("bg_countdown", countdown));
                     }
                     BattleSound.COUNTDOWN_NOTE.play(game);

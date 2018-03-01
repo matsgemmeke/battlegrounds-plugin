@@ -2,11 +2,13 @@ package com.matsg.battlegrounds.api.game;
 
 import org.bukkit.Color;
 
+import java.util.Collection;
+
 public interface Team {
 
     Color getColor();
 
     String getName();
 
-    Iterable<GamePlayer> getPlayers();
+    Collection<GamePlayer> getPlayers();
 }
