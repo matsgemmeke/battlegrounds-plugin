@@ -10,6 +10,8 @@ import com.matsg.battlegrounds.api.item.FireArm;
 import com.matsg.battlegrounds.api.item.Knife;
 import com.matsg.battlegrounds.command.BattlegroundsCommand;
 import com.matsg.battlegrounds.config.BattleCacheYaml;
+import com.matsg.battlegrounds.config.DataLoader;
+import com.matsg.battlegrounds.config.FireArmConfig;
 import com.matsg.battlegrounds.listener.BattleEventManager;
 import com.matsg.battlegrounds.listener.EventListener;
 import com.matsg.battlegrounds.util.EnumMessage;
@@ -29,13 +31,13 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
     private CacheYaml cache;
     private EventManager eventManager;
     //private ExplosiveConfig explosiveConfig;
-    //private FireArmConfig fireArmConfig;
     private GameManager gameManager;
     //private KnifeConfig knifeConfig;
     private List<BattlegroundsExtension> extensions;
     //private PlayerData playerData;
     //private SQLConfig sqlConfig;
     private Translator translator;
+    private WeaponConfig<FireArm> fireArmConfig;
 
     public void onEnable() {
         plugin = this;
@@ -85,7 +87,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
     }
 
     public WeaponConfig<FireArm> getFireArmConfig() {
-        return null;
+        return fireArmConfig;
     }
 
     public GameManager getGameManager() {
@@ -109,7 +111,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
             cache = new BattleCacheYaml(this, "cache.yml");
             config = new BattlegroundsConfig(this);
             //explosiveConfig = new ExplosiveConfig(this);
-            //fireArmConfig = new FireArmConfig(this);
+            fireArmConfig = new FireArmConfig(this);
             //knifeConfig = new KnifeConfig(this);
             //playerData = new PlayerData(this);
             //sqlConfig = new SQLConfig(this);
@@ -168,7 +170,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         this.eventManager = new BattleEventManager();
         this.gameManager = new BattleGameManager();
 
-        //new DataLoader(this);
+        new DataLoader(this);
 
         new BattlegroundsCommand(this);
 

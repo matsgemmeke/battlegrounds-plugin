@@ -43,6 +43,7 @@ BERETTA_93R:
     Magazine: 15
     Max: 120
     Start: 45
+  Description: 3 round burst pistol
   DisplayName: Beretta 93R
   Durability: 1
   FireMode:

@@ -31,8 +31,8 @@ public class BattleGun extends BattleFireArm implements Gun {
     private List<Attachment> attachments;
 
     public BattleGun(String name, String description, ItemStack itemStack, short durability,
-                     int magazine, int ammo, int maxAmmo,  int cooldown, int reloadDuration, double accuracy,
-                     Bullet bullet, FireMode fireMode, ReloadType reloadType, FireArmType fireArmType, Sound[] reloadSound, Sound[] shootSound) {
+                     int magazine, int ammo, int maxAmmo, int fireRate, int burstRounds, int cooldown, int reloadDuration, double accuracy,
+                     Bullet bullet, FireMode fireMode, FireArmType fireArmType, ReloadType reloadType, Sound[] reloadSound, Sound[] shootSound) {
         super(name, description, itemStack, durability, magazine, ammo, maxAmmo, cooldown, reloadDuration, accuracy, reloadType, fireArmType, reloadSound, shootSound);
         this.attachments = new ArrayList<>();
         this.bullet = bullet;

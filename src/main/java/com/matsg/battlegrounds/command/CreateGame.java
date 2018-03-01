@@ -45,6 +45,6 @@ public class CreateGame extends SubCommand {
 
         plugin.getGameManager().getGames().add(game);
 
-        sender.sendMessage(EnumMessage.PREFIX.getMessage() + " " + EnumMessage.GAME_CREATE.getMessage(new Placeholder("bg_game", id)));
+        sender.sendMessage(EnumMessage.GAME_CREATE.getMessage(new Placeholder("bg_game", id)));
     }
 }

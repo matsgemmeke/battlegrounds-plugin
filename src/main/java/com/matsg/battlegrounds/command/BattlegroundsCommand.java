@@ -10,8 +10,14 @@ public class BattlegroundsCommand extends Command {
     public BattlegroundsCommand(BattlegroundsPlugin plugin) {
         super(plugin, "battlegrounds", null, false, "b", "bg", "battleground");
 
+        commands.add(new AddSpawn(plugin));
+        commands.add(new CreateArena(plugin));
         commands.add(new CreateGame(plugin));
         commands.add(new Reload(plugin));
+        commands.add(new RemoveArena(plugin));
+        commands.add(new RemoveGame(plugin));
+        commands.add(new SetGameSign(plugin));
+        commands.add(new SetLobby(plugin));
 
         commands.add(new Help(plugin, commands.toArray(new SubCommand[commands.size()])));
     }

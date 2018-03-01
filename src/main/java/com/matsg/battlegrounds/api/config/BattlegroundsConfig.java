@@ -4,6 +4,7 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.config.AbstractYaml;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public final class BattlegroundsConfig extends AbstractYaml {
@@ -20,6 +21,14 @@ public final class BattlegroundsConfig extends AbstractYaml {
             removeFile();
             createFile(plugin.getDataFolder().getPath(), "config.yml");
         }
+    }
+
+    public String[] getGameSignLayout() {
+        List<String> list = new ArrayList<>();
+        for (String string : getConfigurationSection("game-sign-layout").getKeys(false)) {
+            list.add(getString("game-sign-layout." + string));
+        }
+        return list.toArray(new String[list.size()]);
     }
 
     public String getWeaponDisplayName(String weaponType) {

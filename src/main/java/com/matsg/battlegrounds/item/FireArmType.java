@@ -17,6 +17,8 @@ public enum FireArmType implements WeaponType {
     SNIPER_RIFLE("item-type-sniper-rifle", 1, Bullet.class, 5, true),
     SUBMACHINE_GUN("item-type-submachine-gun", 1, Bullet.class, 1, false);
 
+    public static FireArmType[] GUNS = new FireArmType[] { ASSAULT_RIFLE, LIGHT_MACHINE_GUN, PISTOL, SHOTGUN, SNIPER_RIFLE, SUBMACHINE_GUN };
+
     private Battlegrounds plugin;
     private boolean pierceable, scope;
     private Class<? extends Projectile> projectileClass;
