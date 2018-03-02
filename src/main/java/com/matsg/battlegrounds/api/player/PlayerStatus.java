@@ -1,5 +1,6 @@
-package com.matsg.battlegrounds.api.game;
+package com.matsg.battlegrounds.api.player;
 
+import com.matsg.battlegrounds.api.game.Game;
 import org.bukkit.GameMode;
 
 public enum PlayerStatus {

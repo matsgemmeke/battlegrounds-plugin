@@ -1,4 +1,4 @@
-package com.matsg.battlegrounds.api.game;
+package com.matsg.battlegrounds.api.player;
 
 import org.bukkit.entity.Player;
 

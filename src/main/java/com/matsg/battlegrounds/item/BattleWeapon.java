@@ -1,6 +1,6 @@
 package com.matsg.battlegrounds.item;
 
-import com.matsg.battlegrounds.api.game.GamePlayer;
+import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.Particle;

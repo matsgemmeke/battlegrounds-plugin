@@ -1,7 +1,10 @@
 package com.matsg.battlegrounds.game;
 
 import com.matsg.battlegrounds.api.game.*;
+import com.matsg.battlegrounds.api.player.GamePlayer;
+import com.matsg.battlegrounds.api.player.PlayerStatus;
 import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.player.BattleGamePlayer;
 import com.matsg.battlegrounds.util.EnumMessage;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

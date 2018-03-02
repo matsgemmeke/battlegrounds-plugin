@@ -43,7 +43,7 @@ BERETTA_93R:
     Magazine: 15
     Max: 120
     Start: 45
-  Description: 3 round burst pistol
+  Description: 3 round burst pistol. High rate of fire with moderate recoil.
   DisplayName: Beretta 93R
   Durability: 1
   FireMode:
@@ -76,6 +76,7 @@ FIVE-SEVEN:
     Magazine: 20
     Max: 160
     Start: 60
+  Description: Semi-automatic pistol. Versatile and strong overall with a large magazine.
   DisplayName: Five-seven
   Durability: 2
   FireMode:
@@ -108,6 +109,7 @@ GLOCK_17:
     Magazine: 17
     Max: 102
     Start: 51
+  Description: Semi-automatic pistol. Compatible with select fire to unlock full automatic.
   DisplayName: Glock 17
   Durability: 3
   FireMode:
@@ -140,6 +142,7 @@ M1911:
     Magazine: 7
     Max: 70
     Start: 21
+  Description: Semi-automatic with medium capacity and power. Effective at close range.
   DisplayName: M1911
   Durability: 4
   FireMode:
@@ -172,6 +175,7 @@ PYTHON:
     Magazine: 6
     Max: 54
     Start: 18
+  Description: Double-action revolver pistol. Uses a 6 round cylinder feed system.
   DisplayName: Python
   Durability: 5
   FireMode:
@@ -204,6 +208,7 @@ AKS-74U:
     Magazine: 30
     Max: 240
     Start: 90
+  Description: Fully automatic with high power. Effective at close to medium range.
   DisplayName: AKS-74u
   Durability: 6
   FireMode:
@@ -236,6 +241,7 @@ MAC-11:
     Magazine: 20
     Max: 160
     Start: 60
+  Description: Fully automatic with moderate power. Effective at close to medium range.
   DisplayName: MAC-11
   Durability: 7
   FireMode:
@@ -268,6 +274,7 @@ MP5:
     Magazine: 30
     Max: 240
     Start: 90
+  Description: Fully automatic with good accuracy. Effective at close to medium range.
   DisplayName: MP5
   Durability: 8
   FireMode:
@@ -300,6 +307,7 @@ MP7:
     Magazine: 40
     Max: 240
     Start: 80
+  Description: Fully automatic personal defense weapon. Versatile and strong overall.
   DisplayName: MP7
   Durability: 9
   FireMode:
@@ -332,6 +340,7 @@ QCW-05:
     Magazine: 36
     Max: 288
     Start: 108
+  Description: 3 round burst submachine gun. High cyclic fire rate allows for fast consecutive bursts.
   DisplayName: QCW-05
   Durability: 10
   FireMode:
@@ -364,6 +373,7 @@ VECTOR:
     Magazine: 25
     Max: 200
     Start: 75
+  Description: Fully automatic submachine gun. Incorporates recoil mitigation technology.
   DisplayName: Vector
   Durability: 11
   FireMode:
@@ -396,6 +406,7 @@ UZI:
     Magazine: 25
     Max: 200
     Start: 75
+  Description: Fully automatic with high rate of fire. Effective at close range.
   DisplayName: Uzi
   Durability: 12
   FireMode:
@@ -428,6 +439,7 @@ AK-47:
     Magazine: 30
     Max: 240
     Start: 90
+  Description: Fully automatic with high power. Effective at medium range.
   DisplayName: AK-47
   Durability: 13
   FireMode:
@@ -460,6 +472,7 @@ AUG:
     Magazine: 30
     Max: 240
     Start: 90
+  Description: Fully automatic with high rate of fire. Effective at medium range.
   DisplayName: AUG
   Durability: 14
   FireMode:
@@ -493,6 +506,7 @@ FAL:
     Magazine: 20
     Max: 160
     Start: 60
+  Description: Semi-automatic assault rifle with high damage. Effective at medium to long range.
   DisplayName: FAL
   Durability: 15
   FireMode:
@@ -525,6 +539,7 @@ FAMAS:
     Magazine: 30
     Max: 240
     Start: 90
+  Description: Fully automatic with high rate of fire. Effective at medium range.
   DisplayName: FAMAS
   Durability: 16
   FireMode:
@@ -557,6 +572,7 @@ GALIL:
     Magazine: 35
     Max: 280
     Start: 105
+  Description: Fully automatic assault rifle. Effective at medium to long range.
   DisplayName: Galil
   Durability: 17
   FireMode:
@@ -589,6 +605,7 @@ M14:
     Magazine: 20
     Max: 160
     Start: 60
+  Description: Single-fire with high power. Effective at medium to long range.
   DisplayName: M14
   Durability: 18
   FireMode:
@@ -621,6 +638,7 @@ M16:
     Magazine: 30
     Max: 240
     Start: 90
+  Description: Semi-automatic with three round burst fire. Effective at medium to long range.
   DisplayName: M16
   Durability: 19
   FireMode:
@@ -653,6 +671,7 @@ QBZ-95:
     Magazine: 30
     Max: 240
     Start: 90
+  Description: Delivers pinpoint 3-round bursts. Effective at medium to long range.
   DisplayName: QBZ-95
   Durability: 20
   FireMode:
@@ -685,6 +704,7 @@ SCAR-H:
     Magazine: 20
     Max: 180
     Start: 60
+  Description: Fully automatic assault rifle. Increased damage and range.
   DisplayName: SCAR-H
   Durability: 21
   FireMode:
@@ -717,6 +737,7 @@ ITHACA_37:
     Magazine: 5
     Max: 40
     Start: 15
+  Description: Pump action shotgun. Effective at close range.
   DisplayName: Ithaca 37
   Durability: 22
   FireMode:
@@ -749,6 +770,7 @@ OLYMPIA:
     Magazine: 2
     Max: 38
     Start: 18
+  Description: Double-barrel over/under shotgun. Effective at medium to close range.
   DisplayName: Olympia
   Durability: 23
   FireMode:
@@ -781,6 +803,7 @@ REMINGTON_870:
     Magazine: 8
     Max: 64
     Start: 24
+  Description: Pump action shotgun. Strong damage and range.
   DisplayName: Remington 870
   Durability: 24
   FireMode:
@@ -813,6 +836,7 @@ SAIGA-12K:
     Magazine: 5
     Max: 40
     Start: 15
+  Description: Semi-automatic shotgun with magazine feed system. Deadly at short range.
   DisplayName: Saiga-12K
   Durability: 25
   FireMode:
@@ -845,6 +869,7 @@ SPAS-12:
     Magazine: 8
     Max: 64
     Start: 24
+  Description: Semi-automatic combat shotgun. Effective at close range.
   DisplayName: SPAS-12
   Durability: 26
   FireMode:
@@ -877,6 +902,7 @@ HK21:
     Magazine: 50
     Max: 250
     Start: 100
+  Description: Fully automatic with high power. Effective at medium to long range.
   DisplayName: HK21
   Durability: 27
   FireMode:
@@ -909,6 +935,7 @@ M60:
     Magazine: 100
     Max: 300
     Start: 100
+  Description: Fully automatic with high power. Effective at medium to long range.
   DisplayName: M60
   Durability: 28
   FireMode:
@@ -941,6 +968,7 @@ RPK:
     Magazine: 40
     Max: 320
     Start: 120
+  Description: Fully automatic with good power and quick fire rate. Effective at medium to long range.
   DisplayName: RPK
   Durability: 29
   FireMode:
@@ -973,6 +1001,7 @@ DRAGUNOV:
     Magazine: 10
     Max: 80
     Start: 30
+  Description: Semi-automatic sniper rifle. Effective at long range.
   DisplayName: Dragunov
   Durability: 30
   FireMode:
@@ -1005,6 +1034,7 @@ M82A1:
     Magazine: 10
     Max: 80
     Start: 30
+  Description: Semi-automatic sniper rifle. Effective at long range.
   DisplayName: M82A1
   Durability: 31
   FireMode:
@@ -1037,6 +1067,7 @@ SV-98:
     Magazine: 10
     Max: 80
     Start: 30
+  Description: Bolt action sniper rifle. Effective at long range.
   DisplayName: SV-98
   Durability: 32
   FireMode:
@@ -1069,6 +1100,7 @@ CHINA_LAKE:
     Magazine: 3
     Max: 6
     Start: 3
+  Description: Pump action grenade launcher. Delivers great direct impact damage.
   DisplayName: China Lake
   Durability: 33
   FireMode:
@@ -1101,6 +1133,7 @@ CROSSBOW:
     Magazine: 3
     Max: 9
     Start: 3
+  Description: Fires explosive bolts that detonate after impact.
   DisplayName: Crossbow
   Durability: 34
   FireMode:
@@ -1131,6 +1164,7 @@ MGL:
     Magazine: 6
     Max: 12
     Start: 6
+  Description: 6 round semi-automatic grenade launcher.
   DisplayName: MGL
   Durability: 35
   FireMode:
@@ -1161,6 +1195,7 @@ RPG-7:
     Magazine: 1
     Max: 2
     Start: 1
+  Description: Free-fire shoulder mounted rocket launcher.
   DisplayName: RPG-7
   Durability: 36
   FireMode:
@@ -1191,6 +1226,7 @@ SMAW:
     Magazine: 1
     Max: 2
     Start: 1
+  Description: Free-fire shoulder mounted rocket launcher.
   DisplayName: SMAW
   Durability: 37
   FireMode:

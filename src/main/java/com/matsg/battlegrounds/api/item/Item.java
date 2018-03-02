@@ -1,7 +1,7 @@
 package com.matsg.battlegrounds.api.item;
 
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.GamePlayer;
+import com.matsg.battlegrounds.api.player.GamePlayer;
 import org.bukkit.inventory.ItemStack;
 
 public interface Item extends Cloneable, Comparable<Item> {

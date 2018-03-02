@@ -1,6 +1,6 @@
-package com.matsg.battlegrounds.game;
+package com.matsg.battlegrounds.player;
 
-import com.matsg.battlegrounds.api.game.SavedInventory;
+import com.matsg.battlegrounds.api.player.SavedInventory;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 

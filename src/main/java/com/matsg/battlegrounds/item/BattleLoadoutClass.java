@@ -1,47 +1,27 @@
-package com.matsg.battlegrounds.game;
+package com.matsg.battlegrounds.item;
 
-import com.matsg.battlegrounds.api.game.GamePlayer;
-import com.matsg.battlegrounds.api.game.PlayerStatus;
-import com.matsg.battlegrounds.api.game.SavedInventory;
 import com.matsg.battlegrounds.api.item.*;
-import com.matsg.battlegrounds.api.util.Message;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+public class BattleLoadoutClass implements LoadoutClass {
 
-public class BattleGamePlayer implements GamePlayer {
-
+    private final String name;
     private FireArm primary, secondary;
-    private int deaths, headshots, kills, points;
     private Knife knife;
     private Lethal lethal;
-    private Player player;
-    private PlayerStatus playerStatus;
-    private SavedInventory savedInventory;
     private Tactical tactical;
 
-    public BattleGamePlayer(Player player) {
-        this.player = player;
-        this.deaths = 0;
-        this.headshots = 0;
-        this.kills = 0;
-        this.playerStatus = PlayerStatus.ACTIVE;
-        this.points = 0;
-        this.savedInventory = new BattleSavedInventory(player);
+    public BattleLoadoutClass(String name) {
+        this.name = name;
     }
 
-    public int getDeaths() {
-        return deaths;
-    }
-
-    public int getHeadshots() {
-        return headshots;
-    }
-
-    public int getKills() {
-        return kills;
+    public BattleLoadoutClass(String name, FireArm primary, FireArm secondary, Lethal lethal, Tactical tactical, Knife knife) {
+        this.name = name;
+        this.primary = primary;
+        this.secondary = secondary;
+        this.lethal = lethal;
+        this.tactical = tactical;
+        this.knife = knife;
     }
 
     public Knife getKnife() {
@@ -52,56 +32,20 @@ public class BattleGamePlayer implements GamePlayer {
         return lethal;
     }
 
-    public Location getLocation() {
-        return player.getLocation();
-    }
-
     public String getName() {
-        return player.getName();
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public int getPoints() {
-        return points;
+        return name;
     }
 
     public FireArm getPrimary() {
         return primary;
     }
 
-    public SavedInventory getSavedInventory() {
-        return savedInventory;
-    }
-
     public FireArm getSecondary() {
         return secondary;
     }
 
-    public PlayerStatus getStatus() {
-        return playerStatus;
-    }
-
     public Tactical getTactical() {
         return tactical;
-    }
-
-    public UUID getUUID() {
-        return player.getUniqueId();
-    }
-
-    public void setDeaths(int deaths) {
-        this.deaths = deaths;
-    }
-
-    public void setHeadshots(int headshots) {
-        this.headshots = headshots;
-    }
-
-    public void setKills(int kills) {
-        this.kills = kills;
     }
 
     public void setKnife(Knife knife) {
@@ -112,21 +56,12 @@ public class BattleGamePlayer implements GamePlayer {
         this.lethal = lethal;
     }
 
-    public void setPoints(int points) {
-        this.points = points;
-    }
-
     public void setPrimary(FireArm primary) {
         this.primary = primary;
     }
 
     public void setSecondary(FireArm secondary) {
         this.secondary = secondary;
-    }
-
-    public PlayerStatus setStatus(PlayerStatus playerStatus) {
-        this.playerStatus = playerStatus;
-        return playerStatus;
     }
 
     public void setTactical(Tactical tactical) {
@@ -166,13 +101,5 @@ public class BattleGamePlayer implements GamePlayer {
 
     public Weapon[] getWeapons() {
         return new Weapon[] { primary, secondary, lethal, tactical, knife };
-    }
-
-    public void sendMessage(Message message) {
-        message.send(player);
-    }
-
-    public void sendMessage(String message) {
-        player.sendMessage(message);
     }
 }

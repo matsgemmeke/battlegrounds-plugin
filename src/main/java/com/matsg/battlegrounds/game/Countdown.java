@@ -1,7 +1,7 @@
 package com.matsg.battlegrounds.game;
 
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.GamePlayer;
+import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.game.GameState;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.util.BattleRunnable;

@@ -4,6 +4,8 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.config.CacheYaml;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.game.GameMode;
+import com.matsg.battlegrounds.api.player.GamePlayer;
+import com.matsg.battlegrounds.api.player.PlayerStatus;
 import com.matsg.battlegrounds.api.util.Message;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.config.BattleCacheYaml;

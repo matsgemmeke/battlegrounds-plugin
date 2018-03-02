@@ -1,6 +1,6 @@
 package com.matsg.battlegrounds.api.game;
 
-import com.matsg.battlegrounds.api.util.Hitbox;
+import com.matsg.battlegrounds.api.player.GamePlayer;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 

@@ -1,7 +1,7 @@
 package com.matsg.battlegrounds.game.gamemode;
 
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.GamePlayer;
+import com.matsg.battlegrounds.api.player.GamePlayer;
 
 public class TeamDeathmatch extends AbstractGameMode {
 
