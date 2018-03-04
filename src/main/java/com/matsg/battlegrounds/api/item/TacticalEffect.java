@@ -1,6 +1,46 @@
 package com.matsg.battlegrounds.api.item;
 
-enum TacticalEffect {
+import com.matsg.battlegrounds.api.player.GamePlayer;
+import org.bukkit.Location;
 
-    BAIT, DISORIENTATION, SLOWNESS;
+public enum TacticalEffect {
+
+    BLINDNESS(0, true) {
+        public void applyEffect(GamePlayer gamePlayer, Location location, int duration) {
+
+        }
+    },
+    NOISE(1, false) {
+        public void applyEffect(GamePlayer gamePlayer, Location location, int duration) {
+
+        }
+    },
+    SMOKE(2, false) {
+        public void applyEffect(GamePlayer gamePlayer, Location location, int duration) {
+
+        }
+    };
+
+    private boolean playerEffective;
+    private int id;
+
+    TacticalEffect(int id, boolean playerEffective) {
+        this.id = id;
+        this.playerEffective = playerEffective;
+    }
+
+    public static TacticalEffect valueOf(int id) {
+        for (TacticalEffect tacticalEffect : values()) {
+            if (tacticalEffect.id == id) {
+                return tacticalEffect;
+            }
+        }
+        throw new IllegalArgumentException();
+    }
+
+    public boolean isPlayerEffective() {
+        return playerEffective;
+    }
+
+    public abstract void applyEffect(GamePlayer gamePlayer, Location location, int duration);
 }

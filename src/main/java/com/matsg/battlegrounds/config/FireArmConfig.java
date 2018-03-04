@@ -6,10 +6,7 @@ import com.matsg.battlegrounds.api.item.FireArm;
 import com.matsg.battlegrounds.api.item.Lethal;
 import com.matsg.battlegrounds.api.item.ReloadType;
 import com.matsg.battlegrounds.api.item.WeaponType;
-import com.matsg.battlegrounds.item.BattleGun;
-import com.matsg.battlegrounds.item.Bullet;
-import com.matsg.battlegrounds.item.FireArmType;
-import com.matsg.battlegrounds.item.FireMode;
+import com.matsg.battlegrounds.item.*;
 import com.matsg.battlegrounds.util.BattleSound;
 import com.matsg.battlegrounds.util.ItemStackBuilder;
 import org.bukkit.Material;
@@ -103,7 +100,7 @@ public class FireArmConfig extends AbstractYaml implements WeaponConfig<FireArm>
                             (short) new AttributeValidator(section.getInt("Durability"), "Durability").shouldBeHigherThan(0),
                             (int) new AttributeValidator(section.getInt("Ammo.Magazine"), "Magazine").shouldBeHigherThan(0),
                             (int) new AttributeValidator(section.getInt("Ammo.Start"), "Start ammunition").shouldEqualOrBeHigherThan(0),
-                            (int) new AttributeValidator(section.getInt("Ammo.Max"), "Maximum ammunition").shouldEqualOrBeHigherThan(0),
+                            (int) new AttributeValidator(section.getInt("Ammo.Max"), "Max ammunition").shouldEqualOrBeHigherThan(0),
                             (int) new AttributeValidator(section.getInt("FireMode.FireRate"), "Fire rate").shouldBeBetween(0, 20),
                             (int) new AttributeValidator(section.getInt("FireMode.Burst"), "Burst rounds").shouldEqualOrBeHigherThan(0),
                             (int) new AttributeValidator(section.getInt("FireMode.Cooldown"), "Cooldown").shouldEqualOrBeHigherThan(0),
@@ -121,30 +118,32 @@ public class FireArmConfig extends AbstractYaml implements WeaponConfig<FireArm>
                 }
             }
         });
-//        list.add(new WeaponSerializer(FireArmType.LAUNCHER) {
-//            FireArm getFromSection(ConfigurationSection section) throws ItemFormatException {
-//                String name = section.getString("DisplayName");
-//                try {
-//                    return new ZombiesLauncher(
-//                            name,
-//                            new ItemStackBuilder(Material.valueOf(plugin.getZombiesConfig().getWeaponMaterial("gun"))).build(),
-//                            (short) new AttributeValidator(section.getInt("Durability"), "Durability").shouldBeHigherThan(0),
-//                            (int) new AttributeValidator(section.getInt("Ammo.Magazine"), "Magazine").shouldBeHigherThan(0),
-//                            (int) new AttributeValidator(section.getInt("Ammo.Max"), "Ammo").shouldBeHigherThan(0),
-//                            (int) new AttributeValidator(section.getInt("FireMode.Cooldown"), "Cooldown").shouldEqualOrBeHigherThan(0),
-//                            (int) new AttributeValidator(section.getInt("Reload.Duration"), "Reload duration").shouldBeHigherThan(0),
-//                            new AttributeValidator(section.getDouble("Accuracy"), "Accuracy").shouldBeBetween(0.0, 1.0),
-//                            ReloadType.valueOf(section.getString("Reload.Type")),
-//                            LaunchType.valueOf(section.getString("FireMode.LaunchType")),
-//                            getLethalProjectile(section),
-//                            ZombiesSound.parseSoundArray(section.getString("Reload.Sound.Reload")),
-//                            ZombiesSound.parseSoundArray(section.getString("FireMode.ShootSound"))
-//                    );
-//                } catch (ValidationFailedException e) {
-//                    throw new ItemFormatException("Invalid item format " + name + ": " + e.getMessage());
-//                }
-//            }
-//        });
+        list.add(new WeaponSerializer(FireArmType.LAUNCHER) {
+            FireArm getFromSection(ConfigurationSection section) throws ItemFormatException {
+                String name = section.getString("DisplayName");
+                try {
+                    return new BattleLauncher(
+                            name,
+                            getString("Description"),
+                            new ItemStackBuilder(Material.valueOf(plugin.getBattlegroundsConfig().getWeaponMaterial("firearm"))).build(),
+                            (short) new AttributeValidator(section.getInt("Durability"), "Durability").shouldBeHigherThan(0),
+                            (int) new AttributeValidator(section.getInt("Ammo.Magazine"), "Magazine").shouldBeHigherThan(0),
+                            (int) new AttributeValidator(section.getInt("Ammo.Start"), "Start ammunition").shouldBeHigherThan(0),
+                            (int) new AttributeValidator(section.getInt("Ammo.Max"), "Max ammunition").shouldBeHigherThan(0),
+                            (int) new AttributeValidator(section.getInt("FireMode.Cooldown"), "Cooldown").shouldEqualOrBeHigherThan(0),
+                            (int) new AttributeValidator(section.getInt("Reload.Duration"), "Reload duration").shouldBeHigherThan(0),
+                            new AttributeValidator(section.getDouble("Accuracy"), "Accuracy").shouldBeBetween(0.0, 1.0),
+                            getLethalProjectile(section),
+                            LaunchType.valueOf(section.getString("FireMode.LaunchType")),
+                            ReloadType.valueOf(section.getString("Reload.Type")),
+                            BattleSound.parseSoundArray(section.getString("Reload.Sound.Reload")),
+                            BattleSound.parseSoundArray(section.getString("FireMode.ShootSound"))
+                    );
+                } catch (ValidationFailedException e) {
+                    throw new ItemFormatException("Invalid item format " + name + ": " + e.getMessage());
+                }
+            }
+        });
         return list;
     }
 

@@ -3,16 +3,16 @@ package com.matsg.battlegrounds.api;
 import com.matsg.battlegrounds.api.config.BattlegroundsConfig;
 import com.matsg.battlegrounds.api.config.CacheYaml;
 import com.matsg.battlegrounds.api.config.WeaponConfig;
-import com.matsg.battlegrounds.api.dao.PlayerDAOFactory;
-import com.matsg.battlegrounds.api.item.Explosive;
+import com.matsg.battlegrounds.api.item.Equipment;
 import com.matsg.battlegrounds.api.item.FireArm;
 import com.matsg.battlegrounds.api.item.Knife;
+import com.matsg.battlegrounds.api.player.PlayerStorage;
 import org.bukkit.plugin.Plugin;
 
 public interface Battlegrounds extends Plugin {
 
     /**
-     * Gets the cache storage of the plugin
+     * Gets the cache storage of the plugin.
      *
      * @return The battlegrounds cache storage
      */
@@ -26,18 +26,18 @@ public interface Battlegrounds extends Plugin {
     BattlegroundsConfig getBattlegroundsConfig();
 
     /**
+     * Gets the equipment configrations of the plugin.
+     *
+     * @return The equipment configuration
+     */
+    WeaponConfig<Equipment> getEquipmentConfig();
+
+    /**
      * Gets the event manager of the plugin.
      *
      * @return The event manager
      */
     EventManager getEventManager();
-
-    /**
-     * Gets the explosives configrations of the plugin.
-     *
-     * @return The explosive configuration
-     */
-    WeaponConfig<Explosive> getExplosiveConfig();
 
     /**
      * Gets the firearms configrations of the plugin.
@@ -66,7 +66,7 @@ public interface Battlegrounds extends Plugin {
      *
      * @return The MySQL factory if enabled, local storage otherwise
      */
-    PlayerDAOFactory getPlayerStorage();
+    PlayerStorage getPlayerStorage();
 
     /**
      * Gets the translator of the plugin.

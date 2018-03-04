@@ -1,9 +1,9 @@
 package com.matsg.battlegrounds.item;
 
-import com.matsg.battlegrounds.api.item.Projectile;
+import com.matsg.battlegrounds.api.item.DamageSource;
 import com.matsg.battlegrounds.api.util.Hitbox;
 
-public class Bullet implements Projectile {
+public class Bullet implements DamageSource {
 
     private double headshotMultiplier, longDamage, longRange, midDamage, midRange, shortDamage, shortRange;
 

@@ -12,7 +12,7 @@ game-allowed-commands:
 - battlegrouds
 - leave
 
-# Arenas are protection from construct and destruction modifications
+# Arenas are protected from construct and destruction modifications
 game-arena-protection: true
 
 # Broadcast in-game chat message to the console
@@ -24,7 +24,7 @@ game-default-leave-gamemode: SURVIVAL
 
 # The display names of different weapon types
 game-display-name:
-  explosive: "&f%bg_weapon%"
+  equipment: "&f%bg_weapon%"
   firearm: "&f%bg_weapon%  %bg_magazine%/%bg_ammo%"
   knife: "&f%bg_weapon%"
 
@@ -41,7 +41,7 @@ game-launcher-velocity: 2.0
 
 # Item materials of different weapon types
 game-material:
-  explosive: IRON_HELMET
+  equipment: IRON_HELMET
   firearm: IRON_HOE
   knife: IRON_SWORD
 

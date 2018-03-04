@@ -72,6 +72,6 @@ public abstract class BattleItem implements Item {
     }
 
     public int compareTo(Item item) {
-        return gamePlayer == item.getGamePlayer() && itemStack.equals(item.getItemStack()) && itemSlot == item.getItemSlot() ? 0 : -1;
+        return game == item.getGame() && itemStack.equals(item.getItemStack()) ? 0 : -1;
     }
 }

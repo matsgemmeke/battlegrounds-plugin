@@ -4,17 +4,14 @@ import com.matsg.battlegrounds.api.*;
 import com.matsg.battlegrounds.api.config.BattlegroundsConfig;
 import com.matsg.battlegrounds.api.config.CacheYaml;
 import com.matsg.battlegrounds.api.config.WeaponConfig;
-import com.matsg.battlegrounds.api.dao.PlayerDAOFactory;
-import com.matsg.battlegrounds.api.item.Explosive;
+import com.matsg.battlegrounds.api.item.Equipment;
 import com.matsg.battlegrounds.api.item.FireArm;
 import com.matsg.battlegrounds.api.item.Knife;
+import com.matsg.battlegrounds.api.player.PlayerStorage;
 import com.matsg.battlegrounds.command.BattlegroundsCommand;
-import com.matsg.battlegrounds.config.BattleCacheYaml;
-import com.matsg.battlegrounds.config.DataLoader;
-import com.matsg.battlegrounds.config.FireArmConfig;
+import com.matsg.battlegrounds.config.*;
 import com.matsg.battlegrounds.listener.BattleEventManager;
 import com.matsg.battlegrounds.listener.EventListener;
-import com.matsg.battlegrounds.util.EnumMessage;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -30,14 +27,14 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
     private BattlegroundsConfig config;
     private CacheYaml cache;
     private EventManager eventManager;
-    //private ExplosiveConfig explosiveConfig;
     private GameManager gameManager;
-    //private KnifeConfig knifeConfig;
     private List<BattlegroundsExtension> extensions;
-    //private PlayerData playerData;
+    private PlayerStorage playerStorage;
     //private SQLConfig sqlConfig;
     private Translator translator;
+    private WeaponConfig<Equipment> equipmentConfig;
     private WeaponConfig<FireArm> fireArmConfig;
+    private WeaponConfig<Knife> knifeConfig;
 
     public void onEnable() {
         plugin = this;
@@ -82,7 +79,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         return eventManager;
     }
 
-    public WeaponConfig<Explosive> getExplosiveConfig() {
+    public WeaponConfig<Equipment> getEquipmentConfig() {
         return null;
     }
 
@@ -98,8 +95,8 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         return null;
     }
 
-    public PlayerDAOFactory getPlayerStorage() {
-        return null;
+    public PlayerStorage getPlayerStorage() {
+        return playerStorage;
     }
 
     public Translator getTranslator() {
@@ -110,9 +107,9 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         try {
             cache = new BattleCacheYaml(this, "cache.yml");
             config = new BattlegroundsConfig(this);
-            //explosiveConfig = new ExplosiveConfig(this);
+            equipmentConfig = new EquipmentConfig(this);
             fireArmConfig = new FireArmConfig(this);
-            //knifeConfig = new KnifeConfig(this);
+            knifeConfig = new KnifeConfig(this);
             //playerData = new PlayerData(this);
             //sqlConfig = new SQLConfig(this);
             translator = new PluginTranslator(this);
@@ -155,16 +152,16 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         }
 
         try {
-            //explosiveConfig = new ExplosiveConfig(this);
-            //fireArmConfig = new FireArmConfig(this);
-            //knifeConfig = new KnifeConfig(this);
-
-            //getLogger().info("Succesfully loaded " + fireArmConfig.getWeaponList().size() + " guns, " +
-            //        explosiveConfig.getWeaponList().size() + " explosives and "
-            //        + knifeConfig.getWeaponList().size() + " knives from the config");
+            equipmentConfig = new EquipmentConfig(this);
+            fireArmConfig = new FireArmConfig(this);
+            knifeConfig = new KnifeConfig(this);
         } catch (Exception e) {
             throw new StartupFailedException("Failed to load weapon configuration files!", e);
         }
+
+        getLogger().info("Succesfully loaded " + fireArmConfig.getList().size() + " guns, "
+                + equipmentConfig.getList().size() + " equipment and "
+                + knifeConfig.getList().size() + " knives from the config");
 
         //this.channelMessenger = new PluginChannelMessenger(this);
         this.eventManager = new BattleEventManager();
@@ -176,10 +173,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
 
         new EventListener(this);
 
-        //DAOFactory.init(this, sqlConfig);
         //WeaponsView.getInstance(this);
-
-        System.out.print(EnumMessage.PREFIX.getMessage());
 
         for (BattlegroundsExtension extension : extensions) {
             extension.onPostInit();

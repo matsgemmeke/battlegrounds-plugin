@@ -147,7 +147,7 @@ public class DataLoader {
     }
 
     private Weapon getWeapon(String name) {
-        for (WeaponConfig weaponConfig : Arrays.asList(plugin.getExplosiveConfig(), plugin.getFireArmConfig(), plugin.getKnifeConfig())) {
+        for (WeaponConfig weaponConfig : Arrays.asList(plugin.getEquipmentConfig(), plugin.getFireArmConfig(), plugin.getKnifeConfig())) {
             Weapon weapon = weaponConfig.get(name);
             if (weapon != null) {
                 return weapon;

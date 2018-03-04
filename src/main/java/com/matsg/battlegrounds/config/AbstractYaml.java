@@ -115,7 +115,7 @@ public abstract class AbstractYaml implements Yaml {
         config.set(path, value);
     }
 
-    //Copies existing data in the resource as well as comments
+    // Copies existing data in the resource as well as comments
     private void copyResource(InputStream resource, File file) throws IOException {
         if (resource == null) {
             return;
@@ -134,7 +134,7 @@ public abstract class AbstractYaml implements Yaml {
         resource.close();
     }
 
-    //Creates a new yaml from the resources in the given directory
+    // Creates a new yaml from the resources in the given directory
     public void createFile(String filepath, String resource) throws IOException {
         File file = getNewFile(filepath, resource);
 
@@ -156,7 +156,7 @@ public abstract class AbstractYaml implements Yaml {
         return new File(filepath, filename);
     }
 
-    //Creates the yaml file in the directory if it does not exist yet
+    // Creates the yaml file in the directory if it does not exist yet
     private void prepareFile(File file, String resource) throws IOException {
         if (file.exists()) {
             return;

@@ -4,5 +4,5 @@ import com.matsg.battlegrounds.api.player.OfflineGamePlayer;
 
 public interface StoredPlayer extends OfflineGamePlayer, Comparable<StoredPlayer> {
 
-    int getAttribute(String name);
+    int getAttribute(String attribute);
 }

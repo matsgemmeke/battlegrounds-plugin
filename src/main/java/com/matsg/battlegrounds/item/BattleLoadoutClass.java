@@ -6,30 +6,28 @@ import org.bukkit.inventory.ItemStack;
 public class BattleLoadoutClass implements LoadoutClass {
 
     private final String name;
+    private Equipment equipment;
     private FireArm primary, secondary;
     private Knife knife;
-    private Lethal lethal;
-    private Tactical tactical;
 
     public BattleLoadoutClass(String name) {
         this.name = name;
     }
 
-    public BattleLoadoutClass(String name, FireArm primary, FireArm secondary, Lethal lethal, Tactical tactical, Knife knife) {
+    public BattleLoadoutClass(String name, FireArm primary, FireArm secondary, Equipment equipment, Knife knife) {
         this.name = name;
         this.primary = primary;
         this.secondary = secondary;
-        this.lethal = lethal;
-        this.tactical = tactical;
+        this.equipment = equipment;
         this.knife = knife;
+    }
+
+    public Equipment getEquipment() {
+        return equipment;
     }
 
     public Knife getKnife() {
         return knife;
-    }
-
-    public Lethal getLethal() {
-        return lethal;
     }
 
     public String getName() {
@@ -44,16 +42,12 @@ public class BattleLoadoutClass implements LoadoutClass {
         return secondary;
     }
 
-    public Tactical getTactical() {
-        return tactical;
+    public void setEquipment(Equipment equipment) {
+        this.equipment = equipment;
     }
 
     public void setKnife(Knife knife) {
         this.knife = knife;
-    }
-
-    public void setLethal(Lethal lethal) {
-        this.lethal = lethal;
     }
 
     public void setPrimary(FireArm primary) {
@@ -62,10 +56,6 @@ public class BattleLoadoutClass implements LoadoutClass {
 
     public void setSecondary(FireArm secondary) {
         this.secondary = secondary;
-    }
-
-    public void setTactical(Tactical tactical) {
-        this.tactical = tactical;
     }
 
     public Weapon getWeapon(ItemSlot itemSlot) {
@@ -100,6 +90,6 @@ public class BattleLoadoutClass implements LoadoutClass {
     }
 
     public Weapon[] getWeapons() {
-        return new Weapon[] { primary, secondary, lethal, tactical, knife };
+        return new Weapon[] { primary, secondary, equipment, knife };
     }
 }

@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.api.game;
 
 import com.matsg.battlegrounds.api.item.Item;
+import com.matsg.battlegrounds.api.item.Weapon;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
@@ -13,9 +14,11 @@ public interface ItemRegistry {
 
     Item getItem(ItemStack itemStack);
 
-    Item getItem(Player player, ItemStack itemStack);
+    Item getItemIgnoreMetadata(ItemStack itemStack);
 
-    Item getItemIgnoreMetadata(Player player, ItemStack itemStack);
+    Weapon getWeapon(Player player, ItemStack itemStack);
+
+    Weapon getWeaponIgnoreMetadata(Player player, ItemStack itemStack);
 
     void interact(Item item, Action action);
 

@@ -164,7 +164,7 @@ public class BattleGame implements Game {
 
     public void givePoints(GamePlayer gamePlayer, int points) {
         ActionBar.POINTS_INCREASE.send(gamePlayer.getPlayer(), new Placeholder("bg_points", points));
-        gamePlayer.setPoints(gamePlayer.getPoints() + points);
+        gamePlayer.addScore(points);
     }
 
     public void rollback() {
@@ -204,11 +204,11 @@ public class BattleGame implements Game {
             player.setMaxHealth(20.0);
             player.setHealth(20.0);
 
-            if (gamePlayer.getPrimary() != null) {
-                gamePlayer.getPrimary().setReloadCancelled(true);
+            if (gamePlayer.getLoadoutClass().getPrimary() != null) {
+                gamePlayer.getLoadoutClass().getPrimary().setReloadCancelled(true);
             }
-            if (gamePlayer.getSecondary() != null) {
-                gamePlayer.getSecondary().setReloadCancelled(true);
+            if (gamePlayer.getLoadoutClass().getSecondary() != null) {
+                gamePlayer.getLoadoutClass().getSecondary().setReloadCancelled(true);
             }
             playerManager.setVisible(gamePlayer, true);
         }

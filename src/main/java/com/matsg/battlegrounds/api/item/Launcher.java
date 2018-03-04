@@ -1,6 +1,10 @@
 package com.matsg.battlegrounds.api.item;
 
-public interface Launcher extends FireArm, Explodable {
+import org.bukkit.Location;
+
+public interface Launcher extends FireArm {
 
     Lethal getLethal();
+
+    void explode(Location location);
 }

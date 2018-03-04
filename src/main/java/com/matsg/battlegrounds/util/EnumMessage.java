@@ -47,7 +47,12 @@ public enum EnumMessage implements Message {
     RELOAD_SUCCESS("setup-reload-success", true),
     SPAWN_ADD("setup-spawn-add", true),
     SPECIFY_ID("setup-specify-id", false),
-    SPECIFY_NAME("setup-specify-name", false);
+    SPECIFY_NAME("setup-specify-name", false),
+    STAT_ACCURACY("item-stat-accuracy", false),
+    STAT_DAMAGE("item-stat-damage", false),
+    STAT_FIRERATE("item-stat-firerate", false),
+    STAT_RANGE("item-stat-range", false),
+    TYPE_KNIFE("item-type-knife", false);
 
     private Battlegrounds plugin;
     private boolean prefix;
@@ -58,10 +63,6 @@ public enum EnumMessage implements Message {
         this.message = plugin.getTranslator().getTranslation(path);
         this.path = path;
         this.prefix = prefix;
-    }
-
-    public String getMessage() {
-        return replace();
     }
 
     public String getMessage(Placeholder... placeholders) {

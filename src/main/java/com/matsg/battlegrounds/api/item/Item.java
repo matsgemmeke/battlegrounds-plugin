@@ -8,11 +8,7 @@ public interface Item extends Cloneable, Comparable<Item> {
 
     Game getGame();
 
-    GamePlayer getGamePlayer();
-
     Item clone();
-
-    ItemSlot getItemSlot();
 
     ItemStack getItemStack();
 
@@ -29,10 +25,6 @@ public interface Item extends Cloneable, Comparable<Item> {
     void onSwitch();
 
     void setGame(Game game);
-
-    void setGamePlayer(GamePlayer gamePlayer);
-
-    void setItemSlot(ItemSlot itemSlot);
 
     void setItemStack(ItemStack itemStack);
 

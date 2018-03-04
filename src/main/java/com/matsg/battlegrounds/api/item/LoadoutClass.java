@@ -4,17 +4,15 @@ import org.bukkit.inventory.ItemStack;
 
 public interface LoadoutClass {
 
-    Knife getKnife();
+    Equipment getEquipment();
 
-    Lethal getLethal();
+    Knife getKnife();
 
     String getName();
 
     FireArm getPrimary();
 
     FireArm getSecondary();
-
-    Tactical getTactical();
 
     Weapon getWeapon(ItemSlot itemSlot);
 
@@ -24,13 +22,9 @@ public interface LoadoutClass {
 
     Weapon[] getWeapons();
 
-    void setKnife(Knife knife);
-
-    void setLethal(Lethal lethal);
+    void setEquipment(Equipment equipment);
 
     void setPrimary(FireArm primary);
 
     void setSecondary(FireArm secondary);
-
-    void setTactical(Tactical tactical);
 }

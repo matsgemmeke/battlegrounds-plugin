@@ -18,15 +18,13 @@ public interface FireArm extends Weapon {
 
     int getMaxAmmo();
 
-    Projectile getProjectile();
+    DamageSource getProjectile();
 
     int getReloadDuration();
 
     Sound[] getReloadSound();
 
     Sound[] getShootSound();
-
-    int getStartAmmo();
 
     boolean isReloading();
 

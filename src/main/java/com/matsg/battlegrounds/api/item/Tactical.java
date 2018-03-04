@@ -1,6 +1,6 @@
 package com.matsg.battlegrounds.api.item;
 
-public interface Tactical extends Explosive {
+public interface Tactical extends Equipment {
 
     Tactical clone();
 

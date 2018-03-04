@@ -2,6 +2,183 @@ level:
   '1':
     exp: 0
     unlockables:
-      weapons: M1911
+      equipment: Grenade
+      firearm: Five-seven, M16, M1911, MP5, Olympia
+      knife: Combat Knife
   '2':
-    exp: 100
+    exp: 300
+    unlockables:
+      firearm: HK21
+  '3':
+    exp: 800
+    unlockables:
+      firearm: Dragunov
+  '4':
+    exp: 1400
+    unlockables:
+      equipment: Smoke Grenade
+  '5':
+    exp: 2400
+    unlockables:
+      firearm: FAMAS
+  '6':
+    exp: 3800
+    unlockables:
+      firearm: MAC-11
+  '7':
+    exp: 5500
+    unlockables:
+      firearm: RPK
+  '8':
+    exp: 7500
+    unlockables:
+      firearm: Ithaca 37
+  '9':
+    exp: 9900
+    unlockables:
+      firearm: M14
+  '10':
+    exp: 12700
+    unlockables:
+      equipment: Flashbang
+  '11':
+    exp: 15800
+    unlockables:
+      firearm: QCW-05
+  '12':
+    exp: 19300
+    unlockables:
+      firearm: RPG-7
+  '13':
+    exp: 23300
+  '14':
+    exp: 27800
+    unlockables:
+      equipment: Semtex
+  '15':
+    exp: 32700
+    unlockables:
+      knife: Ballistic Knife
+  '16':
+    exp: 38000
+    unlockables:
+      equipment: Shock Charge
+  '17':
+    exp: 43900
+    unlockables:
+      firearm: AKS-74u
+  '18':
+    exp: 50400
+    unlockables:
+      firearm: Python
+  '19':
+    exp: 57200
+    unlockables:
+      firearm: Remington 870
+  '20':
+    exp: 64500
+    unlockables:
+      firearm: Galil
+  '21':
+    exp: 73000
+    unlockables:
+      equipment: Decoy Grenade
+  '22':
+    exp: 81700
+  '23':
+    exp: 91000
+    unlockables:
+      firearm: Uzi
+  '24':
+    exp: 109000
+    unlockables:
+      firearm: SPAS-12
+  '25':
+    exp: 113400
+    unlockables:
+      firearm: Crossbow
+  '26':
+    exp: 122500
+    unlockables:
+      firearm: SCAR-H
+  '27':
+    exp: 134300
+    unlockables:
+      firearm: M82A1
+  '28':
+    exp: 146700
+      firearm: Glock 17
+  '29':
+    exp: 159700
+    unlockables:
+      firearm: Vector
+  '30':
+    exp: 173400
+    unlockables:
+      firearm: MGL
+  '31':
+    exp: 187800
+  '32':
+    exp: 202800
+    unlockables:
+      firearm: FAL
+  '33':
+    exp: 218600
+    unlockables:
+      firearm: SMAW
+  '34':
+    exp: 235000
+    unlockables:
+      firearm: M60
+  '35':
+    exp: 252200
+    unlockables:
+      firearm: MP7
+  '36':
+    exp: 270000
+    unlockables:
+      equipment: Claymore
+  '37':
+    exp: 288600
+  '38':
+    exp: 308000
+    unlockables:
+      firearm: AK-47
+  '39':
+    exp: 328100
+    unlockables:
+      knife: Hatchet
+  '40':
+    exp: 348900
+  '41':
+    exp: 371000
+    unlockables:
+      firearm: Beretta 93R
+  '42':
+    exp: 392900
+    unlockables:
+      firearm: SV-98
+  '43':
+    exp: 416100
+    unlockables:
+      firearm: QBZ-95
+  '44':
+    exp: 440100
+    unlockables:
+      firearm: Saiga-12K
+  '45':
+    exp: 464900
+  '46':
+    exp: 490500
+    unlockables:
+      firearm: AUG
+  '47':
+    exp: 517000
+  '48':
+    exp: 544300
+    unlockables:
+      firearm: China Lake
+  '49':
+    exp: 572400
+  '50':
+    exp: 601400

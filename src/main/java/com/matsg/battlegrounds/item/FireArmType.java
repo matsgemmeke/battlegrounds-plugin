@@ -2,9 +2,9 @@ package com.matsg.battlegrounds.item;
 
 import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.item.DamageSource;
 import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.item.Lethal;
-import com.matsg.battlegrounds.api.item.Projectile;
 import com.matsg.battlegrounds.api.item.WeaponType;
 
 public enum FireArmType implements WeaponType {
@@ -21,16 +21,16 @@ public enum FireArmType implements WeaponType {
 
     private Battlegrounds plugin;
     private boolean pierceable, scope;
-    private Class<? extends Projectile> projectileClass;
+    private Class<? extends DamageSource> damageSourceClass;
     private int maxHits, projectileAmount;
     private String name;
 
-    FireArmType(String path, int projectileAmount, Class<? extends Projectile> projectileClass, int maxHits, boolean scope) {
+    FireArmType(String path, int projectileAmount, Class<? extends DamageSource> damageSourceClass, int maxHits, boolean scope) {
         this.plugin = BattlegroundsPlugin.getPlugin();
+        this.damageSourceClass = damageSourceClass;
         this.maxHits = maxHits;
         this.name = plugin.getTranslator().getTranslation(path);
         this.projectileAmount = projectileAmount;
-        this.projectileClass = projectileClass;
         this.pierceable = maxHits > 1;
         this.scope = scope;
     }
@@ -60,8 +60,8 @@ public enum FireArmType implements WeaponType {
         return projectileAmount;
     }
 
-    public Class<? extends Projectile> getProjectileClass() {
-        return projectileClass;
+    public Class<? extends DamageSource> getDamageSourceClass() {
+        return damageSourceClass;
     }
 
     public boolean hasScope() {

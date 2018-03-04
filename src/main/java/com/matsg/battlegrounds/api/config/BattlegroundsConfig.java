@@ -11,7 +11,8 @@ public final class BattlegroundsConfig extends AbstractYaml {
 
     public final boolean arenaProtection = getBoolean("game-arena-protection");
     public final boolean broadcastChat = getBoolean("game-broadcast-chat");
-    public final double gunAccuracy = getDouble("game-gun-accuracy");
+    public final int explosiveCooldown = getInt("game-explosive-cooldown");
+    public final double firearmAccuracy = getDouble("game-firearm-accuracy");
     public final double launcherVelocity = getDouble("game-launcher-velocity");
     public final List<String> pierceableBlocks = getStringList("game-pierceable-blocks");
 

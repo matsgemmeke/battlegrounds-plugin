@@ -25,7 +25,7 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
     protected boolean reloadCancelled, reloading, shooting;
     protected double accuracy;
     protected FireArmType fireArmType;
-    protected int ammo, cooldown, magazine, magazineSize, maxAmmo, reloadDuration, startAmmo;
+    protected int ammo, cooldown, magazine, magazineSize, maxAmmo, reloadDuration;
     protected List<Material> blocks;
     protected ReloadType reloadType;
     protected Sound[] reloadSound, shootSound;
@@ -49,7 +49,6 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
         this.reloadType = reloadType;
         this.shooting = false;
         this.shootSound = shootSound;
-        this.startAmmo = ammo;
 
         for (String block : plugin.getBattlegroundsConfig().pierceableBlocks) {
             blocks.add(Material.valueOf(block));
@@ -94,10 +93,6 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
 
     public Sound[] getShootSound() {
         return shootSound;
-    }
-
-    public int getStartAmmo() {
-        return startAmmo;
     }
 
     public FireArmType getType() {
@@ -158,11 +153,11 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
         Player player = gamePlayer.getPlayer();
         Random random = new Random();
 
-        double accuracyAmplifier = plugin.getBattlegroundsConfig().gunAccuracy;
-        if (gamePlayer.getPlayer().isSneaking()) { //Shoot more accurate when the player is crouching
+        double accuracyAmplifier = plugin.getBattlegroundsConfig().firearmAccuracy;
+        if (gamePlayer.getPlayer().isSneaking()) { // Shoot more accurate when the player is crouching
             accuracyAmplifier /= 5.0;
         }
-        if (gamePlayer.getPlayer().isSprinting()) { //Shoot less accurate when the player is sprinting
+        if (gamePlayer.getPlayer().isSprinting()) { // Shoot less accurate when the player is sprinting
             accuracyAmplifier /= 0.5;
         }
 
@@ -174,13 +169,15 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
         double x = Math.sin(pitch) * Math.cos(yaw), y = Math.sin(pitch) * Math.sin(yaw), z = Math.cos(pitch);
 
         Location bulletDirection = targetDirection.clone();
-        bulletDirection.setDirection(new Vector(x, z, y)); //Adds the recoil effect to the gun
+        bulletDirection.setDirection(new Vector(x, z, y)); // Adds the recoil effect to the gun
         return bulletDirection;
     }
 
     public void onSwitch() {
-        gamePlayer.getPlayer().setFoodLevel(20);
-        reloadCancelled = true;
+        if (reloading) {
+            gamePlayer.getPlayer().setFoodLevel(20);
+            reloadCancelled = true;
+        }
     }
 
     public void playReloadSound() {
@@ -190,7 +187,7 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
             }
             if (!sound.isCancelled()) {
                 long delay = sound.getDelay();
-                sound.setDelay((long) (delay / reloadDuration));
+                sound.setDelay(delay / reloadDuration);
                 sound.play(getGame(), getGamePlayer().getPlayer());
                 sound.setCancelled(false);
                 sound.setDelay(delay);

@@ -13,11 +13,9 @@ public interface PlayerStorage {
 
     boolean contains(UUID uuid, int gameId);
 
-    List<StoredPlayer> getList();
+    List<? extends OfflineGamePlayer> getList();
 
     StoredPlayer getStoredPlayer(UUID uuid);
-
-    StoredPlayer getStoredPlayer(UUID uuid, int gameId);
 
     List<? extends OfflineGamePlayer> getTopPlayers(int limit);
 
