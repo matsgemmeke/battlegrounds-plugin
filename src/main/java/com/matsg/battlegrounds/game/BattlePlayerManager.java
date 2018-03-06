@@ -32,7 +32,7 @@ public class BattlePlayerManager implements PlayerManager {
 
         players.add(gamePlayer);
 
-        game.broadcastMessage(EnumMessage.PREFIX.getMessage() + " " + EnumMessage.PLAYER_JOIN.getMessage(
+        game.broadcastMessage(EnumMessage.PLAYER_JOIN.getMessage(
                 new Placeholder("player_name", player.getName()),
                 new Placeholder("bg_players", players.size()),
                 new Placeholder("bg_maxplayers", game.getConfiguration().getMaxPlayers())));

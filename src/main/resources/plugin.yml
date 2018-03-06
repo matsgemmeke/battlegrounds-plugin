@@ -7,3 +7,7 @@ commands:
     aliases: [b, bg, battleground]
     description: Main command
     usage: /battlegrounds
+  class:
+    aliases: classcreator
+    description: Opens the class manager
+    usage: /class

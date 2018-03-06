@@ -62,7 +62,7 @@ public class AddSpawn extends SubCommand {
         game.getDataFile().save();
 
         player.sendMessage(EnumMessage.SPAWN_ADD.getMessage(
-                new Placeholder("zombies_arena", name),
-                new Placeholder("zombies_id", arena.getSpawns().size())));
+                new Placeholder("bg_arena", name),
+                new Placeholder("bg_spawn", arena.getSpawns().size())));
     }
 }

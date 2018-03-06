@@ -213,7 +213,6 @@ public class BattleGame implements Game {
             playerManager.setVisible(gamePlayer, true);
         }
 
-        plugin.getPlayerStorage().save();
         state = GameState.RESETTING;
 
         clearGameData();

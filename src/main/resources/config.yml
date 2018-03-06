@@ -8,8 +8,8 @@ locale: en
 # Commands not included in this list won't be allowed to use while playing
 # Adding an '*' (including quotes) will allow players to dispatch any command
 game-allowed-commands:
-- bg
 - battlegrouds
+- bg
 - leave
 
 # Arenas are protected from construct and destruction modifications
@@ -34,6 +34,23 @@ game-explosive-cooldown: 20
 # The general accuracy of firearms in the game
 # Change to higher number for lower accuracy, change to lower number for higher accuracy
 game-firearm-accuracy: 10.0
+
+# Scoreboard configurations
+game-scoreboard:
+  # Set to false to disable scoreboards
+  enabled: true
+  # The layout of the game scoreboards
+  # Leave "" to remove this line
+  layout:
+    lobby:
+      line-0: "&eCountdown: &f%bg_countdown%s"
+      line-1: " "
+      line-2: "&ePlayers: %bg_players%"
+      line-3: "  "
+      line-4: "&eGamemode: &f%bg_gamemode%"
+      line-5: "&eArena: &f%bg_arena%"
+      line-6: "&8%bg_date%"
+      title: "&6&lBattlegrounds"
 
 # The velocity of grenade launchers' projectiles
 # Higher values than 3.0 may cause the projectile to not launch accurately

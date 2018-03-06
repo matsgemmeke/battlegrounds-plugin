@@ -52,11 +52,9 @@ public class Countdown extends BattleRunnable {
                         player.setHealth(player.getMaxHealth());
                         player.setSaturation((float) 10);
                     }
-
                     game.getGameMode().spawnPlayers(game.getPlayerManager().getPlayers().toArray(new GamePlayer[game.getPlayerManager().getPlayers().size()]));
                     game.setState(GameState.IN_GAME);
                     game.updateSign();
-
                     cancel();
                     return;
                 }

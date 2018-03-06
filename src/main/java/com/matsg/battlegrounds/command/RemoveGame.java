@@ -58,7 +58,7 @@ public class RemoveGame extends SubCommand {
 
         plugin.getGameManager().getGames().remove(game);
 
-        sender.sendMessage(EnumMessage.PREFIX.getMessage() + " " + EnumMessage.GAME_REMOVE.getMessage(new Placeholder("bg_game", id)));
+        sender.sendMessage(EnumMessage.GAME_REMOVE.getMessage(new Placeholder("bg_game", id)));
 
         senders.remove(sender);
     }

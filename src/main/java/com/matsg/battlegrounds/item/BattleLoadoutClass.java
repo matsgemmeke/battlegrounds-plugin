@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.item;
 
 import com.matsg.battlegrounds.api.item.*;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
 public class BattleLoadoutClass implements LoadoutClass {

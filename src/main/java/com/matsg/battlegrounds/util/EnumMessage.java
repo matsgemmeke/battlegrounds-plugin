@@ -10,16 +10,20 @@ import org.bukkit.entity.Player;
 
 public enum EnumMessage implements Message {
 
+    ALREADY_PLAYING("game-already-playing", false),
     ARENA_CONFIRM_REMOVE("setup-arena-confirm-remove", false),
     ARENA_CREATE("setup-arena-create", true),
     ARENA_EXISTS("setup-arena-exists", false),
     ARENA_NOT_EXISTS("setup-arena-not-exists", false),
     ARENA_REMOVE("setup-arena-remove", false),
+    CLASS_MANAGER("gui-class-manager", false),
     COMMAND_ERROR("command-error", false),
     COUNTDOWN_NOTE("game-countdown-note", true),
     DESCRIPTION_ADDSPAWN("command-description-addspawn", false),
     DESCRIPTION_CREATEARENA("command-description-createarena", false),
     DESCRIPTION_CREATEGAME("command-description-creategame", false),
+    DESCRIPTION_JOIN("command-description-join", false),
+    DESCRIPTION_LEAVE("command-description-leave", false),
     DESCRIPTION_RELOAD("command-description-reload", false),
     DESCRIPTION_REMOVEARENA("command-description-removearena", false),
     DESCRIPTION_REMOVEGAME("command-description-removegame", false),
@@ -32,6 +36,7 @@ public enum EnumMessage implements Message {
     GAME_REMOVE("setup-game-remove", true),
     GAMESIGN_SET("setup-gamesign-set", true),
     HELP_MENU("command-help-menu", false),
+    IN_PROGRESS("game-in-progress", false),
     INVALID_ARGUMENT_TYPE("command-invalid-arg-type", false),
     INVALID_ARGUMENTS("command-invalid-args", false),
     INVALID_BLOCK("setup-invalid-block", false),
@@ -39,6 +44,7 @@ public enum EnumMessage implements Message {
     LOBBY_SET("setup-lobby-set", true),
     NO_PERMISSION("command-no-permission", false),
     NO_SELECTION("setup-no-selection", false),
+    NOT_PLAYING("game-not-playing", false),
     PLAYER_JOIN("game-player-join", true),
     PLAYER_LEAVE("game-player-leave", true),
     PLAYER_MESSAGE("game-player-message", true),
@@ -48,6 +54,7 @@ public enum EnumMessage implements Message {
     SPAWN_ADD("setup-spawn-add", true),
     SPECIFY_ID("setup-specify-id", false),
     SPECIFY_NAME("setup-specify-name", false),
+    SPOTS_FULL("game-spots-full", false),
     STAT_ACCURACY("item-stat-accuracy", false),
     STAT_DAMAGE("item-stat-damage", false),
     STAT_FIRERATE("item-stat-firerate", false),
@@ -71,7 +78,7 @@ public enum EnumMessage implements Message {
 
     // Get the String message without sending it to the player
     private String replace(Placeholder... placeholders) {
-        StringBuilder builder = new StringBuilder(message);
+        StringBuilder builder = new StringBuilder();
         if (prefix) {
             builder.append(PREFIX.getMessage());
         }

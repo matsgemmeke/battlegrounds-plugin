@@ -19,7 +19,7 @@
 #     Short:
 #       Damage: Short-range damage
 #       Distance: Distance where short range ends and medium range starts
-#   Sound: List of sounds. [NEWSOUND-VOLUME-PITCH-DELAY]
+#   Sound: List of sounds. [SOUND-VOLUME-PITCH-DELAY]
 #   Velocity: The velocity this explosive travels upon throwing.
 
 GRENADE:

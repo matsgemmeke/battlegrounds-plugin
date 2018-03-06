@@ -2,21 +2,24 @@ level:
   '1':
     exp: 0
     unlockables:
+      class: Assault, Shotgun, SMG
       equipment: Grenade
-      firearm: Five-seven, M16, M1911, MP5, Olympia
+      firearm: Five-seven, M16, M1911, MP5, Olympia, SMAW, Smoke Grenade
       knife: Combat Knife
   '2':
     exp: 300
     unlockables:
+      class: LMG
       firearm: HK21
   '3':
     exp: 800
     unlockables:
+      class: Sniper
       firearm: Dragunov
   '4':
     exp: 1400
     unlockables:
-      equipment: Smoke Grenade
+      firearm: Glock 17
   '5':
     exp: 2400
     unlockables:
@@ -107,7 +110,6 @@ level:
       firearm: M82A1
   '28':
     exp: 146700
-      firearm: Glock 17
   '29':
     exp: 159700
     unlockables:
@@ -124,8 +126,6 @@ level:
       firearm: FAL
   '33':
     exp: 218600
-    unlockables:
-      firearm: SMAW
   '34':
     exp: 235000
     unlockables:

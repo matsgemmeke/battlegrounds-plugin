@@ -9,9 +9,12 @@ import com.matsg.battlegrounds.api.item.FireArm;
 import com.matsg.battlegrounds.api.item.Knife;
 import com.matsg.battlegrounds.api.player.PlayerStorage;
 import com.matsg.battlegrounds.command.BattlegroundsCommand;
+import com.matsg.battlegrounds.command.ClassCommand;
 import com.matsg.battlegrounds.config.*;
+import com.matsg.battlegrounds.listener.BattleEventHandler;
 import com.matsg.battlegrounds.listener.BattleEventManager;
 import com.matsg.battlegrounds.listener.EventListener;
+import com.matsg.battlegrounds.player.LocalPlayerStorage;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -80,7 +83,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
     }
 
     public WeaponConfig<Equipment> getEquipmentConfig() {
-        return null;
+        return equipmentConfig;
     }
 
     public WeaponConfig<FireArm> getFireArmConfig() {
@@ -92,7 +95,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
     }
 
     public WeaponConfig<Knife> getKnifeConfig() {
-        return null;
+        return knifeConfig;
     }
 
     public PlayerStorage getPlayerStorage() {
@@ -110,7 +113,6 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
             equipmentConfig = new EquipmentConfig(this);
             fireArmConfig = new FireArmConfig(this);
             knifeConfig = new KnifeConfig(this);
-            //playerData = new PlayerData(this);
             //sqlConfig = new SQLConfig(this);
             translator = new PluginTranslator(this);
         } catch (IOException e) {
@@ -139,7 +141,6 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         try {
             cache = new BattleCacheYaml(this, "cache.yml");
             config = new BattlegroundsConfig(this);
-            //playerData = new PlayerData(this);
             //sqlConfig = new SQLConfig(this);
         } catch (Exception e) {
             throw new StartupFailedException("Failed to load configuration files!", e);
@@ -159,6 +160,12 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
             throw new StartupFailedException("Failed to load weapon configuration files!", e);
         }
 
+        try {
+            playerStorage = new LocalPlayerStorage(this);
+        } catch (Exception e) {
+            throw new StartupFailedException("Failed to load default loadout classes!", e);
+        }
+
         getLogger().info("Succesfully loaded " + fireArmConfig.getList().size() + " guns, "
                 + equipmentConfig.getList().size() + " equipment and "
                 + knifeConfig.getList().size() + " knives from the config");
@@ -170,7 +177,9 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         new DataLoader(this);
 
         new BattlegroundsCommand(this);
+        new ClassCommand(this);
 
+        new BattleEventHandler(this);
         new EventListener(this);
 
         //WeaponsView.getInstance(this);

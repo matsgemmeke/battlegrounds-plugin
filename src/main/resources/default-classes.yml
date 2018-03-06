@@ -1,0 +1,30 @@
+ASSAULT:
+  Equipment: Grenade
+  Knife: Combat Knife
+  Name: Assault
+  Primary: M16
+  Secondary: M1911
+LMG:
+  Equipment: Grenade
+  Knife: Combat Knife
+  Name: LMG
+  Primary: HK21
+  Secondary: SMAW
+SHOTGUN:
+  Equipment: Smoke Grenade
+  Knife: Combat Knife
+  Name: Shotgun
+  Primary: Olympia
+  Secondary: M1911
+SMG:
+  Equipment: Grenade
+  Knife: Combat Knife
+  Name: SMG
+  Primary: MP5
+  Secondary: SMAW
+SNIPER:
+  Equipment: Smoke Grenade
+  Knife: Combat Knife
+  Name: Sniper
+  Primary: Dragunov
+  Secondary: M1911
