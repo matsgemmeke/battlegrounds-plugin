@@ -42,6 +42,8 @@ public interface Game {
 
     void setConfiguration(GameConfiguration configuration);
 
+    void setGameMode(GameMode gameMode);
+
     void setGameSign(GameSign gameSign);
 
     void setState(GameState state);

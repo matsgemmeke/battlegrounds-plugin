@@ -69,6 +69,17 @@ public class BattleArena implements Arena {
         return getBoundingBlocks().size();
     }
 
+    public Spawn getRandomSpawn() {
+        Random random = new Random();
+        Spawn spawn;
+
+        do {
+            spawn = spawns.get(random.nextInt(spawns.size()));
+        } while (spawn.isOccupied());
+
+        return spawn;
+    }
+
     private List<Block> updateBoundingBlocks() {
         List<Block> list = new ArrayList<>();
         for (int x = (int) min.getX(); x <= max.getX(); x += 1.0) {

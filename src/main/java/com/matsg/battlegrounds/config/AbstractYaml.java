@@ -29,8 +29,12 @@ public abstract class AbstractYaml implements Yaml {
     }
 
     public AbstractYaml(Battlegrounds plugin, String filepath, String resource, boolean readOnly) throws IOException {
-        this.file = getNewFile(filepath, resource);
+        this(filepath, resource, readOnly);
         this.plugin = plugin;
+    }
+
+    public AbstractYaml(String filepath, String resource, boolean readOnly) throws IOException {
+        this.file = getNewFile(filepath, resource);
         this.resource = resource;
         this.readOnly = readOnly;
 

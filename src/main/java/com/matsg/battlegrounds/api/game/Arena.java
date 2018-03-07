@@ -6,6 +6,8 @@ public interface Arena extends Region {
 
     String getName();
 
+    Spawn getRandomSpawn();
+
     Collection<Spawn> getSpawns();
 
     boolean isActive();

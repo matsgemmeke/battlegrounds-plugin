@@ -36,6 +36,7 @@ public class BattlePlayerManager implements PlayerManager {
                 new Placeholder("player_name", player.getName()),
                 new Placeholder("bg_players", players.size()),
                 new Placeholder("bg_maxplayers", game.getConfiguration().getMaxPlayers())));
+        game.getGameMode().addPlayer(gamePlayer);
         game.updateSign();
 
         gamePlayer.setStatus(PlayerStatus.ACTIVE).apply(game, gamePlayer);
@@ -156,6 +157,8 @@ public class BattlePlayerManager implements PlayerManager {
                 new Placeholder("player_name", player.getName()),
                 new Placeholder("bg_players", players.size()),
                 new Placeholder("bg_maxplayers", game.getConfiguration().getMaxPlayers())));
+        game.getGameMode().addPlayer(gamePlayer);
+        game.updateSign();
 
         gamePlayer.getPlayer().teleport(game.getSpawnPoint());
         gamePlayer.getSavedInventory().restore(player);

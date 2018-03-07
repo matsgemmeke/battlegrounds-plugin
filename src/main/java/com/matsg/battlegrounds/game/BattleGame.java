@@ -100,6 +100,10 @@ public class BattleGame implements Game {
         this.configuration = configuration;
     }
 
+    public void setGameMode(GameMode gameMode) {
+        this.gameMode = gameMode;
+    }
+
     public void setGameSign(GameSign gameSign) {
         this.gameSign = gameSign;
     }

@@ -9,6 +9,8 @@ public interface Spawn {
 
     Location getLocation();
 
+    Team getTeam();
+
     boolean isOccupied();
 
     void setGamePlayer(GamePlayer gamePlayer);

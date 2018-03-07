@@ -6,13 +6,16 @@ import com.matsg.battlegrounds.api.config.WeaponConfig;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.game.*;
+import com.matsg.battlegrounds.game.gamemode.GameModeType;
 import org.bukkit.Location;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
 
@@ -57,14 +60,21 @@ public class DataLoader {
         try {
             for (Game game : plugin.getGameManager().getGames()) {
                 ConfigurationSection config = game.getDataFile().getConfigurationSection("_config");
+                List<GameMode> gameModes = new ArrayList<>();
+
+                for (String gameMode : config.getString("_config.gamemodes").split(",")) {
+                    gameModes.add(GameModeType.valueOf(gameMode.toUpperCase()).getInstance(game));
+                }
+
                 GameConfiguration configuration = new BattleGameConfiguration(
-                        new GameMode[0],
+                        gameModes.toArray(new GameMode[gameModes.size()]),
                         config.getInt("maxplayers"),
                         config.getInt("minplayers"),
                         config.getInt("countdown")
                 );
 
                 game.setConfiguration(configuration);
+                game.setGameMode(game.getConfiguration().getGameModes()[new Random().nextInt(game.getConfiguration().getGameModes().length)]);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -97,7 +107,7 @@ public class DataLoader {
 
                     if (spawnSection != null) {
                         for (String spawnIndex : spawnSection.getKeys(false)) {
-                            Spawn spawn = new ArenaSpawn(data.getLocation("arena." + name + ".spawn." + spawnIndex));
+                            Spawn spawn = new ArenaSpawn(data.getLocation("arena." + name + ".spawn." + spawnIndex), null);
                             if (spawn.getLocation() != null) {
                                 arena.getSpawns().add(spawn);
                             }
