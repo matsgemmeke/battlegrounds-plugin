@@ -30,6 +30,8 @@ public enum EnumMessage implements Message {
     DESCRIPTION_SETGAMESIGN("command-description-setgamesign", false),
     DESCRIPTION_SETLOBBY("command-description-setlobby", false),
     GAME_CONFIRM_REMOVE("setup-game-confirm-remove", false),
+    FFA_NAME("gamemode-ffa-name", false),
+    FFA_SHORT("gamemode-ffa-short", false),
     GAME_CREATE("setup-game-create", true),
     GAME_EXISTS("setup-game-exists", false),
     GAME_NOT_EXISTS("setup-game-not-exists", false),
@@ -59,6 +61,8 @@ public enum EnumMessage implements Message {
     STAT_DAMAGE("item-stat-damage", false),
     STAT_FIRERATE("item-stat-firerate", false),
     STAT_RANGE("item-stat-range", false),
+    TDM_NAME("gamemode-tdm-name", false),
+    TDM_SHORT("gamemode-tdm-short", false),
     TYPE_KNIFE("item-type-knife", false);
 
     private Battlegrounds plugin;

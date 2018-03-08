@@ -28,6 +28,11 @@ game-player-leave: "&f%player_name% &6has left the game. &f[&6%bg_players%&f/&6%
 game-player-message: "&f%player_name%: &7%bg_message%"
 game-spots-full: "&cThis game has no player spots left."
 
+gamemode-ffa-name: "Free-for-all"
+gamemode-ffa-short: "FFA"
+gamemode-tdm-name: "Team Deathmatch"
+gamemode-tdm-short: "Team DM"
+
 gui-class-manager: "Class Manager"
 
 item-stat-accuracy: "Accuracy"
@@ -69,4 +74,4 @@ setup-specify-number: "&cSpecify a number."
 setup-reload-failed: "&cFailed to reload configuration files."
 setup-reload-success: "&6Succesfully reloaded all configuration files."
 
-title-countdown: "&f%bg_countdown%,&e&lGame starting in,0,25,0"
+title-countdown: "&f%bg_countdown%,&6&lGame starting in,0,25,0"

@@ -45,7 +45,7 @@ public class BattlePlayerManager implements PlayerManager {
             player.teleport(lobby);
         }
         if (players.size() == game.getConfiguration().getMinPlayers()) {
-            new Countdown(game, game.getConfiguration().getCountdownLength(), 60, 45, 30, 15, 10).run();
+            new LobbyCountdown(game, game.getConfiguration().getLobbyCountdown(), 60, 45, 30, 15, 10).run();
         }
         return gamePlayer;
     }
@@ -131,21 +131,13 @@ public class BattlePlayerManager implements PlayerManager {
         return nearestPlayer;
     }
 
-    private Team getTeam(GamePlayer gamePlayer) {
+    public Team getTeam(GamePlayer gamePlayer) {
         for (Team team : game.getGameMode().getTeams()) {
             if (team.getPlayers().contains(gamePlayer)) {
                 return team;
             }
         }
         return null;
-    }
-
-    public Team getTeam(Player player) {
-        GamePlayer gamePlayer = getGamePlayer(player);
-        if (gamePlayer == null) {
-            return null;
-        }
-        return getTeam(gamePlayer);
     }
 
     public void removePlayer(Player player) {

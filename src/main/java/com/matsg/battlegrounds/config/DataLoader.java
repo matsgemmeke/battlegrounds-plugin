@@ -6,7 +6,7 @@ import com.matsg.battlegrounds.api.config.WeaponConfig;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.game.*;
-import com.matsg.battlegrounds.game.gamemode.GameModeType;
+import com.matsg.battlegrounds.gamemode.GameModeType;
 import org.bukkit.Location;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;

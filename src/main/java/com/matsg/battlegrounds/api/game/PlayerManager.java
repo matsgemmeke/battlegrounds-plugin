@@ -30,7 +30,7 @@ public interface PlayerManager {
 
     Collection<GamePlayer> getPlayers();
 
-    Team getTeam(Player player);
+    Team getTeam(GamePlayer gamePlayer);
 
     void removePlayer(Player player);
 

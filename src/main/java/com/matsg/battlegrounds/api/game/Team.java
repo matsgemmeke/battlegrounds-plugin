@@ -12,4 +12,6 @@ public interface Team {
     String getName();
 
     Collection<GamePlayer> getPlayers();
+
+    int getScore();
 }

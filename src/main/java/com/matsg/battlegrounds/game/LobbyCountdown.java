@@ -7,20 +7,19 @@ import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.BattleSound;
 import com.matsg.battlegrounds.util.EnumMessage;
-import com.matsg.battlegrounds.util.Title;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Countdown extends BattleRunnable {
+public class LobbyCountdown extends BattleRunnable {
 
     private Game game;
     private int id, time;
     private List<Integer> display;
 
-    public Countdown(Game game, int time, int... display) {
+    public LobbyCountdown(Game game, int time, int... display) {
         this.game = game;
         this.time = time;
         this.display = new ArrayList<>();
@@ -53,19 +52,14 @@ public class Countdown extends BattleRunnable {
                         player.setSaturation((float) 10);
                     }
                     game.getGameMode().spawnPlayers(game.getPlayerManager().getPlayers().toArray(new GamePlayer[game.getPlayerManager().getPlayers().size()]));
-                    game.setState(GameState.IN_GAME);
+                    game.setState(GameState.STARTING);
                     game.updateSign();
+                    new GameCountdown(game, game.getConfiguration().getGameCountdown()).runTaskTimer(20, 20);
                     cancel();
                     return;
                 }
                 if (display.contains(countdown)) {
                     game.broadcastMessage(EnumMessage.COUNTDOWN_NOTE.getMessage(new Placeholder("bg_countdown", countdown)));
-                    BattleSound.COUNTDOWN_NOTE.play(game);
-                }
-                if (countdown <= 5) {
-                    for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
-                        Title.COUNTDOWN.send(gamePlayer.getPlayer(), new Placeholder("bg_countdown", countdown));
-                    }
                     BattleSound.COUNTDOWN_NOTE.play(game);
                 }
                 countdown --;

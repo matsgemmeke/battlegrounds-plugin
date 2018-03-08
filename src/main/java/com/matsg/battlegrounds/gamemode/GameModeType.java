@@ -1,7 +1,9 @@
-package com.matsg.battlegrounds.game.gamemode;
+package com.matsg.battlegrounds.gamemode;
 
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameMode;
+import com.matsg.battlegrounds.gamemode.ffa.FreeForAll;
+import com.matsg.battlegrounds.gamemode.tdm.TeamDeathmatch;
 
 public enum GameModeType {
 

@@ -30,4 +30,12 @@ public class BattleTeam implements Team {
     public List<GamePlayer> getPlayers() {
         return players;
     }
+
+    public int getScore() {
+        int score = 0;
+        for (GamePlayer gamePlayer : players) {
+            score += gamePlayer.getScore();
+        }
+        return score;
+    }
 }
