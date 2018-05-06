@@ -9,7 +9,7 @@ public interface Spawn {
 
     Location getLocation();
 
-    Team getTeam();
+    int getTeamId();
 
     boolean isOccupied();
 

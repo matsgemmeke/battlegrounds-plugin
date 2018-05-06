@@ -12,13 +12,13 @@ import java.util.List;
 public class DefaultClasses extends AbstractYaml {
 
     public DefaultClasses(Battlegrounds plugin) throws IOException {
-        super(plugin, plugin.getDataFolder().getPath() + "/classes", "default-classes.yml", true);
+        super(plugin, "default-classes.yml", true);
     }
 
     public List<LoadoutClass> getList() {
         List<LoadoutClass> list = new ArrayList<>();
-        for (String loadoutClass : getConfigurationSection("default_classes").getKeys(false)) {
-            list.add(parseLoadoutClass(getConfigurationSection("default_classes." + loadoutClass)));
+        for (String loadoutClass : getKeys(false)) {
+            list.add(parseLoadoutClass(getConfigurationSection(loadoutClass)));
         }
         return list;
     }

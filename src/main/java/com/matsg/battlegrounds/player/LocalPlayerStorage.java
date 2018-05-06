@@ -10,6 +10,7 @@ import com.matsg.battlegrounds.config.DefaultClasses;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,11 +19,21 @@ public class LocalPlayerStorage implements PlayerStorage {
     private Battlegrounds plugin;
     private DefaultClasses defaultClasses;
     private File folder;
+    private List<PlayerYaml> playerYamls;
 
     public LocalPlayerStorage(Battlegrounds plugin) throws IOException {
         this.plugin = plugin;
         this.defaultClasses = new DefaultClasses(plugin);
         this.folder = new File(plugin.getDataFolder().getPath() + "/players");
+        this.playerYamls = new ArrayList<>();
+
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+
+        for (File file : folder.listFiles()) {
+            playerYamls.add(new BattlePlayerYaml(plugin, UUID.fromString(file.getName().substring(0, file.getName().length() - 4))));
+        }
     }
 
     public void addPlayerAttributes(StoredPlayer player) {
@@ -30,15 +41,27 @@ public class LocalPlayerStorage implements PlayerStorage {
     }
 
     public boolean contains(UUID uuid) {
-        return new File(folder, uuid.toString() + ".yml").exists();
+        return getPlayerYaml(uuid) != null;
     }
 
     public List<? extends OfflineGamePlayer> getList() {
         return null;
     }
 
-    public StoredPlayer getStoredPlayer(UUID uuid) {
+    private PlayerYaml getPlayerYaml(UUID uuid) {
+        for (PlayerYaml playerYaml : playerYamls) {
+            if (playerYaml.getStoredPlayer().getUUID().equals(uuid)) {
+                return playerYaml;
+            }
+        }
         return null;
+    }
+
+    public StoredPlayer getStoredPlayer(UUID uuid) {
+        if (!contains(uuid)) {
+            return null;
+        }
+        return getPlayerYaml(uuid).getStoredPlayer();
     }
 
     public List<? extends OfflineGamePlayer> getTopPlayers(int limit) {
@@ -51,6 +74,7 @@ public class LocalPlayerStorage implements PlayerStorage {
             for (int i = 1; i <= 5; i ++) {
                 playerYaml.saveLoadoutClass(i, defaultClasses.getList().get(i - 1));
             }
+            playerYamls.add(playerYaml);
         } catch (IOException e) {
             return null;
         }

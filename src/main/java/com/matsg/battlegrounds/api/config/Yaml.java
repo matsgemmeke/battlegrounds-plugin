@@ -5,6 +5,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Set;
 
 public interface Yaml {
 
@@ -23,6 +24,8 @@ public interface Yaml {
     String getFilePath();
 
     int getInt(String path);
+
+    Set<String> getKeys(boolean deep);
 
     List<?> getList(String path);
 

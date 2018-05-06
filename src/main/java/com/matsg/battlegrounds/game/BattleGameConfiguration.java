@@ -1,17 +1,15 @@
 package com.matsg.battlegrounds.game;
 
 import com.matsg.battlegrounds.api.config.Yaml;
+import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameConfiguration;
 import com.matsg.battlegrounds.api.game.GameMode;
-import com.matsg.battlegrounds.gamemode.ffa.FreeForAll;
-import com.matsg.battlegrounds.gamemode.tdm.TeamDeathmatch;
+import com.matsg.battlegrounds.gamemode.GameModeType;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BattleGameConfiguration implements GameConfiguration {
-
-    public static final BattleGameConfiguration DEFAULT = getDefaultConfiguration();
 
     private GameMode[] gameModes;
     private int gameCountdown, lobbyCountdown, maxPlayers, minPlayers;
@@ -24,13 +22,13 @@ public class BattleGameConfiguration implements GameConfiguration {
         this.minPlayers = minPlayers;
     }
 
-    private static BattleGameConfiguration getDefaultConfiguration() {
+    public static BattleGameConfiguration getDefaultConfiguration(Game game) {
         return new BattleGameConfiguration(
-                new GameMode[] { new FreeForAll(null, null), new TeamDeathmatch(null, null) },
-                4,
-                1,
-                60,
-                15
+                new GameMode[] { GameModeType.FREE_FOR_ALL.getInstance(game), GameModeType.TEAM_DEATHMATCH.getInstance(game) },
+                12,
+                2,
+                15,
+                60
         );
     }
 

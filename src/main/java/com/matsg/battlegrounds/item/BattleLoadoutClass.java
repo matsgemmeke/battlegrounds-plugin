@@ -11,16 +11,18 @@ public class BattleLoadoutClass implements LoadoutClass {
     private FireArm primary, secondary;
     private Knife knife;
 
-    public BattleLoadoutClass(String name) {
-        this.name = name;
-    }
-
     public BattleLoadoutClass(String name, FireArm primary, FireArm secondary, Equipment equipment, Knife knife) {
         this.name = name;
         this.primary = primary;
         this.secondary = secondary;
         this.equipment = equipment;
         this.knife = knife;
+
+        for (Weapon weapon : getWeapons()) {
+            weapon.setItemSlot(weapon.getType().getDefaultItemSlot());
+        }
+
+        secondary.setItemSlot(ItemSlot.FIREARM_SECONDARY);
     }
 
     public Equipment getEquipment() {

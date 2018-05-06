@@ -2,13 +2,13 @@ package com.matsg.battlegrounds.gamemode.tdm;
 
 import com.matsg.battlegrounds.api.config.Yaml;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.PlayerManager;
 import com.matsg.battlegrounds.api.game.Spawn;
 import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.game.BattleTeam;
 import com.matsg.battlegrounds.gamemode.AbstractGameMode;
 import com.matsg.battlegrounds.util.EnumMessage;
+import com.matsg.battlegrounds.util.Title;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
@@ -16,11 +16,8 @@ import java.util.List;
 
 public class TeamDeathmatch extends AbstractGameMode {
 
-    private PlayerManager playerManager;
-
     public TeamDeathmatch(Game game, Yaml yaml) {
         super(game, EnumMessage.TDM_NAME.getMessage(), EnumMessage.TDM_SHORT.getMessage(), yaml);
-        this.playerManager = game.getPlayerManager();
         this.teams.addAll(getConfigTeams());
     }
 
@@ -30,10 +27,10 @@ public class TeamDeathmatch extends AbstractGameMode {
 
     private List<Team> getConfigTeams() {
         List<Team> list = new ArrayList<>();
-        for (String team : yaml.getConfigurationSection("teams").getKeys(false)) {
-            ConfigurationSection section = yaml.getConfigurationSection("teams." + team);
+        for (String teamId : yaml.getConfigurationSection("teams").getKeys(false)) {
+            ConfigurationSection section = yaml.getConfigurationSection("teams." + teamId);
 
-            list.add(new BattleTeam(section.getString("name"), section.getColor("color")));
+            list.add(new BattleTeam(Integer.parseInt(teamId), section.getString("name"), section.getColor("color")));
         }
         return list;
     }
@@ -50,8 +47,16 @@ public class TeamDeathmatch extends AbstractGameMode {
         return emptiestTeam;
     }
 
+    public void onStart() {
+        game.broadcastMessage(Title.TDM_START);
+    }
+
+    public void onStop() {
+
+    }
+
     public void removePlayer(GamePlayer gamePlayer) {
-        Team team = playerManager.getTeam(gamePlayer);
+        Team team = getTeam(gamePlayer);
         if (team == null) {
             return;
         }
@@ -60,9 +65,9 @@ public class TeamDeathmatch extends AbstractGameMode {
 
     public void spawnPlayers(GamePlayer... players) {
         for (GamePlayer gamePlayer : players) {
-            Team team = playerManager.getTeam(gamePlayer);
+            Team team = getTeam(gamePlayer);
             for (Spawn spawn : game.getArena().getSpawns()) {
-                if (spawn.getTeam() == team && !spawn.isOccupied()) {
+                if (spawn.getTeamId() == team.getId() && !spawn.isOccupied()) {
                     gamePlayer.getPlayer().teleport(spawn.getLocation());
                     break;
                 }

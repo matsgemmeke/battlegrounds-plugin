@@ -38,12 +38,10 @@ public class BattleGame implements Game {
         this.plugin = plugin;
         this.id = id;
         this.arenaList = new ArrayList<>();
-        this.eventHandler = new GameEventHandler();
+        this.eventHandler = new GameEventHandler(plugin);
         this.itemRegistry = new BattleItemRegistry();
         this.playerManager = new BattlePlayerManager(this);
         this.state = GameState.WAITING;
-
-        plugin.getEventManager().registerEventHandler(eventHandler);
 
         try {
             this.dataFile = new BattleCacheYaml(plugin, plugin.getDataFolder().getPath() + "/data", "game_" + id + ".yml");

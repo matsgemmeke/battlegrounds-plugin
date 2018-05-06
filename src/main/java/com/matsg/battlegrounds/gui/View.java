@@ -8,4 +8,6 @@ import org.bukkit.inventory.ItemStack;
 public interface View extends InventoryHolder {
 
     void onClick(Player player, ItemStack itemStack, ClickType clickType);
+
+    boolean onClose();
 }

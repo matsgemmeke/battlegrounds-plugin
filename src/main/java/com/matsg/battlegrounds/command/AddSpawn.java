@@ -54,11 +54,23 @@ public class AddSpawn extends SubCommand {
             return;
         }
 
-        Spawn spawn = new ArenaSpawn(player.getLocation());
+        int teamId = 0;
+
+        if (args.length >= 4) {
+            try {
+                teamId = Integer.parseInt(args[3]);
+            } catch (Exception e) {
+                EnumMessage.INVALID_ARGUMENT_TYPE.send(sender, new Placeholder("bg_arg", args[3]));
+                return;
+            }
+        }
+
+        Spawn spawn = new ArenaSpawn(player.getLocation(), teamId);
 
         arena.getSpawns().add(spawn);
 
-        game.getDataFile().setLocation("arena." + name + ".spawn." + arena.getSpawns().size(), spawn.getLocation(), true);
+        game.getDataFile().setLocation("arena." + name + ".spawn." + arena.getSpawns().size() + ".location", spawn.getLocation(), true);
+        game.getDataFile().set("arena." + name + ".spawn." + arena.getSpawns().size() + ".team", teamId);
         game.getDataFile().save();
 
         player.sendMessage(EnumMessage.SPAWN_ADD.getMessage(

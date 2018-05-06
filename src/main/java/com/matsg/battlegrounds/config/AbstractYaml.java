@@ -8,6 +8,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.*;
 import java.util.List;
+import java.util.Set;
 
 public abstract class AbstractYaml implements Yaml {
 
@@ -29,12 +30,8 @@ public abstract class AbstractYaml implements Yaml {
     }
 
     public AbstractYaml(Battlegrounds plugin, String filepath, String resource, boolean readOnly) throws IOException {
-        this(filepath, resource, readOnly);
-        this.plugin = plugin;
-    }
-
-    public AbstractYaml(String filepath, String resource, boolean readOnly) throws IOException {
         this.file = getNewFile(filepath, resource);
+        this.plugin = plugin;
         this.resource = resource;
         this.readOnly = readOnly;
 
@@ -77,6 +74,10 @@ public abstract class AbstractYaml implements Yaml {
 
     public int getInt(String path) {
         return config.getInt(path);
+    }
+
+    public Set<String> getKeys(boolean deep) {
+        return config.getKeys(deep);
     }
 
     public List<?> getList(String path) {

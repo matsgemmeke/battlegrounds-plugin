@@ -186,11 +186,8 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
                 continue;
             }
             if (!sound.isCancelled()) {
-                long delay = sound.getDelay();
-                sound.setDelay(delay / reloadDuration);
-                sound.play(getGame(), getGamePlayer().getPlayer());
+                sound.play(game, getGamePlayer().getPlayer());
                 sound.setCancelled(false);
-                sound.setDelay(delay);
             }
             sound.setCancelled(false);
         }
@@ -212,8 +209,6 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
 
         gamePlayer.getPlayer().setFoodLevel(6); //Force the player to slow down
 
-        long runnableSpeed = (long) (reloadTime / reloadDuration);
-
         new BattleRunnable() {
             public void run() {
                 if (reloadCancelled) {
@@ -231,7 +226,7 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
                     update();
                 }
             }
-        }.runTaskTimer(runnableSpeed, runnableSpeed);
+        }.runTaskTimer(reloadTime, reloadTime);
     }
 
     private void setSoundCancelled(boolean cancelled, Sound... sounds) {
@@ -248,6 +243,7 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
         };
         itemStack = new ItemStackBuilder(itemStack)
                 .addItemFlags(ItemFlag.values())
+                .setAmount(1)
                 .setDisplayName(ChatColor.translateAlternateColorCodes('&', Placeholder.replace(plugin.getBattlegroundsConfig().getWeaponDisplayName("firearm"), placeholders)))
                 .setDurability(durability)
                 .setLore(getLore())

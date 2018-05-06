@@ -32,6 +32,7 @@ public class ClassManagerView implements View {
                         .addItemFlags(ItemFlag.values())
                         .setAmount(++ i)
                         .setDisplayName("§f" + loadoutClass.getName())
+                        .setLore(EnumMessage.EDIT_CLASS.getMessage())
                         .setUnbreakable(true)
                         .build();
 
@@ -57,6 +58,10 @@ public class ClassManagerView implements View {
     }
 
     public void onClick(Player player, ItemStack itemStack, ClickType clickType) {
+        System.out.print(classes.get(itemStack).getName());
+    }
 
+    public boolean onClose() {
+        return true;
     }
 }

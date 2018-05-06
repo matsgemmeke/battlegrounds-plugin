@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.api.game;
 
+import com.matsg.battlegrounds.api.item.LoadoutClass;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -9,6 +10,8 @@ import java.util.Collection;
 public interface PlayerManager {
 
     GamePlayer addPlayer(Player player);
+
+    void changeLoadoutClass(GamePlayer gamePlayer, LoadoutClass loadoutClass);
 
     void damagePlayer(GamePlayer gamePlayer, double damage);
 
@@ -29,8 +32,6 @@ public interface PlayerManager {
     GamePlayer getNearestPlayer(Location location, Team team, double range);
 
     Collection<GamePlayer> getPlayers();
-
-    Team getTeam(GamePlayer gamePlayer);
 
     void removePlayer(Player player);
 

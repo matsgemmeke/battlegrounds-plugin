@@ -62,7 +62,7 @@ public class DataLoader {
                 ConfigurationSection config = game.getDataFile().getConfigurationSection("_config");
                 List<GameMode> gameModes = new ArrayList<>();
 
-                for (String gameMode : config.getString("_config.gamemodes").split(",")) {
+                for (String gameMode : config.getStringList("gamemodes")) {
                     gameModes.add(GameModeType.valueOf(gameMode.toUpperCase()).getInstance(game));
                 }
 
@@ -70,7 +70,8 @@ public class DataLoader {
                         gameModes.toArray(new GameMode[gameModes.size()]),
                         config.getInt("maxplayers"),
                         config.getInt("minplayers"),
-                        config.getInt("countdown")
+                        config.getInt("gamecountdown"),
+                        config.getInt("lobbycountdown")
                 );
 
                 game.setConfiguration(configuration);
@@ -107,7 +108,7 @@ public class DataLoader {
 
                     if (spawnSection != null) {
                         for (String spawnIndex : spawnSection.getKeys(false)) {
-                            Spawn spawn = new ArenaSpawn(data.getLocation("arena." + name + ".spawn." + spawnIndex), null);
+                            Spawn spawn = new ArenaSpawn(data.getLocation("arena." + name + ".spawn." + spawnIndex + ".location"), spawnSection.getInt(spawnIndex + ".team"));
                             if (spawn.getLocation() != null) {
                                 arena.getSpawns().add(spawn);
                             }

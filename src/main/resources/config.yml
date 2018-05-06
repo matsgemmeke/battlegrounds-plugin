@@ -41,16 +41,17 @@ game-scoreboard:
   enabled: true
   # The layout of the game scoreboards
   # Leave "" to remove this line
-  layout:
-    lobby:
-      line-0: "&eCountdown: &f%bg_countdown%s"
+  lobby:
+    layout:
+      line-0: "&6Countdown: &f%bg_countdown%s"
       line-1: " "
-      line-2: "&ePlayers: %bg_players%"
+      line-2: "&6Players: &f%bg_players%"
       line-3: "  "
-      line-4: "&eGamemode: &f%bg_gamemode%"
-      line-5: "&eArena: &f%bg_arena%"
+      line-4: "&6Gamemode: &f%bg_gamemode%"
+      line-5: "&6Arena: &f%bg_arena%"
       line-6: "&8%bg_date%"
       title: "&6&lBattlegrounds"
+    worlds: "*"
 
 # The velocity of grenade launchers' projectiles
 # Higher values than 3.0 may cause the projectile to not launch accurately

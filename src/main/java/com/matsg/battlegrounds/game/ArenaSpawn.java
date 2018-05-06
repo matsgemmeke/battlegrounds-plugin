@@ -1,6 +1,5 @@
 package com.matsg.battlegrounds.game;
 
-import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.game.Spawn;
 import org.bukkit.Location;
@@ -8,11 +7,11 @@ import org.bukkit.Location;
 public class ArenaSpawn extends Location implements Spawn {
 
     private GamePlayer gamePlayer;
-    private Team team;
+    private int teamId;
 
-    public ArenaSpawn(Location location, Team team) {
+    public ArenaSpawn(Location location, int teamId) {
         super(location.getWorld(), location.getX(), location.getY(), location.getZ());
-        this.team = team;
+        this.teamId = teamId;
     }
 
     public GamePlayer getGamePlayer() {
@@ -23,8 +22,8 @@ public class ArenaSpawn extends Location implements Spawn {
         return this;
     }
 
-    public Team getTeam() {
-        return team;
+    public int getTeamId() {
+        return teamId;
     }
 
     public boolean isOccupied() {

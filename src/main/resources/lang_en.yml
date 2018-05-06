@@ -34,7 +34,11 @@ gamemode-tdm-name: "Team Deathmatch"
 gamemode-tdm-short: "Team DM"
 
 gui-class-manager: "Class Manager"
+gui-edit-class: "&7Click to edit this class"
+gui-select-class: "Select class"
 
+item-armor-helmet: "Kevlar helmet"
+item-armor-vest: "Ballistic vest"
 item-stat-accuracy: "Accuracy"
 item-stat-damage: "Damage"
 item-stat-firerate: "Firerate"
@@ -71,7 +75,10 @@ setup-spawn-add: "&6You have added spawn &f#%bg_spawn% &6to arena &f%bg_arena%&6
 setup-specify-id: "&cSpecify an id."
 setup-specify-name: "&cSpecify a name."
 setup-specify-number: "&cSpecify a number."
+setup-specify-team: "&cSpecify a team."
 setup-reload-failed: "&cFailed to reload configuration files."
 setup-reload-success: "&6Succesfully reloaded all configuration files."
 
-title-countdown: "&f%bg_countdown%,&6&lGame starting in,0,25,0"
+title-countdown: "&f%bg_countdown%,&6Game starting in,0,25,0"
+title-ffa-start: "&fFree-for-all,&6Eliminate other players,10,30,10"
+title-tdm-start: "&fTeam Deathmatch,&6Eliminate enemy players,10,30,10"

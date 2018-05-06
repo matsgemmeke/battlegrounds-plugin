@@ -3,7 +3,6 @@ package com.matsg.battlegrounds.command;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.util.EnumMessage;
 import org.bukkit.command.CommandSender;
-
 public class Reload extends SubCommand {
 
     public Reload(Battlegrounds plugin) {
@@ -16,6 +15,6 @@ public class Reload extends SubCommand {
             EnumMessage.RELOAD_FAILED.send(sender);
             return;
         }
-        sender.sendMessage(EnumMessage.PREFIX.getMessage() + " " + EnumMessage.RELOAD_SUCCESS.getMessage());
+        sender.sendMessage(EnumMessage.RELOAD_SUCCESS.getMessage());
     }
 }

@@ -8,9 +8,17 @@ public interface GameMode {
 
     String getName();
 
-    String getShortName();
+    String getSimpleName();
+
+    Team getTeam(GamePlayer gamePlayer);
+
+    Team getTeam(int id);
 
     Iterable<Team> getTeams();
+
+    void onStart();
+
+    void onStop();
 
     void removePlayer(GamePlayer gamePlayer);
 

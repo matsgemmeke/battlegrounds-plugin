@@ -11,7 +11,9 @@ import java.lang.reflect.Constructor;
 
 public enum Title implements Message {
 
-    COUNTDOWN("title-countdown");
+    COUNTDOWN("title-countdown"),
+    FFA_START("title-ffa-start"),
+    TDM_START("title-tdm-start");
 
     private Battlegrounds plugin;
     private int fadeIn, fadeOut, time;

@@ -90,8 +90,8 @@ public class BattleKnife extends BattleWeapon implements Knife {
 
     private String[] getLore() {
         return new String[] {
-                "ยงf" + type,
-                "ยง7" + format(6, damage, 75.0) + " " + EnumMessage.STAT_DAMAGE.getMessage()
+                ChatColor.WHITE + type,
+                ChatColor.GRAY + format(6, damage, 75.0) + " " + EnumMessage.STAT_DAMAGE.getMessage()
         };
     }
 

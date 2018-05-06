@@ -38,7 +38,7 @@ public class BattlePlayerYaml extends AbstractYaml implements PlayerYaml {
     }
 
     public StoredPlayer getStoredPlayer() {
-        return new LocalStoredPlayer(uuid);
+        return new LocalStoredPlayer(uuid, this);
     }
 
     public void saveLoadoutClass(int classNumber, LoadoutClass loadoutClass) {
@@ -53,11 +53,13 @@ public class BattlePlayerYaml extends AbstractYaml implements PlayerYaml {
     private class LocalStoredPlayer implements StoredPlayer {
 
         private int deaths, exp, headshots, kills;
+        private PlayerYaml playerYaml;
         private String name;
         private UUID uuid;
 
-        private LocalStoredPlayer(UUID uuid) {
+        private LocalStoredPlayer(UUID uuid, PlayerYaml playerYaml) {
             this.uuid = uuid;
+            this.playerYaml = playerYaml;
             this.deaths = getInt("Global.Deaths");
             this.exp = getInt("Global.Exp");
             this.headshots = getInt("Global.Headshots");
@@ -83,6 +85,10 @@ public class BattlePlayerYaml extends AbstractYaml implements PlayerYaml {
 
         public String getName() {
             return name;
+        }
+
+        public PlayerYaml getPlayerYaml() {
+            return playerYaml;
         }
 
         public UUID getUUID() {

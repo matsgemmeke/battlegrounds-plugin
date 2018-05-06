@@ -143,9 +143,9 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
 
     private String[] getLore() {
         return new String[] {
-                "§f" + type.getName(),
-                "§7" + format(6, getShortDamage(), 300.0) + " " + EnumMessage.STAT_DAMAGE.getMessage(),
-                "§7" + format(6, getLongRange() * 10, 100.0) + " " + EnumMessage.STAT_RANGE.getMessage()
+                ChatColor.WHITE + type.getName(),
+                ChatColor.GRAY + format(6, getShortDamage(), 300.0) + " " + EnumMessage.STAT_DAMAGE.getMessage(),
+                ChatColor.GRAY + format(6, getLongRange() * 10, 100.0) + " " + EnumMessage.STAT_RANGE.getMessage()
         };
     }
 
@@ -182,7 +182,7 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
         itemStack = new ItemStackBuilder(itemStack)
                 .addItemFlags(ItemFlag.values())
                 .setAmount(amount)
-                .setDisplayName(ChatColor.translateAlternateColorCodes('&', Placeholder.replace(plugin.getBattlegroundsConfig().getWeaponDisplayName("explosive"), placeholder)))
+                .setDisplayName(ChatColor.translateAlternateColorCodes('&', Placeholder.replace(plugin.getBattlegroundsConfig().getWeaponDisplayName("equipment"), placeholder)))
                 .setDurability(durability)
                 .setLore(getLore())
                 .setUnbreakable(true)

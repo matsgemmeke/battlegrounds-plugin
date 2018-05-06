@@ -9,11 +9,13 @@ import java.util.List;
 
 public class BattleTeam implements Team {
 
+    private final int id;
     private Color color;
     private List<GamePlayer> players;
     private String name;
 
-    public BattleTeam(String name, Color color) {
+    public BattleTeam(int id, String name, Color color) {
+        this.id = id;
         this.name = name;
         this.color = color;
         this.players = new ArrayList<>();
@@ -21,6 +23,10 @@ public class BattleTeam implements Team {
 
     public Color getColor() {
         return color;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {

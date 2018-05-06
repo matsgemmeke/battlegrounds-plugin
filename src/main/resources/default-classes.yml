@@ -1,30 +1,30 @@
-ASSAULT:
+BALANCED:
   Equipment: Grenade
   Knife: Combat Knife
-  Name: Assault
+  Name: Balanced
   Primary: M16
   Secondary: M1911
-LMG:
-  Equipment: Grenade
-  Knife: Combat Knife
-  Name: LMG
-  Primary: HK21
-  Secondary: SMAW
-SHOTGUN:
+CLOSE_QUARTERS:
   Equipment: Smoke Grenade
   Knife: Combat Knife
-  Name: Shotgun
+  Name: Close Quarters
   Primary: Olympia
   Secondary: M1911
-SMG:
+HEAVY_GUNNER:
   Equipment: Grenade
   Knife: Combat Knife
-  Name: SMG
-  Primary: MP5
+  Name: Heavy Gunner
+  Primary: HK21
   Secondary: SMAW
-SNIPER:
+MARKSMAN:
   Equipment: Smoke Grenade
   Knife: Combat Knife
-  Name: Sniper
+  Name: Marksman
   Primary: Dragunov
   Secondary: M1911
+OPERATIVE:
+  Equipment: Grenade
+  Knife: Combat Knife
+  Name: Operative
+  Primary: MP5
+  Secondary: SMAW

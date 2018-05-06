@@ -9,6 +9,7 @@ import com.matsg.battlegrounds.api.util.Hitbox;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.util.BattleSound;
 import com.matsg.battlegrounds.util.EnumMessage;
+import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -61,11 +62,11 @@ public class BattleGun extends BattleFireArm implements Gun {
 
     protected String[] getLore() {
         return new String[] {
-                "§f" + fireArmType.getName(),
-                "§7" + format(6, accuracy * 100.0, 100.0) + " " + EnumMessage.STAT_ACCURACY.getMessage(),
-                "§7" + format(6, bullet.getShortDamage(), 50.0) + " " + EnumMessage.STAT_DAMAGE.getMessage(),
-                "§7" + format(6, (burstRounds == 0 ? fireRate : burstRounds) * 10, 60.0) + " " + EnumMessage.STAT_FIRERATE.getMessage(),
-                "§7" + format(6, bullet.getMidRange(), 35.0) + " " + EnumMessage.STAT_RANGE.getMessage() };
+                ChatColor.WHITE + fireArmType.getName(),
+                ChatColor.GRAY + format(6, accuracy * 100.0, 100.0) + " " + EnumMessage.STAT_ACCURACY.getMessage(),
+                ChatColor.GRAY + format(6, bullet.getShortDamage(), 50.0) + " " + EnumMessage.STAT_DAMAGE.getMessage(),
+                ChatColor.GRAY + format(6, (burstRounds == 0 ? fireRate : burstRounds) * 10, 60.0) + " " + EnumMessage.STAT_FIRERATE.getMessage(),
+                ChatColor.GRAY + format(6, bullet.getMidRange(), 70.0) + " " + EnumMessage.STAT_RANGE.getMessage() };
     }
 
     private List<Location> getSpreadDirections(Location direction, int amount) {

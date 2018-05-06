@@ -11,8 +11,8 @@ import java.util.Set;
 public class ScoreboardBuilder {
 
     private int currentLine;
-    private Set<Objective> objectives;
     private Scoreboard scoreboard;
+    private Set<Objective> objectives;
 
     public ScoreboardBuilder() {
         this.currentLine = 0;
@@ -32,7 +32,7 @@ public class ScoreboardBuilder {
         }
     }
 
-    public ScoreboardBuilder(Scoreboard scoreboard) {
+    public ScoreboardBuilder(org.bukkit.scoreboard.Scoreboard scoreboard) {
         this.currentLine = 0;
         this.scoreboard = scoreboard;
         this.objectives = scoreboard.getObjectives();

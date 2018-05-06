@@ -9,6 +9,8 @@ public interface Team {
 
     Color getColor();
 
+    int getId();
+
     String getName();
 
     Collection<GamePlayer> getPlayers();

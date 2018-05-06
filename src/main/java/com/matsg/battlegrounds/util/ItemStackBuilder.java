@@ -1,18 +1,20 @@
 package com.matsg.battlegrounds.util;
 
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class ItemStackBuilder {
 
-	private final ItemStack item;
-	private final ItemMeta meta;
+	private ItemStack item;
+	private ItemMeta meta;
 	
 	public ItemStackBuilder(ItemStack item) {
 		this.item = item;
@@ -48,6 +50,13 @@ public class ItemStackBuilder {
 	
 	public ItemStackBuilder setAmount(int amount) {
 		item.setAmount(amount);
+		return this;
+	}
+
+	public ItemStackBuilder setColor(Color color) {
+		LeatherArmorMeta leatherMeta = (LeatherArmorMeta) meta;
+		leatherMeta.setColor(color);
+		meta = leatherMeta;
 		return this;
 	}
 	

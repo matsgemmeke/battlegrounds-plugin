@@ -37,7 +37,7 @@ public class CreateGame extends SubCommand {
         }
 
         Game game = new BattleGame(plugin, id);
-        GameConfiguration configuration = BattleGameConfiguration.DEFAULT;
+        GameConfiguration configuration = BattleGameConfiguration.getDefaultConfiguration(game);
 
         configuration.saveConfiguration(game.getDataFile());
         game.getDataFile().save();

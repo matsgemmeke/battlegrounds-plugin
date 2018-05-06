@@ -65,26 +65,28 @@ public class FireArmConfig extends AbstractYaml implements WeaponConfig<FireArm>
                     new AttributeValidator(section.getDouble("Range.Short.Distance")).shouldEqualOrBeHigherThan(0.0),
                     new AttributeValidator(section.getDouble("HeadshotMultiplier")).shouldBeBetween(0.0, 100.0));
         } catch (ValidationFailedException e) {
-            throw new ItemFormatException("Invalid item format " + section.getString("DisplayName") + ": " + e.getMessage());
+            throw new ItemFormatException("Invalid item format " + section.getName() + ": " + e.getMessage());
         }
     }
 
     private Lethal getLethalProjectile(ConfigurationSection section) throws ItemFormatException {
-//        try {
-//            return new ZombiesLethal(null, new ItemStackBuilder(
-//                    Material.valueOf(plugin.getZombiesConfig().getWeaponMaterial("explosive"))).setAmount(1).setDurability((short) 1).build(),
-//                    (short) 1, 1,
-//                    new AttributeValidator(section.getDouble("Range.Long.Damage"), "Long damage").shouldEqualOrBeHigherThan(0.0),
-//                    new AttributeValidator(section.getDouble("Range.Long.Distance"), "Long range").shouldEqualOrBeHigherThan(0.0),
-//                    new AttributeValidator(section.getDouble("Range.Medium.Damage"), "Medium damage").shouldEqualOrBeHigherThan(0.0),
-//                    new AttributeValidator(section.getDouble("Range.Medium.Distance"), "Medium range").shouldEqualOrBeHigherThan(0.0),
-//                    new AttributeValidator(section.getDouble("Range.Short.Damage"), "Short damage").shouldEqualOrBeHigherThan(0.0),
-//                    new AttributeValidator(section.getDouble("Range.Short.Distance"), "Short range").shouldEqualOrBeHigherThan(0.0),
-//                    plugin.getZombiesConfig().launcherVelocity, 1, null);
-//        } catch (ValidationFailedException e) {
-//            throw new ItemFormatException("Invalid item format " + section.getString("DisplayName") + ": " + e.getMessage());
-//        }
-        return null;
+        try {
+            return new BattleLethal(
+                    null,
+                    null,
+                    new ItemStackBuilder(
+                    Material.valueOf(plugin.getBattlegroundsConfig().getWeaponMaterial("equipment"))).setAmount(1).setDurability((short) 1).build(),
+                    (short) 1, 1,
+                    new AttributeValidator(section.getDouble("Range.Long.Damage"), "Long damage").shouldEqualOrBeHigherThan(0.0),
+                    new AttributeValidator(section.getDouble("Range.Long.Distance"), "Long range").shouldEqualOrBeHigherThan(0.0),
+                    new AttributeValidator(section.getDouble("Range.Medium.Damage"), "Medium damage").shouldEqualOrBeHigherThan(0.0),
+                    new AttributeValidator(section.getDouble("Range.Medium.Distance"), "Medium range").shouldEqualOrBeHigherThan(0.0),
+                    new AttributeValidator(section.getDouble("Range.Short.Damage"), "Short damage").shouldEqualOrBeHigherThan(0.0),
+                    new AttributeValidator(section.getDouble("Range.Short.Distance"), "Short range").shouldEqualOrBeHigherThan(0.0),
+                    plugin.getBattlegroundsConfig().launcherVelocity, 1, null);
+        } catch (ValidationFailedException e) {
+            throw new ItemFormatException("Invalid item format " + section.getName() + ": " + e.getMessage());
+        }
     }
 
     private List<WeaponSerializer> prepareSerializers() {
@@ -114,7 +116,7 @@ public class FireArmConfig extends AbstractYaml implements WeaponConfig<FireArm>
                             BattleSound.parseSoundArray(section.getString("FireMode.ShootSound"))
                     );
                 } catch (ValidationFailedException e) {
-                    throw new ItemFormatException("Invalid item format " + name + ": " + e.getMessage());
+                    throw new ItemFormatException("Invalid item format " + section.getName() + ": " + e.getMessage());
                 }
             }
         });
@@ -140,7 +142,7 @@ public class FireArmConfig extends AbstractYaml implements WeaponConfig<FireArm>
                             BattleSound.parseSoundArray(section.getString("FireMode.ShootSound"))
                     );
                 } catch (ValidationFailedException e) {
-                    throw new ItemFormatException("Invalid item format " + name + ": " + e.getMessage());
+                    throw new ItemFormatException("Invalid item format " + section.getName() + ": " + e.getMessage());
                 }
             }
         });
@@ -155,13 +157,13 @@ public class FireArmConfig extends AbstractYaml implements WeaponConfig<FireArm>
                 return (FireArm) serializer.getFromSection(section);
             }
         }
-        throw new ItemFormatException("Invalid item format" + section.getString("DisplayName") + ": Unknown firearm type \"" + typeString + "\"");
+        throw new ItemFormatException("Invalid item format " + section.getName() + ": Unknown firearm type \"" + typeString + "\"");
     }
 
     private void setup() {
         fireArms = new HashMap<>();
 
-        for (String fireArmName : getConfigurationSection("").getKeys(false)) {
+        for (String fireArmName : getKeys(false)) {
             FireArm fireArm;
             try {
                 fireArm = readFireArmConfiguration(getConfigurationSection(fireArmName));

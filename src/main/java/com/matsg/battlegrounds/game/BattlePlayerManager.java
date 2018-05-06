@@ -1,6 +1,8 @@
 package com.matsg.battlegrounds.game;
 
 import com.matsg.battlegrounds.api.game.*;
+import com.matsg.battlegrounds.api.item.LoadoutClass;
+import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.player.PlayerStatus;
 import com.matsg.battlegrounds.api.util.Placeholder;
@@ -44,10 +46,21 @@ public class BattlePlayerManager implements PlayerManager {
         if (lobby != null) {
             player.teleport(lobby);
         }
-        if (players.size() == game.getConfiguration().getMinPlayers()) {
-            new LobbyCountdown(game, game.getConfiguration().getLobbyCountdown(), 60, 45, 30, 15, 10).run();
+        if (players.size() < game.getConfiguration().getMinPlayers()) {
+            new LobbyCountdown(game, game.getConfiguration().getLobbyCountdown(), 60, 45, 30, 15, 10, 5).run();
         }
         return gamePlayer;
+    }
+
+    public void changeLoadoutClass(GamePlayer gamePlayer, LoadoutClass loadoutClass) {
+        gamePlayer.setLoadoutClass(loadoutClass);
+        for (Weapon weapon : loadoutClass.getWeapons()) {
+            Weapon clone = weapon.clone();
+            game.getItemRegistry().addItem(clone);
+            clone.setGame(game);
+            clone.setGamePlayer(gamePlayer);
+            clone.update();
+        }
     }
 
     public void damagePlayer(GamePlayer gamePlayer, double damage) {
@@ -129,15 +142,6 @@ public class BattlePlayerManager implements PlayerManager {
             }
         }
         return nearestPlayer;
-    }
-
-    public Team getTeam(GamePlayer gamePlayer) {
-        for (Team team : game.getGameMode().getTeams()) {
-            if (team.getPlayers().contains(gamePlayer)) {
-                return team;
-            }
-        }
-        return null;
     }
 
     public void removePlayer(Player player) {
