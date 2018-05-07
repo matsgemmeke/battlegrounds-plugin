@@ -21,6 +21,8 @@ public interface PlayerManager {
 
     GamePlayer[] getLivingPlayers(Team team);
 
+    GamePlayer[] getNearbyPlayers(Game game, Location location, double range);
+
     GamePlayer[] getNearbyPlayers(Location location, double range);
 
     GamePlayer getNearestPlayer(Location location);

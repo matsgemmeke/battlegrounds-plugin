@@ -9,6 +9,7 @@ import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.player.BattleGamePlayer;
 import com.matsg.battlegrounds.util.EnumMessage;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ public class BattlePlayerManager implements PlayerManager {
     }
 
     public void damagePlayer(GamePlayer gamePlayer, double damage) {
-        if (gamePlayer == null || gamePlayer.getPlayer().isDead()) {
+        if (gamePlayer == null || !gamePlayer.getStatus().isAlive() || gamePlayer.getPlayer().isDead()) {
             return;
         }
         double finalHealth = gamePlayer.getPlayer().getHealth() - damage;
@@ -95,6 +96,19 @@ public class BattlePlayerManager implements PlayerManager {
         for (GamePlayer gamePlayer : players) {
             if (gamePlayer.getStatus().canInteract()) {
                 list.add(gamePlayer);
+            }
+        }
+        return list.toArray(new GamePlayer[list.size()]);
+    }
+
+    public GamePlayer[] getNearbyPlayers(Game game, Location location, double range) {
+        List<GamePlayer> list = new ArrayList<>();
+        for (Entity entity : game.getArena().getWorld().getNearbyEntities(location, range, range, range)) {
+            if (entity instanceof Player) {
+                GamePlayer gamePlayer = getGamePlayer((Player) entity);
+                if (gamePlayer != null) {
+                    list.add(gamePlayer);
+                }
             }
         }
         return list.toArray(new GamePlayer[list.size()]);

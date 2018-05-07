@@ -16,6 +16,8 @@ public interface OfflineGamePlayer {
 
     UUID getUUID();
 
+    boolean isOnline();
+
     void setDeaths(int deaths);
 
     void setExp(int exp);

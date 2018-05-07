@@ -5,7 +5,7 @@ import com.matsg.battlegrounds.api.util.Message;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-public interface GamePlayer extends OfflineGamePlayer {
+public interface GamePlayer extends OfflineGamePlayer, Comparable<GamePlayer> {
 
     int addScore(int score);
 

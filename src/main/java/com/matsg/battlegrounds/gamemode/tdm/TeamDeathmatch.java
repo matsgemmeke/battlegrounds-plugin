@@ -9,6 +9,7 @@ import com.matsg.battlegrounds.game.BattleTeam;
 import com.matsg.battlegrounds.gamemode.AbstractGameMode;
 import com.matsg.battlegrounds.util.EnumMessage;
 import com.matsg.battlegrounds.util.Title;
+import org.bukkit.Color;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
@@ -29,8 +30,10 @@ public class TeamDeathmatch extends AbstractGameMode {
         List<Team> list = new ArrayList<>();
         for (String teamId : yaml.getConfigurationSection("teams").getKeys(false)) {
             ConfigurationSection section = yaml.getConfigurationSection("teams." + teamId);
+            String[] array = section.getString("color").split(",");
+            Color color = Color.fromRGB(Integer.parseInt(array[0]), Integer.parseInt(array[1]), Integer.parseInt(array[2]));
 
-            list.add(new BattleTeam(Integer.parseInt(teamId), section.getString("name"), section.getColor("color")));
+            list.add(new BattleTeam(Integer.parseInt(teamId), section.getString("name"), color));
         }
         return list;
     }

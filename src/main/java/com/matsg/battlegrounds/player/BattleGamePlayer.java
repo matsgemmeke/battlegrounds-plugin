@@ -112,7 +112,7 @@ public class BattleGamePlayer implements GamePlayer {
         return score;
     }
 
-    public int compareTo(OfflineGamePlayer gamePlayer) {
+    public int compareTo(GamePlayer gamePlayer) {
         if (exp != gamePlayer.getExp()) {
             return gamePlayer.getExp() - exp;
         }
@@ -120,6 +120,10 @@ public class BattleGamePlayer implements GamePlayer {
             return gamePlayer.getKills() - kills;
         }
         return 0;
+    }
+
+    public boolean isOnline() {
+        return player.isOnline();
     }
 
     public void sendMessage(Message message) {

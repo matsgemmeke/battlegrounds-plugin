@@ -130,6 +130,10 @@ public class BattlePlayerYaml extends AbstractYaml implements PlayerYaml {
             return name.compareTo(o.getName());
         }
 
+        public boolean isOnline() {
+            return false;
+        }
+
         private Map<String, Integer> mapValues() {
             Map<String, Integer> map = new HashMap<>();
             map.put("deaths", deaths);
