@@ -1,7 +1,6 @@
 package com.matsg.battlegrounds.api.item;
 
 import com.matsg.battlegrounds.api.player.GamePlayer;
-import com.matsg.battlegrounds.api.util.Hitbox;
 
 public interface Weapon extends Item {
 

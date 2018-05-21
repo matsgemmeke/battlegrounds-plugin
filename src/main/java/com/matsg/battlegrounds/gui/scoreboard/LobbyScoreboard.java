@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.gui.scoreboard;
 
+import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.player.GamePlayer;
@@ -18,13 +19,14 @@ import java.util.Set;
 
 public class LobbyScoreboard implements GameScoreboard {
 
+    private static Battlegrounds plugin = BattlegroundsPlugin.getPlugin();
     private Game game;
     private int countdown;
     private Map<String, String> layout;
     private Set<World> worlds;
     private String scoreboardId;
 
-    public LobbyScoreboard(Battlegrounds plugin, Game game) {
+    public LobbyScoreboard(Game game) {
         this.game = game;
         this.layout = plugin.getBattlegroundsConfig().getLobbyScoreboardLayout();
         this.scoreboardId = "lobby";

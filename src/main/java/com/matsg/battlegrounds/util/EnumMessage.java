@@ -18,10 +18,15 @@ public enum EnumMessage implements Message {
     ARENA_REMOVE("setup-arena-remove", false),
     ARMOR_HELMET("item-armor-helmet", false),
     ARMOR_VEST("item-armor-vest", false),
+    CHANGE_LOADOUT("item-change-loadout", false),
     CLASS_MANAGER("gui-class-manager", false),
     COMMAND_ERROR("command-error", false),
     COMMAND_NOT_ALLOWED("command-not-allowed", false),
     COUNTDOWN_NOTE("game-countdown-note", true),
+    DEATH_BURNING("game-death-burning", true),
+    DEATH_DROWNING("game-death-drowning", true),
+    DEATH_FALLING("game-death-falling", true),
+    DEATH_PLAYER_KILL("game-death-player-kill", true),
     DESCRIPTION_ADDSPAWN("command-description-addspawn", false),
     DESCRIPTION_CREATEARENA("command-description-createarena", false),
     DESCRIPTION_CREATEGAME("command-description-creategame", false),
@@ -69,7 +74,9 @@ public enum EnumMessage implements Message {
     STAT_RANGE("item-stat-range", false),
     TDM_NAME("gamemode-tdm-name", false),
     TDM_SHORT("gamemode-tdm-short", false),
-    TYPE_KNIFE("item-type-knife", false);
+    TEAM_ASSIGNMENT("game-team-assignment", true),
+    TYPE_KNIFE("item-type-knife", false),
+    WEAPONS_TITLE("gui-weapons-title", false);
 
     private Battlegrounds plugin;
     private boolean prefix;

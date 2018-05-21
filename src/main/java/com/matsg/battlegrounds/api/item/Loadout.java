@@ -2,7 +2,7 @@ package com.matsg.battlegrounds.api.item;
 
 import org.bukkit.inventory.ItemStack;
 
-public interface LoadoutClass {
+public interface Loadout {
 
     Equipment getEquipment();
 
@@ -27,4 +27,6 @@ public interface LoadoutClass {
     void setPrimary(FireArm primary);
 
     void setSecondary(FireArm secondary);
+
+    void updateInventory();
 }

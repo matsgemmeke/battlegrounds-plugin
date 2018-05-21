@@ -1,11 +1,13 @@
 package com.matsg.battlegrounds.game;
 
 import com.matsg.battlegrounds.api.game.*;
-import com.matsg.battlegrounds.api.item.LoadoutClass;
+import com.matsg.battlegrounds.api.item.ItemSlot;
+import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.player.PlayerStatus;
 import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.gui.scoreboard.LobbyScoreboard;
 import com.matsg.battlegrounds.player.BattleGamePlayer;
 import com.matsg.battlegrounds.util.EnumMessage;
 import org.bukkit.Location;
@@ -42,20 +44,21 @@ public class BattlePlayerManager implements PlayerManager {
         game.getGameMode().addPlayer(gamePlayer);
         game.updateSign();
 
+        gamePlayer.getPlayer().setScoreboard(new LobbyScoreboard(game).createScoreboard());
         gamePlayer.setStatus(PlayerStatus.ACTIVE).apply(game, gamePlayer);
 
         if (lobby != null) {
             player.teleport(lobby);
         }
-        if (players.size() < game.getConfiguration().getMinPlayers()) {
+        if (players.size() == game.getConfiguration().getMinPlayers()) {
             new LobbyCountdown(game, game.getConfiguration().getLobbyCountdown(), 60, 45, 30, 15, 10, 5).run();
         }
         return gamePlayer;
     }
 
-    public void changeLoadoutClass(GamePlayer gamePlayer, LoadoutClass loadoutClass) {
-        gamePlayer.setLoadoutClass(loadoutClass);
-        for (Weapon weapon : loadoutClass.getWeapons()) {
+    public void changeLoadout(GamePlayer gamePlayer, Loadout loadout) {
+        gamePlayer.setLoadout(loadout);
+        for (Weapon weapon : loadout.getWeapons()) {
             Weapon clone = weapon.clone();
             game.getItemRegistry().addItem(clone);
             clone.setGame(game);
@@ -94,7 +97,7 @@ public class BattlePlayerManager implements PlayerManager {
     public GamePlayer[] getLivingPlayers(Team team) {
         List<GamePlayer> list = new ArrayList<>();
         for (GamePlayer gamePlayer : players) {
-            if (gamePlayer.getStatus().canInteract()) {
+            if (gamePlayer.getStatus().canInteract() && game.getGameMode().getTeam(gamePlayer) == team) {
                 list.add(gamePlayer);
             }
         }

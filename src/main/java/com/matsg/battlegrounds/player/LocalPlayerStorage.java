@@ -72,7 +72,7 @@ public class LocalPlayerStorage implements PlayerStorage {
         try {
             PlayerYaml playerYaml = new BattlePlayerYaml(plugin, uuid);
             for (int i = 1; i <= 5; i ++) {
-                playerYaml.saveLoadoutClass(i, defaultClasses.getList().get(i - 1));
+                playerYaml.saveLoadout(i, defaultClasses.getList().get(i - 1));
             }
             playerYamls.add(playerYaml);
         } catch (IOException e) {

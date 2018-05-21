@@ -1,8 +1,0 @@
-kills-to-win: 75
-teams:
-  '1':
-    color: 255,0,0
-    name: &cTeam Red
-  '2':
-    color: 0,0,255
-    name: &9Team Blue

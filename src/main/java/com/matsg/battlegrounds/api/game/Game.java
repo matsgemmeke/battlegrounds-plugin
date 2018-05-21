@@ -36,6 +36,8 @@ public interface Game {
 
     GameState getState();
 
+    TimeControl getTimeControl();
+
     void rollback();
 
     void setArena(Arena arena);
@@ -47,6 +49,10 @@ public interface Game {
     void setGameSign(GameSign gameSign);
 
     void setState(GameState state);
+
+    void startCountdown();
+
+    void startGame();
 
     void stop();
 

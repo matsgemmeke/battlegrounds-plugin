@@ -1,17 +1,16 @@
 package com.matsg.battlegrounds.item;
 
 import com.matsg.battlegrounds.api.item.*;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
-public class BattleLoadoutClass implements LoadoutClass {
+public class BattleLoadout implements Loadout {
 
     private final String name;
     private Equipment equipment;
     private FireArm primary, secondary;
     private Knife knife;
 
-    public BattleLoadoutClass(String name, FireArm primary, FireArm secondary, Equipment equipment, Knife knife) {
+    public BattleLoadout(String name, FireArm primary, FireArm secondary, Equipment equipment, Knife knife) {
         this.name = name;
         this.primary = primary;
         this.secondary = secondary;
@@ -94,5 +93,11 @@ public class BattleLoadoutClass implements LoadoutClass {
 
     public Weapon[] getWeapons() {
         return new Weapon[] { primary, secondary, equipment, knife };
+    }
+
+    public void updateInventory() {
+        for (Weapon weapon : getWeapons()) {
+            weapon.update();
+        }
     }
 }

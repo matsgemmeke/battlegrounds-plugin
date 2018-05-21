@@ -9,7 +9,7 @@ public interface GamePlayer extends OfflineGamePlayer, Comparable<GamePlayer> {
 
     int addScore(int score);
 
-    LoadoutClass getLoadoutClass();
+    Loadout getLoadout();
 
     Location getLocation();
 
@@ -25,7 +25,7 @@ public interface GamePlayer extends OfflineGamePlayer, Comparable<GamePlayer> {
 
     void sendMessage(String message);
 
-    void setLoadoutClass(LoadoutClass loadoutClass);
+    void setLoadout(Loadout loadout);
 
     void setScore(int score);
 

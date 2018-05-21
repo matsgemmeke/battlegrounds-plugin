@@ -1,16 +1,76 @@
 package com.matsg.battlegrounds.api.game;
 
+import com.matsg.battlegrounds.api.player.GamePlayer;
+
 import java.util.Collection;
 
 public interface Arena extends Region {
 
+    /**
+     * Gets the name of the arena.
+     *
+     * @return The arena name
+     */
     String getName();
 
+    /**
+     * Gets a random entry of the spawn collection.
+     *
+     * @return A random spawn entry
+     */
     Spawn getRandomSpawn();
 
+    /**
+     * Gets a random entry of the spawn collection with a minimum distance to the nearest foe.
+     *
+     * @param distance The minimum distance between the location and the nearest foe
+     * @return A random spawn entry
+     */
+    Spawn getRandomSpawn(double distance);
+
+    /**
+     * Gets a random entry of the spawn collection owned by a specific team.
+     *
+     * @param team The team to find a random spawn of
+     * @return A random spawn entry
+     */
+    Spawn getRandomSpawn(Team team);
+
+    /**
+     * Gets a random entry of the spawn collection owned by a specific team with a minimum distance to the nearest foe.
+     *
+     * @param team The team to find a random spawn of
+     * @param distance The minimum distance between the location and the nearest foe
+     * @return A random spawn entry
+     */
+    Spawn getRandomSpawn(Team team, double distance);
+
+    /**
+     * Gets the spawn which currently being used by a specific player.
+     *
+     * @param gamePlayer The player to find the spawn of
+     * @return The spawn of the player if it is currently occupying one, otherwise null
+     */
+    Spawn getSpawn(GamePlayer gamePlayer);
+
+    /**
+     * Gets the collection of spawns.
+     *
+     * @return The spawn collection
+     */
     Collection<Spawn> getSpawns();
 
+    /**
+     * Gets whether the arena is active or not.
+     *
+     * @return True if the arena is active, otherwise false
+     */
     boolean isActive();
 
+    /**
+     * Sets the active state of the arena
+     *
+     * @param active Whether the arena should be active or not
+     */
     void setActive(boolean active);
 }

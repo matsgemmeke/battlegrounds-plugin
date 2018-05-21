@@ -12,16 +12,7 @@ import java.lang.reflect.Constructor;
 
 public enum ActionBar implements Message {
 
-    BARRICADE_PASSTHROUGH("actionbar-barricade-passthrough"),
-    DOOR("actionbar-door"),
-    ITEM_CHEST("actionbar-item-chest"),
-    MYSTERY_BOX("actionbar-mystery-box"),
-    MYSTERY_BOX_SWAP("actionbar-mystery-box-swap"),
-    NO_POWER("actionbar-no-power"),
-    PERKMACHINE_SOLD_OUT("actionbar-perkmachine-sold-out"),
-    POINTS_DEDUCT("actionbar-points-deduct"),
-    POINTS_INCREASE("actionbar-points-increase"),
-    POWERSWITCH("actionbar-powerswitch");
+    CHANGE_LOADOUT("actionbar-change-loadout");
 
     private Battlegrounds plugin;
     private EnumVersion version;

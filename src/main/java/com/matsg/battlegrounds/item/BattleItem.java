@@ -74,4 +74,14 @@ public abstract class BattleItem implements Item {
     public int compareTo(Item item) {
         return game == item.getGame() && itemStack.equals(item.getItemStack()) ? 0 : -1;
     }
+
+    public void onDrop() { }
+
+    public void onLeftClick() { }
+
+    public void onPickUp(GamePlayer gamePlayer, org.bukkit.entity.Item itemEntity) { }
+
+    public void onRightClick() { }
+
+    public void onSwitch() { }
 }

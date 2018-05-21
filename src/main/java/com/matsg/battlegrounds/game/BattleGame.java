@@ -4,16 +4,19 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.config.CacheYaml;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.game.GameMode;
+import com.matsg.battlegrounds.api.item.Item;
+import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.player.PlayerStatus;
 import com.matsg.battlegrounds.api.util.Message;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.config.BattleCacheYaml;
-import com.matsg.battlegrounds.util.ActionBar;
-import com.matsg.battlegrounds.util.BattleRunnable;
-import com.matsg.battlegrounds.util.Title;
+import com.matsg.battlegrounds.item.misc.SelectLoadout;
+import com.matsg.battlegrounds.util.*;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,6 +36,7 @@ public class BattleGame implements Game {
     private ItemRegistry itemRegistry;
     private List<Arena> arenaList;
     private PlayerManager playerManager;
+    private TimeControl timeControl;
 
     public BattleGame(Battlegrounds plugin, int id) {
         this.plugin = plugin;
@@ -94,6 +98,10 @@ public class BattleGame implements Game {
         return state;
     }
 
+    public TimeControl getTimeControl() {
+        return timeControl;
+    }
+
     public void setConfiguration(GameConfiguration configuration) {
         this.configuration = configuration;
     }
@@ -108,6 +116,7 @@ public class BattleGame implements Game {
 
     public void setState(GameState state) {
         this.state = state;
+        this.gameMode.onStateChange(state);
     }
 
     public void broadcastMessage(Message message) {
@@ -133,10 +142,10 @@ public class BattleGame implements Game {
             public void run() {
                 if (arenaList.size() >= 2) {
                     Random random = new Random();
-                    Arena arena;
+                    Arena arena, activeArena = getActiveArena();
                     do {
                         arena = arenaList.get(random.nextInt(arenaList.size()));
-                    } while (getActiveArena() == arena);
+                    } while (activeArena == arena);
                     setArena(arena);
                 }
                 rollback();
@@ -164,9 +173,31 @@ public class BattleGame implements Game {
         return mainLobby != null ? mainLobby : plugin.getServer().getWorlds().get(0).getSpawnLocation(); // Return the main lobby, otherwise the world spawn
     }
 
-    public void givePoints(GamePlayer gamePlayer, int points) {
-        ActionBar.POINTS_INCREASE.send(gamePlayer.getPlayer(), new Placeholder("bg_points", points));
-        gamePlayer.addScore(points);
+    private void preparePlayer(GamePlayer gamePlayer) {
+        Player player = gamePlayer.getPlayer();
+        player.setFoodLevel(20);
+        player.setGameMode(org.bukkit.GameMode.SURVIVAL);
+        player.setHealth(player.getMaxHealth());
+        player.setSaturation((float) 10);
+
+        player.getInventory().setArmorContents(new ItemStack[] {
+                null,
+                null,
+                new ItemStackBuilder(Material.LEATHER_CHESTPLATE)
+                        .addItemFlags(ItemFlag.values())
+                        .setColor(gameMode.getTeam(gamePlayer).getColor())
+                        .setDisplayName(ChatColor.WHITE + EnumMessage.ARMOR_VEST.getMessage())
+                        .build(),
+                new ItemStackBuilder(Material.LEATHER_HELMET)
+                        .addItemFlags(ItemFlag.values())
+                        .setColor(gameMode.getTeam(gamePlayer).getColor())
+                        .setDisplayName(ChatColor.WHITE + EnumMessage.ARMOR_HELMET.getMessage())
+                        .build()
+        });
+
+        Item selectLoadout = new SelectLoadout(this, gamePlayer);
+        itemRegistry.addItem(selectLoadout);
+        player.getInventory().setItem(ItemSlot.MISCELLANEOUS.getSlot(), selectLoadout.getItemStack());
     }
 
     public void rollback() {
@@ -192,6 +223,28 @@ public class BattleGame implements Game {
         arena.setActive(true);
     }
 
+    public void startCountdown() {
+        for (GamePlayer gamePlayer : playerManager.getPlayers()) {
+            preparePlayer(gamePlayer);
+        }
+        gameMode.spawnPlayers(playerManager.getPlayers().toArray(new GamePlayer[playerManager.getPlayers().size()]));
+        setState(GameState.STARTING);
+        updateSign();
+        new GameCountdown(this, configuration.getGameCountdown()).runTaskTimer(20, 20);
+    }
+
+    public void startGame() {
+        timeControl = new BattleTimeControl(this);
+        setState(GameState.IN_GAME);
+        updateSign();
+
+        for (GamePlayer gamePlayer : playerManager.getPlayers()) {
+            if (gamePlayer.getLoadout() != null) {
+                gamePlayer.getLoadout().updateInventory();
+            }
+        }
+    }
+
     public void stop() {
         if (!state.isInProgress()) {
             state = GameState.WAITING;
@@ -203,26 +256,22 @@ public class BattleGame implements Game {
             Player player = gamePlayer.getPlayer();
             player.setAllowFlight(true);
             player.setGameMode(org.bukkit.GameMode.CREATIVE);
-            player.setMaxHealth(20.0);
             player.setHealth(20.0);
 
-            if (gamePlayer.getLoadoutClass().getPrimary() != null) {
-                gamePlayer.getLoadoutClass().getPrimary().setReloadCancelled(true);
+            if (gamePlayer.getLoadout().getPrimary() != null) {
+                gamePlayer.getLoadout().getPrimary().setReloadCancelled(true);
             }
-            if (gamePlayer.getLoadoutClass().getSecondary() != null) {
-                gamePlayer.getLoadoutClass().getSecondary().setReloadCancelled(true);
+            if (gamePlayer.getLoadout().getSecondary() != null) {
+                gamePlayer.getLoadout().getSecondary().setReloadCancelled(true);
             }
             playerManager.setVisible(gamePlayer, true);
         }
 
         state = GameState.RESETTING;
+        timeControl.stop();
 
         clearGameData();
         updateSign();
-    }
-
-    public void updateScoreboard() {
-        //new GameScoreboard(plugin.getZombiesConfig().getGameScoreboardLayout()).set(this);
     }
 
     public boolean updateSign() {

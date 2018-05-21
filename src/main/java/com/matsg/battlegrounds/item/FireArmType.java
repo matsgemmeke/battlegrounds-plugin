@@ -10,14 +10,14 @@ import com.matsg.battlegrounds.api.item.WeaponType;
 public enum FireArmType implements WeaponType {
 
     ASSAULT_RIFLE("item-type-assault-rifle", 1, Bullet.class, 1, false),
+    HANDGUN("item-type-handgun", 1, Bullet.class, 1, false),
     LAUNCHER("item-type-launcher", 1, Lethal.class, 1, false),
     LIGHT_MACHINE_GUN("item-type-light-machine-gun", 1, Bullet.class, 1, false),
-    PISTOL("item-type-pistol", 1, Bullet.class, 1, false),
     SHOTGUN("item-type-shotgun", 5, Bullet.class, 1, false),
     SNIPER_RIFLE("item-type-sniper-rifle", 1, Bullet.class, 5, true),
     SUBMACHINE_GUN("item-type-submachine-gun", 1, Bullet.class, 1, false);
 
-    public static FireArmType[] GUNS = new FireArmType[] { ASSAULT_RIFLE, LIGHT_MACHINE_GUN, PISTOL, SHOTGUN, SNIPER_RIFLE, SUBMACHINE_GUN };
+    public static FireArmType[] GUNS = new FireArmType[] { ASSAULT_RIFLE, HANDGUN, LIGHT_MACHINE_GUN, SHOTGUN, SNIPER_RIFLE, SUBMACHINE_GUN };
 
     private Battlegrounds plugin;
     private boolean pierceable, scope;

@@ -2,6 +2,8 @@ package com.matsg.battlegrounds.game;
 
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Spawn;
+import com.matsg.battlegrounds.api.game.Team;
+import com.matsg.battlegrounds.api.player.GamePlayer;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -75,9 +77,51 @@ public class BattleArena implements Arena {
 
         do {
             spawn = spawns.get(random.nextInt(spawns.size()));
-        } while (spawn.isOccupied());
+        } while (spawn == null || spawn.isOccupied());
 
         return spawn;
+    }
+
+    public Spawn getRandomSpawn(double distance) {
+        Random random = new Random();
+        Spawn spawn;
+
+        do {
+            spawn = spawns.get(random.nextInt(spawns.size()));
+        } while (spawn == null || spawn.isOccupied());
+
+        return spawn;
+    }
+
+    public Spawn getRandomSpawn(Team team) {
+        Random random = new Random();
+        Spawn spawn;
+
+        do {
+            spawn = spawns.get(random.nextInt(spawns.size()));
+        } while (spawn == null || spawn.isOccupied() || spawn.getTeamId() != team.getId());
+
+        return spawn;
+    }
+
+    public Spawn getRandomSpawn(Team team, double distance) {
+        Random random = new Random();
+        Spawn spawn;
+
+        do {
+            spawn = spawns.get(random.nextInt(spawns.size()));
+        } while (spawn == null || spawn.isOccupied() || spawn.getTeamId() != team.getId());
+
+        return spawn;
+    }
+
+    public Spawn getSpawn(GamePlayer gamePlayer) {
+        for (Spawn spawn : spawns) {
+            if (spawn.getGamePlayer() == gamePlayer) {
+                return spawn;
+            }
+        }
+        return null;
     }
 
     private List<Block> updateBoundingBlocks() {

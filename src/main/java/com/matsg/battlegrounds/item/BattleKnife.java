@@ -91,7 +91,7 @@ public class BattleKnife extends BattleWeapon implements Knife {
     private String[] getLore() {
         return new String[] {
                 ChatColor.WHITE + type,
-                ChatColor.GRAY + format(6, damage, 75.0) + " " + EnumMessage.STAT_DAMAGE.getMessage()
+                ChatColor.GRAY + format(6, damage, 20.0) + " " + EnumMessage.STAT_DAMAGE.getMessage()
         };
     }
 

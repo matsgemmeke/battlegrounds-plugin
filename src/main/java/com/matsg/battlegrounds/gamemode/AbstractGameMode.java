@@ -1,10 +1,9 @@
 package com.matsg.battlegrounds.gamemode;
 
 import com.matsg.battlegrounds.api.config.Yaml;
-import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.GameMode;
-import com.matsg.battlegrounds.api.game.Team;
+import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.player.GamePlayer;
+import com.matsg.battlegrounds.item.misc.SelectLoadout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +21,10 @@ public abstract class AbstractGameMode implements GameMode {
         this.simpleName = simpleName;
         this.teams = new ArrayList<>();
         this.yaml = yaml;
+    }
+
+    public Yaml getConfig() {
+        return yaml;
     }
 
     public String getName() {
@@ -53,4 +56,24 @@ public abstract class AbstractGameMode implements GameMode {
         }
         return null;
     }
+
+    public void onStateChange(GameState state) {
+        switch (state) {
+            case IN_GAME:
+                onStart();
+            case RESETTING:
+                onStop();
+        }
+    }
+
+    public void onStart() {
+        for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
+            new SelectLoadout(game, gamePlayer).update();
+        }
+        for (Spawn spawn : game.getArena().getSpawns()) {
+            spawn.setGamePlayer(null);
+        }
+    }
+
+    public void onStop() { }
 }

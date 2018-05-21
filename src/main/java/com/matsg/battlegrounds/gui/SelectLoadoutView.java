@@ -2,7 +2,7 @@ package com.matsg.battlegrounds.gui;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.item.LoadoutClass;
+import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.util.EnumMessage;
@@ -17,30 +17,30 @@ import org.bukkit.inventory.ItemStack;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SelectClassView implements View {
+public class SelectLoadoutView implements View {
 
     private Game game;
     private GamePlayer gamePlayer;
     private Inventory inventory;
-    private Map<ItemStack, LoadoutClass> classes;
+    private Map<ItemStack, Loadout> loadouts;
 
-    public SelectClassView(Battlegrounds plugin, Game game, GamePlayer gamePlayer) {
+    public SelectLoadoutView(Battlegrounds plugin, Game game, GamePlayer gamePlayer) {
         this.game = game;
         this.gamePlayer = gamePlayer;
-        this.classes = new HashMap<>();
         this.inventory = plugin.getServer().createInventory(this, 27, EnumMessage.SELECT_CLASS.getMessage());
+        this.loadouts = new HashMap<>();
 
         int i = 0;
-        for (LoadoutClass loadoutClass : plugin.getPlayerStorage().getStoredPlayer(gamePlayer.getUUID()).getPlayerYaml().getLoadoutClasses()) {
-            ItemStack itemStack = new ItemStackBuilder(getClassItemStack(loadoutClass))
+        for (Loadout loadout : plugin.getPlayerStorage().getStoredPlayer(gamePlayer.getUUID()).getPlayerYaml().getLoadouts()) {
+            ItemStack itemStack = new ItemStackBuilder(getLoadoutItemStack(loadout))
                     .addItemFlags(ItemFlag.values())
                     .setAmount(++ i)
-                    .setDisplayName(ChatColor.WHITE + loadoutClass.getName())
+                    .setDisplayName(ChatColor.WHITE + loadout.getName())
                     .setUnbreakable(true)
                     .build();
 
-            classes.put(itemStack, loadoutClass);
             inventory.setItem(i + 10, itemStack);
+            loadouts.put(itemStack, loadout);
         }
     }
 
@@ -48,8 +48,8 @@ public class SelectClassView implements View {
         return inventory;
     }
 
-    private ItemStack getClassItemStack(LoadoutClass loadoutClass) {
-        for (Weapon weapon : loadoutClass.getWeapons()) {
+    private ItemStack getLoadoutItemStack(Loadout loadout) {
+        for (Weapon weapon : loadout.getWeapons()) {
             if (weapon.getItemStack() != null) {
                 return weapon.getItemStack();
             }
@@ -58,15 +58,15 @@ public class SelectClassView implements View {
     }
 
     public void onClick(Player player, ItemStack itemStack, ClickType clickType) {
-        LoadoutClass loadoutClass = classes.get(itemStack);
-        if (loadoutClass == null) {
+        Loadout loadout = loadouts.get(itemStack);
+        if (loadout == null) {
             return;
         }
-        game.getPlayerManager().changeLoadoutClass(gamePlayer, loadoutClass);
+        game.getPlayerManager().changeLoadout(gamePlayer, loadout);
         player.closeInventory();
     }
 
     public boolean onClose() {
-        return gamePlayer.getLoadoutClass() != null;
+        return gamePlayer.getLoadout() != null;
     }
 }

@@ -1,7 +1,7 @@
 package com.matsg.battlegrounds.gui;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.item.LoadoutClass;
+import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.config.BattlePlayerYaml;
 import com.matsg.battlegrounds.util.EnumMessage;
@@ -16,28 +16,28 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ClassManagerView implements View {
+public class LoadoutManagerView implements View {
 
     private Inventory inventory;
-    private Map<ItemStack, LoadoutClass> classes;
+    private Map<ItemStack, Loadout> loadouts;
 
-    public ClassManagerView(Battlegrounds plugin, Player player) {
-        this.classes = new HashMap<>();
+    public LoadoutManagerView(Battlegrounds plugin, Player player) {
         this.inventory = plugin.getServer().createInventory(this, 27, EnumMessage.CLASS_MANAGER.getMessage());
+        this.loadouts = new HashMap<>();
 
         try {
             int i = 0;
-            for (LoadoutClass loadoutClass : new BattlePlayerYaml(plugin, player.getUniqueId()).getLoadoutClasses()) {
-                ItemStack itemStack = new ItemStackBuilder(getClassItemStack(loadoutClass))
+            for (Loadout loadout : new BattlePlayerYaml(plugin, player.getUniqueId()).getLoadouts()) {
+                ItemStack itemStack = new ItemStackBuilder(getLoadoutItemStack(loadout))
                         .addItemFlags(ItemFlag.values())
                         .setAmount(++ i)
-                        .setDisplayName("§f" + loadoutClass.getName())
+                        .setDisplayName("§f" + loadout.getName())
                         .setLore(EnumMessage.EDIT_CLASS.getMessage())
                         .setUnbreakable(true)
                         .build();
 
-                classes.put(itemStack, loadoutClass);
                 inventory.setItem(i + 10, itemStack);
+                loadouts.put(itemStack, loadout);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -48,8 +48,8 @@ public class ClassManagerView implements View {
         return inventory;
     }
 
-    private ItemStack getClassItemStack(LoadoutClass loadoutClass) {
-        for (Weapon weapon : loadoutClass.getWeapons()) {
+    private ItemStack getLoadoutItemStack(Loadout loadout) {
+        for (Weapon weapon : loadout.getWeapons()) {
             if (weapon.getItemStack() != null) {
                 return weapon.getItemStack();
             }
@@ -58,7 +58,7 @@ public class ClassManagerView implements View {
     }
 
     public void onClick(Player player, ItemStack itemStack, ClickType clickType) {
-        System.out.print(classes.get(itemStack).getName());
+        System.out.print(loadouts.get(itemStack).getName());
     }
 
     public boolean onClose() {

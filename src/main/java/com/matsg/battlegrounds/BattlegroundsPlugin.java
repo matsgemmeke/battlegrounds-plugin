@@ -9,7 +9,8 @@ import com.matsg.battlegrounds.api.item.FireArm;
 import com.matsg.battlegrounds.api.item.Knife;
 import com.matsg.battlegrounds.api.player.PlayerStorage;
 import com.matsg.battlegrounds.command.BattlegroundsCommand;
-import com.matsg.battlegrounds.command.ClassCommand;
+import com.matsg.battlegrounds.command.LoadoutCommand;
+import com.matsg.battlegrounds.command.WeaponsCommand;
 import com.matsg.battlegrounds.config.*;
 import com.matsg.battlegrounds.listener.BattleEventHandler;
 import com.matsg.battlegrounds.listener.BattleEventManager;
@@ -177,7 +178,8 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         new DataLoader(this);
 
         new BattlegroundsCommand(this);
-        new ClassCommand(this);
+        new LoadoutCommand(this);
+        new WeaponsCommand(this);
 
         new BattleEventHandler(this);
         new EventListener(this);

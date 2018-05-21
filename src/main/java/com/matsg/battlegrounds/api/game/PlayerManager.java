@@ -1,6 +1,6 @@
 package com.matsg.battlegrounds.api.game;
 
-import com.matsg.battlegrounds.api.item.LoadoutClass;
+import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -11,7 +11,7 @@ public interface PlayerManager {
 
     GamePlayer addPlayer(Player player);
 
-    void changeLoadoutClass(GamePlayer gamePlayer, LoadoutClass loadoutClass);
+    void changeLoadout(GamePlayer gamePlayer, Loadout loadout);
 
     void damagePlayer(GamePlayer gamePlayer, double damage);
 

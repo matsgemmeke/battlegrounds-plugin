@@ -1,0 +1,26 @@
+# Player armor color
+armor-color: 100,100,100
+
+# The amount of kills needed to win a game
+kills-to-win: 30
+
+# The mininum distance between a spawn point and the nearest foe upon respawning
+# Warning: setting this value too high may cause a server crash!
+minimum-distance-spawn: 10.0
+
+# Scoreboard configurations
+scoreboard:
+  # Set to false to disable scoreboards
+  enabled: true
+  # The layout of the game scoreboards
+  # Leave "" to remove this line
+  layout:
+    line-0: "&6Time: &f%bg_time%s"
+    line-1: " "
+    line-2: "%bg_scores%"
+    line-4: "  "
+    line-5: "&8%bg_date%"
+    line-6: "&6%bg_gamemode%"
+    title: "&6&lBattlegrounds"
+  # List of worlds where this scoreboard will appear
+  worlds: "*"

@@ -1,7 +1,6 @@
 package com.matsg.battlegrounds.player;
 
 import com.matsg.battlegrounds.api.player.GamePlayer;
-import com.matsg.battlegrounds.api.player.OfflineGamePlayer;
 import com.matsg.battlegrounds.api.player.PlayerStatus;
 import com.matsg.battlegrounds.api.player.SavedInventory;
 import com.matsg.battlegrounds.api.item.*;
@@ -14,7 +13,7 @@ import java.util.*;
 public class BattleGamePlayer implements GamePlayer {
 
     private int deaths, exp, headshots, kills, score;
-    private LoadoutClass loadoutClass;
+    private Loadout loadout;
     private Player player;
     private PlayerStatus playerStatus;
     private SavedInventory savedInventory;
@@ -46,8 +45,8 @@ public class BattleGamePlayer implements GamePlayer {
         return kills;
     }
 
-    public LoadoutClass getLoadoutClass() {
-        return loadoutClass;
+    public Loadout getLoadout() {
+        return loadout;
     }
 
     public Location getLocation() {
@@ -94,8 +93,8 @@ public class BattleGamePlayer implements GamePlayer {
         this.kills = kills;
     }
 
-    public void setLoadoutClass(LoadoutClass loadoutClass) {
-        this.loadoutClass = loadoutClass;
+    public void setLoadout(Loadout loadout) {
+        this.loadout = loadout;
     }
 
     public void setScore(int score) {

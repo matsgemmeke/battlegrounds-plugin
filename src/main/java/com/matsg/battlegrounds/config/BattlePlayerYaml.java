@@ -3,8 +3,8 @@ package com.matsg.battlegrounds.config;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.config.PlayerYaml;
 import com.matsg.battlegrounds.api.config.StoredPlayer;
-import com.matsg.battlegrounds.api.item.LoadoutClass;
-import com.matsg.battlegrounds.item.BattleLoadoutClass;
+import com.matsg.battlegrounds.api.item.Loadout;
+import com.matsg.battlegrounds.item.BattleLoadout;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.io.IOException;
@@ -19,9 +19,9 @@ public class BattlePlayerYaml extends AbstractYaml implements PlayerYaml {
         this.uuid = uuid;
     }
 
-    private LoadoutClass getLoadoutClass(int classNumber) {
+    private Loadout getLoadout(int classNumber) {
         ConfigurationSection section = getConfigurationSection("Class." + classNumber);
-        return new BattleLoadoutClass(
+        return new BattleLoadout(
                 section.getString("Name"),
                 plugin.getFireArmConfig().get(section.getString("Primary")),
                 plugin.getFireArmConfig().get(section.getString("Secondary")),
@@ -29,10 +29,10 @@ public class BattlePlayerYaml extends AbstractYaml implements PlayerYaml {
                 plugin.getKnifeConfig().get(section.getString("Knife")));
     }
 
-    public List<LoadoutClass> getLoadoutClasses() {
-        List<LoadoutClass> list = new ArrayList<>();
+    public List<Loadout> getLoadouts() {
+        List<Loadout> list = new ArrayList<>();
         for (int i = 1; i <= 5; i ++) {
-            list.add(getLoadoutClass(i));
+            list.add(getLoadout(i));
         }
         return list;
     }
@@ -41,12 +41,12 @@ public class BattlePlayerYaml extends AbstractYaml implements PlayerYaml {
         return new LocalStoredPlayer(uuid, this);
     }
 
-    public void saveLoadoutClass(int classNumber, LoadoutClass loadoutClass) {
-        set("Class." + classNumber + ".Name", loadoutClass.getName());
-        set("Class." + classNumber + ".Primary", loadoutClass.getPrimary().getName());
-        set("Class." + classNumber + ".Secondary", loadoutClass.getSecondary().getName());
-        set("Class." + classNumber + ".Equipment", loadoutClass.getEquipment().getName());
-        set("Class." + classNumber + ".Knife", loadoutClass.getKnife().getName());
+    public void saveLoadout(int classNumber, Loadout loadout) {
+        set("Class." + classNumber + ".Name", loadout.getName());
+        set("Class." + classNumber + ".Primary", loadout.getPrimary().getName());
+        set("Class." + classNumber + ".Secondary", loadout.getSecondary().getName());
+        set("Class." + classNumber + ".Equipment", loadout.getEquipment().getName());
+        set("Class." + classNumber + ".Knife", loadout.getKnife().getName());
         save();
     }
 

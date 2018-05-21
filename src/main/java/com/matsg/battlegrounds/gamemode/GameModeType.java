@@ -13,7 +13,7 @@ public enum GameModeType {
     FREE_FOR_ALL(1) {
         public GameMode getInstance(Game game) {
             try {
-                return new FreeForAll(game, new AbstractYaml(plugin, plugin.getDataFolder().getPath() + "/gamemodes", "free_for_all.yml", true) { } );
+                return new FreeForAll(game, new AbstractYaml(plugin, plugin.getDataFolder().getPath() + "/gamemodes", "ffa.yml", true) { } );
             } catch (Exception e) {
                 return null;
             }
@@ -22,7 +22,7 @@ public enum GameModeType {
     TEAM_DEATHMATCH(2) {
         public GameMode getInstance(Game game) {
             try {
-                return new TeamDeathmatch(game, new AbstractYaml(plugin, plugin.getDataFolder().getPath() + "/gamemodes", "team_deathmatch.yml", true) { } );
+                return new TeamDeathmatch(game, new AbstractYaml(plugin, plugin.getDataFolder().getPath() + "/gamemodes", "tdm.yml", true) { } );
             } catch (Exception e) {
                 return null;
             }

@@ -5,7 +5,8 @@ public enum ItemSlot {
     FIREARM_PRIMARY(0),
     FIREARM_SECONDARY(1),
     KNIFE(2),
-    EQUIPMENT(3);
+    EQUIPMENT(3),
+    MISCELLANEOUS(8);
 
     private int slot;
 

@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.item;
 
+import com.matsg.battlegrounds.api.event.GamePlayerKillPlayerEvent;
 import com.matsg.battlegrounds.api.item.DamageSource;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.item.Attachment;
@@ -9,6 +10,7 @@ import com.matsg.battlegrounds.api.util.Hitbox;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.util.BattleSound;
 import com.matsg.battlegrounds.util.EnumMessage;
+import com.matsg.battlegrounds.util.HalfBlocks;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -98,10 +100,12 @@ public class BattleGun extends BattleFireArm implements Gun {
                 return;
             }
             Hitbox hitbox = Hitbox.getHitbox(gamePlayer.getLocation().getY(), location.getY());
-            gamePlayer.getLocation().getWorld().playEffect(location, Effect.STEP_SOUND, Material.REDSTONE_BLOCK);
-            gamePlayer.getPlayer().damage(0.0); // Create a fake damage animation
-            game.getPlayerManager().damagePlayer(gamePlayer, bullet.getDamage(hitbox, gamePlayer.getLocation().distanceSquared(this.gamePlayer.getLocation())));
+            gamePlayer.getPlayer().damage(0.01); // Create a fake damage animation
+            game.getPlayerManager().damagePlayer(gamePlayer, bullet.getDamage(hitbox, gamePlayer.getLocation().distance(this.gamePlayer.getLocation())) / 3);
             hits ++;
+            if (gamePlayer.getPlayer().isDead()) {
+                plugin.getEventManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, this.gamePlayer, this));
+            }
         }
     }
 
@@ -175,7 +179,7 @@ public class BattleGun extends BattleFireArm implements Gun {
 
             Block block = direction.getBlock();
 
-            if (!blocks.contains(block.getType())) {
+            if (!blocks.contains(block.getType()) || !HalfBlocks.isAir(direction)) {
                 block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, block.getType());
                 return;
             }

@@ -1,14 +1,14 @@
 package com.matsg.battlegrounds.api.config;
 
-import com.matsg.battlegrounds.api.item.LoadoutClass;
+import com.matsg.battlegrounds.api.item.Loadout;
 
 import java.util.Collection;
 
 public interface PlayerYaml extends Yaml {
 
-    Collection<LoadoutClass> getLoadoutClasses();
+    Collection<Loadout> getLoadouts();
 
     StoredPlayer getStoredPlayer();
 
-    void saveLoadoutClass(int classNumber, LoadoutClass loadoutClass);
+    void saveLoadout(int classNumber, Loadout loadout);
 }

@@ -28,5 +28,5 @@ public interface WeaponConfig<T extends Weapon> extends Yaml {
      * @param weaponType The weapon type filter
      * @return The whole weapon list only containing
      */
-    Iterable<T> getList(WeaponType weaponType);
+    Collection<T> getList(WeaponType weaponType);
 }

@@ -2,19 +2,19 @@ level:
   '1':
     exp: 0
     unlockables:
-      class: Assault, Shotgun, SMG
-      equipment: Grenade
-      firearm: Five-seven, M16, M1911, MP5, Olympia, SMAW, Smoke Grenade
+      class: Balanced, Close Quarters, Operative
+      equipment: Grenade, Smoke Grenade
+      firearm: Five-seven, M16, M1911, MP5, Olympia, SMAW
       knife: Combat Knife
   '2':
     exp: 300
     unlockables:
-      class: LMG
+      class: Heavy Gunner
       firearm: HK21
   '3':
     exp: 800
     unlockables:
-      class: Sniper
+      class: Marksman
       firearm: Dragunov
   '4':
     exp: 1400

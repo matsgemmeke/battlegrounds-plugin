@@ -64,7 +64,7 @@ public class GameEventHandler implements EventHandler {
         }
 
         GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
-        Weapon weapon = gamePlayer.getLoadoutClass().getWeapon(player.getInventory().getItemInMainHand());
+        Weapon weapon = gamePlayer.getLoadout().getWeapon(player.getInventory().getItemInMainHand());
 
         if (weapon == null) {
             return;

@@ -7,7 +7,10 @@ commands:
     aliases: [b, bg, battleground]
     description: Main command
     usage: /battlegrounds
-  class:
-    aliases: classcreator
-    description: Opens the class manager
-    usage: /class
+  loadout:
+    aliases: loadoutcreator
+    description: Opens the loadout manager
+    usage: /loadout
+  weapons:
+    description: Shows all configured weapons
+    usage: /weapons
