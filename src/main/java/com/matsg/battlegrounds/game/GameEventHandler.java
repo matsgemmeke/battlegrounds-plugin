@@ -1,15 +1,23 @@
 package com.matsg.battlegrounds.game;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent;
+import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.EventHandler;
 import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.api.game.Team;
+import com.matsg.battlegrounds.api.item.ItemSlot;
+import com.matsg.battlegrounds.api.item.Knife;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.util.EnumMessage;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 
 public class GameEventHandler implements EventHandler {
@@ -59,7 +67,7 @@ public class GameEventHandler implements EventHandler {
         Player player = event.getPlayer();
         Game game = plugin.getGameManager().getGame(player);
 
-        if (game == null) {
+        if (game == null || !game.getState().isInProgress()) {
             return;
         }
 
@@ -73,11 +81,64 @@ public class GameEventHandler implements EventHandler {
         weapon.onSwitch();
     }
 
+    public void onPlayerDamageByPlayer(EntityDamageByEntityEvent event) {
+        if (!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Player)) {
+            return;
+        }
+
+        Player player = (Player) event.getEntity();
+        Game game = plugin.getGameManager().getGame(player);
+        boolean differentGame = plugin.getGameManager().getGame((Player) event.getDamager()) != game;
+
+        if (game == null || differentGame) {
+            event.setCancelled(differentGame);
+            return;
+        }
+
+        GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player), damager = game.getPlayerManager().getGamePlayer((Player) event.getDamager());
+
+        if (gamePlayer == null || damager == null || damager.getLoadout() == null) {
+            return;
+        }
+
+        Knife knife = (Knife) damager.getLoadout().getWeapon(ItemSlot.KNIFE);
+        Team team = game.getGameMode().getTeam(gamePlayer);
+
+        event.setCancelled(!game.getState().isInProgress()
+                || team != null && team == game.getGameMode().getTeam(damager)
+                || !(damager.getLoadout().getWeapon(damager.getPlayer().getInventory().getItemInMainHand()) instanceof Knife));
+        event.setDamage(0.0);
+
+        knife.damage(gamePlayer);
+    }
+
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        Player player = event.getEntity();
+        Game game = plugin.getGameManager().getGame(player);
+
+        if (game == null) {
+            return;
+        }
+
+        event.setDeathMessage(null);
+        event.setKeepInventory(true);
+
+        GamePlayerDeathEvent.DeathCause deathCause = GamePlayerDeathEvent.DeathCause.fromDamageCause(player.getLastDamageCause().getCause());
+        GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
+        gamePlayer.setDeaths(gamePlayer.getDeaths() + 1);
+
+        if (deathCause == null) {
+            return; // Only notify the game of death events the game should handle
+        }
+
+        plugin.getServer().getPluginManager().callEvent(new GamePlayerDeathEvent(game, gamePlayer, deathCause));
+    }
+
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         Game game = plugin.getGameManager().getGame(player);
 
-        if (game == null || game.getArena() == null || !game.getState().isInProgress()) {
+        if (game == null || game.getArena() == null || !game.getState().isAllowItems()) {
             return;
         }
 
@@ -97,10 +158,33 @@ public class GameEventHandler implements EventHandler {
         Player player = event.getPlayer();
         Game game = plugin.getGameManager().getGame(player);
 
-        if (game == null || (game.getArena() != null && game.getArena().contains(player.getLocation()))) {
+        if (event.getFrom().getX() == event.getTo().getX() && event.getFrom().getZ() == event.getTo().getZ() || game == null || game.getArena() == null || game.getState().isAllowMove()) {
             return;
         }
 
-        player.teleport(player.getLocation().add(event.getFrom().toVector().subtract(event.getTo().toVector()).normalize()));
+        Arena arena = game.getArena();
+
+        if (!arena.contains(player.getLocation())) {
+            player.teleport(player.getLocation().add(event.getFrom().toVector().subtract(event.getTo().toVector()).normalize()));
+        }
+
+        Location location = game.getArena().getSpawn(game.getPlayerManager().getGamePlayer(player)).getLocation();
+        location.setPitch(player.getLocation().getPitch());
+        location.setYaw(player.getLocation().getYaw());
+        player.teleport(location);
+    }
+
+    public void onRespawn(PlayerRespawnEvent event) {
+        Player player = event.getPlayer();
+        Game game = plugin.getGameManager().getGame(player);
+
+        if (game == null || !game.getState().isInProgress()) {
+            return;
+        }
+
+        GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
+
+        game.getPlayerManager().changeLoadout(gamePlayer, gamePlayer.getLoadout(), true);
+        event.setRespawnLocation(game.getGameMode().getRespawnPoint(gamePlayer).getLocation());
     }
 }

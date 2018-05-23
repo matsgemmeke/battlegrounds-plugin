@@ -41,7 +41,7 @@ public class TeamDeathmatch extends AbstractGameMode {
         List<Team> list = new ArrayList<>();
         for (String teamId : yaml.getConfigurationSection("teams").getKeys(false)) {
             ConfigurationSection section = yaml.getConfigurationSection("teams." + teamId);
-            String[] array = section.getString("color").split(",");
+            String[] array = section.getString("armor-color").split(",");
             Color color = Color.fromRGB(Integer.parseInt(array[0]), Integer.parseInt(array[1]), Integer.parseInt(array[2]));
 
             list.add(new BattleTeam(Integer.parseInt(teamId), section.getString("name"), color, ChatColor.getByChar(section.getString("chatcolor").charAt(0))));
@@ -71,8 +71,8 @@ public class TeamDeathmatch extends AbstractGameMode {
 
     public void onKill(GamePlayer gamePlayer, GamePlayer killer, Weapon weapon) {
         game.broadcastMessage(EnumMessage.DEATH_PLAYER_KILL.getMessage(new Placeholder[] {
-                new Placeholder("bg_killer", getTeam(killer).getChatColor() + killer.getName()),
-                new Placeholder("bg_player", getTeam(gamePlayer).getChatColor() + gamePlayer.getName()),
+                new Placeholder("bg_killer", getTeam(killer).getChatColor() + killer.getName() + ChatColor.WHITE),
+                new Placeholder("bg_player", getTeam(gamePlayer).getChatColor() + gamePlayer.getName() + ChatColor.WHITE),
                 new Placeholder("bg_weapon", weapon.getName())
         }));
     }
@@ -100,6 +100,7 @@ public class TeamDeathmatch extends AbstractGameMode {
             for (Spawn spawn : game.getArena().getSpawns()) {
                 if (spawn.getTeamId() == team.getId() && !spawn.isOccupied()) {
                     gamePlayer.getPlayer().teleport(spawn.getLocation());
+                    spawn.setGamePlayer(gamePlayer);
                     break;
                 }
             }

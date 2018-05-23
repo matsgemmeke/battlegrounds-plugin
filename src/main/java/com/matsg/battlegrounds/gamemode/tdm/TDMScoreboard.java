@@ -6,10 +6,12 @@ import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.gui.scoreboard.AbstractScoreboard;
 import com.matsg.battlegrounds.util.ScoreboardBuilder;
+import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Scoreboard;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -19,6 +21,7 @@ public class TDMScoreboard extends AbstractScoreboard {
         this.game = game;
         this.layout = getScoreboardLayout(yaml.getConfigurationSection("scoreboard.layout"));
         this.scoreboardId = "tdm";
+        this.worlds = new HashSet<>();
 
         for (String world : yaml.getString("scoreboard.worlds").split(",")) {
             if (world.equals("*")) {
@@ -53,7 +56,7 @@ public class TDMScoreboard extends AbstractScoreboard {
         if (index > Integer.MIN_VALUE) {
             builder.removeLine(DisplaySlot.SIDEBAR, index);
             for (Team team : game.getGameMode().getTeams()) {
-                builder.addLine(DisplaySlot.SIDEBAR, index, team.getChatColor() + team.getName() + ": " + team.getScore());
+                builder.addLine(DisplaySlot.SIDEBAR, index, team.getChatColor() + team.getName() + ": " + ChatColor.WHITE + team.getScore());
             }
         }
     }

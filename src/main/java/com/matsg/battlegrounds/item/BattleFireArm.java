@@ -35,7 +35,7 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
                          ReloadType reloadType, FireArmType fireArmType, Sound[] reloadSound, Sound[] shootSound) {
         super(name, description, itemStack, durability);
         this.accuracy = accuracy;
-        this.ammo = ammo;
+        this.ammo = magazine * ammo;
         this.blocks = new ArrayList<>();
         this.cooldown = cooldown;
         this.fireArmType = fireArmType;

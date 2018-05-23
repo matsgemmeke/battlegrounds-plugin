@@ -31,12 +31,12 @@ public class Join extends SubCommand {
         try {
             id = Integer.parseInt(args[1]);
         } catch (Exception e) {
-            EnumMessage.INVALID_ARGUMENT_TYPE.send(sender, new Placeholder("zombies_arg", args[1]));
+            EnumMessage.INVALID_ARGUMENT_TYPE.send(sender, new Placeholder("bg_arg", args[1]));
             return;
         }
 
         if (!plugin.getGameManager().exists(id)) {
-            EnumMessage.GAME_NOT_EXISTS.send(sender, new Placeholder("zombies_game", id));
+            EnumMessage.GAME_NOT_EXISTS.send(sender, new Placeholder("bg_game", id));
             return;
         }
 

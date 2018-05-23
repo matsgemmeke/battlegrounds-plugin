@@ -12,6 +12,8 @@ public class BattleTimeControl extends BattleRunnable implements TimeControl {
     public BattleTimeControl(Game game) {
         this.game = game;
         this.time = 0;
+
+        runTaskTimer(0, 20);
     }
 
     public int getTime() {
@@ -23,7 +25,7 @@ public class BattleTimeControl extends BattleRunnable implements TimeControl {
     }
 
     public String getFormatTime() {
-        return time / 60 + ":" + time % 60;
+        return String.format("%02d", time / 60) + ":" + String.format("%02d", time % 60);
     }
 
     public void run() {

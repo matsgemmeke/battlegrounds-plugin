@@ -27,7 +27,7 @@ public class SelectLoadoutView implements View {
     public SelectLoadoutView(Battlegrounds plugin, Game game, GamePlayer gamePlayer) {
         this.game = game;
         this.gamePlayer = gamePlayer;
-        this.inventory = plugin.getServer().createInventory(this, 27, EnumMessage.SELECT_CLASS.getMessage());
+        this.inventory = plugin.getServer().createInventory(this, 27, EnumMessage.SELECT_LOADOUT.getMessage());
         this.loadouts = new HashMap<>();
 
         int i = 0;
@@ -62,7 +62,7 @@ public class SelectLoadoutView implements View {
         if (loadout == null) {
             return;
         }
-        game.getPlayerManager().changeLoadout(gamePlayer, loadout);
+        game.getPlayerManager().changeLoadout(gamePlayer, loadout, gamePlayer.getLoadout() == null || game.getTimeControl().getTime() <= 10);
         player.closeInventory();
     }
 

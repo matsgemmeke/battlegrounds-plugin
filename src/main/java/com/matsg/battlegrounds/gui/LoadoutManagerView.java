@@ -22,7 +22,7 @@ public class LoadoutManagerView implements View {
     private Map<ItemStack, Loadout> loadouts;
 
     public LoadoutManagerView(Battlegrounds plugin, Player player) {
-        this.inventory = plugin.getServer().createInventory(this, 27, EnumMessage.CLASS_MANAGER.getMessage());
+        this.inventory = plugin.getServer().createInventory(this, 27, EnumMessage.LOADOUT_MANAGER.getMessage());
         this.loadouts = new HashMap<>();
 
         try {
@@ -32,7 +32,7 @@ public class LoadoutManagerView implements View {
                         .addItemFlags(ItemFlag.values())
                         .setAmount(++ i)
                         .setDisplayName("§f" + loadout.getName())
-                        .setLore(EnumMessage.EDIT_CLASS.getMessage())
+                        .setLore(EnumMessage.EDIT_LOADOUT.getMessage())
                         .setUnbreakable(true)
                         .build();
 

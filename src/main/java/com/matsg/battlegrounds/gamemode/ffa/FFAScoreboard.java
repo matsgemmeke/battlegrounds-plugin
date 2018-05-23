@@ -6,10 +6,12 @@ import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.gui.scoreboard.AbstractScoreboard;
 import com.matsg.battlegrounds.util.ScoreboardBuilder;
+import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Scoreboard;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -19,6 +21,7 @@ public class FFAScoreboard extends AbstractScoreboard {
         this.game = game;
         this.layout = getScoreboardLayout(yaml.getConfigurationSection("scoreboard.layout"));
         this.scoreboardId = "ffa";
+        this.worlds = new HashSet<>();
 
         for (String world : yaml.getString("scoreboard.worlds").split(",")) {
             if (world.equals("*")) {
@@ -53,7 +56,7 @@ public class FFAScoreboard extends AbstractScoreboard {
         if (index > Integer.MIN_VALUE) {
             builder.removeLine(DisplaySlot.SIDEBAR, index);
             for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
-                builder.addLine(DisplaySlot.SIDEBAR, index, gamePlayer.getName() + ": " + gamePlayer.getKills());
+                builder.addLine(DisplaySlot.SIDEBAR, index, ChatColor.GOLD + gamePlayer.getName() + ": " + ChatColor.WHITE + gamePlayer.getKills());
             }
         }
     }

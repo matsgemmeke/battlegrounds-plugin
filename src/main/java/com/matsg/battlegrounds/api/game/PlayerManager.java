@@ -11,7 +11,7 @@ public interface PlayerManager {
 
     GamePlayer addPlayer(Player player);
 
-    void changeLoadout(GamePlayer gamePlayer, Loadout loadout);
+    void changeLoadout(GamePlayer gamePlayer, Loadout loadout, boolean apply);
 
     void damagePlayer(GamePlayer gamePlayer, double damage);
 

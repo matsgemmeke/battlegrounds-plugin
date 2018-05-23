@@ -1,6 +1,7 @@
 prefix: "[&6BG&f] "
 
 actionbar-change-loadout: "&fYour loadout will change the next time you spawn"
+actionbar-leave-arena: "&cYou are not allowed to leave the arena"
 
 command-description-addspawn: "adds a player spawn to an arena"
 command-description-createarena: "creates a new arena and adds it to a game"
@@ -46,14 +47,14 @@ gamemode-ffa-short: "FFA"
 gamemode-tdm-name: "Team Deathmatch"
 gamemode-tdm-short: "TDM"
 
-gui-class-manager: "Class Manager"
-gui-edit-class: "&7Click to edit this class"
-gui-select-class: "Select class"
+gui-edit-loadout: "&7Click to edit this loadout"
+gui-loadout-manager: "Loadout Manager"
+gui-select-loadout: "Select loadout"
 gui-weapons-title: "Weapon Categories"
 
 item-armor-helmet: "Kevlar helmet"
 item-armor-vest: "Ballistic vest"
-item-change-loadout: "&fChange loadout"
+item-change-loadout: "Change loadout"
 item-stat-accuracy: "Accuracy"
 item-stat-damage: "Damage"
 item-stat-firerate: "Firerate"

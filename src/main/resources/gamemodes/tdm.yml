@@ -12,7 +12,7 @@ scoreboard:
   # The layout of the game scoreboards
   # Leave "" to remove this line
   layout:
-    line-0: "&6Time: &f%bg_time%s"
+    line-0: "&6Time: &f%bg_time%"
     line-1: " "
     line-2: "%bg_scores%"
     line-4: "  "

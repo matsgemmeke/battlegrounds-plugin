@@ -9,6 +9,7 @@ import com.matsg.battlegrounds.api.player.PlayerStatus;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.gui.scoreboard.LobbyScoreboard;
 import com.matsg.battlegrounds.player.BattleGamePlayer;
+import com.matsg.battlegrounds.util.ActionBar;
 import com.matsg.battlegrounds.util.EnumMessage;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -56,13 +57,18 @@ public class BattlePlayerManager implements PlayerManager {
         return gamePlayer;
     }
 
-    public void changeLoadout(GamePlayer gamePlayer, Loadout loadout) {
+    public void changeLoadout(GamePlayer gamePlayer, Loadout loadout, boolean apply) {
         gamePlayer.setLoadout(loadout);
+        if (!apply) {
+            gamePlayer.sendMessage(ActionBar.CHANGE_LOADOUT);
+            return;
+        }
         for (Weapon weapon : loadout.getWeapons()) {
             Weapon clone = weapon.clone();
             game.getItemRegistry().addItem(clone);
             clone.setGame(game);
             clone.setGamePlayer(gamePlayer);
+            System.out.print(clone.getName());
             clone.update();
         }
     }

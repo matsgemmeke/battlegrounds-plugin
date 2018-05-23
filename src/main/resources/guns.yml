@@ -7,6 +7,7 @@
 #   Ammo:
 #     Magazine: Magazine size
 #     Max: Max ammo
+#     Start: Amount of magazines the gun has when spawned
 #   Description: Description of the gun
 #   DisplayName: The name of the gun
 #   Durability: The durability of the gun (optional for if you want a unique texture)
@@ -42,7 +43,7 @@ BERETTA_93R:
   Ammo:
     Magazine: 15
     Max: 120
-    Start: 45
+    Start: 3
   Description: 3 round burst pistol. High rate of fire with moderate recoil.
   DisplayName: Beretta 93R
   Durability: 1
@@ -50,7 +51,7 @@ BERETTA_93R:
     Burst: 3
     Cooldown: 2
     FireRate: 20
-    ShootSound: ENTITY_BLAZE_HURT-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
+    ShootSound: ENTITY_BLAZE_HURT-5-2-0, ENTITY_FIREWORK_BLAST-5-0-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-5-2-0
     Type: BURST
   GunType: HANDGUN
   HeadshotMultiplier: 1.5
@@ -75,7 +76,7 @@ FIVE-SEVEN:
   Ammo:
     Magazine: 20
     Max: 160
-    Start: 60
+    Start: 3
   Description: Semi-automatic pistol. Versatile and strong overall with a large magazine.
   DisplayName: Five-seven
   Durability: 2
@@ -83,7 +84,7 @@ FIVE-SEVEN:
     Burst: 0
     Cooldown: 2
     FireRate: 1
-    ShootSound: ENTITY_IRONGOLEM_HURT-3-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
+    ShootSound: ENTITY_IRONGOLEM_HURT-5-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-5-2-0
     Type: SEMI_AUTOMATIC
   GunType: HANDGUN
   HeadshotMultiplier: 1.4
@@ -108,7 +109,7 @@ GLOCK_17:
   Ammo:
     Magazine: 17
     Max: 102
-    Start: 51
+    Start: 3
   Description: Semi-automatic pistol. Compatible with select fire to unlock full automatic.
   DisplayName: Glock 17
   Durability: 3
@@ -116,7 +117,7 @@ GLOCK_17:
     Burst: 0
     Cooldown: 2
     FireRate: 1
-    ShootSound: ENTITY_IRONGOLEM_HURT-3-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
+    ShootSound: ENTITY_IRONGOLEM_HURT-5-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-5-2-0
     Type: SEMI_AUTOMATIC
   GunType: HANDGUN
   HeadshotMultiplier: 1.5
@@ -141,7 +142,7 @@ M1911:
   Ammo:
     Magazine: 7
     Max: 70
-    Start: 21
+    Start: 3
   Description: Semi-automatic with medium capacity and power. Effective at close range.
   DisplayName: M1911
   Durability: 4
@@ -149,7 +150,7 @@ M1911:
     Burst: 0
     Cooldown: 2
     FireRate: 1
-    ShootSound: ENTITY_IRONGOLEM_HURT-3-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
+    ShootSound: ENTITY_IRONGOLEM_HURT-5-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-5-2-0
     Type: SEMI_AUTOMATIC
   GunType: HANDGUN
   HeadshotMultiplier: 1.5
@@ -174,7 +175,7 @@ PYTHON:
   Ammo:
     Magazine: 6
     Max: 54
-    Start: 18
+    Start: 3
   Description: Double-action revolver pistol. Uses a 6 round cylinder feed system.
   DisplayName: Python
   Durability: 5
@@ -182,7 +183,7 @@ PYTHON:
     Burst: 0
     Cooldown: 2
     FireRate: 1
-    ShootSound: ENTITY_IRONGOLEM_HURT-3-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
+    ShootSound: ENTITY_IRONGOLEM_HURT-5-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-5-2-0
     Type: SEMI_AUTOMATIC
   GunType: HANDGUN
   HeadshotMultiplier: 1.5
@@ -207,7 +208,7 @@ AKS-74U:
   Ammo:
     Magazine: 30
     Max: 240
-    Start: 90
+    Start: 3
   Description: Fully automatic with high power. Effective at close to medium range.
   DisplayName: AKS-74u
   Durability: 6
@@ -240,7 +241,7 @@ MAC-11:
   Ammo:
     Magazine: 20
     Max: 160
-    Start: 60
+    Start: 3
   Description: Fully automatic with moderate power. Effective at close to medium range.
   DisplayName: MAC-11
   Durability: 7
@@ -273,7 +274,7 @@ MP5:
   Ammo:
     Magazine: 30
     Max: 240
-    Start: 90
+    Start: 3
   Description: Fully automatic with good accuracy. Effective at close to medium range.
   DisplayName: MP5
   Durability: 8
@@ -306,7 +307,7 @@ MP7:
   Ammo:
     Magazine: 40
     Max: 240
-    Start: 80
+    Start: 2
   Description: Fully automatic personal defense weapon. Versatile and strong overall.
   DisplayName: MP7
   Durability: 9
@@ -339,7 +340,7 @@ QCW-05:
   Ammo:
     Magazine: 36
     Max: 288
-    Start: 108
+    Start: 3
   Description: 3 round burst submachine gun. High cyclic fire rate allows for fast consecutive bursts.
   DisplayName: QCW-05
   Durability: 10
@@ -367,48 +368,15 @@ QCW-05:
       Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-0, ENTITY_SKELETON_AMBIENT-1-0-3, BLOCK_WOODEN_DOOR_CLOSE-1-2-6, ENTITY_SKELETON_STEP-1-0-38, BLOCK_WOODEN_DOOR_CLOSE-1-2-42, BLOCK_STONE_BUTTON_CLICK_ON-1-1-44, BLOCK_WOODEN_DOOR_CLOSE-1-2-44
     Type: MAGAZINE
 
-VECTOR:
-  Accuracy: 0.5
-  Ammo:
-    Magazine: 25
-    Max: 200
-    Start: 75
-  Description: Fully automatic submachine gun. Incorporates recoil mitigation technology.
-  DisplayName: Vector
-  Durability: 11
-  FireMode:
-    Burst: 0
-    Cooldown: 0
-    FireRate: 10
-    ShootSound: BLOCK_PISTON_EXTEND-3-2-0, ENTITY_BLAZE_HURT-3-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
-    Type: AUTOMATIC
-  GunType: SUBMACHINE_GUN
-  HeadshotMultiplier: 1.4
-  Range:
-    Long:
-      Damage: 18.0
-      Distance: 50.0
-    Medium:
-      Damage: 25.0
-      Distance: 35.0
-    Short:
-      Damage: 33.0
-      Distance: 20.0
-  Reload:
-    Duration: 48
-    Sound:
-      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-0, ENTITY_SKELETON_AMBIENT-1-0-3, BLOCK_WOODEN_DOOR_CLOSE-1-2-6, ENTITY_SKELETON_STEP-1-0-38, BLOCK_WOODEN_DOOR_CLOSE-1-2-42, BLOCK_STONE_BUTTON_CLICK_ON-1-1-44, BLOCK_WOODEN_DOOR_CLOSE-1-2-44
-    Type: MAGAZINE
-
 UZI:
   Accuracy: 0.4
   Ammo:
     Magazine: 25
     Max: 200
-    Start: 75
+    Start: 3
   Description: Fully automatic with high rate of fire. Effective at close range.
   DisplayName: Uzi
-  Durability: 12
+  Durability: 11
   FireMode:
     Burst: 0
     Cooldown: 0
@@ -433,12 +401,45 @@ UZI:
       Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-0, BLOCK_WOODEN_DOOR_CLOSE-1-2-18, BLOCK_PISTON_EXTEND-1-2-22, BLOCK_WOODEN_DOOR_CLOSE-1-2-32, BLOCK_WOODEN_DOOR_CLOSE-1-2-36
     Type: MAGAZINE
 
+VECTOR:
+  Accuracy: 0.6
+  Ammo:
+    Magazine: 25
+    Max: 200
+    Start: 3
+  Description: Fully automatic submachine gun. Incorporates recoil mitigation technology.
+  DisplayName: Vector
+  Durability: 12
+  FireMode:
+    Burst: 0
+    Cooldown: 0
+    FireRate: 10
+    ShootSound: BLOCK_PISTON_EXTEND-3-2-0, ENTITY_BLAZE_HURT-3-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
+    Type: AUTOMATIC
+  GunType: SUBMACHINE_GUN
+  HeadshotMultiplier: 1.4
+  Range:
+    Long:
+      Damage: 18.0
+      Distance: 50.0
+    Medium:
+      Damage: 25.0
+      Distance: 35.0
+    Short:
+      Damage: 33.0
+      Distance: 20.0
+  Reload:
+    Duration: 48
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-0, ENTITY_SKELETON_AMBIENT-1-0-3, BLOCK_WOODEN_DOOR_CLOSE-1-2-6, ENTITY_SKELETON_STEP-1-0-38, BLOCK_WOODEN_DOOR_CLOSE-1-2-42, BLOCK_STONE_BUTTON_CLICK_ON-1-1-44, BLOCK_WOODEN_DOOR_CLOSE-1-2-44
+    Type: MAGAZINE
+
 AK-47:
   Accuracy: 0.6
   Ammo:
     Magazine: 30
     Max: 240
-    Start: 90
+    Start: 3
   Description: Fully automatic with high power. Effective at medium range.
   DisplayName: AK-47
   Durability: 13
@@ -471,7 +472,7 @@ AUG:
   Ammo:
     Magazine: 30
     Max: 240
-    Start: 90
+    Start: 3
   Description: Bullpup rifle with high rate of fire. Effective at medium range.
   DisplayName: AUG
   Durability: 14
@@ -505,7 +506,7 @@ FAL:
   Ammo:
     Magazine: 20
     Max: 160
-    Start: 60
+    Start: 3
   Description: Semi-automatic assault rifle with high damage. Effective at medium to long range.
   DisplayName: FAL
   Durability: 15
@@ -538,7 +539,7 @@ FAMAS:
   Ammo:
     Magazine: 30
     Max: 240
-    Start: 90
+    Start: 3
   Description: Fully automatic with high rate of fire. Effective at medium range.
   DisplayName: FAMAS
   Durability: 16
@@ -571,7 +572,7 @@ GALIL:
   Ammo:
     Magazine: 35
     Max: 280
-    Start: 105
+    Start: 3
   Description: Fully automatic assault rifle. Effective at medium to long range.
   DisplayName: Galil
   Durability: 17
@@ -599,48 +600,15 @@ GALIL:
       Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-0, BLOCK_WOODEN_DOOR_CLOSE-1-2-5, BLOCK_WOODEN_DOOR_OPEN-1-2-46, BLOCK_PISTON_EXTEND-1-2-46, BLOCK_WOODEN_DOOR_OPEN-1-2-50, BLOCK_PISTON_CONTRACT-1-2-50
     Type: MAGAZINE
 
-M14:
-  Accuracy: 0.7
-  Ammo:
-    Magazine: 20
-    Max: 160
-    Start: 60
-  Description: Single-fire with high power. Effective at medium to long range.
-  DisplayName: M14
-  Durability: 18
-  FireMode:
-    Burst: 0
-    Cooldown: 0
-    FireRate: 1
-    ShootSound: BLOCK_PISTON_EXTEND-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
-    Type: SEMI_AUTOMATIC
-  GunType: ASSAULT_RIFLE
-  HeadshotMultiplier: 1.5
-  Range:
-    Long:
-      Damage: 40.0
-      Distance: 80.0
-    Medium:
-      Damage: 45.0
-      Distance: 50.0
-    Short:
-      Damage: 50.0
-      Distance: 20.0
-  Reload:
-    Duration: 48
-    Sound:
-      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-0, BLOCK_WOODEN_DOOR_CLOSE-1-2-5, BLOCK_WOODEN_DOOR_OPEN-1-2-40, BLOCK_PISTON_EXTEND-1-2-40, BLOCK_WOODEN_DOOR_OPEN-1-2-44, BLOCK_PISTON_CONTRACT-1-2-44
-    Type: MAGAZINE
-
 M16:
   Accuracy: 0.7
   Ammo:
     Magazine: 30
     Max: 240
-    Start: 90
+    Start: 3
   Description: Semi-automatic with three round burst fire. Effective at medium to long range.
   DisplayName: M16
-  Durability: 19
+  Durability: 18
   FireMode:
     Burst: 3
     Cooldown: 2
@@ -670,13 +638,13 @@ QBZ-95:
   Ammo:
     Magazine: 30
     Max: 240
-    Start: 90
+    Start: 3
   Description: Delivers pinpoint 3-round bursts. Effective at medium to long range.
   DisplayName: QBZ-95
-  Durability: 20
+  Durability: 19
   FireMode:
     Burst: 3
-    Cooldown: 2
+    Cooldown: 4
     FireRate: 20
     ShootSound: BLOCK_PISTON_EXTEND-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
     Type: BURST
@@ -703,15 +671,15 @@ SCAR-H:
   Ammo:
     Magazine: 20
     Max: 180
-    Start: 60
+    Start: 3
   Description: Fully automatic assault rifle. Increased damage and range.
   DisplayName: SCAR-H
-  Durability: 21
+  Durability: 20
   FireMode:
     Burst: 0
     Cooldown: 0
     FireRate: 10
-    ShootSound: BLOCK_PISTON_EXTEND-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
+    ShootSound: BLOCK_PISTON_CONTRACT-3-2-0, ENTITY_BLAZE_HURT-3-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
     Type: AUTOMATIC
   GunType: ASSAULT_RIFLE
   HeadshotMultiplier: 1.4
@@ -731,20 +699,53 @@ SCAR-H:
       Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-0, BLOCK_WOODEN_DOOR_CLOSE-1-2-5, BLOCK_WOODEN_DOOR_OPEN-1-2-46, BLOCK_PISTON_EXTEND-1-2-46, BLOCK_WOODEN_DOOR_OPEN-1-2-50, BLOCK_PISTON_CONTRACT-1-2-50
     Type: MAGAZINE
 
+SG_550:
+  Accuracy: 0.7
+  Ammo:
+    Magazine: 20
+    Max: 160
+    Start: 3
+  Description: Single-fire with high power. Effective at medium to long range.
+  DisplayName: SG 550
+  Durability: 21
+  FireMode:
+    Burst: 0
+    Cooldown: 0
+    FireRate: 1
+    ShootSound: BLOCK_PISTON_EXTEND-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
+    Type: SEMI_AUTOMATIC
+  GunType: ASSAULT_RIFLE
+  HeadshotMultiplier: 1.5
+  Range:
+    Long:
+      Damage: 40.0
+      Distance: 80.0
+    Medium:
+      Damage: 45.0
+      Distance: 50.0
+    Short:
+      Damage: 50.0
+      Distance: 20.0
+  Reload:
+    Duration: 48
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-0, BLOCK_WOODEN_DOOR_CLOSE-1-2-5, BLOCK_WOODEN_DOOR_OPEN-1-2-40, BLOCK_PISTON_EXTEND-1-2-40, BLOCK_WOODEN_DOOR_OPEN-1-2-44, BLOCK_PISTON_CONTRACT-1-2-44
+    Type: MAGAZINE
+
 ITHACA_37:
   Accuracy: 0.7
   Ammo:
     Magazine: 5
     Max: 40
-    Start: 15
+    Start: 3
   Description: Pump action shotgun. Effective at close range.
   DisplayName: Ithaca 37
   Durability: 22
   FireMode:
     Burst: 0
-    Cooldown: 6
+    Cooldown: 15
     FireRate: 1
-    ShootSound: ENTITY_BLAZE_HURT-3-2-0, ENTITY_GENERIC_EXPLODE-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0
+    ShootSound: ENTITY_BLAZE_HURT-3-2-0, ENTITY_GENERIC_EXPLODE-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0, BLOCK_IRON_DOOR_CLOSE-1-2-9, BLOCK_WOODEN_DOOR_OPEN-1-2-9
     Type: SEMI_AUTOMATIC
   GunType: SHOTGUN
   HeadshotMultiplier: 1.1
@@ -759,9 +760,9 @@ ITHACA_37:
       Damage: 40.0
       Distance: 10.0
   Reload:
-    Duration: 12
+    Duration: 15
     Sound:
-      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-6, BLOCK_PISTON_EXTEND-1-2-6, BLOCK_WOODEN_DOOR_OPEN-1-2-8, BLOCK_PISTON_CONTRACT-1-2-8
+      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-8, BLOCK_PISTON_EXTEND-1-2-8, BLOCK_WOODEN_DOOR_OPEN-1-2-10, BLOCK_PISTON_CONTRACT-1-2-10
     Type: SHELL
 
 OLYMPIA:
@@ -769,13 +770,13 @@ OLYMPIA:
   Ammo:
     Magazine: 2
     Max: 38
-    Start: 18
+    Start: 4
   Description: Double-barrel over/under shotgun. Effective at medium to close range.
   DisplayName: Olympia
   Durability: 23
   FireMode:
     Burst: 0
-    Cooldown: 4
+    Cooldown: 6
     FireRate: 1
     ShootSound: ENTITY_BLAZE_HURT-3-2-0, ENTITY_GENERIC_EXPLODE-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0
     Type: SEMI_AUTOMATIC
@@ -802,13 +803,13 @@ REMINGTON_870:
   Ammo:
     Magazine: 8
     Max: 64
-    Start: 24
+    Start: 3
   Description: Pump action shotgun. Strong damage and range.
   DisplayName: Remington 870
   Durability: 24
   FireMode:
     Burst: 0
-    Cooldown: 12
+    Cooldown: 15
     FireRate: 1
     ShootSound: ENTITY_BLAZE_HURT-3-2-0, ENTITY_GENERIC_EXPLODE-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0, BLOCK_IRON_DOOR_CLOSE-1-2-9, BLOCK_WOODEN_DOOR_OPEN-1-2-9
     Type: SEMI_AUTOMATIC
@@ -825,7 +826,7 @@ REMINGTON_870:
       Damage: 40.0
       Distance: 10.0
   Reload:
-    Duration: 12
+    Duration: 15
     Sound:
       Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-8, BLOCK_PISTON_EXTEND-1-2-8, BLOCK_WOODEN_DOOR_OPEN-1-2-10, BLOCK_PISTON_CONTRACT-1-2-10
     Type: SHELL
@@ -835,7 +836,7 @@ SAIGA-12K:
   Ammo:
     Magazine: 5
     Max: 40
-    Start: 15
+    Start: 3
   Description: Semi-automatic shotgun with magazine feed system. Deadly at short range.
   DisplayName: Saiga-12K
   Durability: 25
@@ -868,7 +869,7 @@ SPAS-12:
   Ammo:
     Magazine: 8
     Max: 64
-    Start: 24
+    Start: 3
   Description: Semi-automatic combat shotgun. Effective at close range.
   DisplayName: SPAS-12
   Durability: 26
@@ -901,7 +902,7 @@ HK21:
   Ammo:
     Magazine: 50
     Max: 250
-    Start: 100
+    Start: 2
   Description: Fully automatic with high power. Effective at medium to long range.
   DisplayName: HK21
   Durability: 27
@@ -934,7 +935,7 @@ M240:
   Ammo:
     Magazine: 100
     Max: 300
-    Start: 100
+    Start: 1
   Description: Fully automatic with high power. Effective at medium to long range.
   DisplayName: M240
   Durability: 28
@@ -967,7 +968,7 @@ RPK:
   Ammo:
     Magazine: 40
     Max: 320
-    Start: 120
+    Start: 3
   Description: Fully automatic with good power and quick fire rate. Effective at medium to long range.
   DisplayName: RPK
   Durability: 29
@@ -1000,7 +1001,7 @@ DRAGUNOV:
   Ammo:
     Magazine: 10
     Max: 80
-    Start: 30
+    Start: 3
   Description: Semi-automatic sniper rifle. Effective at long range.
   DisplayName: Dragunov
   Durability: 30
@@ -1008,7 +1009,7 @@ DRAGUNOV:
     Burst: 0
     Cooldown: 12
     FireRate: 1
-    ShootSound: ENTITY_BLAZE_HURT-3-1-0, ENTITY_GENERIC_EXPLODE-3-1.5-0, ENTITY_GENERIC_EXPLODE-0.25-0.5-0
+    ShootSound: ENTITY_BLAZE_HURT-10-1-0, ENTITY_GENERIC_EXPLODE-10-1.5-0, ENTITY_GENERIC_EXPLODE-0.5-0.5-0
     Type: SEMI_AUTOMATIC
   GunType: SNIPER_RIFLE
   HeadshotMultiplier: 2.0
@@ -1033,15 +1034,15 @@ M82A1:
   Ammo:
     Magazine: 10
     Max: 80
-    Start: 30
+    Start: 3
   Description: Semi-automatic sniper rifle. Effective at long range.
   DisplayName: M82A1
   Durability: 31
   FireMode:
     Burst: 0
-    Cooldown: 12
+    Cooldown: 16
     FireRate: 1
-    ShootSound: ENTITY_BLAZE_HURT-3-1-0, ENTITY_GENERIC_EXPLODE-3-1.5-0, ENTITY_GENERIC_EXPLODE-0.25-0.5-0
+    ShootSound: ENTITY_BLAZE_HURT-10-1-0, ENTITY_GENERIC_EXPLODE-10-1.5-0, ENTITY_GENERIC_EXPLODE-0.5-0.5-0
     Type: SEMI_AUTOMATIC
   GunType: SNIPER_RIFLE
   HeadshotMultiplier: 2.0
@@ -1066,15 +1067,15 @@ SV-98:
   Ammo:
     Magazine: 10
     Max: 80
-    Start: 30
+    Start: 3
   Description: Bolt action sniper rifle. Effective at long range.
   DisplayName: SV-98
   Durability: 32
   FireMode:
     Burst: 0
-    Cooldown: 12
+    Cooldown: 20
     FireRate: 1
-    ShootSound: ENTITY_BLAZE_HURT-3-1-0, ENTITY_GENERIC_EXPLODE-3-1.5-0, ENTITY_GENERIC_EXPLODE-0.25-0.5-0
+    ShootSound: ENTITY_BLAZE_HURT-10-1-0, ENTITY_GENERIC_EXPLODE-10-1.5-0, ENTITY_GENERIC_EXPLODE-0.5-0.5-0, BLOCK_STONE_BUTTON_CLICK_ON-1-1-14, BLOCK_WOODEN_DOOR_CLOSE-1-2-14
     Type: SEMI_AUTOMATIC
   GunType: SNIPER_RIFLE
   HeadshotMultiplier: 2.0
@@ -1099,7 +1100,7 @@ CHINA_LAKE:
   Ammo:
     Magazine: 3
     Max: 6
-    Start: 3
+    Start: 1
   Description: Pump action grenade launcher. Delivers great direct impact damage.
   DisplayName: China Lake
   Durability: 33
@@ -1132,7 +1133,7 @@ CROSSBOW:
   Ammo:
     Magazine: 3
     Max: 9
-    Start: 3
+    Start: 1
   Description: Fires explosive bolts that detonate after impact.
   DisplayName: Crossbow
   Durability: 34
@@ -1163,7 +1164,7 @@ MGL:
   Ammo:
     Magazine: 6
     Max: 12
-    Start: 6
+    Start: 1
   Description: 6 round semi-automatic grenade launcher.
   DisplayName: MGL
   Durability: 35

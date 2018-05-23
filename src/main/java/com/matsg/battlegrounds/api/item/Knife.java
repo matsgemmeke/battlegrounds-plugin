@@ -1,8 +1,12 @@
 package com.matsg.battlegrounds.api.item;
 
+import com.matsg.battlegrounds.api.player.GamePlayer;
+
 public interface Knife extends Weapon {
 
     Knife clone();
+
+    double damage(GamePlayer gamePlayer);
 
     int getAmount();
 

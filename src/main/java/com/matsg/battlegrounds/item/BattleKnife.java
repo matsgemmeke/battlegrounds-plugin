@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.item;
 
+import com.matsg.battlegrounds.api.event.GamePlayerKillPlayerEvent;
 import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.item.Knife;
 import com.matsg.battlegrounds.api.item.WeaponType;
@@ -86,6 +87,18 @@ public class BattleKnife extends BattleWeapon implements Knife {
                 throwing = false;
             }
         }.runTaskLater(time);
+    }
+
+    public double damage(GamePlayer gamePlayer) {
+        double health = gamePlayer.getPlayer().getHealth();
+        if (health - damage > 0) {
+            gamePlayer.getPlayer().setHealth(health - damage);
+        } else {
+            gamePlayer.getPlayer().setHealth(0.0);
+            System.out.print(hashCode());
+            plugin.getEventManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, this.gamePlayer, this));
+        }
+        return gamePlayer.getPlayer().getHealth();
     }
 
     private String[] getLore() {
