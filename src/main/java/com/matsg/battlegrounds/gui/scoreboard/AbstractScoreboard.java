@@ -3,6 +3,7 @@ package com.matsg.battlegrounds.gui.scoreboard;
 import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.util.ScoreboardBuilder;
@@ -12,6 +13,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team.Option;
+import org.bukkit.scoreboard.Team.OptionStatus;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -39,6 +42,16 @@ public abstract class AbstractScoreboard implements GameScoreboard {
             if (line.contains("line-") && layout.get(line).length() > 0) {
                 builder.setLine(DisplaySlot.SIDEBAR, Integer.parseInt(line.substring(5, line.length())),
                         ChatColor.translateAlternateColorCodes('&', Placeholder.replace(layout.get(line), placeholders)));
+            }
+        }
+    }
+
+    public void addTeams(ScoreboardBuilder builder) {
+        for (Team team : game.getGameMode().getTeams()) {
+            org.bukkit.scoreboard.Team sbTeam = builder.addTeam(team.getName());
+            sbTeam.setOption(Option.NAME_TAG_VISIBILITY, OptionStatus.FOR_OWN_TEAM);
+            for (GamePlayer gamePlayer : team.getPlayers()) {
+                sbTeam.addEntry(gamePlayer.getName());
             }
         }
     }
@@ -77,6 +90,7 @@ public abstract class AbstractScoreboard implements GameScoreboard {
         builder.addObjective(scoreboardId, "dummy", DisplaySlot.SIDEBAR);
         builder.setTitle(DisplaySlot.SIDEBAR, ChatColor.translateAlternateColorCodes('&', layout.get("title")));
         addLayout(builder, layout, placeholders);
+        addTeams(builder);
         return builder.build();
     }
 

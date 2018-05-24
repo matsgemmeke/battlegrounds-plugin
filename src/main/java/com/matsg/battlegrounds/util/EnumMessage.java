@@ -51,7 +51,6 @@ public enum EnumMessage implements Message {
     INVALID_ARGUMENTS("command-invalid-args", false),
     INVALID_BLOCK("setup-invalid-block", false),
     INVALID_SENDER("command-invalid-sender", false),
-    LOADOUT_MANAGER("gui-loadout-manager", false),
     LOBBY_SET("setup-lobby-set", true),
     NO_PERMISSION("command-no-permission", false),
     NO_SELECTION("setup-no-selection", false),
@@ -76,7 +75,9 @@ public enum EnumMessage implements Message {
     TDM_SHORT("gamemode-tdm-short", false),
     TEAM_ASSIGNMENT("game-team-assignment", true),
     TYPE_KNIFE("item-type-knife", false),
-    WEAPONS_TITLE("gui-weapons-title", false);
+    VIEW_EDIT_LOADOUT("gui-view-edit-loadout", false),
+    VIEW_LOADOUT_MANAGER("gui-view-loadout-manager", false),
+    VIEW_WEAPONS("gui-view-weapons", false);
 
     private Battlegrounds plugin;
     private boolean prefix;

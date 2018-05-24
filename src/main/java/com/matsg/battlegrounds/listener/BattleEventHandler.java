@@ -1,19 +1,13 @@
 package com.matsg.battlegrounds.listener;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent;
-import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent.DeathCause;
-import com.matsg.battlegrounds.api.event.GamePlayerKillPlayerEvent;
 import com.matsg.battlegrounds.api.game.EventHandler;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.item.Item;
-import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.gui.View;
 import com.matsg.battlegrounds.util.EnumMessage;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.*;
@@ -64,44 +58,6 @@ public class BattleEventHandler implements EventHandler {
         event.setCancelled(true);
 
         EnumMessage.COMMAND_NOT_ALLOWED.send(player);
-    }
-
-    public void onGamePlayerDeath(GamePlayerDeathEvent event) {
-        event.getGame().broadcastMessage(event.getDeathCause().getDeathMessage());
-    }
-
-    public void onGamePlayerKill(GamePlayerKillPlayerEvent event) {
-        event.getGame().getGameMode().onKill(event.getGamePlayer(), event.getKiller(), event.getWeapon());
-    }
-
-    public void onPlayerDamage(EntityDamageEvent event) {
-        if (!(event.getEntity() instanceof Player)) {
-            return;
-        }
-
-        Player player = (Player) event.getEntity();
-        Game game = plugin.getGameManager().getGame(player);
-
-        event.setCancelled(game != null && !game.getState().isInProgress());
-    }
-
-    public void onPlayerInteract(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
-        Game game = plugin.getGameManager().getGame(player);
-
-        if (game == null || game.getArena() == null || !game.getState().isAllowItems()) {
-            return;
-        }
-
-        GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
-        Item item = game.getItemRegistry().getItemIgnoreMetadata(player.getInventory().getItemInMainHand());
-
-        if (item == null || item instanceof Weapon && ((Weapon) item).getGamePlayer() != gamePlayer) {
-            return;
-        }
-
-        event.setCancelled(true);
-        game.getItemRegistry().interact(item, event.getAction());
     }
 
     public void onPlayerJoin(PlayerJoinEvent event) {

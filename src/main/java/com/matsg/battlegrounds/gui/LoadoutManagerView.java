@@ -18,11 +18,13 @@ import java.util.Map;
 
 public class LoadoutManagerView implements View {
 
+    private Battlegrounds plugin;
     private Inventory inventory;
     private Map<ItemStack, Loadout> loadouts;
 
     public LoadoutManagerView(Battlegrounds plugin, Player player) {
-        this.inventory = plugin.getServer().createInventory(this, 27, EnumMessage.LOADOUT_MANAGER.getMessage());
+        this.plugin = plugin;
+        this.inventory = plugin.getServer().createInventory(this, 27, EnumMessage.VIEW_LOADOUT_MANAGER.getMessage());
         this.loadouts = new HashMap<>();
 
         try {
@@ -58,7 +60,7 @@ public class LoadoutManagerView implements View {
     }
 
     public void onClick(Player player, ItemStack itemStack, ClickType clickType) {
-        System.out.print(loadouts.get(itemStack).getName());
+        player.openInventory(new EditLoadoutView(plugin, loadouts.get(itemStack)).getInventory());
     }
 
     public boolean onClose() {

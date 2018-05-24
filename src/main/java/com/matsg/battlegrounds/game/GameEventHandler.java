@@ -2,10 +2,13 @@ package com.matsg.battlegrounds.game;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent;
+import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent.DeathCause;
+import com.matsg.battlegrounds.api.event.GamePlayerKillPlayerEvent;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.EventHandler;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.Team;
+import com.matsg.battlegrounds.api.item.Item;
 import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.item.Knife;
 import com.matsg.battlegrounds.api.item.Weapon;
@@ -17,6 +20,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 
@@ -63,6 +67,14 @@ public class GameEventHandler implements EventHandler {
         }
     }
 
+    public void onGamePlayerDeath(GamePlayerDeathEvent event) {
+        event.getGame().broadcastMessage(event.getDeathCause().getDeathMessage());
+    }
+
+    public void onGamePlayerKill(GamePlayerKillPlayerEvent event) {
+        event.getGame().getGameMode().onKill(event.getGamePlayer(), event.getKiller(), event.getWeapon());
+    }
+
     public void onItemSwitch(PlayerItemHeldEvent event) {
         Player player = event.getPlayer();
         Game game = plugin.getGameManager().getGame(player);
@@ -79,6 +91,17 @@ public class GameEventHandler implements EventHandler {
         }
 
         weapon.onSwitch();
+    }
+
+    public void onPlayerDamage(EntityDamageEvent event) {
+        if (!(event.getEntity() instanceof Player)) {
+            return;
+        }
+
+        Player player = (Player) event.getEntity();
+        Game game = plugin.getGameManager().getGame(player);
+
+        event.setCancelled(game != null && !game.getState().isInProgress());
     }
 
     public void onPlayerDamageByPlayer(EntityDamageByEntityEvent event) {
@@ -123,15 +146,13 @@ public class GameEventHandler implements EventHandler {
         event.setDeathMessage(null);
         event.setKeepInventory(true);
 
-        GamePlayerDeathEvent.DeathCause deathCause = GamePlayerDeathEvent.DeathCause.fromDamageCause(player.getLastDamageCause().getCause());
-        GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
-        gamePlayer.setDeaths(gamePlayer.getDeaths() + 1);
+        DeathCause deathCause = DeathCause.fromDamageCause(player.getLastDamageCause().getCause());
 
         if (deathCause == null) {
             return; // Only notify the game of death events the game should handle
         }
 
-        plugin.getServer().getPluginManager().callEvent(new GamePlayerDeathEvent(game, gamePlayer, deathCause));
+        plugin.getServer().getPluginManager().callEvent(new GamePlayerDeathEvent(game, game.getPlayerManager().getGamePlayer(player), deathCause));
     }
 
     public void onPlayerInteract(PlayerInteractEvent event) {
@@ -142,16 +163,15 @@ public class GameEventHandler implements EventHandler {
             return;
         }
 
-        event.setCancelled(true);
-
         GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
-        Weapon weapon = game.getItemRegistry().getWeapon(player, player.getInventory().getItemInMainHand());
+        Item item = game.getItemRegistry().getItemIgnoreMetadata(player.getInventory().getItemInMainHand());
 
-        if (gamePlayer == null || !gamePlayer.getStatus().canInteract() || weapon == null) {
+        if (item == null || item instanceof Weapon && ((Weapon) item).getGamePlayer() != gamePlayer) {
             return;
         }
 
-        game.getItemRegistry().interact(weapon, event.getAction());
+        event.setCancelled(true);
+        game.getItemRegistry().interact(item, event.getAction());
     }
 
     public void onPlayerMove(PlayerMoveEvent event) {

@@ -39,7 +39,7 @@ level:
   '9':
     exp: 9900
     unlockables:
-      firearm: M14
+      firearm: SG 550
   '10':
     exp: 12700
     unlockables:
@@ -129,7 +129,7 @@ level:
   '34':
     exp: 235000
     unlockables:
-      firearm: M60
+      firearm: M240
   '35':
     exp: 252200
     unlockables:

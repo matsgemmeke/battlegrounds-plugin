@@ -10,6 +10,7 @@ import com.matsg.battlegrounds.item.EquipmentType;
 import com.matsg.battlegrounds.item.FireArmType;
 import com.matsg.battlegrounds.util.EnumMessage;
 import com.matsg.battlegrounds.util.ItemStackBuilder;
+import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -22,15 +23,14 @@ import java.util.List;
 
 public class WeaponsView implements View {
 
-    private static Battlegrounds plugin;
-    private static Inventory inventory;
-    private static List<Weapon> weapons;
-    private static WeaponsView instance;
+    private Battlegrounds plugin;
+    private Inventory inventory;
+    private List<Weapon> weapons;
 
-    private WeaponsView(Battlegrounds pl) {
-        plugin = pl;
-        inventory = plugin.getServer().createInventory(this, 27, EnumMessage.WEAPONS_TITLE.getMessage());
-        weapons = getWeaponList(pl);
+    private WeaponsView(Battlegrounds plugin) {
+        this.plugin = plugin;
+        this.inventory = plugin.getServer().createInventory(this, 27, EnumMessage.VIEW_WEAPONS.getMessage());
+        this.weapons = getWeaponList(plugin);
 
         // Add all firearm class types
         for (FireArmType fireArmType : FireArmType.values()) {
@@ -53,15 +53,22 @@ public class WeaponsView implements View {
         }
     }
 
-    public static WeaponsView getInstance() {
-        if (instance == null) {
-            instance = new WeaponsView(BattlegroundsPlugin.getPlugin());
-        }
-        return instance;
+    private void addWeapon(Weapon weapon) {
+        inventory.addItem(new ItemStackBuilder(weapon.getItemStack().clone())
+                .addItemFlags(ItemFlag.values())
+                .setDisplayName("§f" + weapon.getType().getName())
+                .setLore(getLore(weapon, 30))
+                .setUnbreakable(true)
+                .build());
     }
 
-    private static void addWeapon(Weapon weapon) {
-        inventory.addItem(new ItemStackBuilder(weapon.getItemStack().clone()).addItemFlags(ItemFlag.values()).setDisplayName("§f" + weapon.getType().getName()).setUnbreakable(true).build());
+    private String[] getLore(Weapon weapon, int charsPerLine) {
+        List<String> lore = weapon.getItemStack().getItemMeta().getLore();
+        lore.add(" ");
+        for (String word : weapon.getDescription().split(" ")) {
+            //Stuff
+        }
+        return lore.toArray(new String[lore.size()]);
     }
 
     private static List<Weapon> getWeaponList(Battlegrounds plugin) {

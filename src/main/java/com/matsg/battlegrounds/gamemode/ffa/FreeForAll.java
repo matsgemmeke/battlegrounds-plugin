@@ -56,6 +56,9 @@ public class FreeForAll extends AbstractGameMode {
                 new Placeholder("bg_player", gamePlayer.getName()),
                 new Placeholder("bg_weapon", weapon.getName())
         }));
+        gamePlayer.setDeaths(gamePlayer.getDeaths() + 1);
+        killer.addScore(100);
+        killer.setKills(killer.getKills() + 1);
     }
 
     public void onStart() {

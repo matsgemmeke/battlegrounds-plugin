@@ -75,6 +75,9 @@ public class TeamDeathmatch extends AbstractGameMode {
                 new Placeholder("bg_player", getTeam(gamePlayer).getChatColor() + gamePlayer.getName() + ChatColor.WHITE),
                 new Placeholder("bg_weapon", weapon.getName())
         }));
+        gamePlayer.setDeaths(gamePlayer.getDeaths() + 1);
+        killer.addScore(100);
+        killer.setKills(killer.getKills() + 1);
     }
 
     public void onStart() {

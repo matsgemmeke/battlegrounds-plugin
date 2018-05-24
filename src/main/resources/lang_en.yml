@@ -48,9 +48,10 @@ gamemode-tdm-name: "Team Deathmatch"
 gamemode-tdm-short: "TDM"
 
 gui-edit-loadout: "&7Click to edit this loadout"
-gui-loadout-manager: "Loadout Manager"
 gui-select-loadout: "Select loadout"
-gui-weapons-title: "Weapon Categories"
+gui-view-edit-loadout: "Edit loadout %bg_loadout%"
+gui-view-loadout-manager: "Loadout Manager"
+gui-view-weapons: "Weapon Categories"
 
 item-armor-helmet: "Kevlar helmet"
 item-armor-vest: "Ballistic vest"
