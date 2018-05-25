@@ -95,7 +95,6 @@ public class BattleKnife extends BattleWeapon implements Knife {
             gamePlayer.getPlayer().setHealth(health - damage);
         } else {
             gamePlayer.getPlayer().setHealth(0.0);
-            System.out.print(hashCode());
             plugin.getEventManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, this.gamePlayer, this));
         }
         return gamePlayer.getPlayer().getHealth();

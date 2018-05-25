@@ -2,6 +2,7 @@ package com.matsg.battlegrounds.api;
 
 import com.matsg.battlegrounds.api.config.BattlegroundsConfig;
 import com.matsg.battlegrounds.api.config.CacheYaml;
+import com.matsg.battlegrounds.api.config.LevelConfig;
 import com.matsg.battlegrounds.api.config.WeaponConfig;
 import com.matsg.battlegrounds.api.item.Equipment;
 import com.matsg.battlegrounds.api.item.FireArm;
@@ -59,6 +60,13 @@ public interface Battlegrounds extends Plugin {
      * @return The knife configuration
      */
     WeaponConfig<Knife> getKnifeConfig();
+
+    /**
+     * Gets the level configurations of the plugin
+     *
+     * @return The level configuration
+     */
+    LevelConfig getLevelConfig();
 
     /**
      * Gets the player data storage of the plugin. This method will either return the factory

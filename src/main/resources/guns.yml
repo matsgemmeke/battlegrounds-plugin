@@ -209,7 +209,7 @@ AKS-74U:
     Magazine: 30
     Max: 240
     Start: 3
-  Description: Fully automatic with high power. Effective at close to medium range.
+  Description: Fully automatic submachine gun. Increased range and reduced recoil.
   DisplayName: AKS-74u
   Durability: 6
   FireMode:
@@ -270,7 +270,7 @@ MAC-11:
     Type: MAGAZINE
 
 MP5:
-  Accuracy: 0.5
+  Accuracy: 0.6
   Ammo:
     Magazine: 30
     Max: 240
@@ -303,7 +303,7 @@ MP5:
     Type: MAGAZINE
 
 MP7:
-  Accuracy: 0.6
+  Accuracy: 0.5
   Ammo:
     Magazine: 40
     Max: 240
@@ -606,7 +606,7 @@ M16:
     Magazine: 30
     Max: 240
     Start: 3
-  Description: Semi-automatic with three round burst fire. Effective at medium to long range.
+  Description: Semi-automatic with 3 round burst fire. Effective at medium to long range.
   DisplayName: M16
   Durability: 18
   FireMode:
@@ -823,7 +823,7 @@ REMINGTON_870:
       Damage: 25.0
       Distance: 20.0
     Short:
-      Damage: 40.0
+      Damage: 50.0
       Distance: 10.0
   Reload:
     Duration: 15
@@ -1068,7 +1068,7 @@ SV-98:
     Magazine: 10
     Max: 80
     Start: 3
-  Description: Bolt action sniper rifle. Effective at long range.
+  Description: Bolt-action sniper rifle. Effective at long range.
   DisplayName: SV-98
   Durability: 32
   FireMode:

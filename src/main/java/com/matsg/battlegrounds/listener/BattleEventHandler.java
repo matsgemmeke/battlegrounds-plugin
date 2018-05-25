@@ -62,10 +62,10 @@ public class BattleEventHandler implements EventHandler {
 
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        if (plugin.getPlayerStorage().contains(player.getUniqueId())) {
-            return;
+        if (!plugin.getPlayerStorage().contains(player.getUniqueId())) {
+            plugin.getPlayerStorage().registerPlayer(player.getUniqueId(), player.getName());
         }
-        plugin.getPlayerStorage().registerPlayer(player.getUniqueId(), player.getName());
+        plugin.getPlayerStorage().updatePlayer(player);
     }
 
     public void onViewItemClick(InventoryClickEvent event) {

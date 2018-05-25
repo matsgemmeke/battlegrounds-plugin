@@ -81,3 +81,6 @@ game-sign-layout:
   line-1: "&lGame %bg_game%"
   line-2: "%bg_arena%"
   line-3: "&8&l%bg_players%/%bg_maxplayers%"
+
+# The minimum level players need to be to get access to custom loadout creation
+loadout-creation-level: 4

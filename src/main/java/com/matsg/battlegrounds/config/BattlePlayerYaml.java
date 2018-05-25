@@ -19,8 +19,16 @@ public class BattlePlayerYaml extends AbstractYaml implements PlayerYaml {
         this.uuid = uuid;
     }
 
+    public void createDefaultAttributes() {
+        set("Stats.Exp", 0);
+        set("Stats.All.Deaths", 0);
+        set("Stats.All.Headshots", 0);
+        set("Stats.All.Kills", 0);
+        save();
+    }
+
     private Loadout getLoadout(int classNumber) {
-        ConfigurationSection section = getConfigurationSection("Class." + classNumber);
+        ConfigurationSection section = getConfigurationSection("Loadout." + classNumber);
         return new BattleLoadout(
                 section.getString("Name"),
                 plugin.getFireArmConfig().get(section.getString("Primary")),
@@ -41,12 +49,17 @@ public class BattlePlayerYaml extends AbstractYaml implements PlayerYaml {
         return new LocalStoredPlayer(uuid, this);
     }
 
-    public void saveLoadout(int classNumber, Loadout loadout) {
-        set("Class." + classNumber + ".Name", loadout.getName());
-        set("Class." + classNumber + ".Primary", loadout.getPrimary().getName());
-        set("Class." + classNumber + ".Secondary", loadout.getSecondary().getName());
-        set("Class." + classNumber + ".Equipment", loadout.getEquipment().getName());
-        set("Class." + classNumber + ".Knife", loadout.getKnife().getName());
+    public void saveLoadout(int loadoutNumber, Loadout loadout) {
+        set("Loadout." + loadoutNumber + ".Name", loadout.getName());
+        set("Loadout." + loadoutNumber + ".Primary", loadout.getPrimary().getName());
+        set("Loadout." + loadoutNumber + ".Secondary", loadout.getSecondary().getName());
+        set("Loadout." + loadoutNumber + ".Equipment", loadout.getEquipment().getName());
+        set("Loadout." + loadoutNumber + ".Knife", loadout.getKnife().getName());
+        save();
+    }
+
+    public void updateName(String name) {
+        set("Name", name);
         save();
     }
 
@@ -60,11 +73,11 @@ public class BattlePlayerYaml extends AbstractYaml implements PlayerYaml {
         private LocalStoredPlayer(UUID uuid, PlayerYaml playerYaml) {
             this.uuid = uuid;
             this.playerYaml = playerYaml;
-            this.deaths = getInt("Global.Deaths");
-            this.exp = getInt("Global.Exp");
-            this.headshots = getInt("Global.Headshots");
-            this.kills = getInt("Global.Kills");
-            this.name = getString("Global.Name");
+            this.deaths = getInt("Stats.All.Deaths");
+            this.exp = getInt("Stats.All.Exp");
+            this.headshots = getInt("Stats.All.Headshots");
+            this.kills = getInt("Stats.All.Kills");
+            this.name = getString("Name");
         }
 
         public int getDeaths() {

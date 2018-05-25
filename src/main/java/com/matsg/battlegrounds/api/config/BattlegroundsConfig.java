@@ -16,6 +16,7 @@ public final class BattlegroundsConfig extends AbstractYaml {
     public final boolean broadcastChat = getBoolean("game-broadcast-chat");
     public final ConfigurationSection lobbyScoreboard = getConfigurationSection("game-scoreboard.lobby");
     public final int explosiveCooldown = getInt("game-explosive-cooldown");
+    public final int loadoutCreationLevel = getInt("loadout-creation-level");
     public final double firearmAccuracy = getDouble("game-firearm-accuracy");
     public final double launcherVelocity = getDouble("game-launcher-velocity");
     public final List<String> allowedCommands = getStringList("game-allowed-commands");

@@ -105,6 +105,7 @@ public abstract class AbstractScoreboard implements GameScoreboard {
     protected Scoreboard updateScoreboard(Map<String, String> layout, Scoreboard scoreboard, Placeholder... placeholders) {
         ScoreboardBuilder builder = new ScoreboardBuilder(scoreboard).clearLines();
         addLayout(builder, layout, placeholders);
+        addTeams(builder);
         return builder.build();
     }
 }

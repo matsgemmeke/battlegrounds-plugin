@@ -76,19 +76,34 @@ public class BattleGun extends BattleFireArm implements Gun {
             return Collections.EMPTY_LIST;
         }
         List<Location> list = new ArrayList<>();
-        double spreadDensity = 50.0; // Spread density constant
-        for (int i = 0; i < amount; i ++) {
-            double degrees = i / amount * 360;
+        float spread = (float) 0.5;
 
-            Location spread = direction.clone();
-            float pitch = (float) (spread.getPitch() + degrees / spreadDensity);
-            float yaw = (float) (spread.getYaw() + (degrees - 180) / spreadDensity);
+        Location bottom = direction.clone(), left = direction.clone(), right = direction.clone(), top = direction.clone();
+        bottom.setPitch(bottom.getPitch() - spread);
+        left.setYaw(left.getYaw() - spread);
+        right.setYaw(right.getYaw() + spread);
+        top.setPitch(top.getPitch() + spread);
 
-            spread.setPitch(pitch);
-            spread.setYaw(yaw);
+        list.add(bottom);
+        list.add(left);
+        list.add(right);
+        list.add(top);
 
-            list.add(spread);
-        }
+        //TODO it may be a good idea to actually get this working soon
+//        double spreadDensity = 25.0; // Spread density constant. Higher values mean more density
+//        for (double i = 0; i < amount; i ++) {
+//            double degrees = i / amount * 360;
+//            double s = degrees % 180 == 0 ? 0 : degrees - 180;
+//
+//            float pitch = (float) (direction.getPitch() + (degrees - 180) * spreadDensity);
+//            float yaw = (float) (direction.getYaw() + m / spreadDensity);
+//
+//            Location spread = direction.clone();
+//            spread.setPitch(pitch);
+//            spread.setYaw(yaw);
+//
+//            list.add(spread);
+//        }
         return list;
     }
 
@@ -101,7 +116,7 @@ public class BattleGun extends BattleFireArm implements Gun {
             }
             Hitbox hitbox = Hitbox.getHitbox(gamePlayer.getLocation().getY(), location.getY());
             gamePlayer.getPlayer().damage(0.01); // Create a fake damage animation
-            game.getPlayerManager().damagePlayer(gamePlayer, bullet.getDamage(hitbox, gamePlayer.getLocation().distance(this.gamePlayer.getLocation())) / 3);
+            game.getPlayerManager().damagePlayer(gamePlayer, bullet.getDamage(hitbox, gamePlayer.getLocation().distance(this.gamePlayer.getLocation())) / 5);
             hits ++;
             if (gamePlayer.getPlayer().isDead()) {
                 plugin.getEventManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, this.gamePlayer, this));

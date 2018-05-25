@@ -68,7 +68,6 @@ public class BattlePlayerManager implements PlayerManager {
             game.getItemRegistry().addItem(clone);
             clone.setGame(game);
             clone.setGamePlayer(gamePlayer);
-            System.out.print(clone.getName());
             clone.update();
         }
     }

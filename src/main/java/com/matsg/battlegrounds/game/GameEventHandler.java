@@ -121,14 +121,14 @@ public class GameEventHandler implements EventHandler {
         GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player), damager = game.getPlayerManager().getGamePlayer((Player) event.getDamager());
 
         if (gamePlayer == null || damager == null || damager.getLoadout() == null) {
+            event.setCancelled(true);
             return;
         }
 
         Knife knife = (Knife) damager.getLoadout().getWeapon(ItemSlot.KNIFE);
         Team team = game.getGameMode().getTeam(gamePlayer);
 
-        event.setCancelled(!game.getState().isInProgress()
-                || team != null && team == game.getGameMode().getTeam(damager)
+        event.setCancelled(team != null && team == game.getGameMode().getTeam(damager)
                 || !(damager.getLoadout().getWeapon(damager.getPlayer().getInventory().getItemInMainHand()) instanceof Knife));
         event.setDamage(0.0);
 

@@ -97,7 +97,7 @@ public class FireArmConfig extends AbstractYaml implements WeaponConfig<FireArm>
                 try {
                     return new BattleGun(
                             name,
-                            getString("Description"),
+                            section.getString("Description"),
                             new ItemStackBuilder(Material.valueOf(plugin.getBattlegroundsConfig().getWeaponMaterial("firearm"))).build(),
                             (short) new AttributeValidator(section.getInt("Durability"), "Durability").shouldBeHigherThan(0),
                             (int) new AttributeValidator(section.getInt("Ammo.Magazine"), "Magazine").shouldBeHigherThan(0),
@@ -126,7 +126,7 @@ public class FireArmConfig extends AbstractYaml implements WeaponConfig<FireArm>
                 try {
                     return new BattleLauncher(
                             name,
-                            getString("Description"),
+                            section.getString("Description"),
                             new ItemStackBuilder(Material.valueOf(plugin.getBattlegroundsConfig().getWeaponMaterial("firearm"))).build(),
                             (short) new AttributeValidator(section.getInt("Durability"), "Durability").shouldBeHigherThan(0),
                             (int) new AttributeValidator(section.getInt("Ammo.Magazine"), "Magazine").shouldBeHigherThan(0),

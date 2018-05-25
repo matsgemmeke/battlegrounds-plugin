@@ -1,183 +1,139 @@
 level:
   '1':
     exp: 0
-    unlockables:
-      class: Balanced, Close Quarters, Operative
-      equipment: Grenade, Smoke Grenade
-      firearm: Five-seven, M16, M1911, MP5, Olympia, SMAW
-      knife: Combat Knife
+    unlocks: Balanced, Close Quarters, Operative, Grenade, Smoke Grenade, Five-seven, M16, M1911, MP5, Olympia, SMAW, Combat Knife
   '2':
     exp: 300
-    unlockables:
-      class: Heavy Gunner
-      firearm: HK21
+    unlocks: Heavy Gunner, HK21
   '3':
     exp: 800
-    unlockables:
-      class: Marksman
-      firearm: Dragunov
+    unlocks: Marksman, Dragunov
   '4':
     exp: 1400
-    unlockables:
-      firearm: Glock 17
+    unlocks: Glock 17
   '5':
     exp: 2400
-    unlockables:
-      firearm: FAMAS
+    unlocks: FAMAS
   '6':
     exp: 3800
-    unlockables:
-      firearm: MAC-11
+    unlocks: MAC-11
   '7':
     exp: 5500
-    unlockables:
-      firearm: RPK
+    unlocks: RPK
   '8':
     exp: 7500
-    unlockables:
-      firearm: Ithaca 37
+    unlocks: Ithaca 37
   '9':
     exp: 9900
-    unlockables:
-      firearm: SG 550
+    unlocks: SG 550
   '10':
     exp: 12700
-    unlockables:
-      equipment: Flashbang
+    unlocks: Flashbang
   '11':
     exp: 15800
-    unlockables:
-      firearm: QCW-05
+    unlocks: QCW-05
   '12':
     exp: 19300
-    unlockables:
-      firearm: RPG-7
+    unlocks: RPG-7
   '13':
     exp: 23300
   '14':
     exp: 27800
-    unlockables:
-      equipment: Semtex
+    unlocks: Semtex
   '15':
     exp: 32700
-    unlockables:
-      knife: Ballistic Knife
+    unlocks: Ballistic Knife
   '16':
     exp: 38000
-    unlockables:
-      equipment: Shock Charge
+    unlocks: Shock Charge
   '17':
     exp: 43900
-    unlockables:
-      firearm: AKS-74u
+    unlocks: AKS-74u
   '18':
     exp: 50400
-    unlockables:
-      firearm: Python
+    unlocks: Python
   '19':
     exp: 57200
-    unlockables:
-      firearm: Remington 870
+    unlocks: Remington 870
   '20':
     exp: 64500
-    unlockables:
-      firearm: Galil
+    unlocks: Galil
   '21':
     exp: 73000
-    unlockables:
-      equipment: Decoy Grenade
+    unlocks: Decoy Grenade
   '22':
     exp: 81700
   '23':
     exp: 91000
-    unlockables:
-      firearm: Uzi
+    unlocks: Uzi
   '24':
     exp: 109000
-    unlockables:
-      firearm: SPAS-12
+    unlocks: SPAS-12
   '25':
     exp: 113400
-    unlockables:
-      firearm: Crossbow
+    unlocks: Crossbow
   '26':
     exp: 122500
-    unlockables:
-      firearm: SCAR-H
+    unlocks: SCAR-H
   '27':
     exp: 134300
-    unlockables:
-      firearm: M82A1
+    unlocks: M82A1
   '28':
     exp: 146700
   '29':
     exp: 159700
-    unlockables:
-      firearm: Vector
+    unlocks: Vector
   '30':
     exp: 173400
-    unlockables:
-      firearm: MGL
+    unlocks: MGL
   '31':
     exp: 187800
   '32':
     exp: 202800
-    unlockables:
-      firearm: FAL
+    unlocks: FAL
   '33':
     exp: 218600
   '34':
     exp: 235000
-    unlockables:
-      firearm: M240
+    unlocks: M240
   '35':
     exp: 252200
-    unlockables:
-      firearm: MP7
+    unlocks: MP7
   '36':
     exp: 270000
-    unlockables:
-      equipment: Claymore
+    unlocks: Claymore
   '37':
     exp: 288600
   '38':
     exp: 308000
-    unlockables:
-      firearm: AK-47
+    unlocks: AK-47
   '39':
     exp: 328100
-    unlockables:
-      knife: Hatchet
+    unlocks: Hatchet
   '40':
     exp: 348900
   '41':
     exp: 371000
-    unlockables:
-      firearm: Beretta 93R
+    unlocks: Beretta 93R
   '42':
     exp: 392900
-    unlockables:
-      firearm: SV-98
+    unlocks: SV-98
   '43':
     exp: 416100
-    unlockables:
-      firearm: QBZ-95
+    unlocks: QBZ-95
   '44':
     exp: 440100
-    unlockables:
-      firearm: Saiga-12K
+    unlocks: Saiga-12K
   '45':
     exp: 464900
   '46':
     exp: 490500
-    unlockables:
-      firearm: AUG
+    unlocks: AUG
   '47':
     exp: 517000
   '48':
     exp: 544300
-    unlockables:
-      firearm: China Lake
+    unlocks: China Lake
   '49':
     exp: 572400
   '50':

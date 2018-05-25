@@ -12,6 +12,6 @@ public class WeaponsCommand extends Command {
     }
 
     public void execute(CommandSender sender, String[] args) {
-        ((Player) sender).openInventory(WeaponsView.getInstance().getInventory());
+        ((Player) sender).openInventory(new WeaponsView(plugin).getInventory());
     }
 }

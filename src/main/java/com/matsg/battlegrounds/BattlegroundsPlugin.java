@@ -3,6 +3,7 @@ package com.matsg.battlegrounds;
 import com.matsg.battlegrounds.api.*;
 import com.matsg.battlegrounds.api.config.BattlegroundsConfig;
 import com.matsg.battlegrounds.api.config.CacheYaml;
+import com.matsg.battlegrounds.api.config.LevelConfig;
 import com.matsg.battlegrounds.api.config.WeaponConfig;
 import com.matsg.battlegrounds.api.item.Equipment;
 import com.matsg.battlegrounds.api.item.FireArm;
@@ -32,6 +33,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
     private CacheYaml cache;
     private EventManager eventManager;
     private GameManager gameManager;
+    private LevelConfig levelConfig;
     private List<BattlegroundsExtension> extensions;
     private PlayerStorage playerStorage;
     //private SQLConfig sqlConfig;
@@ -99,6 +101,10 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         return knifeConfig;
     }
 
+    public LevelConfig getLevelConfig() {
+        return levelConfig;
+    }
+
     public PlayerStorage getPlayerStorage() {
         return playerStorage;
     }
@@ -159,6 +165,12 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
             knifeConfig = new KnifeConfig(this);
         } catch (Exception e) {
             throw new StartupFailedException("Failed to load weapon configuration files!", e);
+        }
+
+        try {
+            levelConfig = new BattleLevelConfig(this);
+        } catch (Exception e) {
+            throw new StartupFailedException("Failed to load the level configuration!", e);
         }
 
         try {

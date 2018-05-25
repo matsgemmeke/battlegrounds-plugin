@@ -7,6 +7,7 @@ import com.matsg.battlegrounds.api.player.OfflineGamePlayer;
 import com.matsg.battlegrounds.api.player.PlayerStorage;
 import com.matsg.battlegrounds.config.BattlePlayerYaml;
 import com.matsg.battlegrounds.config.DefaultClasses;
+import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
@@ -71,6 +72,7 @@ public class LocalPlayerStorage implements PlayerStorage {
     public StoredPlayer registerPlayer(UUID uuid, String name) {
         try {
             PlayerYaml playerYaml = new BattlePlayerYaml(plugin, uuid);
+            playerYaml.createDefaultAttributes();
             for (int i = 1; i <= 5; i ++) {
                 playerYaml.saveLoadout(i, defaultClasses.getList().get(i - 1));
             }
@@ -79,5 +81,9 @@ public class LocalPlayerStorage implements PlayerStorage {
             return null;
         }
         return getStoredPlayer(uuid);
+    }
+
+    public void updatePlayer(Player player) {
+        getPlayerYaml(player.getUniqueId()).updateName(player.getName());
     }
 }

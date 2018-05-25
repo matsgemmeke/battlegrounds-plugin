@@ -100,3 +100,5 @@ title-countdown: "&f%bg_countdown%,&6Game starting in,0,25,0"
 title-game-fisish: "%bg_result%,%bg_reason%,10,180,10"
 title-ffa-start: "&fFree-for-all,&6Eliminate other players,10,30,10"
 title-tdm-start: "&fTeam Deathmatch,&6Eliminate enemy players,10,30,10"
+
+util-custom-loadout-locked: "&cYou have to be level %bg_level% or above to create custom loadouts."

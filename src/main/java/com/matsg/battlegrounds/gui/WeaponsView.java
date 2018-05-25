@@ -1,6 +1,5 @@
 package com.matsg.battlegrounds.gui;
 
-import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.item.Equipment;
 import com.matsg.battlegrounds.api.item.FireArm;
@@ -10,7 +9,6 @@ import com.matsg.battlegrounds.item.EquipmentType;
 import com.matsg.battlegrounds.item.FireArmType;
 import com.matsg.battlegrounds.util.EnumMessage;
 import com.matsg.battlegrounds.util.ItemStackBuilder;
-import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -27,7 +25,7 @@ public class WeaponsView implements View {
     private Inventory inventory;
     private List<Weapon> weapons;
 
-    private WeaponsView(Battlegrounds plugin) {
+    public WeaponsView(Battlegrounds plugin) {
         this.plugin = plugin;
         this.inventory = plugin.getServer().createInventory(this, 27, EnumMessage.VIEW_WEAPONS.getMessage());
         this.weapons = getWeaponList(plugin);
@@ -57,19 +55,10 @@ public class WeaponsView implements View {
         inventory.addItem(new ItemStackBuilder(weapon.getItemStack().clone())
                 .addItemFlags(ItemFlag.values())
                 .setDisplayName("§f" + weapon.getType().getName())
-                .setLore(getLore(weapon, 30))
                 .setUnbreakable(true)
                 .build());
     }
 
-    private String[] getLore(Weapon weapon, int charsPerLine) {
-        List<String> lore = weapon.getItemStack().getItemMeta().getLore();
-        lore.add(" ");
-        for (String word : weapon.getDescription().split(" ")) {
-            //Stuff
-        }
-        return lore.toArray(new String[lore.size()]);
-    }
 
     private static List<Weapon> getWeaponList(Battlegrounds plugin) {
         List<Weapon> list = new ArrayList<>();
@@ -101,16 +90,16 @@ public class WeaponsView implements View {
         if (weapon instanceof Equipment) {
             Equipment equipment = (Equipment) weapon;
             weaponList.addAll(plugin.getEquipmentConfig().getList(equipment.getType()));
-            player.openInventory(new WeaponTypeView(plugin, equipment.getType(), weaponList).getInventory());
+            player.openInventory(new WeaponTypeView(plugin, equipment.getType().getName(), weaponList, this).getInventory());
         }
         if (weapon instanceof FireArm) {
             FireArm fireArm = (FireArm) weapon;
             weaponList.addAll(plugin.getFireArmConfig().getList(fireArm.getType()));
-            player.openInventory(new WeaponTypeView(plugin, fireArm.getType(), weaponList).getInventory());
+            player.openInventory(new WeaponTypeView(plugin, fireArm.getType().getName(), weaponList, this).getInventory());
         }
         if (weapon instanceof Knife) {
             weaponList.addAll(plugin.getKnifeConfig().getList());
-            player.openInventory(new WeaponTypeView(plugin, EnumMessage.TYPE_KNIFE.getMessage(), weaponList).getInventory());
+            player.openInventory(new WeaponTypeView(plugin, EnumMessage.TYPE_KNIFE.getMessage(), weaponList, this).getInventory());
         }
     }
 
