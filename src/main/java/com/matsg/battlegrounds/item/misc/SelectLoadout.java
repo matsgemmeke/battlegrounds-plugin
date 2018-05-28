@@ -19,8 +19,6 @@ public class SelectLoadout extends BattleItem {
         this.gamePlayer = gamePlayer;
         this.itemSlot = ItemSlot.MISCELLANEOUS;
         this.itemStack = getDefaultItemStack();
-
-        game.getItemRegistry().addItem(this);
     }
 
     private static ItemStack getDefaultItemStack() {

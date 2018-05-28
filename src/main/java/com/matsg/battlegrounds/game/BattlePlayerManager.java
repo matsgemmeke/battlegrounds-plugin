@@ -1,7 +1,6 @@
 package com.matsg.battlegrounds.game;
 
 import com.matsg.battlegrounds.api.game.*;
-import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.player.GamePlayer;
@@ -16,7 +15,9 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BattlePlayerManager implements PlayerManager {
 
@@ -63,12 +64,24 @@ public class BattlePlayerManager implements PlayerManager {
             gamePlayer.sendMessage(ActionBar.CHANGE_LOADOUT);
             return;
         }
+        clearLoadout(gamePlayer.getLoadout());
+        gamePlayer.setLoadout(clone);
+        for (Weapon weapon : clone.getWeapons()) {
+            game.getItemRegistry().addItem(weapon);
+            weapon.setGame(game);
+            weapon.setGamePlayer(gamePlayer);
+            weapon.update();
+        }
+    }
+
+    private void clearLoadout(Loadout loadout) {
+        if (loadout == null) {
+            return;
+        }
         for (Weapon weapon : loadout.getWeapons()) {
-            Weapon clone = weapon.clone();
-            game.getItemRegistry().addItem(clone);
-            clone.setGame(game);
-            clone.setGamePlayer(gamePlayer);
-            clone.update();
+            game.getItemRegistry().removeItem(weapon);
+            weapon.setGame(null);
+            weapon.setGamePlayer(null);
         }
     }
 

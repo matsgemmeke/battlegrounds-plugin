@@ -163,14 +163,16 @@ public class GameEventHandler implements EventHandler {
             return;
         }
 
-        GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
-        Item item = game.getItemRegistry().getItemIgnoreMetadata(player.getInventory().getItemInMainHand());
+        event.setCancelled(true);
 
-        if (item == null || item instanceof Weapon && ((Weapon) item).getGamePlayer() != gamePlayer) {
+        GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
+        Item item = game.getItemRegistry().getWeaponIgnoreMetadata(player, player.getInventory().getItemInMainHand());
+
+        if (item == null && (item = game.getItemRegistry().getItemIgnoreMetadata(player.getInventory().getItemInMainHand())) == null
+                || item instanceof Weapon && ((Weapon) item).getGamePlayer() != gamePlayer) {
             return;
         }
 
-        event.setCancelled(true);
         game.getItemRegistry().interact(item, event.getAction());
     }
 

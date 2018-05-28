@@ -19,6 +19,10 @@ public class BattleItemRegistry implements ItemRegistry {
     }
 
     public void addItem(Item item) {
+        if (items.contains(item)) {
+            System.out.print(item.getName());
+            return;
+        }
         items.add(item);
     }
 
@@ -89,6 +93,7 @@ public class BattleItemRegistry implements ItemRegistry {
     }
 
     public void removeItem(Item item) {
+        System.out.print(items.contains(item));
         items.remove(item);
     }
 }

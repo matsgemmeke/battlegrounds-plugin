@@ -24,6 +24,15 @@ public class BattleLoadout implements Loadout {
         secondary.setItemSlot(ItemSlot.FIREARM_SECONDARY);
     }
 
+    public Loadout clone() {
+        try {
+            return (Loadout) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public Equipment getEquipment() {
         return equipment;
     }

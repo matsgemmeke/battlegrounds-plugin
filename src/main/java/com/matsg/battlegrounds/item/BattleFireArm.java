@@ -25,7 +25,7 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
     protected boolean reloadCancelled, reloading, shooting;
     protected double accuracy;
     protected FireArmType fireArmType;
-    protected int ammo, cooldown, magazine, magazineSize, maxAmmo, reloadDuration;
+    protected int ammo, cooldown, magazine, magazineSize, maxAmmo, reloadDuration, startAmmo;
     protected List<Material> blocks;
     protected ReloadType reloadType;
     protected Sound[] reloadSound, shootSound;
@@ -49,6 +49,7 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
         this.reloadType = reloadType;
         this.shooting = false;
         this.shootSound = shootSound;
+        this.startAmmo = magazine * ammo;
 
         for (String block : plugin.getBattlegroundsConfig().pierceableBlocks) {
             blocks.add(Material.valueOf(block));
@@ -194,7 +195,8 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
     }
 
     public void refillAmmo() {
-        ammo = maxAmmo;
+        ammo = startAmmo;
+        magazine = magazineSize;
     }
 
     public void reload() {

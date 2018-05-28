@@ -67,9 +67,6 @@ public abstract class AbstractGameMode implements GameMode {
     }
 
     public void onStart() {
-        for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
-            new SelectLoadout(game, gamePlayer).update();
-        }
         for (Spawn spawn : game.getArena().getSpawns()) {
             spawn.setGamePlayer(null);
         }
