@@ -27,7 +27,7 @@ public class SelectLoadoutView implements View {
     public SelectLoadoutView(Battlegrounds plugin, Game game, GamePlayer gamePlayer) {
         this.game = game;
         this.gamePlayer = gamePlayer;
-        this.inventory = plugin.getServer().createInventory(this, 27, EnumMessage.SELECT_LOADOUT.getMessage());
+        this.inventory = plugin.getServer().createInventory(this, 27, EnumMessage.TITLE_SELECT_LOADOUT.getMessage());
         this.loadouts = new HashMap<>();
 
         int i = 0;

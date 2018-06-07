@@ -27,7 +27,7 @@ public class WeaponsView implements View {
 
     public WeaponsView(Battlegrounds plugin) {
         this.plugin = plugin;
-        this.inventory = plugin.getServer().createInventory(this, 27, EnumMessage.VIEW_WEAPONS.getMessage());
+        this.inventory = plugin.getServer().createInventory(this, 27, EnumMessage.TITLE_WEAPONS.getMessage());
         this.weapons = getWeaponList(plugin);
 
         // Add all firearm class types

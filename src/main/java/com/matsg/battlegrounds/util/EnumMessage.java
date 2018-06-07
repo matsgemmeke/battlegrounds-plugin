@@ -55,14 +55,16 @@ public enum EnumMessage implements Message {
     LOBBY_SET("setup-lobby-set", true),
     NO_PERMISSION("command-no-permission", false),
     NO_SELECTION("setup-no-selection", false),
+    NONE_SELECTED("view-none-selected", false),
     NOT_PLAYING("game-not-playing", false),
     PLAYER_JOIN("game-player-join", true),
     PLAYER_LEAVE("game-player-leave", true),
     PLAYER_MESSAGE("game-player-message", true),
     PREFIX("prefix", false),
+    PRIMARY_WEAPON("view-primary-weapon", false),
     RELOAD_FAILED("setup-reload-failed", false),
     RELOAD_SUCCESS("setup-reload-success", true),
-    SELECT_LOADOUT("gui-select-loadout", false),
+    SECONDARY_WEAPON("view-secondary-weapon", false),
     SPAWN_ADD("setup-spawn-add", true),
     SPECIFY_ID("setup-specify-id", false),
     SPECIFY_NAME("setup-specify-name", false),
@@ -75,10 +77,11 @@ public enum EnumMessage implements Message {
     TDM_NAME("gamemode-tdm-name", false),
     TDM_SHORT("gamemode-tdm-short", false),
     TEAM_ASSIGNMENT("game-team-assignment", true),
-    TYPE_KNIFE("item-type-knife", false),
-    VIEW_EDIT_LOADOUT("gui-view-edit-loadout", false),
-    VIEW_LOADOUT_MANAGER("gui-view-loadout-manager", false),
-    VIEW_WEAPONS("gui-view-weapons", false);
+    TITLE_EDIT_LOADOUT("gui-view-edit-loadout", false),
+    TITLE_LOADOUT_MANAGER("gui-view-loadout-manager", false),
+    TITLE_SELECT_LOADOUT("gui-select-loadout", false),
+    TITLE_WEAPONS("gui-view-weapons", false),
+    TYPE_KNIFE("item-type-knife", false);
 
     private Battlegrounds plugin;
     private boolean prefix;

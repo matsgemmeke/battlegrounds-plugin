@@ -8,6 +8,7 @@ public enum ItemSlot {
     EQUIPMENT(3),
     MISCELLANEOUS(8);
 
+    public static ItemSlot[] WEAPON_SLOTS = { FIREARM_PRIMARY, FIREARM_SECONDARY, KNIFE, EQUIPMENT };
     private int slot;
 
     ItemSlot(int slot) {

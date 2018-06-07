@@ -24,7 +24,7 @@ public class LoadoutManagerView implements View {
 
     public LoadoutManagerView(Battlegrounds plugin, Player player) {
         this.plugin = plugin;
-        this.inventory = plugin.getServer().createInventory(this, 27, EnumMessage.VIEW_LOADOUT_MANAGER.getMessage());
+        this.inventory = plugin.getServer().createInventory(this, 27, EnumMessage.TITLE_LOADOUT_MANAGER.getMessage());
         this.loadouts = new HashMap<>();
 
         try {
