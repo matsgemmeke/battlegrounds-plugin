@@ -507,7 +507,7 @@ FAL:
     Magazine: 20
     Max: 160
     Start: 3
-  Description: Semi-automatic assault rifle with high damage. Effective at medium to long range.
+  Description: Semi-automatic battle rifle with high damage. Effective at medium to long range.
   DisplayName: FAL
   Durability: 15
   FireMode:
@@ -672,7 +672,7 @@ SCAR-H:
     Magazine: 20
     Max: 180
     Start: 3
-  Description: Fully automatic assault rifle. Increased damage and range.
+  Description: Fully automatic battle rifle. Increased damage and range.
   DisplayName: SCAR-H
   Durability: 20
   FireMode:

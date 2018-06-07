@@ -65,8 +65,7 @@ public class BattlePlayerManager implements PlayerManager {
             return;
         }
         clearLoadout(gamePlayer.getLoadout());
-        gamePlayer.setLoadout(clone);
-        for (Weapon weapon : clone.getWeapons()) {
+        for (Weapon weapon : loadout.getWeapons()) {
             game.getItemRegistry().addItem(weapon);
             weapon.setGame(game);
             weapon.setGamePlayer(gamePlayer);
