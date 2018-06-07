@@ -10,6 +10,12 @@ CLOSE_QUARTERS:
   Name: Close Quarters
   Primary: Olympia
   Secondary: Five-seven
+OPERATIVE:
+  Equipment: Grenade
+  Knife: Combat Knife
+  Name: Operative
+  Primary: MP5
+  Secondary: SMAW
 HEAVY_GUNNER:
   Equipment: Grenade
   Knife: Combat Knife
@@ -22,9 +28,3 @@ MARKSMAN:
   Name: Marksman
   Primary: Dragunov
   Secondary: M1911
-OPERATIVE:
-  Equipment: Grenade
-  Knife: Combat Knife
-  Name: Operative
-  Primary: MP5
-  Secondary: SMAW

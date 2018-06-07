@@ -37,6 +37,8 @@ public interface PlayerManager {
 
     void removePlayer(Player player);
 
+    void respawnPlayer(GamePlayer gamePlayer);
+
     void setVisible(GamePlayer gamePlayer, boolean visible);
 
     void setVisible(GamePlayer gamePlayer, Team team, boolean visible);

@@ -1,5 +1,8 @@
 package com.matsg.battlegrounds.item;
 
+import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent;
+import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent.DeathCause;
+import com.matsg.battlegrounds.api.event.GamePlayerKillPlayerEvent;
 import com.matsg.battlegrounds.api.item.Lethal;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.util.Hitbox;
@@ -80,6 +83,9 @@ public class BattleLethal extends BattleEquipment implements Lethal {
         for (GamePlayer gamePlayer : game.getPlayerManager().getNearbyPlayers(location, longRange)) {
             if (gamePlayer != null && gamePlayer.getPlayer() != null && !gamePlayer.getPlayer().isDead() && gamePlayer.getStatus().isAlive()) {
                 game.getPlayerManager().damagePlayer(gamePlayer, getDistanceDamage(gamePlayer.getLocation().distanceSquared(location) / 5));
+                if (gamePlayer.getPlayer().isDead()) {
+                    plugin.getEventManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, this.gamePlayer, this));
+                }
             }
         }
     }
@@ -87,7 +93,10 @@ public class BattleLethal extends BattleEquipment implements Lethal {
     private void inflictUserDamage(Location location) {
         double playerDistance = gamePlayer.getPlayer().getLocation().distanceSquared(location);
         if (playerDistance <= longRange) {
-            gamePlayer.getPlayer().damage(getDistanceDamage(playerDistance) / 2);
+            game.getPlayerManager().damagePlayer(gamePlayer, getDistanceDamage(playerDistance) / 2);
+            if (gamePlayer.getPlayer().isDead()) {
+                plugin.getEventManager().callEvent(new GamePlayerDeathEvent(game, gamePlayer, DeathCause.SUICIDE));
+            }
         }
     }
 }

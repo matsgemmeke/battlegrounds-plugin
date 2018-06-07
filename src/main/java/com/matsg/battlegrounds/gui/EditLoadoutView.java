@@ -1,7 +1,6 @@
 package com.matsg.battlegrounds.gui;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.util.Placeholder;
@@ -36,8 +35,9 @@ public class EditLoadoutView implements View {
         for (Weapon weapon : loadout.getWeapons()) {
             inventory.setItem((i += 2) + 8, new ItemStackBuilder(getType(weapon))
                     .addItemFlags(ItemFlag.values())
-                    .setDisplayName()
-                    .setLore(ChatColor.GRAY + getName(weapon)));
+                    .setDisplayName(null)
+                    .setLore(ChatColor.GRAY + getName(weapon))
+                    .build());
         }
         return inventory;
     }

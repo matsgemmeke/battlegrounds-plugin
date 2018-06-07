@@ -15,9 +15,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class BattlePlayerManager implements PlayerManager {
 
@@ -89,6 +87,7 @@ public class BattlePlayerManager implements PlayerManager {
             return;
         }
         double finalHealth = gamePlayer.getPlayer().getHealth() - damage;
+        gamePlayer.getPlayer().damage(0.01); // Create a fake damage animation
         gamePlayer.getPlayer().setHealth(finalHealth > 0.0 ? finalHealth : 0); // It needs to set the health to 0 if the damage is greater than the health, else the api will complain
     }
 
@@ -197,6 +196,10 @@ public class BattlePlayerManager implements PlayerManager {
         if (getLivingPlayers().length <= 0) {
             game.stop();
         }
+    }
+
+    public void respawnPlayer(GamePlayer gamePlayer) {
+
     }
 
     public void setVisible(GamePlayer gamePlayer, boolean visible) {
