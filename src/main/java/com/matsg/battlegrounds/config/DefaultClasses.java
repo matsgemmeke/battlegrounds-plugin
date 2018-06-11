@@ -17,14 +17,15 @@ public class DefaultClasses extends AbstractYaml {
 
     public List<Loadout> getList() {
         List<Loadout> list = new ArrayList<>();
-        for (String loadoutClass : getKeys(false)) {
-            list.add(parseLoadout(getConfigurationSection(loadoutClass)));
+        for (String loadoutId : getKeys(false)) {
+            list.add(parseLoadout(Integer.parseInt(loadoutId), getConfigurationSection(loadoutId)));
         }
         return list;
     }
 
-    private Loadout parseLoadout(ConfigurationSection section) {
+    private Loadout parseLoadout(int loadoutId, ConfigurationSection section) {
         return new BattleLoadout(
+                loadoutId,
                 section.getString("Name"),
                 plugin.getFireArmConfig().get(section.getString("Primary")),
                 plugin.getFireArmConfig().get(section.getString("Secondary")),

@@ -27,9 +27,10 @@ public class BattlePlayerYaml extends AbstractYaml implements PlayerYaml {
         save();
     }
 
-    private Loadout getLoadout(int classNumber) {
-        ConfigurationSection section = getConfigurationSection("Loadout." + classNumber);
+    public Loadout getLoadout(int loadoutId) {
+        ConfigurationSection section = getConfigurationSection("Loadout." + loadoutId);
         return new BattleLoadout(
+                loadoutId,
                 section.getString("Name"),
                 plugin.getFireArmConfig().get(section.getString("Primary")),
                 plugin.getFireArmConfig().get(section.getString("Secondary")),
@@ -49,12 +50,12 @@ public class BattlePlayerYaml extends AbstractYaml implements PlayerYaml {
         return new LocalStoredPlayer(uuid, this);
     }
 
-    public void saveLoadout(int loadoutNumber, Loadout loadout) {
-        set("Loadout." + loadoutNumber + ".Name", loadout.getName());
-        set("Loadout." + loadoutNumber + ".Primary", loadout.getPrimary().getName());
-        set("Loadout." + loadoutNumber + ".Secondary", loadout.getSecondary().getName());
-        set("Loadout." + loadoutNumber + ".Equipment", loadout.getEquipment().getName());
-        set("Loadout." + loadoutNumber + ".Knife", loadout.getKnife().getName());
+    public void saveLoadout(Loadout loadout) {
+        set("Loadout." + loadout.getId() + ".Name", loadout.getName());
+        set("Loadout." + loadout.getId() + ".Primary", loadout.getPrimary().getName());
+        set("Loadout." + loadout.getId() + ".Secondary", loadout.getSecondary().getName());
+        set("Loadout." + loadout.getId() + ".Equipment", loadout.getEquipment().getName());
+        set("Loadout." + loadout.getId() + ".Knife", loadout.getKnife().getName());
         save();
     }
 
@@ -74,7 +75,7 @@ public class BattlePlayerYaml extends AbstractYaml implements PlayerYaml {
             this.uuid = uuid;
             this.playerYaml = playerYaml;
             this.deaths = getInt("Stats.All.Deaths");
-            this.exp = getInt("Stats.All.Exp");
+            this.exp = getInt("Stats.Exp");
             this.headshots = getInt("Stats.All.Headshots");
             this.kills = getInt("Stats.All.Kills");
             this.name = getString("Name");
@@ -110,18 +111,22 @@ public class BattlePlayerYaml extends AbstractYaml implements PlayerYaml {
 
         public void setDeaths(int deaths) {
             this.deaths = deaths;
+            set("Stats.All.Deaths", deaths);
         }
 
         public void setExp(int exp) {
             this.exp = exp;
+            set("Stats.Exp", exp);
         }
 
         public void setHeadshots(int headshots) {
             this.headshots = headshots;
+            set("Stats.All.Headshots", headshots);
         }
 
         public void setKills(int kills) {
             this.kills = kills;
+            set("Stats.All.Kills", kills);
         }
 
         public int getAttribute(String attribute) {

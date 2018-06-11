@@ -63,7 +63,7 @@ public class EquipmentConfig extends AbstractYaml implements WeaponConfig<Equipm
                 try {
                     return new BattleLethal(
                             name,
-                            getString("Description"),
+                            section.getString("Description"),
                             new ItemStackBuilder(Material.valueOf(plugin.getBattlegroundsConfig().getWeaponMaterial("equipment"))).setDurability((short) section.getInt("Durability")).build(),
                             (short) new AttributeValidator(section.getInt("Durability"), "Durability").shouldBeHigherThan(0),
                             (int) new AttributeValidator(section.getInt("Amount"), "Amount").shouldBeHigherThan(0),
@@ -88,7 +88,7 @@ public class EquipmentConfig extends AbstractYaml implements WeaponConfig<Equipm
                 try {
                     return new BattleTactical(
                             name,
-                            getString("Description"),
+                            section.getString("Description"),
                             new ItemStackBuilder(Material.valueOf(plugin.getBattlegroundsConfig().getWeaponMaterial("equipment"))).setDurability((short) section.getInt("Durability")).build(),
                             (short) new AttributeValidator(section.getInt("Durability")).shouldBeHigherThan(0),
                             (int) new AttributeValidator(section.getInt("Amount"), "Amount").shouldBeHigherThan(0),

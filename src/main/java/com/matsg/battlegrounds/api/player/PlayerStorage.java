@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface PlayerStorage {
 
-    void addPlayerAttributes(StoredPlayer player);
+    void addPlayerAttributes(OfflineGamePlayer player);
 
     boolean contains(UUID uuid);
 

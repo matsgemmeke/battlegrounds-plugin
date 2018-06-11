@@ -1,7 +1,6 @@
 package com.matsg.battlegrounds.item;
 
 import com.matsg.battlegrounds.api.item.Equipment;
-import com.matsg.battlegrounds.api.util.Hitbox;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.util.BattleRunnable;

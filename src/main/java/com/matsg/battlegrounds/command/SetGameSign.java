@@ -50,11 +50,11 @@ public class SetGameSign extends SubCommand {
 
         GameSign sign = new BattleGameSign(plugin, game, (Sign) state);
 
-        game.setGameSign(sign);
-        sign.update();
-
         game.getDataFile().setLocation("sign", state.getLocation(), false);
         game.getDataFile().save();
+        game.setGameSign(sign);
+
+        sign.update();
 
         player.sendMessage(EnumMessage.GAMESIGN_SET.getMessage(new Placeholder("bg_game", id)));
     }

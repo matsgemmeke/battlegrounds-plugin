@@ -9,13 +9,13 @@ import com.matsg.battlegrounds.api.item.WeaponType;
 
 public enum FireArmType implements WeaponType {
 
-    ASSAULT_RIFLE("item-type-assault-rifle", 1, Bullet.class, 1, false),
-    HANDGUN("item-type-handgun", 1, Bullet.class, 1, false),
-    LAUNCHER("item-type-launcher", 1, Lethal.class, 1, false),
-    LIGHT_MACHINE_GUN("item-type-light-machine-gun", 1, Bullet.class, 1, false),
-    SHOTGUN("item-type-shotgun", 5, Bullet.class, 1, false),
-    SNIPER_RIFLE("item-type-sniper-rifle", 1, Bullet.class, 5, true),
-    SUBMACHINE_GUN("item-type-submachine-gun", 1, Bullet.class, 1, false);
+    ASSAULT_RIFLE("item-type-assault-rifle", ItemSlot.FIREARM_PRIMARY, 1, Bullet.class, 1, false),
+    HANDGUN("item-type-handgun", ItemSlot.FIREARM_SECONDARY, 1, Bullet.class, 1, false),
+    LAUNCHER("item-type-launcher", ItemSlot.FIREARM_SECONDARY, 1, Lethal.class, 1, false),
+    LIGHT_MACHINE_GUN("item-type-light-machine-gun", ItemSlot.FIREARM_PRIMARY, 1, Bullet.class, 1, false),
+    SHOTGUN("item-type-shotgun", ItemSlot.FIREARM_PRIMARY, 5, Bullet.class, 1, false),
+    SNIPER_RIFLE("item-type-sniper-rifle", ItemSlot.FIREARM_PRIMARY, 1, Bullet.class, 5, true),
+    SUBMACHINE_GUN("item-type-submachine-gun", ItemSlot.FIREARM_PRIMARY,1, Bullet.class, 1, false);
 
     public static FireArmType[] GUNS = new FireArmType[] { ASSAULT_RIFLE, HANDGUN, LIGHT_MACHINE_GUN, SHOTGUN, SNIPER_RIFLE, SUBMACHINE_GUN };
 
@@ -23,11 +23,13 @@ public enum FireArmType implements WeaponType {
     private boolean pierceable, scope;
     private Class<? extends DamageSource> damageSourceClass;
     private int maxHits, projectileAmount;
+    private ItemSlot itemSlot;
     private String name;
 
-    FireArmType(String path, int projectileAmount, Class<? extends DamageSource> damageSourceClass, int maxHits, boolean scope) {
+    FireArmType(String path, ItemSlot itemSlot, int projectileAmount, Class<? extends DamageSource> damageSourceClass, int maxHits, boolean scope) {
         this.plugin = BattlegroundsPlugin.getPlugin();
         this.damageSourceClass = damageSourceClass;
+        this.itemSlot = itemSlot;
         this.maxHits = maxHits;
         this.name = plugin.getTranslator().getTranslation(path);
         this.projectileAmount = projectileAmount;
@@ -45,7 +47,7 @@ public enum FireArmType implements WeaponType {
     }
 
     public ItemSlot getDefaultItemSlot() {
-        return ItemSlot.FIREARM_PRIMARY;
+        return itemSlot;
     }
 
     public int getMaxHits() {

@@ -51,7 +51,7 @@ public abstract class AbstractScoreboard implements GameScoreboard {
             org.bukkit.scoreboard.Team sbTeam = builder.addTeam(team.getName());
             sbTeam.setOption(Option.NAME_TAG_VISIBILITY, OptionStatus.FOR_OWN_TEAM);
             for (GamePlayer gamePlayer : team.getPlayers()) {
-                sbTeam.addEntry(gamePlayer.getName());
+                sbTeam.addPlayer(gamePlayer.getPlayer());
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.game;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.config.PlayerYaml;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent.DeathCause;
 import com.matsg.battlegrounds.api.event.GamePlayerKillPlayerEvent;
@@ -21,6 +22,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 
@@ -155,6 +157,10 @@ public class GameEventHandler implements EventHandler {
         plugin.getServer().getPluginManager().callEvent(new GamePlayerDeathEvent(game, game.getPlayerManager().getGamePlayer(player), deathCause));
     }
 
+    public void onPlayerFoodLevelChange(FoodLevelChangeEvent event) {
+        event.setCancelled(isPlaying((Player) event.getEntity()));
+    }
+
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         Game game = plugin.getGameManager().getGame(player);
@@ -201,7 +207,7 @@ public class GameEventHandler implements EventHandler {
 
         GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
 
-        game.getPlayerManager().changeLoadout(gamePlayer, gamePlayer.getLoadout(), true);
+        game.getPlayerManager().respawnPlayer(gamePlayer);
         event.setRespawnLocation(game.getGameMode().getRespawnPoint(gamePlayer).getLocation());
     }
 }

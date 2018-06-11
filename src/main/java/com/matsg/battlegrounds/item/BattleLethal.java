@@ -5,7 +5,7 @@ import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent.DeathCause;
 import com.matsg.battlegrounds.api.event.GamePlayerKillPlayerEvent;
 import com.matsg.battlegrounds.api.item.Lethal;
 import com.matsg.battlegrounds.api.player.GamePlayer;
-import com.matsg.battlegrounds.api.util.Hitbox;
+import com.matsg.battlegrounds.api.player.Hitbox;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.util.Particle.ParticleEffect;
 import org.bukkit.Location;

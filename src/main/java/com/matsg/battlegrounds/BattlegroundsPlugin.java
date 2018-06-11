@@ -11,7 +11,6 @@ import com.matsg.battlegrounds.api.item.Knife;
 import com.matsg.battlegrounds.api.player.PlayerStorage;
 import com.matsg.battlegrounds.command.BattlegroundsCommand;
 import com.matsg.battlegrounds.command.LoadoutCommand;
-import com.matsg.battlegrounds.command.WeaponsCommand;
 import com.matsg.battlegrounds.config.*;
 import com.matsg.battlegrounds.listener.BattleEventHandler;
 import com.matsg.battlegrounds.listener.BattleEventManager;
@@ -81,12 +80,12 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         return config;
     }
 
-    public EventManager getEventManager() {
-        return eventManager;
-    }
-
     public WeaponConfig<Equipment> getEquipmentConfig() {
         return equipmentConfig;
+    }
+
+    public EventManager getEventManager() {
+        return eventManager;
     }
 
     public WeaponConfig<FireArm> getFireArmConfig() {
@@ -141,10 +140,6 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
     private void startPlugin() throws StartupFailedException {
         extensions = loadExtensions();
 
-        for (BattlegroundsExtension extension : extensions) {
-            extension.onInit();
-        }
-
         try {
             cache = new BattleCacheYaml(this, "cache.yml");
             config = new BattlegroundsConfig(this);
@@ -183,7 +178,6 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
                 + equipmentConfig.getList().size() + " equipment and "
                 + knifeConfig.getList().size() + " knives from the config");
 
-        //this.channelMessenger = new PluginChannelMessenger(this);
         this.eventManager = new BattleEventManager();
         this.gameManager = new BattleGameManager();
 
@@ -191,15 +185,12 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
 
         new BattlegroundsCommand(this);
         new LoadoutCommand(this);
-        new WeaponsCommand(this);
 
         new BattleEventHandler(this);
         new EventListener(this);
 
-        //WeaponsView.getInstance(this);
-
         for (BattlegroundsExtension extension : extensions) {
-            extension.onPostInit();
+            extension.onInit();
         }
     }
 }

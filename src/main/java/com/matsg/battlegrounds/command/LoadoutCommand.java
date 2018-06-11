@@ -14,6 +14,8 @@ public class LoadoutCommand extends Command {
     public LoadoutCommand(BattlegroundsPlugin plugin) {
         super(plugin, "loadout", null, true, "loadoutcreator");
         this.minLevel = plugin.getBattlegroundsConfig().loadoutCreationLevel;
+
+        commands.add(new Rename(plugin));
     }
 
     public void execute(CommandSender sender, String[] args) {
@@ -24,6 +26,22 @@ public class LoadoutCommand extends Command {
             return;
         }
 
-        player.openInventory(new LoadoutManagerView(plugin, player).getInventory());
+        if (args.length == 0) {
+            player.openInventory(new LoadoutManagerView(plugin, player).getInventory());
+            return;
+        }
+
+        SubCommand subCommand = getSubCommand(args[0]);
+
+        if (subCommand == null) {
+            return;
+        }
+
+        try {
+            subCommand.execute(sender, args);
+        } catch (Exception e) {
+            EnumMessage.COMMAND_ERROR.send(sender);
+            e.printStackTrace();
+        }
     }
 }

@@ -56,7 +56,7 @@ public class TDMScoreboard extends AbstractScoreboard {
         if (index > Integer.MIN_VALUE) {
             builder.removeLine(DisplaySlot.SIDEBAR, index);
             for (Team team : game.getGameMode().getTeams()) {
-                builder.addLine(DisplaySlot.SIDEBAR, index, team.getChatColor() + team.getName() + ": " + ChatColor.WHITE + team.getScore());
+                builder.addLine(DisplaySlot.SIDEBAR, index, team.getChatColor() + team.getName() + ": " + ChatColor.WHITE + team.getKills());
             }
         }
     }
@@ -70,7 +70,7 @@ public class TDMScoreboard extends AbstractScoreboard {
         return new Placeholder[] {
                 new Placeholder("bg_date", getDate()),
                 new Placeholder("bg_gamemode", game.getGameMode().getName()),
-                new Placeholder("bg_time", game.getTimeControl().getFormatTime())
+                new Placeholder("bg_time", game.getTimeControl().formatTime())
         };
     }
 }

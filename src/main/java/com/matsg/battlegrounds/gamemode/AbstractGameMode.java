@@ -3,14 +3,17 @@ package com.matsg.battlegrounds.gamemode;
 import com.matsg.battlegrounds.api.config.Yaml;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.player.GamePlayer;
-import com.matsg.battlegrounds.item.misc.SelectLoadout;
+import com.matsg.battlegrounds.util.EnumMessage;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public abstract class AbstractGameMode implements GameMode {
 
     protected Game game;
+    protected int killsToWin, timeLimit;
     protected List<Team> teams;
     protected String name, simpleName;
     protected Yaml yaml;
@@ -39,9 +42,60 @@ public abstract class AbstractGameMode implements GameMode {
         return teams;
     }
 
+    public int getTimeLimit() {
+        return timeLimit;
+    }
+
+    public void setTimeLimit(int timeLimit) {
+        this.timeLimit = timeLimit;
+    }
+
+    protected String getEndMessage() {
+        if (killsToWin != 0 && getTopTeam().getKills() >= killsToWin) {
+            return EnumMessage.ENDREASON_SCORE.getMessage();
+        } else if (timeLimit != 0 && game.getTimeControl().getTime() > timeLimit) {
+            return EnumMessage.ENDREASON_TIME.getMessage();
+        } else if (game.getPlayerManager().getLivingPlayers().length <= 1) {
+            return EnumMessage.ENDREASON_ELIMINATION.getMessage();
+        }
+        return null;
+    }
+
+    protected List<Team> getSortedTeams() {
+        List<Team> list = new ArrayList<>();
+        list.addAll(teams);
+
+        Collections.sort(list, new Comparator<Team>() {
+            public int compare(Team o1, Team o2) {
+                return ((Integer) o1.getKills()).compareTo(o2.getKills());
+            }
+        });
+
+        return list;
+    }
+
+    public void onStateChange(GameState state) {
+        switch (state) {
+            case IN_GAME:
+                onStart();
+                break;
+            case RESETTING:
+                onStop();
+                break;
+        }
+    }
+
+    public void onStart() {
+        for (Spawn spawn : game.getArena().getSpawns()) {
+            spawn.setGamePlayer(null);
+        }
+    }
+
+    public void onStop() { }
+
     public Team getTeam(GamePlayer gamePlayer) {
         for (Team team : teams) {
-            if (team.getPlayers().contains(gamePlayer)) {
+            if (team.hasPlayer(gamePlayer)) {
                 return team;
             }
         }
@@ -57,20 +111,7 @@ public abstract class AbstractGameMode implements GameMode {
         return null;
     }
 
-    public void onStateChange(GameState state) {
-        switch (state) {
-            case IN_GAME:
-                onStart();
-            case RESETTING:
-                onStop();
-        }
+    public Team getTopTeam() {
+        return getSortedTeams().get(0);
     }
-
-    public void onStart() {
-        for (Spawn spawn : game.getArena().getSpawns()) {
-            spawn.setGamePlayer(null);
-        }
-    }
-
-    public void onStop() { }
 }

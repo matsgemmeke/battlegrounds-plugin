@@ -37,8 +37,17 @@ public class LocalPlayerStorage implements PlayerStorage {
         }
     }
 
-    public void addPlayerAttributes(StoredPlayer player) {
-
+    public void addPlayerAttributes(OfflineGamePlayer player) {
+        PlayerYaml playerYaml = getPlayerYaml(player.getUUID());
+        if (playerYaml == null) {
+            return;
+        }
+        StoredPlayer storedPlayer = playerYaml.getStoredPlayer();
+        storedPlayer.setDeaths(storedPlayer.getDeaths() + player.getDeaths());
+        storedPlayer.setDeaths(storedPlayer.getExp() + player.getExp());
+        storedPlayer.setDeaths(storedPlayer.getHeadshots() + player.getHeadshots());
+        storedPlayer.setDeaths(storedPlayer.getKills() + player.getKills());
+        playerYaml.save();
     }
 
     public boolean contains(UUID uuid) {
@@ -74,7 +83,7 @@ public class LocalPlayerStorage implements PlayerStorage {
             PlayerYaml playerYaml = new BattlePlayerYaml(plugin, uuid);
             playerYaml.createDefaultAttributes();
             for (int i = 1; i <= 5; i ++) {
-                playerYaml.saveLoadout(i, defaultClasses.getList().get(i - 1));
+                playerYaml.saveLoadout(defaultClasses.getList().get(i - 1));
             }
             playerYamls.add(playerYaml);
         } catch (IOException e) {

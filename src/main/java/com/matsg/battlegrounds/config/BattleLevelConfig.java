@@ -17,12 +17,13 @@ public class BattleLevelConfig extends AbstractYaml implements LevelConfig {
     }
 
     public int getLevel(int exp) {
-        for (Level level : getLevelCollection()) {
-            if (level.exp < exp) {
+        List<Level> list = getLevelCollection();
+        for (Level level : list) {
+            if (level.exp <= exp && (list.size() <= list.indexOf(level) + 1 || list.get(list.indexOf(level) + 1).exp > exp)) {
                 return level.level;
             }
         }
-        return -1;
+        return 0;
     }
 
     private Level getLevelFromNr(int levelNr) {

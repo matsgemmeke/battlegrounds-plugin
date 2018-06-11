@@ -1,7 +1,5 @@
 package com.matsg.battlegrounds.util;
 
-import com.matsg.battlegrounds.BattlegroundsPlugin;
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.util.Message;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import org.bukkit.ChatColor;
@@ -9,36 +7,17 @@ import org.bukkit.entity.Player;
 
 import java.lang.reflect.Constructor;
 
-public enum Title implements Message {
+public class Title implements Message {
 
-    COUNTDOWN("title-countdown"),
-    FFA_START("title-ffa-start"),
-    TDM_START("title-tdm-start");
-
-    private Battlegrounds plugin;
     private int fadeIn, fadeOut, time;
-    private String path, subTitle, title;
+    private String subTitle, title;
 
-    Title(String path) {
-        this.plugin = BattlegroundsPlugin.getPlugin();
-        if (path == null || path.length() <= 0) {
-            throw new TitleFormatException("Title argument cannot be null");
-        }
-        String string = plugin.getTranslator().getTranslation(path);
-        String[] split = string.split(",");
-        if (split.length <= 4) {
-            throw new TitleFormatException("Invalid title format \"" + string + "\"");
-        }
-        try {
-            this.title = split[0];
-            this.subTitle = split[1];
-            this.fadeIn = Integer.parseInt(split[2]);
-            this.time = Integer.parseInt(split[3]);
-            this.fadeOut = Integer.parseInt(split[4]);
-        } catch (Exception e) {
-            throw new TitleFormatException("An error occurred while formatting the title");
-        }
-        this.path = path;
+    public Title(String title, String subTitle, int fadeIn, int time, int fadeOut) {
+        this.title = title;
+        this.subTitle = subTitle;
+        this.fadeIn = fadeIn;
+        this.time = time;
+        this.fadeOut = fadeOut;
     }
 
     public String getMessage() {
@@ -56,10 +35,10 @@ public enum Title implements Message {
     public void send(Player player, Placeholder... placeholders) {
         send(player, title, subTitle, fadeIn, time, fadeOut, placeholders);
     }
-    
+
     private void send(Player player, String title, String subTitle, int fadeIn, int time, int fadeOut, Placeholder... placeholders) {
         String editTitle = replace(title, placeholders), editSubTitle = replace(subTitle, placeholders);
-        
+
         if (editTitle != null) {
             try {
                 Object enumTitle = ReflectionUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0]
@@ -132,6 +111,6 @@ public enum Title implements Message {
     }
 
     public String toString() {
-        return title + "," + subTitle + "@" + path;
+        return title + "," + subTitle;
     }
 }

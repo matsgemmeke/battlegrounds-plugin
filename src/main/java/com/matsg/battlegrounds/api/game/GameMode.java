@@ -25,9 +25,15 @@ public interface GameMode extends StateListener {
 
     Iterable<Team> getTeams();
 
+    int getTimeLimit();
+
+    Team getTopTeam();
+
     void onKill(GamePlayer gamePlayer, GamePlayer killer, Weapon weapon);
 
     void removePlayer(GamePlayer gamePlayer);
+
+    void setTimeLimit(int timeLimit);
 
     void spawnPlayers(GamePlayer... players);
 }

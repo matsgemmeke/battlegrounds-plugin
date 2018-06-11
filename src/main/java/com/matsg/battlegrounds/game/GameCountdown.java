@@ -30,7 +30,7 @@ public class GameCountdown extends BattleRunnable {
         }
         if (countdown <= 10) {
             for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
-                Title.COUNTDOWN.send(gamePlayer.getPlayer(), new Placeholder("bg_countdown", countdown));
+                EnumTitle.COUNTDOWN.send(gamePlayer.getPlayer(), new Placeholder("bg_countdown", countdown));
             }
             BattleSound.COUNTDOWN_NOTE.play(game);
         }

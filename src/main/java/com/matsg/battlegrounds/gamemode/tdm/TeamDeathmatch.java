@@ -9,8 +9,10 @@ import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.game.BattleTeam;
 import com.matsg.battlegrounds.gamemode.AbstractGameMode;
+import com.matsg.battlegrounds.gamemode.Result;
 import com.matsg.battlegrounds.gui.scoreboard.GameScoreboard;
 import com.matsg.battlegrounds.util.EnumMessage;
+import com.matsg.battlegrounds.util.EnumTitle;
 import com.matsg.battlegrounds.util.Title;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -22,18 +24,20 @@ import java.util.List;
 public class TeamDeathmatch extends AbstractGameMode {
 
     private boolean scoreboardEnabled;
-    private double minSpawnDistance;
+    protected double minSpawnDistance;
 
     public TeamDeathmatch(Game game, Yaml yaml) {
         super(game, EnumMessage.TDM_NAME.getMessage(), EnumMessage.TDM_SHORT.getMessage(), yaml);
+        this.killsToWin = yaml.getInt("kills-to-win");
         this.minSpawnDistance = yaml.getDouble("minimum-spawn-distance");
         this.scoreboardEnabled = yaml.getBoolean("scoreboard.enabled");
         this.teams.addAll(getConfigTeams());
+        this.timeLimit = yaml.getInt("time-limit");
     }
 
     public void addPlayer(GamePlayer gamePlayer) {
         Team team = getEmptiestTeam();
-        team.getPlayers().add(gamePlayer);
+        team.addPlayer(gamePlayer);
         gamePlayer.sendMessage(EnumMessage.TEAM_ASSIGNMENT.getMessage(new Placeholder("bg_team", team.getChatColor() + team.getName())));
     }
 
@@ -53,9 +57,9 @@ public class TeamDeathmatch extends AbstractGameMode {
         int size = Integer.MAX_VALUE;
         Team emptiestTeam = null;
         for (Team team : teams) {
-            if (team.getPlayers().size() < size) {
+            if (team.getTotalPlayers() < size) {
                 emptiestTeam = team;
-                size = team.getPlayers().size();
+                size = team.getTotalPlayers();
             }
         }
         return emptiestTeam;
@@ -82,11 +86,18 @@ public class TeamDeathmatch extends AbstractGameMode {
 
     public void onStart() {
         super.onStart();
-        game.broadcastMessage(Title.TDM_START);
+        game.broadcastMessage(EnumTitle.TDM_START);
     }
 
     public void onStop() {
-
+        for (Team team : teams) {
+            Result result = Result.getResult(team, getSortedTeams());
+            if (result != null) {
+                for (GamePlayer gamePlayer : team.getPlayers()) {
+                    gamePlayer.sendMessage(new Title(result.getTitle(), getEndMessage(), 10, 80, 10));
+                }
+            }
+        }
     }
 
     public void removePlayer(GamePlayer gamePlayer) {
@@ -94,7 +105,7 @@ public class TeamDeathmatch extends AbstractGameMode {
         if (team == null) {
             return;
         }
-        team.getPlayers().remove(gamePlayer);
+        team.removePlayer(gamePlayer);
     }
 
     public void spawnPlayers(GamePlayer... players) {

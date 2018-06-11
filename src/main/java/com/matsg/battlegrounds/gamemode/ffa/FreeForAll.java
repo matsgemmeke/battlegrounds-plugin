@@ -9,8 +9,10 @@ import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.game.BattleTeam;
 import com.matsg.battlegrounds.gamemode.AbstractGameMode;
+import com.matsg.battlegrounds.gamemode.Result;
 import com.matsg.battlegrounds.gui.scoreboard.GameScoreboard;
 import com.matsg.battlegrounds.util.EnumMessage;
+import com.matsg.battlegrounds.util.EnumTitle;
 import com.matsg.battlegrounds.util.Title;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -20,12 +22,15 @@ public class FreeForAll extends AbstractGameMode {
     private boolean scoreboardEnabled;
     private Color color;
     private double minSpawnDistance;
+    private int killsToWin;
 
     public FreeForAll(Game game, Yaml yaml) {
         super(game, EnumMessage.FFA_NAME.getMessage(), EnumMessage.FFA_SHORT.getMessage(), yaml);
         this.color = getConfigColor();
+        this.killsToWin = yaml.getInt("kills-to-win");
         this.minSpawnDistance = yaml.getDouble("minimum-spawn-distance");
         this.scoreboardEnabled = yaml.getBoolean("scoreboard.enabled");
+        this.timeLimit = yaml.getInt("time-limit");
     }
 
     public void addPlayer(GamePlayer gamePlayer) {
@@ -33,7 +38,7 @@ public class FreeForAll extends AbstractGameMode {
             return;
         }
         Team team = new BattleTeam(0, gamePlayer.getName(), color, ChatColor.WHITE);
-        team.getPlayers().add(gamePlayer);
+        team.addPlayer(gamePlayer);
         teams.add(team);
     }
 
@@ -59,15 +64,26 @@ public class FreeForAll extends AbstractGameMode {
         gamePlayer.setDeaths(gamePlayer.getDeaths() + 1);
         killer.addScore(100);
         killer.setKills(killer.getKills() + 1);
+
+        if (killer.getKills() >= killsToWin) {
+            game.stop();
+        }
     }
 
     public void onStart() {
         super.onStart();
-        game.broadcastMessage(Title.FFA_START);
+        game.broadcastMessage(EnumTitle.FFA_START);
     }
 
     public void onStop() {
-
+        for (Team team : teams) {
+            Result result = Result.getResult(team, getSortedTeams());
+            if (result != null) {
+                for (GamePlayer gamePlayer : team.getPlayers()) {
+                    gamePlayer.sendMessage(new Title(result.getTitle(), getEndMessage(), 10, 80, 10));
+                }
+            }
+        }
     }
 
     public void removePlayer(GamePlayer gamePlayer) {

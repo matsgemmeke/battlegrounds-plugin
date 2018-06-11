@@ -14,7 +14,7 @@ public class AddSpawn extends SubCommand {
 
     public AddSpawn(Battlegrounds plugin) {
         super(plugin, "addspawn", EnumMessage.DESCRIPTION_ADDSPAWN.getMessage(),
-                "bg addspawn [id] [arena]", "battlegrounds.addspawn", true, "as");
+                "bg addspawn [id] [arena] [teamid]", "battlegrounds.addspawn", true, "as");
     }
 
     public void execute(CommandSender sender, String[] args) {

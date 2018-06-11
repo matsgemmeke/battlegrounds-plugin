@@ -25,7 +25,7 @@ level:
     unlocks: Ithaca 37
   '9':
     exp: 9900
-    unlocks: SG 550
+    unlocks: FAL
   '10':
     exp: 12700
     unlocks: Flashbang
@@ -90,7 +90,7 @@ level:
     exp: 187800
   '32':
     exp: 202800
-    unlocks: FAL
+    unlocks: SG 550
   '33':
     exp: 218600
   '34':

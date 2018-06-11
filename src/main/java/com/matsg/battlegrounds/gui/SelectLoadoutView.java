@@ -36,6 +36,7 @@ public class SelectLoadoutView implements View {
                     .addItemFlags(ItemFlag.values())
                     .setAmount(++ i)
                     .setDisplayName(ChatColor.WHITE + loadout.getName())
+                    .setLore(new String[0])
                     .setUnbreakable(true)
                     .build();
 

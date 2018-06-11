@@ -65,6 +65,7 @@ public class BattlePlayerManager implements PlayerManager {
         clearLoadout(gamePlayer.getLoadout());
         for (Weapon weapon : loadout.getWeapons()) {
             game.getItemRegistry().addItem(weapon);
+            weapon.refillAmmo();
             weapon.setGame(game);
             weapon.setGamePlayer(gamePlayer);
             weapon.update();
@@ -77,6 +78,7 @@ public class BattlePlayerManager implements PlayerManager {
         }
         for (Weapon weapon : loadout.getWeapons()) {
             game.getItemRegistry().removeItem(weapon);
+            weapon.remove();
             weapon.setGame(null);
             weapon.setGamePlayer(null);
         }
@@ -120,6 +122,20 @@ public class BattlePlayerManager implements PlayerManager {
         return list.toArray(new GamePlayer[list.size()]);
     }
 
+    public GamePlayer[] getNearbyEnemyPlayers(Game game, GamePlayer gamePlayer, double range) {
+        List<GamePlayer> list = new ArrayList<>();
+        Team team = game.getGameMode().getTeam(gamePlayer);
+        for (Entity entity : game.getArena().getWorld().getNearbyEntities(gamePlayer.getLocation(), range, range, range)) {
+            if (entity instanceof Player) {
+                GamePlayer other = getGamePlayer((Player) entity);
+                if (other != null && game.getGameMode().getTeam(other) == team) {
+                    list.add(gamePlayer);
+                }
+            }
+        }
+        return list.toArray(new GamePlayer[list.size()]);
+    }
+
     public GamePlayer[] getNearbyPlayers(Game game, Location location, double range) {
         List<GamePlayer> list = new ArrayList<>();
         for (Entity entity : game.getArena().getWorld().getNearbyEntities(location, range, range, range)) {
@@ -151,7 +167,9 @@ public class BattlePlayerManager implements PlayerManager {
         double distance = range;
         GamePlayer nearestPlayer = null;
         for (GamePlayer gamePlayer : getLivingPlayers()) {
-            if (gamePlayer != null && gamePlayer.getStatus().canInteract() && location.getWorld() == gamePlayer.getPlayer().getWorld()
+            if (gamePlayer != null
+                    && gamePlayer.getStatus().canInteract()
+                    && location.getWorld() == gamePlayer.getPlayer().getWorld()
                     && location.distanceSquared(gamePlayer.getPlayer().getLocation()) < distance) {
                 distance = location.distanceSquared(gamePlayer.getPlayer().getLocation());
                 nearestPlayer = gamePlayer;
@@ -168,7 +186,10 @@ public class BattlePlayerManager implements PlayerManager {
         double distance = range;
         GamePlayer nearestPlayer = null;
         for (GamePlayer gamePlayer : team.getPlayers()) {
-            if (gamePlayer != null && gamePlayer.getStatus().isAlive() && location.getWorld() == gamePlayer.getPlayer().getWorld()
+            if (gamePlayer != null
+                    && gamePlayer.getStatus().isAlive()
+                    && game.getGameMode().getTeam(gamePlayer) == team
+                    && location.getWorld() == gamePlayer.getPlayer().getWorld()
                     && location.distanceSquared(gamePlayer.getPlayer().getLocation()) < distance) {
                 distance = location.distanceSquared(gamePlayer.getPlayer().getLocation());
                 nearestPlayer = gamePlayer;
@@ -199,7 +220,7 @@ public class BattlePlayerManager implements PlayerManager {
     }
 
     public void respawnPlayer(GamePlayer gamePlayer) {
-
+        game.getPlayerManager().changeLoadout(gamePlayer, gamePlayer.getLoadout(), true);
     }
 
     public void setVisible(GamePlayer gamePlayer, boolean visible) {

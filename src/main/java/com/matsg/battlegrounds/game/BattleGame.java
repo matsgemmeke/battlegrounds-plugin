@@ -177,7 +177,7 @@ public class BattleGame implements Game {
         Player player = gamePlayer.getPlayer();
         player.setFoodLevel(20);
         player.setGameMode(org.bukkit.GameMode.SURVIVAL);
-        player.setHealth(player.getMaxHealth());
+        player.setHealth(20.0);
         player.setSaturation((float) 10);
 
         player.getInventory().setArmorContents(new ItemStack[] {

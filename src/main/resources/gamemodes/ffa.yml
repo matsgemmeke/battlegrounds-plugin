@@ -15,12 +15,10 @@ scoreboard:
   # The layout of the game scoreboards
   # Leave "" to remove this line
   layout:
-    line-0: "&6Time: &f%bg_time%"
-    line-1: " "
-    line-2: "%bg_scores%"
-    line-4: "  "
-    line-5: "&8%bg_date%"
-    line-6: "&6%bg_gamemode%"
+    line-0: "%bg_scores%"
     title: "&6&lBattlegrounds"
   # List of worlds where this scoreboard will appear
   worlds: "*"
+
+# The length of a game in seconds
+time-limit: 600

@@ -2,9 +2,9 @@ package com.matsg.battlegrounds.api.game;
 
 public interface TimeControl {
 
-    String getFormatTime();
-
     int getTime();
+
+    String formatTime();
 
     void setTime(int time);
 

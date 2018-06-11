@@ -41,7 +41,7 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
         this.fireArmType = fireArmType;
         this.magazine = magazine;
         this.magazineSize = magazine;
-        this.maxAmmo = maxAmmo;
+        this.maxAmmo = magazine * maxAmmo;
         this.reloadCancelled = false;
         this.reloadDuration = reloadDuration;
         this.reloading = false;

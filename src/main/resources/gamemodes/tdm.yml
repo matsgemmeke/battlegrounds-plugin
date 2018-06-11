@@ -15,9 +15,8 @@ scoreboard:
     line-0: "&6Time: &f%bg_time%"
     line-1: " "
     line-2: "%bg_scores%"
-    line-4: "  "
-    line-5: "&8%bg_date%"
-    line-6: "&6%bg_gamemode%"
+    line-3: "  "
+    line-4: "&8%bg_date%"
     title: "&6&lBattlegrounds"
   # List of worlds where this scoreboard will appear
   worlds: "*"
@@ -32,3 +31,6 @@ teams:
     armor-color: 0,0,255
     chatcolor: '9'
     name: Team Blue
+
+# The length of a game in seconds
+time-limit: 600

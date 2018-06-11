@@ -4,9 +4,9 @@ import com.matsg.battlegrounds.api.player.GamePlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 
-import java.util.Collection;
-
 public interface Team {
+
+    void addPlayer(GamePlayer gamePlayer);
 
     ChatColor getChatColor();
 
@@ -14,9 +14,17 @@ public interface Team {
 
     int getId();
 
+    int getKills();
+
     String getName();
 
-    Collection<GamePlayer> getPlayers();
+    Iterable<GamePlayer> getPlayers();
 
     int getScore();
+
+    int getTotalPlayers();
+
+    boolean hasPlayer(GamePlayer gamePlayer);
+
+    void removePlayer(GamePlayer gamePlayer);
 }

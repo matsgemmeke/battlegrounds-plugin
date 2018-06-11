@@ -5,12 +5,14 @@ import org.bukkit.inventory.ItemStack;
 
 public class BattleLoadout implements Loadout {
 
-    private final String name;
+    private final int id;
     private Equipment equipment;
     private FireArm primary, secondary;
     private Knife knife;
+    private String name;
 
-    public BattleLoadout(String name, FireArm primary, FireArm secondary, Equipment equipment, Knife knife) {
+    public BattleLoadout(int id, String name, FireArm primary, FireArm secondary, Equipment equipment, Knife knife) {
+        this.id = id;
         this.name = name;
         this.primary = primary;
         this.secondary = secondary;
@@ -37,6 +39,10 @@ public class BattleLoadout implements Loadout {
         return equipment;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public Knife getKnife() {
         return knife;
     }
@@ -59,6 +65,10 @@ public class BattleLoadout implements Loadout {
 
     public void setKnife(Knife knife) {
         this.knife = knife;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setPrimary(FireArm primary) {

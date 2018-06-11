@@ -30,7 +30,7 @@ public class LoadoutManagerView implements View {
         try {
             int i = 0;
             for (Loadout loadout : new BattlePlayerYaml(plugin, player.getUniqueId()).getLoadouts()) {
-                ItemStack itemStack = new ItemStackBuilder(getLoadoutItemStack(loadout))
+                ItemStack itemStack = new ItemStackBuilder(getLoadoutItemStack(loadout).clone())
                         .addItemFlags(ItemFlag.values())
                         .setAmount(++ i)
                         .setDisplayName("§f" + loadout.getName())
@@ -60,7 +60,11 @@ public class LoadoutManagerView implements View {
     }
 
     public void onClick(Player player, ItemStack itemStack, ClickType clickType) {
-        player.openInventory(new EditLoadoutView(plugin, loadouts.get(itemStack)).getInventory());
+        Loadout loadout = loadouts.get(itemStack);
+        if (loadout == null) {
+            return;
+        }
+        player.openInventory(new EditLoadoutView(plugin, loadout).getInventory());
     }
 
     public boolean onClose() {

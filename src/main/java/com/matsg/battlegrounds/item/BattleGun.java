@@ -1,12 +1,13 @@
 package com.matsg.battlegrounds.item;
 
 import com.matsg.battlegrounds.api.event.GamePlayerKillPlayerEvent;
+import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.item.DamageSource;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.item.Attachment;
 import com.matsg.battlegrounds.api.item.Gun;
 import com.matsg.battlegrounds.api.item.ReloadType;
-import com.matsg.battlegrounds.api.util.Hitbox;
+import com.matsg.battlegrounds.api.player.Hitbox;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.util.BattleSound;
 import com.matsg.battlegrounds.util.EnumMessage;
@@ -109,9 +110,10 @@ public class BattleGun extends BattleFireArm implements Gun {
 
     private void inflictDamage(Location location, double range) {
         GamePlayer[] players = game.getPlayerManager().getNearbyPlayers(game, location, range);
+        Team team = game.getGameMode().getTeam(gamePlayer);
         if (players.length > 0) {
             GamePlayer gamePlayer = players[0];
-            if (gamePlayer == null || gamePlayer == this.gamePlayer || gamePlayer.getPlayer().isDead()) {
+            if (gamePlayer == null || gamePlayer == this.gamePlayer || gamePlayer.getPlayer().isDead() || team != null && game.getGameMode().getTeam(gamePlayer) == team) {
                 return;
             }
             Hitbox hitbox = Hitbox.getHitbox(gamePlayer.getLocation().getY(), location.getY());

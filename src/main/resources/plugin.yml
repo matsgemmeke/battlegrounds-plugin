@@ -11,6 +11,3 @@ commands:
     aliases: loadoutcreator
     description: Opens the loadout manager
     usage: /loadout
-  weapons:
-    description: Shows all configured weapons
-    usage: /weapons

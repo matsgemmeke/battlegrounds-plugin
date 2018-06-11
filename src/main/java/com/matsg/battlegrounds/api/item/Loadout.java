@@ -6,6 +6,8 @@ public interface Loadout {
 
     Equipment getEquipment();
 
+    int getId();
+
     Knife getKnife();
 
     String getName();
@@ -23,6 +25,10 @@ public interface Loadout {
     Weapon[] getWeapons();
 
     void setEquipment(Equipment equipment);
+
+    void setKnife(Knife knife);
+
+    void setName(String name);
 
     void setPrimary(FireArm primary);
 

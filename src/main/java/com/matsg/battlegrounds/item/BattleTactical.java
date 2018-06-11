@@ -3,7 +3,7 @@ package com.matsg.battlegrounds.item;
 import com.matsg.battlegrounds.api.item.Tactical;
 import com.matsg.battlegrounds.api.item.TacticalEffect;
 import com.matsg.battlegrounds.api.player.GamePlayer;
-import com.matsg.battlegrounds.api.util.Hitbox;
+import com.matsg.battlegrounds.api.player.Hitbox;
 import com.matsg.battlegrounds.api.util.Sound;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;

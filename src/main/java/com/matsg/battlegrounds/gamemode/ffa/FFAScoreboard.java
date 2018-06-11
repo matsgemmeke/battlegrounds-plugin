@@ -56,7 +56,7 @@ public class FFAScoreboard extends AbstractScoreboard {
         if (index > Integer.MIN_VALUE) {
             builder.removeLine(DisplaySlot.SIDEBAR, index);
             for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
-                builder.addLine(DisplaySlot.SIDEBAR, index, ChatColor.GOLD + gamePlayer.getName() + ": " + ChatColor.WHITE + gamePlayer.getKills());
+                builder.addLine(DisplaySlot.SIDEBAR, gamePlayer.getKills(), ChatColor.GOLD + gamePlayer.getName() + ": " + ChatColor.WHITE + gamePlayer.getKills());
             }
         }
     }
@@ -70,7 +70,7 @@ public class FFAScoreboard extends AbstractScoreboard {
         return new Placeholder[] {
                 new Placeholder("bg_date", getDate()),
                 new Placeholder("bg_gamemode", game.getGameMode().getName()),
-                new Placeholder("bg_time", game.getTimeControl().getFormatTime())
+                new Placeholder("bg_time", game.getTimeControl().formatTime())
         };
     }
 }

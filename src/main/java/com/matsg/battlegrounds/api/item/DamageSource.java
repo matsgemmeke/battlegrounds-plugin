@@ -1,6 +1,6 @@
 package com.matsg.battlegrounds.api.item;
 
-import com.matsg.battlegrounds.api.util.Hitbox;
+import com.matsg.battlegrounds.api.player.Hitbox;
 
 public interface DamageSource {
 
