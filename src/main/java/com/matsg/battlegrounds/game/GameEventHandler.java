@@ -5,10 +5,7 @@ import com.matsg.battlegrounds.api.config.PlayerYaml;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent.DeathCause;
 import com.matsg.battlegrounds.api.event.GamePlayerKillPlayerEvent;
-import com.matsg.battlegrounds.api.game.Arena;
-import com.matsg.battlegrounds.api.game.EventHandler;
-import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.Team;
+import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.item.Item;
 import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.item.Knife;
@@ -181,20 +178,11 @@ public class GameEventHandler implements EventHandler {
         Player player = event.getPlayer();
         Game game = plugin.getGameManager().getGame(player);
 
-        if (event.getFrom().getX() == event.getTo().getX() && event.getFrom().getZ() == event.getTo().getZ() || game == null || game.getArena() == null || game.getState().isAllowMove()) {
+        if (game == null) {
             return;
         }
 
-        Arena arena = game.getArena();
-
-        if (!arena.contains(player.getLocation())) {
-            player.teleport(player.getLocation().add(event.getFrom().toVector().subtract(event.getTo().toVector()).normalize()));
-        }
-
-        Location location = game.getArena().getSpawn(game.getPlayerManager().getGamePlayer(player)).getLocation();
-        location.setPitch(player.getLocation().getPitch());
-        location.setYaw(player.getLocation().getYaw());
-        player.teleport(location);
+        game.getPlayerManager().onPlayerMove(player, event.getFrom(), event.getTo());
     }
 
     public void onRespawn(PlayerRespawnEvent event) {
@@ -206,8 +194,9 @@ public class GameEventHandler implements EventHandler {
         }
 
         GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
+        Spawn spawn = game.getGameMode().getRespawnPoint(gamePlayer);
 
-        game.getPlayerManager().respawnPlayer(gamePlayer);
-        event.setRespawnLocation(game.getGameMode().getRespawnPoint(gamePlayer).getLocation());
+        game.getPlayerManager().respawnPlayer(gamePlayer, spawn);
+        event.setRespawnLocation(spawn.getLocation());
     }
 }

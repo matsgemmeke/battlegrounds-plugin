@@ -18,6 +18,7 @@ public class BattlegroundsCommand extends Command {
         commands.add(new Reload(plugin));
         commands.add(new RemoveArena(plugin));
         commands.add(new RemoveGame(plugin));
+        commands.add(new RemoveSpawn(plugin));
         commands.add(new SetGameSign(plugin));
         commands.add(new SetLobby(plugin));
 

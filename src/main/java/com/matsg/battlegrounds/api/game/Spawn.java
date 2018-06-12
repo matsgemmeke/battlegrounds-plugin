@@ -7,11 +7,17 @@ public interface Spawn {
 
     GamePlayer getGamePlayer();
 
+    int getIndex();
+
     Location getLocation();
 
     int getTeamId();
 
     boolean isOccupied();
 
+    boolean isTeamBase();
+
     void setGamePlayer(GamePlayer gamePlayer);
+
+    void setTeamBase(boolean teamBase);
 }

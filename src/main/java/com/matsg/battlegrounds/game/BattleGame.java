@@ -265,6 +265,7 @@ public class BattleGame implements Game {
                 gamePlayer.getLoadout().getSecondary().setReloadCancelled(true);
             }
             playerManager.setVisible(gamePlayer, true);
+            plugin.getPlayerStorage().addPlayerAttributes(gamePlayer);
         }
 
         state = GameState.RESETTING;

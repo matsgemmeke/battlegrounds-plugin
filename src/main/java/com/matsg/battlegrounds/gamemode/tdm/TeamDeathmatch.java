@@ -10,7 +10,7 @@ import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.game.BattleTeam;
 import com.matsg.battlegrounds.gamemode.AbstractGameMode;
 import com.matsg.battlegrounds.gamemode.Result;
-import com.matsg.battlegrounds.gui.scoreboard.GameScoreboard;
+import com.matsg.battlegrounds.api.game.GameScoreboard;
 import com.matsg.battlegrounds.util.EnumMessage;
 import com.matsg.battlegrounds.util.EnumTitle;
 import com.matsg.battlegrounds.util.Title;
@@ -24,7 +24,8 @@ import java.util.List;
 public class TeamDeathmatch extends AbstractGameMode {
 
     private boolean scoreboardEnabled;
-    protected double minSpawnDistance;
+    private double minSpawnDistance;
+    private int killsToWin;
 
     public TeamDeathmatch(Game game, Yaml yaml) {
         super(game, EnumMessage.TDM_NAME.getMessage(), EnumMessage.TDM_SHORT.getMessage(), yaml);
@@ -73,6 +74,15 @@ public class TeamDeathmatch extends AbstractGameMode {
         return scoreboardEnabled ? new TDMScoreboard(game, yaml) : null;
     }
 
+    private Spawn getTeamBase(Team team) {
+        for (Spawn spawn : game.getArena().getSpawns()) {
+            if (spawn.getTeamId() == team.getId() && spawn.isTeamBase()) {
+                return spawn;
+            }
+        }
+        return null;
+    }
+
     public void onKill(GamePlayer gamePlayer, GamePlayer killer, Weapon weapon) {
         game.broadcastMessage(EnumMessage.DEATH_PLAYER_KILL.getMessage(new Placeholder[] {
                 new Placeholder("bg_killer", getTeam(killer).getChatColor() + killer.getName() + ChatColor.WHITE),
@@ -82,6 +92,10 @@ public class TeamDeathmatch extends AbstractGameMode {
         gamePlayer.setDeaths(gamePlayer.getDeaths() + 1);
         killer.addScore(100);
         killer.setKills(killer.getKills() + 1);
+
+        if (killer.getKills() > killsToWin) {
+            game.stop();
+        }
     }
 
     public void onStart() {
@@ -94,7 +108,7 @@ public class TeamDeathmatch extends AbstractGameMode {
             Result result = Result.getResult(team, getSortedTeams());
             if (result != null) {
                 for (GamePlayer gamePlayer : team.getPlayers()) {
-                    gamePlayer.sendMessage(new Title(result.getTitle(), getEndMessage(), 10, 80, 10));
+                    gamePlayer.sendMessage(new Title(result.getTitle(), EnumMessage.ENDREASON_SCORE.getMessage(), 10, 80, 10));
                 }
             }
         }
@@ -110,14 +124,7 @@ public class TeamDeathmatch extends AbstractGameMode {
 
     public void spawnPlayers(GamePlayer... players) {
         for (GamePlayer gamePlayer : players) {
-            Team team = getTeam(gamePlayer);
-            for (Spawn spawn : game.getArena().getSpawns()) {
-                if (spawn.getTeamId() == team.getId() && !spawn.isOccupied()) {
-                    gamePlayer.getPlayer().teleport(spawn.getLocation());
-                    spawn.setGamePlayer(gamePlayer);
-                    break;
-                }
-            }
+            gamePlayer.getPlayer().teleport(getTeamBase(getTeam(gamePlayer)).getLocation());
         }
     }
 }

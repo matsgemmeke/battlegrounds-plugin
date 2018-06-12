@@ -37,9 +37,11 @@ public interface PlayerManager {
 
     Collection<GamePlayer> getPlayers();
 
-    void removePlayer(Player player);
+    void onPlayerMove(Player player, Location from, Location to);
 
-    void respawnPlayer(GamePlayer gamePlayer);
+    void removePlayer(GamePlayer gamePlayer);
+
+    void respawnPlayer(GamePlayer gamePlayer, Spawn spawn);
 
     void setVisible(GamePlayer gamePlayer, boolean visible);
 

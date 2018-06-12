@@ -3,25 +3,19 @@ package com.matsg.battlegrounds.command;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.api.game.Spawn;
 import com.matsg.battlegrounds.api.util.Placeholder;
-import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.EnumMessage;
 import org.bukkit.command.CommandSender;
 
-import java.util.ArrayList;
-import java.util.List;
+public class RemoveSpawn extends SubCommand {
 
-public class RemoveArena extends SubCommand {
-
-    private List<CommandSender> senders;
-
-    public RemoveArena(Battlegrounds plugin) {
-        super(plugin,"removearena", EnumMessage.DESCRIPTION_REMOVEARENA.getMessage(),
-                "bg removearena [id] [arena]", "battlegrounds.removearena", false, "ra");
-        this.senders = new ArrayList<>();
+    public RemoveSpawn(Battlegrounds plugin) {
+        super(plugin, "removespawn", EnumMessage.DESCRIPTION_REMOVESPAWN.getMessage(),
+                "bg removespawn [id] [arena] [index]", "battlegrounds.removespawn", false, "rs");
     }
 
-    public void execute(final CommandSender sender, String[] args) {
+    public void execute(CommandSender sender, String[] args) {
         if (args.length == 1) {
             EnumMessage.SPECIFY_ID.send(sender);
             return;
@@ -56,23 +50,31 @@ public class RemoveArena extends SubCommand {
             return;
         }
 
-        if (!senders.contains(sender)) {
-            EnumMessage.ARENA_CONFIRM_REMOVE.send(sender, new Placeholder("bg_arena", args[2]));
-
-            senders.add(sender);
-
-            new BattleRunnable() {
-                public void run() {
-                    senders.remove(sender);
-                }
-            }.runTaskLater(200);
+        if (args.length == 3) {
+            EnumMessage.SPECIFY_INDEX.send(sender);
             return;
         }
 
-        game.getArenaList().remove(arena);
-        game.getDataFile().set("arena." + name, null);
+        int index;
+
+        try {
+            index = Integer.parseInt(args[3]);
+        } catch (Exception e) {
+            EnumMessage.INVALID_ARGUMENT_TYPE.send(sender, new Placeholder("bg_arg", args[3]));
+            return;
+        }
+
+        Spawn spawn = arena.getSpawn(index);
+
+        if (spawn == null) {
+            EnumMessage.SPAWN_NOT_EXISTS.send(sender, new Placeholder("bg_arena", arena.getName()), new Placeholder("bg_index", index));
+            return;
+        }
+
+        arena.getSpawns().remove(spawn);
+        game.getDataFile().set("arena." + arena.getName() + ".spawn." + index, null);
         game.getDataFile().save();
 
-        EnumMessage.ARENA_REMOVE.send(sender, new Placeholder("bg_arena", name), new Placeholder("bg_game", id));
+        EnumMessage.SPAWN_REMOVE.send(sender, new Placeholder("bg_arena", arena.getName()), new Placeholder("bg_index", index));
     }
 }

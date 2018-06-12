@@ -1,6 +1,14 @@
 # Player armor color
 armor-color: 100,100,100
 
+# The message sent after a game has ended
+end-message:
+- "&6&m------------------------------"
+- " &f1st: %bg_first% (%bg_first_score%)"
+- " &f2nd: %bg_second% (%bg_second_score%)"
+- " &f3rd: %bg_third% (%bg_third_score%)"
+- "&6&m------------------------------"
+
 # The amount of kills needed to win a game
 kills-to-win: 30
 
@@ -15,8 +23,9 @@ scoreboard:
   # The layout of the game scoreboards
   # Leave "" to remove this line
   layout:
-    line-0: "%bg_scores%"
-    title: "&6&lBattlegrounds"
+    line-1: "%bg_scores%"
+    line0: "%bg_scores%"
+    title: "&6&lFree-for-all"
   # List of worlds where this scoreboard will appear
   worlds: "*"
 

@@ -10,12 +10,14 @@ import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.game.BattleTeam;
 import com.matsg.battlegrounds.gamemode.AbstractGameMode;
 import com.matsg.battlegrounds.gamemode.Result;
-import com.matsg.battlegrounds.gui.scoreboard.GameScoreboard;
+import com.matsg.battlegrounds.api.game.GameScoreboard;
 import com.matsg.battlegrounds.util.EnumMessage;
 import com.matsg.battlegrounds.util.EnumTitle;
 import com.matsg.battlegrounds.util.Title;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
+
+import java.util.List;
 
 public class FreeForAll extends AbstractGameMode {
 
@@ -23,6 +25,7 @@ public class FreeForAll extends AbstractGameMode {
     private Color color;
     private double minSpawnDistance;
     private int killsToWin;
+    private String[] endMessage;
 
     public FreeForAll(Game game, Yaml yaml) {
         super(game, EnumMessage.FFA_NAME.getMessage(), EnumMessage.FFA_SHORT.getMessage(), yaml);
@@ -31,6 +34,9 @@ public class FreeForAll extends AbstractGameMode {
         this.minSpawnDistance = yaml.getDouble("minimum-spawn-distance");
         this.scoreboardEnabled = yaml.getBoolean("scoreboard.enabled");
         this.timeLimit = yaml.getInt("time-limit");
+
+        List<String> endMessage = yaml.getStringList("end-message");
+        this.endMessage = endMessage.toArray(new String[endMessage.size()]);
     }
 
     public void addPlayer(GamePlayer gamePlayer) {
@@ -80,9 +86,23 @@ public class FreeForAll extends AbstractGameMode {
             Result result = Result.getResult(team, getSortedTeams());
             if (result != null) {
                 for (GamePlayer gamePlayer : team.getPlayers()) {
-                    gamePlayer.sendMessage(new Title(result.getTitle(), getEndMessage(), 10, 80, 10));
+                    gamePlayer.sendMessage(new Title(result.getTitle(), EnumMessage.ENDREASON_SCORE.getMessage(), 10, 80, 10));
                 }
             }
+        }
+
+        List<Team> teams = getSortedTeams();
+        Placeholder[] placeholders = new Placeholder[] {
+                new Placeholder("bg_first", teams.size() > 0 && teams.get(0) != null ? teams.get(0).getPlayers().iterator().next() : "---"),
+                new Placeholder("bg_first_score", teams.size() > 0 && teams.get(0) != null ? teams.get(0).getPlayers().iterator().next().getKills() : 0),
+                new Placeholder("bg_second", teams.size() > 1 && teams.get(1) != null ? teams.get(1).getPlayers().iterator().next() : "---"),
+                new Placeholder("bg_second_score", teams.size() > 1 && teams.get(1) != null ? teams.get(1).getPlayers().iterator().next().getKills() : 0),
+                new Placeholder("bg_third", teams.size() > 2 && teams.get(2) != null ? teams.get(2).getPlayers().iterator().next() : "---"),
+                new Placeholder("bg_third_score", teams.size() > 2 && teams.get(2) != null ? teams.get(2).getPlayers().iterator().next().getKills() : 0)
+        };
+
+        for (String message : endMessage) {
+            game.broadcastMessage(EnumMessage.PREFIX.getMessage() + Placeholder.replace(message, placeholders));
         }
     }
 

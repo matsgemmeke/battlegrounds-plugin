@@ -17,7 +17,7 @@ scoreboard:
     line-2: "%bg_scores%"
     line-3: "  "
     line-4: "&8%bg_date%"
-    title: "&6&lBattlegrounds"
+    title: "&6&lTeam Deathmatch"
   # List of worlds where this scoreboard will appear
   worlds: "*"
 

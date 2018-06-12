@@ -3,7 +3,6 @@ package com.matsg.battlegrounds.api.game;
 import com.matsg.battlegrounds.api.config.Yaml;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.player.GamePlayer;
-import com.matsg.battlegrounds.gui.scoreboard.GameScoreboard;
 
 public interface GameMode extends StateListener {
 

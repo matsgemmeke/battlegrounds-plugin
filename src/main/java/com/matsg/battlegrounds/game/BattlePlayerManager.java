@@ -9,6 +9,7 @@ import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.gui.scoreboard.LobbyScoreboard;
 import com.matsg.battlegrounds.player.BattleGamePlayer;
 import com.matsg.battlegrounds.util.ActionBar;
+import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.EnumMessage;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -198,20 +199,33 @@ public class BattlePlayerManager implements PlayerManager {
         return nearestPlayer;
     }
 
-    public void removePlayer(Player player) {
-        GamePlayer gamePlayer = getGamePlayer(player);
+    public void onPlayerMove(Player player, Location from, Location to) {
+        Arena arena = game.getArena();
 
+        if (!arena.contains(player.getLocation())) {
+            player.teleport(player.getLocation().add(from.toVector().subtract(to.toVector()).normalize()));
+        }
+
+        Location location = game.getArena().getSpawn(game.getPlayerManager().getGamePlayer(player)).getLocation();
+        location.setPitch(player.getLocation().getPitch());
+        location.setYaw(player.getLocation().getYaw());
+        player.teleport(location);
+
+        ActionBar.LEAVE_ARENA.send(player);
+    }
+
+    public void removePlayer(GamePlayer gamePlayer) {
         players.remove(gamePlayer);
 
         game.broadcastMessage(EnumMessage.PREFIX.getMessage() + " " + EnumMessage.PLAYER_LEAVE.getMessage(
-                new Placeholder("player_name", player.getName()),
+                new Placeholder("player_name", gamePlayer.getName()),
                 new Placeholder("bg_players", players.size()),
                 new Placeholder("bg_maxplayers", game.getConfiguration().getMaxPlayers())));
         game.getGameMode().addPlayer(gamePlayer);
         game.updateSign();
 
         gamePlayer.getPlayer().teleport(game.getSpawnPoint());
-        gamePlayer.getSavedInventory().restore(player);
+        gamePlayer.getSavedInventory().restore(gamePlayer.getPlayer());
         gamePlayer.setStatus(PlayerStatus.ACTIVE).apply(game, gamePlayer);
 
         if (getLivingPlayers().length <= 0) {
@@ -219,8 +233,16 @@ public class BattlePlayerManager implements PlayerManager {
         }
     }
 
-    public void respawnPlayer(GamePlayer gamePlayer) {
+    public void respawnPlayer(GamePlayer gamePlayer, Spawn spawn) {
         game.getPlayerManager().changeLoadout(gamePlayer, gamePlayer.getLoadout(), true);
+
+        spawn.setGamePlayer(gamePlayer);
+
+        new BattleRunnable() {
+            public void run() {
+                spawn.setGamePlayer(null); // Wait 5 seconds before resetting the spawn state
+            }
+        }.runTaskLater(100);
     }
 
     public void setVisible(GamePlayer gamePlayer, boolean visible) {

@@ -54,6 +54,7 @@ public class AddSpawn extends SubCommand {
             return;
         }
 
+        boolean teamBase = false;
         int teamId = 0;
 
         if (args.length >= 4) {
@@ -65,16 +66,43 @@ public class AddSpawn extends SubCommand {
             }
         }
 
-        Spawn spawn = new ArenaSpawn(player.getLocation(), teamId);
+        if (args.length >= 5) {
+            teamBase = args[4].equals("-b");
+        }
+
+        Spawn spawn = new ArenaSpawn(getSpawnIndex(arena), player.getLocation(), teamId);
+        spawn.setTeamBase(teamBase);
 
         arena.getSpawns().add(spawn);
 
-        game.getDataFile().setLocation("arena." + name + ".spawn." + arena.getSpawns().size() + ".location", spawn.getLocation(), true);
-        game.getDataFile().set("arena." + name + ".spawn." + arena.getSpawns().size() + ".team", teamId);
+        game.getDataFile().set("arena." + name + ".spawn." + spawn.getIndex() + ".base", teamBase);
+        game.getDataFile().setLocation("arena." + name + ".spawn." + spawn.getIndex() + ".location", spawn.getLocation(), true);
+        game.getDataFile().set("arena." + name + ".spawn." + spawn.getIndex() + ".team", teamId);
         game.getDataFile().save();
 
         player.sendMessage(EnumMessage.SPAWN_ADD.getMessage(
                 new Placeholder("bg_arena", name),
-                new Placeholder("bg_spawn", arena.getSpawns().size())));
+                new Placeholder("bg_index", spawn.getIndex())));
+    }
+
+    private int getSpawnIndex(Arena arena) {
+        int i = 1;
+        loop: while (true) {
+            for (Spawn spawn : arena.getSpawns()) {
+                if (spawn.getIndex() == i) {
+                    continue loop;
+                }
+            }
+            return i;
+        }
+    }
+
+    private boolean hasTeamBase(Arena arena) {
+        for (Spawn spawn : arena.getSpawns()) {
+            if (spawn.isTeamBase()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

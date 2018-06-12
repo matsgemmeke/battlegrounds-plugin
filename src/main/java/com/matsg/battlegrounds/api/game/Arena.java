@@ -54,6 +54,14 @@ public interface Arena extends Region {
     Spawn getSpawn(GamePlayer gamePlayer);
 
     /**
+     * Gets a spawn with a certain index number.
+     *
+     * @param index The spawn index
+     * @return The spawn with the index number if one exists, otherwise null
+     */
+    Spawn getSpawn(int index);
+
+    /**
      * Gets the collection of spawns.
      *
      * @return The spawn collection
