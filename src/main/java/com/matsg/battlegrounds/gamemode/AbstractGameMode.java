@@ -55,7 +55,7 @@ public abstract class AbstractGameMode implements GameMode {
 
         Collections.sort(list, new Comparator<Team>() {
             public int compare(Team o1, Team o2) {
-                return ((Integer) o1.getKills()).compareTo(o2.getKills());
+                return ((Integer) o2.getKills()).compareTo(o1.getKills()); // Reverse sort
             }
         });
 

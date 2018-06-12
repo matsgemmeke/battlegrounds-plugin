@@ -1,28 +1,28 @@
-BALANCED:
+'1':
   Equipment: Grenade
   Knife: Combat Knife
   Name: Balanced
   Primary: M16
   Secondary: M1911
-CLOSE_QUARTERS:
+'2':
   Equipment: Smoke Grenade
   Knife: Combat Knife
   Name: Close Quarters
   Primary: Olympia
   Secondary: Five-seven
-OPERATIVE:
+'3':
   Equipment: Grenade
   Knife: Combat Knife
   Name: Operative
   Primary: MP5
   Secondary: SMAW
-HEAVY_GUNNER:
+'4':
   Equipment: Grenade
   Knife: Combat Knife
   Name: Heavy Gunner
   Primary: HK21
   Secondary: SMAW
-MARKSMAN:
+'5':
   Equipment: Smoke Grenade
   Knife: Combat Knife
   Name: Marksman

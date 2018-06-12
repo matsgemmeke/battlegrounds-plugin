@@ -108,7 +108,8 @@ public class DataLoader {
 
                     if (spawnSection != null) {
                         for (String spawnIndex : spawnSection.getKeys(false)) {
-                            Spawn spawn = new ArenaSpawn(data.getLocation("arena." + name + ".spawn." + spawnIndex + ".location"), spawnSection.getInt(spawnIndex + ".team"));
+                            Spawn spawn = new ArenaSpawn(Integer.parseInt(spawnIndex), data.getLocation("arena." + name + ".spawn." + spawnIndex + ".location"), spawnSection.getInt(spawnIndex + ".team"));
+                            spawn.setTeamBase(spawnSection.getBoolean(spawnIndex + ".base"));
                             if (spawn.getLocation() != null) {
                                 arena.getSpawns().add(spawn);
                             }

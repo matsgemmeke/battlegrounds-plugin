@@ -1,7 +1,6 @@
-package com.matsg.battlegrounds.config;
+package com.matsg.battlegrounds.api.config;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.config.Yaml;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;

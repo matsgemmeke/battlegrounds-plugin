@@ -80,6 +80,7 @@ public enum EnumMessage implements Message {
     SPAWN_ADD("setup-spawn-add", true),
     SPAWN_NOT_EXISTS("setup-spawn-not-exists", false),
     SPAWN_REMOVE("setup-spawn-remove", true),
+    SPAWN_TEAMBASE_EXISTS("setup-spawn-teambase-exists", false),
     SPECIFY_ID("command-specify-id", false),
     SPECIFY_INDEX("command-specify-index", false),
     SPECIFY_LOADOUT("command-specify-loadout", false),

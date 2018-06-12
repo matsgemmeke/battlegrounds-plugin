@@ -56,7 +56,7 @@ public class FFAScoreboard extends AbstractScoreboard {
         if (index > Integer.MIN_VALUE) {
             builder.removeLine(DisplaySlot.SIDEBAR, index);
             for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
-                builder.addLine(DisplaySlot.SIDEBAR, gamePlayer.getKills(), ChatColor.GOLD + gamePlayer.getName() + ": " + ChatColor.WHITE + gamePlayer.getKills());
+                builder.addLine(DisplaySlot.SIDEBAR, gamePlayer.getKills(), gamePlayer.getName());
             }
         }
     }

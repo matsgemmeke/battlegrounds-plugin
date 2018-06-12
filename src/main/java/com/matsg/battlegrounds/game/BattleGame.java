@@ -247,7 +247,7 @@ public class BattleGame implements Game {
 
     public void stop() {
         if (!state.isInProgress()) {
-            state = GameState.WAITING;
+            setState(GameState.WAITING);
             updateSign();
             return;
         }
@@ -268,10 +268,10 @@ public class BattleGame implements Game {
             plugin.getPlayerStorage().addPlayerAttributes(gamePlayer);
         }
 
-        state = GameState.RESETTING;
         timeControl.stop();
 
         clearGameData();
+        setState(GameState.RESETTING);
         updateSign();
     }
 

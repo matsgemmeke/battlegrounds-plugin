@@ -93,16 +93,16 @@ public class FreeForAll extends AbstractGameMode {
 
         List<Team> teams = getSortedTeams();
         Placeholder[] placeholders = new Placeholder[] {
-                new Placeholder("bg_first", teams.size() > 0 && teams.get(0) != null ? teams.get(0).getPlayers().iterator().next() : "---"),
+                new Placeholder("bg_first", teams.size() > 0 && teams.get(0) != null ? teams.get(0).getPlayers().iterator().next().getName() : "---"),
                 new Placeholder("bg_first_score", teams.size() > 0 && teams.get(0) != null ? teams.get(0).getPlayers().iterator().next().getKills() : 0),
-                new Placeholder("bg_second", teams.size() > 1 && teams.get(1) != null ? teams.get(1).getPlayers().iterator().next() : "---"),
+                new Placeholder("bg_second", teams.size() > 1 && teams.get(1) != null ? teams.get(1).getPlayers().iterator().next().getName() : "---"),
                 new Placeholder("bg_second_score", teams.size() > 1 && teams.get(1) != null ? teams.get(1).getPlayers().iterator().next().getKills() : 0),
-                new Placeholder("bg_third", teams.size() > 2 && teams.get(2) != null ? teams.get(2).getPlayers().iterator().next() : "---"),
+                new Placeholder("bg_third", teams.size() > 2 && teams.get(2) != null ? teams.get(2).getPlayers().iterator().next().getName() : "---"),
                 new Placeholder("bg_third_score", teams.size() > 2 && teams.get(2) != null ? teams.get(2).getPlayers().iterator().next().getKills() : 0)
         };
 
         for (String message : endMessage) {
-            game.broadcastMessage(EnumMessage.PREFIX.getMessage() + Placeholder.replace(message, placeholders));
+            game.broadcastMessage(EnumMessage.PREFIX.getMessage() + ChatColor.translateAlternateColorCodes('&', Placeholder.replace(message, placeholders)));
         }
     }
 

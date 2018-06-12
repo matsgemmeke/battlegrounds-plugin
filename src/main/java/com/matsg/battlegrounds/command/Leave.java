@@ -21,6 +21,6 @@ public class Leave extends SubCommand {
             return;
         }
 
-        game.getPlayerManager().removePlayer(player);
+        game.getPlayerManager().removePlayer(game.getPlayerManager().getGamePlayer(player));
     }
 }

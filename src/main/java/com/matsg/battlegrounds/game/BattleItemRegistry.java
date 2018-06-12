@@ -60,7 +60,6 @@ public class BattleItemRegistry implements ItemRegistry {
     }
 
     public void removeItem(Item item) {
-        System.out.print(items.contains(item));
         items.remove(item);
     }
 }

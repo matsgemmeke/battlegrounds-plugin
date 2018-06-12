@@ -127,6 +127,15 @@ public class BattleArena implements Arena {
         return null;
     }
 
+    public Spawn getSpawn(int index) {
+        for (Spawn spawn : spawns) {
+            if (spawn.getIndex() == index) {
+                return spawn;
+            }
+        }
+        return null;
+    }
+
     private List<Block> updateBoundingBlocks() {
         List<Block> list = new ArrayList<>();
         for (int x = (int) min.getX(); x <= max.getX(); x += 1.0) {

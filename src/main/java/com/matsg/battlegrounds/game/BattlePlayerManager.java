@@ -204,14 +204,17 @@ public class BattlePlayerManager implements PlayerManager {
 
         if (!arena.contains(player.getLocation())) {
             player.teleport(player.getLocation().add(from.toVector().subtract(to.toVector()).normalize()));
+            ActionBar.LEAVE_ARENA.send(player);
+        }
+
+        if (game.getState().isAllowMove() || from.getX() == to.getX() && from.getZ() == to.getZ()) {
+            return;
         }
 
         Location location = game.getArena().getSpawn(game.getPlayerManager().getGamePlayer(player)).getLocation();
         location.setPitch(player.getLocation().getPitch());
         location.setYaw(player.getLocation().getYaw());
         player.teleport(location);
-
-        ActionBar.LEAVE_ARENA.send(player);
     }
 
     public void removePlayer(GamePlayer gamePlayer) {

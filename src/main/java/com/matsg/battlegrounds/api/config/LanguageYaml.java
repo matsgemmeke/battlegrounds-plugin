@@ -1,7 +1,6 @@
 package com.matsg.battlegrounds.api.config;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.config.AbstractYaml;
 
 import java.io.IOException;
 import java.util.Locale;

@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.config;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.config.AbstractYaml;
 import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.item.BattleLoadout;
 import org.bukkit.configuration.ConfigurationSection;

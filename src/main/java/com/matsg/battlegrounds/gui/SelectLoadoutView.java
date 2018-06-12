@@ -70,7 +70,7 @@ public class SelectLoadoutView implements View {
 
     public void onClick(Player player, ItemStack itemStack, ClickType clickType) {
         Loadout loadout = loadouts.get(itemStack);
-        if (loadout == null) {
+        if (loadout == null || itemStack.getType() == Material.BARRIER) {
             return;
         }
         game.getPlayerManager().changeLoadout(gamePlayer, loadout, gamePlayer.getLoadout() == null || game.getTimeControl().getTime() <= 10);
