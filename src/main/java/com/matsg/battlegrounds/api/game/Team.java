@@ -27,4 +27,6 @@ public interface Team {
     boolean hasPlayer(GamePlayer gamePlayer);
 
     void removePlayer(GamePlayer gamePlayer);
+
+    void setScore(int score);
 }

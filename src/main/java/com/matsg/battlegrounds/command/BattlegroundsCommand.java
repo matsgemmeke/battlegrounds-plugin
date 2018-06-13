@@ -21,6 +21,7 @@ public class BattlegroundsCommand extends Command {
         commands.add(new RemoveSpawn(plugin));
         commands.add(new SetGameSign(plugin));
         commands.add(new SetLobby(plugin));
+        commands.add(new SetMainLobby(plugin));
 
         commands.add(new Help(plugin, commands.toArray(new SubCommand[commands.size()])));
     }

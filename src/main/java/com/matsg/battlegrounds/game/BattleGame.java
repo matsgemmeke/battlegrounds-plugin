@@ -4,19 +4,14 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.config.CacheYaml;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.game.GameMode;
-import com.matsg.battlegrounds.api.item.Item;
-import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.player.PlayerStatus;
 import com.matsg.battlegrounds.api.util.Message;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.config.BattleCacheYaml;
-import com.matsg.battlegrounds.item.misc.SelectLoadout;
 import com.matsg.battlegrounds.util.*;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,7 +37,7 @@ public class BattleGame implements Game {
         this.plugin = plugin;
         this.id = id;
         this.arenaList = new ArrayList<>();
-        this.eventHandler = new GameEventHandler(plugin);
+        this.eventHandler = new GameEventHandler(plugin, this);
         this.itemRegistry = new BattleItemRegistry();
         this.playerManager = new BattlePlayerManager(this);
         this.state = GameState.WAITING;
@@ -153,10 +148,10 @@ public class BattleGame implements Game {
                 itemRegistry.clear();
                 playerManager.getPlayers().clear();
 
-                state = GameState.WAITING;
+                setState(GameState.WAITING);
                 updateSign();
             }
-        }.runTaskLater(240);
+        }.runTaskLater(200);
     }
 
     private Arena getActiveArena() {
@@ -171,33 +166,6 @@ public class BattleGame implements Game {
     public Location getSpawnPoint() {
         Location mainLobby = plugin.getBattlegroundsCache().getLocation("mainlobby");
         return mainLobby != null ? mainLobby : plugin.getServer().getWorlds().get(0).getSpawnLocation(); // Return the main lobby, otherwise the world spawn
-    }
-
-    private void preparePlayer(GamePlayer gamePlayer) {
-        Player player = gamePlayer.getPlayer();
-        player.setFoodLevel(20);
-        player.setGameMode(org.bukkit.GameMode.SURVIVAL);
-        player.setHealth(20.0);
-        player.setSaturation((float) 10);
-
-        player.getInventory().setArmorContents(new ItemStack[] {
-                null,
-                null,
-                new ItemStackBuilder(Material.LEATHER_CHESTPLATE)
-                        .addItemFlags(ItemFlag.values())
-                        .setColor(gameMode.getTeam(gamePlayer).getColor())
-                        .setDisplayName(ChatColor.WHITE + EnumMessage.ARMOR_VEST.getMessage())
-                        .build(),
-                new ItemStackBuilder(Material.LEATHER_HELMET)
-                        .addItemFlags(ItemFlag.values())
-                        .setColor(gameMode.getTeam(gamePlayer).getColor())
-                        .setDisplayName(ChatColor.WHITE + EnumMessage.ARMOR_HELMET.getMessage())
-                        .build()
-        });
-
-        Item selectLoadout = new SelectLoadout(this, gamePlayer);
-        itemRegistry.addItem(selectLoadout);
-        player.getInventory().setItem(ItemSlot.MISCELLANEOUS.getSlot(), selectLoadout.getItemStack());
     }
 
     public void rollback() {
@@ -225,7 +193,7 @@ public class BattleGame implements Game {
 
     public void startCountdown() {
         for (GamePlayer gamePlayer : playerManager.getPlayers()) {
-            preparePlayer(gamePlayer);
+            playerManager.preparePlayer(gamePlayer);
         }
         gameMode.spawnPlayers(playerManager.getPlayers().toArray(new GamePlayer[playerManager.getPlayers().size()]));
         setState(GameState.STARTING);

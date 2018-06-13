@@ -1,7 +1,6 @@
 package com.matsg.battlegrounds.game;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.config.PlayerYaml;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent.DeathCause;
 import com.matsg.battlegrounds.api.event.GamePlayerKillPlayerEvent;
@@ -13,53 +12,39 @@ import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.util.EnumMessage;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
 
 public class GameEventHandler implements EventHandler {
 
     private Battlegrounds plugin;
+    private Game game;
 
-    public GameEventHandler(Battlegrounds plugin) {
+    public GameEventHandler(Battlegrounds plugin, Game game) {
         this.plugin = plugin;
+        this.game = game;
+
         plugin.getEventManager().registerEventHandler(this);
     }
 
     private boolean isPlaying(Player player) {
-        return plugin.getGameManager().getGame(player) != null;
-    }
-
-    public void onBlockBreak(BlockBreakEvent event) {
-        event.setCancelled(isPlaying(event.getPlayer()) || (plugin.getGameManager().getArena(event.getBlock().getLocation()) != null && plugin.getBattlegroundsConfig().arenaProtection));
-    }
-
-    public void onBlockPlace(BlockPlaceEvent event) {
-        event.setCancelled(isPlaying(event.getPlayer()) || (plugin.getGameManager().getArena(event.getBlock().getLocation()) != null && plugin.getBattlegroundsConfig().arenaProtection));
+        Game game = plugin.getGameManager().getGame(player);
+        return game != null && game == this.game;
     }
 
     public void onChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
-        Game game = plugin.getGameManager().getGame(player);
 
-        if (game == null) {
-            for (GamePlayer gamePlayer : plugin.getGameManager().getAllPlayers()) {
+        if (!isPlaying(player)) {
+            for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
                 event.getRecipients().remove(gamePlayer.getPlayer());
             }
             return;
         }
 
         event.setCancelled(true);
-
-        game.broadcastMessage(EnumMessage.PLAYER_MESSAGE.getMessage(
-                new Placeholder("player_name", player.getName()),
-                new Placeholder("bg_message", event.getMessage())));
+        game.getPlayerManager().receivePlayerChat(player, event.getMessage());
 
         if (plugin.getBattlegroundsConfig().broadcastChat) {
             plugin.getLogger().info("[Game " + game.getId() + "] " + player.getName() + ": " + event.getMessage());
@@ -76,9 +61,8 @@ public class GameEventHandler implements EventHandler {
 
     public void onItemSwitch(PlayerItemHeldEvent event) {
         Player player = event.getPlayer();
-        Game game = plugin.getGameManager().getGame(player);
 
-        if (game == null || !game.getState().isInProgress()) {
+        if (!isPlaying(player) || game == null || !game.getState().isInProgress()) {
             return;
         }
 
@@ -96,11 +80,7 @@ public class GameEventHandler implements EventHandler {
         if (!(event.getEntity() instanceof Player)) {
             return;
         }
-
-        Player player = (Player) event.getEntity();
-        Game game = plugin.getGameManager().getGame(player);
-
-        event.setCancelled(game != null && !game.getState().isInProgress());
+        event.setCancelled(isPlaying((Player) event.getEntity()) && !game.getState().isInProgress());
     }
 
     public void onPlayerDamageByPlayer(EntityDamageByEntityEvent event) {
@@ -109,10 +89,9 @@ public class GameEventHandler implements EventHandler {
         }
 
         Player player = (Player) event.getEntity();
-        Game game = plugin.getGameManager().getGame(player);
         boolean differentGame = plugin.getGameManager().getGame((Player) event.getDamager()) != game;
 
-        if (game == null || differentGame) {
+        if (!isPlaying(player) || game == null || differentGame) {
             event.setCancelled(differentGame);
             return;
         }
@@ -136,9 +115,8 @@ public class GameEventHandler implements EventHandler {
 
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
-        Game game = plugin.getGameManager().getGame(player);
 
-        if (game == null) {
+        if (!isPlaying(player) || game == null) {
             return;
         }
 
@@ -160,9 +138,8 @@ public class GameEventHandler implements EventHandler {
 
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        Game game = plugin.getGameManager().getGame(player);
 
-        if (game == null || game.getArena() == null || !game.getState().isAllowItems()) {
+        if (!isPlaying(player) || game == null || game.getArena() == null || !game.getState().isAllowItems()) {
             return;
         }
 
@@ -174,11 +151,18 @@ public class GameEventHandler implements EventHandler {
         game.getItemRegistry().interact(item, event.getAction());
     }
 
+    public void onPlayerItemPickUp(EntityPickupItemEvent event) {
+        if (!(event.getEntity() instanceof Player)) {
+            return;
+        }
+
+        Player player = (Player) event.getEntity();
+    }
+
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
-        Game game = plugin.getGameManager().getGame(player);
 
-        if (game == null) {
+        if (!isPlaying(player) || game == null) {
             return;
         }
 
@@ -187,9 +171,8 @@ public class GameEventHandler implements EventHandler {
 
     public void onRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
-        Game game = plugin.getGameManager().getGame(player);
 
-        if (game == null || !game.getState().isInProgress()) {
+        if (!isPlaying(player) || game == null || !game.getState().isInProgress()) {
             return;
         }
 

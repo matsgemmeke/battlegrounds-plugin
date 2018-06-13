@@ -10,10 +10,10 @@ public enum Result {
 
     VICTORY(1, EnumMessage.RESULT_VICTORY.getMessage()) {
         boolean applies(Team team, List<Team> sortedTeams) {
-            int score = sortedTeams.get(0).getKills();
+            int score = sortedTeams.get(0).getScore();
             List<Team> topscorers = new ArrayList<>();
             for (Team other : sortedTeams) {
-                if (other.getKills() >= score) {
+                if (other.getScore() >= score) {
                     topscorers.add(other);
                 }
             }
@@ -22,15 +22,15 @@ public enum Result {
     },
     DEFEAT(2, EnumMessage.RESULT_DEFEAT.getMessage()) {
         boolean applies(Team team, List<Team> sortedTeams) {
-            return team.getKills() < sortedTeams.get(0).getKills();
+            return team.getScore() < sortedTeams.get(0).getScore();
         }
     },
     DRAW(3, EnumMessage.RESULT_DRAW.getMessage()) {
         boolean applies(Team team, List<Team> sortedTeams) {
-            int score = sortedTeams.get(0).getKills();
+            int score = sortedTeams.get(0).getScore();
             List<Team> topscorers = new ArrayList<>();
             for (Team other : sortedTeams) {
-                if (other.getKills() >= score) {
+                if (other.getScore() >= score) {
                     topscorers.add(other);
                 }
             }

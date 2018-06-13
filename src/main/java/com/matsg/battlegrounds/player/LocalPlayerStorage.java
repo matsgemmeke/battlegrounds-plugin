@@ -11,9 +11,7 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class LocalPlayerStorage implements PlayerStorage {
 
@@ -44,9 +42,9 @@ public class LocalPlayerStorage implements PlayerStorage {
         }
         StoredPlayer storedPlayer = playerYaml.getStoredPlayer();
         storedPlayer.setDeaths(storedPlayer.getDeaths() + player.getDeaths());
-        storedPlayer.setDeaths(storedPlayer.getExp() + player.getExp());
-        storedPlayer.setDeaths(storedPlayer.getHeadshots() + player.getHeadshots());
-        storedPlayer.setDeaths(storedPlayer.getKills() + player.getKills());
+        storedPlayer.setExp(storedPlayer.getExp() + player.getExp());
+        storedPlayer.setHeadshots(storedPlayer.getHeadshots() + player.getHeadshots());
+        storedPlayer.setKills(storedPlayer.getKills() + player.getKills());
         playerYaml.save();
     }
 
@@ -55,7 +53,11 @@ public class LocalPlayerStorage implements PlayerStorage {
     }
 
     public List<? extends OfflineGamePlayer> getList() {
-        return null;
+        List<StoredPlayer> list = new ArrayList<>();
+        for (PlayerYaml playerYaml : playerYamls) {
+            list.add(playerYaml.getStoredPlayer());
+        }
+        return list;
     }
 
     private PlayerYaml getPlayerYaml(UUID uuid) {
@@ -75,7 +77,13 @@ public class LocalPlayerStorage implements PlayerStorage {
     }
 
     public List<? extends OfflineGamePlayer> getTopPlayers(int limit) {
-        return null;
+        List<? extends OfflineGamePlayer> list = getList();
+        Collections.sort(list, new Comparator<OfflineGamePlayer>() {
+            public int compare(OfflineGamePlayer o1, OfflineGamePlayer o2) {
+                return ((Integer) o2.getExp()).compareTo(o1.getExp()); // Reverse sort
+            }
+        });
+        return list;
     }
 
     public StoredPlayer registerPlayer(UUID uuid, String name) {

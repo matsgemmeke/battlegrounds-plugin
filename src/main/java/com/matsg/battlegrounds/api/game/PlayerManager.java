@@ -39,6 +39,10 @@ public interface PlayerManager {
 
     void onPlayerMove(Player player, Location from, Location to);
 
+    void preparePlayer(GamePlayer gamePlayer);
+
+    void receivePlayerChat(Player player, String message);
+
     void removePlayer(GamePlayer gamePlayer);
 
     void respawnPlayer(GamePlayer gamePlayer, Spawn spawn);

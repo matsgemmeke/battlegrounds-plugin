@@ -2,12 +2,12 @@ package com.matsg.battlegrounds.listener;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.EventHandler;
-import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.player.GamePlayer;
-import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.gui.View;
 import com.matsg.battlegrounds.util.EnumMessage;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPhysicsEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.*;
@@ -24,26 +24,20 @@ public class BattleEventHandler implements EventHandler {
         plugin.getEventManager().registerEventHandler(this);
     }
 
-    public void onChat(AsyncPlayerChatEvent event) {
-        Player player = event.getPlayer();
-        Game game = plugin.getGameManager().getGame(player);
+    private boolean isPlaying(Player player) {
+        return plugin.getGameManager().getGame(player) != null;
+    }
 
-        if (game == null) {
-            for (GamePlayer gamePlayer : plugin.getGameManager().getAllPlayers()) {
-                event.getRecipients().remove(gamePlayer.getPlayer());
-            }
-            return;
-        }
+    public void onBlockBreak(BlockBreakEvent event) {
+        event.setCancelled(isPlaying(event.getPlayer()) || plugin.getGameManager().getArena(event.getBlock().getLocation()) != null && plugin.getBattlegroundsConfig().arenaProtection);
+    }
 
-        event.setCancelled(true);
+    public void onBlockPlace(BlockPlaceEvent event) {
+        event.setCancelled(isPlaying(event.getPlayer()) || plugin.getGameManager().getArena(event.getBlock().getLocation()) != null && plugin.getBattlegroundsConfig().arenaProtection);
+    }
 
-        game.broadcastMessage(EnumMessage.PLAYER_MESSAGE.getMessage(
-                new Placeholder("bg_message", event.getMessage()),
-                new Placeholder("player_name", player.getName())));
-
-        if (plugin.getBattlegroundsConfig().broadcastChat) {
-            plugin.getLogger().info("[Game " + game.getId() + "] " + player.getName() + ": " + event.getMessage());
-        }
+    public void onBlockUpdate(BlockPhysicsEvent event) {
+        event.setCancelled(plugin.getGameManager().getArena(event.getBlock().getLocation()) != null && plugin.getBattlegroundsConfig().arenaProtection);
     }
 
     public void onCommandSend(PlayerCommandPreprocessEvent event) {

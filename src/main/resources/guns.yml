@@ -3,23 +3,23 @@
 # Gun format
 #
 # <Name>:
-#   Accuracy: Represents how accurate the gun fires onto the proposed target
+#   Accuracy: Represents how accurate the firearm fires onto the proposed target.
 #   Ammo:
-#     Magazine: Magazine size
-#     Max: Max ammo
-#     Start: Amount of magazines the gun has when spawned
-#   Description: Description of the gun
-#   DisplayName: The name of the gun
-#   Durability: The durability of the gun (optional for if you want a unique texture)
-#   FireMode: AUTOMATIC, BURST, SEMI_AUTOMATIC
-#     Burst: Amount of rounds fired with a single pull on the trigger. This option only affects guns using burst mode
-#     Cooldown: The amount of ticks the gun needs to wait to be able to shoot again
-#     FireRate: Amount of rounds fired per second. Semi-automatic guns always fire only one projectile at a time
-#     LaunchType: GRENADE, ROCKET (Only required for launcher firearms)
-#     ShootSound: Array of sounds which play when the gun shoots
+#     Magazine: Magazine size.
+#     Max: Maximum amount of magazines the player can carry.
+#     Start: Amount of magazines the firearm has when spawned.
+#   Description: Description of the firearm.
+#   DisplayName: The name of the firearm.
+#   Durability: The durability of the firearm. This is optional for if you want a unique texture.
+#   FireMode:
+#     Burst: Amount of rounds fired with a single pull on the trigger. This option only affects guns using burst fire.
+#     Cooldown: The amount of ticks the firearm needs to wait to be able to shoot again.
+#     FireRate: Amount of rounds fired per second. Semi-automatic firearms always fire only one projectile at a time.
+#     LaunchType: GRENADE, ROCKET (Only required for launchers)
+#     ShootSound: Array of sounds which play when the firearm shoots
 #     Type: AUTOMATIC, BURST, SEMI_AUTOMATIC
-#   GunType: ASSAULT_RIFLE, LIGHT_MACHINE_GUN, PISTOL, SHOTGUN, SNIPER_RIFLE, SUBMACHINE_GUN
-#   HeadshotMultiplier: When the gun hits a zombie in the head, the damage gets multiplied with this number
+#   GunType: ASSAULT_RIFLE, HANDGUN, LIGHT_MACHINE_GUN, SHOTGUN, SNIPER_RIFLE, SUBMACHINE_GUN
+#   HeadshotMultiplier: Damage multiplier when the projectile hits a player in the head
 #   Range:
 #     Long:
 #       Damage: Long-range damage
@@ -34,12 +34,10 @@
 #     Duration: Reload time in ticks
 #     Sound:
 #       Reload: Array of sounds which play when adding ammo or replacing the magazine of the gun
-#       Start: Array of sounds which play at the start of a reload. This options only guns using shell reloading
-#       Stop: Array of sounds which play at the end of a reload. This options only guns using shell reloading
 #     Type: MAGAZINE, SHELL
 
 BERETTA_93R:
-  Accuracy: 0.5
+  Accuracy: 0.6
   Ammo:
     Magazine: 15
     Max: 8
@@ -51,7 +49,7 @@ BERETTA_93R:
     Burst: 3
     Cooldown: 2
     FireRate: 20
-    ShootSound: ENTITY_BLAZE_HURT-5-2-0, ENTITY_FIREWORK_BLAST-5-0-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-5-2-0
+    ShootSound: ENTITY_BLAZE_HURT-4-2-0, ENTITY_FIREWORK_BLAST-4-0-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-4-2-0
     Type: BURST
   GunType: HANDGUN
   HeadshotMultiplier: 1.5
@@ -84,7 +82,7 @@ FIVE-SEVEN:
     Burst: 0
     Cooldown: 2
     FireRate: 1
-    ShootSound: ENTITY_IRONGOLEM_HURT-5-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-5-2-0
+    ShootSound: ENTITY_IRONGOLEM_HURT-4-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-4-2-0
     Type: SEMI_AUTOMATIC
   GunType: HANDGUN
   HeadshotMultiplier: 1.4
@@ -117,7 +115,7 @@ GLOCK_17:
     Burst: 0
     Cooldown: 2
     FireRate: 1
-    ShootSound: ENTITY_IRONGOLEM_HURT-5-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-5-2-0
+    ShootSound: ENTITY_IRONGOLEM_HURT-4-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-4-2-0
     Type: SEMI_AUTOMATIC
   GunType: HANDGUN
   HeadshotMultiplier: 1.5
@@ -138,7 +136,7 @@ GLOCK_17:
     Type: MAGAZINE
 
 M1911:
-  Accuracy: 0.6
+  Accuracy: 0.7
   Ammo:
     Magazine: 7
     Max: 8
@@ -150,7 +148,7 @@ M1911:
     Burst: 0
     Cooldown: 2
     FireRate: 1
-    ShootSound: ENTITY_IRONGOLEM_HURT-5-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-5-2-0
+    ShootSound: ENTITY_IRONGOLEM_HURT-4-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-4-2-0
     Type: SEMI_AUTOMATIC
   GunType: HANDGUN
   HeadshotMultiplier: 1.5
@@ -183,7 +181,7 @@ PYTHON:
     Burst: 0
     Cooldown: 2
     FireRate: 1
-    ShootSound: ENTITY_IRONGOLEM_HURT-5-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-5-2-0
+    ShootSound: ENTITY_IRONGOLEM_HURT-4-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-4-2-0
     Type: SEMI_AUTOMATIC
   GunType: HANDGUN
   HeadshotMultiplier: 1.5
@@ -216,7 +214,7 @@ AKS-74U:
     Burst: 0
     Cooldown: 0
     FireRate: 10
-    ShootSound: BLOCK_PISTON_EXTEND-3-2-0, ENTITY_BLAZE_HURT-3-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
+    ShootSound: BLOCK_PISTON_EXTEND-4-2-0, ENTITY_BLAZE_HURT-4-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-4-2-0
     Type: AUTOMATIC
   GunType: SUBMACHINE_GUN
   HeadshotMultiplier: 1.4
@@ -249,7 +247,7 @@ MAC-11:
     Burst: 0
     Cooldown: 0
     FireRate: 10
-    ShootSound: BLOCK_PISTON_EXTEND-3-2-0, ENTITY_BLAZE_HURT-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0
+    ShootSound: BLOCK_PISTON_EXTEND-4-2-0, ENTITY_BLAZE_HURT-4-2-0, ENTITY_FIREWORK_BLAST-4-0-0
     Type: AUTOMATIC
   GunType: SUBMACHINE_GUN
   HeadshotMultiplier: 1.4
@@ -282,7 +280,7 @@ MP5:
     Burst: 0
     Cooldown: 0
     FireRate: 10
-    ShootSound: BLOCK_PISTON_EXTEND-3-2-0, ENTITY_BLAZE_HURT-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0
+    ShootSound: BLOCK_PISTON_EXTEND-4-2-0, ENTITY_BLAZE_HURT-4-2-0, ENTITY_FIREWORK_BLAST-4-0-0
     Type: AUTOMATIC
   GunType: SUBMACHINE_GUN
   HeadshotMultiplier: 1.4
@@ -315,7 +313,7 @@ MP7:
     Burst: 0
     Cooldown: 0
     FireRate: 10
-    ShootSound: BLOCK_PISTON_EXTEND-3-2-0, ENTITY_BLAZE_HURT-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0
+    ShootSound: BLOCK_PISTON_EXTEND-4-2-0, ENTITY_BLAZE_HURT-4-2-0, ENTITY_FIREWORK_BLAST-4-0-0
     Type: AUTOMATIC
   GunType: SUBMACHINE_GUN
   HeadshotMultiplier: 1.4
@@ -348,7 +346,7 @@ QCW-05:
     Burst: 3
     Cooldown: 2
     FireRate: 20
-    ShootSound: BLOCK_PISTON_EXTEND-3-2-0, ENTITY_BLAZE_HURT-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0
+    ShootSound: BLOCK_PISTON_EXTEND-4-2-0, ENTITY_BLAZE_HURT-4-2-0, ENTITY_FIREWORK_BLAST-4-0-0
     Type: BURST
   GunType: SUBMACHINE_GUN
   HeadshotMultiplier: 1.4
@@ -381,7 +379,7 @@ UZI:
     Burst: 0
     Cooldown: 0
     FireRate: 10
-    ShootSound: BLOCK_PISTON_EXTEND-3-2-0, ENTITY_BLAZE_HURT-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0
+    ShootSound: BLOCK_PISTON_EXTEND-4-2-0, ENTITY_BLAZE_HURT-4-2-0, ENTITY_FIREWORK_BLAST-4-0-0
     Type: AUTOMATIC
   GunType: SUBMACHINE_GUN
   HeadshotMultiplier: 1.4
@@ -414,7 +412,7 @@ VECTOR:
     Burst: 0
     Cooldown: 0
     FireRate: 10
-    ShootSound: BLOCK_PISTON_EXTEND-3-2-0, ENTITY_BLAZE_HURT-3-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
+    ShootSound: BLOCK_PISTON_EXTEND-4-2-0, ENTITY_BLAZE_HURT-4-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-4-2-0
     Type: AUTOMATIC
   GunType: SUBMACHINE_GUN
   HeadshotMultiplier: 1.4
@@ -447,7 +445,7 @@ AK-47:
     Burst: 0
     Cooldown: 0
     FireRate: 10
-    ShootSound: BLOCK_PISTON_CONTRACT-3-2-0, ENTITY_BLAZE_HURT-3-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
+    ShootSound: BLOCK_PISTON_CONTRACT-4-2-0, ENTITY_BLAZE_HURT-4-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-4-2-0
     Type: AUTOMATIC
   GunType: ASSAULT_RIFLE
   HeadshotMultiplier: 1.5
@@ -480,7 +478,7 @@ AUG:
     Burst: 0
     Cooldown: 0
     FireRate: 10
-    ShootSound: BLOCK_PISTON_CONTRACT-3-2-0, ENTITY_BLAZE_HURT-3-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
+    ShootSound: BLOCK_PISTON_CONTRACT-4-2-0, ENTITY_BLAZE_HURT-4-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-4-2-0
     Type: AUTOMATIC
   FireRate: 10
   GunType: ASSAULT_RIFLE
@@ -502,7 +500,7 @@ AUG:
     Type: MAGAZINE
 
 FAL:
-  Accuracy: 0.7
+  Accuracy: 0.8
   Ammo:
     Magazine: 20
     Max: 8
@@ -514,7 +512,7 @@ FAL:
     Burst: 0
     Cooldown: 0
     FireRate: 1
-    ShootSound: BLOCK_PISTON_EXTEND-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
+    ShootSound: BLOCK_PISTON_EXTEND-4-2-0, ENTITY_FIREWORK_BLAST-4-0-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-4-2-0
     Type: SEMI_AUTOMATIC
   GunType: ASSAULT_RIFLE
   HeadshotMultiplier: 1.5
@@ -547,7 +545,7 @@ FAMAS:
     Burst: 0
     Cooldown: 0
     FireRate: 10
-    ShootSound: BLOCK_PISTON_EXTEND-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
+    ShootSound: BLOCK_PISTON_EXTEND-4-2-0, ENTITY_FIREWORK_BLAST-4-0-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-4-2-0
     Type: AUTOMATIC
   GunType: ASSAULT_RIFLE
   HeadshotMultiplier: 1.5
@@ -580,7 +578,7 @@ GALIL:
     Burst: 0
     Cooldown: 0
     FireRate: 10
-    ShootSound: BLOCK_PISTON_CONTRACT-3-2-0, ENTITY_BLAZE_HURT-3-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
+    ShootSound: BLOCK_PISTON_CONTRACT-4-2-0, ENTITY_BLAZE_HURT-4-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-4-2-0
     Type: AUTOMATIC
   GunType: ASSAULT_RIFLE
   HeadshotMultiplier: 1.5
@@ -613,7 +611,7 @@ M16:
     Burst: 3
     Cooldown: 2
     FireRate: 10
-    ShootSound: BLOCK_PISTON_EXTEND-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
+    ShootSound: BLOCK_PISTON_EXTEND-4-2-0, ENTITY_FIREWORK_BLAST-4-0-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-4-2-0
     Type: BURST
   GunType: ASSAULT_RIFLE
   HeadshotMultiplier: 1.5
@@ -634,7 +632,7 @@ M16:
     Type: MAGAZINE
 
 QBZ-95:
-  Accuracy: 0.6
+  Accuracy: 0.7
   Ammo:
     Magazine: 30
     Max: 8
@@ -646,7 +644,7 @@ QBZ-95:
     Burst: 3
     Cooldown: 4
     FireRate: 20
-    ShootSound: BLOCK_PISTON_EXTEND-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
+    ShootSound: BLOCK_PISTON_EXTEND-4-2-0, ENTITY_FIREWORK_BLAST-4-0-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-4-2-0
     Type: BURST
   GunType: ASSAULT_RIFLE
   HeadshotMultiplier: 1.4
@@ -667,7 +665,7 @@ QBZ-95:
     Type: MAGAZINE
 
 SCAR-H:
-  Accuracy: 0.6
+  Accuracy: 0.7
   Ammo:
     Magazine: 20
     Max: 8
@@ -679,7 +677,7 @@ SCAR-H:
     Burst: 0
     Cooldown: 0
     FireRate: 10
-    ShootSound: BLOCK_PISTON_CONTRACT-3-2-0, ENTITY_BLAZE_HURT-3-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
+    ShootSound: BLOCK_PISTON_CONTRACT-4-2-0, ENTITY_BLAZE_HURT-4-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-4-2-0
     Type: AUTOMATIC
   GunType: ASSAULT_RIFLE
   HeadshotMultiplier: 1.4
@@ -700,7 +698,7 @@ SCAR-H:
     Type: MAGAZINE
 
 SG_550:
-  Accuracy: 0.7
+  Accuracy: 0.8
   Ammo:
     Magazine: 20
     Max: 8
@@ -712,7 +710,7 @@ SG_550:
     Burst: 0
     Cooldown: 0
     FireRate: 1
-    ShootSound: BLOCK_PISTON_EXTEND-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-3-2-0
+    ShootSound: BLOCK_PISTON_EXTEND-4-2-0, ENTITY_FIREWORK_BLAST-4-0-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-4-2-0
     Type: SEMI_AUTOMATIC
   GunType: ASSAULT_RIFLE
   HeadshotMultiplier: 1.5
@@ -745,7 +743,7 @@ ITHACA_37:
     Burst: 0
     Cooldown: 15
     FireRate: 1
-    ShootSound: ENTITY_BLAZE_HURT-3-2-0, ENTITY_GENERIC_EXPLODE-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0, BLOCK_IRON_DOOR_CLOSE-1-2-9, BLOCK_WOODEN_DOOR_OPEN-1-2-9
+    ShootSound: ENTITY_BLAZE_HURT-4-2-0, ENTITY_GENERIC_EXPLODE-4-2-0, ENTITY_FIREWORK_BLAST-4-0-0, BLOCK_IRON_DOOR_CLOSE-4-2-9, BLOCK_WOODEN_DOOR_OPEN-4-2-9
     Type: SEMI_AUTOMATIC
   GunType: SHOTGUN
   HeadshotMultiplier: 1.1
@@ -755,7 +753,7 @@ ITHACA_37:
       Distance: 50.0
     Medium:
       Damage: 25.0
-      Distance: 20.0
+      Distance: 25.0
     Short:
       Damage: 40.0
       Distance: 10.0
@@ -778,7 +776,7 @@ OLYMPIA:
     Burst: 0
     Cooldown: 6
     FireRate: 1
-    ShootSound: ENTITY_BLAZE_HURT-3-2-0, ENTITY_GENERIC_EXPLODE-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0
+    ShootSound: ENTITY_BLAZE_HURT-4-2-0, ENTITY_GENERIC_EXPLODE-4-2-0, ENTITY_FIREWORK_BLAST-4-0-0
     Type: SEMI_AUTOMATIC
   GunType: SHOTGUN
   HeadshotMultiplier: 1.1
@@ -788,7 +786,7 @@ OLYMPIA:
       Distance: 50.0
     Medium:
       Damage: 25.0
-      Distance: 20.0
+      Distance: 25.0
     Short:
       Damage: 40.0
       Distance: 10.0
@@ -799,7 +797,7 @@ OLYMPIA:
     Type: SHELL
 
 REMINGTON_870:
-  Accuracy: 0.7
+  Accuracy: 0.6
   Ammo:
     Magazine: 8
     Max: 8
@@ -811,7 +809,7 @@ REMINGTON_870:
     Burst: 0
     Cooldown: 15
     FireRate: 1
-    ShootSound: ENTITY_BLAZE_HURT-3-2-0, ENTITY_GENERIC_EXPLODE-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0, BLOCK_IRON_DOOR_CLOSE-1-2-9, BLOCK_WOODEN_DOOR_OPEN-1-2-9
+    ShootSound: ENTITY_BLAZE_HURT-4-2-0, ENTITY_GENERIC_EXPLODE-4-2-0, ENTITY_FIREWORK_BLAST-4-0-0, BLOCK_IRON_DOOR_CLOSE-4-2-9, BLOCK_WOODEN_DOOR_OPEN-4-2-9
     Type: SEMI_AUTOMATIC
   GunType: SHOTGUN
   HeadshotMultiplier: 1.2
@@ -820,8 +818,8 @@ REMINGTON_870:
       Damage: 10.0
       Distance: 50.0
     Medium:
-      Damage: 25.0
-      Distance: 20.0
+      Damage: 30.0
+      Distance: 25.0
     Short:
       Damage: 50.0
       Distance: 10.0
@@ -842,9 +840,9 @@ SAIGA-12K:
   Durability: 25
   FireMode:
     Burst: 0
-    Cooldown: 6
+    Cooldown: 4
     FireRate: 1
-    ShootSound: ENTITY_BLAZE_HURT-3-2-0, ENTITY_GENERIC_EXPLODE-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0
+    ShootSound: ENTITY_BLAZE_HURT-4-2-0, ENTITY_GENERIC_EXPLODE-4-2-0, ENTITY_FIREWORK_BLAST-4-0-0
     Type: SEMI_AUTOMATIC
   GunType: SHOTGUN
   HeadshotMultiplier: 1.2
@@ -854,7 +852,7 @@ SAIGA-12K:
       Distance: 50.0
     Medium:
       Damage: 25.0
-      Distance: 20.0
+      Distance: 25.0
     Short:
       Damage: 40.0
       Distance: 10.0
@@ -877,7 +875,7 @@ SPAS-12:
     Burst: 0
     Cooldown: 6
     FireRate: 1
-    ShootSound: ENTITY_BLAZE_HURT-3-2-0, ENTITY_GENERIC_EXPLODE-3-2-0, ENTITY_FIREWORK_BLAST-3-0-0
+    ShootSound: ENTITY_BLAZE_HURT-4-2-0, ENTITY_GENERIC_EXPLODE-4-2-0, ENTITY_FIREWORK_BLAST-4-0-0
     Type: SEMI_AUTOMATIC
   GunType: SHOTGUN
   HeadshotMultiplier: 1.2
@@ -887,7 +885,7 @@ SPAS-12:
       Distance: 50.0
     Medium:
       Damage: 30.0
-      Distance: 20.0
+      Distance: 25.0
     Short:
       Damage: 50.0
       Distance: 10.0
@@ -898,7 +896,7 @@ SPAS-12:
     Type: SHELL
 
 HK21:
-  Accuracy: 0.8
+  Accuracy: 0.7
   Ammo:
     Magazine: 50
     Max: 4
@@ -910,7 +908,7 @@ HK21:
     Burst: 0
     Cooldown: 0
     FireRate: 10
-    ShootSound: ENTITY_BLAZE_HURT-3-2-0, ENTITY_ZOMBIE_ATTACK_DOOR_WOOD-3-2-0
+    ShootSound: ENTITY_BLAZE_HURT-4-2-0, ENTITY_ZOMBIE_ATTACK_DOOR_WOOD-4-2-0
     Type: AUTOMATIC
   GunType: LIGHT_MACHINE_GUN
   HeadshotMultiplier: 1.4
@@ -931,7 +929,7 @@ HK21:
     Type: MAGAZINE
 
 M240:
-  Accuracy: 0.8
+  Accuracy: 0.7
   Ammo:
     Magazine: 100
     Max: 2
@@ -943,7 +941,7 @@ M240:
     Burst: 0
     Cooldown: 0
     FireRate: 10
-    ShootSound: ENTITY_BLAZE_HURT-3-2-0, ENTITY_ZOMBIE_ATTACK_DOOR_WOOD-3-2-0
+    ShootSound: ENTITY_BLAZE_HURT-4-2-0, ENTITY_ZOMBIE_ATTACK_DOOR_WOOD-4-2-0
     Type: AUTOMATIC
   GunType: LIGHT_MACHINE_GUN
   HeadshotMultiplier: 1.4
@@ -964,7 +962,7 @@ M240:
     Type: MAGAZINE
 
 RPK:
-  Accuracy: 0.8
+  Accuracy: 0.7
   Ammo:
     Magazine: 40
     Max: 5
@@ -976,7 +974,7 @@ RPK:
     Burst: 0
     Cooldown: 0
     FireRate: 10
-    ShootSound: ENTITY_BLAZE_HURT-3-2-0, ENTITY_ZOMBIE_ATTACK_DOOR_WOOD-3-2-0
+    ShootSound: ENTITY_BLAZE_HURT-4-2-0, ENTITY_ZOMBIE_ATTACK_DOOR_WOOD-4-2-0
     Type: AUTOMATIC
   GunType: LIGHT_MACHINE_GUN
   HeadshotMultiplier: 1.4
@@ -1009,7 +1007,7 @@ DRAGUNOV:
     Burst: 0
     Cooldown: 12
     FireRate: 1
-    ShootSound: ENTITY_BLAZE_HURT-10-1-0, ENTITY_GENERIC_EXPLODE-10-1.5-0, ENTITY_GENERIC_EXPLODE-0.5-0.5-0
+    ShootSound: ENTITY_BLAZE_HURT-8-1-0, ENTITY_GENERIC_EXPLODE-8-1.5-0, ENTITY_GENERIC_EXPLODE-0.5-0.5-0
     Type: SEMI_AUTOMATIC
   GunType: SNIPER_RIFLE
   HeadshotMultiplier: 2.0
@@ -1042,7 +1040,7 @@ M82A1:
     Burst: 0
     Cooldown: 16
     FireRate: 1
-    ShootSound: ENTITY_BLAZE_HURT-10-1-0, ENTITY_GENERIC_EXPLODE-10-1.5-0, ENTITY_GENERIC_EXPLODE-0.5-0.5-0
+    ShootSound: ENTITY_BLAZE_HURT-8-1-0, ENTITY_GENERIC_EXPLODE-8-1.5-0, ENTITY_GENERIC_EXPLODE-0.5-0.5-0
     Type: SEMI_AUTOMATIC
   GunType: SNIPER_RIFLE
   HeadshotMultiplier: 2.0
@@ -1075,7 +1073,7 @@ SV-98:
     Burst: 0
     Cooldown: 20
     FireRate: 1
-    ShootSound: ENTITY_BLAZE_HURT-10-1-0, ENTITY_GENERIC_EXPLODE-10-1.5-0, ENTITY_GENERIC_EXPLODE-0.5-0.5-0, BLOCK_STONE_BUTTON_CLICK_ON-1-1-14, BLOCK_WOODEN_DOOR_CLOSE-1-2-14
+    ShootSound: ENTITY_BLAZE_HURT-8-1-0, ENTITY_GENERIC_EXPLODE-8-1.5-0, ENTITY_GENERIC_EXPLODE-0.5-0.5-0, BLOCK_STONE_BUTTON_CLICK_ON-1-1-14, BLOCK_WOODEN_DOOR_CLOSE-1-2-14
     Type: SEMI_AUTOMATIC
   GunType: SNIPER_RIFLE
   HeadshotMultiplier: 2.0
@@ -1107,7 +1105,7 @@ CHINA_LAKE:
   FireMode:
     Cooldown: 20
     LaunchType: GRENADE
-    ShootSound: BLOCK_WOODEN_DOOR_CLOSE-3-2-0, ENTITY_ARROW_SHOOT-3-1-1
+    ShootSound: BLOCK_WOODEN_DOOR_CLOSE-2-2-0, ENTITY_ARROW_SHOOT-2-1-1
   GunType: LAUNCHER
   HeadshotMultiplier: 1.0
   Range:
@@ -1129,7 +1127,7 @@ CHINA_LAKE:
     Type: SHELL
 
 CROSSBOW:
-  Accuracy: 0.8
+  Accuracy: 0.9
   Ammo:
     Magazine: 3
     Max: 3
@@ -1140,7 +1138,7 @@ CROSSBOW:
   FireMode:
     Cooldown: 20
     LaunchType: ROCKET
-    ShootSound: BLOCK_WOODEN_DOOR_CLOSE-3-2-0, ENTITY_ARROW_SHOOT-3-1-1
+    ShootSound: BLOCK_WOODEN_DOOR_CLOSE-2-2-0, ENTITY_ARROW_SHOOT-2-1-1
   GunType: LAUNCHER
   HeadshotMultiplier: 1.0
   Range:
@@ -1160,7 +1158,7 @@ CROSSBOW:
     Type: MAGAZINE
 
 MGL:
-  Accuracy: 0.6
+  Accuracy: 0.8
   Ammo:
     Magazine: 6
     Max: 2
@@ -1171,7 +1169,7 @@ MGL:
   FireMode:
     Cooldown: 10
     LaunchType: GRENADE
-    ShootSound: BLOCK_WOODEN_DOOR_CLOSE-3-2-0, ENTITY_ARROW_SHOOT-3-1-1
+    ShootSound: BLOCK_WOODEN_DOOR_CLOSE-2-2-0, ENTITY_ARROW_SHOOT-2-1-1
   GunType: LAUNCHER
   HeadshotMultiplier: 1.0
   Range:
@@ -1191,7 +1189,7 @@ MGL:
     Type: SHELL
 
 RPG-7:
-  Accuracy: 0.8
+  Accuracy: 0.5
   Ammo:
     Magazine: 1
     Max: 2
@@ -1202,7 +1200,7 @@ RPG-7:
   FireMode:
     Cooldown: 20
     LaunchType: ROCKET
-    ShootSound: BLOCK_FIRE_EXTINGUISH-3-1-0, ENTITY_ZOMBIE_ATTACK_DOOR_WOOD-3-0-0
+    ShootSound: BLOCK_FIRE_EXTINGUISH-2-1-0, ENTITY_ZOMBIE_ATTACK_DOOR_WOOD-2-0-0
   GunType: LAUNCHER
   HeadshotMultiplier: 1.0
   Range:
@@ -1222,18 +1220,18 @@ RPG-7:
     Type: MAGAZINE
 
 SMAW:
-  Accuracy: 0.8
+  Accuracy: 0.5
   Ammo:
     Magazine: 1
     Max: 2
     Start: 1
-  Description: Free-fire shoulder mounted rocket launcher.
+  Description: Shoulder-launched rocket launcher. Delivers splash damage upon impact.
   DisplayName: SMAW
   Durability: 37
   FireMode:
     Cooldown: 20
     LaunchType: ROCKET
-    ShootSound: BLOCK_FIRE_EXTINGUISH-3-1-0, ENTITY_ZOMBIE_ATTACK_DOOR_WOOD-3-0-0
+    ShootSound: BLOCK_FIRE_EXTINGUISH-2-1-0, ENTITY_ZOMBIE_ATTACK_DOOR_WOOD-2-0-0
   GunType: LAUNCHER
   HeadshotMultiplier: 1.0
   Range:

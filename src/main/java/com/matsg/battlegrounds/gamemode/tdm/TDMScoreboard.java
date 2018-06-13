@@ -56,7 +56,7 @@ public class TDMScoreboard extends AbstractScoreboard {
         if (index > Integer.MIN_VALUE) {
             builder.removeLine(DisplaySlot.SIDEBAR, index);
             for (Team team : game.getGameMode().getTeams()) {
-                builder.addLine(DisplaySlot.SIDEBAR, index, team.getChatColor() + team.getName() + ": " + ChatColor.WHITE + team.getKills());
+                builder.addLine(DisplaySlot.SIDEBAR, index, team.getChatColor() + team.getName() + ": " + ChatColor.WHITE + team.getScore());
             }
         }
     }

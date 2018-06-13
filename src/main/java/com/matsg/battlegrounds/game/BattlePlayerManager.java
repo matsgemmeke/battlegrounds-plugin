@@ -1,19 +1,27 @@
 package com.matsg.battlegrounds.game;
 
 import com.matsg.battlegrounds.api.game.*;
+import com.matsg.battlegrounds.api.item.Item;
+import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.player.PlayerStatus;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.gui.scoreboard.LobbyScoreboard;
+import com.matsg.battlegrounds.item.misc.SelectLoadout;
 import com.matsg.battlegrounds.player.BattleGamePlayer;
 import com.matsg.battlegrounds.util.ActionBar;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.EnumMessage;
+import com.matsg.battlegrounds.util.ItemStackBuilder;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -215,6 +223,42 @@ public class BattlePlayerManager implements PlayerManager {
         location.setPitch(player.getLocation().getPitch());
         location.setYaw(player.getLocation().getYaw());
         player.teleport(location);
+    }
+
+    public void preparePlayer(GamePlayer gamePlayer) {
+        Player player = gamePlayer.getPlayer();
+        player.setFoodLevel(20);
+        player.setGameMode(org.bukkit.GameMode.SURVIVAL);
+        player.setHealth(20.0);
+        player.setSaturation((float) 10);
+
+        player.getInventory().setArmorContents(new ItemStack[] {
+                null,
+                null,
+                new ItemStackBuilder(Material.LEATHER_CHESTPLATE)
+                        .addItemFlags(ItemFlag.values())
+                        .setColor(game.getGameMode().getTeam(gamePlayer).getColor())
+                        .setDisplayName(ChatColor.WHITE + EnumMessage.ARMOR_VEST.getMessage())
+                        .build(),
+                new ItemStackBuilder(Material.LEATHER_HELMET)
+                        .addItemFlags(ItemFlag.values())
+                        .setColor(game.getGameMode().getTeam(gamePlayer).getColor())
+                        .setDisplayName(ChatColor.WHITE + EnumMessage.ARMOR_HELMET.getMessage())
+                        .build()
+        });
+
+        Item selectLoadout = new SelectLoadout(game, gamePlayer);
+        game.getItemRegistry().addItem(selectLoadout);
+        player.getInventory().setItem(ItemSlot.MISCELLANEOUS.getSlot(), selectLoadout.getItemStack());
+    }
+
+    public void receivePlayerChat(Player player, String message) {
+        GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
+        Team team = game.getGameMode().getTeam(gamePlayer);
+
+        game.broadcastMessage(EnumMessage.PLAYER_MESSAGE.getMessage(
+                new Placeholder("bg_message", message),
+                new Placeholder("player_name", team.getChatColor() + player.getName())));
     }
 
     public void removePlayer(GamePlayer gamePlayer) {

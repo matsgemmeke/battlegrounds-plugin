@@ -4,7 +4,6 @@ import com.matsg.battlegrounds.api.event.GamePlayerKillPlayerEvent;
 import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.item.DamageSource;
 import com.matsg.battlegrounds.api.player.GamePlayer;
-import com.matsg.battlegrounds.api.item.Attachment;
 import com.matsg.battlegrounds.api.item.Gun;
 import com.matsg.battlegrounds.api.item.ReloadType;
 import com.matsg.battlegrounds.api.player.Hitbox;
@@ -33,22 +32,16 @@ public class BattleGun extends BattleFireArm implements Gun {
     private Bullet bullet;
     private FireMode fireMode;
     private int burstRounds, fireRate, hits, scopeZoom;
-    private List<Attachment> attachments;
 
     public BattleGun(String name, String description, ItemStack itemStack, short durability,
                      int magazine, int ammo, int maxAmmo, int fireRate, int burstRounds, int cooldown, int reloadDuration, double accuracy,
                      Bullet bullet, FireMode fireMode, FireArmType fireArmType, ReloadType reloadType, Sound[] reloadSound, Sound[] shootSound) {
         super(name, description, itemStack, durability, magazine, ammo, maxAmmo, cooldown, reloadDuration, accuracy, reloadType, fireArmType, reloadSound, shootSound);
-        this.attachments = new ArrayList<>();
         this.bullet = bullet;
         this.burstRounds = burstRounds;
         this.fireMode = fireMode;
         this.fireRate = fireRate;
         this.scopeZoom = 10;
-    }
-
-    public List<Attachment> getAttachments() {
-        return attachments;
     }
 
     public int getBurstRounds() {

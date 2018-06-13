@@ -13,6 +13,7 @@ public class BattleTeam implements Team {
     private final int id;
     private ChatColor chatColor;
     private Color color;
+    private int score;
     private List<GamePlayer> players;
     private String name;
 
@@ -22,6 +23,7 @@ public class BattleTeam implements Team {
         this.color = color;
         this.chatColor = chatColor;
         this.players = new ArrayList<>();
+        this.score = 0;
     }
 
     public ChatColor getChatColor() {
@@ -44,11 +46,20 @@ public class BattleTeam implements Team {
         return players;
     }
 
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     public void addPlayer(GamePlayer gamePlayer) {
         if (players.contains(gamePlayer)) {
             return;
         }
         players.add(gamePlayer);
+        gamePlayer.setTeam(this);
     }
 
     public int getKills() {
@@ -57,14 +68,6 @@ public class BattleTeam implements Team {
             kills += gamePlayer.getKills();
         }
         return kills;
-    }
-
-    public int getScore() {
-        int score = 0;
-        for (GamePlayer gamePlayer : players) {
-            score += gamePlayer.getScore();
-        }
-        return score;
     }
 
     public int getTotalPlayers() {
@@ -80,5 +83,6 @@ public class BattleTeam implements Team {
             return;
         }
         players.remove(gamePlayer);
+        gamePlayer.setTeam(null);
     }
 }

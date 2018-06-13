@@ -92,6 +92,7 @@ public class TeamDeathmatch extends AbstractGameMode {
         gamePlayer.setDeaths(gamePlayer.getDeaths() + 1);
         killer.addScore(100);
         killer.setKills(killer.getKills() + 1);
+        killer.getTeam().setScore(killer.getTeam().getScore() + 1);
 
         if (killer.getKills() > killsToWin) {
             game.stop();
@@ -108,7 +109,7 @@ public class TeamDeathmatch extends AbstractGameMode {
             Result result = Result.getResult(team, getSortedTeams());
             if (result != null) {
                 for (GamePlayer gamePlayer : team.getPlayers()) {
-                    gamePlayer.sendMessage(new Title(result.getTitle(), EnumMessage.ENDREASON_SCORE.getMessage(), 10, 80, 10));
+                    gamePlayer.sendMessage(new Title(result.getTitle(), EnumMessage.ENDREASON_SCORE.getMessage(), 20, 160, 20));
                 }
             }
         }
