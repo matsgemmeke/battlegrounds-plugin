@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.item;
 
+import com.matsg.battlegrounds.api.item.AttributeModifier;
 import com.matsg.battlegrounds.api.item.WeaponAttribute;
 
 public class BattleWeaponAttribute implements WeaponAttribute {

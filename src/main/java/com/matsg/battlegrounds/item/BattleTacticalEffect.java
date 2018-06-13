@@ -19,7 +19,7 @@ public enum BattleTacticalEffect implements TacticalEffect {
     NOISE(2, false) {
         public void applyEffect(GamePlayer gamePlayer, Location location, int duration) {
             Loadout loadout = gamePlayer.getLoadout();
-            Sound[] decoySound =
+            //Sound[] decoySound =
         }
     },
     SMOKE(3, false) {

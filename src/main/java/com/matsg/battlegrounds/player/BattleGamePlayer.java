@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.player;
 
+import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.player.PlayerStatus;
 import com.matsg.battlegrounds.api.player.SavedInventory;
@@ -17,6 +18,7 @@ public class BattleGamePlayer implements GamePlayer {
     private Player player;
     private PlayerStatus playerStatus;
     private SavedInventory savedInventory;
+    private Team team;
 
     public BattleGamePlayer(Player player) {
         this.player = player;
@@ -73,6 +75,10 @@ public class BattleGamePlayer implements GamePlayer {
         return playerStatus;
     }
 
+    public Team getTeam() {
+        return team;
+    }
+
     public UUID getUUID() {
         return player.getUniqueId();
     }
@@ -104,6 +110,10 @@ public class BattleGamePlayer implements GamePlayer {
     public PlayerStatus setStatus(PlayerStatus playerStatus) {
         this.playerStatus = playerStatus;
         return playerStatus;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
     public int addScore(int score) {

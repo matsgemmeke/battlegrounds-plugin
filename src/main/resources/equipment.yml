@@ -86,7 +86,7 @@ DECOY_GRENADE:
   Amount: 1
   Description: Distraction device that simulates enemy gunfire and radar indicators.
   DisplayName: Decoy Grenade
-  Durability: 5
+  Durability: 4
   Duration: 100
   Effect: NOISE
   EquipmentType: TACTICAL
@@ -105,7 +105,7 @@ DECOY_GRENADE:
   Velocity: 1.1
 
 FLASHBANG:
-  Amount: 2
+  Amount: 1
   Description: Device that blinds the target when detonated.
   DisplayName: Flashbang
   Durability: 5
@@ -127,10 +127,10 @@ FLASHBANG:
   Velocity: 1.1
 
 SHOCK_CHARGE:
-  Amount: 2
+  Amount: 1
   Description: Electrocutes and stuns nearby enemies.
   DisplayName: Shock Charge
-  Durability: 7
+  Durability: 6
   Duration: 60
   Effect: BLINDNESS
   EquipmentType: TACTICAL
@@ -152,7 +152,7 @@ SMOKE_GRENADE:
   Amount: 1
   Description: Device that creates a smoke screen when detonated.
   DisplayName: Smoke Grenade
-  Durability: 5
+  Durability: 7
   Duration: 100
   Effect: SMOKE
   EquipmentType: TACTICAL

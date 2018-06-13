@@ -4,10 +4,10 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.config.AbstractYaml;
 import com.matsg.battlegrounds.api.config.WeaponConfig;
 import com.matsg.battlegrounds.api.item.Equipment;
-import com.matsg.battlegrounds.api.item.TacticalEffect;
 import com.matsg.battlegrounds.api.item.WeaponType;
 import com.matsg.battlegrounds.item.BattleLethal;
 import com.matsg.battlegrounds.item.BattleTactical;
+import com.matsg.battlegrounds.item.BattleTacticalEffect;
 import com.matsg.battlegrounds.item.EquipmentType;
 import com.matsg.battlegrounds.util.BattleSound;
 import com.matsg.battlegrounds.util.ItemStackBuilder;
@@ -93,7 +93,7 @@ public class EquipmentConfig extends AbstractYaml implements WeaponConfig<Equipm
                             new ItemStackBuilder(Material.valueOf(plugin.getBattlegroundsConfig().getWeaponMaterial("equipment"))).setDurability((short) section.getInt("Durability")).build(),
                             (short) new AttributeValidator(section.getInt("Durability")).shouldBeHigherThan(0),
                             (int) new AttributeValidator(section.getInt("Amount"), "Amount").shouldBeHigherThan(0),
-                            TacticalEffect.valueOf(section.getString("Effect")),
+                            BattleTacticalEffect.valueOf(section.getString("Effect")),
                             (int) new AttributeValidator(section.getInt("Duration"), "Duration").shouldBeHigherThan(0),
                             new AttributeValidator(section.getDouble("Range.Long.Distance"), "Long range").shouldEqualOrBeHigherThan(0.0),
                             new AttributeValidator(section.getDouble("Range.Medium.Distance"), "Medium range").shouldEqualOrBeHigherThan(0.0),

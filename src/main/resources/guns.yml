@@ -731,7 +731,7 @@ SG_550:
     Type: MAGAZINE
 
 ITHACA_37:
-  Accuracy: 0.7
+  Accuracy: 0.6
   Ammo:
     Magazine: 5
     Max: 8
@@ -782,13 +782,13 @@ OLYMPIA:
   HeadshotMultiplier: 1.1
   Range:
     Long:
-      Damage: 10.0
+      Damage: 15.0
       Distance: 50.0
     Medium:
-      Damage: 25.0
+      Damage: 30.0
       Distance: 25.0
     Short:
-      Damage: 40.0
+      Damage: 50.0
       Distance: 10.0
   Reload:
     Duration: 25
@@ -797,7 +797,7 @@ OLYMPIA:
     Type: SHELL
 
 REMINGTON_870:
-  Accuracy: 0.6
+  Accuracy: 0.7
   Ammo:
     Magazine: 8
     Max: 8
