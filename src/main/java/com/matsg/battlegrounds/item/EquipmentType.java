@@ -22,4 +22,8 @@ public enum EquipmentType implements WeaponType {
     public String getName() {
         return name;
     }
+
+    public boolean hasSubTypes() {
+        return true;
+    }
 }

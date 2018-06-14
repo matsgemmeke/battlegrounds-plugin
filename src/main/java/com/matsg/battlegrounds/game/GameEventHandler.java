@@ -56,7 +56,7 @@ public class GameEventHandler implements EventHandler {
     }
 
     public void onGamePlayerKill(GamePlayerKillPlayerEvent event) {
-        event.getGame().getGameMode().onKill(event.getGamePlayer(), event.getKiller(), event.getWeapon());
+        event.getGame().getGameMode().onKill(event.getGamePlayer(), event.getKiller(), event.getWeapon(), event.getHitbox());
     }
 
     public void onItemSwitch(PlayerItemHeldEvent event) {

@@ -6,4 +6,6 @@ import org.bukkit.Location;
 public interface TacticalEffect {
 
     void applyEffect(GamePlayer gamePlayer, Location location, int duration);
+
+    void onIgnite(Tactical tactical);
 }

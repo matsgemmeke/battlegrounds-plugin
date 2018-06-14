@@ -5,4 +5,6 @@ public interface WeaponType {
     ItemSlot getDefaultItemSlot();
 
     String getName();
+
+    boolean hasSubTypes();
 }

@@ -125,7 +125,7 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
     }
 
     public void deployEquipment(double velocity) {
-        final Item item = gamePlayer.getPlayer().getWorld().dropItem(gamePlayer.getPlayer().getEyeLocation(), new ItemStackBuilder(itemStack.clone()).setAmount(1).build());
+        Item item = gamePlayer.getPlayer().getWorld().dropItem(gamePlayer.getPlayer().getEyeLocation(), new ItemStackBuilder(itemStack.clone()).setAmount(1).build());
         item.setPickupDelay(1000);
         item.setVelocity(gamePlayer.getPlayer().getEyeLocation().getDirection().multiply(velocity));
 

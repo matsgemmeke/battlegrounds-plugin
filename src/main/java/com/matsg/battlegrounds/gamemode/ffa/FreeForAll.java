@@ -6,6 +6,8 @@ import com.matsg.battlegrounds.api.game.Spawn;
 import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.player.GamePlayer;
+import com.matsg.battlegrounds.api.player.Hitbox;
+import com.matsg.battlegrounds.api.util.Message;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.game.BattleTeam;
 import com.matsg.battlegrounds.gamemode.AbstractGameMode;
@@ -53,6 +55,19 @@ public class FreeForAll extends AbstractGameMode {
         return Color.fromRGB(Integer.parseInt(array[0]), Integer.parseInt(array[1]), Integer.parseInt(array[2]));
     }
 
+    private Message getKillMessage(Hitbox hitbox) {
+        switch (hitbox) {
+            case HEAD:
+                return EnumMessage.DEATH_HEADSHOT;
+            case LEG:
+                return EnumMessage.DEATH_PLAYER_KILL;
+            case TORSO:
+                return EnumMessage.DEATH_PLAYER_KILL;
+            default:
+                return null;
+        }
+    }
+
     public Spawn getRespawnPoint(GamePlayer gamePlayer) {
         return game.getArena().getRandomSpawn(minSpawnDistance);
     }
@@ -61,8 +76,8 @@ public class FreeForAll extends AbstractGameMode {
         return scoreboardEnabled ? new FFAScoreboard(game, yaml) : null;
     }
 
-    public void onKill(GamePlayer gamePlayer, GamePlayer killer, Weapon weapon) {
-        game.broadcastMessage(EnumMessage.DEATH_PLAYER_KILL.getMessage(new Placeholder[] {
+    public void onKill(GamePlayer gamePlayer, GamePlayer killer, Weapon weapon, Hitbox hitbox) {
+        game.broadcastMessage(getKillMessage(hitbox).getMessage(new Placeholder[] {
                 new Placeholder("bg_killer", killer.getName()),
                 new Placeholder("bg_player", gamePlayer.getName()),
                 new Placeholder("bg_weapon", weapon.getName())

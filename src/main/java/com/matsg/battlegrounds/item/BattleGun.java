@@ -114,7 +114,7 @@ public class BattleGun extends BattleFireArm implements Gun {
             hits ++;
             if (gamePlayer.getPlayer().isDead()) {
                 System.out.print("kill");
-                plugin.getEventManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, this.gamePlayer, this));
+                plugin.getEventManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, this.gamePlayer, this, hitbox));
             }
         }
     }

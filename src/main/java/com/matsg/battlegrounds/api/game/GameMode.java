@@ -3,6 +3,7 @@ package com.matsg.battlegrounds.api.game;
 import com.matsg.battlegrounds.api.config.Yaml;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.player.GamePlayer;
+import com.matsg.battlegrounds.api.player.Hitbox;
 
 public interface GameMode extends StateListener {
 
@@ -28,7 +29,7 @@ public interface GameMode extends StateListener {
 
     Team getTopTeam();
 
-    void onKill(GamePlayer gamePlayer, GamePlayer killer, Weapon weapon);
+    void onKill(GamePlayer gamePlayer, GamePlayer killer, Weapon weapon, Hitbox hitbox);
 
     void removePlayer(GamePlayer gamePlayer);
 

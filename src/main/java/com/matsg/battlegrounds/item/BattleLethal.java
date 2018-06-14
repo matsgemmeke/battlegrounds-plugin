@@ -84,7 +84,7 @@ public class BattleLethal extends BattleEquipment implements Lethal {
             if (gamePlayer != null && gamePlayer.getPlayer() != null && !gamePlayer.getPlayer().isDead() && gamePlayer.getStatus().isAlive()) {
                 game.getPlayerManager().damagePlayer(gamePlayer, getDistanceDamage(gamePlayer.getLocation().distanceSquared(location) / 5));
                 if (gamePlayer.getPlayer().isDead()) {
-                    plugin.getEventManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, this.gamePlayer, this));
+                    plugin.getEventManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, this.gamePlayer, this, Hitbox.TORSO));
                 }
             }
         }

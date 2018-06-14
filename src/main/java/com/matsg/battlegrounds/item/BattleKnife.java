@@ -5,6 +5,7 @@ import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.item.Knife;
 import com.matsg.battlegrounds.api.item.WeaponType;
 import com.matsg.battlegrounds.api.player.GamePlayer;
+import com.matsg.battlegrounds.api.player.Hitbox;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.util.BattleRunnable;
@@ -66,6 +67,10 @@ public class BattleKnife extends BattleWeapon implements Knife {
             public String getName() {
                 return type;
             }
+
+            public boolean hasSubTypes() {
+                return false;
+            }
         };
     }
 
@@ -95,7 +100,7 @@ public class BattleKnife extends BattleWeapon implements Knife {
             gamePlayer.getPlayer().setHealth(health - damage);
         } else {
             gamePlayer.getPlayer().setHealth(0.0);
-            plugin.getEventManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, this.gamePlayer, this));
+            plugin.getEventManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, this.gamePlayer, this, Hitbox.TORSO));
         }
         return gamePlayer.getPlayer().getHealth();
     }

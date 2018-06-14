@@ -70,6 +70,10 @@ public enum FireArmType implements WeaponType {
         return scope;
     }
 
+    public boolean hasSubTypes() {
+        return true;
+    }
+
     public boolean isPierceable() {
         return pierceable;
     }

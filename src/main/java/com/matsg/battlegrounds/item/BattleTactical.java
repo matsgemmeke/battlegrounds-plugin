@@ -51,12 +51,6 @@ public class BattleTactical extends BattleEquipment implements Tactical {
         this.effect = effect;
     }
 
-    public void setLongDamage(double longDamage) { }
-
-    public void setMidDamage(double midDamage) { }
-
-    public void setShortDamage(double shortDamage) { }
-
     private void effectPlayers(Location location) {
         for (GamePlayer gamePlayer : game.getPlayerManager().getNearbyPlayers(location, longRange)) {
             if (gamePlayer != null && gamePlayer.getPlayer() != null && !gamePlayer.getPlayer().isDead() && gamePlayer.getStatus().isAlive()) {
@@ -70,6 +64,13 @@ public class BattleTactical extends BattleEquipment implements Tactical {
     }
 
     public void ignite(Item item) {
+        effect.onIgnite(this, item.getLocation());
         effectPlayers(item.getLocation());
     }
+
+    public void setLongDamage(double longDamage) { }
+
+    public void setMidDamage(double midDamage) { }
+
+    public void setShortDamage(double shortDamage) { }
 }
