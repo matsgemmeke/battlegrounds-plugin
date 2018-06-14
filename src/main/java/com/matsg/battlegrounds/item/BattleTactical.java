@@ -64,7 +64,7 @@ public class BattleTactical extends BattleEquipment implements Tactical {
     }
 
     public void ignite(Item item) {
-        effect.onIgnite(this, item.getLocation());
+        effect.onIgnite(this);
         effectPlayers(item.getLocation());
     }
 

@@ -55,19 +55,6 @@ public class FreeForAll extends AbstractGameMode {
         return Color.fromRGB(Integer.parseInt(array[0]), Integer.parseInt(array[1]), Integer.parseInt(array[2]));
     }
 
-    private Message getKillMessage(Hitbox hitbox) {
-        switch (hitbox) {
-            case HEAD:
-                return EnumMessage.DEATH_HEADSHOT;
-            case LEG:
-                return EnumMessage.DEATH_PLAYER_KILL;
-            case TORSO:
-                return EnumMessage.DEATH_PLAYER_KILL;
-            default:
-                return null;
-        }
-    }
-
     public Spawn getRespawnPoint(GamePlayer gamePlayer) {
         return game.getArena().getRandomSpawn(minSpawnDistance);
     }

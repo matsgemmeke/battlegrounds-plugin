@@ -1127,7 +1127,7 @@ CHINA_LAKE:
     Type: SHELL
 
 CROSSBOW:
-  Accuracy: 0.9
+  Accuracy: 0.8
   Ammo:
     Magazine: 3
     Max: 3

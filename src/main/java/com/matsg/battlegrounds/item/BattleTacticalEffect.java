@@ -32,7 +32,7 @@ public enum BattleTacticalEffect implements TacticalEffect {
 
         public void onIgnite(Tactical tactical) {
             Loadout loadout = tactical.getGamePlayer().getLoadout();
-            Sound[] decoySound =
+            //Sound[] decoySound =
         }
     },
     SMOKE(3, false) {
@@ -40,7 +40,7 @@ public enum BattleTacticalEffect implements TacticalEffect {
 
         }
 
-        private List<Block> getCircleBlocks(Location center, int radius) {
+        private List<Block> getCircleBlocks(Location center, int radius, boolean hollow) {
             List<Block> circleBlocks = new ArrayList<Block>();
             int bx = center.getBlockX();
             int by = center.getBlockY();

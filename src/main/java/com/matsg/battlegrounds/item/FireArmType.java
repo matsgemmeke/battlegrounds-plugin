@@ -77,4 +77,8 @@ public enum FireArmType implements WeaponType {
     public boolean isPierceable() {
         return pierceable;
     }
+
+    public boolean isRemovable() {
+        return true;
+    }
 }

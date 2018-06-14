@@ -7,4 +7,6 @@ public interface WeaponType {
     String getName();
 
     boolean hasSubTypes();
+
+    boolean isRemovable();
 }

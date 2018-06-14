@@ -52,7 +52,7 @@ public class LoadoutManagerView implements View {
 
     private ItemStack getLoadoutItemStack(Loadout loadout) {
         for (Weapon weapon : loadout.getWeapons()) {
-            if (weapon.getItemStack() != null) {
+            if (weapon != null && weapon.getItemStack() != null) {
                 return weapon.getItemStack();
             }
         }

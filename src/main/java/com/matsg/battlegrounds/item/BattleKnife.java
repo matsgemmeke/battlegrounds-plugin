@@ -71,6 +71,10 @@ public class BattleKnife extends BattleWeapon implements Knife {
             public boolean hasSubTypes() {
                 return false;
             }
+
+            public boolean isRemovable() {
+                return false;
+            }
         };
     }
 

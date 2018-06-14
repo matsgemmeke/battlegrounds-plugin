@@ -26,4 +26,8 @@ public enum EquipmentType implements WeaponType {
     public boolean hasSubTypes() {
         return true;
     }
+
+    public boolean isRemovable() {
+        return true;
+    }
 }

@@ -3,6 +3,9 @@ package com.matsg.battlegrounds.gamemode;
 import com.matsg.battlegrounds.api.config.Yaml;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.player.GamePlayer;
+import com.matsg.battlegrounds.api.player.Hitbox;
+import com.matsg.battlegrounds.api.util.Message;
+import com.matsg.battlegrounds.util.EnumMessage;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,6 +50,19 @@ public abstract class AbstractGameMode implements GameMode {
 
     public void setTimeLimit(int timeLimit) {
         this.timeLimit = timeLimit;
+    }
+
+    protected Message getKillMessage(Hitbox hitbox) {
+        switch (hitbox) {
+            case HEAD:
+                return EnumMessage.DEATH_HEADSHOT;
+            case LEG:
+                return EnumMessage.DEATH_PLAYER_KILL;
+            case TORSO:
+                return EnumMessage.DEATH_PLAYER_KILL;
+            default:
+                return null;
+        }
     }
 
     protected List<Team> getSortedTeams() {

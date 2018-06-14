@@ -20,10 +20,10 @@ public class BattleLoadout implements Loadout {
         this.knife = knife;
 
         for (Weapon weapon : getWeapons()) {
-            weapon.setItemSlot(weapon.getType().getDefaultItemSlot());
+            if (weapon != null) {
+                weapon.setItemSlot(weapon.getType().getDefaultItemSlot());
+            }
         }
-
-        secondary.setItemSlot(ItemSlot.FIREARM_SECONDARY);
     }
 
     public Loadout clone() {

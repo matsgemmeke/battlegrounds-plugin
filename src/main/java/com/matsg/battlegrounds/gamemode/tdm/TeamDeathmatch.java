@@ -6,6 +6,7 @@ import com.matsg.battlegrounds.api.game.Spawn;
 import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.player.GamePlayer;
+import com.matsg.battlegrounds.api.player.Hitbox;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.game.BattleTeam;
 import com.matsg.battlegrounds.gamemode.AbstractGameMode;
@@ -83,8 +84,8 @@ public class TeamDeathmatch extends AbstractGameMode {
         return null;
     }
 
-    public void onKill(GamePlayer gamePlayer, GamePlayer killer, Weapon weapon) {
-        game.broadcastMessage(EnumMessage.DEATH_PLAYER_KILL.getMessage(new Placeholder[] {
+    public void onKill(GamePlayer gamePlayer, GamePlayer killer, Weapon weapon, Hitbox hitbox) {
+        game.broadcastMessage(getKillMessage(hitbox).getMessage(new Placeholder[] {
                 new Placeholder("bg_killer", getTeam(killer).getChatColor() + killer.getName() + ChatColor.WHITE),
                 new Placeholder("bg_player", getTeam(gamePlayer).getChatColor() + gamePlayer.getName() + ChatColor.WHITE),
                 new Placeholder("bg_weapon", weapon.getName())

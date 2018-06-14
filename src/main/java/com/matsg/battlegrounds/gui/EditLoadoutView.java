@@ -47,7 +47,7 @@ public class EditLoadoutView implements View {
             ItemStack itemStack = new ItemStackBuilder(getItemStack(weapon))
                     .addItemFlags(ItemFlag.values())
                     .setDisplayName(ChatColor.WHITE + getDisplayName(weapon))
-                    .setLore(ChatColor.WHITE + getName(weapon), EnumMessage.EDIT_WEAPON.getMessage(), EnumMessage.CLEAR_WEAPON.getMessage())
+                    .setLore(ChatColor.WHITE + getName(weapon), EnumMessage.EDIT_WEAPON.getMessage())
                     .setUnbreakable(true)
                     .build();
 
@@ -90,12 +90,7 @@ public class EditLoadoutView implements View {
         if (weapon == null) {
             return;
         }
-        if (clickType == ClickType.RIGHT) {
-            removeWeapon(loadout, weapon);
-            player.openInventory(new EditLoadoutView(plugin, loadout).getInventory());
-            return;
-        }
-        if (!weapon.getType().hasSubTypes()) {
+        if (weapon.getType().hasSubTypes()) {
             player.openInventory(new WeaponsView(plugin, loadout, weapon.getType().getDefaultItemSlot(), this).getInventory());
         } else {
             List<Weapon> weapons = new ArrayList<>();
@@ -106,23 +101,5 @@ public class EditLoadoutView implements View {
 
     public boolean onClose() {
         return true;
-    }
-
-    private void removeWeapon(Loadout loadout, Weapon weapon) {
-        ItemSlot itemSlot = weapon.getType().getDefaultItemSlot();
-        switch (itemSlot) {
-            case FIREARM_PRIMARY:
-                loadout.setPrimary(null);
-                break;
-            case FIREARM_SECONDARY:
-                loadout.setSecondary(null);
-                break;
-            case EQUIPMENT:
-                loadout.setEquipment(null);
-                break;
-            case KNIFE:
-                loadout.setKnife(null);
-                break;
-        }
     }
 }
