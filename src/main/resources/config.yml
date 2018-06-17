@@ -43,13 +43,13 @@ game-scoreboard:
   # Leave "" to remove this line
   lobby:
     layout:
-      line-0: "&6Countdown: &f%bg_countdown%s"
-      line-1: " "
-      line-2: "&6Players: &f%bg_players%"
-      line-3: "  "
-      line-4: "&6Gamemode: &f%bg_gamemode%"
-      line-5: "&6Arena: &f%bg_arena%"
-      line-6: "&8%bg_date%"
+      line0: "&6Countdown: &f%bg_countdown%s"
+      line1: " "
+      line2: "&6Players: &f%bg_players%"
+      line3: "  "
+      line4: "&6Gamemode: &f%bg_gamemode%"
+      line5: "&6Arena: &f%bg_arena%"
+      line6: "&8%bg_date%"
       title: "&6&lBattlegrounds"
     worlds: "*"
 

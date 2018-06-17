@@ -14,8 +14,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team.Option;
-import org.bukkit.scoreboard.Team.OptionStatus;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -40,22 +38,14 @@ public abstract class AbstractScoreboard implements GameScoreboard {
 
     public void addLayout(ScoreboardBuilder builder, Map<String, String> layout, Placeholder... placeholders) {
         for (String line : layout.keySet()) {
-            if (line.contains("line-") && layout.get(line).length() > 0) {
-                builder.setLine(DisplaySlot.SIDEBAR, Integer.parseInt(line.substring(5, line.length())),
+            if (line.contains("line") && layout.get(line).length() > 0) {
+                builder.setLine(DisplaySlot.SIDEBAR, Integer.parseInt(line.substring(4, line.length())),
                         ChatColor.translateAlternateColorCodes('&', Placeholder.replace(layout.get(line), placeholders)));
             }
         }
     }
 
-    public void addTeams(ScoreboardBuilder builder) {
-        for (Team team : game.getGameMode().getTeams()) {
-            org.bukkit.scoreboard.Team sbTeam = builder.addTeam(team.getName());
-            sbTeam.setOption(Option.NAME_TAG_VISIBILITY, OptionStatus.FOR_OWN_TEAM);
-            for (GamePlayer gamePlayer : team.getPlayers()) {
-                sbTeam.addPlayer(gamePlayer.getPlayer());
-            }
-        }
-    }
+    public abstract void addTeams(ScoreboardBuilder builder);
 
     public abstract Scoreboard buildScoreboard(Map<String, String> layout, Scoreboard scoreboard);
 

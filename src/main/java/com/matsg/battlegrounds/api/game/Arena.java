@@ -69,6 +69,14 @@ public interface Arena extends Region {
     Collection<Spawn> getSpawns();
 
     /**
+     * Gets the base spawn of a team.
+     *
+     * @param team The team to get the base spawn of
+     * @return The team's base spawn
+     */
+    Spawn getTeamBase(Team team);
+
+    /**
      * Gets whether the arena is active or not.
      *
      * @return True if the arena is active, otherwise false

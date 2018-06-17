@@ -194,11 +194,6 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
         }
     }
 
-    public void refillAmmo() {
-        ammo = startAmmo;
-        magazine = magazineSize;
-    }
-
     public void reload() {
         reload(reloadDuration);
     }
@@ -229,6 +224,11 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
                 }
             }
         }.runTaskTimer(reloadTime, reloadTime);
+    }
+
+    public void resetState() {
+        ammo = startAmmo;
+        magazine = magazineSize;
     }
 
     private void setSoundCancelled(boolean cancelled, Sound... sounds) {

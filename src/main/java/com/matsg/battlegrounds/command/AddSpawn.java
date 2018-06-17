@@ -4,7 +4,6 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.Spawn;
-import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.game.ArenaSpawn;
 import com.matsg.battlegrounds.util.EnumMessage;

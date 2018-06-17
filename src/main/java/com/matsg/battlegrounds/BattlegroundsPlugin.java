@@ -35,7 +35,6 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
     private LevelConfig levelConfig;
     private List<BattlegroundsExtension> extensions;
     private PlayerStorage playerStorage;
-    //private SQLConfig sqlConfig;
     private Translator translator;
     private WeaponConfig<Equipment> equipmentConfig;
     private WeaponConfig<FireArm> fireArmConfig;
@@ -119,7 +118,6 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
             equipmentConfig = new EquipmentConfig(this);
             fireArmConfig = new FireArmConfig(this);
             knifeConfig = new KnifeConfig(this);
-            //sqlConfig = new SQLConfig(this);
             translator = new PluginTranslator(this);
         } catch (IOException e) {
             return false;
@@ -143,7 +141,6 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         try {
             cache = new BattleCacheYaml(this, "cache.yml");
             config = new BattlegroundsConfig(this);
-            //sqlConfig = new SQLConfig(this);
         } catch (Exception e) {
             throw new StartupFailedException("Failed to load configuration files!", e);
         }

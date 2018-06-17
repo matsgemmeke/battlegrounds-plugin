@@ -133,6 +133,7 @@ public class FireArmConfig extends AbstractYaml implements WeaponConfig<FireArm>
                             (int) new AttributeValidator(section.getInt("Ammo.Magazine"), "Magazine").shouldBeHigherThan(0),
                             (int) new AttributeValidator(section.getInt("Ammo.Start"), "Start ammunition").shouldBeHigherThan(0),
                             (int) new AttributeValidator(section.getInt("Ammo.Max"), "Max ammunition").shouldBeHigherThan(0),
+                            (int) new AttributeValidator(section.getDouble("Speed"), "Launch speed").shouldBeHigherThan(0.0),
                             (int) new AttributeValidator(section.getInt("FireMode.Cooldown"), "Cooldown").shouldEqualOrBeHigherThan(0),
                             (int) new AttributeValidator(section.getInt("Reload.Duration"), "Reload duration").shouldBeHigherThan(0),
                             new AttributeValidator(section.getDouble("Accuracy"), "Accuracy").shouldBeBetween(0.0, 1.0),

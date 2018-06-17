@@ -2,14 +2,16 @@ package com.matsg.battlegrounds.gamemode.ffa;
 
 import com.matsg.battlegrounds.api.config.Yaml;
 import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.gui.scoreboard.AbstractScoreboard;
 import com.matsg.battlegrounds.util.ScoreboardBuilder;
-import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team.Option;
+import org.bukkit.scoreboard.Team.OptionStatus;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -48,7 +50,7 @@ public class FFAScoreboard extends AbstractScoreboard {
 
         for (String line : layout.keySet()) {
             if (layout.get(line).contains("%bg_scores%")) {
-                index = Integer.parseInt(line.substring(5, line.length()));
+                index = Integer.parseInt(line.substring(4, line.length()));
                 break;
             }
         }
@@ -61,6 +63,16 @@ public class FFAScoreboard extends AbstractScoreboard {
         }
     }
 
+    public void addTeams(ScoreboardBuilder builder) {
+        for (Team team : game.getGameMode().getTeams()) {
+            org.bukkit.scoreboard.Team sbTeam = builder.addTeam(team.getName());
+            sbTeam.setOption(Option.NAME_TAG_VISIBILITY, OptionStatus.NEVER);
+            for (GamePlayer gamePlayer : team.getPlayers()) {
+                sbTeam.addEntry(gamePlayer.getName());
+            }
+        }
+    }
+
     public Scoreboard buildScoreboard(Map<String, String> layout, Scoreboard scoreboard) {
         return scoreboard == null || scoreboard.getObjective(DisplaySlot.SIDEBAR) == null
                 || !scoreboard.getObjective(DisplaySlot.SIDEBAR).getCriteria().equals(scoreboardId) ? getNewScoreboard(layout, getPlaceholders()) : updateScoreboard(layout, scoreboard, getPlaceholders());
@@ -69,8 +81,7 @@ public class FFAScoreboard extends AbstractScoreboard {
     private Placeholder[] getPlaceholders() {
         return new Placeholder[] {
                 new Placeholder("bg_date", getDate()),
-                new Placeholder("bg_gamemode", game.getGameMode().getName()),
-                new Placeholder("bg_time", game.getTimeControl().formatTime())
+                new Placeholder("bg_time", game.getTimeControl() != null ? game.getTimeControl().formatTime() : 0)
         };
     }
 }

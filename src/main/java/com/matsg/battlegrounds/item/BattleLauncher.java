@@ -1,28 +1,39 @@
 package com.matsg.battlegrounds.item;
 
+import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent;
+import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent.DeathCause;
+import com.matsg.battlegrounds.api.event.GamePlayerKillPlayerEvent;
 import com.matsg.battlegrounds.api.item.DamageSource;
 import com.matsg.battlegrounds.api.item.Launcher;
 import com.matsg.battlegrounds.api.item.Lethal;
 import com.matsg.battlegrounds.api.item.ReloadType;
 import com.matsg.battlegrounds.api.player.GamePlayer;
+import com.matsg.battlegrounds.api.player.Hitbox;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.util.BattleSound;
 import com.matsg.battlegrounds.util.EnumMessage;
 import com.matsg.battlegrounds.util.Particle.ParticleEffect;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 
 public class BattleLauncher extends BattleFireArm implements Launcher {
 
+    private double launchSpeed;
     private LaunchType launchType;
     private Lethal lethal;
 
     public BattleLauncher(String name, String description, ItemStack itemStack, short durability,
-                     int magazine, int ammo, int maxAmmo, int cooldown, int reloadDuration, double accuracy,
+                     int magazine, int ammo, int maxAmmo, double launchSpeed, int cooldown, int reloadDuration, double accuracy,
                      Lethal lethal, LaunchType launchType, ReloadType reloadType, Sound[] reloadSound, Sound[] shootSound) {
         super(name, description, itemStack, durability, magazine, ammo, maxAmmo, cooldown, reloadDuration, accuracy, reloadType, FireArmType.LAUNCHER, reloadSound, shootSound);
+        this.launchSpeed = launchSpeed;
         this.launchType = launchType;
         this.lethal = lethal;
+    }
+
+    public double getLaunchSpeed() {
+        return launchSpeed;
     }
 
     public Lethal getLethal() {
@@ -39,31 +50,37 @@ public class BattleLauncher extends BattleFireArm implements Launcher {
 
     protected String[] getLore() {
         return new String[] {
-                "§f" + fireArmType.getName(),
-                "§7" + format(6, accuracy * 10.0, 10.0) + " " + EnumMessage.STAT_ACCURACY.getMessage(),
-                "§7" + format(6, lethal.getShortDamage(), 50.0) + " " + EnumMessage.STAT_DAMAGE.getMessage(),
-                "§7" + format(6, 10.0, 60.0) + " " + EnumMessage.STAT_FIRERATE.getMessage(),
-                "§7" + format(6, lethal.getLongRange(), 35.0) + " " + EnumMessage.STAT_RANGE.getMessage() };
+                ChatColor.WHITE + fireArmType.getName(),
+                ChatColor.GRAY + format(6, accuracy * 10.0, 10.0) + " " + EnumMessage.STAT_ACCURACY.getMessage(),
+                ChatColor.GRAY + format(6, lethal.getShortDamage(), 50.0) + " " + EnumMessage.STAT_DAMAGE.getMessage(),
+                ChatColor.GRAY + format(6, Math.max((15 - cooldown / 2) * 10.0, 40.0), 200.0) + " " + EnumMessage.STAT_FIRERATE.getMessage(),
+                ChatColor.GRAY + format(6, lethal.getLongRange(), 35.0) + " " + EnumMessage.STAT_RANGE.getMessage() };
     }
 
     public DamageSource getProjectile() {
         return lethal;
     }
 
-    protected void inflictDamage(Location location, double range) {
+    private void inflictDamage(Location location, double range) {
         for (GamePlayer gamePlayer : game.getPlayerManager().getNearbyPlayers(location, range)) { //Explosion splash damage range
-            if (gamePlayer == null || gamePlayer.getPlayer() == null || gamePlayer.getPlayer().isDead()) {
+            if (gamePlayer == null || gamePlayer == this.gamePlayer || gamePlayer.getPlayer() == null || gamePlayer.getPlayer().isDead()) {
                 continue;
             }
-            double damage = lethal.getDamage(null, gamePlayer.getLocation().distance(location) / 2 + 1);
+            double damage = lethal.getDamage(Hitbox.TORSO, gamePlayer.getLocation().distance(location));
             game.getPlayerManager().damagePlayer(gamePlayer, damage);
+            if (gamePlayer.getPlayer().isDead()) {
+                plugin.getEventManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, this.gamePlayer, this, Hitbox.TORSO));
+            }
         }
     }
 
-    protected void inflictUserDamage(Location location) {
+    private void inflictUserDamage(Location location) {
         double playerDistance = gamePlayer.getPlayer().getLocation().distanceSquared(location);
         if (playerDistance <= lethal.getLongRange()) {
-            gamePlayer.getPlayer().damage(lethal.getDamage(null, playerDistance) / 5);
+            game.getPlayerManager().damagePlayer(gamePlayer, lethal.getDamage(Hitbox.TORSO, playerDistance) / 5);
+            if (gamePlayer.getPlayer().isDead()) {
+                plugin.getEventManager().callEvent(new GamePlayerDeathEvent(game, gamePlayer, DeathCause.SUICIDE));
+            }
         }
     }
 

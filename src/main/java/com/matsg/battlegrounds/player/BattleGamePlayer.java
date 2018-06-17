@@ -1,19 +1,23 @@
 package com.matsg.battlegrounds.player;
 
 import com.matsg.battlegrounds.api.game.Team;
+import com.matsg.battlegrounds.api.item.Item;
+import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.player.PlayerStatus;
 import com.matsg.battlegrounds.api.player.SavedInventory;
-import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.util.Message;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class BattleGamePlayer implements GamePlayer {
 
     private int deaths, exp, headshots, kills, score;
+    private List<Item> heldItems;
     private Loadout loadout;
     private Player player;
     private PlayerStatus playerStatus;
@@ -25,6 +29,7 @@ public class BattleGamePlayer implements GamePlayer {
         this.exp = 0;
         this.deaths = 0;
         this.headshots = 0;
+        this.heldItems = new ArrayList<>();
         this.kills = 0;
         this.playerStatus = PlayerStatus.ACTIVE;
         this.savedInventory = new BattleSavedInventory(player);
@@ -41,6 +46,10 @@ public class BattleGamePlayer implements GamePlayer {
 
     public int getHeadshots() {
         return headshots;
+    }
+
+    public List<Item> getHeldItems() {
+        return heldItems;
     }
 
     public int getKills() {

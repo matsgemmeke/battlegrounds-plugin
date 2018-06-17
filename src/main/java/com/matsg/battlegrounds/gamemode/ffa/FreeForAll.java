@@ -2,17 +2,16 @@ package com.matsg.battlegrounds.gamemode.ffa;
 
 import com.matsg.battlegrounds.api.config.Yaml;
 import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.api.game.GameScoreboard;
 import com.matsg.battlegrounds.api.game.Spawn;
 import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.player.Hitbox;
-import com.matsg.battlegrounds.api.util.Message;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.game.BattleTeam;
 import com.matsg.battlegrounds.gamemode.AbstractGameMode;
 import com.matsg.battlegrounds.gamemode.Result;
-import com.matsg.battlegrounds.api.game.GameScoreboard;
 import com.matsg.battlegrounds.util.EnumMessage;
 import com.matsg.battlegrounds.util.EnumTitle;
 import com.matsg.battlegrounds.util.Title;

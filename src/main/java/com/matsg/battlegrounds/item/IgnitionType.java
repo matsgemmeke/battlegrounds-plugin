@@ -23,8 +23,8 @@ public enum IgnitionType {
                     for (Sound sound : equipment.getIgnitionSound()) {
                         sound.play(game, item.getLocation());
                     }
-                    equipment.getDroppedItems().remove(item);
                     equipment.ignite(item);
+                    equipment.getDroppedItems().remove(item);
                     item.remove();
                 }
             }.runTaskLater(equipment.getIgnitionTime());
@@ -44,8 +44,8 @@ public enum IgnitionType {
                         for (Sound sound : equipment.getIgnitionSound()) {
                             sound.play(game, item.getLocation());
                         }
-                        equipment.getDroppedItems().remove(item);
                         equipment.ignite(item);
+                        equipment.getDroppedItems().remove(item);
                         item.remove();
                         cancel();
                     }

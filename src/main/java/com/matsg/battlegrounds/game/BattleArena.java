@@ -8,7 +8,9 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class BattleArena implements Arena {
 
@@ -130,6 +132,15 @@ public class BattleArena implements Arena {
     public Spawn getSpawn(int index) {
         for (Spawn spawn : spawns) {
             if (spawn.getIndex() == index) {
+                return spawn;
+            }
+        }
+        return null;
+    }
+
+    public Spawn getTeamBase(Team team) {
+        for (Spawn spawn : spawns) {
+            if (spawn.getTeamId() == team.getId() && spawn.isTeamBase()) {
                 return spawn;
             }
         }

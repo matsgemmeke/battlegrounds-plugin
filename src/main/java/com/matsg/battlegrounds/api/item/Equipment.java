@@ -17,6 +17,8 @@ public interface Equipment extends Weapon, DamageSource {
 
     Collection<Item> getDroppedItems();
 
+    Item getFirstDroppedItem();
+
     Sound[] getIgnitionSound();
 
     int getIgnitionTime();

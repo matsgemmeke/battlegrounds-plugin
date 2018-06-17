@@ -10,7 +10,7 @@ public interface Weapon extends Item {
 
     WeaponType getType();
 
-    void refillAmmo();
+    void resetState();
 
     void remove();
 

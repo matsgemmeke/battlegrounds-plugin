@@ -99,11 +99,8 @@ public class BattleKnife extends BattleWeapon implements Knife {
     }
 
     public double damage(GamePlayer gamePlayer) {
-        double health = gamePlayer.getPlayer().getHealth();
-        if (health - damage > 0) {
-            gamePlayer.getPlayer().setHealth(health - damage);
-        } else {
-            gamePlayer.getPlayer().setHealth(0.0);
+        game.getPlayerManager().damagePlayer(gamePlayer, damage);
+        if (gamePlayer.getPlayer().isDead()) {
             plugin.getEventManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, this.gamePlayer, this, Hitbox.TORSO));
         }
         return gamePlayer.getPlayer().getHealth();
@@ -111,8 +108,7 @@ public class BattleKnife extends BattleWeapon implements Knife {
 
     private String[] getLore() {
         return new String[] {
-                ChatColor.WHITE + type,
-                ChatColor.GRAY + format(6, damage, 20.0) + " " + EnumMessage.STAT_DAMAGE.getMessage()
+                ChatColor.WHITE + type
         };
     }
 
@@ -128,7 +124,7 @@ public class BattleKnife extends BattleWeapon implements Knife {
     }
 
     public void onRightClick() {
-        if (throwing || !throwable || amount <= 1) {
+        if (throwing || !throwable || amount <= 0) {
             return;
         }
         shoot();
@@ -136,7 +132,7 @@ public class BattleKnife extends BattleWeapon implements Knife {
 
     public void onSwitch() { }
 
-    public void refillAmmo() {
+    public void resetState() {
         amount = maxAmount;
     }
 

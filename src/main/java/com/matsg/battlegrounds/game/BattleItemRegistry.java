@@ -19,7 +19,6 @@ public class BattleItemRegistry implements ItemRegistry {
 
     public void addItem(Item item) {
         if (items.contains(item)) {
-            System.out.print(item.getName());
             return;
         }
         items.add(item);

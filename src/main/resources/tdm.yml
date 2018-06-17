@@ -12,11 +12,11 @@ scoreboard:
   # The layout of the game scoreboards
   # Leave "" to remove this line
   layout:
-    line-0: "&6Time: &f%bg_time%"
-    line-1: " "
-    line-2: "%bg_scores%"
-    line-3: "  "
-    line-4: "&8%bg_date%"
+    line0: "&6Time: &f%bg_time%"
+    line1: " "
+    line2: "%bg_scores%"
+    line3: "  "
+    line4: "&8%bg_date%"
     title: "&6&lTeam Deathmatch"
   # List of worlds where this scoreboard will appear
   worlds: "*"

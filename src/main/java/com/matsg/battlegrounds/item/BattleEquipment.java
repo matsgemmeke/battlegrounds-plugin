@@ -12,8 +12,8 @@ import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class BattleEquipment extends BattleWeapon implements Equipment {
 
@@ -22,7 +22,7 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
     protected EquipmentType type;
     protected IgnitionType ignitionType;
     protected int amount, cooldown, ignitionTime, maxAmount;
-    protected Set<Item> droppedItems;
+    protected List<Item> droppedItems;
     protected Sound[] ignitionSound;
 
     public BattleEquipment(String name, String description, ItemStack itemStack, short durability, EquipmentType type, int amount,
@@ -32,7 +32,7 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
         this.amount = amount;
         this.beingThrown = false;
         this.cooldown = plugin.getBattlegroundsConfig().explosiveCooldown;
-        this.droppedItems = new HashSet<>();
+        this.droppedItems = new ArrayList<>();
         this.ignitionSound = ignitionSound;
         this.ignitionTime = ignitionTime;
         this.ignitionType = ignitionType;
@@ -52,7 +52,7 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
         return amount;
     }
 
-    public Set<Item> getDroppedItems() {
+    public List<Item> getDroppedItems() {
         return droppedItems;
     }
 
@@ -140,11 +140,13 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
         BattleSound.EXPLOSIVE_THROW.play(game, item.getLocation());
     }
 
+    public Item getFirstDroppedItem() {
+        return droppedItems.get(0);
+    }
+
     private String[] getLore() {
         return new String[] {
-                ChatColor.WHITE + type.getName(),
-                ChatColor.GRAY + format(6, getShortDamage(), 300.0) + " " + EnumMessage.STAT_DAMAGE.getMessage(),
-                ChatColor.GRAY + format(6, getLongRange() * 10, 100.0) + " " + EnumMessage.STAT_RANGE.getMessage()
+                ChatColor.WHITE + type.getName()
         };
     }
 
@@ -164,16 +166,16 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
 
     public void onSwitch() { }
 
-    public void refillAmmo() {
-        amount = maxAmount;
-    }
-
     public void remove() {
         super.remove();
         for (Item item : droppedItems) {
             item.remove();
         }
         droppedItems.clear();
+    }
+
+    public void resetState() {
+        amount = maxAmount;
     }
 
     public boolean update() {

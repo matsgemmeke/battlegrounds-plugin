@@ -3,9 +3,9 @@ package com.matsg.battlegrounds.item;
 import com.matsg.battlegrounds.api.event.GamePlayerKillPlayerEvent;
 import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.item.DamageSource;
-import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.item.Gun;
 import com.matsg.battlegrounds.api.item.ReloadType;
+import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.player.Hitbox;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.util.BattleSound;
@@ -45,11 +45,11 @@ public class BattleGun extends BattleFireArm implements Gun {
     }
 
     public int getBurstRounds() {
-        return 0;
+        return burstRounds;
     }
 
     public int getFireRate() {
-        return 0;
+        return fireRate;
     }
 
     public DamageSource getProjectile() {
@@ -61,7 +61,7 @@ public class BattleGun extends BattleFireArm implements Gun {
                 ChatColor.WHITE + fireArmType.getName(),
                 ChatColor.GRAY + format(6, accuracy * 100.0, 100.0) + " " + EnumMessage.STAT_ACCURACY.getMessage(),
                 ChatColor.GRAY + format(6, bullet.getShortDamage(), 50.0) + " " + EnumMessage.STAT_DAMAGE.getMessage(),
-                ChatColor.GRAY + format(6, (burstRounds == 0 ? fireRate : burstRounds) * 10, 60.0) + " " + EnumMessage.STAT_FIRERATE.getMessage(),
+                ChatColor.GRAY + format(6, Math.max((fireRate + 10 - cooldown / 2) * 10.0, 40.0), 200.0) + " " + EnumMessage.STAT_FIRERATE.getMessage(),
                 ChatColor.GRAY + format(6, bullet.getMidRange(), 70.0) + " " + EnumMessage.STAT_RANGE.getMessage() };
     }
 
@@ -70,7 +70,7 @@ public class BattleGun extends BattleFireArm implements Gun {
             return Collections.EMPTY_LIST;
         }
         List<Location> list = new ArrayList<>();
-        float spread = (float) 0.5;
+        float spread = (float) 1.5;
 
         Location bottom = direction.clone(), left = direction.clone(), right = direction.clone(), top = direction.clone();
         bottom.setPitch(bottom.getPitch() - spread);
@@ -113,7 +113,6 @@ public class BattleGun extends BattleFireArm implements Gun {
             game.getPlayerManager().damagePlayer(gamePlayer, bullet.getDamage(hitbox, gamePlayer.getLocation().distance(this.gamePlayer.getLocation())) / 5);
             hits ++;
             if (gamePlayer.getPlayer().isDead()) {
-                System.out.print("kill");
                 plugin.getEventManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, this.gamePlayer, this, hitbox));
             }
         }
@@ -147,10 +146,19 @@ public class BattleGun extends BattleFireArm implements Gun {
         shoot();
     }
 
+    public void resetState() {
+        super.resetState();
+        setScoped(false);
+    }
+
     public void setScoped(boolean scoped) {
+        if (!fireArmType.hasScope()) {
+            return;
+        }
+
         this.scoped = scoped;
 
-        Player player = getGamePlayer().getPlayer();
+        Player player = gamePlayer.getPlayer();
 
         if (scoped) {
             for (Sound sound : BattleSound.GUN_SCOPE) {
@@ -189,7 +197,7 @@ public class BattleGun extends BattleFireArm implements Gun {
 
             Block block = direction.getBlock();
 
-            if (!blocks.contains(block.getType()) || !HalfBlocks.isAir(direction)) {
+            if (!blocks.contains(block.getType()) && !HalfBlocks.isAir(direction)) {
                 block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, block.getType());
                 return;
             }

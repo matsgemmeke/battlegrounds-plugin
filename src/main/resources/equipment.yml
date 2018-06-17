@@ -82,10 +82,10 @@ CLAYMORE:
   Sound: ENTITY_GENERIC_EXPLODE-3-1-0
   Velocity: 0.0
 
-DECOY_GRENADE:
+DECOY:
   Amount: 1
   Description: Distraction device that simulates enemy gunfire and radar indicators.
-  DisplayName: Decoy Grenade
+  DisplayName: Decoy
   Durability: 4
   Duration: 100
   Effect: NOISE
@@ -160,12 +160,12 @@ SMOKE_GRENADE:
   Range:
     Long:
       Damage: 0.0
-      Distance: 8.0
+      Distance: 5.0
     Medium:
       Damage: 0.0
-      Distance: 8.0
+      Distance: 5.0
     Short:
       Damage: 0.0
-      Distance: 8.0
+      Distance: 5.0
   Sound: BLOCK_ANVIL_HIT-0.1-0.5-0, ENTITY_GENERIC_EXPLODE-1-1-0, BLOCK_FIRE_EXTINGUISH-1-1-0
   Velocity: 1.1

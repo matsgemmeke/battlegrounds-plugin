@@ -7,5 +7,5 @@ public interface TacticalEffect {
 
     void applyEffect(GamePlayer gamePlayer, Location location, int duration);
 
-    void onIgnite(Tactical tactical);
+    void onIgnite(Tactical tactical, org.bukkit.entity.Item item);
 }

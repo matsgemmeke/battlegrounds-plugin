@@ -2,6 +2,7 @@ package com.matsg.battlegrounds.gui.scoreboard;
 
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.util.ScoreboardBuilder;
 import org.bukkit.World;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Scoreboard;
@@ -42,6 +43,8 @@ public class LobbyScoreboard extends AbstractScoreboard {
     public void setCountdown(int countdown) {
         this.countdown = countdown;
     }
+
+    public void addTeams(ScoreboardBuilder builder) { }
 
     public Scoreboard buildScoreboard(Map<String, String> layout, Scoreboard scoreboard) {
         return scoreboard == null || scoreboard.getObjective(DisplaySlot.SIDEBAR) == null

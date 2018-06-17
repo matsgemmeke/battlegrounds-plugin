@@ -30,7 +30,7 @@ public class BattleTimeControl extends BattleRunnable implements TimeControl {
     }
 
     public String formatTime() {
-        return String.format("%02d", time / 60) + ":" + String.format("%02d", time % 60);
+        return time / 60 + ":" + String.format("%02d", time % 60);
     }
 
     public void run() {

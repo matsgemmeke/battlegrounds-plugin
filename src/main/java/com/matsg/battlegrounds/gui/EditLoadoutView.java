@@ -1,7 +1,8 @@
 package com.matsg.battlegrounds.gui;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.item.*;
+import com.matsg.battlegrounds.api.item.Loadout;
+import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.util.EnumMessage;
 import com.matsg.battlegrounds.util.ItemStackBuilder;

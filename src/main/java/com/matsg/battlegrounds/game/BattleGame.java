@@ -3,14 +3,14 @@ package com.matsg.battlegrounds.game;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.config.CacheYaml;
 import com.matsg.battlegrounds.api.game.*;
-import com.matsg.battlegrounds.api.game.GameMode;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.player.PlayerStatus;
 import com.matsg.battlegrounds.api.util.Message;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.config.BattleCacheYaml;
-import com.matsg.battlegrounds.util.*;
-import org.bukkit.*;
+import com.matsg.battlegrounds.util.BattleRunnable;
+import com.matsg.battlegrounds.util.Title;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.io.IOException;
@@ -195,6 +195,7 @@ public class BattleGame implements Game {
         for (GamePlayer gamePlayer : playerManager.getPlayers()) {
             playerManager.preparePlayer(gamePlayer);
         }
+        gameMode.getScoreboard().display(this);
         gameMode.spawnPlayers(playerManager.getPlayers().toArray(new GamePlayer[playerManager.getPlayers().size()]));
         setState(GameState.STARTING);
         updateSign();
@@ -205,12 +206,6 @@ public class BattleGame implements Game {
         timeControl = new BattleTimeControl(this);
         setState(GameState.IN_GAME);
         updateSign();
-
-        for (GamePlayer gamePlayer : playerManager.getPlayers()) {
-            if (gamePlayer.getLoadout() != null) {
-                gamePlayer.getLoadout().updateInventory();
-            }
-        }
     }
 
     public void stop() {

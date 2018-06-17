@@ -2,7 +2,10 @@ package com.matsg.battlegrounds.util;
 
 import com.matsg.battlegrounds.api.util.Placeholder;
 import org.bukkit.Bukkit;
-import org.bukkit.scoreboard.*;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
 import java.util.HashSet;
 import java.util.Map;

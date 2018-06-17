@@ -71,7 +71,7 @@ level:
     unlocks: SPAS-12
   '25':
     exp: 113400
-    unlocks: Crossbow
+    unlocks: China Lake
   '26':
     exp: 122500
     unlocks: SCAR-H
@@ -85,7 +85,7 @@ level:
     unlocks: Vector
   '30':
     exp: 173400
-    unlocks: MGL
+    unlocks: Crossbow
   '31':
     exp: 187800
   '32':
@@ -133,7 +133,7 @@ level:
     exp: 517000
   '48':
     exp: 544300
-    unlocks: China Lake
+    unlocks: MGL
   '49':
     exp: 572400
   '50':

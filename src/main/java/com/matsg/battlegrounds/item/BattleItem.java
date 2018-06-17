@@ -3,9 +3,9 @@ package com.matsg.battlegrounds.item;
 import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.item.Item;
 import com.matsg.battlegrounds.api.item.ItemSlot;
+import com.matsg.battlegrounds.api.player.GamePlayer;
 import org.bukkit.inventory.ItemStack;
 
 public abstract class BattleItem implements Item {

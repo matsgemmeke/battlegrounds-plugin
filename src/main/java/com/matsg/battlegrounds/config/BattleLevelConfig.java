@@ -5,7 +5,8 @@ import com.matsg.battlegrounds.api.config.AbstractYaml;
 import com.matsg.battlegrounds.api.config.LevelConfig;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BattleLevelConfig extends AbstractYaml implements LevelConfig {
 

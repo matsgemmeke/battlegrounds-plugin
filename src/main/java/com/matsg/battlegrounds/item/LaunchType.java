@@ -21,10 +21,10 @@ public enum LaunchType {
 
             Item item = gamePlayer.getPlayer().getWorld().dropItem(direction, lethal.getItemStack());
             item.setPickupDelay(1000);
-            item.setVelocity(gamePlayer.getPlayer().getEyeLocation().getDirection().multiply(lethal.getVelocity()));
+            item.setVelocity(gamePlayer.getPlayer().getEyeLocation().getDirection().multiply(launcher.getLaunchSpeed()));
 
             return new BattleRunnable() {
-                double range = 0.01; // Range constant
+                double range = 0.1; // Range constant
 
                 public void run() {
                     Location location = item.getLocation();
@@ -42,8 +42,8 @@ public enum LaunchType {
     ROCKET(1) {
         public BukkitTask launch(Launcher launcher, Location direction) {
             return new BattleRunnable() {
-                double distance = 0.5, maxDistance = 50.0, range = 0.1; // Multiplier and range constant
-                int i = 0, speed = 5;
+                double distance = 0.5, maxDistance = 50.0, range = 1.0; // Multiplier and range constant
+                int i = 0;
 
                 public void run() {
                     do {
@@ -63,7 +63,7 @@ public enum LaunchType {
 
                         direction.subtract(vector);
                         distance += 1.0;
-                    } while (distance <= maxDistance && ++ i <= speed);
+                    } while (distance <= maxDistance && ++ i <= launcher.getLaunchSpeed());
 
                     if (distance > maxDistance) {
                         cancel(); //If the projectile distance exceeds the long range, stop the runnable

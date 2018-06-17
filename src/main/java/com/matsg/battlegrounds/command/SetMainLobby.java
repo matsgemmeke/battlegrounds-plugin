@@ -9,7 +9,7 @@ public class SetMainLobby extends SubCommand {
 
     public SetMainLobby(Battlegrounds plugin) {
         super(plugin, "setmainlobby", EnumMessage.DESCRIPTION_SETMAINLOBBY.getMessage(),
-                "bg setmainlobby", null, true, "sml");
+                "bg setmainlobby", "battlegrounds.setmainlobby", true, "sml");
     }
 
     public void execute(CommandSender sender, String[] args) {

@@ -40,6 +40,15 @@ public class BattlePlayerManager implements PlayerManager {
         return players;
     }
 
+    private void addLoadout(GamePlayer gamePlayer, Loadout loadout) {
+        for (Weapon weapon : loadout.getWeapons()) {
+            game.getItemRegistry().addItem(weapon);
+            weapon.setGame(game);
+            weapon.setGamePlayer(gamePlayer);
+            weapon.resetState();
+        }
+    }
+
     public GamePlayer addPlayer(Player player) {
         GamePlayer gamePlayer = new BattleGamePlayer(player);
         Location lobby = game.getDataFile().getLocation("lobby");
@@ -66,25 +75,20 @@ public class BattlePlayerManager implements PlayerManager {
     }
 
     public void changeLoadout(GamePlayer gamePlayer, Loadout loadout, boolean apply) {
+        Loadout old = gamePlayer.getLoadout();
         gamePlayer.setLoadout(loadout);
         if (!apply) {
             gamePlayer.sendMessage(ActionBar.CHANGE_LOADOUT);
             return;
         }
-        clearLoadout(gamePlayer.getLoadout());
-        for (Weapon weapon : loadout.getWeapons()) {
-            game.getItemRegistry().addItem(weapon);
-            weapon.refillAmmo();
-            weapon.setGame(game);
-            weapon.setGamePlayer(gamePlayer);
-            weapon.update();
+        if (old != null) {
+            clearLoadout(loadout);
         }
+        addLoadout(gamePlayer, loadout);
+        loadout.updateInventory();
     }
 
     private void clearLoadout(Loadout loadout) {
-        if (loadout == null) {
-            return;
-        }
         for (Weapon weapon : loadout.getWeapons()) {
             game.getItemRegistry().removeItem(weapon);
             weapon.remove();
@@ -219,7 +223,14 @@ public class BattlePlayerManager implements PlayerManager {
             return;
         }
 
-        Location location = game.getArena().getSpawn(game.getPlayerManager().getGamePlayer(player)).getLocation();
+        GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
+        Spawn spawn = arena.getSpawn(gamePlayer) != null ? arena.getSpawn(gamePlayer) : arena.getTeamBase(game.getGameMode().getTeam(gamePlayer));
+
+        if (spawn == null) {
+            return;
+        }
+
+        Location location = spawn.getLocation();
         location.setPitch(player.getLocation().getPitch());
         location.setYaw(player.getLocation().getYaw());
         player.teleport(location);
@@ -239,16 +250,19 @@ public class BattlePlayerManager implements PlayerManager {
                         .addItemFlags(ItemFlag.values())
                         .setColor(game.getGameMode().getTeam(gamePlayer).getColor())
                         .setDisplayName(ChatColor.WHITE + EnumMessage.ARMOR_VEST.getMessage())
+                        .setUnbreakable(true)
                         .build(),
                 new ItemStackBuilder(Material.LEATHER_HELMET)
                         .addItemFlags(ItemFlag.values())
                         .setColor(game.getGameMode().getTeam(gamePlayer).getColor())
                         .setDisplayName(ChatColor.WHITE + EnumMessage.ARMOR_HELMET.getMessage())
+                        .setUnbreakable(true)
                         .build()
         });
 
         Item selectLoadout = new SelectLoadout(game, gamePlayer);
         game.getItemRegistry().addItem(selectLoadout);
+        gamePlayer.getHeldItems().add(selectLoadout);
         player.getInventory().setItem(ItemSlot.MISCELLANEOUS.getSlot(), selectLoadout.getItemStack());
     }
 
@@ -258,13 +272,13 @@ public class BattlePlayerManager implements PlayerManager {
 
         game.broadcastMessage(EnumMessage.PLAYER_MESSAGE.getMessage(
                 new Placeholder("bg_message", message),
-                new Placeholder("player_name", team.getChatColor() + player.getName())));
+                new Placeholder("player_name", team.getChatColor() + player.getName() + ChatColor.WHITE)));
     }
 
     public void removePlayer(GamePlayer gamePlayer) {
         players.remove(gamePlayer);
 
-        game.broadcastMessage(EnumMessage.PREFIX.getMessage() + " " + EnumMessage.PLAYER_LEAVE.getMessage(
+        game.broadcastMessage(EnumMessage.PLAYER_LEAVE.getMessage(
                 new Placeholder("player_name", gamePlayer.getName()),
                 new Placeholder("bg_players", players.size()),
                 new Placeholder("bg_maxplayers", game.getConfiguration().getMaxPlayers())));
@@ -275,6 +289,9 @@ public class BattlePlayerManager implements PlayerManager {
         gamePlayer.getSavedInventory().restore(gamePlayer.getPlayer());
         gamePlayer.setStatus(PlayerStatus.ACTIVE).apply(game, gamePlayer);
 
+        if (!game.getState().isJoinable()) {
+
+        }
         if (getLivingPlayers().length <= 0) {
             game.stop();
         }

@@ -4,7 +4,10 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent.DeathCause;
 import com.matsg.battlegrounds.api.event.GamePlayerKillPlayerEvent;
-import com.matsg.battlegrounds.api.game.*;
+import com.matsg.battlegrounds.api.game.EventHandler;
+import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.api.game.Spawn;
+import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.item.Item;
 import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.item.Knife;
@@ -13,10 +16,13 @@ import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.util.EnumMessage;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
 
-public class GameEventHandler implements EventHandler {
+import java.util.List;
+
+public class GameEventHandler implements EventHandler, Listener {
 
     private Battlegrounds plugin;
     private Game game;
@@ -26,6 +32,7 @@ public class GameEventHandler implements EventHandler {
         this.game = game;
 
         plugin.getEventManager().registerEventHandler(this);
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     private boolean isPlaying(Player player) {
@@ -51,10 +58,26 @@ public class GameEventHandler implements EventHandler {
         }
     }
 
-    public void onGamePlayerDeath(GamePlayerDeathEvent event) {
-        event.getGame().broadcastMessage(event.getDeathCause().getDeathMessage());
+    public void onCommandSend(PlayerCommandPreprocessEvent event) {
+        Player player = event.getPlayer();
+        List<String> list = plugin.getBattlegroundsConfig().allowedCommands;
+
+        if (!isPlaying(player) || list.contains("*") || list.contains(event.getMessage().split(" ")[0].substring(1, event.getMessage().split(" ")[0].length()))) {
+            return;
+        }
+
+        event.setCancelled(true);
+
+        EnumMessage.COMMAND_NOT_ALLOWED.send(player);
     }
 
+    @org.bukkit.event.EventHandler
+    public void onGamePlayerDeath(GamePlayerDeathEvent event) {
+        System.out.print(event.getDeathCause().getDeathMessage());
+        event.getGame().broadcastMessage(Placeholder.replace(event.getDeathCause().getDeathMessage(), new Placeholder("bg_player", event.getGamePlayer().getName())));
+    }
+
+    @org.bukkit.event.EventHandler
     public void onGamePlayerKill(GamePlayerKillPlayerEvent event) {
         event.getGame().getGameMode().onKill(event.getGamePlayer(), event.getKiller(), event.getWeapon(), event.getHitbox());
     }
@@ -97,20 +120,20 @@ public class GameEventHandler implements EventHandler {
         }
 
         GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player), damager = game.getPlayerManager().getGamePlayer((Player) event.getDamager());
+        Team team = game.getGameMode().getTeam(gamePlayer);
 
-        if (gamePlayer == null || damager == null || damager.getLoadout() == null) {
+        if (gamePlayer == null
+                || damager == null
+                || damager.getLoadout() == null
+                || !(damager.getLoadout().getWeapon(damager.getPlayer().getInventory().getItemInMainHand()) instanceof Knife)
+                || team == game.getGameMode().getTeam(damager)) {
             event.setCancelled(true);
             return;
         }
 
-        Knife knife = (Knife) damager.getLoadout().getWeapon(ItemSlot.KNIFE);
-        Team team = game.getGameMode().getTeam(gamePlayer);
+        ((Knife) damager.getLoadout().getWeapon(ItemSlot.KNIFE)).damage(gamePlayer);
 
-        event.setCancelled(team != null && team == game.getGameMode().getTeam(damager)
-                || !(damager.getLoadout().getWeapon(damager.getPlayer().getInventory().getItemInMainHand()) instanceof Knife));
         event.setDamage(0.0);
-
-        knife.damage(gamePlayer);
     }
 
     public void onPlayerDeath(PlayerDeathEvent event) {
@@ -148,6 +171,10 @@ public class GameEventHandler implements EventHandler {
         GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
         Item item = game.getItemRegistry().getItemIgnoreMetadata(gamePlayer, player.getInventory().getItemInMainHand());
 
+        if (item == null) {
+            return;
+        }
+
         game.getItemRegistry().interact(item, event.getAction());
     }
 
@@ -157,6 +184,10 @@ public class GameEventHandler implements EventHandler {
         }
 
         Player player = (Player) event.getEntity();
+    }
+
+    public void onPlayerItemSwap(PlayerSwapHandItemsEvent event) {
+        event.setCancelled(isPlaying(event.getPlayer()));
     }
 
     public void onPlayerMove(PlayerMoveEvent event) {
