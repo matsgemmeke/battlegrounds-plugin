@@ -81,10 +81,10 @@ public class BattleLethal extends BattleEquipment implements Lethal {
 
     private void inflictDamage(Location location) {
         for (GamePlayer gamePlayer : game.getPlayerManager().getNearbyPlayers(location, longRange)) {
-            if (gamePlayer != null && gamePlayer.getPlayer() != null && !gamePlayer.getPlayer().isDead() && gamePlayer.getStatus().isAlive()) {
+            if (gamePlayer != null && gamePlayer != this.gamePlayer && gamePlayer.getPlayer() != null && !gamePlayer.getPlayer().isDead() && gamePlayer.getStatus().isAlive()) {
                 game.getPlayerManager().damagePlayer(gamePlayer, getDistanceDamage(gamePlayer.getLocation().distanceSquared(location) / 5));
                 if (gamePlayer.getPlayer().isDead()) {
-                    plugin.getEventManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, this.gamePlayer, this, Hitbox.TORSO));
+                    plugin.getServer().getPluginManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, this.gamePlayer, this, Hitbox.TORSO));
                 }
             }
         }
@@ -93,9 +93,9 @@ public class BattleLethal extends BattleEquipment implements Lethal {
     private void inflictUserDamage(Location location) {
         double playerDistance = gamePlayer.getPlayer().getLocation().distanceSquared(location);
         if (playerDistance <= longRange) {
-            game.getPlayerManager().damagePlayer(gamePlayer, getDistanceDamage(playerDistance) / 2);
+            game.getPlayerManager().damagePlayer(gamePlayer, getDistanceDamage(playerDistance));
             if (gamePlayer.getPlayer().isDead()) {
-                plugin.getEventManager().callEvent(new GamePlayerDeathEvent(game, gamePlayer, DeathCause.SUICIDE));
+                plugin.getServer().getPluginManager().callEvent(new GamePlayerDeathEvent(game, gamePlayer, DeathCause.SUICIDE));
             }
         }
     }

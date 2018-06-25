@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.api.game;
 
 import com.matsg.battlegrounds.api.config.CacheYaml;
+import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.util.Message;
 import org.bukkit.Location;
 
@@ -20,8 +21,6 @@ public interface Game {
 
     CacheYaml getDataFile();
 
-    EventHandler getEventHandler();
-
     GameMode getGameMode();
 
     GameSign getGameSign();
@@ -39,6 +38,8 @@ public interface Game {
     TimeControl getTimeControl();
 
     void rollback();
+
+    void savePlayer(GamePlayer gamePlayer);
 
     void setArena(Arena arena);
 

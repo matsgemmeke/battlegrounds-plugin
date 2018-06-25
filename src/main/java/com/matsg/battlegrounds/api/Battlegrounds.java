@@ -34,13 +34,6 @@ public interface Battlegrounds extends Plugin {
     WeaponConfig<Equipment> getEquipmentConfig();
 
     /**
-     * Gets the event manager of the plugin.
-     *
-     * @return The event manager
-     */
-    EventManager getEventManager();
-
-    /**
      * Gets the firearms configrations of the plugin.
      *
      * @return The firearm configuration

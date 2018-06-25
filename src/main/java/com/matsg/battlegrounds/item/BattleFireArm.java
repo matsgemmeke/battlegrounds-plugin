@@ -132,6 +132,14 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
         this.shooting = shooting;
     }
 
+    private void cancelReload() {
+        if (!reloading) {
+            return;
+        }
+        gamePlayer.getPlayer().setFoodLevel(20);
+        reloadCancelled = true;
+    }
+
     public void cooldown(int time) {
         new BattleRunnable() {
             public void run() {
@@ -175,10 +183,7 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
     }
 
     public void onSwitch() {
-        if (reloading) {
-            gamePlayer.getPlayer().setFoodLevel(20);
-            reloadCancelled = true;
-        }
+        cancelReload();
     }
 
     public void playReloadSound() {
@@ -224,6 +229,11 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
                 }
             }
         }.runTaskTimer(reloadTime, reloadTime);
+    }
+
+    public void remove() {
+        super.remove();
+        cancelReload();
     }
 
     public void resetState() {

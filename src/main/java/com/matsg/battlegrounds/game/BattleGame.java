@@ -23,7 +23,6 @@ public class BattleGame implements Game {
     private final int id;
     private Battlegrounds plugin;
     private CacheYaml dataFile;
-    private EventHandler eventHandler;
     private GameConfiguration configuration;
     private GameMode gameMode;
     private GameSign gameSign;
@@ -37,10 +36,11 @@ public class BattleGame implements Game {
         this.plugin = plugin;
         this.id = id;
         this.arenaList = new ArrayList<>();
-        this.eventHandler = new GameEventHandler(plugin, this);
         this.itemRegistry = new BattleItemRegistry();
         this.playerManager = new BattlePlayerManager(this);
         this.state = GameState.WAITING;
+
+        new GameEventHandler(plugin, this);
 
         try {
             this.dataFile = new BattleCacheYaml(plugin, plugin.getDataFolder().getPath() + "/data", "game_" + id + ".yml");
@@ -63,10 +63,6 @@ public class BattleGame implements Game {
 
     public CacheYaml getDataFile() {
         return dataFile;
-    }
-
-    public EventHandler getEventHandler() {
-        return eventHandler;
     }
 
     public GameMode getGameMode() {
@@ -182,6 +178,10 @@ public class BattleGame implements Game {
         }
     }
 
+    public void savePlayer(GamePlayer gamePlayer) {
+        plugin.getPlayerStorage().addPlayerAttributes(gamePlayer);
+    }
+
     public void setArena(Arena arena) {
         for (Arena other : arenaList) {
             if (other.isActive()) {
@@ -197,13 +197,14 @@ public class BattleGame implements Game {
         }
         gameMode.getScoreboard().display(this);
         gameMode.spawnPlayers(playerManager.getPlayers().toArray(new GamePlayer[playerManager.getPlayers().size()]));
+        timeControl = new BattleTimeControl(this);
         setState(GameState.STARTING);
         updateSign();
         new GameCountdown(this, configuration.getGameCountdown()).runTaskTimer(20, 20);
     }
 
     public void startGame() {
-        timeControl = new BattleTimeControl(this);
+        timeControl.start();
         setState(GameState.IN_GAME);
         updateSign();
     }

@@ -48,7 +48,7 @@ BERETTA_93R:
   Durability: 1
   FireMode:
     Burst: 3
-    Cooldown: 2
+    Cooldown: 3
     FireRate: 20
     ShootSound: ENTITY_BLAZE_HURT-4-2-0, ENTITY_FIREWORK_BLAST-4-0-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-4-2-0
     Type: BURST
@@ -81,7 +81,7 @@ FIVE-SEVEN:
   Durability: 2
   FireMode:
     Burst: 0
-    Cooldown: 2
+    Cooldown: 3
     FireRate: 1
     ShootSound: ENTITY_IRONGOLEM_HURT-4-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-4-2-0
     Type: SEMI_AUTOMATIC
@@ -114,7 +114,7 @@ GLOCK_17:
   Durability: 3
   FireMode:
     Burst: 0
-    Cooldown: 2
+    Cooldown: 3
     FireRate: 1
     ShootSound: ENTITY_IRONGOLEM_HURT-4-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-4-2-0
     Type: SEMI_AUTOMATIC
@@ -238,7 +238,7 @@ AKS-74U:
 MAC-11:
   Accuracy: 0.4
   Ammo:
-    Magazine: 16
+    Magazine: 20
     Max: 8
     Start: 3
   Description: Fully automatic with moderate power. Effective at close to medium range.
@@ -304,7 +304,7 @@ MP5:
 MP7:
   Accuracy: 0.5
   Ammo:
-    Magazine: 20
+    Magazine: 40
     Max: 8
     Start: 3
   Description: Fully automatic personal defense weapon. Versatile and strong overall.
@@ -345,7 +345,7 @@ QCW-05:
   Durability: 10
   FireMode:
     Burst: 3
-    Cooldown: 2
+    Cooldown: 3
     FireRate: 20
     ShootSound: BLOCK_PISTON_EXTEND-4-2-0, ENTITY_BLAZE_HURT-4-2-0, ENTITY_FIREWORK_BLAST-4-0-0
     Type: BURST
@@ -511,7 +511,7 @@ FAL:
   Durability: 15
   FireMode:
     Burst: 0
-    Cooldown: 2
+    Cooldown: 3
     FireRate: 1
     ShootSound: BLOCK_PISTON_EXTEND-4-2-0, ENTITY_FIREWORK_BLAST-4-0-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-4-2-0
     Type: SEMI_AUTOMATIC
@@ -610,7 +610,7 @@ M16:
   Durability: 18
   FireMode:
     Burst: 3
-    Cooldown: 2
+    Cooldown: 4
     FireRate: 10
     ShootSound: BLOCK_PISTON_EXTEND-4-2-0, ENTITY_FIREWORK_BLAST-4-0-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-4-2-0
     Type: BURST
@@ -709,7 +709,7 @@ SG_550:
   Durability: 21
   FireMode:
     Burst: 0
-    Cooldown: 2
+    Cooldown: 3
     FireRate: 1
     ShootSound: BLOCK_PISTON_EXTEND-4-2-0, ENTITY_FIREWORK_BLAST-4-0-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-4-2-0
     Type: SEMI_AUTOMATIC

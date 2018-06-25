@@ -23,8 +23,7 @@ scoreboard:
   # The layout of the game scoreboards
   # Leave "" to remove this line
   layout:
-    line-2: "&6Time: &f%bg_time%"
-    line-1: " "
+    line-1: "&6Time: &f%bg_time%"
     line0: "%bg_scores%"
     title: "&6&lFree-for-all"
   # List of worlds where this scoreboard will appear

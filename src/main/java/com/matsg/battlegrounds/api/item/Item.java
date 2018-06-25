@@ -1,14 +1,12 @@
 package com.matsg.battlegrounds.api.item;
 
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.player.GamePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public interface Item extends Cloneable, Comparable<Item> {
 
     Game getGame();
-
-    GamePlayer getGamePlayer();
 
     Item clone();
 
@@ -16,19 +14,13 @@ public interface Item extends Cloneable, Comparable<Item> {
 
     String getName();
 
-    void onDrop();
+    void onLeftClick(Player player);
 
-    void onLeftClick();
+    void onRightClick(Player player);
 
-    void onPickUp(GamePlayer gamePlayer, org.bukkit.entity.Item itemEntity);
-
-    void onRightClick();
-
-    void onSwitch();
+    void onSwitch(Player player);
 
     void setGame(Game game);
-
-    void setGamePlayer(GamePlayer gamePlayer);
 
     void setItemStack(ItemStack itemStack);
 

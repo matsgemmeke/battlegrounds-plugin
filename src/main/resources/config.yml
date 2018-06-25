@@ -67,12 +67,17 @@ game-material:
 game-pierceable-blocks:
 - AIR
 - BARRIER
+- BEETROOT_BLOCK
 - CARPET
+- FENCE
 - IRON_FENCE
+- LADDER
 - LEAVES
 - LONG_GRASS
 - REDSTONE_WIRE
 - SIGN_POST
+- STAINED_GLASS_PANE
+- THIN_GLASS
 - WALL_SIGN
 
 # The layout of the game joining signs

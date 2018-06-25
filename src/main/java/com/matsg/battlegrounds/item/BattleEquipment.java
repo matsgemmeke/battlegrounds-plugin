@@ -150,6 +150,17 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
         };
     }
 
+    public boolean isRelated(ItemStack itemStack) {
+        for (Item item : droppedItems) {
+            if (item.getItemStack() == itemStack) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void onDrop() { }
+
     public void onLeftClick() {
         if (amount <= 0 || beingThrown || game == null || gamePlayer == null) {
             return;

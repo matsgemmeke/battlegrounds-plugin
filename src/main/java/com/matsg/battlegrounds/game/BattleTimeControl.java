@@ -17,8 +17,6 @@ public class BattleTimeControl extends BattleRunnable implements TimeControl {
         this.game = game;
         this.tasks = new HashMap<>();
         this.time = 0;
-
-        runTaskTimer(0, 20);
     }
 
     public int getTime() {
@@ -40,6 +38,10 @@ public class BattleTimeControl extends BattleRunnable implements TimeControl {
 
     public void scheduleRepeatingTask(Runnable runnable, int seconds) {
         tasks.put(seconds, runnable);
+    }
+
+    public void start() {
+        runTaskTimer(0, 20);
     }
 
     public void stop() {

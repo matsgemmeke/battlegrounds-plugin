@@ -25,6 +25,7 @@ import org.bukkit.util.Vector;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class BattleGun extends BattleFireArm implements Gun {
 
@@ -70,34 +71,16 @@ public class BattleGun extends BattleFireArm implements Gun {
             return Collections.EMPTY_LIST;
         }
         List<Location> list = new ArrayList<>();
-        float spread = (float) 1.5;
+        Random random = new Random();
+        float choke = (float) 3.0;
 
-        Location bottom = direction.clone(), left = direction.clone(), right = direction.clone(), top = direction.clone();
-        bottom.setPitch(bottom.getPitch() - spread);
-        left.setYaw(left.getYaw() - spread);
-        right.setYaw(right.getYaw() + spread);
-        top.setPitch(top.getPitch() + spread);
+        for (int i = 1; i <= amount; i ++) {
+            Location location = direction.clone();
+            location.setPitch(location.getPitch() + random.nextFloat() * choke - choke / 2);
+            location.setYaw(location.getYaw() + random.nextFloat() * choke - choke / 2);
+            list.add(location);
+        }
 
-        list.add(bottom);
-        list.add(left);
-        list.add(right);
-        list.add(top);
-
-        //TODO it may be a good idea to actually get this working soon
-//        double spreadDensity = 25.0; // Spread density constant. Higher values mean more density
-//        for (double i = 0; i < amount; i ++) {
-//            double degrees = i / amount * 360;
-//            double s = degrees % 180 == 0 ? 0 : degrees - 180;
-//
-//            float pitch = (float) (direction.getPitch() + (degrees - 180) * spreadDensity);
-//            float yaw = (float) (direction.getYaw() + m / spreadDensity);
-//
-//            Location spread = direction.clone();
-//            spread.setPitch(pitch);
-//            spread.setYaw(yaw);
-//
-//            list.add(spread);
-//        }
         return list;
     }
 
@@ -113,7 +96,7 @@ public class BattleGun extends BattleFireArm implements Gun {
             game.getPlayerManager().damagePlayer(gamePlayer, bullet.getDamage(hitbox, gamePlayer.getLocation().distance(this.gamePlayer.getLocation())) / 5);
             hits ++;
             if (gamePlayer.getPlayer().isDead()) {
-                plugin.getEventManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, this.gamePlayer, this, hitbox));
+                plugin.getServer().getPluginManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, this.gamePlayer, this, hitbox));
             }
         }
     }
@@ -152,7 +135,7 @@ public class BattleGun extends BattleFireArm implements Gun {
     }
 
     public void setScoped(boolean scoped) {
-        if (!fireArmType.hasScope()) {
+        if (!fireArmType.hasScope() || scoped == this.scoped) {
             return;
         }
 
@@ -165,6 +148,7 @@ public class BattleGun extends BattleFireArm implements Gun {
                 sound.play(game, player.getLocation());
             }
 
+            cooldown(1);
             player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 1000, -scopeZoom)); //Zoom effect
             player.getInventory().setHelmet(new ItemStack(Material.PUMPKIN, 1));
         } else {

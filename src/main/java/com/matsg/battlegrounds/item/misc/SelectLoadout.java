@@ -9,10 +9,13 @@ import com.matsg.battlegrounds.util.EnumMessage;
 import com.matsg.battlegrounds.util.ItemStackBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 public class SelectLoadout extends BattleItem {
+
+    private GamePlayer gamePlayer;
 
     public SelectLoadout(Game game, GamePlayer gamePlayer) {
         super("SelectLoadout", null);
@@ -26,16 +29,19 @@ public class SelectLoadout extends BattleItem {
         return new ItemStackBuilder(Material.COMPASS).setDisplayName(ChatColor.WHITE + EnumMessage.CHANGE_LOADOUT.getMessage()).build();
     }
 
-    public void onLeftClick() {
-        openLoadoutView();
-    }
-
-    public void onRightClick() {
-        openLoadoutView();
-    }
-
-    private void openLoadoutView() {
+    private void onClick(Player player) {
+        if (gamePlayer == null || game.getPlayerManager().getGamePlayer(player) != gamePlayer) {
+            return;
+        }
         gamePlayer.getPlayer().openInventory(new SelectLoadoutView(plugin, game, gamePlayer).getInventory());
+    }
+
+    public void onLeftClick(Player player) {
+        onClick(player);
+    }
+
+    public void onRightClick(Player player) {
+        onClick(player);
     }
 
     public boolean update() {

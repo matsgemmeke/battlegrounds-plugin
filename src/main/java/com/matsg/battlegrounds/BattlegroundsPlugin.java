@@ -12,8 +12,6 @@ import com.matsg.battlegrounds.api.player.PlayerStorage;
 import com.matsg.battlegrounds.command.BattlegroundsCommand;
 import com.matsg.battlegrounds.command.LoadoutCommand;
 import com.matsg.battlegrounds.config.*;
-import com.matsg.battlegrounds.listener.BattleEventHandler;
-import com.matsg.battlegrounds.listener.BattleEventManager;
 import com.matsg.battlegrounds.listener.EventListener;
 import com.matsg.battlegrounds.player.LocalPlayerStorage;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
@@ -30,7 +28,6 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
     private static Battlegrounds plugin;
     private BattlegroundsConfig config;
     private CacheYaml cache;
-    private EventManager eventManager;
     private GameManager gameManager;
     private LevelConfig levelConfig;
     private List<BattlegroundsExtension> extensions;
@@ -81,10 +78,6 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
 
     public WeaponConfig<Equipment> getEquipmentConfig() {
         return equipmentConfig;
-    }
-
-    public EventManager getEventManager() {
-        return eventManager;
     }
 
     public WeaponConfig<FireArm> getFireArmConfig() {
@@ -175,7 +168,6 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
                 + equipmentConfig.getList().size() + " equipment and "
                 + knifeConfig.getList().size() + " knives from the config");
 
-        this.eventManager = new BattleEventManager();
         this.gameManager = new BattleGameManager();
 
         new DataLoader(this);
@@ -183,7 +175,6 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         new BattlegroundsCommand(this);
         new LoadoutCommand(this);
 
-        new BattleEventHandler(this);
         new EventListener(this);
 
         for (BattlegroundsExtension extension : extensions) {

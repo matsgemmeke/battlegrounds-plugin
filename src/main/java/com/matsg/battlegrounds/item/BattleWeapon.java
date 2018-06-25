@@ -7,12 +7,14 @@ import com.matsg.battlegrounds.util.Particle;
 import com.matsg.battlegrounds.util.Particle.ParticleEffect;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Random;
 
 public abstract class BattleWeapon extends BattleItem implements Weapon {
 
+    protected GamePlayer gamePlayer;
     protected short durability;
     protected String description;
 
@@ -29,6 +31,14 @@ public abstract class BattleWeapon extends BattleItem implements Weapon {
 
     public String getDescription() {
         return description;
+    }
+
+    public GamePlayer getGamePlayer() {
+        return gamePlayer;
+    }
+
+    public void setGamePlayer(GamePlayer gamePlayer) {
+        this.gamePlayer = gamePlayer;
     }
 
     protected void displayCircleEffect(Location location, int size, ParticleEffect effect, final int amount, int random) {
@@ -70,9 +80,35 @@ public abstract class BattleWeapon extends BattleItem implements Weapon {
         return string.toString();
     }
 
-    public void onDrop() { }
+    public abstract void onLeftClick();
 
-    public void onPickUp(GamePlayer gamePlayer, Item itemEntity) { }
+    public void onLeftClick(Player player) {
+        GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
+        if (gamePlayer == null || gamePlayer != this.gamePlayer) {
+            return;
+        }
+        onLeftClick();
+    }
+
+    public abstract void onRightClick();
+
+    public void onRightClick(Player player) {
+        GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
+        if (gamePlayer == null || gamePlayer != this.gamePlayer) {
+            return;
+        }
+        onRightClick();
+    }
+
+    public abstract void onSwitch();
+
+    public void onSwitch(Player player) {
+        GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
+        if (gamePlayer == null || gamePlayer != this.gamePlayer) {
+            return;
+        }
+        onSwitch();
+    }
 
     public void remove() {
         if (game != null) {

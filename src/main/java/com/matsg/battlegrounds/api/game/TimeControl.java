@@ -10,5 +10,7 @@ public interface TimeControl extends Runnable {
 
     void setTime(int time);
 
+    void start();
+
     void stop();
 }

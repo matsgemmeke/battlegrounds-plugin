@@ -90,7 +90,6 @@ public class BattlePlayerManager implements PlayerManager {
 
     private void clearLoadout(Loadout loadout) {
         for (Weapon weapon : loadout.getWeapons()) {
-            game.getItemRegistry().removeItem(weapon);
             weapon.remove();
             weapon.setGame(null);
             weapon.setGamePlayer(null);
@@ -242,7 +241,6 @@ public class BattlePlayerManager implements PlayerManager {
         player.setGameMode(org.bukkit.GameMode.SURVIVAL);
         player.setHealth(20.0);
         player.setSaturation((float) 10);
-
         player.getInventory().setArmorContents(new ItemStack[] {
                 null,
                 null,
@@ -282,7 +280,7 @@ public class BattlePlayerManager implements PlayerManager {
                 new Placeholder("player_name", gamePlayer.getName()),
                 new Placeholder("bg_players", players.size()),
                 new Placeholder("bg_maxplayers", game.getConfiguration().getMaxPlayers())));
-        game.getGameMode().addPlayer(gamePlayer);
+        game.getGameMode().removePlayer(gamePlayer);
         game.updateSign();
 
         gamePlayer.getPlayer().teleport(game.getSpawnPoint());
@@ -290,16 +288,16 @@ public class BattlePlayerManager implements PlayerManager {
         gamePlayer.setStatus(PlayerStatus.ACTIVE).apply(game, gamePlayer);
 
         if (!game.getState().isJoinable()) {
-
+            game.savePlayer(gamePlayer);
         }
-        if (getLivingPlayers().length <= 0) {
+        if (getLivingPlayers().length <= 1) {
             game.stop();
         }
     }
 
     public void respawnPlayer(GamePlayer gamePlayer, Spawn spawn) {
         game.getPlayerManager().changeLoadout(gamePlayer, gamePlayer.getLoadout(), true);
-
+        gamePlayer.getLoadout().updateInventory();
         spawn.setGamePlayer(gamePlayer);
 
         new BattleRunnable() {

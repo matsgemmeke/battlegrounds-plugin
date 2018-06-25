@@ -6,6 +6,7 @@ import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.util.ActionBar;
 import com.matsg.battlegrounds.util.EnumMessage;
 import com.matsg.battlegrounds.util.ItemStackBuilder;
 import org.bukkit.ChatColor;
@@ -69,8 +70,14 @@ public class SelectLoadoutView implements View {
     }
 
     public void onClick(Player player, ItemStack itemStack, ClickType clickType) {
+        GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
         Loadout loadout = loadouts.get(itemStack);
-        if (loadout == null || itemStack.getType() == Material.BARRIER) {
+        if (gamePlayer == null || loadout == null || itemStack.getType() == Material.BARRIER) {
+            return;
+        }
+        if (loadout.equals(gamePlayer.getLoadout())) {
+            ActionBar.SAME_LOADOUT.send(player);
+            player.closeInventory();
             return;
         }
         game.getPlayerManager().changeLoadout(gamePlayer, loadout, gamePlayer.getLoadout() == null || game.getTimeControl().getTime() <= 10);

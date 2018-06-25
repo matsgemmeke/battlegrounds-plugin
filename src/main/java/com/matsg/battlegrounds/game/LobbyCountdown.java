@@ -37,7 +37,7 @@ public class LobbyCountdown extends BattleRunnable {
         id = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
             int countdown = time;
             public void run() {
-                if (game.getArena() == null || game.getPlayerManager().getPlayers().size() <= 1) {
+                if (game.getArena() == null || game.getPlayerManager().getPlayers().size() <= 0) {
                     game.setState(GameState.WAITING);
                     game.updateSign();
                     cancel();

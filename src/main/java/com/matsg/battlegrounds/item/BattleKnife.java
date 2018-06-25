@@ -17,14 +17,19 @@ import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BattleKnife extends BattleWeapon implements Knife {
 
     private boolean throwing, throwable;
     private double damage;
     private int amount, cooldown, maxAmount;
+    private List<Item> droppedItems;
     private String type;
 
     public BattleKnife(String name, String description, ItemStack itemStack, short durability, double damage, int amount, boolean throwable, int cooldown) {
@@ -32,6 +37,7 @@ public class BattleKnife extends BattleWeapon implements Knife {
         this.amount = amount;
         this.cooldown = cooldown;
         this.damage = damage;
+        this.droppedItems = new ArrayList<>();
         this.maxAmount = amount;
         this.throwable = throwable;
         this.throwing = false;
@@ -52,6 +58,10 @@ public class BattleKnife extends BattleWeapon implements Knife {
 
     public double getDamage() {
         return damage;
+    }
+
+    public List<Item> getDroppedItems() {
+        return droppedItems;
     }
 
     public int getMaxAmount() {
@@ -101,7 +111,7 @@ public class BattleKnife extends BattleWeapon implements Knife {
     public double damage(GamePlayer gamePlayer) {
         game.getPlayerManager().damagePlayer(gamePlayer, damage);
         if (gamePlayer.getPlayer().isDead()) {
-            plugin.getEventManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, this.gamePlayer, this, Hitbox.TORSO));
+            plugin.getServer().getPluginManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, this.gamePlayer, this, Hitbox.TORSO));
         }
         return gamePlayer.getPlayer().getHealth();
     }
@@ -112,9 +122,23 @@ public class BattleKnife extends BattleWeapon implements Knife {
         };
     }
 
+    public boolean isRelated(ItemStack itemStack) {
+        for (Item item : droppedItems) {
+            if (item.getItemStack() == itemStack) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void onDrop() { }
+
     public void onLeftClick() { }
 
-    public void onPickUp(GamePlayer gamePlayer, Item itemEntity) {
+    public void onPickUp(Player player, Item itemEntity) {
+        if (game.getPlayerManager().getGamePlayer(player) != gamePlayer) {
+            return;
+        }
         itemEntity.remove();
         amount ++;
         update();
@@ -124,7 +148,7 @@ public class BattleKnife extends BattleWeapon implements Knife {
     }
 
     public void onRightClick() {
-        if (throwing || !throwable || amount <= 0) {
+        if (throwing || !throwable || amount < 0) {
             return;
         }
         shoot();

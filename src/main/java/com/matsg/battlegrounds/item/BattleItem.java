@@ -5,14 +5,13 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.item.Item;
 import com.matsg.battlegrounds.api.item.ItemSlot;
-import com.matsg.battlegrounds.api.player.GamePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public abstract class BattleItem implements Item {
 
     protected static Battlegrounds plugin = BattlegroundsPlugin.getPlugin();
     protected Game game;
-    protected GamePlayer gamePlayer;
     protected ItemSlot itemSlot;
     protected ItemStack itemStack;
     protected String name;
@@ -39,10 +38,6 @@ public abstract class BattleItem implements Item {
         return game;
     }
 
-    public GamePlayer getGamePlayer() {
-        return gamePlayer;
-    }
-
     public ItemSlot getItemSlot() {
         return itemSlot;
     }
@@ -59,10 +54,6 @@ public abstract class BattleItem implements Item {
         this.game = game;
     }
 
-    public void setGamePlayer(GamePlayer gamePlayer) {
-        this.gamePlayer = gamePlayer;
-    }
-
     public void setItemSlot(ItemSlot itemSlot) {
         this.itemSlot = itemSlot;
     }
@@ -75,13 +66,13 @@ public abstract class BattleItem implements Item {
         return game == item.getGame() && itemStack.equals(item.getItemStack()) ? 0 : -1;
     }
 
-    public void onDrop() { }
+    public void onDrop(Player player) { }
 
-    public void onLeftClick() { }
+    public void onLeftClick(Player player) { }
 
-    public void onPickUp(GamePlayer gamePlayer, org.bukkit.entity.Item itemEntity) { }
+    public void onPickUp(Player player, org.bukkit.entity.Item itemEntity) { }
 
-    public void onRightClick() { }
+    public void onRightClick(Player player) { }
 
-    public void onSwitch() { }
+    public void onSwitch(Player player) { }
 }

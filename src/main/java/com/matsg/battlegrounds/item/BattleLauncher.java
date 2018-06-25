@@ -69,7 +69,7 @@ public class BattleLauncher extends BattleFireArm implements Launcher {
             double damage = lethal.getDamage(Hitbox.TORSO, gamePlayer.getLocation().distance(location));
             game.getPlayerManager().damagePlayer(gamePlayer, damage);
             if (gamePlayer.getPlayer().isDead()) {
-                plugin.getEventManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, this.gamePlayer, this, Hitbox.TORSO));
+                plugin.getServer().getPluginManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, this.gamePlayer, this, Hitbox.TORSO));
             }
         }
     }
@@ -79,7 +79,7 @@ public class BattleLauncher extends BattleFireArm implements Launcher {
         if (playerDistance <= lethal.getLongRange()) {
             game.getPlayerManager().damagePlayer(gamePlayer, lethal.getDamage(Hitbox.TORSO, playerDistance) / 5);
             if (gamePlayer.getPlayer().isDead()) {
-                plugin.getEventManager().callEvent(new GamePlayerDeathEvent(game, gamePlayer, DeathCause.SUICIDE));
+                plugin.getServer().getPluginManager().callEvent(new GamePlayerDeathEvent(game, gamePlayer, DeathCause.SUICIDE));
             }
         }
     }

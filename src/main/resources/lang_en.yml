@@ -2,6 +2,7 @@ prefix: "[&6BG&f] "
 
 actionbar-change-loadout: "&fYour loadout will change the next time you spawn"
 actionbar-leave-arena: "&cYou are not allowed to leave the arena"
+actionbar-same-loadout: "&cYou are already using this loadout"
 
 command-description-addspawn: "adds a player spawn to an arena"
 command-description-createarena: "creates a new arena and adds it to a game"

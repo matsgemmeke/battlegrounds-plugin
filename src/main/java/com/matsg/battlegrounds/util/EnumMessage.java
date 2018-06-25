@@ -29,7 +29,7 @@ public enum EnumMessage implements Message {
     DEATH_FALLING("game-death-falling", true),
     DEATH_HEADSHOT("game-death-headshot", true),
     DEATH_PLAYER_KILL("game-death-player-kill", true),
-    DEATH_SUICIDE("game-death-player-kill", true),
+    DEATH_SUICIDE("game-death-suicide", true),
     DESCRIPTION_ADDSPAWN("command-description-addspawn", false),
     DESCRIPTION_CREATEARENA("command-description-createarena", false),
     DESCRIPTION_CREATEGAME("command-description-creategame", false),

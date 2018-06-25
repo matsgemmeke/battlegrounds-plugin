@@ -79,6 +79,19 @@ public class BattleLoadout implements Loadout {
         this.secondary = secondary;
     }
 
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Loadout)) {
+            return false;
+        }
+        Loadout loadout = (Loadout) obj;
+        return id == loadout.getId()
+                && name.equals(loadout.getName())
+                && primary.getName().equals(loadout.getPrimary().getName())
+                && secondary.getName().equals(loadout.getSecondary().getName())
+                && equipment.getName().equals(loadout.getEquipment().getName())
+                && knife.getName().equals(loadout.getKnife().getName());
+    }
+
     public Weapon getWeapon(ItemSlot itemSlot) {
         for (Weapon weapon : getWeapons()) {
             if (weapon != null && weapon.getItemSlot() == itemSlot) {

@@ -2,7 +2,7 @@ package com.matsg.battlegrounds.api.item;
 
 import com.matsg.battlegrounds.api.player.GamePlayer;
 
-public interface Knife extends Weapon {
+public interface Knife extends Weapon, Droppable {
 
     Knife clone();
 

@@ -13,7 +13,8 @@ import java.lang.reflect.Constructor;
 public enum ActionBar implements Message {
 
     CHANGE_LOADOUT("actionbar-change-loadout"),
-    LEAVE_ARENA("actionbar-leave-arena");
+    LEAVE_ARENA("actionbar-leave-arena"),
+    SAME_LOADOUT("actionbar-same-loadout");
 
     private Battlegrounds plugin;
     private EnumVersion version;
