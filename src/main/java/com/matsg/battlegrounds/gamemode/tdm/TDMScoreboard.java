@@ -14,7 +14,6 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team.Option;
 import org.bukkit.scoreboard.Team.OptionStatus;
 
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -24,7 +23,6 @@ public class TDMScoreboard extends AbstractScoreboard {
         this.game = game;
         this.layout = getScoreboardLayout(yaml.getConfigurationSection("scoreboard.layout"));
         this.scoreboardId = "tdm";
-        this.worlds = new HashSet<>();
 
         for (String world : yaml.getString("scoreboard.worlds").split(",")) {
             if (world.equals("*")) {
@@ -67,6 +65,7 @@ public class TDMScoreboard extends AbstractScoreboard {
     public void addTeams(ScoreboardBuilder builder) {
         for (Team team : game.getGameMode().getTeams()) {
             org.bukkit.scoreboard.Team sbTeam = builder.addTeam(team.getName());
+            scoreboardTeams.add(sbTeam);
             sbTeam.setOption(Option.NAME_TAG_VISIBILITY, OptionStatus.FOR_OTHER_TEAMS);
             for (GamePlayer gamePlayer : team.getPlayers()) {
                 sbTeam.addEntry(gamePlayer.getName());
@@ -83,7 +82,7 @@ public class TDMScoreboard extends AbstractScoreboard {
         return new Placeholder[] {
                 new Placeholder("bg_date", getDate()),
                 new Placeholder("bg_gamemode", game.getGameMode().getName()),
-                new Placeholder("bg_time", game.getTimeControl() != null ? game.getTimeControl().formatTime() : 0)
+                new Placeholder("bg_time", game.getTimeControl().formatTime())
         };
     }
 }

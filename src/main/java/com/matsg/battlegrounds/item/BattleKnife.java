@@ -124,14 +124,12 @@ public class BattleKnife extends BattleWeapon implements Knife {
 
     public boolean isRelated(ItemStack itemStack) {
         for (Item item : droppedItems) {
-            if (item.getItemStack() == itemStack) {
+            if (item.getItemStack().equals(itemStack)) {
                 return true;
             }
         }
         return false;
     }
-
-    public void onDrop() { }
 
     public void onLeftClick() { }
 
@@ -141,6 +139,7 @@ public class BattleKnife extends BattleWeapon implements Knife {
         }
         itemEntity.remove();
         amount ++;
+        droppedItems.remove(itemEntity);
         update();
         for (Sound sound : BattleSound.ITEM_EQUIP) {
             sound.play(game, itemEntity.getLocation());
@@ -156,6 +155,13 @@ public class BattleKnife extends BattleWeapon implements Knife {
 
     public void onSwitch() { }
 
+    public void remove() {
+        super.remove();
+        for (Item item : droppedItems) {
+            item.remove();
+        }
+    }
+
     public void resetState() {
         amount = maxAmount;
     }
@@ -168,6 +174,8 @@ public class BattleKnife extends BattleWeapon implements Knife {
         item.setPickupDelay(20);
         item.setVelocity(gamePlayer.getPlayer().getEyeLocation().getDirection().multiply(3.0));
 
+        droppedItems.add(item);
+
         cooldown(cooldown);
         update();
 
@@ -176,13 +184,13 @@ public class BattleKnife extends BattleWeapon implements Knife {
         new BattleRunnable() {
             Location location;
             public void run() {
-                GamePlayer[] players = game.getPlayerManager().getNearbyPlayers(item.getLocation(), 1.0);
+                GamePlayer[] players = game.getPlayerManager().getNearbyPlayers(item.getLocation(), 2.0);
                 if (players.length > 0) {
                     item.remove();
 
                     players[0].getLocation().getWorld().playEffect(players[0].getLocation(), Effect.STEP_SOUND, Material.REDSTONE_BLOCK);
 
-                    game.getPlayerManager().damagePlayer(gamePlayer, damage);
+                    damage(players[0]);
                     cancel();
                 }
                 if (location != null && item.getLocation().equals(location)) {

@@ -17,6 +17,7 @@ public class LobbyScoreboard extends AbstractScoreboard {
 
     public LobbyScoreboard(Game game) {
         this.game = game;
+        this.countdown = 0;
         this.layout = plugin.getBattlegroundsConfig().getLobbyScoreboardLayout();
         this.scoreboardId = "lobby";
         this.worlds = new HashSet<>();

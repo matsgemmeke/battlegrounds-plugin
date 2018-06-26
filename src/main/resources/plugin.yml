@@ -1,6 +1,6 @@
 name: Battlegrounds
 main: com.matsg.battlegrounds.BattlegroundsPlugin
-version: 1.0.0 Beta
+version: 1.0.0
 author: Mats9799
 commands:
   battlegrounds:

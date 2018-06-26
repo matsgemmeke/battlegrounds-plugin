@@ -72,7 +72,7 @@ public class SelectLoadoutView implements View {
     public void onClick(Player player, ItemStack itemStack, ClickType clickType) {
         GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
         Loadout loadout = loadouts.get(itemStack);
-        if (gamePlayer == null || loadout == null || itemStack.getType() == Material.BARRIER) {
+        if (game == null || !game.getState().isInProgress() || gamePlayer == null || loadout == null || itemStack.getType() == Material.BARRIER) {
             return;
         }
         if (loadout.equals(gamePlayer.getLoadout())) {
@@ -85,6 +85,6 @@ public class SelectLoadoutView implements View {
     }
 
     public boolean onClose() {
-        return gamePlayer.getLoadout() != null;
+        return gamePlayer.getLoadout() != null || !game.getState().isInProgress();
     }
 }

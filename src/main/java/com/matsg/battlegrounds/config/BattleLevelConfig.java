@@ -14,6 +14,19 @@ public class BattleLevelConfig extends AbstractYaml implements LevelConfig {
         super(plugin, "levels.yml", true);
     }
 
+    public int getExp(int level) {
+        return getLevelFromNr(level).exp;
+    }
+
+    public float getExpBar(int exp) {
+        int level = getLevel(exp);
+        if (exp <= 0 || level >= 50) {
+            return 0f;
+        }
+        int levelExp = getExp(level);
+        return ((float) (exp - levelExp) / (getExp(level + 1) - levelExp));
+    }
+
     public int getExpNeeded(int level, int exp) {
         return getLevelFromNr(level).exp - exp;
     }
@@ -30,7 +43,7 @@ public class BattleLevelConfig extends AbstractYaml implements LevelConfig {
 
     private Level getLevelFromNr(int levelNr) {
         for (Level level : getLevelCollection()) {
-            if (level.level < levelNr) {
+            if (level.level == levelNr) {
                 return level;
             }
         }

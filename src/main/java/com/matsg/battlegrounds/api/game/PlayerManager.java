@@ -13,6 +13,8 @@ public interface PlayerManager {
 
     void changeLoadout(GamePlayer gamePlayer, Loadout loadout, boolean apply);
 
+    void clearPlayer(GamePlayer gamePlayer);
+
     void damagePlayer(GamePlayer gamePlayer, double damage);
 
     GamePlayer getGamePlayer(Player player);
@@ -50,4 +52,6 @@ public interface PlayerManager {
     void setVisible(GamePlayer gamePlayer, boolean visible);
 
     void setVisible(GamePlayer gamePlayer, Team team, boolean visible);
+
+    void updateExpBar(GamePlayer gamePlayer);
 }

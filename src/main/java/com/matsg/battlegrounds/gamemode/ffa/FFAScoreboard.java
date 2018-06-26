@@ -81,7 +81,7 @@ public class FFAScoreboard extends AbstractScoreboard {
     private Placeholder[] getPlaceholders() {
         return new Placeholder[] {
                 new Placeholder("bg_date", getDate()),
-                new Placeholder("bg_time", game.getTimeControl() != null ? game.getTimeControl().formatTime() : 0)
+                new Placeholder("bg_time", game.getTimeControl().formatTime())
         };
     }
 }

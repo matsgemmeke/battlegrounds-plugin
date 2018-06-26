@@ -67,6 +67,10 @@ public class ScoreboardBuilder {
     }
 
     public Team addTeam(String name) {
+        Team team = scoreboard.getTeam(name);
+        if (team != null) {
+            team.unregister();
+        }
         return scoreboard.registerNewTeam(name);
     }
 

@@ -9,7 +9,6 @@ import com.matsg.battlegrounds.api.game.Spawn;
 import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.player.GamePlayer;
-import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.util.EnumMessage;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -89,12 +88,18 @@ public class GameEventHandler implements Listener {
 
     @EventHandler
     public void onGamePlayerDeath(GamePlayerDeathEvent event) {
-        event.getGame().broadcastMessage(Placeholder.replace(event.getDeathCause().getDeathMessage(), new Placeholder("bg_player", event.getGamePlayer().getName())));
+        if (event.getGame() != game) {
+            return;
+        }
+        game.getGameMode().onDeath(event.getGamePlayer(), event.getDeathCause());
     }
 
     @EventHandler
     public void onGamePlayerKill(GamePlayerKillPlayerEvent event) {
-        event.getGame().getGameMode().onKill(event.getGamePlayer(), event.getKiller(), event.getWeapon(), event.getHitbox());
+        if (event.getGame() != game) {
+            return;
+        }
+        game.getGameMode().onKill(event.getGamePlayer(), event.getKiller(), event.getWeapon(), event.getHitbox());
     }
 
     @EventHandler
@@ -106,6 +111,11 @@ public class GameEventHandler implements Listener {
         }
 
         GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
+
+        if (gamePlayer == null || gamePlayer.getLoadout() == null) {
+            return;
+        }
+
         Weapon weapon = gamePlayer.getLoadout().getWeapon(player.getInventory().getItemInMainHand());
 
         if (weapon == null) {
@@ -163,6 +173,9 @@ public class GameEventHandler implements Listener {
         }
 
         event.setDeathMessage(null);
+        event.setDroppedExp(0);
+        event.setKeepInventory(true);
+        event.setKeepLevel(true);
 
         DeathCause deathCause = DeathCause.fromDamageCause(player.getLastDamageCause().getCause());
 
@@ -212,14 +225,15 @@ public class GameEventHandler implements Listener {
 
     @EventHandler
     public void onPlayerItemPickUp(EntityPickupItemEvent event) {
-        if (!(event.getEntity() instanceof Player)) {
+        if (!(event.getEntity() instanceof Player) || !isPlaying((Player) event.getEntity())) {
             return;
         }
+
+        event.setCancelled(true);
 
         Item item = getDroppedItem(event.getItem().getItemStack());
 
         if (item == null || !(item instanceof Droppable)) {
-            event.setCancelled(true);
             return;
         }
 

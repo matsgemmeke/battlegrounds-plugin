@@ -22,7 +22,7 @@ public class BattleSound implements com.matsg.battlegrounds.api.util.Sound {
             POWER_SWITCH_ACTIVATE = new BattleSound(Sound.BLOCK_LEVER_CLICK, 1, (float) 0.75);
     public static final BattleSound[]
             GUN_SCOPE = new BattleSound[] { new BattleSound(Sound.ENTITY_PLAYER_SMALL_FALL, 1, 1), new BattleSound(Sound.ENTITY_HORSE_SADDLE, 1, 2) },
-            ITEM_EQUIP = new BattleSound[] { new BattleSound(Sound.ENTITY_BAT_TAKEOFF, 1, 2), new BattleSound(Sound.ENTITY_HORSE_SADDLE, 1, 2) };
+            ITEM_EQUIP = new BattleSound[] { new BattleSound(Sound.ENTITY_BAT_TAKEOFF, 1, 1), new BattleSound(Sound.ENTITY_HORSE_SADDLE, 1, 1) };
 
     private boolean cancelled;
     private float pitch, volume;

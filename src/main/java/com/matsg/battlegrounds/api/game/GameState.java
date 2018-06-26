@@ -2,11 +2,11 @@ package com.matsg.battlegrounds.api.game;
 
 public enum GameState {
 
-    WAITING(0, true, false, true, true, false, "§2§l[ WAITING ]"),
-    STARTING(1, false, true, true, false, false, "§6§l[ STARTING ]"),
-    IN_GAME(2, false, true, true, true, true, "§4§l[ IN GAME ]"),
-    RESETTING(3, false, false, true, true, false, "§9§l[ RESETTING ]"),
-    DISABLED(4, false, false, false, false, false, "§8§l[ DISABLED ]");
+    WAITING(1, true, false, true, true, false, "§2§l[ WAITING ]"),
+    STARTING(2, false, true, true, false, false, "§6§l[ STARTING ]"),
+    IN_GAME(3, false, true, true, true, true, "§4§l[ IN GAME ]"),
+    RESETTING(4, false, false, true, true, false, "§9§l[ RESETTING ]"),
+    DISABLED(5, false, false, false, false, false, "§8§l[ DISABLED ]");
 
     private boolean allowItems, allowMove, allowWeapons, inProgress, joinable;
     private int id;

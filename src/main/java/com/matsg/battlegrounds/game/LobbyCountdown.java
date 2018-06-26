@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.game;
 
+import com.matsg.battlegrounds.api.game.Countdown;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameState;
 import com.matsg.battlegrounds.api.util.Placeholder;
@@ -11,8 +12,9 @@ import com.matsg.battlegrounds.util.EnumMessage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LobbyCountdown extends BattleRunnable {
+public class LobbyCountdown extends BattleRunnable implements Countdown {
 
+    private boolean cancelled;
     private Game game;
     private int id, time;
     private List<Integer> display;
@@ -21,6 +23,7 @@ public class LobbyCountdown extends BattleRunnable {
     public LobbyCountdown(Game game, int time, int... display) {
         this.game = game;
         this.time = time;
+        this.cancelled = false;
         this.display = new ArrayList<>();
         this.scoreboard = new LobbyScoreboard(game);
 
@@ -33,11 +36,16 @@ public class LobbyCountdown extends BattleRunnable {
         plugin.getServer().getScheduler().cancelTask(id);
     }
 
+    public void cancelCountdown() {
+        cancelled = true;
+        game.broadcastMessage(EnumMessage.COUNTDOWN_CANCELLED);
+    }
+
     public void run() {
         id = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
             int countdown = time;
             public void run() {
-                if (game.getArena() == null || game.getPlayerManager().getPlayers().size() <= 0) {
+                if (cancelled) {
                     game.setState(GameState.WAITING);
                     game.updateSign();
                     cancel();

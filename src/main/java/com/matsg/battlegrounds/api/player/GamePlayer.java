@@ -11,7 +11,7 @@ import java.util.Collection;
 
 public interface GamePlayer extends OfflineGamePlayer, Comparable<GamePlayer> {
 
-    int addScore(int score);
+    int addExp(int exp);
 
     Collection<Item> getHeldItems();
 
@@ -23,8 +23,6 @@ public interface GamePlayer extends OfflineGamePlayer, Comparable<GamePlayer> {
 
     SavedInventory getSavedInventory();
 
-    int getScore();
-
     PlayerStatus getStatus();
 
     Team getTeam();
@@ -34,8 +32,6 @@ public interface GamePlayer extends OfflineGamePlayer, Comparable<GamePlayer> {
     void sendMessage(String message);
 
     void setLoadout(Loadout loadout);
-
-    void setScore(int score);
 
     void setTeam(Team team);
 

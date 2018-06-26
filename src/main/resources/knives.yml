@@ -10,7 +10,7 @@
 #   Throwable: true, false; if true, this knife can be throw towards monsters
 
 BALLISTIC_KNIFE:
-  Amount: 5
+  Amount: 4
   Cooldown: 10
   Damage: 10.0
   Description: Spring-action knife launcher. Can fire the blade as a projectile.
@@ -34,4 +34,4 @@ HATCHET:
   Description: Retrievable throwing hatchet that causes instant death on impact.
   DisplayName: Hatchet
   Durability: 3
-  Throwable: false
+  Throwable: true

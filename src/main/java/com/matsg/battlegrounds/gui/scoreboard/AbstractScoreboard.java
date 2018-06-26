@@ -4,7 +4,6 @@ import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameScoreboard;
-import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.util.ScoreboardBuilder;
@@ -14,19 +13,23 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public abstract class AbstractScoreboard implements GameScoreboard {
 
     protected static Battlegrounds plugin = BattlegroundsPlugin.getPlugin();
     protected Game game;
     protected Map<String, String> layout;
+    protected Set<Team> scoreboardTeams;
     protected Set<World> worlds;
     protected String scoreboardId;
+
+    public AbstractScoreboard() {
+        this.scoreboardTeams = new HashSet<>();
+        this.worlds = new HashSet<>();
+    }
 
     public String getScoreboardId() {
         return scoreboardId;
@@ -51,6 +54,12 @@ public abstract class AbstractScoreboard implements GameScoreboard {
 
     public Scoreboard createScoreboard() {
         return buildScoreboard(layout, null);
+    }
+
+    public void destroy() {
+        for (Team team : scoreboardTeams) {
+            team.unregister();
+        }
     }
 
     public void display(Game game) {

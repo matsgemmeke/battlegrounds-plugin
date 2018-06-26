@@ -1,5 +1,8 @@
 package com.matsg.battlegrounds.game;
 
+import com.matsg.battlegrounds.api.config.LevelConfig;
+import com.matsg.battlegrounds.api.config.PlayerYaml;
+import com.matsg.battlegrounds.api.config.StoredPlayer;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.item.Item;
 import com.matsg.battlegrounds.api.item.ItemSlot;
@@ -7,6 +10,7 @@ import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.player.PlayerStatus;
+import com.matsg.battlegrounds.api.player.PlayerStorage;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.gui.scoreboard.LobbyScoreboard;
 import com.matsg.battlegrounds.item.misc.SelectLoadout;
@@ -15,6 +19,7 @@ import com.matsg.battlegrounds.util.ActionBar;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.EnumMessage;
 import com.matsg.battlegrounds.util.ItemStackBuilder;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -29,10 +34,14 @@ import java.util.List;
 public class BattlePlayerManager implements PlayerManager {
 
     private Game game;
+    private LevelConfig levelConfig;
     private List<GamePlayer> players;
+    private PlayerStorage playerStorage;
 
-    public BattlePlayerManager(Game game) {
+    public BattlePlayerManager(Game game, LevelConfig levelConfig, PlayerStorage playerStorage) {
         this.game = game;
+        this.levelConfig = levelConfig;
+        this.playerStorage = playerStorage;
         this.players = new ArrayList<>();
     }
 
@@ -46,6 +55,7 @@ public class BattlePlayerManager implements PlayerManager {
             weapon.setGame(game);
             weapon.setGamePlayer(gamePlayer);
             weapon.resetState();
+            weapon.update();
         }
     }
 
@@ -65,11 +75,15 @@ public class BattlePlayerManager implements PlayerManager {
         gamePlayer.getPlayer().setScoreboard(new LobbyScoreboard(game).createScoreboard());
         gamePlayer.setStatus(PlayerStatus.ACTIVE).apply(game, gamePlayer);
 
+        updateExpBar(gamePlayer);
+
         if (lobby != null) {
             player.teleport(lobby);
         }
-        if (players.size() == game.getConfiguration().getMinPlayers()) {
-            new LobbyCountdown(game, game.getConfiguration().getLobbyCountdown(), 60, 45, 30, 15, 10, 5).run();
+        if (game.getArena() != null && players.size() == game.getConfiguration().getMinPlayers()) {
+            Countdown countdown = new LobbyCountdown(game, game.getConfiguration().getLobbyCountdown(), 60, 45, 30, 15, 10, 5);
+            game.setCountdown(countdown);
+            countdown.run();
         }
         return gamePlayer;
     }
@@ -93,6 +107,16 @@ public class BattlePlayerManager implements PlayerManager {
             weapon.remove();
             weapon.setGame(null);
             weapon.setGamePlayer(null);
+        }
+    }
+
+    public void clearPlayer(GamePlayer gamePlayer) {
+        Player player = gamePlayer.getPlayer();
+        player.closeInventory();
+        player.getInventory().clear();
+        player.getInventory().setArmorContents(null);
+        if (gamePlayer.getLoadout() != null) {
+            clearLoadout(gamePlayer.getLoadout());
         }
     }
 
@@ -258,7 +282,7 @@ public class BattlePlayerManager implements PlayerManager {
                         .build()
         });
 
-        Item selectLoadout = new SelectLoadout(game, gamePlayer);
+        Item selectLoadout = new SelectLoadout(game);
         game.getItemRegistry().addItem(selectLoadout);
         gamePlayer.getHeldItems().add(selectLoadout);
         player.getInventory().setItem(ItemSlot.MISCELLANEOUS.getSlot(), selectLoadout.getItemStack());
@@ -283,20 +307,21 @@ public class BattlePlayerManager implements PlayerManager {
         game.getGameMode().removePlayer(gamePlayer);
         game.updateSign();
 
+        gamePlayer.getPlayer().setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
         gamePlayer.getPlayer().teleport(game.getSpawnPoint());
         gamePlayer.getSavedInventory().restore(gamePlayer.getPlayer());
         gamePlayer.setStatus(PlayerStatus.ACTIVE).apply(game, gamePlayer);
 
         if (!game.getState().isJoinable()) {
-            game.savePlayer(gamePlayer);
+            playerStorage.addPlayerAttributes(gamePlayer);
         }
-        if (getLivingPlayers().length <= 1) {
+        if (getLivingPlayers().length == 1) {
             game.stop();
         }
     }
 
     public void respawnPlayer(GamePlayer gamePlayer, Spawn spawn) {
-        game.getPlayerManager().changeLoadout(gamePlayer, gamePlayer.getLoadout(), true);
+        changeLoadout(gamePlayer, gamePlayer.getLoadout(), true);
         gamePlayer.getLoadout().updateInventory();
         spawn.setGamePlayer(gamePlayer);
 
@@ -325,5 +350,15 @@ public class BattlePlayerManager implements PlayerManager {
                 other.getPlayer().hidePlayer(gamePlayer.getPlayer());
             }
         }
+    }
+
+    public void updateExpBar(GamePlayer gamePlayer) {
+        Player player = gamePlayer.getPlayer();
+        StoredPlayer storedPlayer = playerStorage.getStoredPlayer(player.getUniqueId());
+
+        int exp = storedPlayer.getExp() + gamePlayer.getExp(), level = levelConfig.getLevel(exp);
+
+        player.setExp(levelConfig.getExpBar(exp));
+        player.setLevel(level);
     }
 }

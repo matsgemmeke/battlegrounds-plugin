@@ -22,6 +22,7 @@ public enum EnumMessage implements Message {
     CLEAR_WEAPON("view-clear-weapon", false),
     COMMAND_ERROR("command-error", false),
     COMMAND_NOT_ALLOWED("command-not-allowed", false),
+    COUNTDOWN_CANCELLED("game-countdown-cancelled", true),
     COUNTDOWN_NOTE("game-countdown-note", true),
     CUSTOM_LOADOUT_LOCKED("util-custom-loadout-locked", false),
     DEATH_BURNING("game-death-burning", true),

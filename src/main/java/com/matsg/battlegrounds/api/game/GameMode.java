@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.api.game;
 
 import com.matsg.battlegrounds.api.config.Yaml;
+import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent.DeathCause;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.player.Hitbox;
@@ -28,6 +29,8 @@ public interface GameMode extends StateListener {
     int getTimeLimit();
 
     Team getTopTeam();
+
+    void onDeath(GamePlayer gamePlayer, DeathCause deathCause);
 
     void onKill(GamePlayer gamePlayer, GamePlayer killer, Weapon weapon, Hitbox hitbox);
 
