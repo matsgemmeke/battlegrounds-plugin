@@ -10,7 +10,7 @@ public class LanguageYaml extends AbstractYaml {
     private Locale locale;
 
     public LanguageYaml(Battlegrounds plugin, Locale locale) throws IOException {
-        super(plugin, plugin.getDataFolder().getPath() + "\\lang", "lang_" + locale.getLanguage() + ".yml", false);
+        super(plugin, plugin.getDataFolder().getPath() + "/lang", "lang_" + locale.getLanguage() + ".yml", false);
         this.locale = locale;
     }
 

@@ -10,6 +10,7 @@ import com.matsg.battlegrounds.api.util.Message;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.config.BattleCacheYaml;
 import com.matsg.battlegrounds.gui.scoreboard.LobbyScoreboard;
+import com.matsg.battlegrounds.listener.GameEventHandler;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.Title;
 import org.bukkit.Bukkit;
@@ -152,13 +153,13 @@ public class BattleGame implements Game {
                     } while (activeArena == arena);
                     setArena(arena);
                 }
-//                if (configuration.getGameModes().length >= 2) {
-//                    GameMode gameMode, activeGameMode = getGameMode();
-//                    do {
-//                        gameMode = configuration.getGameModes()[random.nextInt(configuration.getGameModes().length)];
-//                    } while (activeGameMode == gameMode);
-//                    setGameMode(gameMode);
-//                }
+                if (configuration.getGameModes().length >= 2) {
+                    GameMode gameMode, activeGameMode = getGameMode();
+                    do {
+                        gameMode = configuration.getGameModes()[random.nextInt(configuration.getGameModes().length)];
+                    } while (activeGameMode == gameMode);
+                    setGameMode(gameMode);
+                }
 
                 rollback();
 

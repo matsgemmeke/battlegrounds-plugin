@@ -98,7 +98,7 @@ public enum BattleTacticalEffect implements TacticalEffect {
             for (Block block : blocks) {
                 if (block.getType() == Material.AIR) {
                     blockStates.add(block.getState());
-                    block.setType(Material.BEETROOT_BLOCK);
+                    block.setType(Material.CROPS);
                 }
             }
 

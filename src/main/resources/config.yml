@@ -1,5 +1,5 @@
 # Do not touch
-version: 1.0.0
+version: 1.0.1
 
 # The language locale which the plugin will translate its messages to
 locale: en
@@ -53,22 +53,19 @@ game-scoreboard:
       title: "&6&lBattlegrounds"
     worlds: "*"
 
+# The material and durability of the launchers' projectiles
+game-launcher-material: IRON_HELMET,1
+
 # The velocity of grenade launchers' projectiles
 # Higher values than 3.0 may cause the projectile to not launch accurately
 game-launcher-velocity: 2.0
-
-# Item materials of different weapon types
-game-material:
-  equipment: IRON_HELMET
-  firearm: IRON_HOE
-  knife: IRON_SWORD
 
 # Some projectiles are able to pierce through certain blocks. Add their materials here
 game-pierceable-blocks:
 - AIR
 - BARRIER
-- BEETROOT_BLOCK
 - CARPET
+- CROPS
 - FENCE
 - IRON_FENCE
 - LADDER

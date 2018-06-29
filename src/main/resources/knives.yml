@@ -6,7 +6,7 @@
 #   Damage: The damage the knife inflicts.
 #   Description: Description of the knife
 #   DisplayName: The name of the knife.
-#   Durability: The durability of the knife (optional for if you want a unique texture)
+#   Material: The item material and durability
 #   Throwable: true, false; if true, this knife can be throw towards monsters
 
 BALLISTIC_KNIFE:
@@ -15,7 +15,7 @@ BALLISTIC_KNIFE:
   Damage: 10.0
   Description: Spring-action knife launcher. Can fire the blade as a projectile.
   DisplayName: Ballistic Knife
-  Durability: 1
+  Material: IRON_SWORD,1
   Throwable: true
 
 COMBAT_KNIFE:
@@ -24,7 +24,7 @@ COMBAT_KNIFE:
   Damage: 15.0
   Description: Standard issue military knife. Fast, quiet and deadly.
   DisplayName: Combat Knife
-  Durability: 2
+  Material: IRON_SWORD,2
   Throwable: false
 
 HATCHET:
@@ -33,5 +33,5 @@ HATCHET:
   Damage: 20.0
   Description: Retrievable throwing hatchet that causes instant death on impact.
   DisplayName: Hatchet
-  Durability: 3
+  Material: IRON_SWORD,3
   Throwable: true

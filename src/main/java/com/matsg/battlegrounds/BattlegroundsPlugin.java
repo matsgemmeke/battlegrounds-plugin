@@ -13,7 +13,9 @@ import com.matsg.battlegrounds.command.BattlegroundsCommand;
 import com.matsg.battlegrounds.command.LoadoutCommand;
 import com.matsg.battlegrounds.config.*;
 import com.matsg.battlegrounds.listener.EventListener;
+import com.matsg.battlegrounds.listener.PlayerSwapItemListener;
 import com.matsg.battlegrounds.player.LocalPlayerStorage;
+import com.matsg.battlegrounds.util.ReflectionUtils;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -176,6 +178,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         new LoadoutCommand(this);
 
         new EventListener(this);
+        new PlayerSwapItemListener(this);
 
         for (BattlegroundsExtension extension : extensions) {
             extension.onInit();

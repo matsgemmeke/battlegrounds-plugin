@@ -127,6 +127,7 @@ public class BattlePlayerManager implements PlayerManager {
         double finalHealth = gamePlayer.getPlayer().getHealth() - damage;
         gamePlayer.getPlayer().damage(0.01); // Create a fake damage animation
         gamePlayer.getPlayer().setHealth(finalHealth > 0.0 ? finalHealth : 0); // It needs to set the health to 0 if the damage is greater than the health, else the api will complain
+        gamePlayer.getPlayer().setLastDamageCause(null);
     }
 
     public GamePlayer getGamePlayer(Player player) {

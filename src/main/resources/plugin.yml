@@ -1,6 +1,6 @@
 name: Battlegrounds
 main: com.matsg.battlegrounds.BattlegroundsPlugin
-version: 1.0.0
+version: 1.0.1
 author: Mats9799
 commands:
   battlegrounds:
@@ -9,5 +9,5 @@ commands:
     usage: /battlegrounds
   loadout:
     aliases: loadoutcreator
-    description: Opens the loadout manager
+    description: Opens the loadout creation manager
     usage: /loadout

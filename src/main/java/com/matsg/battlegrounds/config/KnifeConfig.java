@@ -51,12 +51,13 @@ public class KnifeConfig extends AbstractYaml implements WeaponConfig<Knife> {
         return new WeaponSerializer() {
             Weapon getFromSection(ConfigurationSection section) throws ItemFormatException {
                 String name = section.getString("DisplayName");
+                String[] material = section.getString("Material").split(",");
                 try {
                     return new BattleKnife(
                             name,
                             section.getString("Description"),
-                            new ItemStackBuilder(Material.valueOf(plugin.getBattlegroundsConfig().getWeaponMaterial("knife"))).build(),
-                            (short) new AttributeValidator(section.getInt("Durability"), "Durability").shouldBeHigherThan(0),
+                            new ItemStackBuilder(Material.valueOf(material[0])).build(),
+                            (short) new AttributeValidator(Short.parseShort(material[1]), "Durability").shouldBeHigherThan(0),
                             new AttributeValidator(section.getDouble("Damage"), "Damage").shouldEqualOrBeHigherThan(0.0),
                             (int) new AttributeValidator(section.getInt("Amount"), "Amount").shouldBeHigherThan(0),
                             section.getBoolean("Throwable"),

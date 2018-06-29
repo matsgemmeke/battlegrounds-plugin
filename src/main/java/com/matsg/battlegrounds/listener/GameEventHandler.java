@@ -1,4 +1,4 @@
-package com.matsg.battlegrounds.game;
+package com.matsg.battlegrounds.listener;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent;
@@ -116,7 +116,7 @@ public class GameEventHandler implements Listener {
             return;
         }
 
-        Weapon weapon = gamePlayer.getLoadout().getWeapon(player.getInventory().getItemInMainHand());
+        Weapon weapon = gamePlayer.getLoadout().getWeapon(player.getItemInHand());
 
         if (weapon == null) {
             return;
@@ -177,7 +177,7 @@ public class GameEventHandler implements Listener {
         event.setKeepInventory(true);
         event.setKeepLevel(true);
 
-        DeathCause deathCause = DeathCause.fromDamageCause(player.getLastDamageCause().getCause());
+        DeathCause deathCause = player.getLastDamageCause() != null ? DeathCause.fromDamageCause(player.getLastDamageCause().getCause()) : null;
 
         if (deathCause == null) {
             return; // Only notify the game of death events the game should handle
@@ -201,7 +201,7 @@ public class GameEventHandler implements Listener {
 
         event.setCancelled(true);
 
-        Item item = getInteractItem(game.getPlayerManager().getGamePlayer(player), player.getInventory().getItemInMainHand());
+        Item item = getInteractItem(game.getPlayerManager().getGamePlayer(player), player.getItemInHand());
 
         if (item == null || !game.getState().isAllowWeapons() && item instanceof Weapon) {
             return;
@@ -224,11 +224,7 @@ public class GameEventHandler implements Listener {
     }
 
     @EventHandler
-    public void onPlayerItemPickUp(EntityPickupItemEvent event) {
-        if (!(event.getEntity() instanceof Player) || !isPlaying((Player) event.getEntity())) {
-            return;
-        }
-
+    public void onPlayerItemPickUp(PlayerPickupItemEvent event) {
         event.setCancelled(true);
 
         Item item = getDroppedItem(event.getItem().getItemStack());
@@ -237,12 +233,7 @@ public class GameEventHandler implements Listener {
             return;
         }
 
-        ((Droppable) item).onPickUp((Player) event.getEntity(), event.getItem());
-    }
-
-    @EventHandler
-    public void onPlayerItemSwap(PlayerSwapHandItemsEvent event) {
-        event.setCancelled(isPlaying(event.getPlayer()));
+        ((Droppable) item).onPickUp(event.getPlayer(), event.getItem());
     }
 
     @EventHandler

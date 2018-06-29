@@ -61,12 +61,13 @@ public class EquipmentConfig extends AbstractYaml implements WeaponConfig<Equipm
         list.add(new WeaponSerializer(EquipmentType.LETHAL) {
             Equipment getFromSection(ConfigurationSection section) throws ItemFormatException {
                 String name = section.getString("DisplayName");
+                String[] material = section.getString("Material").split(",");
                 try {
                     return new BattleLethal(
                             name,
                             section.getString("Description"),
-                            new ItemStackBuilder(Material.valueOf(plugin.getBattlegroundsConfig().getWeaponMaterial("equipment"))).setDurability((short) section.getInt("Durability")).build(),
-                            (short) new AttributeValidator(section.getInt("Durability"), "Durability").shouldBeHigherThan(0),
+                            new ItemStackBuilder(Material.valueOf(material[0])).setDurability((short) section.getInt("Durability")).build(),
+                            (short) new AttributeValidator(Short.parseShort(material[1]), "Durability").shouldBeHigherThan(0),
                             (int) new AttributeValidator(section.getInt("Amount"), "Amount").shouldBeHigherThan(0),
                             new AttributeValidator(section.getDouble("Range.Long.Damage"), "Long damage").shouldEqualOrBeHigherThan(0.0),
                             new AttributeValidator(section.getDouble("Range.Long.Distance"), "Long range").shouldEqualOrBeHigherThan(0.0),
@@ -86,12 +87,13 @@ public class EquipmentConfig extends AbstractYaml implements WeaponConfig<Equipm
         list.add(new WeaponSerializer(EquipmentType.TACTICAL) {
             Equipment getFromSection(ConfigurationSection section) throws ItemFormatException {
                 String name = section.getString("DisplayName");
+                String[] material = section.getString("Material").split(",");
                 try {
                     return new BattleTactical(
                             name,
                             section.getString("Description"),
-                            new ItemStackBuilder(Material.valueOf(plugin.getBattlegroundsConfig().getWeaponMaterial("equipment"))).setDurability((short) section.getInt("Durability")).build(),
-                            (short) new AttributeValidator(section.getInt("Durability")).shouldBeHigherThan(0),
+                            new ItemStackBuilder(Material.valueOf(material[0])).setDurability((short) section.getInt("Durability")).build(),
+                            (short) new AttributeValidator(Short.parseShort(material[1]), "Durability").shouldBeHigherThan(0),
                             (int) new AttributeValidator(section.getInt("Amount"), "Amount").shouldBeHigherThan(0),
                             BattleTacticalEffect.valueOf(section.getString("Effect")),
                             (int) new AttributeValidator(section.getInt("Duration"), "Duration").shouldBeHigherThan(0),

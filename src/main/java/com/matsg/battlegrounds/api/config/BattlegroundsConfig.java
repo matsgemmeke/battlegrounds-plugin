@@ -20,6 +20,7 @@ public final class BattlegroundsConfig extends AbstractYaml {
     public final double launcherVelocity = getDouble("game-launcher-velocity");
     public final List<String> allowedCommands = getStringList("game-allowed-commands");
     public final List<String> pierceableBlocks = getStringList("game-pierceable-blocks");
+    public final String launcherMaterial = getString("game-launcher-material");
 
     public BattlegroundsConfig(Battlegrounds plugin) throws IOException {
         super(plugin, "config.yml", false);
@@ -47,9 +48,5 @@ public final class BattlegroundsConfig extends AbstractYaml {
 
     public String getWeaponDisplayName(String weaponType) {
         return getString("game-display-name." + weaponType);
-    }
-
-    public String getWeaponMaterial(String weaponType) {
-        return getString("game-material." + weaponType);
     }
 }

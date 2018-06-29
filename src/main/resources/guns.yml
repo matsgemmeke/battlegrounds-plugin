@@ -10,7 +10,6 @@
 #     Start: Amount of magazines the firearm has when spawned.
 #   Description: Description of the firearm.
 #   DisplayName: The name of the firearm.
-#   Durability: The durability of the firearm. This is optional for if you want a unique texture.
 #   FireMode:
 #     Burst: Amount of rounds fired with a single pull on the trigger. This option only affects guns using burst fire.
 #     Cooldown: The amount of ticks the firearm needs to wait to be able to shoot again.
@@ -20,6 +19,7 @@
 #     Type: AUTOMATIC, BURST, SEMI_AUTOMATIC
 #   GunType: ASSAULT_RIFLE, HANDGUN, LIGHT_MACHINE_GUN, SHOTGUN, SNIPER_RIFLE, SUBMACHINE_GUN
 #   HeadshotMultiplier: Damage multiplier when the projectile hits a player in the head
+#   Material: The item material and durability
 #   Range:
 #     Long:
 #       Damage: Long-range damage
@@ -45,7 +45,6 @@ BERETTA_93R:
     Start: 3
   Description: 3 round burst pistol. High rate of fire with moderate recoil.
   DisplayName: Beretta 93R
-  Durability: 1
   FireMode:
     Burst: 3
     Cooldown: 3
@@ -54,6 +53,7 @@ BERETTA_93R:
     Type: BURST
   GunType: HANDGUN
   HeadshotMultiplier: 1.5
+  Material: IRON_HOE,1
   Range:
     Long:
       Damage: 19.0
@@ -78,7 +78,6 @@ FIVE-SEVEN:
     Start: 3
   Description: Semi-automatic pistol. Versatile and strong overall with a large magazine.
   DisplayName: Five-seven
-  Durability: 2
   FireMode:
     Burst: 0
     Cooldown: 3
@@ -87,6 +86,7 @@ FIVE-SEVEN:
     Type: SEMI_AUTOMATIC
   GunType: HANDGUN
   HeadshotMultiplier: 1.4
+  Material: IRON_HOE,2
   Range:
     Long:
       Damage: 19.0
@@ -111,7 +111,6 @@ GLOCK_17:
     Start: 3
   Description: Semi-automatic pistol. Compatible with select fire to unlock full automatic.
   DisplayName: Glock 17
-  Durability: 3
   FireMode:
     Burst: 0
     Cooldown: 3
@@ -120,6 +119,7 @@ GLOCK_17:
     Type: SEMI_AUTOMATIC
   GunType: HANDGUN
   HeadshotMultiplier: 1.5
+  Material: IRON_HOE,3
   Range:
     Long:
       Damage: 17.0
@@ -144,7 +144,6 @@ M1911:
     Start: 3
   Description: Semi-automatic with medium capacity and power. Effective at close range.
   DisplayName: M1911
-  Durability: 4
   FireMode:
     Burst: 0
     Cooldown: 4
@@ -153,6 +152,7 @@ M1911:
     Type: SEMI_AUTOMATIC
   GunType: HANDGUN
   HeadshotMultiplier: 1.5
+  Material: IRON_HOE,4
   Range:
     Long:
       Damage: 20.0
@@ -177,7 +177,6 @@ PYTHON:
     Start: 3
   Description: Double-action revolver pistol. Uses a 6 round cylinder feed system.
   DisplayName: Python
-  Durability: 5
   FireMode:
     Burst: 0
     Cooldown: 4
@@ -186,6 +185,7 @@ PYTHON:
     Type: SEMI_AUTOMATIC
   GunType: HANDGUN
   HeadshotMultiplier: 1.5
+  Material: IRON_HOE,5
   Range:
     Long:
       Damage: 30.0
@@ -210,7 +210,6 @@ AKS-74U:
     Start: 3
   Description: Fully automatic submachine gun. Increased range and reduced recoil.
   DisplayName: AKS-74u
-  Durability: 6
   FireMode:
     Burst: 0
     Cooldown: 0
@@ -219,6 +218,7 @@ AKS-74U:
     Type: AUTOMATIC
   GunType: SUBMACHINE_GUN
   HeadshotMultiplier: 1.4
+  Material: IRON_HOE,6
   Range:
     Long:
       Damage: 20.0
@@ -243,7 +243,6 @@ MAC-11:
     Start: 3
   Description: Fully automatic with moderate power. Effective at close to medium range.
   DisplayName: MAC-11
-  Durability: 7
   FireMode:
     Burst: 0
     Cooldown: 0
@@ -252,6 +251,7 @@ MAC-11:
     Type: AUTOMATIC
   GunType: SUBMACHINE_GUN
   HeadshotMultiplier: 1.4
+  Material: IRON_HOE,7
   Range:
     Long:
       Damage: 20.0
@@ -276,7 +276,6 @@ MP5:
     Start: 3
   Description: Fully automatic with good accuracy. Effective at close to medium range.
   DisplayName: MP5
-  Durability: 8
   FireMode:
     Burst: 0
     Cooldown: 0
@@ -285,6 +284,7 @@ MP5:
     Type: AUTOMATIC
   GunType: SUBMACHINE_GUN
   HeadshotMultiplier: 1.4
+  Material: IRON_HOE,8
   Range:
     Long:
       Damage: 20.0
@@ -309,7 +309,6 @@ MP7:
     Start: 3
   Description: Fully automatic personal defense weapon. Versatile and strong overall.
   DisplayName: MP7
-  Durability: 9
   FireMode:
     Burst: 0
     Cooldown: 0
@@ -318,6 +317,7 @@ MP7:
     Type: AUTOMATIC
   GunType: SUBMACHINE_GUN
   HeadshotMultiplier: 1.4
+  Material: IRON_HOE,9
   Range:
     Long:
       Damage: 20.0
@@ -342,7 +342,6 @@ QCW-05:
     Start: 3
   Description: 3 round burst submachine gun. High cyclic fire rate allows for fast consecutive bursts.
   DisplayName: QCW-05
-  Durability: 10
   FireMode:
     Burst: 3
     Cooldown: 3
@@ -351,6 +350,7 @@ QCW-05:
     Type: BURST
   GunType: SUBMACHINE_GUN
   HeadshotMultiplier: 1.4
+  Material: IRON_HOE,10
   Range:
     Long:
       Damage: 18.0
@@ -375,7 +375,6 @@ UZI:
     Start: 3
   Description: Fully automatic with high rate of fire. Effective at close range.
   DisplayName: Uzi
-  Durability: 11
   FireMode:
     Burst: 0
     Cooldown: 0
@@ -384,6 +383,7 @@ UZI:
     Type: AUTOMATIC
   GunType: SUBMACHINE_GUN
   HeadshotMultiplier: 1.4
+  Material: IRON_HOE,11
   Range:
     Long:
       Damage: 20.0
@@ -408,7 +408,6 @@ VECTOR:
     Start: 3
   Description: Fully automatic submachine gun. Incorporates recoil mitigation technology.
   DisplayName: Vector
-  Durability: 12
   FireMode:
     Burst: 0
     Cooldown: 0
@@ -417,6 +416,7 @@ VECTOR:
     Type: AUTOMATIC
   GunType: SUBMACHINE_GUN
   HeadshotMultiplier: 1.4
+  Material: IRON_HOE,12
   Range:
     Long:
       Damage: 18.0
@@ -441,7 +441,6 @@ AK-47:
     Start: 3
   Description: Fully automatic with high power. Effective at medium range.
   DisplayName: AK-47
-  Durability: 13
   FireMode:
     Burst: 0
     Cooldown: 0
@@ -450,6 +449,7 @@ AK-47:
     Type: AUTOMATIC
   GunType: ASSAULT_RIFLE
   HeadshotMultiplier: 1.5
+  Material: IRON_HOE,13
   Range:
     Long:
       Damage: 30.0
@@ -474,7 +474,6 @@ AUG:
     Start: 3
   Description: Bullpup rifle with high rate of fire. Effective at medium range.
   DisplayName: AUG
-  Durability: 14
   FireMode:
     Burst: 0
     Cooldown: 0
@@ -484,6 +483,7 @@ AUG:
   FireRate: 10
   GunType: ASSAULT_RIFLE
   HeadshotMultiplier: 1.5
+  Material: IRON_HOE,14
   Range:
     Long:
       Damage: 25.0
@@ -508,7 +508,6 @@ FAL:
     Start: 3
   Description: Semi-automatic battle rifle with high damage. Effective at medium to long range.
   DisplayName: FAL
-  Durability: 15
   FireMode:
     Burst: 0
     Cooldown: 3
@@ -517,6 +516,7 @@ FAL:
     Type: SEMI_AUTOMATIC
   GunType: ASSAULT_RIFLE
   HeadshotMultiplier: 1.5
+  Material: IRON_HOE,15
   Range:
     Long:
       Damage: 40.0
@@ -541,7 +541,6 @@ FAMAS:
     Start: 3
   Description: Fully automatic with high rate of fire. Effective at medium range.
   DisplayName: FAMAS
-  Durability: 16
   FireMode:
     Burst: 0
     Cooldown: 0
@@ -550,6 +549,7 @@ FAMAS:
     Type: AUTOMATIC
   GunType: ASSAULT_RIFLE
   HeadshotMultiplier: 1.5
+  Material: IRON_HOE,16
   Range:
     Long:
       Damage: 25.0
@@ -574,7 +574,6 @@ GALIL:
     Start: 3
   Description: Fully automatic assault rifle. Effective at medium to long range.
   DisplayName: Galil
-  Durability: 17
   FireMode:
     Burst: 0
     Cooldown: 0
@@ -583,6 +582,7 @@ GALIL:
     Type: AUTOMATIC
   GunType: ASSAULT_RIFLE
   HeadshotMultiplier: 1.5
+  Material: IRON_HOE,17
   Range:
     Long:
       Damage: 30.0
@@ -607,7 +607,6 @@ M16:
     Start: 3
   Description: Semi-automatic with 3 round burst fire. Effective at medium to long range.
   DisplayName: M16
-  Durability: 18
   FireMode:
     Burst: 3
     Cooldown: 4
@@ -616,6 +615,7 @@ M16:
     Type: BURST
   GunType: ASSAULT_RIFLE
   HeadshotMultiplier: 1.5
+  Material: IRON_HOE,18
   Range:
     Long:
       Damage: 30.0
@@ -640,7 +640,6 @@ QBZ-95:
     Start: 3
   Description: Delivers pinpoint 3-round bursts. Effective at medium to long range.
   DisplayName: QBZ-95
-  Durability: 19
   FireMode:
     Burst: 3
     Cooldown: 4
@@ -649,6 +648,7 @@ QBZ-95:
     Type: BURST
   GunType: ASSAULT_RIFLE
   HeadshotMultiplier: 1.4
+  Material: IRON_HOE,19
   Range:
     Long:
       Damage: 25.0
@@ -673,7 +673,6 @@ SCAR-H:
     Start: 3
   Description: Fully automatic battle rifle. Increased damage and range.
   DisplayName: SCAR-H
-  Durability: 20
   FireMode:
     Burst: 0
     Cooldown: 0
@@ -682,6 +681,7 @@ SCAR-H:
     Type: AUTOMATIC
   GunType: ASSAULT_RIFLE
   HeadshotMultiplier: 1.4
+  Material: IRON_HOE,20
   Range:
     Long:
       Damage: 30.0
@@ -706,7 +706,6 @@ SG_550:
     Start: 3
   Description: Single-fire with high power. Effective at medium to long range.
   DisplayName: SG 550
-  Durability: 21
   FireMode:
     Burst: 0
     Cooldown: 3
@@ -715,6 +714,7 @@ SG_550:
     Type: SEMI_AUTOMATIC
   GunType: ASSAULT_RIFLE
   HeadshotMultiplier: 1.5
+  Material: IRON_HOE,21
   Range:
     Long:
       Damage: 40.0
@@ -739,7 +739,6 @@ ITHACA_37:
     Start: 3
   Description: Pump action shotgun. Effective at close range.
   DisplayName: Ithaca 37
-  Durability: 22
   FireMode:
     Burst: 0
     Cooldown: 15
@@ -748,6 +747,7 @@ ITHACA_37:
     Type: SEMI_AUTOMATIC
   GunType: SHOTGUN
   HeadshotMultiplier: 1.1
+  Material: IRON_HOE,22
   Range:
     Long:
       Damage: 10.0
@@ -772,7 +772,6 @@ OLYMPIA:
     Start: 4
   Description: Double-barrel over/under shotgun. Effective at medium to close range.
   DisplayName: Olympia
-  Durability: 23
   FireMode:
     Burst: 0
     Cooldown: 6
@@ -781,6 +780,7 @@ OLYMPIA:
     Type: SEMI_AUTOMATIC
   GunType: SHOTGUN
   HeadshotMultiplier: 1.1
+  Material: IRON_HOE,23
   Range:
     Long:
       Damage: 15.0
@@ -805,7 +805,6 @@ REMINGTON_870:
     Start: 3
   Description: Pump action shotgun. Strong damage and range.
   DisplayName: Remington 870
-  Durability: 24
   FireMode:
     Burst: 0
     Cooldown: 15
@@ -814,6 +813,7 @@ REMINGTON_870:
     Type: SEMI_AUTOMATIC
   GunType: SHOTGUN
   HeadshotMultiplier: 1.2
+  Material: IRON_HOE,24
   Range:
     Long:
       Damage: 10.0
@@ -838,7 +838,6 @@ SAIGA-12K:
     Start: 3
   Description: Semi-automatic shotgun with magazine feed system. Deadly at short range.
   DisplayName: Saiga-12K
-  Durability: 25
   FireMode:
     Burst: 0
     Cooldown: 6
@@ -847,6 +846,7 @@ SAIGA-12K:
     Type: SEMI_AUTOMATIC
   GunType: SHOTGUN
   HeadshotMultiplier: 1.2
+  Material: IRON_HOE,25
   Range:
     Long:
       Damage: 10.0
@@ -871,7 +871,6 @@ SPAS-12:
     Start: 3
   Description: Semi-automatic combat shotgun. Effective at close range.
   DisplayName: SPAS-12
-  Durability: 26
   FireMode:
     Burst: 0
     Cooldown: 6
@@ -880,6 +879,7 @@ SPAS-12:
     Type: SEMI_AUTOMATIC
   GunType: SHOTGUN
   HeadshotMultiplier: 1.2
+  Material: IRON_HOE,26
   Range:
     Long:
       Damage: 15.0
@@ -904,7 +904,6 @@ HK21:
     Start: 2
   Description: Fully automatic with high power. Effective at medium to long range.
   DisplayName: HK21
-  Durability: 27
   FireMode:
     Burst: 0
     Cooldown: 0
@@ -913,6 +912,7 @@ HK21:
     Type: AUTOMATIC
   GunType: LIGHT_MACHINE_GUN
   HeadshotMultiplier: 1.4
+  Material: IRON_HOE,27
   Range:
     Long:
       Damage: 30.0
@@ -937,7 +937,6 @@ M240:
     Start: 1
   Description: Fully automatic with high power. Effective at medium to long range.
   DisplayName: M240
-  Durability: 28
   FireMode:
     Burst: 0
     Cooldown: 0
@@ -946,6 +945,7 @@ M240:
     Type: AUTOMATIC
   GunType: LIGHT_MACHINE_GUN
   HeadshotMultiplier: 1.4
+  Material: IRON_HOE,28
   Range:
     Long:
       Damage: 30.0
@@ -970,7 +970,6 @@ RPK:
     Start: 3
   Description: Fully automatic with good power and quick fire rate. Effective at medium to long range.
   DisplayName: RPK
-  Durability: 29
   FireMode:
     Burst: 0
     Cooldown: 0
@@ -979,6 +978,7 @@ RPK:
     Type: AUTOMATIC
   GunType: LIGHT_MACHINE_GUN
   HeadshotMultiplier: 1.4
+  Material: IRON_HOE,29
   Range:
     Long:
       Damage: 24.0
@@ -1003,7 +1003,6 @@ DRAGUNOV:
     Start: 3
   Description: Semi-automatic sniper rifle. Effective at long range.
   DisplayName: Dragunov
-  Durability: 30
   FireMode:
     Burst: 0
     Cooldown: 12
@@ -1012,6 +1011,7 @@ DRAGUNOV:
     Type: SEMI_AUTOMATIC
   GunType: SNIPER_RIFLE
   HeadshotMultiplier: 2.0
+  Material: IRON_HOE,30
   Range:
     Long:
       Damage: 70.0
@@ -1036,7 +1036,6 @@ M82A1:
     Start: 3
   Description: Semi-automatic sniper rifle. Effective at long range.
   DisplayName: M82A1
-  Durability: 31
   FireMode:
     Burst: 0
     Cooldown: 16
@@ -1045,6 +1044,7 @@ M82A1:
     Type: SEMI_AUTOMATIC
   GunType: SNIPER_RIFLE
   HeadshotMultiplier: 2.0
+  Material: IRON_HOE,31
   Range:
     Long:
       Damage: 98.0
@@ -1069,7 +1069,6 @@ SV-98:
     Start: 3
   Description: Bolt-action sniper rifle. Effective at long range.
   DisplayName: SV-98
-  Durability: 32
   FireMode:
     Burst: 0
     Cooldown: 20
@@ -1078,6 +1077,7 @@ SV-98:
     Type: SEMI_AUTOMATIC
   GunType: SNIPER_RIFLE
   HeadshotMultiplier: 2.0
+  Material: IRON_HOE,32
   Range:
     Long:
       Damage: 98.0
@@ -1102,13 +1102,13 @@ CHINA_LAKE:
     Start: 1
   Description: Pump action grenade launcher. Delivers great direct impact damage.
   DisplayName: China Lake
-  Durability: 33
   FireMode:
     Cooldown: 20
     LaunchType: GRENADE
     ShootSound: BLOCK_WOODEN_DOOR_CLOSE-2-2-0, ENTITY_ARROW_SHOOT-2-1-1
   GunType: LAUNCHER
   HeadshotMultiplier: 1.0
+  Material: IRON_HOE,33
   Range:
     Long:
       Damage: 20.0
@@ -1136,13 +1136,13 @@ CROSSBOW:
     Start: 1
   Description: Fires explosive bolts that detonate after impact.
   DisplayName: Crossbow
-  Durability: 34
   FireMode:
     Cooldown: 20
     LaunchType: ROCKET
     ShootSound: BLOCK_WOODEN_DOOR_CLOSE-2-2-0, ENTITY_ARROW_SHOOT-2-1-1
   GunType: LAUNCHER
   HeadshotMultiplier: 1.0
+  Material: IRON_HOE,34
   Range:
     Long:
       Damage: 20.0
@@ -1168,13 +1168,13 @@ MGL:
     Start: 1
   Description: 6 round semi-automatic grenade launcher.
   DisplayName: MGL
-  Durability: 35
   FireMode:
     Cooldown: 10
     LaunchType: GRENADE
     ShootSound: BLOCK_WOODEN_DOOR_CLOSE-2-2-0, ENTITY_ARROW_SHOOT-2-1-1
   GunType: LAUNCHER
   HeadshotMultiplier: 1.0
+  Material: IRON_HOE,35
   Range:
     Long:
       Damage: 15.0
@@ -1200,13 +1200,13 @@ RPG-7:
     Start: 1
   Description: Free-fire shoulder mounted rocket launcher.
   DisplayName: RPG-7
-  Durability: 36
   FireMode:
     Cooldown: 20
     LaunchType: ROCKET
     ShootSound: BLOCK_FIRE_EXTINGUISH-2-1-0, ENTITY_ZOMBIE_ATTACK_DOOR_WOOD-2-0-0
   GunType: LAUNCHER
   HeadshotMultiplier: 1.0
+  Material: IRON_HOE,36
   Range:
     Long:
       Damage: 30.0
@@ -1232,13 +1232,13 @@ SMAW:
     Start: 1
   Description: Shoulder-launched rocket launcher. Delivers splash damage upon impact.
   DisplayName: SMAW
-  Durability: 37
   FireMode:
     Cooldown: 20
     LaunchType: ROCKET
     ShootSound: BLOCK_FIRE_EXTINGUISH-2-1-0, ENTITY_ZOMBIE_ATTACK_DOOR_WOOD-2-0-0
   GunType: LAUNCHER
   HeadshotMultiplier: 1.0
+  Material: IRON_HOE,37
   Range:
     Long:
       Damage: 30.0

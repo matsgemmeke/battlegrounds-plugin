@@ -4,11 +4,11 @@
 #   Amount: The maximum amount a player can carry
 #   Description: Description of the equipment
 #   DisplayName: The name of the explosive
-#   Durability: The durability of the explosive (optional for if you want a unique texture)
 #   Duration: The duration of the explosive effects in ticks. Only required for tacticals
 #   Effect: The effect of the explosive. Only required for tacticals
 #   EquipmentType: LETHAL, TACTICAL
 #   IgnitionTime: Time in ticks before the explosive explodes. Set to 0 to have it only explode when monsters are nearby.
+#   Material: The item material and durability
 #   Range:
 #     Long:
 #       Damage: Long-range damage
@@ -26,9 +26,9 @@ GRENADE:
   Amount: 1
   Description: Fragmentation grenade. Detonates shortly after ignition, causing splash damage to the enemy.
   DisplayName: Grenade
-  Durability: 1
   EquipmentType: LETHAL
   IgnitionTime: 60
+  Material: IRON_HELMET,1
   Range:
     Long:
       Damage: 15.0
@@ -46,9 +46,9 @@ SEMTEX:
   Amount: 1
   Description: Powerful frag grenade. Detonates shortly after ignition, causing splash damage to the enemy.
   DisplayName: Semtex
-  Durability: 2
   EquipmentType: LETHAL
   IgnitionTime: 40
+  Material: IRON_HELMET,2
   Range:
     Long:
       Damage: 20.0
@@ -66,9 +66,9 @@ CLAYMORE:
   Amount: 1
   Description: Directional anti-personnel mine that triggers a proximity-based explosion.
   DisplayName: Claymore
-  Durability: 3
   EquipmentType: LETHAL
   IgnitionTime: 0
+  Material: IRON_HELMET,3
   Range:
     Long:
       Damage: 15.0
@@ -86,11 +86,11 @@ DECOY:
   Amount: 1
   Description: Distraction device that simulates enemy gunfire and radar indicators.
   DisplayName: Decoy
-  Durability: 4
   Duration: 100
   Effect: NOISE
   EquipmentType: TACTICAL
   IgnitionTime: 40
+  Material: IRON_HELMET,4
   Range:
     Long:
       Damage: 0.0
@@ -108,11 +108,11 @@ FLASHBANG:
   Amount: 1
   Description: Device that blinds the target when detonated.
   DisplayName: Flashbang
-  Durability: 5
   Duration: 100
   Effect: BLINDNESS
   EquipmentType: TACTICAL
   IgnitionTime: 40
+  Material: IRON_HELMET,5
   Range:
     Long:
       Damage: 0.0
@@ -130,11 +130,11 @@ SHOCK_CHARGE:
   Amount: 1
   Description: Electrocutes and stuns nearby enemies.
   DisplayName: Shock Charge
-  Durability: 6
   Duration: 60
   Effect: BLINDNESS
   EquipmentType: TACTICAL
   IgnitionTime: 0
+  Material: IRON_HELMET,6
   Range:
     Long:
       Damage: 0.0
@@ -152,11 +152,11 @@ SMOKE_GRENADE:
   Amount: 1
   Description: Device that creates a smoke screen when detonated.
   DisplayName: Smoke Grenade
-  Durability: 7
   Duration: 100
   Effect: SMOKE
   EquipmentType: TACTICAL
   IgnitionTime: 40
+  Material: IRON_HELMET,7
   Range:
     Long:
       Damage: 0.0

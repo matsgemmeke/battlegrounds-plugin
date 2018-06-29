@@ -6,7 +6,6 @@ import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.Particle;
 import com.matsg.battlegrounds.util.Particle.ParticleEffect;
 import org.bukkit.Location;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 

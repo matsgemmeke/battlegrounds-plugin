@@ -9,6 +9,7 @@ import com.matsg.battlegrounds.gui.scoreboard.AbstractScoreboard;
 import com.matsg.battlegrounds.util.ScoreboardBuilder;
 import org.bukkit.World;
 import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.NameTagVisibility;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team.Option;
 import org.bukkit.scoreboard.Team.OptionStatus;
@@ -66,7 +67,7 @@ public class FFAScoreboard extends AbstractScoreboard {
     public void addTeams(ScoreboardBuilder builder) {
         for (Team team : game.getGameMode().getTeams()) {
             org.bukkit.scoreboard.Team sbTeam = builder.addTeam(team.getName());
-            sbTeam.setOption(Option.NAME_TAG_VISIBILITY, OptionStatus.NEVER);
+            sbTeam.setNameTagVisibility(NameTagVisibility.NEVER);
             for (GamePlayer gamePlayer : team.getPlayers()) {
                 sbTeam.addEntry(gamePlayer.getName());
             }

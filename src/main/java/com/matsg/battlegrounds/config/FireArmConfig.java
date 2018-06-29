@@ -71,12 +71,12 @@ public class FireArmConfig extends AbstractYaml implements WeaponConfig<FireArm>
     }
 
     private Lethal getLethalProjectile(ConfigurationSection section) throws ItemFormatException {
+        String[] material = plugin.getBattlegroundsConfig().launcherMaterial.split(",");
         try {
             return new BattleLethal(
                     null,
                     null,
-                    new ItemStackBuilder(
-                    Material.valueOf(plugin.getBattlegroundsConfig().getWeaponMaterial("equipment"))).setAmount(1).setDurability((short) 1).build(),
+                    new ItemStackBuilder(Material.valueOf(material[0])).setAmount(1).setDurability(Short.parseShort(material[1])).build(),
                     (short) 1, 1,
                     new AttributeValidator(section.getDouble("Range.Long.Damage"), "Long damage").shouldEqualOrBeHigherThan(0.0),
                     new AttributeValidator(section.getDouble("Range.Long.Distance"), "Long range").shouldEqualOrBeHigherThan(0.0),
@@ -95,12 +95,13 @@ public class FireArmConfig extends AbstractYaml implements WeaponConfig<FireArm>
         list.add(new WeaponSerializer(FireArmType.GUNS) {
             FireArm getFromSection(ConfigurationSection section) throws ItemFormatException {
                 String name = section.getString("DisplayName");
+                String[] material = section.getString("Material").split(",");
                 try {
                     return new BattleGun(
                             name,
                             section.getString("Description"),
-                            new ItemStackBuilder(Material.valueOf(plugin.getBattlegroundsConfig().getWeaponMaterial("firearm"))).build(),
-                            (short) new AttributeValidator(section.getInt("Durability"), "Durability").shouldBeHigherThan(0),
+                            new ItemStackBuilder(Material.valueOf(material[0])).build(),
+                            (short) new AttributeValidator(Short.parseShort(material[1]), "Durability").shouldBeHigherThan(0),
                             (int) new AttributeValidator(section.getInt("Ammo.Magazine"), "Magazine").shouldBeHigherThan(0),
                             (int) new AttributeValidator(section.getInt("Ammo.Start"), "Start ammunition").shouldEqualOrBeHigherThan(0),
                             (int) new AttributeValidator(section.getInt("Ammo.Max"), "Max ammunition").shouldEqualOrBeHigherThan(0),
@@ -124,12 +125,13 @@ public class FireArmConfig extends AbstractYaml implements WeaponConfig<FireArm>
         list.add(new WeaponSerializer(FireArmType.LAUNCHER) {
             FireArm getFromSection(ConfigurationSection section) throws ItemFormatException {
                 String name = section.getString("DisplayName");
+                String[] material = section.getString("Material").split(",");
                 try {
                     return new BattleLauncher(
                             name,
                             section.getString("Description"),
-                            new ItemStackBuilder(Material.valueOf(plugin.getBattlegroundsConfig().getWeaponMaterial("firearm"))).build(),
-                            (short) new AttributeValidator(section.getInt("Durability"), "Durability").shouldBeHigherThan(0),
+                            new ItemStackBuilder(Material.valueOf(material[0])).build(),
+                            (short) new AttributeValidator(Short.parseShort(material[1]), "Durability").shouldBeHigherThan(0),
                             (int) new AttributeValidator(section.getInt("Ammo.Magazine"), "Magazine").shouldBeHigherThan(0),
                             (int) new AttributeValidator(section.getInt("Ammo.Start"), "Start ammunition").shouldBeHigherThan(0),
                             (int) new AttributeValidator(section.getInt("Ammo.Max"), "Max ammunition").shouldBeHigherThan(0),
@@ -143,7 +145,7 @@ public class FireArmConfig extends AbstractYaml implements WeaponConfig<FireArm>
                             BattleSound.parseSoundArray(section.getString("Reload.Sound.Reload")),
                             BattleSound.parseSoundArray(section.getString("FireMode.ShootSound"))
                     );
-                } catch (ValidationFailedException e) {
+                } catch (Exception e) {
                     throw new ItemFormatException("Invalid item format " + section.getName() + ": " + e.getMessage());
                 }
             }
