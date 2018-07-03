@@ -38,7 +38,7 @@ public class LobbyCountdown extends BattleRunnable implements Countdown {
 
     public void cancelCountdown() {
         cancelled = true;
-        game.broadcastMessage(EnumMessage.COUNTDOWN_CANCELLED);
+        game.getPlayerManager().broadcastMessage(EnumMessage.COUNTDOWN_CANCELLED);
     }
 
     public void run() {
@@ -57,7 +57,7 @@ public class LobbyCountdown extends BattleRunnable implements Countdown {
                     return;
                 }
                 if (display.contains(countdown)) {
-                    game.broadcastMessage(EnumMessage.COUNTDOWN_NOTE.getMessage(new Placeholder("bg_countdown", countdown)));
+                    game.getPlayerManager().broadcastMessage(EnumMessage.COUNTDOWN_NOTE.getMessage(new Placeholder("bg_countdown", countdown)));
                     BattleSound.COUNTDOWN_NOTE.play(game);
                 }
                 scoreboard.setCountdown(countdown);

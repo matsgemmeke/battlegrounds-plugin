@@ -153,7 +153,7 @@ public class GameEventHandler implements Listener {
         if (gamePlayer == null
                 || damager == null
                 || damager.getLoadout() == null
-                || !(damager.getLoadout().getWeapon(damager.getPlayer().getInventory().getItemInMainHand()) instanceof Knife)
+                || !(damager.getLoadout().getWeapon(damager.getPlayer().getItemInHand()) instanceof Knife)
                 || team == game.getGameMode().getTeam(damager)) {
             event.setCancelled(true);
             return;

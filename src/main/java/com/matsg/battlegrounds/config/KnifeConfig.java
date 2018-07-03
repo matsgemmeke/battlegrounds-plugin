@@ -57,7 +57,7 @@ public class KnifeConfig extends AbstractYaml implements WeaponConfig<Knife> {
                             name,
                             section.getString("Description"),
                             new ItemStackBuilder(Material.valueOf(material[0])).build(),
-                            (short) new AttributeValidator(Short.parseShort(material[1]), "Durability").shouldBeHigherThan(0),
+                            (short) new AttributeValidator(Short.parseShort(material[1]), "Durability").shouldEqualOrBeHigherThan(0),
                             new AttributeValidator(section.getDouble("Damage"), "Damage").shouldEqualOrBeHigherThan(0.0),
                             (int) new AttributeValidator(section.getInt("Amount"), "Amount").shouldBeHigherThan(0),
                             section.getBoolean("Throwable"),

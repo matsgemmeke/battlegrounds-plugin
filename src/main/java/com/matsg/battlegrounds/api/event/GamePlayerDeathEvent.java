@@ -5,6 +5,7 @@ import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.util.EnumMessage;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 public class GamePlayerDeathEvent extends Event {
@@ -52,7 +53,7 @@ public class GamePlayerDeathEvent extends Event {
         private int id;
         private String deathMessage;
 
-        DeathCause(int id, String deathMessage, DamageCause... damageCause) {
+        private DeathCause(int id, String deathMessage, EntityDamageEvent.DamageCause... damageCause) {
             this.id = id;
             this.deathMessage = deathMessage;
             this.damageCause = damageCause;

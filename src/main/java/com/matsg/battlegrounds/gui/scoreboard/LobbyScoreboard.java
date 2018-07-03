@@ -2,7 +2,6 @@ package com.matsg.battlegrounds.gui.scoreboard;
 
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.util.Placeholder;
-import com.matsg.battlegrounds.util.ScoreboardBuilder;
 import org.bukkit.World;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Scoreboard;
@@ -12,7 +11,6 @@ import java.util.Map;
 import java.util.Set;
 
 public class LobbyScoreboard extends AbstractScoreboard {
-
     private int countdown;
 
     public LobbyScoreboard(Game game) {
@@ -27,14 +25,13 @@ public class LobbyScoreboard extends AbstractScoreboard {
                 worlds.clear();
                 worlds.addAll(plugin.getServer().getWorlds());
                 break;
-            } else {
-                worlds.add(plugin.getServer().getWorld(world));
             }
+            worlds.add(plugin.getServer().getWorld(world));
         }
     }
 
     public String getScoreboardId() {
-        return scoreboardId;
+        return this.scoreboardId;
     }
 
     public Set<World> getWorlds() {
@@ -45,11 +42,11 @@ public class LobbyScoreboard extends AbstractScoreboard {
         this.countdown = countdown;
     }
 
-    public void addTeams(ScoreboardBuilder builder) { }
+    public void addTeams(ScoreboardBuilder builder) {}
 
     public Scoreboard buildScoreboard(Map<String, String> layout, Scoreboard scoreboard) {
-        return scoreboard == null || scoreboard.getObjective(DisplaySlot.SIDEBAR) == null
-                || !scoreboard.getObjective(DisplaySlot.SIDEBAR).getCriteria().equals(scoreboardId) ? getNewScoreboard(layout, getPlaceholders()) : updateScoreboard(layout, scoreboard, getPlaceholders());
+        return scoreboard == null || scoreboard.getObjective(DisplaySlot.SIDEBAR) == null ||
+                !scoreboard.getObjective(DisplaySlot.SIDEBAR).getCriteria().equals(scoreboardId) ? getNewScoreboard(layout, getPlaceholders()) : updateScoreboard(layout, scoreboard, getPlaceholders());
     }
 
     private Placeholder[] getPlaceholders() {
@@ -58,7 +55,6 @@ public class LobbyScoreboard extends AbstractScoreboard {
                 new Placeholder("bg_countdown", countdown),
                 new Placeholder("bg_date", getDate()),
                 new Placeholder("bg_gamemode", game.getGameMode().getSimpleName()),
-                new Placeholder("bg_players", game.getPlayerManager().getPlayers().size())
-        };
+                new Placeholder("bg_players", game.getPlayerManager().getPlayers().size()) };
     }
 }

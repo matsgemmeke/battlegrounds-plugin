@@ -6,6 +6,7 @@ import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.player.Hitbox;
 import com.matsg.battlegrounds.api.util.Message;
 import com.matsg.battlegrounds.util.EnumMessage;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 import java.util.ArrayList;
 import java.util.Collections;

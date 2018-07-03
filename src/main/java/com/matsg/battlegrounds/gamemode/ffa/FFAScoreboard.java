@@ -6,13 +6,11 @@ import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.gui.scoreboard.AbstractScoreboard;
-import com.matsg.battlegrounds.util.ScoreboardBuilder;
+import com.matsg.battlegrounds.gui.scoreboard.ScoreboardBuilder;
 import org.bukkit.World;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.NameTagVisibility;
 import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team.Option;
-import org.bukkit.scoreboard.Team.OptionStatus;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -31,33 +29,31 @@ public class FFAScoreboard extends AbstractScoreboard {
                 worlds.clear();
                 worlds.addAll(plugin.getServer().getWorlds());
                 break;
-            } else {
-                worlds.add(plugin.getServer().getWorld(world));
             }
+            worlds.add(plugin.getServer().getWorld(world));
         }
     }
 
     public String getScoreboardId() {
-        return scoreboardId;
+        return this.scoreboardId;
     }
 
     public Set<World> getWorlds() {
-        return worlds;
+        return this.worlds;
     }
 
     public void addLayout(ScoreboardBuilder builder, Map<String, String> layout, Placeholder... placeholders) {
         super.addLayout(builder, layout, placeholders);
         int index = Integer.MIN_VALUE;
-
         for (String line : layout.keySet()) {
-            if (layout.get(line).contains("%bg_scores%")) {
+            if (layout.get(line).contains("%bg_scores%"))
+            {
                 index = Integer.parseInt(line.substring(4, line.length()));
                 break;
             }
         }
-
         if (index > Integer.MIN_VALUE) {
-            builder.removeLine(DisplaySlot.SIDEBAR, index);
+            builder.removeLine(DisplaySlot.SIDEBAR, index );
             for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
                 builder.addLine(DisplaySlot.SIDEBAR, gamePlayer.getKills(), gamePlayer.getName());
             }
@@ -65,7 +61,7 @@ public class FFAScoreboard extends AbstractScoreboard {
     }
 
     public void addTeams(ScoreboardBuilder builder) {
-        for (Team team : game.getGameMode().getTeams()) {
+        for (Team team : this.game.getGameMode().getTeams()) {
             org.bukkit.scoreboard.Team sbTeam = builder.addTeam(team.getName());
             sbTeam.setNameTagVisibility(NameTagVisibility.NEVER);
             for (GamePlayer gamePlayer : team.getPlayers()) {
@@ -75,8 +71,8 @@ public class FFAScoreboard extends AbstractScoreboard {
     }
 
     public Scoreboard buildScoreboard(Map<String, String> layout, Scoreboard scoreboard) {
-        return scoreboard == null || scoreboard.getObjective(DisplaySlot.SIDEBAR) == null
-                || !scoreboard.getObjective(DisplaySlot.SIDEBAR).getCriteria().equals(scoreboardId) ? getNewScoreboard(layout, getPlaceholders()) : updateScoreboard(layout, scoreboard, getPlaceholders());
+        return scoreboard == null || scoreboard.getObjective(DisplaySlot.SIDEBAR) == null ||
+                !scoreboard.getObjective(DisplaySlot.SIDEBAR).getCriteria().equals(this.scoreboardId) ? getNewScoreboard(layout, getPlaceholders()) : updateScoreboard(layout, scoreboard, getPlaceholders());
     }
 
     private Placeholder[] getPlaceholders() {

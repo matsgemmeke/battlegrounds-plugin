@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.gamemode.ffa;
 
 import com.matsg.battlegrounds.api.config.Yaml;
+import com.matsg.battlegrounds.api.event.GameEndEvent;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent.DeathCause;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameScoreboard;
@@ -64,12 +65,12 @@ public class FreeForAll extends AbstractGameMode {
     }
 
     public void onDeath(GamePlayer gamePlayer, DeathCause deathCause) {
-        game.broadcastMessage(Placeholder.replace(deathCause.getDeathMessage(), new Placeholder("bg_player", gamePlayer.getName())));
+        game.getPlayerManager().broadcastMessage(Placeholder.replace(deathCause.getDeathMessage(), new Placeholder("bg_player", gamePlayer.getName())));
         gamePlayer.setDeaths(gamePlayer.getDeaths() + 1);
     }
 
     public void onKill(GamePlayer gamePlayer, GamePlayer killer, Weapon weapon, Hitbox hitbox) {
-        game.broadcastMessage(getKillMessage(hitbox).getMessage(new Placeholder[] {
+        game.getPlayerManager().broadcastMessage(getKillMessage(hitbox).getMessage(new Placeholder[] {
                 new Placeholder("bg_killer", killer.getName()),
                 new Placeholder("bg_player", gamePlayer.getName()),
                 new Placeholder("bg_weapon", weapon.getName())
@@ -81,13 +82,14 @@ public class FreeForAll extends AbstractGameMode {
         game.getPlayerManager().updateExpBar(killer);
 
         if (killer.getKills() >= killsToWin) {
+            game.callEvent(new GameEndEvent(game, getTeam(killer), getSortedTeams()));
             game.stop();
         }
     }
 
     public void onStart() {
         super.onStart();
-        game.broadcastMessage(EnumTitle.FFA_START);
+        game.getPlayerManager().broadcastMessage(EnumTitle.FFA_START);
     }
 
     public void onStop() {
@@ -111,7 +113,7 @@ public class FreeForAll extends AbstractGameMode {
         };
 
         for (String message : endMessage) {
-            game.broadcastMessage(EnumMessage.PREFIX.getMessage() + ChatColor.translateAlternateColorCodes('&', Placeholder.replace(message, placeholders)));
+            game.getPlayerManager().broadcastMessage(EnumMessage.PREFIX.getMessage() + ChatColor.translateAlternateColorCodes('&', Placeholder.replace(message, placeholders)));
         }
 
         this.teams.clear();

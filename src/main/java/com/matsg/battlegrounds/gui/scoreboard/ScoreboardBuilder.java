@@ -1,4 +1,4 @@
-package com.matsg.battlegrounds.util;
+package com.matsg.battlegrounds.gui.scoreboard;
 
 import com.matsg.battlegrounds.api.util.Placeholder;
 import org.bukkit.Bukkit;
@@ -29,13 +29,12 @@ public class ScoreboardBuilder {
         this.scoreboard = Bukkit.getServer().getScoreboardManager().getNewScoreboard();
 
         addObjective(layout.get("id"), layout.get("title"), DisplaySlot.SIDEBAR);
-
         for (String line : layout.keySet()) {
             setLine(DisplaySlot.SIDEBAR, Integer.parseInt(line.substring(4, line.length())), Placeholder.replace(line, placeholders));
         }
     }
 
-    public ScoreboardBuilder(org.bukkit.scoreboard.Scoreboard scoreboard) {
+    public ScoreboardBuilder(Scoreboard scoreboard) {
         this.currentLine = 0;
         this.scoreboard = scoreboard;
         this.objectives = scoreboard.getObjectives();
@@ -45,7 +44,7 @@ public class ScoreboardBuilder {
         for (String string : displayName) {
             getObjective(slot).getScore(string).setScore(currentLine);
             if (slot == DisplaySlot.SIDEBAR) {
-                currentLine ++;
+                currentLine += 1;
             }
         }
         return this;
@@ -71,7 +70,7 @@ public class ScoreboardBuilder {
         if (team != null) {
             team.unregister();
         }
-        return scoreboard.registerNewTeam(name);
+        return this.scoreboard.registerNewTeam(name);
     }
 
     public Scoreboard build() {
@@ -126,7 +125,6 @@ public class ScoreboardBuilder {
                 return this;
             }
         }
-
         getObjective(slot).getScore(displayName).setScore(line);
         return this;
     }

@@ -157,7 +157,7 @@ public class BattleSound implements com.matsg.battlegrounds.api.util.Sound {
         if (sound == null) {
             sound = arg;
         }
-        return Sound.valueOf(getSoundDictionary().get(sound));
+        return Sound.valueOf(sound);
     }
 
     private static Map<String, String> getSoundDictionary() {
@@ -166,7 +166,7 @@ public class BattleSound implements com.matsg.battlegrounds.api.util.Sound {
         map.put("BLOCK_FIRE_EXTINGUISH", "FIZZ");
         map.put("BLOCK_IRON_DOOR_CLOSE", "DOOR_CLOSE");
         map.put("BLOCK_IRON_DOOR_OPEN", "DOOR_OPEN");
-        map.put("BLOCK_NOTE_HAT", "NOTE_PLING");
+        map.put("BLOCK_NOTE_HAT", "NOTE_STICKS");
         map.put("BLOCK_PISTON_CONTRACT", "PISTON_RETRACT");
         map.put("BLOCK_PISTON_EXTEND", "PISTON_EXTEND");
         map.put("BLOCK_STONE_BUTTON_CLICK_OFF", "CLICK");

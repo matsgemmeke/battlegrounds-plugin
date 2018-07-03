@@ -11,14 +11,12 @@ import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.player.PlayerStatus;
 import com.matsg.battlegrounds.api.player.PlayerStorage;
+import com.matsg.battlegrounds.api.util.Message;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.gui.scoreboard.LobbyScoreboard;
 import com.matsg.battlegrounds.item.misc.SelectLoadout;
 import com.matsg.battlegrounds.player.BattleGamePlayer;
-import com.matsg.battlegrounds.util.ActionBar;
-import com.matsg.battlegrounds.util.BattleRunnable;
-import com.matsg.battlegrounds.util.EnumMessage;
-import com.matsg.battlegrounds.util.ItemStackBuilder;
+import com.matsg.battlegrounds.util.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -65,10 +63,11 @@ public class BattlePlayerManager implements PlayerManager {
 
         players.add(gamePlayer);
 
-        game.broadcastMessage(EnumMessage.PLAYER_JOIN.getMessage(
+        broadcastMessage(EnumMessage.PLAYER_JOIN.getMessage(
                 new Placeholder("player_name", player.getName()),
                 new Placeholder("bg_players", players.size()),
                 new Placeholder("bg_maxplayers", game.getConfiguration().getMaxPlayers())));
+
         game.getGameMode().addPlayer(gamePlayer);
         game.updateSign();
 
@@ -86,6 +85,24 @@ public class BattlePlayerManager implements PlayerManager {
             countdown.run();
         }
         return gamePlayer;
+    }
+
+    public void broadcastMessage(Message message) {
+        for (GamePlayer gamePlayer : players) {
+            gamePlayer.sendMessage(message);
+        }
+    }
+
+    public void broadcastMessage(String message) {
+        for (GamePlayer gamePlayer : players) {
+            gamePlayer.sendMessage(message);
+        }
+    }
+
+    private void broadcastTitle(Title title, Placeholder... placeholders) {
+        for (GamePlayer gamePlayer : players) {
+            title.send(gamePlayer.getPlayer(), placeholders);
+        }
     }
 
     public void changeLoadout(GamePlayer gamePlayer, Loadout loadout, boolean apply) {
@@ -293,7 +310,7 @@ public class BattlePlayerManager implements PlayerManager {
         GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
         Team team = game.getGameMode().getTeam(gamePlayer);
 
-        game.broadcastMessage(EnumMessage.PLAYER_MESSAGE.getMessage(
+        broadcastMessage(EnumMessage.PLAYER_MESSAGE.getMessage(
                 new Placeholder("bg_message", message),
                 new Placeholder("player_name", team.getChatColor() + player.getName() + ChatColor.WHITE)));
     }
@@ -301,10 +318,11 @@ public class BattlePlayerManager implements PlayerManager {
     public void removePlayer(GamePlayer gamePlayer) {
         players.remove(gamePlayer);
 
-        game.broadcastMessage(EnumMessage.PLAYER_LEAVE.getMessage(
+        broadcastMessage(EnumMessage.PLAYER_LEAVE.getMessage(
                 new Placeholder("player_name", gamePlayer.getName()),
                 new Placeholder("bg_players", players.size()),
                 new Placeholder("bg_maxplayers", game.getConfiguration().getMaxPlayers())));
+
         game.getGameMode().removePlayer(gamePlayer);
         game.updateSign();
 

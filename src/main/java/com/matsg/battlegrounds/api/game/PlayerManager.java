@@ -2,6 +2,7 @@ package com.matsg.battlegrounds.api.game;
 
 import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.player.GamePlayer;
+import com.matsg.battlegrounds.api.util.Message;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -10,6 +11,10 @@ import java.util.Collection;
 public interface PlayerManager {
 
     GamePlayer addPlayer(Player player);
+
+    void broadcastMessage(Message message);
+
+    void broadcastMessage(String message);
 
     void changeLoadout(GamePlayer gamePlayer, Loadout loadout, boolean apply);
 

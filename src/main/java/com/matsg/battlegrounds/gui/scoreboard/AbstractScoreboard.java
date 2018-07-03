@@ -6,7 +6,6 @@ import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameScoreboard;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.util.Placeholder;
-import com.matsg.battlegrounds.util.ScoreboardBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
@@ -36,24 +35,24 @@ public abstract class AbstractScoreboard implements GameScoreboard {
     }
 
     public Set<World> getWorlds() {
-        return worlds;
+        return this.worlds;
     }
 
     public void addLayout(ScoreboardBuilder builder, Map<String, String> layout, Placeholder... placeholders) {
         for (String line : layout.keySet()) {
-            if (line.contains("line") && layout.get(line).length() > 0) {
+            if ((line.contains("line")) && layout.get(line).length() > 0) {
                 builder.setLine(DisplaySlot.SIDEBAR, Integer.parseInt(line.substring(4, line.length())),
                         ChatColor.translateAlternateColorCodes('&', Placeholder.replace(layout.get(line), placeholders)));
             }
         }
     }
 
-    public abstract void addTeams(ScoreboardBuilder builder);
+    public abstract void addTeams(ScoreboardBuilder paramScoreboardBuilder);
 
-    public abstract Scoreboard buildScoreboard(Map<String, String> layout, Scoreboard scoreboard);
+    public abstract Scoreboard buildScoreboard(Map<String, String> paramMap, Scoreboard paramScoreboard);
 
     public Scoreboard createScoreboard() {
-        return buildScoreboard(layout, null);
+        return buildScoreboard(this.layout, null);
     }
 
     public void destroy() {
@@ -74,14 +73,14 @@ public abstract class AbstractScoreboard implements GameScoreboard {
 
     protected String getDate() {
         StringBuilder builder = new StringBuilder();
-        if (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) < 10) {
+        if (Calendar.getInstance().get(5) < 10) {
             builder.append("0");
         }
-        builder.append(Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "/");
-        if ((Calendar.getInstance().get(Calendar.MONTH) + 1) < 10) {
+        builder.append(Calendar.getInstance().get(5) + "/");
+        if (Calendar.getInstance().get(2) + 1 < 10) {
             builder.append("0");
         }
-        builder.append((Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR));
+        builder.append(Calendar.getInstance().get(2) + 1 + "/" + Calendar.getInstance().get(1));
         return builder.toString();
     }
 

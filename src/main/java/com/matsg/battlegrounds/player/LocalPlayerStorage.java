@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class LocalPlayerStorage implements PlayerStorage {
 
@@ -83,7 +84,7 @@ public class LocalPlayerStorage implements PlayerStorage {
                 return ((Integer) o2.getExp()).compareTo(o1.getExp()); // Reverse sort
             }
         });
-        return list;
+        return list.stream().limit(limit).collect(Collectors.toList());
     }
 
     public StoredPlayer registerPlayer(UUID uuid, String name) {

@@ -39,7 +39,7 @@ public class GameCountdown extends BattleRunnable implements Countdown {
         for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
             gamePlayer.getPlayer().teleport(game.getLobby());
         }
-        game.broadcastMessage(EnumMessage.COUNTDOWN_CANCELLED);
+        game.getPlayerManager().broadcastMessage(EnumMessage.COUNTDOWN_CANCELLED);
     }
 
     public void run() {

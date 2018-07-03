@@ -10,8 +10,6 @@ public interface GameScoreboard {
 
     Scoreboard createScoreboard();
 
-    void destroy();
-
     void display(Game game);
 
     void display(Player player);

@@ -2,20 +2,20 @@ package com.matsg.battlegrounds.game;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.config.CacheYaml;
+import com.matsg.battlegrounds.api.event.GameStartEvent;
+import com.matsg.battlegrounds.api.event.GameStateChangeEvent;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.player.PlayerStatus;
-import com.matsg.battlegrounds.api.util.Message;
-import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.config.BattleCacheYaml;
 import com.matsg.battlegrounds.gui.scoreboard.LobbyScoreboard;
 import com.matsg.battlegrounds.listener.GameEventHandler;
 import com.matsg.battlegrounds.util.BattleRunnable;
-import com.matsg.battlegrounds.util.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -119,26 +119,13 @@ public class BattleGame implements Game {
     }
 
     public void setState(GameState state) {
+        this.plugin.getServer().getPluginManager().callEvent(new GameStateChangeEvent(this, this.state, state));
         this.state = state;
         this.gameMode.onStateChange(state);
     }
 
-    public void broadcastMessage(Message message) {
-        for (GamePlayer gamePlayer : playerManager.getPlayers()) {
-            gamePlayer.sendMessage(message);
-        }
-    }
-
-    public void broadcastMessage(String message) {
-        for (GamePlayer gamePlayer : playerManager.getPlayers()) {
-            gamePlayer.sendMessage(message);
-        }
-    }
-
-    private void broadcastTitle(Title title, Placeholder... placeholders) {
-        for (GamePlayer gamePlayer : playerManager.getPlayers()) {
-            title.send(gamePlayer.getPlayer(), placeholders);
-        }
+    public void callEvent(Event event) {
+        plugin.getServer().getPluginManager().callEvent(event);
     }
 
     private void clearGameData() {
@@ -226,9 +213,11 @@ public class BattleGame implements Game {
     }
 
     public void startGame() {
+        countdown = null;
         timeControl.start();
         setState(GameState.IN_GAME);
         updateSign();
+        callEvent(new GameStartEvent(this));
     }
 
     public void stop() {

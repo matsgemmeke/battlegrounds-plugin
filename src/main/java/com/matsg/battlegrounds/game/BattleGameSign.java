@@ -43,7 +43,7 @@ public class BattleGameSign implements GameSign {
                     new Placeholder("bg_game", game.getId()),
                     new Placeholder("bg_maxplayers", game.getConfiguration().getMaxPlayers()),
                     new Placeholder("bg_players", game.getPlayerManager().getPlayers().size()),
-                    new Placeholder("bg_state", game.getState().asSignState()))));
+                    new Placeholder("bg_state", plugin.getBattlegroundsConfig().getGameSignState(game.getState())))));
         }
         return sign.update();
     }

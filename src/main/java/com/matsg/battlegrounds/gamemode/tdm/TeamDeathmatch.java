@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.gamemode.tdm;
 
 import com.matsg.battlegrounds.api.config.Yaml;
+import com.matsg.battlegrounds.api.event.GameEndEvent;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent.DeathCause;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameScoreboard;
@@ -86,12 +87,12 @@ public class TeamDeathmatch extends AbstractGameMode {
     }
 
     public void onDeath(GamePlayer gamePlayer, DeathCause deathCause) {
-        game.broadcastMessage(Placeholder.replace(deathCause.getDeathMessage(), new Placeholder("bg_player", gamePlayer.getName())));
+        game.getPlayerManager().broadcastMessage(Placeholder.replace(deathCause.getDeathMessage(), new Placeholder("bg_player", gamePlayer.getName())));
         gamePlayer.setDeaths(gamePlayer.getDeaths() + 1);
     }
 
     public void onKill(GamePlayer gamePlayer, GamePlayer killer, Weapon weapon, Hitbox hitbox) {
-        game.broadcastMessage(getKillMessage(hitbox).getMessage(new Placeholder[] {
+        game.getPlayerManager().broadcastMessage(getKillMessage(hitbox).getMessage(new Placeholder[] {
                 new Placeholder("bg_killer", getTeam(killer).getChatColor() + killer.getName() + ChatColor.WHITE),
                 new Placeholder("bg_player", getTeam(gamePlayer).getChatColor() + gamePlayer.getName() + ChatColor.WHITE),
                 new Placeholder("bg_weapon", weapon.getName())
@@ -103,13 +104,14 @@ public class TeamDeathmatch extends AbstractGameMode {
         game.getPlayerManager().updateExpBar(killer);
 
         if (killer.getKills() >= killsToWin) {
+            game.callEvent(new GameEndEvent(game, getTeam(killer), getSortedTeams()));
             game.stop();
         }
     }
 
     public void onStart() {
         super.onStart();
-        game.broadcastMessage(EnumTitle.TDM_START);
+        game.getPlayerManager().broadcastMessage(EnumTitle.TDM_START);
     }
 
     public void onStop() {

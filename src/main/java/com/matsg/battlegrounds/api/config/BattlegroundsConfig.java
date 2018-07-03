@@ -1,6 +1,8 @@
 package com.matsg.battlegrounds.api.config;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.game.GameState;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.io.IOException;
@@ -36,6 +38,10 @@ public final class BattlegroundsConfig extends AbstractYaml {
             list.add(getString("game-sign-layout." + string));
         }
         return list.toArray(new String[list.size()]);
+    }
+
+    public String getGameSignState(GameState gameState) {
+        return ChatColor.translateAlternateColorCodes('&', getString("game-sign-state." + gameState.toString().replaceAll("_", "-")));
     }
 
     public Map<String, String> getLobbyScoreboardLayout() {

@@ -84,5 +84,13 @@ game-sign-layout:
   line-2: "%bg_arena%"
   line-3: "&8&l%bg_players%/%bg_maxplayers%"
 
+# Gamestate notations on game joining signs
+game-sign-states:
+  disabled: "&8&l[ DISABLED ]"
+  in-game: "&4&l[ IN GAME ]"
+  resetting: "&9&l[ RESETTING ]"
+  starting: "&6&l[ STARTING ]"
+  waiting: "&2&l[ WAITING ]"
+
 # The minimum level players need to be to get access to custom loadout creation
 loadout-creation-level: 4
