@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.gui.scoreboard;
 
 import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import org.bukkit.World;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -11,6 +12,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class LobbyScoreboard extends AbstractScoreboard {
+
     private int countdown;
 
     public LobbyScoreboard(Game game) {
@@ -44,7 +46,7 @@ public class LobbyScoreboard extends AbstractScoreboard {
 
     public void addTeams(ScoreboardBuilder builder) {}
 
-    public Scoreboard buildScoreboard(Map<String, String> layout, Scoreboard scoreboard) {
+    public Scoreboard buildScoreboard(Map<String, String> layout, Scoreboard scoreboard, GamePlayer gamePlayer) {
         return scoreboard == null || scoreboard.getObjective(DisplaySlot.SIDEBAR) == null ||
                 !scoreboard.getObjective(DisplaySlot.SIDEBAR).getCriteria().equals(scoreboardId) ? getNewScoreboard(layout, getPlaceholders()) : updateScoreboard(layout, scoreboard, getPlaceholders());
     }
@@ -54,7 +56,7 @@ public class LobbyScoreboard extends AbstractScoreboard {
                 new Placeholder("bg_arena", game.getArena() != null ? game.getArena().getName() : "---"),
                 new Placeholder("bg_countdown", countdown),
                 new Placeholder("bg_date", getDate()),
-                new Placeholder("bg_gamemode", game.getGameMode().getSimpleName()),
+                new Placeholder("bg_gamemode", game.getGameMode().getShortName()),
                 new Placeholder("bg_players", game.getPlayerManager().getPlayers().size()) };
     }
 }

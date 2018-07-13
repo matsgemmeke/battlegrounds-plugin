@@ -4,6 +4,7 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.config.CacheYaml;
 import com.matsg.battlegrounds.api.config.WeaponConfig;
 import com.matsg.battlegrounds.api.game.*;
+import com.matsg.battlegrounds.api.gamemode.GameMode;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.game.*;
 import com.matsg.battlegrounds.gamemode.GameModeType;
@@ -118,7 +119,7 @@ public class DataLoader {
 
                     game.getArenaList().add(arena);
 
-                    logger.info("Succesfully added arena " + name + " to game " + id);
+                    logger.info("Succesfully added arena " + name + " with " + arena.getSpawns().size() + " spawns to game " + id);
                 }
 
                 // Assign an arena to this game

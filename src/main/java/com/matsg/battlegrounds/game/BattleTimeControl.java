@@ -32,7 +32,7 @@ public class BattleTimeControl extends BattleRunnable implements TimeControl {
     }
 
     public void run() {
-        game.getGameMode().getScoreboard().display(game);
+        game.getGameMode().tick();
         time ++;
     }
 

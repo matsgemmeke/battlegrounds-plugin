@@ -41,7 +41,7 @@ public final class BattlegroundsConfig extends AbstractYaml {
     }
 
     public String getGameSignState(GameState gameState) {
-        return ChatColor.translateAlternateColorCodes('&', getString("game-sign-state." + gameState.toString().replaceAll("_", "-")));
+        return ChatColor.translateAlternateColorCodes('&', getString("game-sign-state." + gameState.toString().toLowerCase().replaceAll("_", "-")));
     }
 
     public Map<String, String> getLobbyScoreboardLayout() {

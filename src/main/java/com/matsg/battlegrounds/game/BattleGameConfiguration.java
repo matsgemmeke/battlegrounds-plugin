@@ -3,7 +3,7 @@ package com.matsg.battlegrounds.game;
 import com.matsg.battlegrounds.api.config.Yaml;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameConfiguration;
-import com.matsg.battlegrounds.api.game.GameMode;
+import com.matsg.battlegrounds.api.gamemode.GameMode;
 import com.matsg.battlegrounds.gamemode.GameModeType;
 
 import java.util.ArrayList;

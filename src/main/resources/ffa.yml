@@ -12,6 +12,9 @@ end-message:
 # The amount of kills needed to win a game
 kills-to-win: 30
 
+# The amount of lives players have
+lives: 100
+
 # The mininum distance between a spawn point and the nearest foe upon respawning
 # Warning: setting this value too high may cause a server crash!
 minimum-distance-spawn: 10.0

@@ -1,5 +1,5 @@
 # Do not touch
-version: 1.0.1
+version: 1.0.2
 
 # The language locale which the plugin will translate its messages to
 locale: en
@@ -85,7 +85,7 @@ game-sign-layout:
   line-3: "&8&l%bg_players%/%bg_maxplayers%"
 
 # Gamestate notations on game joining signs
-game-sign-states:
+game-sign-state:
   disabled: "&8&l[ DISABLED ]"
   in-game: "&4&l[ IN GAME ]"
   resetting: "&9&l[ RESETTING ]"

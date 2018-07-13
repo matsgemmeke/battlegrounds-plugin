@@ -7,6 +7,7 @@ import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameScoreboard;
 import com.matsg.battlegrounds.api.game.Spawn;
 import com.matsg.battlegrounds.api.game.Team;
+import com.matsg.battlegrounds.api.gamemode.Objective;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.player.Hitbox;
@@ -14,9 +15,11 @@ import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.game.BattleTeam;
 import com.matsg.battlegrounds.gamemode.AbstractGameMode;
 import com.matsg.battlegrounds.gamemode.Result;
+import com.matsg.battlegrounds.gamemode.objective.EliminationObjective;
+import com.matsg.battlegrounds.gamemode.objective.ScoreObjective;
+import com.matsg.battlegrounds.gamemode.objective.TimeObjective;
 import com.matsg.battlegrounds.util.EnumMessage;
 import com.matsg.battlegrounds.util.EnumTitle;
-import com.matsg.battlegrounds.util.Title;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.configuration.ConfigurationSection;
@@ -28,15 +31,20 @@ public class TeamDeathmatch extends AbstractGameMode {
 
     private boolean scoreboardEnabled;
     private double minSpawnDistance;
-    private int killsToWin;
+    private int killsToWin, lives;
 
     public TeamDeathmatch(Game game, Yaml yaml) {
         super(game, EnumMessage.TDM_NAME.getMessage(), EnumMessage.TDM_SHORT.getMessage(), yaml);
         this.killsToWin = yaml.getInt("kills-to-win");
+        this.lives = yaml.getInt("lives");
         this.minSpawnDistance = yaml.getDouble("minimum-spawn-distance");
         this.scoreboardEnabled = yaml.getBoolean("scoreboard.enabled");
         this.teams.addAll(getConfigTeams());
         this.timeLimit = yaml.getInt("time-limit");
+
+        objectives.add(new EliminationObjective());
+        objectives.add(new ScoreObjective(killsToWin));
+        objectives.add(new TimeObjective(timeLimit));
     }
 
     public void addPlayer(GamePlayer gamePlayer) {
@@ -88,7 +96,7 @@ public class TeamDeathmatch extends AbstractGameMode {
 
     public void onDeath(GamePlayer gamePlayer, DeathCause deathCause) {
         game.getPlayerManager().broadcastMessage(Placeholder.replace(deathCause.getDeathMessage(), new Placeholder("bg_player", gamePlayer.getName())));
-        gamePlayer.setDeaths(gamePlayer.getDeaths() + 1);
+        handleDeath(gamePlayer);
     }
 
     public void onKill(GamePlayer gamePlayer, GamePlayer killer, Weapon weapon, Hitbox hitbox) {
@@ -97,14 +105,16 @@ public class TeamDeathmatch extends AbstractGameMode {
                 new Placeholder("bg_player", getTeam(gamePlayer).getChatColor() + gamePlayer.getName() + ChatColor.WHITE),
                 new Placeholder("bg_weapon", weapon.getName())
         }));
-        gamePlayer.setDeaths(gamePlayer.getDeaths() + 1);
+        handleDeath(gamePlayer);
         killer.addExp(100);
         killer.setKills(killer.getKills() + 1);
         killer.getTeam().setScore(killer.getTeam().getScore() + 1);
         game.getPlayerManager().updateExpBar(killer);
 
-        if (killer.getKills() >= killsToWin) {
-            game.callEvent(new GameEndEvent(game, getTeam(killer), getSortedTeams()));
+        Objective objective = getReachedObjective();
+
+        if (objective != null) {
+            game.callEvent(new GameEndEvent(game, objective, getTopTeam(), getSortedTeams()));
             game.stop();
         }
     }
@@ -112,14 +122,19 @@ public class TeamDeathmatch extends AbstractGameMode {
     public void onStart() {
         super.onStart();
         game.getPlayerManager().broadcastMessage(EnumTitle.TDM_START);
+        for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
+            gamePlayer.setLives(lives);
+        }
     }
 
     public void onStop() {
+        Objective objective = getReachedObjective();
+
         for (Team team : teams) {
             Result result = Result.getResult(team, getSortedTeams());
             if (result != null) {
                 for (GamePlayer gamePlayer : team.getPlayers()) {
-                    gamePlayer.sendMessage(new Title(result.getTitle(), EnumMessage.ENDREASON_SCORE.getMessage(), 20, 160, 20));
+                    objective.getTitle().send(gamePlayer.getPlayer(), new Placeholder("bg_result", result.getResultMessage()));
                 }
             }
         }

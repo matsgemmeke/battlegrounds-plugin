@@ -10,6 +10,9 @@ public enum EnumTitle implements Message {
 
     COUNTDOWN("title-countdown"),
     FFA_START("title-ffa-start"),
+    OBJECTIVE_ELIMINATION("title-objective-elimination"),
+    OBJECTIVE_SCORE("title-objective-score"),
+    OBJECTIVE_TIME("title-objective-time"),
     TDM_START("title-tdm-start");
 
     private Battlegrounds plugin;
@@ -46,6 +49,10 @@ public enum EnumTitle implements Message {
 
     public String getMessage(Placeholder... placeholders) {
         return title.getMessage(placeholders);
+    }
+
+    public Title getTitle() {
+        return title;
     }
 
     public void send(Player player, Placeholder... placeholders) {

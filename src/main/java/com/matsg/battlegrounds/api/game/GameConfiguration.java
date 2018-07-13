@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.api.game;
 
 import com.matsg.battlegrounds.api.config.Yaml;
+import com.matsg.battlegrounds.api.gamemode.GameMode;
 
 public interface GameConfiguration {
 

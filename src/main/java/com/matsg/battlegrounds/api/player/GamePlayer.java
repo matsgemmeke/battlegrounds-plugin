@@ -15,6 +15,8 @@ public interface GamePlayer extends OfflineGamePlayer, Comparable<GamePlayer> {
 
     Collection<Item> getHeldItems();
 
+    int getLives();
+
     Loadout getLoadout();
 
     Location getLocation();
@@ -30,6 +32,8 @@ public interface GamePlayer extends OfflineGamePlayer, Comparable<GamePlayer> {
     void sendMessage(Message message);
 
     void sendMessage(String message);
+
+    void setLives(int lives);
 
     void setLoadout(Loadout loadout);
 

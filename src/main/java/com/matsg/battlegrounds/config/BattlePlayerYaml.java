@@ -56,7 +56,7 @@ public class BattlePlayerYaml extends AbstractYaml implements PlayerYaml {
         set("Loadout." + loadout.getId() + ".Primary", loadout.getPrimary() != null ? loadout.getPrimary().getName() : null);
         set("Loadout." + loadout.getId() + ".Secondary", loadout.getSecondary() != null ? loadout.getSecondary().getName() : null);
         set("Loadout." + loadout.getId() + ".Equipment", loadout.getEquipment() != null ? loadout.getEquipment().getName() : null);
-        set("Loadout." + loadout.getId() + ".Knife", loadout.getKnife().getName());
+        set("Loadout." + loadout.getId() + ".Knife", loadout.getKnife() != null ? loadout.getKnife().getName() : null);
         save();
     }
 

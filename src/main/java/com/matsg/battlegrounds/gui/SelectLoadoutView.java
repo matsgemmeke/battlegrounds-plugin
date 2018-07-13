@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.gui;
 
+import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.item.Loadout;
@@ -22,14 +23,13 @@ import java.util.Map;
 
 public class SelectLoadoutView implements View {
 
-    private Battlegrounds plugin;
+    private static Battlegrounds plugin = BattlegroundsPlugin.getPlugin();
     private Game game;
     private GamePlayer gamePlayer;
     private Inventory inventory;
     private Map<ItemStack, Loadout> loadouts;
 
-    public SelectLoadoutView(Battlegrounds plugin, Game game, GamePlayer gamePlayer) {
-        this.plugin = plugin;
+    public SelectLoadoutView(Game game, GamePlayer gamePlayer) {
         this.game = game;
         this.gamePlayer = gamePlayer;
         this.inventory = plugin.getServer().createInventory(this, 27, EnumMessage.TITLE_SELECT_LOADOUT.getMessage());

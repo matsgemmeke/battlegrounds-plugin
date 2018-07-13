@@ -85,7 +85,7 @@ public class BattleGun extends BattleFireArm implements Gun {
     }
 
     private void inflictDamage(Location location, double range) {
-        GamePlayer[] players = game.getPlayerManager().getNearbyPlayers(game, location, range);
+        GamePlayer[] players = game.getPlayerManager().getNearbyPlayers(location, range);
         Team team = game.getGameMode().getTeam(gamePlayer);
         if (players.length > 0) {
             GamePlayer gamePlayer = players[0];

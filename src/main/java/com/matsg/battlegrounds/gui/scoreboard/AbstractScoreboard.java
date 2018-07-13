@@ -49,10 +49,10 @@ public abstract class AbstractScoreboard implements GameScoreboard {
 
     public abstract void addTeams(ScoreboardBuilder paramScoreboardBuilder);
 
-    public abstract Scoreboard buildScoreboard(Map<String, String> paramMap, Scoreboard paramScoreboard);
+    public abstract Scoreboard buildScoreboard(Map<String, String> layout, Scoreboard scoreboard, GamePlayer gamePlayer);
 
     public Scoreboard createScoreboard() {
-        return buildScoreboard(this.layout, null);
+        return buildScoreboard(layout, null, null);
     }
 
     public void destroy() {
@@ -63,12 +63,12 @@ public abstract class AbstractScoreboard implements GameScoreboard {
 
     public void display(Game game) {
         for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
-            display(gamePlayer.getPlayer());
+            display(gamePlayer);
         }
     }
 
-    public void display(Player player) {
-        player.setScoreboard(buildScoreboard(layout, player.getScoreboard()));
+    public void display(GamePlayer gamePlayer) {
+        gamePlayer.getPlayer().setScoreboard(buildScoreboard(layout, gamePlayer.getPlayer().getScoreboard(), gamePlayer));
     }
 
     protected String getDate() {

@@ -16,7 +16,7 @@ import java.util.UUID;
 
 public class BattleGamePlayer implements GamePlayer {
 
-    private int deaths, exp, headshots, kills;
+    private int deaths, exp, headshots, kills, lives;
     private List<Item> heldItems;
     private Loadout loadout;
     private Player player;
@@ -31,6 +31,7 @@ public class BattleGamePlayer implements GamePlayer {
         this.headshots = 0;
         this.heldItems = new ArrayList<>();
         this.kills = 0;
+        this.lives = 0;
         this.playerStatus = PlayerStatus.ACTIVE;
         this.savedInventory = new BattleSavedInventory(player);
     }
@@ -53,6 +54,10 @@ public class BattleGamePlayer implements GamePlayer {
 
     public int getKills() {
         return kills;
+    }
+
+    public int getLives() {
+        return lives;
     }
 
     public Loadout getLoadout() {
@@ -101,6 +106,10 @@ public class BattleGamePlayer implements GamePlayer {
 
     public void setKills(int kills) {
         this.kills = kills;
+    }
+
+    public void setLives(int lives) {
+        this.lives = lives;
     }
 
     public void setLoadout(Loadout loadout) {

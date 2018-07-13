@@ -46,14 +46,13 @@ public class FFAScoreboard extends AbstractScoreboard {
         super.addLayout(builder, layout, placeholders);
         int index = Integer.MIN_VALUE;
         for (String line : layout.keySet()) {
-            if (layout.get(line).contains("%bg_scores%"))
-            {
+            if (layout.get(line).contains("%bg_scores%")) {
                 index = Integer.parseInt(line.substring(4, line.length()));
                 break;
             }
         }
         if (index > Integer.MIN_VALUE) {
-            builder.removeLine(DisplaySlot.SIDEBAR, index );
+            builder.removeLine(DisplaySlot.SIDEBAR, index);
             for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
                 builder.addLine(DisplaySlot.SIDEBAR, gamePlayer.getKills(), gamePlayer.getName());
             }
@@ -70,14 +69,16 @@ public class FFAScoreboard extends AbstractScoreboard {
         }
     }
 
-    public Scoreboard buildScoreboard(Map<String, String> layout, Scoreboard scoreboard) {
+    public Scoreboard buildScoreboard(Map<String, String> layout, Scoreboard scoreboard, GamePlayer gamePlayer) {
         return scoreboard == null || scoreboard.getObjective(DisplaySlot.SIDEBAR) == null ||
-                !scoreboard.getObjective(DisplaySlot.SIDEBAR).getCriteria().equals(this.scoreboardId) ? getNewScoreboard(layout, getPlaceholders()) : updateScoreboard(layout, scoreboard, getPlaceholders());
+                !scoreboard.getObjective(DisplaySlot.SIDEBAR).getCriteria().equals(scoreboardId) ? getNewScoreboard(layout, getPlaceholders(gamePlayer)) : updateScoreboard(layout, scoreboard, getPlaceholders(gamePlayer));
     }
 
-    private Placeholder[] getPlaceholders() {
+    private Placeholder[] getPlaceholders(GamePlayer gamePlayer) {
         return new Placeholder[] {
                 new Placeholder("bg_date", getDate()),
+                new Placeholder("bg_gamemode", game.getGameMode().getName()),
+                new Placeholder("bg_player_kills", gamePlayer.getKills()),
                 new Placeholder("bg_time", game.getTimeControl().formatTime())
         };
     }

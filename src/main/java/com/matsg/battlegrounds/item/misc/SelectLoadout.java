@@ -30,7 +30,7 @@ public class SelectLoadout extends BattleItem {
         if (gamePlayer == null) {
             return;
         }
-        player.openInventory(new SelectLoadoutView(plugin, game, gamePlayer).getInventory());
+        player.openInventory(new SelectLoadoutView(game, gamePlayer).getInventory());
     }
 
     public void onLeftClick(Player player) {

@@ -4,7 +4,7 @@ import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.config.AbstractYaml;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.GameMode;
+import com.matsg.battlegrounds.api.gamemode.GameMode;
 import com.matsg.battlegrounds.gamemode.ffa.FreeForAll;
 import com.matsg.battlegrounds.gamemode.tdm.TeamDeathmatch;
 

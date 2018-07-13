@@ -3,6 +3,7 @@ package com.matsg.battlegrounds.listener;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.gui.View;
+import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,6 +12,7 @@ import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -32,12 +34,19 @@ public class EventListener implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        event.setCancelled(isPlaying(event.getPlayer()) || plugin.getGameManager().getArena(event.getBlock().getLocation()) != null && plugin.getBattlegroundsConfig().arenaProtection);
+        if (plugin.getGameManager().getArena(event.getBlock().getLocation()) != null || plugin.getBattlegroundsConfig().arenaProtection) {
+            return;
+        }
+        event.setCancelled(true);
     }
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
-        event.setCancelled(isPlaying(event.getPlayer()) || plugin.getGameManager().getArena(event.getBlock().getLocation()) != null && plugin.getBattlegroundsConfig().arenaProtection);
+        if (plugin.getGameManager().getArena(event.getBlock().getLocation()) != null || plugin.getBattlegroundsConfig().arenaProtection) {
+            return;
+        }
+        event.setCancelled(true);
+        //event.setCancelled(isPlaying(event.getPlayer()) || plugin.getGameManager().getArena(event.getBlock().getLocation()) != null && plugin.getBattlegroundsConfig().arenaProtection);
     }
 
     @EventHandler
@@ -70,6 +79,22 @@ public class EventListener implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         onPlayerLeave(event.getPlayer());
+    }
+
+    @EventHandler
+    public void onSignClick(PlayerInteractEvent event) {
+        if (event.getClickedBlock() == null || !(event.getClickedBlock().getState() instanceof Sign)) {
+            return;
+        }
+
+        Sign sign = (Sign) event.getClickedBlock().getState();
+
+        for (Game game : plugin.getGameManager().getGames()) {
+            if (game.getGameSign() != null && game.getGameSign().getSign().equals(sign)) {
+                game.getGameSign().click(event.getPlayer());
+                break;
+            }
+        }
     }
 
     @EventHandler

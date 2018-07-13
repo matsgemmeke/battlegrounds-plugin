@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.api.game;
 
 import com.matsg.battlegrounds.api.config.CacheYaml;
+import com.matsg.battlegrounds.api.gamemode.GameMode;
 import org.bukkit.Location;
 import org.bukkit.event.Event;
 

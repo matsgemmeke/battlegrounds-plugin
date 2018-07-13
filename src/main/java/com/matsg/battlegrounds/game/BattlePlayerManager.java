@@ -1,7 +1,6 @@
 package com.matsg.battlegrounds.game;
 
 import com.matsg.battlegrounds.api.config.LevelConfig;
-import com.matsg.battlegrounds.api.config.PlayerYaml;
 import com.matsg.battlegrounds.api.config.StoredPlayer;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.item.Item;
@@ -39,8 +38,8 @@ public class BattlePlayerManager implements PlayerManager {
     public BattlePlayerManager(Game game, LevelConfig levelConfig, PlayerStorage playerStorage) {
         this.game = game;
         this.levelConfig = levelConfig;
-        this.playerStorage = playerStorage;
         this.players = new ArrayList<>();
+        this.playerStorage = playerStorage;
     }
 
     public List<GamePlayer> getPlayers() {
@@ -99,12 +98,6 @@ public class BattlePlayerManager implements PlayerManager {
         }
     }
 
-    private void broadcastTitle(Title title, Placeholder... placeholders) {
-        for (GamePlayer gamePlayer : players) {
-            title.send(gamePlayer.getPlayer(), placeholders);
-        }
-    }
-
     public void changeLoadout(GamePlayer gamePlayer, Loadout loadout, boolean apply) {
         Loadout old = gamePlayer.getLoadout();
         gamePlayer.setLoadout(loadout);
@@ -113,7 +106,7 @@ public class BattlePlayerManager implements PlayerManager {
             return;
         }
         if (old != null) {
-            clearLoadout(loadout);
+            clearLoadout(old);
         }
         addLoadout(gamePlayer, loadout);
         loadout.updateInventory();
@@ -121,9 +114,11 @@ public class BattlePlayerManager implements PlayerManager {
 
     private void clearLoadout(Loadout loadout) {
         for (Weapon weapon : loadout.getWeapons()) {
-            weapon.remove();
-            weapon.setGame(null);
-            weapon.setGamePlayer(null);
+            if (weapon != null) {
+                weapon.remove();
+                weapon.setGame(null);
+                weapon.setGamePlayer(null);
+            }
         }
     }
 
@@ -176,7 +171,7 @@ public class BattlePlayerManager implements PlayerManager {
         return list.toArray(new GamePlayer[list.size()]);
     }
 
-    public GamePlayer[] getNearbyEnemyPlayers(Game game, GamePlayer gamePlayer, double range) {
+    public GamePlayer[] getNearbyEnemyPlayers(GamePlayer gamePlayer, double range) {
         List<GamePlayer> list = new ArrayList<>();
         Team team = game.getGameMode().getTeam(gamePlayer);
         for (Entity entity : game.getArena().getWorld().getNearbyEntities(gamePlayer.getLocation(), range, range, range)) {
@@ -190,7 +185,7 @@ public class BattlePlayerManager implements PlayerManager {
         return list.toArray(new GamePlayer[list.size()]);
     }
 
-    public GamePlayer[] getNearbyPlayers(Game game, Location location, double range) {
+    public GamePlayer[] getNearbyPlayers(Location location, double range) {
         List<GamePlayer> list = new ArrayList<>();
         for (Entity entity : game.getArena().getWorld().getNearbyEntities(location, range, range, range)) {
             if (entity instanceof Player) {
@@ -198,16 +193,6 @@ public class BattlePlayerManager implements PlayerManager {
                 if (gamePlayer != null) {
                     list.add(gamePlayer);
                 }
-            }
-        }
-        return list.toArray(new GamePlayer[list.size()]);
-    }
-
-    public GamePlayer[] getNearbyPlayers(Location location, double range) {
-        List<GamePlayer> list = new ArrayList<>();
-        for (GamePlayer gamePlayer : players) {
-            if (gamePlayer != null && location.distanceSquared(gamePlayer.getLocation()) <= range) {
-                list.add(gamePlayer);
             }
         }
         return list.toArray(new GamePlayer[list.size()]);
@@ -315,7 +300,7 @@ public class BattlePlayerManager implements PlayerManager {
                 new Placeholder("player_name", team.getChatColor() + player.getName() + ChatColor.WHITE)));
     }
 
-    public void removePlayer(GamePlayer gamePlayer) {
+    public boolean removePlayer(GamePlayer gamePlayer) {
         players.remove(gamePlayer);
 
         broadcastMessage(EnumMessage.PLAYER_LEAVE.getMessage(
@@ -337,11 +322,11 @@ public class BattlePlayerManager implements PlayerManager {
         if (getLivingPlayers().length == 1) {
             game.stop();
         }
+        return !players.contains(gamePlayer);
     }
 
     public void respawnPlayer(GamePlayer gamePlayer, Spawn spawn) {
         changeLoadout(gamePlayer, gamePlayer.getLoadout(), true);
-        gamePlayer.getLoadout().updateInventory();
         spawn.setGamePlayer(gamePlayer);
 
         new BattleRunnable() {

@@ -2,6 +2,7 @@ package com.matsg.battlegrounds.gamemode;
 
 import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.util.EnumMessage;
+import com.matsg.battlegrounds.util.Title;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,11 +40,11 @@ public enum Result {
     };
 
     private int id;
-    private String title;
+    private String resultMessage;
 
-    Result(int id, String title) {
+    Result(int id, String resultMessage) {
         this.id = id;
-        this.title = title;
+        this.resultMessage = resultMessage;
     }
 
     public static Result getResult(Team team, List<Team> teams) {
@@ -59,8 +60,8 @@ public enum Result {
         return id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getResultMessage() {
+        return resultMessage;
     }
 
     abstract boolean applies(Team team, List<Team> sortedTeams);

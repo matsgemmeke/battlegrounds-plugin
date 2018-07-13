@@ -22,12 +22,11 @@ public class TDMScoreboard extends AbstractScoreboard {
         this.game = game;
         this.layout = getScoreboardLayout(yaml.getConfigurationSection("scoreboard.layout"));
         this.scoreboardId = "tdm";
-        for (String world : yaml.getString("scoreboard.worlds").split(","))
-        {
-            if (world.equals("*"))
-            {
-                this.worlds.clear();
-                this.worlds.addAll(plugin.getServer().getWorlds());
+
+        for (String world : yaml.getString("scoreboard.worlds").split(",")) {
+            if (world.equals("*")) {
+                worlds.clear();
+                worlds.addAll(plugin.getServer().getWorlds());
                 break;
             }
             this.worlds.add(plugin.getServer().getWorld(world));
@@ -70,15 +69,16 @@ public class TDMScoreboard extends AbstractScoreboard {
         }
     }
 
-    public Scoreboard buildScoreboard(Map<String, String> layout, Scoreboard scoreboard) {
+    public Scoreboard buildScoreboard(Map<String, String> layout, Scoreboard scoreboard, GamePlayer gamePlayer) {
         return scoreboard == null || scoreboard.getObjective(DisplaySlot.SIDEBAR) == null ||
-                !scoreboard.getObjective(DisplaySlot.SIDEBAR).getCriteria().equals(this.scoreboardId) ? getNewScoreboard(layout, getPlaceholders()) : updateScoreboard(layout, scoreboard, getPlaceholders());
+                !scoreboard.getObjective(DisplaySlot.SIDEBAR).getCriteria().equals(scoreboardId) ? getNewScoreboard(layout, getPlaceholders(gamePlayer)) : updateScoreboard(layout, scoreboard, getPlaceholders(gamePlayer));
     }
 
-    private Placeholder[] getPlaceholders() {
+    private Placeholder[] getPlaceholders(GamePlayer gamePlayer) {
         return new Placeholder[] {
                 new Placeholder("bg_date", getDate()),
                 new Placeholder("bg_gamemode", game.getGameMode().getName()),
+                new Placeholder("bg_player_kills", gamePlayer.getKills()),
                 new Placeholder("bg_time", game.getTimeControl().formatTime()) };
     }
 }

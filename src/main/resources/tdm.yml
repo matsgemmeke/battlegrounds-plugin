@@ -1,6 +1,9 @@
 # Amount of kills needed to win a game
 kills-to-win: 75
 
+# The amount of lives players have
+lives: 100
+
 # The mininum distance between a spawn point and the nearest foe upon respawning
 # Warning: setting this value too high may cause a server crash!
 minimum-distance-spawn: 10.0
@@ -13,9 +16,10 @@ scoreboard:
   # Leave "" to remove this line
   layout:
     line0: "&6Time: &f%bg_time%"
-    line1: " "
-    line2: "%bg_scores%"
-    line3: "  "
+    line1: "&6Kills: &f%bg_player_kills%"
+    line2: " "
+    line3: "%bg_scores%"
+    line4: "  "
     title: "&6&lTeam Deathmatch"
   # List of worlds where this scoreboard will appear
   worlds: "*"
