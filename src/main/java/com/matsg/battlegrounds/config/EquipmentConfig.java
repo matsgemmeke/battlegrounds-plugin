@@ -4,6 +4,8 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.config.AbstractYaml;
 import com.matsg.battlegrounds.api.config.WeaponConfig;
 import com.matsg.battlegrounds.api.item.Equipment;
+import com.matsg.battlegrounds.api.item.Lethal;
+import com.matsg.battlegrounds.api.item.Tactical;
 import com.matsg.battlegrounds.api.item.WeaponType;
 import com.matsg.battlegrounds.item.BattleLethal;
 import com.matsg.battlegrounds.item.BattleTactical;
@@ -58,8 +60,8 @@ public class EquipmentConfig extends AbstractYaml implements WeaponConfig<Equipm
 
     private List<WeaponSerializer> prepareSerializers() {
         List<WeaponSerializer> list = new ArrayList<>();
-        list.add(new WeaponSerializer(EquipmentType.LETHAL) {
-            Equipment getFromSection(ConfigurationSection section) throws ItemFormatException {
+        list.add(new WeaponSerializer<Lethal>(EquipmentType.LETHAL) {
+            Lethal getFromSection(ConfigurationSection section) throws ItemFormatException {
                 String name = section.getString("DisplayName");
                 String[] material = section.getString("Material").split(",");
                 try {
@@ -84,8 +86,8 @@ public class EquipmentConfig extends AbstractYaml implements WeaponConfig<Equipm
                 }
             }
         });
-        list.add(new WeaponSerializer(EquipmentType.TACTICAL) {
-            Equipment getFromSection(ConfigurationSection section) throws ItemFormatException {
+        list.add(new WeaponSerializer<Tactical>(EquipmentType.TACTICAL) {
+            Tactical getFromSection(ConfigurationSection section) throws ItemFormatException {
                 String name = section.getString("DisplayName");
                 String[] material = section.getString("Material").split(",");
                 try {

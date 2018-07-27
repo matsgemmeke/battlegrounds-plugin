@@ -55,7 +55,7 @@ public enum LaunchType {
 
                         GamePlayer[] players = launcher.getGame().getPlayerManager().getNearbyEnemyPlayers(launcher.getGame().getGameMode().getTeam(launcher.getGamePlayer()), direction, range);
 
-                        if (players.length >= 1 || direction.getBlock().getRelative(BlockFace.DOWN).getType().isSolid()) {
+                        if (players.length >= 1 || direction.getBlock().getType().isSolid()) {
                             launcher.explode(direction);
                             cancel();
                             return;

@@ -53,7 +53,7 @@ public class EditLoadoutView implements View {
                     .build();
 
             inventory.setItem(i += 2, itemStack);
-            weapons.put(itemStack, weapon);
+            weapons.put(inventory.getItem(i), weapon);
         }
         return inventory;
     }

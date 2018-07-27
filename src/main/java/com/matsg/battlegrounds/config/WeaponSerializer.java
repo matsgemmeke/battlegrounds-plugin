@@ -7,7 +7,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.Arrays;
 import java.util.List;
 
-abstract class WeaponSerializer {
+abstract class WeaponSerializer<T extends Weapon> {
 
     private List<WeaponType> types;
 
@@ -19,5 +19,5 @@ abstract class WeaponSerializer {
         return types.contains(type);
     }
 
-    abstract Weapon getFromSection(ConfigurationSection section) throws ItemFormatException;
+    abstract T getFromSection(ConfigurationSection section) throws ItemFormatException;
 }

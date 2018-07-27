@@ -4,7 +4,6 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.config.AbstractYaml;
 import com.matsg.battlegrounds.api.config.WeaponConfig;
 import com.matsg.battlegrounds.api.item.Knife;
-import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.item.WeaponType;
 import com.matsg.battlegrounds.item.BattleKnife;
 import com.matsg.battlegrounds.util.ItemStackBuilder;
@@ -48,8 +47,8 @@ public class KnifeConfig extends AbstractYaml implements WeaponConfig<Knife> {
     }
 
     private WeaponSerializer prepareSerializer() {
-        return new WeaponSerializer() {
-            Weapon getFromSection(ConfigurationSection section) throws ItemFormatException {
+        return new WeaponSerializer<Knife>() {
+            Knife getFromSection(ConfigurationSection section) throws ItemFormatException {
                 String name = section.getString("DisplayName");
                 String[] material = section.getString("Material").split(",");
                 try {

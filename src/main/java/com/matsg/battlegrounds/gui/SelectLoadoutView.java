@@ -57,7 +57,7 @@ public class SelectLoadoutView implements View {
                 .build();
 
         inventory.setItem(loadout.getId() + 10, itemStack);
-        loadouts.put(itemStack, loadout);
+        loadouts.put(inventory.getItem(loadout.getId() + 10), loadout);
     }
 
     private ItemStack getLoadoutItemStack(Loadout loadout) {

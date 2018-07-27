@@ -38,9 +38,11 @@ public class SelectWeaponView implements View {
             }
         });
 
+        int slot = 0;
+
         for (Weapon weapon : weapons) {
             weapon.update();
-            addWeapon(weapon);
+            addWeapon(weapon, slot ++);
         }
 
         inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(EnumMessage.GO_BACK.getMessage()).build());
@@ -51,13 +53,13 @@ public class SelectWeaponView implements View {
         this.previous = previous;
     }
 
-    private void addWeapon(Weapon weapon) {
+    private void addWeapon(Weapon weapon, int slot) {
         ItemStack itemStack = plugin.getLevelConfig().getLevelUnlocked(weapon.getName())
                 <= plugin.getLevelConfig().getLevel(plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).getExp())
                 ? getUnlockedItemStack(weapon) : getLockedItemStack(weapon);
 
-        inventory.addItem(itemStack);
-        weapons.put(itemStack, weapon);
+        inventory.setItem(slot, itemStack);
+        weapons.put(inventory.getItem(slot), weapon);
     }
 
     private ItemStack getLockedItemStack(Weapon weapon) {

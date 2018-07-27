@@ -6,6 +6,7 @@ import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.config.BattlePlayerYaml;
 import com.matsg.battlegrounds.util.EnumMessage;
 import com.matsg.battlegrounds.util.ItemStackBuilder;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
@@ -33,13 +34,13 @@ public class LoadoutManagerView implements View {
                 ItemStack itemStack = new ItemStackBuilder(getLoadoutItemStack(loadout).clone())
                         .addItemFlags(ItemFlag.values())
                         .setAmount(++ i)
-                        .setDisplayName("§f" + loadout.getName())
+                        .setDisplayName(ChatColor.WHITE + loadout.getName())
                         .setLore(EnumMessage.EDIT_LOADOUT.getMessage())
                         .setUnbreakable(true)
                         .build();
 
                 inventory.setItem(i + 10, itemStack);
-                loadouts.put(itemStack, loadout);
+                loadouts.put(inventory.getItem(i + 10), loadout);
             }
         } catch (IOException e) {
             e.printStackTrace();

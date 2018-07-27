@@ -3,10 +3,7 @@ package com.matsg.battlegrounds.config;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.config.AbstractYaml;
 import com.matsg.battlegrounds.api.config.WeaponConfig;
-import com.matsg.battlegrounds.api.item.FireArm;
-import com.matsg.battlegrounds.api.item.Lethal;
-import com.matsg.battlegrounds.api.item.ReloadType;
-import com.matsg.battlegrounds.api.item.WeaponType;
+import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.item.*;
 import com.matsg.battlegrounds.util.BattleSound;
 import com.matsg.battlegrounds.util.ItemStackBuilder;
@@ -92,8 +89,8 @@ public class FireArmConfig extends AbstractYaml implements WeaponConfig<FireArm>
 
     private List<WeaponSerializer> prepareSerializers() {
         List<WeaponSerializer> list = new ArrayList<>();
-        list.add(new WeaponSerializer(FireArmType.GUNS) {
-            FireArm getFromSection(ConfigurationSection section) throws ItemFormatException {
+        list.add(new WeaponSerializer<Gun>(FireArmType.GUNS) {
+            Gun getFromSection(ConfigurationSection section) throws ItemFormatException {
                 String name = section.getString("DisplayName");
                 String[] material = section.getString("Material").split(",");
                 try {
@@ -122,8 +119,8 @@ public class FireArmConfig extends AbstractYaml implements WeaponConfig<FireArm>
                 }
             }
         });
-        list.add(new WeaponSerializer(FireArmType.LAUNCHER) {
-            FireArm getFromSection(ConfigurationSection section) throws ItemFormatException {
+        list.add(new WeaponSerializer<Launcher>(FireArmType.LAUNCHER) {
+            Launcher getFromSection(ConfigurationSection section) throws ItemFormatException {
                 String name = section.getString("DisplayName");
                 String[] material = section.getString("Material").split(",");
                 try {

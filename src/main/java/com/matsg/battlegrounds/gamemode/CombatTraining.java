@@ -24,7 +24,6 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.NameTagVisibility;
 import org.bukkit.scoreboard.Scoreboard;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -119,6 +118,8 @@ public class CombatTraining extends AbstractGameMode {
         private CBTScoreboard(Game game) {
             this.game = game;
             this.scoreboardId = "cbt";
+
+            layout.put("title", scoreboardId);
         }
 
         public String getScoreboardId() {

@@ -61,7 +61,7 @@ public class BattleGun extends BattleFireArm implements Gun {
         return new String[] {
                 ChatColor.WHITE + fireArmType.getName(),
                 ChatColor.GRAY + format(6, accuracy * 100.0, 100.0) + " " + EnumMessage.STAT_ACCURACY.getMessage(),
-                ChatColor.GRAY + format(6, bullet.getShortDamage(), 50.0) + " " + EnumMessage.STAT_DAMAGE.getMessage(),
+                ChatColor.GRAY + format(6, bullet.getShortDamage(), 55.0) + " " + EnumMessage.STAT_DAMAGE.getMessage(),
                 ChatColor.GRAY + format(6, Math.max((fireRate + 10 - cooldown / 2) * 10.0, 40.0), 200.0) + " " + EnumMessage.STAT_FIRERATE.getMessage(),
                 ChatColor.GRAY + format(6, bullet.getMidRange(), 70.0) + " " + EnumMessage.STAT_RANGE.getMessage() };
     }
