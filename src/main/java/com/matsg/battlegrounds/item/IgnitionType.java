@@ -40,7 +40,7 @@ public enum IgnitionType {
                     if (game == null || gamePlayer == null || !equipment.getDroppedItems().contains(item)) {
                         return;
                     }
-                    if (game.getPlayerManager().getNearbyPlayers(item.getLocation(), equipment.getLongRange()).length >= 1) {
+                    if (game.getPlayerManager().getNearbyEnemyPlayers(game.getGameMode().getTeam(gamePlayer), item.getLocation(), equipment.getLongRange()).length >= 1) {
                         for (Sound sound : equipment.getIgnitionSound()) {
                             sound.play(game, item.getLocation());
                         }

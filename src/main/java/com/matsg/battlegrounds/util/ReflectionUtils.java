@@ -65,7 +65,8 @@ public class ReflectionUtils {
         V1_9_R2("1.9.R2", 9),
         V1_10_R1("1.10.R1", 10),
         V1_11_R1("1.11.R1", 11),
-        V1_12_R1("1.12.R1", 12);
+        V1_12_R1("1.12.R1", 12),
+        V1_13_R1("1.13.R1", 13);
 
         private int value;
         private String version;

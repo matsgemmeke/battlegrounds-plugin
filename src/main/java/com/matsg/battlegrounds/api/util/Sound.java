@@ -8,7 +8,7 @@ public interface Sound {
 
     long getDelay();
 
-    org.bukkit.Sound getEnumSound();
+    org.bukkit.Sound getBukkitSound();
 
     float getPitch();
 

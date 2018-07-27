@@ -171,14 +171,13 @@ public class BattlePlayerManager implements PlayerManager {
         return list.toArray(new GamePlayer[list.size()]);
     }
 
-    public GamePlayer[] getNearbyEnemyPlayers(GamePlayer gamePlayer, double range) {
+    public GamePlayer[] getNearbyEnemyPlayers(Team team, Location location, double range) {
         List<GamePlayer> list = new ArrayList<>();
-        Team team = game.getGameMode().getTeam(gamePlayer);
-        for (Entity entity : game.getArena().getWorld().getNearbyEntities(gamePlayer.getLocation(), range, range, range)) {
+        for (Entity entity : game.getArena().getWorld().getNearbyEntities(location, range, range, range)) {
             if (entity instanceof Player) {
                 GamePlayer other = getGamePlayer((Player) entity);
-                if (other != null && game.getGameMode().getTeam(other) == team) {
-                    list.add(gamePlayer);
+                if (other != null && game.getGameMode().getTeam(other) != team) {
+                    list.add(other);
                 }
             }
         }
@@ -308,20 +307,17 @@ public class BattlePlayerManager implements PlayerManager {
                 new Placeholder("bg_players", players.size()),
                 new Placeholder("bg_maxplayers", game.getConfiguration().getMaxPlayers())));
 
-        game.getGameMode().removePlayer(gamePlayer);
-        game.updateSign();
-
         gamePlayer.getPlayer().setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
         gamePlayer.getPlayer().teleport(game.getSpawnPoint());
         gamePlayer.getSavedInventory().restore(gamePlayer.getPlayer());
         gamePlayer.setStatus(PlayerStatus.ACTIVE).apply(game, gamePlayer);
 
-        if (!game.getState().isJoinable()) {
+        if (game.getState().isInProgress()) {
             playerStorage.addPlayerAttributes(gamePlayer);
         }
-        if (getLivingPlayers().length == 1) {
-            game.stop();
-        }
+
+        game.getGameMode().removePlayer(gamePlayer);
+        game.updateSign();
         return !players.contains(gamePlayer);
     }
 

@@ -49,7 +49,7 @@ public class BattleGame implements Game {
         new GameEventHandler(plugin, this);
 
         try {
-            this.dataFile = new BattleCacheYaml(plugin, plugin.getDataFolder().getPath() + "/data", "game_" + id + ".yml");
+            this.dataFile = new BattleCacheYaml(plugin, plugin.getDataFolder().getPath() + "/data/game_" + id, "game_" + id + ".yml");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -112,7 +112,11 @@ public class BattleGame implements Game {
     }
 
     public void setGameMode(GameMode gameMode) {
+        if (this.gameMode != null) {
+            this.gameMode.onDisable();
+        }
         this.gameMode = gameMode;
+        this.gameMode.onEnable();
     }
 
     public void setGameSign(GameSign gameSign) {
@@ -209,8 +213,8 @@ public class BattleGame implements Game {
         }
         countdown = new GameCountdown(this, configuration.getGameCountdown());
         timeControl = new BattleTimeControl(this);
-        gameMode.getScoreboard().display(this);
         gameMode.spawnPlayers(playerManager.getPlayers().toArray(new GamePlayer[playerManager.getPlayers().size()]));
+        updateScoreboard();
     }
 
     public void startGame() {
@@ -256,6 +260,14 @@ public class BattleGame implements Game {
         clearGameData();
         setState(GameState.RESETTING);
         updateSign();
+    }
+
+    private boolean updateScoreboard() {
+        boolean scoreboard = gameMode.getScoreboard() != null;
+        if (scoreboard) {
+            gameMode.getScoreboard().display(this);
+        }
+        return scoreboard;
     }
 
     public boolean updateSign() {

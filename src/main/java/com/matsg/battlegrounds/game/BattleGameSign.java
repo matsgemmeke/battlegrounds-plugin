@@ -25,7 +25,10 @@ public class BattleGameSign implements GameSign {
     }
 
     public void click(Player player) {
-        if (game == null || !game.getState().isJoinable() || game.getPlayerManager().getPlayers().size() > game.getConfiguration().getMaxPlayers()) {
+        if (game == null
+                || game.getPlayerManager().getGamePlayer(player) != null
+                || !plugin.getBattlegroundsConfig().joinableGamestates.contains(game.getState().toString())
+                || game.getPlayerManager().getPlayers().size() > game.getConfiguration().getMaxPlayers()) {
             return;
         }
         game.getPlayerManager().addPlayer(player);

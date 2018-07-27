@@ -1,5 +1,5 @@
 # Do not touch
-version: 1.0.2
+version: 1.1.0
 
 # The language locale which the plugin will translate its messages to
 locale: en
@@ -31,9 +31,17 @@ game-display-name:
 # Explosive throwing cooldown in ticks
 game-explosive-cooldown: 20
 
+# Game states where players are able to join games
+game-joinable-states:
+- WAITING
+
 # The general accuracy of firearms in the game
 # Change to higher number for lower accuracy, change to lower number for higher accuracy
 game-firearm-accuracy: 10.0
+
+# Overall gun damage modifier
+# Change to lower number for higher damage, change to higher number for lower damage
+game-gun-damage-modifier: 5
 
 # Scoreboard configurations
 game-scoreboard:

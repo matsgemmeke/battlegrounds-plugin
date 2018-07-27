@@ -99,13 +99,13 @@ public class EventListener implements Listener {
 
     @EventHandler
     public void onViewItemClick(InventoryClickEvent event) {
-        ItemStack item = event.getCurrentItem();
+        ItemStack itemStack = event.getCurrentItem();
         Player player = (Player) event.getWhoClicked();
 
         if (event.getInventory().getHolder() instanceof View) {
             event.setCancelled(true);
 
-            ((View) event.getInventory().getHolder()).onClick(player, item, event.getClick());
+            ((View) event.getInventory().getHolder()).onClick(player, itemStack, event.getClick());
         }
     }
 

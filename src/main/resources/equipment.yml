@@ -32,13 +32,13 @@ GRENADE:
   Range:
     Long:
       Damage: 15.0
-      Distance: 8.0
+      Distance: 4.0
     Medium:
       Damage: 50.0
-      Distance: 4.0
+      Distance: 2.0
     Short:
       Damage: 150.0
-      Distance: 2.0
+      Distance: 1.0
   Sound: ENTITY_GENERIC_EXPLODE-3-1-0
   Velocity: 1.2
 
@@ -52,10 +52,10 @@ SEMTEX:
   Range:
     Long:
       Damage: 20.0
-      Distance: 6.0
+      Distance: 3.0
     Medium:
       Damage: 100.0
-      Distance: 3.0
+      Distance: 2.0
     Short:
       Damage: 200.0
       Distance: 1.0
@@ -72,13 +72,13 @@ CLAYMORE:
   Range:
     Long:
       Damage: 15.0
-      Distance: 8.0
-    Medium:
-      Damage: 100.0
       Distance: 4.0
+    Medium:
+      Damage: 50.0
+      Distance: 2.0
     Short:
       Damage: 150.0
-      Distance: 2.0
+      Distance: 1.0
   Sound: ENTITY_GENERIC_EXPLODE-3-1-0
   Velocity: 0.0
 
@@ -123,7 +123,7 @@ FLASHBANG:
     Short:
       Damage: 0.0
       Distance: 8.0
-  Sound: BLOCK_ANVIL_HIT-0.1-0.5-0, ENTITY_GENERIC_EXPLODE-1-1-0, BLOCK_FIRE_EXTINGUISH-1-1-0
+  Sound: ENTITY_GENERIC_EXPLODE-1-1-0, BLOCK_FIRE_EXTINGUISH-1-1-0
   Velocity: 1.1
 
 SHOCK_CHARGE:
@@ -141,7 +141,7 @@ SHOCK_CHARGE:
       Distance: 4.0
     Medium:
       Damage: 0.0
-      Distance: 4.0
+      Distance: 2.0
     Short:
       Damage: 0.0
       Distance: 1.0
@@ -167,5 +167,5 @@ SMOKE_GRENADE:
     Short:
       Damage: 0.0
       Distance: 5.0
-  Sound: BLOCK_ANVIL_HIT-0.1-0.5-0, ENTITY_GENERIC_EXPLODE-1-1-0, BLOCK_FIRE_EXTINGUISH-1-1-0
+  Sound: ENTITY_GENERIC_EXPLODE-1-1-0, BLOCK_FIRE_EXTINGUISH-1-1-0
   Velocity: 1.1

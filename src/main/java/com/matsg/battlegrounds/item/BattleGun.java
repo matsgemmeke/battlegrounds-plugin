@@ -93,7 +93,8 @@ public class BattleGun extends BattleFireArm implements Gun {
                 return;
             }
             Hitbox hitbox = Hitbox.getHitbox(gamePlayer.getLocation().getY(), location.getY());
-            game.getPlayerManager().damagePlayer(gamePlayer, bullet.getDamage(hitbox, gamePlayer.getLocation().distance(this.gamePlayer.getLocation())) / 5);
+            double damage = bullet.getDamage(hitbox, gamePlayer.getLocation().distance(this.gamePlayer.getLocation())) / plugin.getBattlegroundsConfig().gunDamageModifer;
+            game.getPlayerManager().damagePlayer(gamePlayer, damage);
             hits ++;
             if (gamePlayer.getPlayer().isDead()) {
                 plugin.getServer().getPluginManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, this.gamePlayer, this, hitbox));

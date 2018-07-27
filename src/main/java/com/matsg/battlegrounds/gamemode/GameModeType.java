@@ -5,16 +5,17 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.config.AbstractYaml;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.gamemode.GameMode;
-import com.matsg.battlegrounds.gamemode.ffa.FreeForAll;
-import com.matsg.battlegrounds.gamemode.tdm.TeamDeathmatch;
+
+import java.io.File;
+import java.io.IOException;
 
 public enum GameModeType {
 
     FREE_FOR_ALL(1, FreeForAll.class) {
         public GameMode getInstance(Game game) {
             try {
-                return new FreeForAll(game, new AbstractYaml(plugin, plugin.getDataFolder().getPath() + "/gamemodes", "ffa.yml", true) { } );
-            } catch (Exception e) {
+                return new FreeForAll(plugin, game, new AbstractYaml(plugin, filePath(game).getPath(), "ffa.yml", true) { } );
+            } catch (IOException e) {
                 return null;
             }
         }
@@ -22,8 +23,17 @@ public enum GameModeType {
     TEAM_DEATHMATCH(2, TeamDeathmatch.class) {
         public GameMode getInstance(Game game) {
             try {
-                return new TeamDeathmatch(game, new AbstractYaml(plugin, plugin.getDataFolder().getPath() + "/gamemodes", "tdm.yml", true) { } );
-            } catch (Exception e) {
+                return new TeamDeathmatch(plugin, game, new AbstractYaml(plugin, filePath(game).getPath(), "tdm.yml", true) { } );
+            } catch (IOException e) {
+                return null;
+            }
+        }
+    },
+    COMBAT_TRAINING(3, CombatTraining.class) {
+        public GameMode getInstance(Game game) {
+            try {
+                return new CombatTraining(plugin, game, new AbstractYaml(plugin, filePath(game).getPath(), "cbt.yml", true) { });
+            } catch (IOException e) {
                 return null;
             }
         }
@@ -36,6 +46,10 @@ public enum GameModeType {
     GameModeType(int id, Class gameModeClass) {
         this.id = id;
         this.gameModeClass = gameModeClass;
+    }
+
+    private static File filePath(Game game) {
+        return new File(plugin.getDataFolder().getPath() + "/data/game_" + game.getId() + "/gamemodes");
     }
 
     public static GameModeType getByGameMode(Class gameModeClass) {

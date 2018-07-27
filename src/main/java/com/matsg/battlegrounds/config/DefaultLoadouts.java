@@ -10,10 +10,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DefaultClasses extends AbstractYaml {
+public class DefaultLoadouts extends AbstractYaml {
 
-    public DefaultClasses(Battlegrounds plugin) throws IOException {
-        super(plugin, "default-classes.yml", true);
+    public DefaultLoadouts(Battlegrounds plugin) throws IOException {
+        super(plugin, "default-loadouts.yml", true);
     }
 
     public List<Loadout> getList() {

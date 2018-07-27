@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.gamemode;
 
+import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.config.Yaml;
 import com.matsg.battlegrounds.api.event.GameEndEvent;
 import com.matsg.battlegrounds.api.game.*;
@@ -10,14 +11,17 @@ import com.matsg.battlegrounds.api.player.Hitbox;
 import com.matsg.battlegrounds.api.player.PlayerStatus;
 import com.matsg.battlegrounds.api.util.Message;
 import com.matsg.battlegrounds.util.EnumMessage;
+import org.bukkit.event.Listener;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public abstract class AbstractGameMode implements GameMode {
+public abstract class AbstractGameMode implements GameMode, Listener {
 
+    protected Battlegrounds plugin;
+    protected boolean active;
     protected Game game;
     protected int timeLimit;
     protected List<Objective> objectives;
@@ -25,13 +29,17 @@ public abstract class AbstractGameMode implements GameMode {
     protected String name, shortName;
     protected Yaml yaml;
 
-    public AbstractGameMode(Game game, String name, String shortName, Yaml yaml) {
+    public AbstractGameMode(Battlegrounds plugin, Game game, String name, String shortName, Yaml yaml) {
+        this.plugin = plugin;
+        this.active = false;
         this.game = game;
         this.objectives = new ArrayList<>();
         this.name = name;
         this.shortName = shortName;
         this.teams = new ArrayList<>();
         this.yaml = yaml;
+
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     public Yaml getConfig() {
@@ -127,6 +135,10 @@ public abstract class AbstractGameMode implements GameMode {
         }
     }
 
+    public void onDisable() { }
+
+    public void onEnable() { }
+
     public void onStateChange(GameState state) {
         switch (state) {
             case IN_GAME:
@@ -147,7 +159,11 @@ public abstract class AbstractGameMode implements GameMode {
     public void onStop() { }
 
     public void tick() {
-        getScoreboard().display(game);
+        GameScoreboard scoreboard = getScoreboard();
+
+        if (scoreboard != null) {
+            scoreboard.display(game);
+        }
 
         for (Objective objective : objectives) {
             if (objective.isReached(game)) {

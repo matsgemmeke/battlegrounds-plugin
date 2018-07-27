@@ -6,7 +6,7 @@ import com.matsg.battlegrounds.api.config.StoredPlayer;
 import com.matsg.battlegrounds.api.player.OfflineGamePlayer;
 import com.matsg.battlegrounds.api.player.PlayerStorage;
 import com.matsg.battlegrounds.config.BattlePlayerYaml;
-import com.matsg.battlegrounds.config.DefaultClasses;
+import com.matsg.battlegrounds.config.DefaultLoadouts;
 import org.bukkit.entity.Player;
 
 import java.io.File;
@@ -17,13 +17,13 @@ import java.util.stream.Collectors;
 public class LocalPlayerStorage implements PlayerStorage {
 
     private Battlegrounds plugin;
-    private DefaultClasses defaultClasses;
+    private DefaultLoadouts defaultLoadouts;
     private File folder;
     private List<PlayerYaml> playerYamls;
 
     public LocalPlayerStorage(Battlegrounds plugin) throws IOException {
         this.plugin = plugin;
-        this.defaultClasses = new DefaultClasses(plugin);
+        this.defaultLoadouts = new DefaultLoadouts(plugin);
         this.folder = new File(plugin.getDataFolder().getPath() + "/players");
         this.playerYamls = new ArrayList<>();
 
@@ -92,7 +92,7 @@ public class LocalPlayerStorage implements PlayerStorage {
             PlayerYaml playerYaml = new BattlePlayerYaml(plugin, uuid);
             playerYaml.createDefaultAttributes();
             for (int i = 1; i <= 5; i ++) {
-                playerYaml.saveLoadout(defaultClasses.getList().get(i - 1));
+                playerYaml.saveLoadout(defaultLoadouts.getList().get(i - 1));
             }
             playerYamls.add(playerYaml);
         } catch (IOException e) {

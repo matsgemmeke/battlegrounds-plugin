@@ -26,6 +26,7 @@ public abstract class AbstractScoreboard implements GameScoreboard {
     protected String scoreboardId;
 
     public AbstractScoreboard() {
+        this.layout = new HashMap<>();
         this.scoreboardTeams = new HashSet<>();
         this.worlds = new HashSet<>();
     }

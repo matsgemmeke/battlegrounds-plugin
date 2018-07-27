@@ -4,6 +4,7 @@ import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.util.BattleRunnable;
+import com.matsg.battlegrounds.util.XMaterial;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -98,7 +99,7 @@ public enum BattleTacticalEffect implements TacticalEffect {
             for (Block block : blocks) {
                 if (block.getType() == Material.AIR) {
                     blockStates.add(block.getState());
-                    block.setType(Material.CROPS);
+                    block.setType(XMaterial.WHEAT.parseMaterial());
                 }
             }
 

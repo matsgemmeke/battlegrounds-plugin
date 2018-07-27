@@ -46,7 +46,7 @@ public class GamePlayerDeathEvent extends Event {
         BURNING(1, EnumMessage.DEATH_BURNING.getMessage(), DamageCause.FIRE, DamageCause.FIRE_TICK, DamageCause.LAVA),
         DROWNING(2, EnumMessage.DEATH_DROWNING.getMessage(), DamageCause.DROWNING),
         FALLING(3, EnumMessage.DEATH_FALLING.getMessage(), DamageCause.FALL),
-        PLAYER_KILL(4, EnumMessage.DEATH_PLAYER_KILL.getMessage(), DamageCause.ENTITY_ATTACK),
+        PLAYER_KILL(4, EnumMessage.DEATH_PLAYER_KILL.getMessage()),
         SUICIDE(5, EnumMessage.DEATH_SUICIDE.getMessage(), DamageCause.SUICIDE);
 
         private DamageCause[] damageCause;

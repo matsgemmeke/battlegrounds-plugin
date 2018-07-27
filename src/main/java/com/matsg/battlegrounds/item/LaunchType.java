@@ -28,7 +28,7 @@ public enum LaunchType {
 
                 public void run() {
                     Location location = item.getLocation();
-                    GamePlayer[] players = launcher.getGame().getPlayerManager().getNearbyPlayers(location, range);
+                    GamePlayer[] players = launcher.getGame().getPlayerManager().getNearbyEnemyPlayers(launcher.getGame().getGameMode().getTeam(launcher.getGamePlayer()), direction, range);
 
                     if (players.length >= 1 || location.getBlock().getRelative(BlockFace.DOWN).getType().isSolid()) {
                         launcher.explode(location);
@@ -53,7 +53,7 @@ public enum LaunchType {
 
                         displayParticle(direction, Float.MAX_VALUE, Float.MAX_VALUE, Float.MAX_VALUE);
 
-                        GamePlayer[] players = launcher.getGame().getPlayerManager().getNearbyPlayers(direction, range);
+                        GamePlayer[] players = launcher.getGame().getPlayerManager().getNearbyEnemyPlayers(launcher.getGame().getGameMode().getTeam(launcher.getGamePlayer()), direction, range);
 
                         if (players.length >= 1 || direction.getBlock().getRelative(BlockFace.DOWN).getType().isSolid()) {
                             launcher.explode(direction);

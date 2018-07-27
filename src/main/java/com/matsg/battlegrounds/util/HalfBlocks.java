@@ -27,7 +27,10 @@ public class HalfBlocks {
 
     private static List<Slab> getSlabs() {
         List<Slab> list = new ArrayList<>();
-        Material[] slabTypes = new Material[] { Material.STEP, Material.STONE_SLAB2, Material.WOOD_STEP };
+        Material[] slabTypes = new Material[] { XMaterial.ACACIA_SLAB.parseMaterial(), XMaterial.BIRCH_SLAB.parseMaterial(), XMaterial.BRICK_SLAB.parseMaterial(),
+                XMaterial.COBBLESTONE_SLAB.parseMaterial(), XMaterial.DARK_OAK_SLAB.parseMaterial(), XMaterial.DARK_PRISMARINE_SLAB.parseMaterial(), XMaterial.JUNGLE_SLAB.parseMaterial(),
+                XMaterial.NETHER_BRICK_SLAB.parseMaterial(), XMaterial.OAK_SLAB.parseMaterial(), XMaterial.QUARTZ_SLAB.parseMaterial(), XMaterial.RED_SANDSTONE_SLAB.parseMaterial(),
+                XMaterial.SANDSTONE_SLAB.parseMaterial(), XMaterial.SPRUCE_SLAB.parseMaterial(), XMaterial.STONE_BRICK_SLAB.parseMaterial() };
         for (Material material : slabTypes) {
             for (byte i = 0; i <= 17; i ++) {
                 list.add(new Slab(material, i, i <= 8));
@@ -38,10 +41,10 @@ public class HalfBlocks {
 
     private static List<Stairs> getStairs() {
         List<Stairs> list = new ArrayList<>();
-        Material[] stairsTypes = new Material[] { Material.ACACIA_STAIRS, Material.BIRCH_WOOD_STAIRS, Material.BRICK_STAIRS,
-                Material.COBBLESTONE_STAIRS, Material.DARK_OAK_STAIRS, Material.JUNGLE_WOOD_STAIRS, Material.NETHER_BRICK_STAIRS,
-                Material.QUARTZ_STAIRS, Material.RED_SANDSTONE_STAIRS, Material.SANDSTONE_STAIRS, Material.SMOOTH_STAIRS,
-                Material.SPRUCE_WOOD_STAIRS, Material.WOOD_STAIRS };
+        Material[] stairsTypes = new Material[] { XMaterial.ACACIA_STAIRS.parseMaterial(), XMaterial.BIRCH_STAIRS.parseMaterial(), XMaterial.BRICK_STAIRS.parseMaterial(),
+                XMaterial.COBBLESTONE_STAIRS.parseMaterial(), XMaterial.DARK_OAK_STAIRS.parseMaterial(), XMaterial.DARK_PRISMARINE_STAIRS.parseMaterial(), XMaterial.JUNGLE_STAIRS.parseMaterial(), 
+                XMaterial.NETHER_BRICK_STAIRS.parseMaterial(), XMaterial.OAK_STAIRS.parseMaterial(), XMaterial.QUARTZ_STAIRS.parseMaterial(), XMaterial.RED_SANDSTONE_STAIRS.parseMaterial(), 
+                XMaterial.SANDSTONE_STAIRS.parseMaterial(), XMaterial.SPRUCE_STAIRS.parseMaterial(), XMaterial.STONE_BRICK_STAIRS.parseMaterial() };
 
         for (Material material : stairsTypes) {
             for (byte i = 0; i <= 7; i ++) {
@@ -70,7 +73,7 @@ public class HalfBlocks {
     public static boolean isAir(Location location) {
         Block block = location.getBlock();
         if (!isHalfBlock(block)) {
-            return block.getType() == Material.AIR;
+            return block.getType() == XMaterial.AIR.parseMaterial();
         }
         return getHalfblock(block).isAir(location);
     }

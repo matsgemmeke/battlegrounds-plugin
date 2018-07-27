@@ -35,7 +35,11 @@ public interface GameMode extends StateListener {
 
     Team getTopTeam();
 
-    void onDeath(GamePlayer gamePlayer, DeathCause damageCause);
+    void onDeath(GamePlayer gamePlayer, DeathCause deathCause);
+
+    void onDisable();
+
+    void onEnable();
 
     void onKill(GamePlayer gamePlayer, GamePlayer killer, Weapon weapon, Hitbox hitbox);
 

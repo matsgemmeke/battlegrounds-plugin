@@ -82,11 +82,12 @@ public interface PlayerManager {
     /**
      * Gets nearby enemy players of a player.
      *
-     * @param gamePlayer The player to get nearby enemies of
+     * @param team The team to find enemy players of
+     * @param location The location to look for enemy players
      * @param range The maximum distance between enemy and the player
      * @return An array of nearby enemy players
      */
-    GamePlayer[] getNearbyEnemyPlayers(GamePlayer gamePlayer, double range);
+    GamePlayer[] getNearbyEnemyPlayers(Team team, Location location, double range);
 
     /**
      * Gets nearby players from a location.

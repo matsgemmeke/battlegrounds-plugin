@@ -15,7 +15,6 @@ import com.matsg.battlegrounds.config.*;
 import com.matsg.battlegrounds.listener.EventListener;
 import com.matsg.battlegrounds.listener.PlayerSwapItemListener;
 import com.matsg.battlegrounds.player.LocalPlayerStorage;
-import com.matsg.battlegrounds.util.ReflectionUtils;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;

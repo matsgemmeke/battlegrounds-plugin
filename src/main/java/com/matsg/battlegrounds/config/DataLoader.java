@@ -43,8 +43,8 @@ public class DataLoader {
 
             if (files != null && files.length > 0) {
                 for (File file : files) {
-                    if (!file.isDirectory() && file.getName().startsWith("game_")) {
-                        int id = Integer.parseInt(file.getName().substring(5, file.getName().length() - 4));
+                    if (file.isDirectory() && file.getName().startsWith("game_")) {
+                        int id = Integer.parseInt(file.getName().substring(5, file.getName().length()));
 
                         plugin.getGameManager().getGames().add(new BattleGame(plugin, id));
                     }
@@ -63,8 +63,15 @@ public class DataLoader {
                 ConfigurationSection config = game.getDataFile().getConfigurationSection("_config");
                 List<GameMode> gameModes = new ArrayList<>();
 
-                for (String gameMode : config.getStringList("gamemodes")) {
-                    gameModes.add(GameModeType.valueOf(gameMode.toUpperCase()).getInstance(game));
+                for (String gameModeType : config.getStringList("gamemodes")) {
+                    GameMode gameMode;
+                    try {
+                        gameMode = GameModeType.valueOf(gameModeType.toUpperCase()).getInstance(game);
+                    } catch (IllegalArgumentException e) {
+                        plugin.getLogger().severe("Invalid gamemode type \"" + gameModeType + "\"");
+                        continue;
+                    }
+                    gameModes.add(gameMode);
                 }
 
                 GameConfiguration configuration = new BattleGameConfiguration(

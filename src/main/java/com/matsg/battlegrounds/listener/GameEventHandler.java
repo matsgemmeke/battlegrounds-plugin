@@ -150,18 +150,16 @@ public class GameEventHandler implements Listener {
         GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player), damager = game.getPlayerManager().getGamePlayer((Player) event.getDamager());
         Team team = game.getGameMode().getTeam(gamePlayer);
 
-        if (gamePlayer == null
-                || damager == null
-                || damager.getLoadout() == null
-                || !(damager.getLoadout().getWeapon(damager.getPlayer().getItemInHand()) instanceof Knife)
-                || team == game.getGameMode().getTeam(damager)) {
+        if (gamePlayer == null || damager == null || damager.getLoadout() == null
+                || team == game.getGameMode().getTeam(damager)
+                || !(damager.getLoadout().getWeapon(damager.getPlayer().getItemInHand()) instanceof Knife)) {
             event.setCancelled(true);
             return;
         }
 
-        ((Knife) damager.getLoadout().getWeapon(ItemSlot.KNIFE)).damage(gamePlayer);
-
         event.setDamage(0.0);
+
+        ((Knife) damager.getLoadout().getWeapon(ItemSlot.KNIFE)).damage(gamePlayer);
     }
 
     @EventHandler

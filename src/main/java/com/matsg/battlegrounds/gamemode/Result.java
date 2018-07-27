@@ -2,7 +2,6 @@ package com.matsg.battlegrounds.gamemode;
 
 import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.util.EnumMessage;
-import com.matsg.battlegrounds.util.Title;
 
 import java.util.ArrayList;
 import java.util.List;

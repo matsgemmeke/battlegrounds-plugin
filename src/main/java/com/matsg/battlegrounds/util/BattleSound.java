@@ -2,53 +2,47 @@ package com.matsg.battlegrounds.util;
 
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.player.GamePlayer;
-import com.matsg.battlegrounds.util.ReflectionUtils.EnumVersion;
 import org.bukkit.Location;
-import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class BattleSound implements com.matsg.battlegrounds.api.util.Sound {
 
     public static final BattleSound
-            COUNTDOWN_NOTE = new BattleSound("BLOCK_NOTE_HAT", 1, 1),
-            EXPLOSION = new BattleSound("ENTITY_GENERIC_EXPLODE", 10, (float) 0.75),
-            EXPLOSIVE_THROW = new BattleSound("ENTITY_ARROW_SHOOT", 1, (float) 0.5),
-            KNIFE_THROW = new BattleSound("ENTITY_ARROW_SHOOT", 1, (float) 1.25);
+            COUNTDOWN_NOTE = new BattleSound(Sound.NOTE_STICKS.bukkitSound(), 1, 1),
+            EXPLOSION = new BattleSound(Sound.EXPLODE.bukkitSound(), 10, (float) 0.75),
+            EXPLOSIVE_THROW = new BattleSound(Sound.SHOOT_ARROW.bukkitSound(), 1, (float) 0.5),
+            KNIFE_THROW = new BattleSound(Sound.SHOOT_ARROW.bukkitSound(), 1, (float) 1.25);
     public static final BattleSound[]
-            GUN_SCOPE = new BattleSound[] { new BattleSound("ENTITY_PLAYER_SMALL_FALL", 1, 1), new BattleSound("ENTITY_HORSE_SADDLE", 1, 2) },
-            ITEM_EQUIP = new BattleSound[] { new BattleSound("ENTITY_BAT_TAKEOFF", 1, 1), new BattleSound("ENTITY_HORSE_SADDLE", 1, 1) };
+            GUN_SCOPE = new BattleSound[] { new BattleSound(Sound.FALL_SMALL.bukkitSound(), 1, 1), new BattleSound(Sound.HORSE_SADDLE.bukkitSound(), 1, 2) },
+            ITEM_EQUIP = new BattleSound[] { new BattleSound(Sound.BAT_TAKEOFF.bukkitSound(), 1, 1), new BattleSound(Sound.HORSE_SADDLE.bukkitSound(), 1, 1) };
 
     private boolean cancelled;
     private float pitch, volume;
     private long delay;
-    private Sound sound;
+    private org.bukkit.Sound sound;
 
-    private BattleSound(String sound, float volume, float pitch) {
-        this.sound = getSound(sound);
+    private BattleSound(org.bukkit.Sound sound, float volume, float pitch) {
+        this.sound = sound;
         this.volume = volume;
         this.pitch = pitch;
     }
 
-    private BattleSound(Sound sound, float volume, float pitch, long delay) {
+    private BattleSound(org.bukkit.Sound sound, float volume, float pitch, long delay) {
         this.sound = sound;
         this.volume = volume;
         this.pitch = pitch;
         this.delay = delay;
     }
 
-    private static Sound getSound(String arg) {
-        Sound sound;
-        if (ReflectionUtils.ENUM_VERSION.getValue() > EnumVersion.V1_8_R3.getValue()) {
-            sound = Sound.valueOf(arg);
-        } else {
-            sound = searchSoundDictionary(arg);
+    private static org.bukkit.Sound getSound(String sound) {
+        try {
+            return org.bukkit.Sound.valueOf(sound);
+        } catch (IllegalArgumentException e) {
+            return Sound.getSound(sound).bukkitSound();
         }
-        return sound;
     }
 
     public static BattleSound parseSound(String arg) {
@@ -80,7 +74,7 @@ public class BattleSound implements com.matsg.battlegrounds.api.util.Sound {
         return delay;
     }
 
-    public Sound getEnumSound() {
+    public org.bukkit.Sound getBukkitSound() {
         return sound;
     }
 
@@ -116,7 +110,7 @@ public class BattleSound implements com.matsg.battlegrounds.api.util.Sound {
         new BattleRunnable() {
             public void run() {
                 for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
-                    gamePlayer.getPlayer().playSound(gamePlayer.getPlayer().getLocation(), sound, volume, pitch);
+                    gamePlayer.getPlayer().playSound(gamePlayer.getPlayer().getLocation(), getBukkitSound(), volume, pitch);
                 }
             }
         }.runTaskLater(delay);
@@ -126,7 +120,7 @@ public class BattleSound implements com.matsg.battlegrounds.api.util.Sound {
         new BattleRunnable() {
             public void run() {
                 for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
-                    gamePlayer.getPlayer().playSound(entity.getLocation(), sound, volume, pitch);
+                    gamePlayer.getPlayer().playSound(entity.getLocation(), getBukkitSound(), volume, pitch);
                 }
             }
         }.runTaskLater(delay);
@@ -136,7 +130,7 @@ public class BattleSound implements com.matsg.battlegrounds.api.util.Sound {
         new BattleRunnable() {
             public void run() {
                 for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
-                    gamePlayer.getPlayer().playSound(location, sound, volume, pitch);
+                    gamePlayer.getPlayer().playSound(location, getBukkitSound(), volume, pitch);
                 }
             }
         }.runTaskLater(delay);
@@ -146,45 +140,9 @@ public class BattleSound implements com.matsg.battlegrounds.api.util.Sound {
         new BattleRunnable() {
             public void run() {
                 for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
-                    gamePlayer.getPlayer().playSound(location, sound, volume, pitch);
+                    gamePlayer.getPlayer().playSound(location, getBukkitSound(), volume, pitch);
                 }
             }
         }.runTaskLater(delay);
-    }
-
-    private static Sound searchSoundDictionary(String arg) {
-        String sound = getSoundDictionary().get(arg);
-        if (sound == null) {
-            sound = arg;
-        }
-        return Sound.valueOf(sound);
-    }
-
-    private static Map<String, String> getSoundDictionary() {
-        Map<String, String> map = new HashMap<>();
-        map.put("BLOCK_ANVIL_HIT", "ANVIL_LAND");
-        map.put("BLOCK_FIRE_EXTINGUISH", "FIZZ");
-        map.put("BLOCK_IRON_DOOR_CLOSE", "DOOR_CLOSE");
-        map.put("BLOCK_IRON_DOOR_OPEN", "DOOR_OPEN");
-        map.put("BLOCK_NOTE_HAT", "NOTE_STICKS");
-        map.put("BLOCK_PISTON_CONTRACT", "PISTON_RETRACT");
-        map.put("BLOCK_PISTON_EXTEND", "PISTON_EXTEND");
-        map.put("BLOCK_STONE_BUTTON_CLICK_OFF", "CLICK");
-        map.put("BLOCK_STONE_BUTTON_CLICK_ON", "CLICK");
-        map.put("BLOCK_WOODEN_DOOR_CLOSE", "DOOR_CLOSE");
-        map.put("BLOCK_WOODEN_DOOR_OPEN", "DOOR_OPEN");
-        map.put("ENTITY_ARROW_SHOOT", "SHOOT_ARROW");
-        map.put("ENTITY_BAT_TAKEOFF", "BAT_TAKEOFF");
-        map.put("ENTITY_BLAZE_HURT", "BLAZE_HIT");
-        map.put("ENTITY_FIREWORK_BLAST", "FIREWORK_BLAST");
-        map.put("ENTITY_GENERIC_EXPLODE", "EXPLODE");
-        map.put("ENTITY_HORSE_SADDLE", "HORSE_SADDLE");
-        map.put("ENTITY_IRONGOLEM_HURT", "IRONGOLEM_HIT");
-        map.put("ENTITY_PLAYER_SMALL_FALL", "FALL_BIG");
-        map.put("ENTITY_SKELETON_AMBIENT", "SKELETON_IDLE");
-        map.put("ENTITY_SKELETON_STEP", "SKELETON_WALK");
-        map.put("ENTITY_ZOMBIE_ATTACK_DOOR_WOOD", "ZOMBIE_WOODBREAK");
-        map.put("ENTITY_ZOMBIE_ATTACK_IRON_DOOR", "ZOMBIE_METAL");
-        return map;
     }
 }

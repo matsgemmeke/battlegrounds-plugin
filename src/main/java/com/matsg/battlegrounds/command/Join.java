@@ -42,7 +42,7 @@ public class Join extends SubCommand {
 
         Game game = plugin.getGameManager().getGame(id);
 
-        if (!game.getState().isJoinable()) {
+        if (!plugin.getBattlegroundsConfig().joinableGamestates.contains(game.getState().toString())) {
             EnumMessage.IN_PROGRESS.send(player);
             return;
         }

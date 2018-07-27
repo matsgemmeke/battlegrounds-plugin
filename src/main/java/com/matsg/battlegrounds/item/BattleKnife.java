@@ -109,6 +109,14 @@ public class BattleKnife extends BattleWeapon implements Knife {
     }
 
     public double damage(GamePlayer gamePlayer) {
+        double damage = this.damage;
+        if (throwable) {
+            damage /= 2;
+        }
+        return damage(gamePlayer, damage);
+    }
+
+    private double damage(GamePlayer gamePlayer, double damage) {
         game.getPlayerManager().damagePlayer(gamePlayer, damage);
         if (gamePlayer.getPlayer().isDead()) {
             plugin.getServer().getPluginManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, this.gamePlayer, this, Hitbox.TORSO));
@@ -190,7 +198,7 @@ public class BattleKnife extends BattleWeapon implements Knife {
 
                     players[0].getLocation().getWorld().playEffect(players[0].getLocation(), Effect.STEP_SOUND, Material.REDSTONE_BLOCK);
 
-                    damage(players[0]);
+                    damage(players[0], damage);
                     cancel();
                 }
                 if (location != null && item.getLocation().equals(location)) {

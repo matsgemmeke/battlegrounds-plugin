@@ -2,19 +2,18 @@ package com.matsg.battlegrounds.api.game;
 
 public enum GameState {
 
-    WAITING(1, true, false, true, true, false),
-    STARTING(2, false, true, true, false, false),
-    IN_GAME(3, false, true, true, true, true),
-    RESETTING(4, false, false, true, true, false),
-    DISABLED(5, false, false, false, false, false);
+    WAITING(1, false, true, true, false),
+    STARTING(2, true, true, false, false),
+    IN_GAME(3, true, true, true, true),
+    RESETTING(4, true, true, true, false),
+    DISABLED(5, false, false, false, false);
 
-    private boolean allowItems, allowMove, allowWeapons, inProgress, joinable;
+    private boolean allowItems, allowMove, allowWeapons, inProgress;
     private int id;
 
-    GameState(int id, boolean joinable, boolean inProgress, boolean allowItems, boolean allowMove, boolean allowWeapons) {
+    GameState(int id, boolean inProgress, boolean allowItems, boolean allowMove, boolean allowWeapons) {
         this.id = id;
         this.inProgress = inProgress;
-        this.joinable = joinable;
         this.allowItems = allowItems;
         this.allowMove = allowMove;
         this.allowWeapons = allowWeapons;
@@ -43,9 +42,5 @@ public enum GameState {
 
     public boolean isInProgress() {
         return inProgress;
-    }
-
-    public boolean isJoinable() {
-        return joinable;
     }
 }
