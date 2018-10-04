@@ -17,8 +17,8 @@ public abstract class BattleWeapon extends BattleItem implements Weapon {
     protected short durability;
     protected String description;
 
-    public BattleWeapon(String name, String description, ItemStack itemStack, short durability) {
-        super(name, itemStack);
+    public BattleWeapon(String id, String name, String description, ItemStack itemStack, short durability) {
+        super(id, name, itemStack);
         this.description = description;
         this.durability = durability;
         this.itemStack.setDurability(durability);

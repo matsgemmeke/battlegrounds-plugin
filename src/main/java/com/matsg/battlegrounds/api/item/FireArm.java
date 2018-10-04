@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.api.item;
 
 import com.matsg.battlegrounds.api.util.Sound;
+import org.bukkit.Location;
 
 public interface FireArm extends Weapon {
 
@@ -22,15 +23,17 @@ public interface FireArm extends Weapon {
 
     int getReloadDuration();
 
-    Sound[] getReloadSound();
-
-    Sound[] getShootSound();
-
     boolean isReloading();
 
     boolean isShooting();
 
     void playReloadSound();
+
+    void playReloadSound(Location location);
+
+    void playShotSound();
+
+    void playShotSound(Location location);
 
     void reload();
 

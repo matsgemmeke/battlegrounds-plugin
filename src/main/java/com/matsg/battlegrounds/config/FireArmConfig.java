@@ -2,7 +2,7 @@ package com.matsg.battlegrounds.config;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.config.AbstractYaml;
-import com.matsg.battlegrounds.api.config.WeaponConfig;
+import com.matsg.battlegrounds.api.config.ItemConfig;
 import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.item.*;
 import com.matsg.battlegrounds.util.BattleSound;
@@ -16,9 +16,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FireArmConfig extends AbstractYaml implements WeaponConfig<FireArm> {
+public class FireArmConfig extends AbstractYaml implements ItemConfig<FireArm> {
 
-    private List<WeaponSerializer> serializers;
+    private List<ItemSerializer> serializers;
     private Map<String, FireArm> fireArms;
 
     public FireArmConfig(Battlegrounds plugin) throws IOException {
@@ -27,9 +27,9 @@ public class FireArmConfig extends AbstractYaml implements WeaponConfig<FireArm>
         setup();
     }
 
-    public FireArm get(String name) {
-        for (FireArm fireArm : getList()) {
-            if (fireArm.getName().equalsIgnoreCase(name)) {
+    public FireArm get(String arg) {
+        for (FireArm fireArm : fireArms.values()) {
+            if (fireArm.getId().equals(arg) || fireArm.getName().equals(arg)) {
                 return fireArm.clone();
             }
         }
@@ -38,7 +38,9 @@ public class FireArmConfig extends AbstractYaml implements WeaponConfig<FireArm>
 
     public List<FireArm> getList() {
         List<FireArm> list = new ArrayList<>();
-        list.addAll(fireArms.values());
+        for (FireArm fireArm : fireArms.values()) {
+            list.add(fireArm.clone()); // Create a deep copy of the list
+        }
         return list;
     }
 
@@ -46,7 +48,7 @@ public class FireArmConfig extends AbstractYaml implements WeaponConfig<FireArm>
         List<FireArm> list = new ArrayList<>();
         for (FireArm fireArm : fireArms.values()) {
             if (fireArm.getType() == weaponType) {
-                list.add(fireArm);
+                list.add(fireArm.clone());
             }
         }
         return list;
@@ -67,10 +69,24 @@ public class FireArmConfig extends AbstractYaml implements WeaponConfig<FireArm>
         }
     }
 
+    private Map<String, String[]> getCompatibleAttachments(String string) {
+        Map<String, String[]> map = new HashMap<>();
+        for (String attachment : string.split(", ")) {
+            String id = attachment.substring(0, attachment.contains("(") ? attachment.indexOf('(') : attachment.length());
+            String[] args = new String[0];
+            if (attachment.contains("(") && attachment.contains(")")) {
+                args = attachment.substring(attachment.indexOf('(') + 1, attachment.indexOf(')')).split(",");
+            }
+            map.put(id, args);
+        }
+        return map;
+    }
+
     private Lethal getLethalProjectile(ConfigurationSection section) throws ItemFormatException {
         String[] material = plugin.getBattlegroundsConfig().launcherMaterial.split(",");
         try {
             return new BattleLethal(
+                    null,
                     null,
                     null,
                     new ItemStackBuilder(Material.valueOf(material[0])).setAmount(1).setDurability(Short.parseShort(material[1])).build(),
@@ -87,15 +103,15 @@ public class FireArmConfig extends AbstractYaml implements WeaponConfig<FireArm>
         }
     }
 
-    private List<WeaponSerializer> prepareSerializers() {
-        List<WeaponSerializer> list = new ArrayList<>();
-        list.add(new WeaponSerializer<Gun>(FireArmType.GUNS) {
+    private List<ItemSerializer> prepareSerializers() {
+        List<ItemSerializer> list = new ArrayList<>();
+        list.add(new ItemSerializer<Gun>(FireArmType.GUNS) {
             Gun getFromSection(ConfigurationSection section) throws ItemFormatException {
-                String name = section.getString("DisplayName");
                 String[] material = section.getString("Material").split(",");
                 try {
                     return new BattleGun(
-                            name,
+                            section.getName(),
+                            section.getString("DisplayName"),
                             section.getString("Description"),
                             new ItemStackBuilder(Material.valueOf(material[0])).build(),
                             (short) new AttributeValidator(Short.parseShort(material[1]), "Durability").shouldEqualOrBeHigherThan(0),
@@ -112,20 +128,22 @@ public class FireArmConfig extends AbstractYaml implements WeaponConfig<FireArm>
                             FireArmType.getValue(section.getString("GunType")),
                             ReloadType.valueOf(section.getString("Reload.Type")),
                             BattleSound.parseSoundArray(section.getString("Reload.Sound.Reload")),
-                            BattleSound.parseSoundArray(section.getString("FireMode.ShootSound"))
+                            BattleSound.parseSoundArray(section.getString("Shot.ShotSound")),
+                            BattleSound.parseSoundArray(section.getString("Shot.SuppressedSound")),
+                            getCompatibleAttachments(section.getString("Attachments"))
                     );
                 } catch (ValidationFailedException e) {
                     throw new ItemFormatException("Invalid item format " + section.getName() + ": " + e.getMessage());
                 }
             }
         });
-        list.add(new WeaponSerializer<Launcher>(FireArmType.LAUNCHER) {
+        list.add(new ItemSerializer<Launcher>(FireArmType.LAUNCHER) {
             Launcher getFromSection(ConfigurationSection section) throws ItemFormatException {
-                String name = section.getString("DisplayName");
                 String[] material = section.getString("Material").split(",");
                 try {
                     return new BattleLauncher(
-                            name,
+                            section.getName(),
+                            section.getString("DisplayName"),
                             section.getString("Description"),
                             new ItemStackBuilder(Material.valueOf(material[0])).build(),
                             (short) new AttributeValidator(Short.parseShort(material[1]), "Durability").shouldEqualOrBeHigherThan(0),
@@ -140,7 +158,7 @@ public class FireArmConfig extends AbstractYaml implements WeaponConfig<FireArm>
                             LaunchType.valueOf(section.getString("FireMode.LaunchType")),
                             ReloadType.valueOf(section.getString("Reload.Type")),
                             BattleSound.parseSoundArray(section.getString("Reload.Sound.Reload")),
-                            BattleSound.parseSoundArray(section.getString("FireMode.ShootSound"))
+                            BattleSound.parseSoundArray(section.getString("Shot.ShotSound"))
                     );
                 } catch (Exception e) {
                     throw new ItemFormatException("Invalid item format " + section.getName() + ": " + e.getMessage());
@@ -153,7 +171,7 @@ public class FireArmConfig extends AbstractYaml implements WeaponConfig<FireArm>
     private FireArm readFireArmConfiguration(ConfigurationSection section) throws IllegalArgumentException, ItemFormatException {
         String typeString = section.getString("GunType");
         FireArmType type = FireArmType.valueOf(typeString);
-        for (WeaponSerializer serializer : serializers) {
+        for (ItemSerializer serializer : serializers) {
             if (serializer.hasType(type)) {
                 return (FireArm) serializer.getFromSection(section);
             }

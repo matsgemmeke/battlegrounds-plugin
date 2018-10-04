@@ -22,7 +22,7 @@ public interface Team {
 
     int getScore();
 
-    int getTotalPlayers();
+    int getTeamSize();
 
     boolean hasPlayer(GamePlayer gamePlayer);
 

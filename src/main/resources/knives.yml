@@ -1,6 +1,6 @@
 # Knife format
 #
-# <Name>:
+# <Id>:
 #   Amount: The maximum amount a player can carry (will only affect throwables)
 #   Cooldown: The amount of ticks the players needs to wait to be able to throw a knife again (will only affect throwables)
 #   Damage: The damage the knife inflicts.

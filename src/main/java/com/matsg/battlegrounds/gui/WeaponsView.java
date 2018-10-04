@@ -119,7 +119,7 @@ public class WeaponsView implements View {
         }
         if (weapon instanceof Knife) {
             weaponList.addAll(plugin.getKnifeConfig().getList());
-            player.openInventory(new SelectWeaponView(plugin, player, loadout, ((Knife) weapon).getType(), weaponList, inventory).getInventory());
+            player.openInventory(new SelectWeaponView(plugin, player, loadout, weapon.getType(), weaponList, inventory).getInventory());
         }
     }
 

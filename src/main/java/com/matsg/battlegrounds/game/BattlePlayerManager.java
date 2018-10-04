@@ -3,10 +3,7 @@ package com.matsg.battlegrounds.game;
 import com.matsg.battlegrounds.api.config.LevelConfig;
 import com.matsg.battlegrounds.api.config.StoredPlayer;
 import com.matsg.battlegrounds.api.game.*;
-import com.matsg.battlegrounds.api.item.Item;
-import com.matsg.battlegrounds.api.item.ItemSlot;
-import com.matsg.battlegrounds.api.item.Loadout;
-import com.matsg.battlegrounds.api.item.Weapon;
+import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.player.PlayerStatus;
 import com.matsg.battlegrounds.api.player.PlayerStorage;
@@ -26,13 +23,16 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BattlePlayerManager implements PlayerManager {
 
     private Game game;
     private LevelConfig levelConfig;
     private List<GamePlayer> players;
+    private Map<GamePlayer, Loadout> selectedLoadouts;
     private PlayerStorage playerStorage;
 
     public BattlePlayerManager(Game game, LevelConfig levelConfig, PlayerStorage playerStorage) {
@@ -40,6 +40,7 @@ public class BattlePlayerManager implements PlayerManager {
         this.levelConfig = levelConfig;
         this.players = new ArrayList<>();
         this.playerStorage = playerStorage;
+        this.selectedLoadouts = new HashMap<>();
     }
 
     public List<GamePlayer> getPlayers() {
@@ -100,21 +101,22 @@ public class BattlePlayerManager implements PlayerManager {
 
     public void changeLoadout(GamePlayer gamePlayer, Loadout loadout, boolean apply) {
         Loadout old = gamePlayer.getLoadout();
-        gamePlayer.setLoadout(loadout);
+        setSelectedLoadout(gamePlayer, loadout);
         if (!apply) {
             gamePlayer.sendMessage(ActionBar.CHANGE_LOADOUT);
             return;
         }
-        if (old != null) {
+        if (old != null && old != loadout) {
             clearLoadout(old);
         }
         addLoadout(gamePlayer, loadout);
-        loadout.updateInventory();
+        gamePlayer.setLoadout(loadout);
     }
 
     private void clearLoadout(Loadout loadout) {
         for (Weapon weapon : loadout.getWeapons()) {
             if (weapon != null) {
+                game.getItemRegistry().removeItem(game.getItemRegistry().getItem(weapon.getItemStack()));
                 weapon.remove();
                 weapon.setGame(null);
                 weapon.setGamePlayer(null);
@@ -261,6 +263,10 @@ public class BattlePlayerManager implements PlayerManager {
         player.teleport(location);
     }
 
+    public Loadout getSelectedLoadout(GamePlayer gamePlayer) {
+        return selectedLoadouts.get(gamePlayer);
+    }
+
     public void preparePlayer(GamePlayer gamePlayer) {
         Player player = gamePlayer.getPlayer();
         player.setFoodLevel(20);
@@ -322,7 +328,7 @@ public class BattlePlayerManager implements PlayerManager {
     }
 
     public void respawnPlayer(GamePlayer gamePlayer, Spawn spawn) {
-        changeLoadout(gamePlayer, gamePlayer.getLoadout(), true);
+        changeLoadout(gamePlayer, selectedLoadouts.get(gamePlayer), true);
         spawn.setGamePlayer(gamePlayer);
 
         new BattleRunnable() {
@@ -330,6 +336,14 @@ public class BattlePlayerManager implements PlayerManager {
                 spawn.setGamePlayer(null); // Wait 5 seconds before resetting the spawn state
             }
         }.runTaskLater(100);
+    }
+
+    private void setSelectedLoadout(GamePlayer gamePlayer, Loadout loadout) {
+        if (!selectedLoadouts.containsKey(gamePlayer)) {
+            selectedLoadouts.put(gamePlayer, loadout);
+            return;
+        }
+        selectedLoadouts.replace(gamePlayer, loadout);
     }
 
     public void setVisible(GamePlayer gamePlayer, boolean visible) {

@@ -6,13 +6,11 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Collection;
 
-public interface Droppable {
+public interface Droppable extends DropListener {
 
     Collection<Item> getDroppedItems();
 
     boolean isRelated(ItemStack itemStack);
-
-    void onDrop(Player player);
 
     void onPickUp(Player player, Item item);
 }

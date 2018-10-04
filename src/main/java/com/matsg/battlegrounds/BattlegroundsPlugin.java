@@ -3,8 +3,9 @@ package com.matsg.battlegrounds;
 import com.matsg.battlegrounds.api.*;
 import com.matsg.battlegrounds.api.config.BattlegroundsConfig;
 import com.matsg.battlegrounds.api.config.CacheYaml;
+import com.matsg.battlegrounds.api.config.ItemConfig;
 import com.matsg.battlegrounds.api.config.LevelConfig;
-import com.matsg.battlegrounds.api.config.WeaponConfig;
+import com.matsg.battlegrounds.api.item.Attachment;
 import com.matsg.battlegrounds.api.item.Equipment;
 import com.matsg.battlegrounds.api.item.FireArm;
 import com.matsg.battlegrounds.api.item.Knife;
@@ -30,13 +31,14 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
     private BattlegroundsConfig config;
     private CacheYaml cache;
     private GameManager gameManager;
+    private ItemConfig<Attachment> attachmentConfig;
+    private ItemConfig<Equipment> equipmentConfig;
+    private ItemConfig<FireArm> fireArmConfig;
+    private ItemConfig<Knife> knifeConfig;
     private LevelConfig levelConfig;
     private List<BattlegroundsExtension> extensions;
     private PlayerStorage playerStorage;
     private Translator translator;
-    private WeaponConfig<Equipment> equipmentConfig;
-    private WeaponConfig<FireArm> fireArmConfig;
-    private WeaponConfig<Knife> knifeConfig;
 
     public void onEnable() {
         plugin = this;
@@ -69,6 +71,10 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         return (WorldEditPlugin) plugin;
     }
 
+    public ItemConfig<Attachment> getAttachmentConfig() {
+        return attachmentConfig;
+    }
+
     public CacheYaml getBattlegroundsCache() {
         return cache;
     }
@@ -77,11 +83,11 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         return config;
     }
 
-    public WeaponConfig<Equipment> getEquipmentConfig() {
+    public ItemConfig<Equipment> getEquipmentConfig() {
         return equipmentConfig;
     }
 
-    public WeaponConfig<FireArm> getFireArmConfig() {
+    public ItemConfig<FireArm> getFireArmConfig() {
         return fireArmConfig;
     }
 
@@ -89,7 +95,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         return gameManager;
     }
 
-    public WeaponConfig<Knife> getKnifeConfig() {
+    public ItemConfig<Knife> getKnifeConfig() {
         return knifeConfig;
     }
 
@@ -146,11 +152,12 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         }
 
         try {
+            attachmentConfig = new AttachmentConfig(this);
             equipmentConfig = new EquipmentConfig(this);
             fireArmConfig = new FireArmConfig(this);
             knifeConfig = new KnifeConfig(this);
         } catch (Exception e) {
-            throw new StartupFailedException("Failed to load weapon configuration files!", e);
+            throw new StartupFailedException("Failed to load item configuration files!", e);
         }
 
         try {
@@ -165,11 +172,13 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
             throw new StartupFailedException("Failed to load default loadout classes!", e);
         }
 
-        getLogger().info("Succesfully loaded " + fireArmConfig.getList().size() + " guns, "
-                + equipmentConfig.getList().size() + " equipment and "
-                + knifeConfig.getList().size() + " knives from the config");
+        getLogger().info("Succesfully loaded "
+                + fireArmConfig.getList().size() + " guns, "
+                + equipmentConfig.getList().size() + " equipment, "
+                + knifeConfig.getList().size() + " knives and "
+                + attachmentConfig.getList().size() + " attachments from the config");
 
-        this.gameManager = new BattleGameManager();
+        gameManager = new BattleGameManager();
 
         new DataLoader(this);
 

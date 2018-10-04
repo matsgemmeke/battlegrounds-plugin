@@ -55,9 +55,7 @@ public enum BattleTacticalEffect implements TacticalEffect {
                 int loops = 0, maxLoops = 40;
                 public void run() {
                     loops += period;
-                    for (Sound sound : gun.getShootSound()) {
-                        sound.play(tactical.getGame(), item.getLocation());
-                    }
+                    gun.playShotSound(item.getLocation());
                     if (loops > maxLoops) {
                         tactical.getDroppedItems().remove(item);
                         item.remove();
@@ -99,7 +97,7 @@ public enum BattleTacticalEffect implements TacticalEffect {
             for (Block block : blocks) {
                 if (block.getType() == Material.AIR) {
                     blockStates.add(block.getState());
-                    block.setType(XMaterial.WHEAT.parseMaterial());
+                    block.setType(XMaterial.LEGACY_CROPS.parseMaterial());
                 }
             }
 

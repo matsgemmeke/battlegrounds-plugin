@@ -2,7 +2,7 @@ package com.matsg.battlegrounds.config;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.config.AbstractYaml;
-import com.matsg.battlegrounds.api.config.WeaponConfig;
+import com.matsg.battlegrounds.api.config.ItemConfig;
 import com.matsg.battlegrounds.api.item.Knife;
 import com.matsg.battlegrounds.api.item.WeaponType;
 import com.matsg.battlegrounds.item.BattleKnife;
@@ -16,10 +16,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class KnifeConfig extends AbstractYaml implements WeaponConfig<Knife> {
+public class KnifeConfig extends AbstractYaml implements ItemConfig<Knife> {
 
+    private ItemSerializer serializer;
     private Map<String, Knife> knives;
-    private WeaponSerializer serializer;
 
     public KnifeConfig(Battlegrounds plugin) throws IOException {
         super(plugin, plugin.getDataFolder().getPath() + "/items", "knives.yml", false);
@@ -27,9 +27,9 @@ public class KnifeConfig extends AbstractYaml implements WeaponConfig<Knife> {
         setup();
     }
 
-    public Knife get(String name) {
+    public Knife get(String arg) {
         for (Knife knife : getList()) {
-            if (knife.getName().equalsIgnoreCase(name)) {
+            if (knife.getId().equals(arg) || knife.getName().equals(arg)) {
                 return knife.clone();
             }
         }
@@ -38,7 +38,9 @@ public class KnifeConfig extends AbstractYaml implements WeaponConfig<Knife> {
 
     public List<Knife> getList() {
         List<Knife> list = new ArrayList<>();
-        list.addAll(knives.values());
+        for (Knife knife : knives.values()) {
+            list.add(knife.clone()); // Create a deep copy of the list
+        }
         return list;
     }
 
@@ -46,14 +48,14 @@ public class KnifeConfig extends AbstractYaml implements WeaponConfig<Knife> {
         return getList(); // No subtypes for knives
     }
 
-    private WeaponSerializer prepareSerializer() {
-        return new WeaponSerializer<Knife>() {
+    private ItemSerializer prepareSerializer() {
+        return new ItemSerializer<Knife>() {
             Knife getFromSection(ConfigurationSection section) throws ItemFormatException {
-                String name = section.getString("DisplayName");
                 String[] material = section.getString("Material").split(",");
                 try {
                     return new BattleKnife(
-                            name,
+                            section.getName(),
+                            section.getString("DisplayName"),
                             section.getString("Description"),
                             new ItemStackBuilder(Material.valueOf(material[0])).build(),
                             (short) new AttributeValidator(Short.parseShort(material[1]), "Durability").shouldEqualOrBeHigherThan(0),
@@ -63,7 +65,7 @@ public class KnifeConfig extends AbstractYaml implements WeaponConfig<Knife> {
                             (int) new AttributeValidator(section.getInt("Cooldown"), "Cooldown").shouldEqualOrBeHigherThan(0.0)
                     );
                 } catch (ValidationFailedException e) {
-                    throw new ItemFormatException("Invalid item format " + name + ": " + e.getMessage());
+                    throw new ItemFormatException("Invalid item format " + section.getName() + ": " + e.getMessage());
                 }
             }
         };

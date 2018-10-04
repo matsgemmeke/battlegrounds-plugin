@@ -70,7 +70,7 @@ public class BattleTeam implements Team {
         return kills;
     }
 
-    public int getTotalPlayers() {
+    public int getTeamSize() {
         return players.size();
     }
 

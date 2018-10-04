@@ -213,12 +213,12 @@ public class GameEventHandler implements Listener {
         Player player = event.getPlayer();
         Item item = getInteractItem(game.getPlayerManager().getGamePlayer(player), event.getItemDrop().getItemStack());
 
-        if (item == null || !(item instanceof Droppable)) {
+        if (item == null || !game.getState().isAllowItems() || !(item instanceof DropListener)) {
             event.setCancelled(true);
             return;
         }
 
-        ((Droppable) item).onDrop(player);
+        event.setCancelled(((DropListener) item).onDrop());
     }
 
     @EventHandler

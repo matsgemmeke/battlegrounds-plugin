@@ -1,7 +1,6 @@
 package com.matsg.battlegrounds.item;
 
 import com.matsg.battlegrounds.api.item.FireArm;
-import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.util.BattleRunnable;
 
 public enum FireMode {
@@ -19,7 +18,7 @@ public enum FireMode {
                         fireArm.shootProjectile();
                         fireArm.update();
 
-                        playShootSound(fireArm);
+                        fireArm.playShotSound();
 
                         if (shots == amount || fireArm.getMagazine() <= 0) {
                             fireArm.setShooting(false); // Preventing quicker shooting when fast right clicking
@@ -41,7 +40,7 @@ public enum FireMode {
             new BattleRunnable() {
                 int shots = 0;
                 public void run() {
-                    playShootSound(fireArm);
+                    fireArm.playShotSound();
                     shots ++;
 
                     fireArm.setMagazine(fireArm.getMagazine() - 1);
@@ -58,7 +57,7 @@ public enum FireMode {
     },
     SEMI_AUTOMATIC(2) {
         public void shoot(FireArm fireArm, int rateOfFire, int burstRounds) {
-            playShootSound(fireArm);
+            fireArm.playShotSound();
 
             fireArm.cooldown(fireArm.getCooldown());
             fireArm.setMagazine(fireArm.getMagazine() - 1);
@@ -71,15 +70,6 @@ public enum FireMode {
 
     FireMode(int id) {
         this.id = id;
-    }
-
-    private static void playShootSound(FireArm fireArm) {
-        for (Sound sound : fireArm.getShootSound()) {
-            if (!sound.isCancelled()) {
-                sound.play(fireArm.getGame(), fireArm.getGamePlayer().getPlayer().getLocation());
-            }
-            sound.setCancelled(false);
-        }
     }
 
     public static FireMode valueOf(int id) {

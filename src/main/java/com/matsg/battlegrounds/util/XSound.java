@@ -1,6 +1,6 @@
 package com.matsg.battlegrounds.util;
 
-public enum Sound {
+public enum XSound {
 
     AMBIENCE_CAVE("AMBIENCE_CAVE", "AMBIENT_CAVE"),
     AMBIENCE_RAIN("AMBIENCE_RAIN", "WEATHER_RAIN"),
@@ -200,12 +200,12 @@ public enum Sound {
     private String[] versionDependentNames;
     private org.bukkit.Sound cached = null;
 
-    Sound(String... versionDependentNames) {
+    XSound(String... versionDependentNames) {
         this.versionDependentNames = versionDependentNames;
     }
 
-    public static Sound getSound(String arg) {
-        for (Sound sound : values()) {
+    public static XSound getSound(String arg) {
+        for (XSound sound : values()) {
             for (String vdn : sound.versionDependentNames) {
                 if (vdn.equals(arg)) {
                     return sound;

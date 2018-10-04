@@ -32,8 +32,8 @@ public class BattleKnife extends BattleWeapon implements Knife {
     private List<Item> droppedItems;
     private String type;
 
-    public BattleKnife(String name, String description, ItemStack itemStack, short durability, double damage, int amount, boolean throwable, int cooldown) {
-        super(name, description, itemStack, durability);
+    public BattleKnife(String id, String name, String description, ItemStack itemStack, short durability, double damage, int amount, boolean throwable, int cooldown) {
+        super(id, name, description, itemStack, durability);
         this.amount = amount;
         this.cooldown = cooldown;
         this.damage = damage;
@@ -137,6 +137,10 @@ public class BattleKnife extends BattleWeapon implements Knife {
             }
         }
         return false;
+    }
+
+    public boolean onDrop() {
+        return true;
     }
 
     public void onLeftClick() { }

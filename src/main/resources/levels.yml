@@ -10,7 +10,7 @@ level:
     unlocks: Marksman, Dragunov
   '4':
     exp: 1400
-    unlocks: Glock 17
+    unlocks: Glock 17, Choke
   '5':
     exp: 2400
     unlocks: FAMAS
@@ -22,7 +22,7 @@ level:
     unlocks: RPK
   '8':
     exp: 7500
-    unlocks: Ithaca 37
+    unlocks: Ithaca 37, Extended Clip
   '9':
     exp: 9900
     unlocks: FAL
@@ -31,7 +31,7 @@ level:
     unlocks: Flashbang
   '11':
     exp: 15800
-    unlocks: QCW-05
+    unlocks: QCW-05, Vertical Grip
   '12':
     exp: 19300
     unlocks: RPG-7
@@ -39,7 +39,7 @@ level:
     exp: 23300
   '14':
     exp: 27800
-    unlocks: Semtex
+    unlocks: Semtex, Muzzle Brake
   '15':
     exp: 32700
     unlocks: Ballistic Knife
@@ -48,16 +48,16 @@ level:
     unlocks: Shock Charge
   '17':
     exp: 43900
-    unlocks: AKS-74u
+    unlocks: AKS-74u, Select Fire
   '18':
     exp: 50400
     unlocks: Python
   '19':
     exp: 57200
-    unlocks: Remington 870
+    unlocks: SPAS-12
   '20':
     exp: 64500
-    unlocks: Galil
+    unlocks: Galil, Bullet Loops
   '21':
     exp: 73000
     unlocks: Decoy
@@ -65,16 +65,16 @@ level:
     exp: 81700
   '23':
     exp: 91000
-    unlocks: Uzi
+    unlocks: Uzi, Heavy Barrel
   '24':
     exp: 109000
-    unlocks: SPAS-12
+    unlocks: Remington 870
   '25':
     exp: 113400
     unlocks: China Lake
   '26':
     exp: 122500
-    unlocks: SCAR-H
+    unlocks: SCAR-H, ACOG Scope
   '27':
     exp: 134300
     unlocks: M82A1
@@ -82,7 +82,7 @@ level:
     exp: 146700
   '29':
     exp: 159700
-    unlocks: Vector
+    unlocks: Vector, Fast Mag
   '30':
     exp: 173400
     unlocks: Crossbow
@@ -90,7 +90,7 @@ level:
     exp: 187800
   '32':
     exp: 202800
-    unlocks: SG 550
+    unlocks: SG 550, Suppressor
   '33':
     exp: 218600
   '34':
@@ -98,7 +98,7 @@ level:
     unlocks: M249
   '35':
     exp: 252200
-    unlocks: MP7
+    unlocks: MP7, Night Vision Scope
   '36':
     exp: 270000
     unlocks: Claymore
@@ -106,7 +106,7 @@ level:
     exp: 288600
   '38':
     exp: 308000
-    unlocks: AK-47
+    unlocks: AK-47, Angled Grip
   '39':
     exp: 328100
     unlocks: Hatchet
@@ -114,7 +114,7 @@ level:
     exp: 348900
   '41':
     exp: 371000
-    unlocks: Beretta 93R
+    unlocks: Beretta 93R, Tactical Stock
   '42':
     exp: 392900
     unlocks: SV-98
@@ -123,7 +123,7 @@ level:
     unlocks: QBZ-95
   '44':
     exp: 440100
-    unlocks: Saiga-12K
+    unlocks: Saiga-12K, Bipod
   '45':
     exp: 464900
   '46':
@@ -131,6 +131,7 @@ level:
     unlocks: AUG
   '47':
     exp: 517000
+    unlocks: Rapid Fire
   '48':
     exp: 544300
     unlocks: MGL

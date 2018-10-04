@@ -2,8 +2,9 @@ package com.matsg.battlegrounds.api;
 
 import com.matsg.battlegrounds.api.config.BattlegroundsConfig;
 import com.matsg.battlegrounds.api.config.CacheYaml;
+import com.matsg.battlegrounds.api.config.ItemConfig;
 import com.matsg.battlegrounds.api.config.LevelConfig;
-import com.matsg.battlegrounds.api.config.WeaponConfig;
+import com.matsg.battlegrounds.api.item.Attachment;
 import com.matsg.battlegrounds.api.item.Equipment;
 import com.matsg.battlegrounds.api.item.FireArm;
 import com.matsg.battlegrounds.api.item.Knife;
@@ -11,6 +12,13 @@ import com.matsg.battlegrounds.api.player.PlayerStorage;
 import org.bukkit.plugin.Plugin;
 
 public interface Battlegrounds extends Plugin {
+
+    /**
+     * Gets the attachment configrations of the plugin.
+     *
+     * @return The attachment configuration
+     */
+    ItemConfig<Attachment> getAttachmentConfig();
 
     /**
      * Gets the cache storage of the plugin.
@@ -31,14 +39,14 @@ public interface Battlegrounds extends Plugin {
      *
      * @return The equipment configuration
      */
-    WeaponConfig<Equipment> getEquipmentConfig();
+    ItemConfig<Equipment> getEquipmentConfig();
 
     /**
      * Gets the firearms configrations of the plugin.
      *
      * @return The firearm configuration
      */
-    WeaponConfig<FireArm> getFireArmConfig();
+    ItemConfig<FireArm> getFireArmConfig();
 
     /**
      * Gets the game manager of the plugin.
@@ -52,7 +60,7 @@ public interface Battlegrounds extends Plugin {
      *
      * @return The knife configuration
      */
-    WeaponConfig<Knife> getKnifeConfig();
+    ItemConfig<Knife> getKnifeConfig();
 
     /**
      * Gets the level configurations of the plugin

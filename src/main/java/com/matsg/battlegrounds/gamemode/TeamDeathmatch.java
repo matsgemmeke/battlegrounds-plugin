@@ -76,9 +76,9 @@ public class TeamDeathmatch extends AbstractGameMode {
         int size = Integer.MAX_VALUE;
         Team emptiestTeam = null;
         for (Team team : teams) {
-            if (team.getTotalPlayers() < size) {
+            if (team.getTeamSize() < size) {
                 emptiestTeam = team;
-                size = team.getTotalPlayers();
+                size = team.getTeamSize();
             }
         }
         return emptiestTeam;

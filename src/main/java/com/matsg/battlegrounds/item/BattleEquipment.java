@@ -8,6 +8,7 @@ import com.matsg.battlegrounds.util.BattleSound;
 import com.matsg.battlegrounds.util.ItemStackBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
@@ -24,10 +25,10 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
     protected List<Item> droppedItems;
     protected Sound[] ignitionSound;
 
-    public BattleEquipment(String name, String description, ItemStack itemStack, short durability, EquipmentType type, int amount,
+    public BattleEquipment(String id, String name, String description, ItemStack itemStack, short durability, EquipmentType type, int amount,
                             double longRange, double midRange, double shortRange, double velocity,
                             IgnitionType ignitionType, int ignitionTime, Sound[] ignitionSound) {
-        super(name, description, itemStack, durability);
+        super(id, name, description, itemStack, durability);
         this.amount = amount;
         this.beingThrown = false;
         this.cooldown = plugin.getBattlegroundsConfig().explosiveCooldown;
@@ -158,7 +159,9 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
         return false;
     }
 
-    public void onDrop() { }
+    public boolean onDrop() {
+        return true;
+    }
 
     public void onLeftClick() {
         if (amount <= 0 || beingThrown || game == null || gamePlayer == null) {
@@ -166,6 +169,8 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
         }
         deployEquipment(velocity);
     }
+
+    public void onPickUp(Player player, Item item) { }
 
     public void onRightClick() {
         if (amount <= 0 || beingThrown || game == null || gamePlayer == null) {

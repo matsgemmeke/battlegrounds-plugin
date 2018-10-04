@@ -35,7 +35,7 @@ public class SelectLoadoutView implements View {
         this.inventory = plugin.getServer().createInventory(this, 27, EnumMessage.TITLE_SELECT_LOADOUT.getMessage());
         this.loadouts = new HashMap<>();
 
-        for (Loadout loadout : plugin.getPlayerStorage().getStoredPlayer(gamePlayer.getUUID()).getPlayerYaml().getLoadouts()) {
+        for (Loadout loadout : plugin.getPlayerStorage().getStoredPlayer(gamePlayer.getUUID()).getLoadouts()) {
             addLoadout(loadout);
         }
     }

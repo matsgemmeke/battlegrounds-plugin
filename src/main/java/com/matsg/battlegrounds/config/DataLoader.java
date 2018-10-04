@@ -2,10 +2,8 @@ package com.matsg.battlegrounds.config;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.config.CacheYaml;
-import com.matsg.battlegrounds.api.config.WeaponConfig;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.gamemode.GameMode;
-import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.game.*;
 import com.matsg.battlegrounds.gamemode.GameModeType;
 import org.bukkit.Location;
@@ -15,7 +13,6 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
@@ -164,15 +161,5 @@ public class DataLoader {
         }
 
         logger.info("Loaded " + plugin.getGameManager().getGames().size() + " game(s) from the cache");
-    }
-
-    private Weapon getWeapon(String name) {
-        for (WeaponConfig weaponConfig : Arrays.asList(plugin.getEquipmentConfig(), plugin.getFireArmConfig(), plugin.getKnifeConfig())) {
-            Weapon weapon = weaponConfig.get(name);
-            if (weapon != null) {
-                return weapon;
-            }
-        }
-        return null;
     }
 }

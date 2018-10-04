@@ -31,7 +31,7 @@ public class Rename extends SubCommand {
             return;
         }
 
-        Loadout loadout = plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).getPlayerYaml().getLoadout(loadoutId);
+        Loadout loadout = plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).getLoadout(loadoutId);
 
         if (loadout == null) {
             EnumMessage.INVALID_LOADOUT.send(player);
@@ -45,7 +45,7 @@ public class Rename extends SubCommand {
 
         String old = loadout.getName();
         loadout.setName(args[2]);
-        plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).getPlayerYaml().saveLoadout(loadout);
+        plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).saveLoadout(loadout);
 
         EnumMessage.RENAME_LOADOUT.send(player, new Placeholder("bg_loadout_old", old), new Placeholder("bg_loadout_new", loadout.getName()));
     }

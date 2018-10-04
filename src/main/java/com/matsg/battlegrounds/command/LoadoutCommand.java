@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.command;
 
 import com.matsg.battlegrounds.BattlegroundsPlugin;
+import com.matsg.battlegrounds.api.config.StoredPlayer;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.gui.LoadoutManagerView;
 import com.matsg.battlegrounds.util.EnumMessage;
@@ -20,8 +21,9 @@ public class LoadoutCommand extends Command {
 
     public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
+        StoredPlayer storedPlayer = plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId());
 
-        if (plugin.getLevelConfig().getLevel(plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).getExp()) < minLevel) {
+        if (storedPlayer == null || plugin.getLevelConfig().getLevel(storedPlayer.getExp()) < minLevel) {
             EnumMessage.CUSTOM_LOADOUT_LOCKED.send(player, new Placeholder("bg_level", minLevel));
             return;
         }

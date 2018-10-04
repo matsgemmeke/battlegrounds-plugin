@@ -11,13 +11,14 @@ import java.util.List;
 public class BattleSound implements com.matsg.battlegrounds.api.util.Sound {
 
     public static final BattleSound
-            COUNTDOWN_NOTE = new BattleSound(Sound.NOTE_STICKS.bukkitSound(), 1, 1),
-            EXPLOSION = new BattleSound(Sound.EXPLODE.bukkitSound(), 10, (float) 0.75),
-            EXPLOSIVE_THROW = new BattleSound(Sound.SHOOT_ARROW.bukkitSound(), 1, (float) 0.5),
-            KNIFE_THROW = new BattleSound(Sound.SHOOT_ARROW.bukkitSound(), 1, (float) 1.25);
+            ATTACHMENT_TOGGLE = new BattleSound(XSound.CLICK.bukkitSound(), (float) 0.5, (float) 1.25),
+            COUNTDOWN_NOTE = new BattleSound(XSound.NOTE_STICKS.bukkitSound(), 1, 1),
+            EXPLOSION = new BattleSound(XSound.EXPLODE.bukkitSound(), 10, (float) 0.75),
+            EXPLOSIVE_THROW = new BattleSound(XSound.SHOOT_ARROW.bukkitSound(), 1, (float) 0.5),
+            KNIFE_THROW = new BattleSound(XSound.SHOOT_ARROW.bukkitSound(), 1, (float) 1.25);
     public static final BattleSound[]
-            GUN_SCOPE = new BattleSound[] { new BattleSound(Sound.FALL_SMALL.bukkitSound(), 1, 1), new BattleSound(Sound.HORSE_SADDLE.bukkitSound(), 1, 2) },
-            ITEM_EQUIP = new BattleSound[] { new BattleSound(Sound.BAT_TAKEOFF.bukkitSound(), 1, 1), new BattleSound(Sound.HORSE_SADDLE.bukkitSound(), 1, 1) };
+            GUN_SCOPE = new BattleSound[] { new BattleSound(XSound.FALL_SMALL.bukkitSound(), 1, 1), new BattleSound(XSound.HORSE_SADDLE.bukkitSound(), 1, 2) },
+            ITEM_EQUIP = new BattleSound[] { new BattleSound(XSound.BAT_TAKEOFF.bukkitSound(), 1, 1), new BattleSound(XSound.HORSE_SADDLE.bukkitSound(), 1, 1) };
 
     private boolean cancelled;
     private float pitch, volume;
@@ -41,7 +42,7 @@ public class BattleSound implements com.matsg.battlegrounds.api.util.Sound {
         try {
             return org.bukkit.Sound.valueOf(sound);
         } catch (IllegalArgumentException e) {
-            return Sound.getSound(sound).bukkitSound();
+            return XSound.getSound(sound).bukkitSound();
         }
     }
 
@@ -58,6 +59,9 @@ public class BattleSound implements com.matsg.battlegrounds.api.util.Sound {
     }
 
     public static BattleSound[] parseSoundArray(String soundString) {
+        if (soundString == null || soundString.isEmpty()) {
+            return new BattleSound[0];
+        }
         try {
             List<BattleSound> list = new ArrayList<>();
             for (String sound : soundString.split(", ")) {
@@ -67,7 +71,7 @@ public class BattleSound implements com.matsg.battlegrounds.api.util.Sound {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return new BattleSound[0];
     }
 
     public long getDelay() {

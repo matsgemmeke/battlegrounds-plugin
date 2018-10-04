@@ -2,7 +2,7 @@ package com.matsg.battlegrounds.config;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.config.AbstractYaml;
-import com.matsg.battlegrounds.api.config.WeaponConfig;
+import com.matsg.battlegrounds.api.config.ItemConfig;
 import com.matsg.battlegrounds.api.item.Equipment;
 import com.matsg.battlegrounds.api.item.Lethal;
 import com.matsg.battlegrounds.api.item.Tactical;
@@ -22,9 +22,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class EquipmentConfig extends AbstractYaml implements WeaponConfig<Equipment> {
+public class EquipmentConfig extends AbstractYaml implements ItemConfig<Equipment> {
 
-    private List<WeaponSerializer> serializers;
+    private List<ItemSerializer> serializers;
     private Map<String, Equipment> equipment;
 
     public EquipmentConfig(Battlegrounds plugin) throws IOException {
@@ -33,9 +33,9 @@ public class EquipmentConfig extends AbstractYaml implements WeaponConfig<Equipm
         setup();
     }
 
-    public Equipment get(String name) {
+    public Equipment get(String arg) {
         for (Equipment equipment : getList()) {
-            if (equipment.getName().equalsIgnoreCase(name)) {
+            if (equipment.getId().equals(arg) || equipment.getName().equals(arg)) {
                 return equipment.clone();
             }
         }
@@ -44,7 +44,9 @@ public class EquipmentConfig extends AbstractYaml implements WeaponConfig<Equipm
 
     public List<Equipment> getList() {
         List<Equipment> list = new ArrayList<>();
-        list.addAll(equipment.values());
+        for (Equipment equipment : this.equipment.values()) {
+            list.add(equipment.clone()); // Create a deep copy of the list
+        }
         return list;
     }
 
@@ -52,21 +54,21 @@ public class EquipmentConfig extends AbstractYaml implements WeaponConfig<Equipm
         List<Equipment> list = new ArrayList<>();
         for (Equipment equipment : equipment.values()) {
             if (equipment.getType() == weaponType) {
-                list.add(equipment);
+                list.add(equipment.clone());
             }
         }
         return list;
     }
 
-    private List<WeaponSerializer> prepareSerializers() {
-        List<WeaponSerializer> list = new ArrayList<>();
-        list.add(new WeaponSerializer<Lethal>(EquipmentType.LETHAL) {
+    private List<ItemSerializer> prepareSerializers() {
+        List<ItemSerializer> list = new ArrayList<>();
+        list.add(new ItemSerializer<Lethal>(EquipmentType.LETHAL) {
             Lethal getFromSection(ConfigurationSection section) throws ItemFormatException {
-                String name = section.getString("DisplayName");
                 String[] material = section.getString("Material").split(",");
                 try {
                     return new BattleLethal(
-                            name,
+                            section.getName(),
+                            section.getString("DisplayName"),
                             section.getString("Description"),
                             new ItemStackBuilder(Material.valueOf(material[0])).setDurability((short) section.getInt("Durability")).build(),
                             (short) new AttributeValidator(Short.parseShort(material[1]), "Durability").shouldEqualOrBeHigherThan(0),
@@ -82,17 +84,17 @@ public class EquipmentConfig extends AbstractYaml implements WeaponConfig<Equipm
                             BattleSound.parseSoundArray(section.getString("Sound"))
                     );
                 } catch (ValidationFailedException e) {
-                    throw new ItemFormatException("Invalid item format " + name + ": " + e.getMessage());
+                    throw new ItemFormatException("Invalid item format " + section.getName() + ": " + e.getMessage());
                 }
             }
         });
-        list.add(new WeaponSerializer<Tactical>(EquipmentType.TACTICAL) {
+        list.add(new ItemSerializer<Tactical>(EquipmentType.TACTICAL) {
             Tactical getFromSection(ConfigurationSection section) throws ItemFormatException {
-                String name = section.getString("DisplayName");
                 String[] material = section.getString("Material").split(",");
                 try {
                     return new BattleTactical(
-                            name,
+                            section.getName(),
+                            section.getString("DisplayName"),
                             section.getString("Description"),
                             new ItemStackBuilder(Material.valueOf(material[0])).setDurability((short) section.getInt("Durability")).build(),
                             (short) new AttributeValidator(Short.parseShort(material[1]), "Durability").shouldEqualOrBeHigherThan(0),
@@ -107,7 +109,7 @@ public class EquipmentConfig extends AbstractYaml implements WeaponConfig<Equipm
                             BattleSound.parseSoundArray(section.getString("Sound"))
                     );
                 } catch (ValidationFailedException e) {
-                    throw new ItemFormatException("Invalid item format " + name + ": " + e.getMessage());
+                    throw new ItemFormatException("Invalid item format " + section.getName() + ": " + e.getMessage());
                 }
             }
         });
@@ -116,7 +118,7 @@ public class EquipmentConfig extends AbstractYaml implements WeaponConfig<Equipm
 
     private Equipment readEquipmentConfiguration(ConfigurationSection section) throws IllegalArgumentException, ItemFormatException {
         EquipmentType type = EquipmentType.valueOf(section.getString("EquipmentType"));
-        for (WeaponSerializer serializer : serializers) {
+        for (ItemSerializer serializer : serializers) {
             if (serializer.hasType(type)) {
                 return (Equipment) serializer.getFromSection(section);
             }

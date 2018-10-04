@@ -15,7 +15,7 @@ import org.bukkit.inventory.ItemStack;
 public class SelectLoadout extends BattleItem {
 
     public SelectLoadout(Game game) {
-        super("SelectLoadout", null);
+        super(null, "SelectLoadout", null);
         this.game = game;
         this.itemSlot = ItemSlot.MISCELLANEOUS;
         this.itemStack = getDefaultItemStack();

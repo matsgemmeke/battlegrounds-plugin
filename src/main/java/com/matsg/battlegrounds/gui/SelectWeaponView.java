@@ -103,7 +103,7 @@ public class SelectWeaponView implements View {
             return;
         }
         replaceWeapon(loadout, weapon);
-        plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).getPlayerYaml().saveLoadout(loadout);
+        plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).saveLoadout(loadout);
         player.openInventory(new EditLoadoutView(plugin, loadout).getInventory());
     }
 
@@ -111,9 +111,15 @@ public class SelectWeaponView implements View {
         ItemSlot itemSlot = weapon.getType().getDefaultItemSlot();
         switch (itemSlot) {
             case FIREARM_PRIMARY:
+                if (loadout.getPrimary() != null && loadout.getPrimary() instanceof Gun) {
+                    ((Gun) loadout.getPrimary()).getAttachments().clear();
+                }
                 loadout.setPrimary((FireArm) weapon);
                 break;
             case FIREARM_SECONDARY:
+                if (loadout.getSecondary() != null && loadout.getSecondary() instanceof Gun) {
+                    ((Gun) loadout.getSecondary()).getAttachments().clear();
+                }
                 loadout.setSecondary((FireArm) weapon);
                 break;
             case EQUIPMENT:

@@ -14,10 +14,10 @@ public class BattleTactical extends BattleEquipment implements Tactical {
     private int duration;
     private TacticalEffect effect;
 
-    public BattleTactical(String name, String description, ItemStack itemStack, short durability,
+    public BattleTactical(String id, String name, String description, ItemStack itemStack, short durability,
                           int amount, TacticalEffect effect, int duration, double longRange, double midRange, double shortRange,
                           double velocity, int ignitionTime, Sound[] explodeSound) {
-        super(name, description, itemStack, durability, EquipmentType.TACTICAL, amount, longRange, midRange, shortRange, velocity,
+        super(id, name, description, itemStack, durability, EquipmentType.TACTICAL, amount, longRange, midRange, shortRange, velocity,
                 ignitionTime == 0 ? IgnitionType.PASSIVE : IgnitionType.AGGRESSIVE, ignitionTime, explodeSound);
         this.duration = duration;
         this.effect = effect;

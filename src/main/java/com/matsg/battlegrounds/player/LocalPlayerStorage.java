@@ -1,7 +1,6 @@
 package com.matsg.battlegrounds.player;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.config.PlayerYaml;
 import com.matsg.battlegrounds.api.config.StoredPlayer;
 import com.matsg.battlegrounds.api.player.OfflineGamePlayer;
 import com.matsg.battlegrounds.api.player.PlayerStorage;
@@ -19,62 +18,49 @@ public class LocalPlayerStorage implements PlayerStorage {
     private Battlegrounds plugin;
     private DefaultLoadouts defaultLoadouts;
     private File folder;
-    private List<PlayerYaml> playerYamls;
+    private List<StoredPlayer> storedPlayers;
 
     public LocalPlayerStorage(Battlegrounds plugin) throws IOException {
         this.plugin = plugin;
         this.defaultLoadouts = new DefaultLoadouts(plugin);
         this.folder = new File(plugin.getDataFolder().getPath() + "/players");
-        this.playerYamls = new ArrayList<>();
+        this.storedPlayers = new ArrayList<>();
 
         if (!folder.exists()) {
             folder.mkdirs();
         }
 
         for (File file : folder.listFiles()) {
-            playerYamls.add(new BattlePlayerYaml(plugin, UUID.fromString(file.getName().substring(0, file.getName().length() - 4))));
+            storedPlayers.add(new BattlePlayerYaml(plugin, UUID.fromString(file.getName().substring(0, file.getName().length() - 4))));
         }
     }
 
+    public List<? extends OfflineGamePlayer> getList() {
+        return storedPlayers;
+    }
+
     public void addPlayerAttributes(OfflineGamePlayer player) {
-        PlayerYaml playerYaml = getPlayerYaml(player.getUUID());
-        if (playerYaml == null) {
+        StoredPlayer storedPlayer = getStoredPlayer(player.getUUID());
+        if (storedPlayer == null) {
             return;
         }
-        StoredPlayer storedPlayer = playerYaml.getStoredPlayer();
         storedPlayer.setDeaths(storedPlayer.getDeaths() + player.getDeaths());
         storedPlayer.setExp(storedPlayer.getExp() + player.getExp());
         storedPlayer.setHeadshots(storedPlayer.getHeadshots() + player.getHeadshots());
         storedPlayer.setKills(storedPlayer.getKills() + player.getKills());
-        playerYaml.save();
     }
 
     public boolean contains(UUID uuid) {
-        return getPlayerYaml(uuid) != null;
-    }
-
-    public List<? extends OfflineGamePlayer> getList() {
-        List<StoredPlayer> list = new ArrayList<>();
-        for (PlayerYaml playerYaml : playerYamls) {
-            list.add(playerYaml.getStoredPlayer());
-        }
-        return list;
-    }
-
-    private PlayerYaml getPlayerYaml(UUID uuid) {
-        for (PlayerYaml playerYaml : playerYamls) {
-            if (playerYaml.getStoredPlayer().getUUID().equals(uuid)) {
-                return playerYaml;
-            }
-        }
-        return null;
+        return getStoredPlayer(uuid) != null;
     }
 
     public StoredPlayer getStoredPlayer(UUID uuid) {
-        if (!contains(uuid)) {
-            return null;
+        for (StoredPlayer  storedPlayer : storedPlayers) {
+            if (storedPlayer.getUUID().equals(uuid)) {
+                return storedPlayer;
+            }
         }
-        return getPlayerYaml(uuid).getStoredPlayer();
+        return null;
     }
 
     public List<? extends OfflineGamePlayer> getTopPlayers(int limit) {
@@ -89,12 +75,12 @@ public class LocalPlayerStorage implements PlayerStorage {
 
     public StoredPlayer registerPlayer(UUID uuid, String name) {
         try {
-            PlayerYaml playerYaml = new BattlePlayerYaml(plugin, uuid);
-            playerYaml.createDefaultAttributes();
+            StoredPlayer storedPlayer = new BattlePlayerYaml(plugin, uuid);
+            storedPlayer.createDefaultAttributes();
             for (int i = 1; i <= 5; i ++) {
-                playerYaml.saveLoadout(defaultLoadouts.getList().get(i - 1));
+                storedPlayer.saveLoadout(defaultLoadouts.getList().get(i - 1));
             }
-            playerYamls.add(playerYaml);
+            storedPlayers.add(storedPlayer);
         } catch (IOException e) {
             return null;
         }
@@ -102,6 +88,6 @@ public class LocalPlayerStorage implements PlayerStorage {
     }
 
     public void updatePlayer(Player player) {
-        getPlayerYaml(player.getUniqueId()).updateName(player.getName());
+        getStoredPlayer(player.getUniqueId()).updateName(player.getName());
     }
 }

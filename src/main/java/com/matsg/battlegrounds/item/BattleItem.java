@@ -4,9 +4,13 @@ import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.item.Item;
+import com.matsg.battlegrounds.api.item.ItemAttribute;
 import com.matsg.battlegrounds.api.item.ItemSlot;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class BattleItem implements Item {
 
@@ -14,18 +18,21 @@ public abstract class BattleItem implements Item {
     protected Game game;
     protected ItemSlot itemSlot;
     protected ItemStack itemStack;
-    protected String name;
+    protected List<ItemAttribute> attributes;
+    protected String id, name;
 
-    public BattleItem(String name, ItemStack itemStack) {
-        this.itemStack = itemStack;
+    public BattleItem(String id, String name, ItemStack itemStack) {
+        this.id = id;
         this.name = name;
+        this.itemStack = itemStack;
+        this.attributes = new ArrayList<>();
     }
 
     public Item clone() {
         try {
-            Item item = (Item) super.clone();
+            BattleItem item = (BattleItem) super.clone();
             if (itemStack != null) {
-                item.setItemStack(itemStack.clone());
+                item.itemStack = itemStack.clone();
             }
             return item;
         } catch (Exception e) {
@@ -36,6 +43,10 @@ public abstract class BattleItem implements Item {
 
     public Game getGame() {
         return game;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public ItemSlot getItemSlot() {
@@ -66,11 +77,16 @@ public abstract class BattleItem implements Item {
         return game == item.getGame() && itemStack.equals(item.getItemStack()) ? 0 : -1;
     }
 
-    public void onDrop(Player player) { }
+    public ItemAttribute getAttribute(String id) {
+        for (ItemAttribute attribute : attributes) {
+            if (attribute.getId().equals(id)) {
+                return attribute;
+            }
+        }
+        return null;
+    }
 
     public void onLeftClick(Player player) { }
-
-    public void onPickUp(Player player, org.bukkit.entity.Item itemEntity) { }
 
     public void onRightClick(Player player) { }
 

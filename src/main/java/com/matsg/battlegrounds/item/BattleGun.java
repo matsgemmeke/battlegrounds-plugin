@@ -2,12 +2,11 @@ package com.matsg.battlegrounds.item;
 
 import com.matsg.battlegrounds.api.event.GamePlayerKillPlayerEvent;
 import com.matsg.battlegrounds.api.game.Team;
-import com.matsg.battlegrounds.api.item.DamageSource;
-import com.matsg.battlegrounds.api.item.Gun;
-import com.matsg.battlegrounds.api.item.ReloadType;
+import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.player.Hitbox;
 import com.matsg.battlegrounds.api.util.Sound;
+import com.matsg.battlegrounds.item.attributes.*;
 import com.matsg.battlegrounds.util.BattleSound;
 import com.matsg.battlegrounds.util.EnumMessage;
 import com.matsg.battlegrounds.util.HalfBlocks;
@@ -22,66 +21,150 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class BattleGun extends BattleFireArm implements Gun {
 
-    private boolean scoped;
+    private boolean scoped, toggled;
     private Bullet bullet;
-    private FireMode fireMode;
-    private int burstRounds, fireRate, hits, scopeZoom;
+    private int hits;
+    private ItemAttribute<Boolean> scopeNightVision, scope, suppressed;
+    private ItemAttribute<Double> spread;
+    private ItemAttribute<FireMode> fireMode;
+    private ItemAttribute<Integer> burstRounds, fireRate, scopeZoom;
+    private List<Attachment> attachments;
+    private Map<Attachment, AttributeModifier> appliedModifiers, toggleModifiers;
+    private Map<ItemAttribute, AttributeValue> toggleAttributes;
+    private Map<String, String[]> compatibleAttachments;
+    private Sound[] suppressedSound;
 
-    public BattleGun(String name, String description, ItemStack itemStack, short durability,
+    public BattleGun(String id, String name, String description, ItemStack itemStack, short durability,
                      int magazine, int ammo, int maxAmmo, int fireRate, int burstRounds, int cooldown, int reloadDuration, double accuracy,
-                     Bullet bullet, FireMode fireMode, FireArmType fireArmType, ReloadType reloadType, Sound[] reloadSound, Sound[] shootSound) {
-        super(name, description, itemStack, durability, magazine, ammo, maxAmmo, cooldown, reloadDuration, accuracy, reloadType, fireArmType, reloadSound, shootSound);
+                     Bullet bullet, FireMode fireMode, FireArmType fireArmType, ReloadType reloadType,
+                     Sound[] reloadSound, Sound[] shootSound, Sound[] suppressedSound, Map<String, String[]> compatibleAttachments) {
+        super(id, name, description, itemStack, durability, magazine, ammo, maxAmmo, cooldown, reloadDuration, accuracy, reloadType, fireArmType, reloadSound, shootSound);
+        this.appliedModifiers = new HashMap<>();
+        this.attachments = new ArrayList<>();
         this.bullet = bullet;
-        this.burstRounds = burstRounds;
-        this.fireMode = fireMode;
-        this.fireRate = fireRate;
-        this.scopeZoom = 10;
+        this.compatibleAttachments = compatibleAttachments;
+        this.scoped = false;
+        this.suppressedSound = suppressedSound;
+        this.toggleAttributes = new HashMap<>();
+        this.toggled = false;
+        this.toggleModifiers = new HashMap<>();
+
+        this.burstRounds = new BattleItemAttribute<>("shot-burstrounds", new IntegerAttributeValue(burstRounds));
+        this.fireMode = new BattleItemAttribute<>("shot-firemode", new FireModeAttributeValue(fireMode));
+        this.fireRate = new BattleItemAttribute<>("shot-firerate", new IntegerAttributeValue(fireRate));
+        this.scope = new BattleItemAttribute<>("scope-use", new BooleanAttributeValue(fireArmType.hasScope()));
+        this.scopeNightVision = new BattleItemAttribute<>("scope-nightvision", new BooleanAttributeValue(false));
+        this.scopeZoom = new BattleItemAttribute<>("scope-zoom", new IntegerAttributeValue(10));
+        this.spread = new BattleItemAttribute<>("shot-spread", new DoubleAttributeValue(4.0));
+        this.suppressed = new BattleItemAttribute<>("shot-suppressed", new BooleanAttributeValue(false));
+
+        attributes.add(this.burstRounds);
+        attributes.add(this.fireMode);
+        attributes.add(this.fireRate);
+        attributes.add(this.scope);
+        attributes.add(this.scopeNightVision);
+        attributes.add(this.scopeZoom);
+        attributes.add(this.spread);
+        attributes.add(this.suppressed);
+    }
+
+    public Gun clone() {
+        BattleGun gun = (BattleGun) super.clone();
+        gun.attachments = new ArrayList<>(); // Gun clones have their attachments stripped
+        gun.burstRounds = getAttribute("shot-burstrounds");
+        gun.fireMode = getAttribute("shot-firemode");
+        gun.fireRate = getAttribute("shot-firerate");
+        gun.scope = getAttribute("scope-use");
+        gun.scopeNightVision = getAttribute("scope-nightvision");
+        gun.scopeZoom = getAttribute("scope-zoom");
+        gun.spread = getAttribute("shot-spread");
+        gun.suppressed = getAttribute("shot-suppressed");
+        return gun;
+    }
+
+    public List<Attachment> getAttachments() {
+        return attachments;
     }
 
     public int getBurstRounds() {
-        return burstRounds;
+        return burstRounds.getAttributeValue().getValue();
+    }
+
+    public Set<String> getCompatibleAttachments() {
+        return compatibleAttachments.keySet();
     }
 
     public int getFireRate() {
-        return fireRate;
+        return fireRate.getAttributeValue().getValue();
     }
 
     public DamageSource getProjectile() {
         return bullet;
     }
 
+    public void addAttachments() {
+        if (appliedModifiers.size() > 0) {
+            return;
+        }
+        toggleModifiers.clear();
+        for (Attachment attachment : attachments) {
+            for (ItemAttribute attribute : attributes) {
+                AttributeModifier modifier = attachment.getModifier(attribute.getId());
+                String[] args = compatibleAttachments.get(attachment.getId());
+                if (modifier != null) {
+                    if (!attachment.isToggleable()) {
+                        appliedModifiers.put(attachment, modifier);
+                        attribute.applyModifier(modifier, args);
+                    } else {
+                        toggleModifiers.put(attachment, modifier);
+                    }
+                }
+            }
+        }
+    }
+
     protected String[] getLore() {
         return new String[] {
                 ChatColor.WHITE + fireArmType.getName(),
-                ChatColor.GRAY + format(6, accuracy * 100.0, 100.0) + " " + EnumMessage.STAT_ACCURACY.getMessage(),
+                ChatColor.GRAY + format(6, getAccuracy() * 100.0, 100.0) + " " + EnumMessage.STAT_ACCURACY.getMessage(),
                 ChatColor.GRAY + format(6, bullet.getShortDamage(), 55.0) + " " + EnumMessage.STAT_DAMAGE.getMessage(),
-                ChatColor.GRAY + format(6, Math.max((fireRate + 10 - cooldown / 2) * 10.0, 40.0), 200.0) + " " + EnumMessage.STAT_FIRERATE.getMessage(),
+                ChatColor.GRAY + format(6, Math.max((fireRate.getAttributeValue().getValue() + 10 - cooldown.getAttributeValue().getValue() / 2) * 10.0, 40.0), 200.0) + " " + EnumMessage.STAT_FIRERATE.getMessage(),
                 ChatColor.GRAY + format(6, bullet.getMidRange(), 70.0) + " " + EnumMessage.STAT_RANGE.getMessage() };
+    }
+
+    private Sound[] getShotSound() {
+        return suppressed.getAttributeValue().getValue() ? suppressedSound : shotSound;
     }
 
     private List<Location> getSpreadDirections(Location direction, int amount) {
         if (amount <= 0) {
             return Collections.EMPTY_LIST;
         }
+        Float spread = this.spread.getAttributeValue().getValue().floatValue();
         List<Location> list = new ArrayList<>();
         Random random = new Random();
-        float choke = (float) 3.0;
 
         for (int i = 1; i <= amount; i ++) {
             Location location = direction.clone();
-            location.setPitch(location.getPitch() + random.nextFloat() * choke - choke / 2);
-            location.setYaw(location.getYaw() + random.nextFloat() * choke - choke / 2);
+            location.setPitch(location.getPitch() + random.nextFloat() * spread - spread / 2);
+            location.setYaw(location.getYaw() + random.nextFloat() * spread - spread / 2);
             list.add(location);
         }
 
         return list;
+    }
+
+    private boolean hasToggleableAttachments() {
+        for (Attachment attachment : attachments) {
+            if (attachment.isToggleable()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void inflictDamage(Location location, double range) {
@@ -102,41 +185,77 @@ public class BattleGun extends BattleFireArm implements Gun {
         }
     }
 
+    public boolean onDrop() {
+        if (!hasToggleableAttachments()) {
+            return true;
+        }
+        BattleSound.ATTACHMENT_TOGGLE.play(game);
+        if (!toggled) {
+            for (Attachment attachment : toggleModifiers.keySet()) {
+                for (ItemAttribute attribute : attributes) {
+                    AttributeModifier modifier = attachment.getModifier(attribute.getId());
+                    if (modifier != null) {
+                        toggleAttributes.put(attribute, attribute.getAttributeValue().copy());
+                        attribute.applyModifier(modifier, compatibleAttachments.get(attachment.getId()));
+                    }
+                }
+            }
+        } else {
+            for (ItemAttribute attribute : toggleAttributes.keySet()) {
+                getAttribute(attribute.getId()).getAttributeValue().setValue(toggleAttributes.get(attribute).getValue());
+            }
+            toggleAttributes.clear();
+        }
+        toggled = !toggled;
+        return true;
+    }
+
     public void onLeftClick() {
-        if (fireArmType.hasScope() && scoped) {
+        if (scope.getAttributeValue().getValue() && scoped) {
             setScoped(false);
             return;
         }
-        if (reloading || shooting || ammo <= 0 || magazine >= magazineSize) {
+        if (reloading || shooting || ammo.getAttributeValue().getValue() <= 0 || magazine.getAttributeValue().getValue() >= magazineSize.getAttributeValue().getValue()) {
             return;
         }
-        reload(reloadDuration);
+        reload(reloadDuration.getAttributeValue().getValue());
     }
 
     public void onRightClick() {
         if (reloading || shooting) {
             return;
         }
-        if (fireArmType.hasScope() && !scoped) {
+        if (scope.getAttributeValue().getValue() && !scoped) {
             setScoped(true);
             return;
         }
-        if (magazine <= 0) {
-            if (ammo > 0) {
-                reload(reloadDuration); // Reload if the magazine is empty
+        if (magazine.getAttributeValue().getValue() <= 0) {
+            if (ammo.getAttributeValue().getValue() > 0) {
+                reload(reloadDuration.getAttributeValue().getValue()); // Reload if the magazine is empty
             }
             return;
         }
         shoot();
     }
 
+    public void playShotSound(Location location) {
+        Sound[] shotSound = getShotSound();
+        for (Sound sound : shotSound) {
+            if (!sound.isCancelled()) {
+                sound.play(game, location);
+            }
+            sound.setCancelled(false);
+        }
+    }
+
     public void resetState() {
-        super.resetState();
+        addAttachments();
         setScoped(false);
+        super.resetState();
     }
 
     public void setScoped(boolean scoped) {
-        if (!fireArmType.hasScope() || scoped == this.scoped) {
+        if (!scope.getAttributeValue().getValue() || scoped == this.scoped) {
             return;
         }
 
@@ -148,22 +267,25 @@ public class BattleGun extends BattleFireArm implements Gun {
             for (Sound sound : BattleSound.GUN_SCOPE) {
                 sound.play(game, player.getLocation());
             }
-
+            if (scopeNightVision.getAttributeValue().getValue()) {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 1000, 1));
+            }
             cooldown(1);
-            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 1000, -scopeZoom)); //Zoom effect
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 1000, -scopeZoom.getAttributeValue().getValue())); // Zoom effect
             player.getInventory().setHelmet(new ItemStack(Material.PUMPKIN, 1));
         } else {
             BattleSound.GUN_SCOPE[0].play(game, player.getLocation(), (float) 0.75);
             BattleSound.GUN_SCOPE[1].play(game, player.getLocation(), (float) 1.5);
 
             player.getInventory().setHelmet(null);
-            player.removePotionEffect(PotionEffectType.SPEED); //Restore zoom effect
+            player.removePotionEffect(PotionEffectType.NIGHT_VISION);
+            player.removePotionEffect(PotionEffectType.SPEED); // Restore zoom effect
         }
     }
 
     public void shoot() {
         shooting = true;
-        fireMode.shoot(this, fireRate, burstRounds);
+        fireMode.getAttributeValue().getValue().shoot(this, getFireRate(), getBurstRounds());
     }
 
     public void shootProjectile() {

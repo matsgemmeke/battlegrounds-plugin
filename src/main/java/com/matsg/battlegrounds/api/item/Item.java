@@ -6,9 +6,13 @@ import org.bukkit.inventory.ItemStack;
 
 public interface Item extends Cloneable, Comparable<Item> {
 
+    ItemAttribute getAttribute(String id);
+
     Game getGame();
 
     Item clone();
+
+    String getId();
 
     ItemStack getItemStack();
 

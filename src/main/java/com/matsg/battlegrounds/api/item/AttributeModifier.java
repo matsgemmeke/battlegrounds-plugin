@@ -1,6 +1,6 @@
 package com.matsg.battlegrounds.api.item;
 
-public interface AttributeModifier {
+public interface AttributeModifier<T> {
 
-    Object modify(Object value);
+    AttributeValue<T> modify(AttributeValue<T> attributeValue, Object... args);
 }

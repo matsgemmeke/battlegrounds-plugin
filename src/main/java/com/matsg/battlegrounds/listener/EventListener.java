@@ -46,7 +46,6 @@ public class EventListener implements Listener {
             return;
         }
         event.setCancelled(true);
-        //event.setCancelled(isPlaying(event.getPlayer()) || plugin.getGameManager().getArena(event.getBlock().getLocation()) != null && plugin.getBattlegroundsConfig().arenaProtection);
     }
 
     @EventHandler

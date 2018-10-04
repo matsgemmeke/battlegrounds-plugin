@@ -23,10 +23,10 @@ public class BattleLauncher extends BattleFireArm implements Launcher {
     private LaunchType launchType;
     private Lethal lethal;
 
-    public BattleLauncher(String name, String description, ItemStack itemStack, short durability,
+    public BattleLauncher(String id, String name, String description, ItemStack itemStack, short durability,
                      int magazine, int ammo, int maxAmmo, double launchSpeed, int cooldown, int reloadDuration, double accuracy,
                      Lethal lethal, LaunchType launchType, ReloadType reloadType, Sound[] reloadSound, Sound[] shootSound) {
-        super(name, description, itemStack, durability, magazine, ammo, maxAmmo, cooldown, reloadDuration, accuracy, reloadType, FireArmType.LAUNCHER, reloadSound, shootSound);
+        super(id, name, description, itemStack, durability, magazine, ammo, maxAmmo, cooldown, reloadDuration, accuracy, reloadType, FireArmType.LAUNCHER, reloadSound, shootSound);
         this.launchSpeed = launchSpeed;
         this.launchType = launchType;
         this.lethal = lethal;
@@ -51,9 +51,9 @@ public class BattleLauncher extends BattleFireArm implements Launcher {
     protected String[] getLore() {
         return new String[] {
                 ChatColor.WHITE + fireArmType.getName(),
-                ChatColor.GRAY + format(6, accuracy * 10.0, 10.0) + " " + EnumMessage.STAT_ACCURACY.getMessage(),
+                ChatColor.GRAY + format(6, getAccuracy() * 100.0, 100.0) + " " + EnumMessage.STAT_ACCURACY.getMessage(),
                 ChatColor.GRAY + format(6, lethal.getShortDamage(), 50.0) + " " + EnumMessage.STAT_DAMAGE.getMessage(),
-                ChatColor.GRAY + format(6, Math.max((15 - cooldown / 2) * 10.0, 40.0), 200.0) + " " + EnumMessage.STAT_FIRERATE.getMessage(),
+                ChatColor.GRAY + format(6, Math.max((15 - getCooldown() / 2) * 10.0, 40.0), 200.0) + " " + EnumMessage.STAT_FIRERATE.getMessage(),
                 ChatColor.GRAY + format(6, lethal.getLongRange(), 35.0) + " " + EnumMessage.STAT_RANGE.getMessage() };
     }
 
@@ -85,19 +85,19 @@ public class BattleLauncher extends BattleFireArm implements Launcher {
     }
 
     public void onLeftClick() {
-        if (reloading || shooting || ammo <= 0 || magazine >= magazineSize) {
+        if (reloading || shooting || ammo.getAttributeValue().getValue() <= 0 || magazine.getAttributeValue().getValue() >= magazineSize.getAttributeValue().getValue()) {
             return;
         }
-        reload(reloadDuration);
+        reload(getReloadDuration());
     }
 
     public void onRightClick() {
         if (reloading || shooting) {
             return;
         }
-        if (magazine <= 0) {
-            if (ammo > 0) {
-                reload(reloadDuration); //Call a reload event if the magazine is empty
+        if (magazine.getAttributeValue().getValue() <= 0) {
+            if (ammo.getAttributeValue().getValue() > 0) {
+                reload(reloadDuration.getAttributeValue().getValue()); //Call a reload event if the magazine is empty
             }
             return;
         }
@@ -105,14 +105,14 @@ public class BattleLauncher extends BattleFireArm implements Launcher {
     }
 
     public void shoot() {
-        magazine --;
         shooting = true;
+        setMagazine(getMagazine() - 1);
 
-        for (Sound sound : shootSound) {
+        for (Sound sound : shotSound) {
             sound.play(game, gamePlayer.getPlayer().getLocation());
         }
 
-        cooldown(cooldown);
+        cooldown(getCooldown());
         shootProjectile();
         update();
     }

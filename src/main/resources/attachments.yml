@@ -1,0 +1,160 @@
+# Attachment format
+#
+# <Id>:
+#   Description: Description of the attachment.
+#   DisplayName: The name of the attachment.
+#   GunPart: INTERNAL, LOWER_RAIL, MAGAZINE, MUZZLE, STOCK, UPPER_RAIL
+#   Material: The item material and durability
+#   Modifiers: List of attribute modifiers which the attachment applies to guns when added.
+#   Toggleable: Whether the attachment can be toggled by the player.
+
+ACOG_SCOPE:
+  Description: Enhanced zoom sight.
+  DisplayName: ACOG Scope
+  GunPart: UPPER_RAIL
+  Material: IRON_CHESTPLATE,1
+  Modifiers:
+    scope-use: "=true"
+    scope-zoom: "=4"
+  Toggleable: false
+
+ANGLED_GRIP:
+  Description: Reduces horizontal recoil.
+  DisplayName: Angled Grip
+  GunPart: LOWER_RAIL
+  Material: IRON_CHESTPLATE,2
+  Modifiers:
+    accuracy-horizontal: "+0.1"
+  Toggleable: false
+
+BIPOD:
+  Description: Slightly reduces horizontal and vertical recoil.
+  DisplayName: Bipod
+  GunPart: LOWER_RAIL
+  Material: IRON_CHESTPLATE,3
+  Modifiers:
+    accuracy-horizontal: "+0.05"
+    accuracy-vertical: "+0.05"
+  Toggleable: false
+
+BULLET_LOOPS:
+  Description: Increases shell reload speed.
+  DisplayName: Bullet Loops
+  GunPart: STOCK
+  Material: IRON_CHESTPLATE,4
+  Modifiers:
+    reload-duration: "=arg1"
+    reload-type: "=SHELL"
+  Toggleable: false
+
+CHOKE:
+  Description: Reduces the spread of shotgun pellets.
+  DisplayName: Choke
+  GunPart: MUZZLE
+  Material: IRON_CHESTPLATE,5
+  Modifiers:
+    shot-spread: "-1.0"
+  Toggleable: false
+
+EXTENDED_CLIP:
+  Description: More ammo in each clip.
+  DisplayName: Extended Clip
+  GunPart: MAGAZINE
+  Material: IRON_CHESTPLATE,6
+  Modifiers:
+    ammo-magazine: "=arg1"
+    ammo-magazine-size: "=arg1"
+  Toggleable: false
+
+FAST_MAG:
+  Description: Increases reload speed.
+  DisplayName: Fast Mag
+  GunPart: MAGAZINE
+  Material: IRON_CHESTPLATE,7
+  Modifiers:
+    reload-duration: "=arg1"
+    reload-type: "=MAGAZINE"
+  Toggleable: false
+
+HEAVY_BARREL:
+  Description: Increases range.
+  DisplayName: Heavy Barrel
+  GunPart: MUZZLE
+  Material: IRON_CHESTPLATE,8
+  Modifiers:
+    range-long: "*1.25"
+    range-medium: "*1.25"
+    range-short: "*1.25"
+  Toggleable: false
+
+MUZZLE_BRAKE:
+  Description: Slightly reduces horizontal recoil and reduces vertical recoil.
+  DisplayName: Muzzle Brake
+  GunPart: MUZZLE
+  Material: IRON_CHESTPLATE,9
+  Modifiers:
+    accuracy-horizontal: "+0.05"
+    accuracy-vertical: "+0.05"
+  Toggleable: false
+
+NIGHT_VISION_SCOPE:
+  Description: Scope with night vision.
+  DisplayName: Night Vision Scope
+  GunPart: UPPER_RAIL
+  Material: IRON_CHESTPLATE,10
+  Modifiers:
+    scope-nightvision: "=true"
+  Toggleable: false
+
+RAPID_FIRE:
+  Description: Increased fire rate.
+  DisplayName: Rapid Fire
+  GunPart: INTERNAL
+  Material: IRON_CHESTPLATE,11
+  Modifiers:
+    accuracy-horizontal: "-0.1"
+    accuracy-vertical: "-0.1"
+    shot-firerate: "=arg1"
+  Toggleable: false
+
+SELECT_FIRE:
+  Description: Switch gun firemode with Q. Automatic fire will always have more recoil.
+  DisplayName: Select Fire
+  GunPart: INTERNAL
+  Material: IRON_CHESTPLATE,12
+  Modifiers:
+    accuracy-horizontal: "+arg5"
+    accuracy-vertical: "+arg6"
+    shot-burstrounds: "=arg3"
+    shot-cooldown: "=arg4"
+    shot-firemode: "=arg1"
+    shot-firerate: "=arg2"
+  Toggleable: true
+
+SUPPRESSOR:
+  Description: Reduces weapon sound.
+  DisplayName: Suppressor
+  GunPart: MUZZLE
+  Material: IRON_CHESTPLATE,13
+  Modifiers:
+    shot-suppressed: "=true"
+  Toggleable: false
+
+TACTICAL_STOCK:
+  Description: Reduces weapon sway improving accuracy
+  DisplayName: Tactical Stock
+  GunPart: STOCK
+  Material: IRON_CHESTPLATE,14
+  Modifiers:
+    accuracy-horizontal: "+0.05"
+    accuracy-vertical: "+0.05"
+  Toggleable: false
+
+VERTICAL_GRIP:
+  Description: Reduces vertical recoil.
+  DisplayName: Vertical Grip
+  GunPart: LOWER_RAIL
+  Material: IRON_CHESTPLATE,15
+  Modifiers:
+    accuracy-vertical: "+0.1"
+  Toggleable: false

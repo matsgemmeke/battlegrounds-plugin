@@ -1,30 +1,40 @@
 '1':
-  Equipment: Grenade
-  Knife: Combat Knife
+  Equipment: GRENADE
+  Knife: COMBAT_KNIFE
   Name: Balanced
-  Primary: M16
-  Secondary: M1911
+  Primary:
+    Name: M16
+  Secondary:
+    Name: M1911
 '2':
-  Equipment: Smoke Grenade
-  Knife: Combat Knife
+  Equipment: SMOKE_GRENADE
+  Knife: COMBAT_KNIFE
   Name: Close Quarters
-  Primary: Olympia
-  Secondary: Five-seven
+  Primary:
+    Name: OLYMPIA
+  Secondary:
+    Name: FIVE-SEVEN
 '3':
-  Equipment: Grenade
-  Knife: Combat Knife
+  Equipment: GRENADE
+  Knife: COMBAT_KNIFE
   Name: Operative
-  Primary: MP5
-  Secondary: SMAW
+  Primary:
+    Name: MP5
+  Secondary:
+    Name: SMAW
 '4':
-  Equipment: Grenade
-  Knife: Combat Knife
+  Equipment: GRENADE
+  Knife: COMBAT_KNIFE
   Name: Heavy Gunner
-  Primary: HK21
-  Secondary: SMAW
+  Primary:
+    Name: HK21
+  Secondary:
+    Name: SMAW
 '5':
-  Equipment: Smoke Grenade
-  Knife: Combat Knife
+  Equipment: SMOKE_GRENADE
+  Knife: COMBAT_KNIFE
   Name: Marksman
-  Primary: Dragunov
-  Secondary: M1911
+  Primary:
+    Name: DRAGUNOV
+  Secondary:
+    Name: M1911

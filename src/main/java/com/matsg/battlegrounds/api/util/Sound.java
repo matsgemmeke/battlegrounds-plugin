@@ -29,4 +29,6 @@ public interface Sound {
     void setDelay(long delay);
 
     void setPitch(float pitch);
+
+    void setVolume(float volume);
 }
