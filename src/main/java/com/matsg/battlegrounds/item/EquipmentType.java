@@ -2,9 +2,9 @@ package com.matsg.battlegrounds.item;
 
 import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.api.item.ItemSlot;
-import com.matsg.battlegrounds.api.item.WeaponType;
+import com.matsg.battlegrounds.api.item.ItemType;
 
-public enum EquipmentType implements WeaponType {
+public enum EquipmentType implements ItemType {
 
     LETHAL("item-type-lethal"),
     TACTICAL("item-type-tactical");

@@ -2,6 +2,7 @@ package com.matsg.battlegrounds.api.item;
 
 import com.matsg.battlegrounds.api.util.Sound;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 
 public interface FireArm extends Weapon {
 
@@ -29,11 +30,11 @@ public interface FireArm extends Weapon {
 
     void playReloadSound();
 
-    void playReloadSound(Location location);
+    void playReloadSound(Entity entity);
 
     void playShotSound();
 
-    void playShotSound(Location location);
+    void playShotSound(Entity entity);
 
     void reload();
 

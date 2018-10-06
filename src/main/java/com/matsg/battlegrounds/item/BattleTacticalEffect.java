@@ -55,7 +55,7 @@ public enum BattleTacticalEffect implements TacticalEffect {
                 int loops = 0, maxLoops = 40;
                 public void run() {
                     loops += period;
-                    gun.playShotSound(item.getLocation());
+                    gun.playShotSound(item);
                     if (loops > maxLoops) {
                         tactical.getDroppedItems().remove(item);
                         item.remove();

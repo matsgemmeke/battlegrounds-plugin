@@ -4,10 +4,10 @@ import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.item.DamageSource;
 import com.matsg.battlegrounds.api.item.ItemSlot;
+import com.matsg.battlegrounds.api.item.ItemType;
 import com.matsg.battlegrounds.api.item.Lethal;
-import com.matsg.battlegrounds.api.item.WeaponType;
 
-public enum FireArmType implements WeaponType {
+public enum FireArmType implements ItemType {
 
     ASSAULT_RIFLE("item-type-assault-rifle", ItemSlot.FIREARM_PRIMARY, 1, Bullet.class, 1, false),
     HANDGUN("item-type-handgun", ItemSlot.FIREARM_SECONDARY, 1, Bullet.class, 1, false),

@@ -24,13 +24,13 @@ public class SelectWeaponView implements View {
     private Map<ItemStack, Weapon> weapons;
     private Player player;
 
-    public SelectWeaponView(Battlegrounds plugin, Player player, Loadout loadout, WeaponType weaponType, List<Weapon> weapons) {
+    public SelectWeaponView(Battlegrounds plugin, Player player, Loadout loadout, ItemType itemType, List<Weapon> weapons) {
         this.plugin = plugin;
         this.loadout = loadout;
         this.player = player;
         this.weapons = new HashMap<>();
 
-        this.inventory = plugin.getServer().createInventory(this, 27, weaponType.getName());
+        this.inventory = plugin.getServer().createInventory(this, 27, itemType.getName());
 
         Collections.sort(weapons, new Comparator<Weapon>() {
             public int compare(Weapon o1, Weapon o2){
@@ -48,8 +48,8 @@ public class SelectWeaponView implements View {
         inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(EnumMessage.GO_BACK.getMessage()).build());
     }
 
-    public SelectWeaponView(Battlegrounds plugin, Player player, Loadout loadout, WeaponType weaponType, List<Weapon> weapons, Inventory previous) {
-        this(plugin, player, loadout, weaponType, weapons);
+    public SelectWeaponView(Battlegrounds plugin, Player player, Loadout loadout, ItemType itemType, List<Weapon> weapons, Inventory previous) {
+        this(plugin, player, loadout, itemType, weapons);
         this.previous = previous;
     }
 

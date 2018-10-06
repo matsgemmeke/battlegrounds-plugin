@@ -15,6 +15,7 @@ import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -75,14 +76,14 @@ public class BattleGun extends BattleFireArm implements Gun {
     public Gun clone() {
         BattleGun gun = (BattleGun) super.clone();
         gun.attachments = new ArrayList<>(); // Gun clones have their attachments stripped
-        gun.burstRounds = getAttribute("shot-burstrounds");
-        gun.fireMode = getAttribute("shot-firemode");
-        gun.fireRate = getAttribute("shot-firerate");
-        gun.scope = getAttribute("scope-use");
-        gun.scopeNightVision = getAttribute("scope-nightvision");
-        gun.scopeZoom = getAttribute("scope-zoom");
-        gun.spread = getAttribute("shot-spread");
-        gun.suppressed = getAttribute("shot-suppressed");
+        gun.burstRounds = gun.getAttribute("shot-burstrounds");
+        gun.fireMode = gun.getAttribute("shot-firemode");
+        gun.fireRate = gun.getAttribute("shot-firerate");
+        gun.scope = gun.getAttribute("scope-use");
+        gun.scopeNightVision = gun.getAttribute("scope-nightvision");
+        gun.scopeZoom = gun.getAttribute("scope-zoom");
+        gun.spread = gun.getAttribute("shot-spread");
+        gun.suppressed = gun.getAttribute("shot-suppressed");
         return gun;
     }
 
@@ -186,10 +187,10 @@ public class BattleGun extends BattleFireArm implements Gun {
     }
 
     public boolean onDrop() {
-        if (!hasToggleableAttachments()) {
+        if (reloading || shooting || !hasToggleableAttachments()) {
             return true;
         }
-        BattleSound.ATTACHMENT_TOGGLE.play(game);
+        BattleSound.ATTACHMENT_TOGGLE.play(game, gamePlayer.getLocation());
         if (!toggled) {
             for (Attachment attachment : toggleModifiers.keySet()) {
                 for (ItemAttribute attribute : attributes) {
@@ -238,11 +239,10 @@ public class BattleGun extends BattleFireArm implements Gun {
         shoot();
     }
 
-    public void playShotSound(Location location) {
-        Sound[] shotSound = getShotSound();
-        for (Sound sound : shotSound) {
+    public void playShotSound(Entity entity) {
+        for (Sound sound : getShotSound()) {
             if (!sound.isCancelled()) {
-                sound.play(game, location);
+                sound.play(game, entity);
             }
             sound.setCancelled(false);
         }

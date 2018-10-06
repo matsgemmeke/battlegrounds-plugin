@@ -3,8 +3,8 @@ package com.matsg.battlegrounds.config;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.config.AbstractYaml;
 import com.matsg.battlegrounds.api.config.ItemConfig;
+import com.matsg.battlegrounds.api.item.ItemType;
 import com.matsg.battlegrounds.api.item.Knife;
-import com.matsg.battlegrounds.api.item.WeaponType;
 import com.matsg.battlegrounds.item.BattleKnife;
 import com.matsg.battlegrounds.util.ItemStackBuilder;
 import org.bukkit.Material;
@@ -28,7 +28,7 @@ public class KnifeConfig extends AbstractYaml implements ItemConfig<Knife> {
     }
 
     public Knife get(String arg) {
-        for (Knife knife : getList()) {
+        for (Knife knife : knives.values()) {
             if (knife.getId().equals(arg) || knife.getName().equals(arg)) {
                 return knife.clone();
             }
@@ -44,7 +44,7 @@ public class KnifeConfig extends AbstractYaml implements ItemConfig<Knife> {
         return list;
     }
 
-    public List<Knife> getList(WeaponType weaponType) {
+    public List<Knife> getList(ItemType itemType) {
         return getList(); // No subtypes for knives
     }
 

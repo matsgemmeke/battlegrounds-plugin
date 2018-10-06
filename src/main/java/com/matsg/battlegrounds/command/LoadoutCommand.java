@@ -23,7 +23,7 @@ public class LoadoutCommand extends Command {
         Player player = (Player) sender;
         StoredPlayer storedPlayer = plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId());
 
-        if (storedPlayer == null || plugin.getLevelConfig().getLevel(storedPlayer.getExp()) < minLevel) {
+        if (storedPlayer == null && (storedPlayer = plugin.getPlayerStorage().registerPlayer(player.getUniqueId(), player.getName())) == null || plugin.getLevelConfig().getLevel(storedPlayer.getExp()) < minLevel) {
             EnumMessage.CUSTOM_LOADOUT_LOCKED.send(player, new Placeholder("bg_level", minLevel));
             return;
         }

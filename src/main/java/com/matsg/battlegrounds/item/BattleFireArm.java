@@ -13,6 +13,7 @@ import com.matsg.battlegrounds.util.Particle.ParticleEffect;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -75,18 +76,18 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
 
     public FireArm clone() {
         BattleFireArm fireArm = (BattleFireArm) super.clone();
-        fireArm.ammo = getAttribute("ammo-reserve");
-        fireArm.cooldown = getAttribute("shot-cooldown");
-        fireArm.horizontalAccuracy = getAttribute("accuracy-horizontal");
-        fireArm.magazine = getAttribute("ammo-magazine");
-        fireArm.magazineSize = getAttribute("ammo-magazine-size");
-        fireArm.magazineSupply = getAttribute("ammo-magazine-supply");
-        fireArm.maxAmmo = getAttribute("ammo-max");
-        fireArm.reloadDuration = getAttribute("reload-duration");
-        fireArm.reloadDurationOg = getAttribute("reload-duration-og");
-        fireArm.reloadType = getAttribute("reload-type");
-        fireArm.verticalAccuracy = getAttribute("accuracy-vertical");
-        return (FireArm) super.clone();
+        fireArm.ammo = fireArm.getAttribute("ammo-reserve");
+        fireArm.cooldown = fireArm.getAttribute("shot-cooldown");
+        fireArm.horizontalAccuracy = fireArm.getAttribute("accuracy-horizontal");
+        fireArm.magazine = fireArm.getAttribute("ammo-magazine");
+        fireArm.magazineSize = fireArm.getAttribute("ammo-magazine-size");
+        fireArm.magazineSupply = fireArm.getAttribute("ammo-magazine-supply");
+        fireArm.maxAmmo = fireArm.getAttribute("ammo-max");
+        fireArm.reloadDuration = fireArm.getAttribute("reload-duration");
+        fireArm.reloadDurationOg = fireArm.getAttribute("reload-duration-og");
+        fireArm.reloadType = fireArm.getAttribute("reload-type");
+        fireArm.verticalAccuracy = fireArm.getAttribute("accuracy-vertical");
+        return fireArm;
     }
 
     public double getAccuracy() {
@@ -214,10 +215,10 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
     }
 
     public void playReloadSound() {
-        playReloadSound(gamePlayer.getLocation());
+        playReloadSound(gamePlayer.getPlayer());
     }
 
-    public void playReloadSound(Location location) {
+    public void playReloadSound(Entity entity) {
         for (Sound sound : reloadSound) {
             if (sound == null) {
                 continue;
@@ -226,7 +227,7 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
                 long delay = sound.getDelay();
 
                 sound.setDelay((long) (delay / getReloadSpeed()));
-                sound.play(game, location);
+                sound.play(game, entity);
                 sound.setCancelled(false);
                 sound.setDelay(delay);
             }
@@ -235,13 +236,13 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
     }
 
     public void playShotSound() {
-        playShotSound(gamePlayer.getLocation());
+        playShotSound(gamePlayer.getPlayer());
     }
 
-    public void playShotSound(Location location) {
+    public void playShotSound(Entity entity) {
         for (Sound sound : shotSound) {
             if (!sound.isCancelled()) {
-                sound.play(game, location);
+                sound.play(game, entity);
             }
             sound.setCancelled(false);
         }

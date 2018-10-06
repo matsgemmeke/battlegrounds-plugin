@@ -2,8 +2,8 @@ package com.matsg.battlegrounds.item;
 
 import com.matsg.battlegrounds.api.event.GamePlayerKillPlayerEvent;
 import com.matsg.battlegrounds.api.item.ItemSlot;
+import com.matsg.battlegrounds.api.item.ItemType;
 import com.matsg.battlegrounds.api.item.Knife;
-import com.matsg.battlegrounds.api.item.WeaponType;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.player.Hitbox;
 import com.matsg.battlegrounds.api.util.Placeholder;
@@ -68,8 +68,8 @@ public class BattleKnife extends BattleWeapon implements Knife {
         return maxAmount;
     }
 
-    public WeaponType getType() {
-        return new WeaponType() {
+    public ItemType getType() {
+        return new ItemType() {
             public ItemSlot getDefaultItemSlot() {
                 return ItemSlot.KNIFE;
             }

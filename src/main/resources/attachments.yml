@@ -98,7 +98,7 @@ MUZZLE_BRAKE:
   Toggleable: false
 
 NIGHT_VISION_SCOPE:
-  Description: Scope with night vision.
+  Description: Scope with night vision providing better vision in dark settings.
   DisplayName: Night Vision Scope
   GunPart: UPPER_RAIL
   Material: IRON_CHESTPLATE,10
@@ -107,13 +107,13 @@ NIGHT_VISION_SCOPE:
   Toggleable: false
 
 RAPID_FIRE:
-  Description: Increased fire rate.
+  Description: Increases rate of fire.
   DisplayName: Rapid Fire
   GunPart: INTERNAL
   Material: IRON_CHESTPLATE,11
   Modifiers:
-    accuracy-horizontal: "-0.1"
-    accuracy-vertical: "-0.1"
+    accuracy-horizontal: "-0.2"
+    accuracy-vertical: "-0.2"
     shot-firerate: "=arg1"
   Toggleable: false
 
@@ -141,7 +141,7 @@ SUPPRESSOR:
   Toggleable: false
 
 TACTICAL_STOCK:
-  Description: Reduces weapon sway improving accuracy
+  Description: Reduces weapon sway improving accuracy.
   DisplayName: Tactical Stock
   GunPart: STOCK
   Material: IRON_CHESTPLATE,14

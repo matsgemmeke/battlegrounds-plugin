@@ -223,13 +223,13 @@ public class GameEventHandler implements Listener {
 
     @EventHandler
     public void onPlayerItemPickUp(PlayerPickupItemEvent event) {
-        event.setCancelled(true);
-
         Item item = getDroppedItem(event.getItem().getItemStack());
 
         if (item == null || !(item instanceof Droppable)) {
             return;
         }
+
+        event.setCancelled(true);
 
         ((Droppable) item).onPickUp(event.getPlayer(), event.getItem());
     }

@@ -34,6 +34,13 @@ public abstract class BattleItem implements Item {
             if (itemStack != null) {
                 item.itemStack = itemStack.clone();
             }
+            if (attributes != null && attributes.size() > 0) {
+                List<ItemAttribute> attributes = new ArrayList<>();
+                for (ItemAttribute attribute : this.attributes) {
+                    attributes.add(attribute.clone());
+                }
+                item.attributes = attributes;
+            }
             return item;
         } catch (Exception e) {
             e.printStackTrace();

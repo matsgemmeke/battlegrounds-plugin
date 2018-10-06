@@ -4,9 +4,9 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.config.AbstractYaml;
 import com.matsg.battlegrounds.api.config.ItemConfig;
 import com.matsg.battlegrounds.api.item.Equipment;
+import com.matsg.battlegrounds.api.item.ItemType;
 import com.matsg.battlegrounds.api.item.Lethal;
 import com.matsg.battlegrounds.api.item.Tactical;
-import com.matsg.battlegrounds.api.item.WeaponType;
 import com.matsg.battlegrounds.item.BattleLethal;
 import com.matsg.battlegrounds.item.BattleTactical;
 import com.matsg.battlegrounds.item.BattleTacticalEffect;
@@ -34,7 +34,7 @@ public class EquipmentConfig extends AbstractYaml implements ItemConfig<Equipmen
     }
 
     public Equipment get(String arg) {
-        for (Equipment equipment : getList()) {
+        for (Equipment equipment : this.equipment.values()) {
             if (equipment.getId().equals(arg) || equipment.getName().equals(arg)) {
                 return equipment.clone();
             }
@@ -50,10 +50,10 @@ public class EquipmentConfig extends AbstractYaml implements ItemConfig<Equipmen
         return list;
     }
 
-    public List<Equipment> getList(WeaponType weaponType) {
+    public List<Equipment> getList(ItemType itemType) {
         List<Equipment> list = new ArrayList<>();
         for (Equipment equipment : equipment.values()) {
-            if (equipment.getType() == weaponType) {
+            if (equipment.getType() == itemType) {
                 list.add(equipment.clone());
             }
         }

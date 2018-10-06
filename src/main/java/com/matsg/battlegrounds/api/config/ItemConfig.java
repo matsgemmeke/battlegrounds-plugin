@@ -1,7 +1,7 @@
 package com.matsg.battlegrounds.api.config;
 
 import com.matsg.battlegrounds.api.item.Item;
-import com.matsg.battlegrounds.api.item.WeaponType;
+import com.matsg.battlegrounds.api.item.ItemType;
 
 import java.util.Collection;
 
@@ -25,8 +25,8 @@ public interface ItemConfig<T extends Item> extends Yaml {
     /**
      * Gets the list which contains all items of this type
      *
-     * @param weaponType The weapon type filter
+     * @param itemType The item type filter
      * @return The whole weapon list only containing
      */
-    Collection<T> getList(WeaponType weaponType);
+    Collection<T> getList(ItemType itemType);
 }

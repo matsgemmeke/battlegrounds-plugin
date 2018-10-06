@@ -17,7 +17,5 @@ public interface Gun extends FireArm, DropListener {
 
     int getFireRate();
 
-    WeaponType getType();
-
     void setScoped(boolean scoped);
 }

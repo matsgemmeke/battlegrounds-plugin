@@ -44,10 +44,10 @@ public class FireArmConfig extends AbstractYaml implements ItemConfig<FireArm> {
         return list;
     }
 
-    public List<FireArm> getList(WeaponType weaponType) {
+    public List<FireArm> getList(ItemType itemType) {
         List<FireArm> list = new ArrayList<>();
         for (FireArm fireArm : fireArms.values()) {
-            if (fireArm.getType() == weaponType) {
+            if (fireArm.getType() == itemType) {
                 list.add(fireArm.clone());
             }
         }
@@ -116,7 +116,7 @@ public class FireArmConfig extends AbstractYaml implements ItemConfig<FireArm> {
                             new ItemStackBuilder(Material.valueOf(material[0])).build(),
                             (short) new AttributeValidator(Short.parseShort(material[1]), "Durability").shouldEqualOrBeHigherThan(0),
                             (int) new AttributeValidator(section.getInt("Ammo.Magazine"), "Magazine").shouldBeHigherThan(0),
-                            (int) new AttributeValidator(section.getInt("Ammo.Start"), "Start ammunition").shouldEqualOrBeHigherThan(0),
+                            (int) new AttributeValidator(section.getInt("Ammo.Supply"), "Ammunition supply").shouldEqualOrBeHigherThan(0),
                             (int) new AttributeValidator(section.getInt("Ammo.Max"), "Max ammunition").shouldEqualOrBeHigherThan(0),
                             (int) new AttributeValidator(section.getInt("FireMode.FireRate"), "Fire rate").shouldBeBetween(0, 20),
                             (int) new AttributeValidator(section.getInt("FireMode.Burst"), "Burst rounds").shouldEqualOrBeHigherThan(0),
@@ -148,7 +148,7 @@ public class FireArmConfig extends AbstractYaml implements ItemConfig<FireArm> {
                             new ItemStackBuilder(Material.valueOf(material[0])).build(),
                             (short) new AttributeValidator(Short.parseShort(material[1]), "Durability").shouldEqualOrBeHigherThan(0),
                             (int) new AttributeValidator(section.getInt("Ammo.Magazine"), "Magazine").shouldBeHigherThan(0),
-                            (int) new AttributeValidator(section.getInt("Ammo.Start"), "Start ammunition").shouldBeHigherThan(0),
+                            (int) new AttributeValidator(section.getInt("Ammo.Supply"), "Ammunition supply").shouldBeHigherThan(0),
                             (int) new AttributeValidator(section.getInt("Ammo.Max"), "Max ammunition").shouldBeHigherThan(0),
                             (int) new AttributeValidator(section.getDouble("Speed"), "Launch speed").shouldBeHigherThan(0.0),
                             (int) new AttributeValidator(section.getInt("FireMode.Cooldown"), "Cooldown").shouldEqualOrBeHigherThan(0),

@@ -3,10 +3,7 @@ package com.matsg.battlegrounds.config;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.config.AbstractYaml;
 import com.matsg.battlegrounds.api.config.ItemConfig;
-import com.matsg.battlegrounds.api.item.Attachment;
-import com.matsg.battlegrounds.api.item.AttributeModifier;
-import com.matsg.battlegrounds.api.item.AttributeValue;
-import com.matsg.battlegrounds.api.item.WeaponType;
+import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.item.BattleAttachment;
 import com.matsg.battlegrounds.item.BattleGunPart;
 import com.matsg.battlegrounds.util.ItemStackBuilder;
@@ -30,23 +27,10 @@ public class AttachmentConfig extends AbstractYaml implements ItemConfig<Attachm
         setup();
     }
 
-    private Object convertType(Object object) {
-        String string = object.toString();
-        if (string.contains(".")) {
-            return Double.parseDouble(string);
-        } else {
-            try {
-                return Integer.parseInt(string);
-            } catch (Exception e) {
-                return string;
-            }
-        }
-    }
-
     public Attachment get(String arg) {
-        for (Attachment attachment : getList()) {
+        for (Attachment attachment : attachments.values()) {
             if (attachment.getId().equals(arg) || attachment.getName().equals(arg)) {
-                return (Attachment) attachment.clone();
+                return attachment.clone();
             }
         }
         return null;
@@ -54,11 +38,13 @@ public class AttachmentConfig extends AbstractYaml implements ItemConfig<Attachm
 
     public List<Attachment> getList() {
         List<Attachment> list = new ArrayList<>();
-        list.addAll(attachments.values());
+        for (Attachment attachment : attachments.values()) {
+            list.add(attachment.clone()); // Create a deep copy of the list
+        }
         return list;
     }
 
-    public List<Attachment> getList(WeaponType weaponType) {
+    public List<Attachment> getList(ItemType itemType) {
         return getList(); // No subtypes for attachments
     }
 

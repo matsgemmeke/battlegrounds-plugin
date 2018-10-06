@@ -1,6 +1,6 @@
 package com.matsg.battlegrounds.api.item;
 
-public interface WeaponType {
+public interface ItemType {
 
     ItemSlot getDefaultItemSlot();
 

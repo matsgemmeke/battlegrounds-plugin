@@ -12,7 +12,7 @@ public interface Weapon extends Item {
 
     ItemSlot getItemSlot();
 
-    WeaponType getType();
+    ItemType getType();
 
     void remove();
 
