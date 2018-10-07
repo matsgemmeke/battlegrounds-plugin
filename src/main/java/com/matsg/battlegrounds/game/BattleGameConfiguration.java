@@ -16,8 +16,8 @@ public class BattleGameConfiguration implements GameConfiguration {
 
     public BattleGameConfiguration(GameMode[] gameModes, int maxPlayers, int minPlayers, int gameCountdown, int lobbyCountdown) {
         this.gameCountdown = gameCountdown;
-        this.lobbyCountdown = lobbyCountdown;
         this.gameModes = gameModes;
+        this.lobbyCountdown = lobbyCountdown;
         this.maxPlayers = maxPlayers;
         this.minPlayers = minPlayers;
     }

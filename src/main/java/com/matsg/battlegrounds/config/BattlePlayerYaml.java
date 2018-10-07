@@ -54,22 +54,22 @@ public class BattlePlayerYaml extends AbstractYaml implements StoredPlayer {
 
     public void setDeaths(int deaths) {
         this.deaths = deaths;
-        set("Stats.All.Deaths", deaths);
+        setAttribute("Stats.All.Deaths", deaths);
     }
 
     public void setExp(int exp) {
         this.exp = exp;
-        set("Stats.Exp", exp);
+        setAttribute("Stats.Exp", exp);
     }
 
     public void setHeadshots(int headshots) {
         this.headshots = headshots;
-        set("Stats.All.Headshots", headshots);
+        setAttribute("Stats.All.Headshots", headshots);
     }
 
     public void setKills(int kills) {
         this.kills = kills;
-        set("Stats.All.Kills", kills);
+        setAttribute("Stats.All.Kills", kills);
     }
 
     public int compareTo(StoredPlayer o) {
@@ -175,6 +175,11 @@ public class BattlePlayerYaml extends AbstractYaml implements StoredPlayer {
             set("Loadout." + loadout.getId() + ".Secondary.Attachments", convertAttachments((Gun) loadout.getSecondary()));
         }
 
+        save();
+    }
+
+    private void setAttribute(String attribute, int value) {
+        set(attribute, value);
         save();
     }
 

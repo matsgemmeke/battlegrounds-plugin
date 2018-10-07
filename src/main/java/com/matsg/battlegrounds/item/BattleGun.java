@@ -170,15 +170,15 @@ public class BattleGun extends BattleFireArm implements Gun {
 
     private void inflictDamage(Location location, double range) {
         GamePlayer[] players = game.getPlayerManager().getNearbyPlayers(location, range);
-        Team team = game.getGameMode().getTeam(gamePlayer);
+        Team team = gamePlayer.getTeam();
         if (players.length > 0) {
             GamePlayer gamePlayer = players[0];
-            if (gamePlayer == null || gamePlayer == this.gamePlayer || gamePlayer.getPlayer().isDead() || team != null && game.getGameMode().getTeam(gamePlayer) == team) {
+            if (gamePlayer == null || gamePlayer == this.gamePlayer || gamePlayer.getPlayer().isDead() || team != null && gamePlayer.getTeam() == team) {
                 return;
             }
             Hitbox hitbox = Hitbox.getHitbox(gamePlayer.getLocation().getY(), location.getY());
-            double damage = bullet.getDamage(hitbox, gamePlayer.getLocation().distance(this.gamePlayer.getLocation())) / plugin.getBattlegroundsConfig().gunDamageModifer;
-            game.getPlayerManager().damagePlayer(gamePlayer, damage);
+            double damage = bullet.getDamage(hitbox, gamePlayer.getLocation().distance(this.gamePlayer.getLocation())) / plugin.getBattlegroundsConfig().firearmDamageModifer;
+            game.getPlayerManager().damagePlayer(gamePlayer, damage, plugin.getBattlegroundsConfig().displayBloodEffect);
             hits ++;
             if (gamePlayer.getPlayer().isDead()) {
                 plugin.getServer().getPluginManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, this.gamePlayer, this, hitbox));

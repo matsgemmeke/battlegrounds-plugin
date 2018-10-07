@@ -1,4 +1,4 @@
-package com.matsg.battlegrounds.listener;
+package com.matsg.battlegrounds.event;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
 import org.bukkit.event.EventHandler;

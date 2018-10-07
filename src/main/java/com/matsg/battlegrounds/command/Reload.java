@@ -1,7 +1,6 @@
 package com.matsg.battlegrounds.command;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.item.FireArm;
 import com.matsg.battlegrounds.util.EnumMessage;
 import org.bukkit.command.CommandSender;
 
@@ -18,9 +17,5 @@ public class Reload extends SubCommand {
             return;
         }
         sender.sendMessage(EnumMessage.RELOAD_SUCCESS.getMessage());
-
-        FireArm fireArm = plugin.getFireArmConfig().get("China Lake");
-
-        fireArm.clone();
     }
 }

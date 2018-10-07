@@ -22,6 +22,9 @@ game-broadcast-chat: false
 game-default-join-gamemode: SURVIVAL
 game-default-leave-gamemode: SURVIVAL
 
+# Displays a blood effect when a player takes damage
+game-display-blood-effect: false
+
 # The display names of different weapon types
 game-display-name:
   equipment: "&f%bg_weapon%"
@@ -31,17 +34,17 @@ game-display-name:
 # Explosive throwing cooldown in ticks
 game-explosive-cooldown: 20
 
-# Game states where players are able to join games
-game-joinable-states:
-- WAITING
-
 # The general accuracy of firearms in the game
 # Change to higher number for lower accuracy, change to lower number for higher accuracy
 game-firearm-accuracy: 10.0
 
-# Overall gun damage modifier
+# Overall firearm damage modifier
 # Change to lower number for higher damage, change to higher number for lower damage
-game-gun-damage-modifier: 5
+game-firearm-damage-modifier: 5
+
+# Game states where players are able to join games
+game-joinable-states:
+- WAITING
 
 # Scoreboard configurations
 game-scoreboard:

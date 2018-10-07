@@ -5,6 +5,7 @@ import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.util.Message;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerEvent;
 
 import java.util.Collection;
 
@@ -55,6 +56,15 @@ public interface PlayerManager {
      * @param damage The damage amount
      */
     void damagePlayer(GamePlayer gamePlayer, double damage);
+
+    /**
+     * Damages a player.
+     *
+     * @param gamePlayer The player to damage
+     * @param damage The damage amount
+     * @param effect Display a damage effect or not
+     */
+    void damagePlayer(GamePlayer gamePlayer, double damage, boolean effect);
 
     /**
      * Gets the GamePlayer instance of a player
@@ -150,28 +160,11 @@ public interface PlayerManager {
     Loadout getSelectedLoadout(GamePlayer gamePlayer);
 
     /**
-     * Handles a player move event.
-     *
-     * @param player The player that moved
-     * @param from The location the player comes from
-     * @param to The location the player moves to
-     */
-    void onPlayerMove(Player player, Location from, Location to);
-
-    /**
      * Equips the player with the default items.
      *
      * @param gamePlayer The player to prepare
      */
     void preparePlayer(GamePlayer gamePlayer);
-
-    /**
-     * Handles a player chat message sent from within the game.
-     *
-     * @param player The player that sent the message
-     * @param message The message
-     */
-    void receivePlayerChat(Player player, String message);
 
     /**
      * Removes a player from the game.

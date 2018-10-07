@@ -9,16 +9,19 @@ import com.matsg.battlegrounds.api.player.PlayerStatus;
 import com.matsg.battlegrounds.api.player.PlayerStorage;
 import com.matsg.battlegrounds.api.util.Message;
 import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.api.event.handler.EventHandler;
+import com.matsg.battlegrounds.event.handler.PlayerMoveEventHandler;
+import com.matsg.battlegrounds.event.handler.PlayerRespawnEventHandler;
 import com.matsg.battlegrounds.gui.scoreboard.LobbyScoreboard;
 import com.matsg.battlegrounds.item.misc.SelectLoadout;
 import com.matsg.battlegrounds.player.BattleGamePlayer;
 import com.matsg.battlegrounds.util.*;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
@@ -32,15 +35,20 @@ public class BattlePlayerManager implements PlayerManager {
     private Game game;
     private LevelConfig levelConfig;
     private List<GamePlayer> players;
+    private Map<Class<? extends PlayerEvent>, EventHandler> handlers;
     private Map<GamePlayer, Loadout> selectedLoadouts;
     private PlayerStorage playerStorage;
 
     public BattlePlayerManager(Game game, LevelConfig levelConfig, PlayerStorage playerStorage) {
         this.game = game;
+        this.handlers = new HashMap<>();
         this.levelConfig = levelConfig;
         this.players = new ArrayList<>();
         this.playerStorage = playerStorage;
         this.selectedLoadouts = new HashMap<>();
+
+        handlers.put(PlayerMoveEvent.class, new PlayerMoveEventHandler(game));
+        handlers.put(PlayerRespawnEvent.class, new PlayerRespawnEventHandler(game));
     }
 
     public List<GamePlayer> getPlayers() {
@@ -140,8 +148,15 @@ public class BattlePlayerManager implements PlayerManager {
         }
         double finalHealth = gamePlayer.getPlayer().getHealth() - damage;
         gamePlayer.getPlayer().damage(0.01); // Create a fake damage animation
-        gamePlayer.getPlayer().setHealth(finalHealth > 0.0 ? finalHealth : 0); // It needs to set the health to 0 if the damage is greater than the health, else the api will complain
+        gamePlayer.getPlayer().setHealth(finalHealth > 0.0 ? finalHealth : 0); // Set the health to 0 if the damage is greater than the health
         gamePlayer.getPlayer().setLastDamageCause(null);
+    }
+
+    public void damagePlayer(GamePlayer gamePlayer, double damage, boolean effect) {
+        if (effect) {
+            gamePlayer.getLocation().getWorld().playEffect(gamePlayer.getLocation(), Effect.STEP_SOUND, Material.REDSTONE_BLOCK);
+        }
+        damagePlayer(gamePlayer, damage);
     }
 
     public GamePlayer getGamePlayer(Player player) {
@@ -238,33 +253,12 @@ public class BattlePlayerManager implements PlayerManager {
         return nearestPlayer;
     }
 
-    public void onPlayerMove(Player player, Location from, Location to) {
-        Arena arena = game.getArena();
-
-        if (!arena.contains(player.getLocation())) {
-            player.teleport(player.getLocation().add(from.toVector().subtract(to.toVector()).normalize()));
-            ActionBar.LEAVE_ARENA.send(player);
-        }
-
-        if (game.getState().isAllowMove() || from.getX() == to.getX() && from.getZ() == to.getZ()) {
-            return;
-        }
-
-        GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
-        Spawn spawn = arena.getSpawn(gamePlayer) != null ? arena.getSpawn(gamePlayer) : arena.getTeamBase(game.getGameMode().getTeam(gamePlayer));
-
-        if (spawn == null) {
-            return;
-        }
-
-        Location location = spawn.getLocation();
-        location.setPitch(player.getLocation().getPitch());
-        location.setYaw(player.getLocation().getYaw());
-        player.teleport(location);
-    }
-
     public Loadout getSelectedLoadout(GamePlayer gamePlayer) {
         return selectedLoadouts.get(gamePlayer);
+    }
+
+    public boolean handleEvent(PlayerEvent event) {
+        return handlers.get(event.getClass()).handle(event);
     }
 
     public void preparePlayer(GamePlayer gamePlayer) {
@@ -294,15 +288,6 @@ public class BattlePlayerManager implements PlayerManager {
         game.getItemRegistry().addItem(selectLoadout);
         gamePlayer.getHeldItems().add(selectLoadout);
         player.getInventory().setItem(ItemSlot.MISCELLANEOUS.getSlot(), selectLoadout.getItemStack());
-    }
-
-    public void receivePlayerChat(Player player, String message) {
-        GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
-        Team team = game.getGameMode().getTeam(gamePlayer);
-
-        broadcastMessage(EnumMessage.PLAYER_MESSAGE.getMessage(
-                new Placeholder("bg_message", message),
-                new Placeholder("player_name", team.getChatColor() + player.getName() + ChatColor.WHITE)));
     }
 
     public boolean removePlayer(GamePlayer gamePlayer) {

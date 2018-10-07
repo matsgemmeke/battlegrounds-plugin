@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.item;
 
 import com.matsg.battlegrounds.api.event.GamePlayerKillPlayerEvent;
+import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.item.ItemType;
 import com.matsg.battlegrounds.api.item.Knife;
@@ -13,9 +14,7 @@ import com.matsg.battlegrounds.util.BattleSound;
 import com.matsg.battlegrounds.util.EnumMessage;
 import com.matsg.battlegrounds.util.ItemStackBuilder;
 import org.bukkit.ChatColor;
-import org.bukkit.Effect;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
@@ -117,7 +116,7 @@ public class BattleKnife extends BattleWeapon implements Knife {
     }
 
     private double damage(GamePlayer gamePlayer, double damage) {
-        game.getPlayerManager().damagePlayer(gamePlayer, damage);
+        game.getPlayerManager().damagePlayer(gamePlayer, damage, plugin.getBattlegroundsConfig().displayBloodEffect);
         if (gamePlayer.getPlayer().isDead()) {
             plugin.getServer().getPluginManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, this.gamePlayer, this, Hitbox.TORSO));
         }
@@ -184,7 +183,7 @@ public class BattleKnife extends BattleWeapon implements Knife {
 
         Item item = game.getArena().getWorld().dropItem(gamePlayer.getPlayer().getEyeLocation(), new ItemStackBuilder(itemStack.clone()).setAmount(1).build());
         item.setPickupDelay(20);
-        item.setVelocity(gamePlayer.getPlayer().getEyeLocation().getDirection().multiply(3.0));
+        item.setVelocity(gamePlayer.getPlayer().getEyeLocation().getDirection().multiply(1.5));
 
         droppedItems.add(item);
 
@@ -197,16 +196,21 @@ public class BattleKnife extends BattleWeapon implements Knife {
             Location location;
             public void run() {
                 GamePlayer[] players = game.getPlayerManager().getNearbyPlayers(item.getLocation(), 2.0);
+                Team team = gamePlayer.getTeam();
                 if (players.length > 0) {
+                    GamePlayer gamePlayer = players[0];
+
+                    if (gamePlayer == null || gamePlayer == BattleKnife.this.gamePlayer || gamePlayer.getPlayer().isDead() || team != null && gamePlayer.getTeam() == team) {
+                        return;
+                    }
+
                     item.remove();
 
-                    players[0].getLocation().getWorld().playEffect(players[0].getLocation(), Effect.STEP_SOUND, Material.REDSTONE_BLOCK);
-
-                    damage(players[0], damage);
+                    damage(gamePlayer, damage);
                     cancel();
                 }
                 if (location != null && item.getLocation().equals(location)) {
-                    cancel();
+                    cancel(); // Cancel player searching loop
                 }
                 location = item.getLocation();
             }
