@@ -24,7 +24,6 @@ public class EliminationObjective implements Objective {
     }
 
     public boolean isReached(Game game) {
-        return false;
-        //return game.getPlayerManager().getLivingPlayers().length <= 1;
+        return game.getPlayerManager().getLivingPlayers().length <= 1;
     }
 }
