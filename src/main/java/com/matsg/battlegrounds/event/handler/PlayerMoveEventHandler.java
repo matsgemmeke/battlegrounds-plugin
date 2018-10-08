@@ -28,7 +28,7 @@ public class PlayerMoveEventHandler implements EventHandler<PlayerMoveEvent> {
             ActionBar.LEAVE_ARENA.send(player);
         }
 
-        if (game.getState().isAllowMove() || from.getX() == to.getX() && from.getZ() == to.getZ()) {
+        if (arena == null || game.getState().isAllowMove() || from.getX() == to.getX() && from.getZ() == to.getZ()) {
             return event.isCancelled();
         }
 

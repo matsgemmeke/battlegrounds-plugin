@@ -81,7 +81,8 @@ public class FreeForAll extends AbstractGameMode {
     }
 
     public void onDeath(GamePlayer gamePlayer, DeathCause deathCause) {
-        game.getPlayerManager().broadcastMessage(Placeholder.replace(deathCause.getDeathMessage(), new Placeholder("bg_player", gamePlayer.getName())));
+        game.getPlayerManager().broadcastMessage(Placeholder.replace(plugin.getTranslator().getTranslation(deathCause.getMessagePath()),
+                new Placeholder("bg_player", gamePlayer.getName())));
         handleDeath(gamePlayer);
     }
 

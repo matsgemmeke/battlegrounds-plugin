@@ -183,7 +183,7 @@ public class BattleKnife extends BattleWeapon implements Knife {
 
         Item item = game.getArena().getWorld().dropItem(gamePlayer.getPlayer().getEyeLocation(), new ItemStackBuilder(itemStack.clone()).setAmount(1).build());
         item.setPickupDelay(20);
-        item.setVelocity(gamePlayer.getPlayer().getEyeLocation().getDirection().multiply(1.5));
+        item.setVelocity(gamePlayer.getPlayer().getEyeLocation().getDirection().multiply(2.0));
 
         droppedItems.add(item);
 

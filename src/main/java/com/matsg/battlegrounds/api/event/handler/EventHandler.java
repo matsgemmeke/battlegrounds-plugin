@@ -4,5 +4,5 @@ import org.bukkit.event.Event;
 
 public interface EventHandler<T extends Event> {
 
-    boolean handle(T t);
+    boolean handle(T event);
 }

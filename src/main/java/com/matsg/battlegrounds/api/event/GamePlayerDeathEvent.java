@@ -2,7 +2,6 @@ package com.matsg.battlegrounds.api.event;
 
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.player.GamePlayer;
-import com.matsg.battlegrounds.util.EnumMessage;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -43,20 +42,20 @@ public class GamePlayerDeathEvent extends Event {
 
     public enum DeathCause {
 
-        BURNING(1, EnumMessage.DEATH_BURNING.getMessage(), DamageCause.FIRE, DamageCause.FIRE_TICK, DamageCause.LAVA),
-        DROWNING(2, EnumMessage.DEATH_DROWNING.getMessage(), DamageCause.DROWNING),
-        FALLING(3, EnumMessage.DEATH_FALLING.getMessage(), DamageCause.FALL),
-        PLAYER_KILL(4, EnumMessage.DEATH_PLAYER_KILL.getMessage()),
-        SUICIDE(5, EnumMessage.DEATH_SUICIDE.getMessage(), DamageCause.SUICIDE);
+        BURNING(1, "game-death-burning", DamageCause.FIRE, DamageCause.FIRE_TICK, DamageCause.LAVA),
+        DROWNING(2, "game-death-drowning", DamageCause.DROWNING),
+        FALLING(3, "game-death-falling", DamageCause.FALL),
+        PLAYER_KILL(4, "game-death-player-kill"),
+        SUICIDE(5, "game-death-suicide", DamageCause.SUICIDE);
 
         private DamageCause[] damageCause;
         private int id;
-        private String deathMessage;
+        private String messagePath;
 
-        private DeathCause(int id, String deathMessage, EntityDamageEvent.DamageCause... damageCause) {
+        private DeathCause(int id, String messagePath, EntityDamageEvent.DamageCause... damageCause) {
             this.id = id;
-            this.deathMessage = deathMessage;
             this.damageCause = damageCause;
+            this.messagePath = messagePath;
         }
 
         public static DeathCause fromDamageCause(DamageCause damageCause) {
@@ -70,8 +69,8 @@ public class GamePlayerDeathEvent extends Event {
             return null;
         }
 
-        public String getDeathMessage() {
-            return deathMessage;
+        public String getMessagePath() {
+            return messagePath;
         }
 
         public int getId() {

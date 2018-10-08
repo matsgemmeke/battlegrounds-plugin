@@ -1254,7 +1254,7 @@ CROSSBOW:
     Type: MAGAZINE
   Shot:
     ShotSound: BLOCK_WOODEN_DOOR_CLOSE-2-2-0, ENTITY_ARROW_SHOOT-2-1-1
-  Speed: 12.0
+  Speed: 18.0
 
 MGL:
   Accuracy: 0.8

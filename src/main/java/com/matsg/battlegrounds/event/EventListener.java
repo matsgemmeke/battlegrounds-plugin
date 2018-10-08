@@ -34,7 +34,7 @@ public class EventListener implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        if (plugin.getGameManager().getArena(event.getBlock().getLocation()) != null || plugin.getBattlegroundsConfig().arenaProtection) {
+        if (!plugin.getBattlegroundsConfig().arenaProtection && !isPlaying(event.getPlayer()) || plugin.getGameManager().getArena(event.getBlock().getLocation()) == null) {
             return;
         }
         event.setCancelled(true);
@@ -42,7 +42,7 @@ public class EventListener implements Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
-        if (plugin.getGameManager().getArena(event.getBlock().getLocation()) != null || plugin.getBattlegroundsConfig().arenaProtection) {
+        if (!plugin.getBattlegroundsConfig().arenaProtection && !isPlaying(event.getPlayer()) || plugin.getGameManager().getArena(event.getBlock().getLocation()) == null) {
             return;
         }
         event.setCancelled(true);
@@ -50,7 +50,7 @@ public class EventListener implements Listener {
 
     @EventHandler
     public void onBlockUpdate(BlockPhysicsEvent event) {
-        event.setCancelled(plugin.getGameManager().getArena(event.getBlock().getLocation()) != null && plugin.getBattlegroundsConfig().arenaProtection);
+        event.setCancelled(plugin.getGameManager().getArena(event.getBlock().getLocation()) != null);
     }
 
     @EventHandler

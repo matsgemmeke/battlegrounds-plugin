@@ -77,7 +77,7 @@ level:
     unlocks: SCAR-H, ACOG Scope
   '27':
     exp: 134300
-    unlocks: M82A1
+    unlocks: SV-98
   '28':
     exp: 146700
   '29':
@@ -117,7 +117,7 @@ level:
     unlocks: Beretta 93R, Tactical Stock
   '42':
     exp: 392900
-    unlocks: SV-98
+    unlocks: M82A1
   '43':
     exp: 416100
     unlocks: QBZ-95

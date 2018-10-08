@@ -28,7 +28,7 @@ public enum EnumMessage implements Message {
     COUNTDOWN_NOTE("game-countdown-note", true),
     CUSTOM_LOADOUT_LOCKED("util-custom-loadout-locked", false),
     DEATH_BURNING("game-death-burning", true),
-    DEATH_DROWNING("game-death-suicide", true),
+    DEATH_DROWNING("game-death-drowning", true),
     DEATH_FALLING("game-death-falling", true),
     DEATH_HEADSHOT("game-death-headshot", true),
     DEATH_PLAYER_KILL("game-death-player-kill", true),
