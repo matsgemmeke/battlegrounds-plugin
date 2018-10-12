@@ -1,20 +1,29 @@
 package com.matsg.battlegrounds.event.handler;
 
+import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.event.handler.EventHandler;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.item.Droppable;
 import com.matsg.battlegrounds.api.item.Item;
+import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 
 public class PlayerPickupItemEventHandler implements EventHandler<PlayerPickupItemEvent> {
 
-    private Game game;
+    private Battlegrounds plugin;
 
-    public PlayerPickupItemEventHandler(Game game) {
-        this.game = game;
+    public PlayerPickupItemEventHandler(Battlegrounds plugin) {
+        this.plugin = plugin;
     }
 
-    public boolean handle(PlayerPickupItemEvent event) {
+    public void handle(PlayerPickupItemEvent event) {
+        Player player = event.getPlayer();
+        Game game = plugin.getGameManager().getGame(player);
+
+        if (game == null) {
+            return;
+        }
+
         Item item = null;
 
         for (Item i : game.getItemRegistry().getItems()) {
@@ -25,10 +34,9 @@ public class PlayerPickupItemEventHandler implements EventHandler<PlayerPickupIt
         }
 
         if (item == null) {
-            return event.isCancelled();
+            return;
         }
 
-        ((Droppable) item).onPickUp(event.getPlayer(), event.getItem());
-        return true;
+        event.setCancelled(((Droppable) item).onPickUp(player, event.getItem()));
     }
 }

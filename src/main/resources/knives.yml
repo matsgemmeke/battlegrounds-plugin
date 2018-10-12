@@ -12,7 +12,7 @@
 BALLISTIC_KNIFE:
   Amount: 4
   Cooldown: 10
-  Damage: 10.0
+  Damage: 15.0
   Description: Spring-action knife launcher. Can fire the blade as a projectile.
   DisplayName: Ballistic Knife
   Material: IRON_SWORD,1

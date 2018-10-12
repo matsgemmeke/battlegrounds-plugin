@@ -10,7 +10,6 @@ import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.player.PlayerStatus;
 import com.matsg.battlegrounds.config.BattleCacheYaml;
-import com.matsg.battlegrounds.event.GameEventListener;
 import com.matsg.battlegrounds.gui.scoreboard.LobbyScoreboard;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import org.bukkit.Bukkit;
@@ -30,7 +29,6 @@ public class BattleGame implements Game {
     private CacheYaml dataFile;
     private Countdown countdown;
     private GameConfiguration configuration;
-    private GameEventHandler eventHandler;
     private GameMode gameMode;
     private GameSign gameSign;
     private GameState state;
@@ -43,12 +41,9 @@ public class BattleGame implements Game {
         this.plugin = plugin;
         this.id = id;
         this.arenaList = new ArrayList<>();
-        this.eventHandler = new BattleGameEventHandler(this);
         this.itemRegistry = new BattleItemRegistry();
         this.playerManager = new BattlePlayerManager(this, plugin.getLevelConfig(), plugin.getPlayerStorage());
         this.state = GameState.WAITING;
-
-        new GameEventListener(plugin, this);
 
         try {
             this.dataFile = new BattleCacheYaml(plugin, plugin.getDataFolder().getPath() + "/data/game_" + id, "game_" + id + ".yml");
@@ -75,10 +70,6 @@ public class BattleGame implements Game {
 
     public CacheYaml getDataFile() {
         return dataFile;
-    }
-
-    public GameEventHandler getEventHandler() {
-        return eventHandler;
     }
 
     public GameMode getGameMode() {
@@ -233,7 +224,9 @@ public class BattleGame implements Game {
 
     public void stop() {
         if (state == GameState.WAITING || state == GameState.STARTING) {
-            countdown.cancelCountdown();
+            if (countdown != null) {
+                countdown.cancelCountdown();
+            }
             setState(GameState.WAITING);
             updateSign();
             for (GamePlayer gamePlayer : playerManager.getPlayers()) {

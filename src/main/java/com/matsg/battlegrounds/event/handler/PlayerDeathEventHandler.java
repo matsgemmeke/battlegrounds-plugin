@@ -1,6 +1,5 @@
 package com.matsg.battlegrounds.event.handler;
 
-import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent.DeathCause;
@@ -12,15 +11,18 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 public class PlayerDeathEventHandler implements EventHandler<PlayerDeathEvent> {
 
     private Battlegrounds plugin;
-    private Game game;
 
-    public PlayerDeathEventHandler(Game game) {
-        this.game = game;
-        this.plugin = BattlegroundsPlugin.getPlugin();
+    public PlayerDeathEventHandler(Battlegrounds plugin) {
+        this.plugin = plugin;
     }
 
-    public boolean handle(PlayerDeathEvent event) {
+    public void handle(PlayerDeathEvent event) {
         Player player = event.getEntity();
+        Game game = plugin.getGameManager().getGame(player);
+
+        if (game == null) {
+            return;
+        }
 
         event.setDeathMessage(null);
         event.setDroppedExp(0);
@@ -30,10 +32,9 @@ public class PlayerDeathEventHandler implements EventHandler<PlayerDeathEvent> {
         DeathCause deathCause = player.getLastDamageCause() != null ? DeathCause.fromDamageCause(player.getLastDamageCause().getCause()) : null;
 
         if (deathCause == null) {
-            return false; // Only notify the game of death events the game should handle
+            return; // Only notify the game of death events the game should handle
         }
 
         plugin.getServer().getPluginManager().callEvent(new GamePlayerDeathEvent(game, game.getPlayerManager().getGamePlayer(player), deathCause));
-        return false;
     }
 }

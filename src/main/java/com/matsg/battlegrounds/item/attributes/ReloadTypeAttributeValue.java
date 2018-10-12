@@ -1,7 +1,7 @@
 package com.matsg.battlegrounds.item.attributes;
 
-import com.matsg.battlegrounds.api.item.ReloadType;
 import com.matsg.battlegrounds.api.item.AttributeValue;
+import com.matsg.battlegrounds.api.item.ReloadType;
 
 public class ReloadTypeAttributeValue implements AttributeValue<ReloadType> {
 

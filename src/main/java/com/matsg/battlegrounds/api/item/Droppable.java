@@ -12,5 +12,5 @@ public interface Droppable extends DropListener {
 
     boolean isRelated(ItemStack itemStack);
 
-    void onPickUp(Player player, Item item);
+    boolean onPickUp(Player player, Item item);
 }

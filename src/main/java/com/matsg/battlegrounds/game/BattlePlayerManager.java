@@ -3,25 +3,25 @@ package com.matsg.battlegrounds.game;
 import com.matsg.battlegrounds.api.config.LevelConfig;
 import com.matsg.battlegrounds.api.config.StoredPlayer;
 import com.matsg.battlegrounds.api.game.*;
-import com.matsg.battlegrounds.api.item.*;
+import com.matsg.battlegrounds.api.item.Item;
+import com.matsg.battlegrounds.api.item.ItemSlot;
+import com.matsg.battlegrounds.api.item.Loadout;
+import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.player.PlayerStatus;
 import com.matsg.battlegrounds.api.player.PlayerStorage;
 import com.matsg.battlegrounds.api.util.Message;
 import com.matsg.battlegrounds.api.util.Placeholder;
-import com.matsg.battlegrounds.api.event.handler.EventHandler;
-import com.matsg.battlegrounds.event.handler.PlayerMoveEventHandler;
-import com.matsg.battlegrounds.event.handler.PlayerRespawnEventHandler;
 import com.matsg.battlegrounds.gui.scoreboard.LobbyScoreboard;
 import com.matsg.battlegrounds.item.misc.SelectLoadout;
 import com.matsg.battlegrounds.player.BattleGamePlayer;
-import com.matsg.battlegrounds.util.*;
+import com.matsg.battlegrounds.util.ActionBar;
+import com.matsg.battlegrounds.util.BattleRunnable;
+import com.matsg.battlegrounds.util.EnumMessage;
+import com.matsg.battlegrounds.util.ItemStackBuilder;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
@@ -35,20 +35,15 @@ public class BattlePlayerManager implements PlayerManager {
     private Game game;
     private LevelConfig levelConfig;
     private List<GamePlayer> players;
-    private Map<Class<? extends PlayerEvent>, EventHandler> handlers;
     private Map<GamePlayer, Loadout> selectedLoadouts;
     private PlayerStorage playerStorage;
 
     public BattlePlayerManager(Game game, LevelConfig levelConfig, PlayerStorage playerStorage) {
         this.game = game;
-        this.handlers = new HashMap<>();
         this.levelConfig = levelConfig;
         this.players = new ArrayList<>();
         this.playerStorage = playerStorage;
         this.selectedLoadouts = new HashMap<>();
-
-        handlers.put(PlayerMoveEvent.class, new PlayerMoveEventHandler(game));
-        handlers.put(PlayerRespawnEvent.class, new PlayerRespawnEventHandler(game));
     }
 
     public List<GamePlayer> getPlayers() {
@@ -257,10 +252,6 @@ public class BattlePlayerManager implements PlayerManager {
         return selectedLoadouts.get(gamePlayer);
     }
 
-    public boolean handleEvent(PlayerEvent event) {
-        return handlers.get(event.getClass()).handle(event);
-    }
-
     public void preparePlayer(GamePlayer gamePlayer) {
         Player player = gamePlayer.getPlayer();
         player.setFoodLevel(20);
@@ -305,6 +296,10 @@ public class BattlePlayerManager implements PlayerManager {
 
         if (game.getState().isInProgress()) {
             playerStorage.addPlayerAttributes(gamePlayer);
+        }
+
+        if (game.getPlayerManager().getPlayers().size() < game.getConfiguration().getMinPlayers()) {
+            game.stop();
         }
 
         game.getGameMode().removePlayer(gamePlayer);

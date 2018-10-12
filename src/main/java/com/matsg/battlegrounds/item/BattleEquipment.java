@@ -170,7 +170,9 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
         deployEquipment(velocity);
     }
 
-    public void onPickUp(Player player, Item item) { }
+    public boolean onPickUp(Player player, Item item) {
+        return true;
+    }
 
     public void onRightClick() {
         if (amount <= 0 || beingThrown || game == null || gamePlayer == null) {

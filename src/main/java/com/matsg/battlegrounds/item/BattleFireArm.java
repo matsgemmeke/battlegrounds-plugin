@@ -5,7 +5,9 @@ import com.matsg.battlegrounds.api.item.ItemAttribute;
 import com.matsg.battlegrounds.api.item.ReloadType;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.api.util.Sound;
-import com.matsg.battlegrounds.item.attributes.*;
+import com.matsg.battlegrounds.item.attributes.DoubleAttributeValue;
+import com.matsg.battlegrounds.item.attributes.IntegerAttributeValue;
+import com.matsg.battlegrounds.item.attributes.ReloadTypeAttributeValue;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.ItemStackBuilder;
 import com.matsg.battlegrounds.util.Particle;
@@ -262,7 +264,7 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
 
         new BattleRunnable() {
             public void run() {
-                if (reloadCancelled) {
+                if (reloadCancelled || gamePlayer == null || !gamePlayer.getStatus().isAlive()) {
                     cancel();
                     reloadCancelled = false;
                     reloading = false;
@@ -283,6 +285,7 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
     public void remove() {
         super.remove();
         cancelReload();
+        resetState();
     }
 
     public void resetState() {

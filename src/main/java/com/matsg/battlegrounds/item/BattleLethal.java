@@ -81,7 +81,7 @@ public class BattleLethal extends BattleEquipment implements Lethal {
 
     private void inflictDamage(Location location) {
         for (GamePlayer gamePlayer : game.getPlayerManager().getNearbyPlayers(location, longRange)) {
-            if (gamePlayer != null && gamePlayer != this.gamePlayer && gamePlayer.getPlayer() != null && !gamePlayer.getPlayer().isDead() && gamePlayer.getStatus().isAlive()) {
+            if (gamePlayer != null && gamePlayer != this.gamePlayer && !gamePlayer.getPlayer().isDead() && (gamePlayer.getTeam() != null && this.gamePlayer.getTeam() != gamePlayer.getTeam())) {
                 game.getPlayerManager().damagePlayer(gamePlayer, getDistanceDamage(gamePlayer.getLocation().distanceSquared(location) / 5));
                 if (gamePlayer.getPlayer().isDead()) {
                     plugin.getServer().getPluginManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, this.gamePlayer, this, Hitbox.TORSO));

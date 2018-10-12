@@ -1,9 +1,9 @@
-package com.matsg.battlegrounds.api.game;
+package com.matsg.battlegrounds.api;
 
 import com.matsg.battlegrounds.api.event.handler.EventHandler;
 import org.bukkit.event.Event;
 
-public interface GameEventHandler {
+public interface EventManager {
 
     /**
      * Registers an event handler.
@@ -17,9 +17,8 @@ public interface GameEventHandler {
      * Handles an event.
      *
      * @param event The event
-     * @return Whether the event should be cancelled or not
      */
-    boolean handleEvent(Event event);
+    void handleEvent(Event event);
 
     /**
      * Removes a registered event handler.

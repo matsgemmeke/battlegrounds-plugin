@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.event.handler;
 
+import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.event.handler.EventHandler;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
@@ -12,37 +13,42 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 public class PlayerMoveEventHandler implements EventHandler<PlayerMoveEvent> {
 
-    private Game game;
+    private Battlegrounds plugin;
 
-    public PlayerMoveEventHandler(Game game) {
-        this.game = game;
+    public PlayerMoveEventHandler(Battlegrounds plugin) {
+        this.plugin = plugin;
     }
 
-    public boolean handle(PlayerMoveEvent event) {
+    public void handle(PlayerMoveEvent event) {
+        Player player = event.getPlayer();
+        Game game = plugin.getGameManager().getGame(player);
+
+        if (game == null) {
+            return;
+        }
+
         Arena arena = game.getArena();
         Location from = event.getFrom(), to = event.getTo();
-        Player player = event.getPlayer();
 
-        if (arena != null && !arena.contains(player.getLocation())) {
+        if (game.getState().isInProgress() && arena != null && !arena.contains(player.getLocation())) {
             player.teleport(player.getLocation().add(from.toVector().subtract(to.toVector()).normalize()));
             ActionBar.LEAVE_ARENA.send(player);
         }
 
         if (arena == null || game.getState().isAllowMove() || from.getX() == to.getX() && from.getZ() == to.getZ()) {
-            return event.isCancelled();
+            return;
         }
 
         GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
         Spawn spawn = arena.getSpawn(gamePlayer) != null ? arena.getSpawn(gamePlayer) : arena.getTeamBase(game.getGameMode().getTeam(gamePlayer));
 
         if (spawn == null) {
-            return event.isCancelled();
+            return;
         }
 
         Location location = spawn.getLocation();
         location.setPitch(player.getLocation().getPitch());
         location.setYaw(player.getLocation().getYaw());
         player.teleport(location);
-        return event.isCancelled();
     }
 }

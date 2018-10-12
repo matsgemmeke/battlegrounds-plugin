@@ -6,7 +6,10 @@ import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.player.Hitbox;
 import com.matsg.battlegrounds.api.util.Sound;
-import com.matsg.battlegrounds.item.attributes.*;
+import com.matsg.battlegrounds.item.attributes.BooleanAttributeValue;
+import com.matsg.battlegrounds.item.attributes.DoubleAttributeValue;
+import com.matsg.battlegrounds.item.attributes.FireModeAttributeValue;
+import com.matsg.battlegrounds.item.attributes.IntegerAttributeValue;
 import com.matsg.battlegrounds.util.BattleSound;
 import com.matsg.battlegrounds.util.EnumMessage;
 import com.matsg.battlegrounds.util.HalfBlocks;
@@ -173,7 +176,11 @@ public class BattleGun extends BattleFireArm implements Gun {
         Team team = gamePlayer.getTeam();
         if (players.length > 0) {
             GamePlayer gamePlayer = players[0];
-            if (gamePlayer == null || gamePlayer == this.gamePlayer || gamePlayer.getPlayer().isDead() || team != null && gamePlayer.getTeam() == team) {
+            if (gamePlayer == null || gamePlayer == this.gamePlayer) {
+                return;
+            }
+            if (gamePlayer.getPlayer().isDead() || team != null && gamePlayer.getTeam() == team) {
+                hits ++;
                 return;
             }
             Hitbox hitbox = Hitbox.getHitbox(gamePlayer.getLocation().getY(), location.getY());

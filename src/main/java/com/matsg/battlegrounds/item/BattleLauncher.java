@@ -63,7 +63,7 @@ public class BattleLauncher extends BattleFireArm implements Launcher {
 
     private void inflictDamage(Location location, double range) {
         for (GamePlayer gamePlayer : game.getPlayerManager().getNearbyPlayers(location, range)) { //Explosion splash damage range
-            if (gamePlayer == null || gamePlayer == this.gamePlayer || gamePlayer.getPlayer() == null || gamePlayer.getPlayer().isDead()) {
+            if (gamePlayer == null || gamePlayer == this.gamePlayer || gamePlayer.getPlayer().isDead() || gamePlayer.getTeam() == this.gamePlayer.getTeam()) {
                 continue;
             }
             double damage = lethal.getDamage(Hitbox.TORSO, gamePlayer.getLocation().distance(location));

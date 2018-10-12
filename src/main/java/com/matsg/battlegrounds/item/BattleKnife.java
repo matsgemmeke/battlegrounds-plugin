@@ -144,9 +144,9 @@ public class BattleKnife extends BattleWeapon implements Knife {
 
     public void onLeftClick() { }
 
-    public void onPickUp(Player player, Item itemEntity) {
+    public boolean onPickUp(Player player, Item itemEntity) {
         if (game.getPlayerManager().getGamePlayer(player) != gamePlayer) {
-            return;
+            return true;
         }
         itemEntity.remove();
         amount ++;
@@ -155,6 +155,7 @@ public class BattleKnife extends BattleWeapon implements Knife {
         for (Sound sound : BattleSound.ITEM_EQUIP) {
             sound.play(game, itemEntity.getLocation());
         }
+        return true;
     }
 
     public void onRightClick() {
@@ -199,13 +200,10 @@ public class BattleKnife extends BattleWeapon implements Knife {
                 Team team = gamePlayer.getTeam();
                 if (players.length > 0) {
                     GamePlayer gamePlayer = players[0];
-
                     if (gamePlayer == null || gamePlayer == BattleKnife.this.gamePlayer || gamePlayer.getPlayer().isDead() || team != null && gamePlayer.getTeam() == team) {
                         return;
                     }
-
                     item.remove();
-
                     damage(gamePlayer, damage);
                     cancel();
                 }

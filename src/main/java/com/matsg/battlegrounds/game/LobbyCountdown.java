@@ -51,6 +51,10 @@ public class LobbyCountdown extends BattleRunnable implements Countdown {
                     cancel();
                     return;
                 }
+                if (game.getArena() == null || game.getPlayerManager().getPlayers().size() < game.getConfiguration().getMinPlayers()) {
+                    game.stop();
+                    return;
+                }
                 if (countdown <= 0) {
                     game.startCountdown();
                     cancel();

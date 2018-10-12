@@ -1,4 +1,4 @@
-package com.matsg.battlegrounds.game;
+package com.matsg.battlegrounds;
 
 public class EventHandlingException extends RuntimeException {
 

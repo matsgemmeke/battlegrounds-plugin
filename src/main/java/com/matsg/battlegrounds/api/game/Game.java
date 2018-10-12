@@ -52,13 +52,6 @@ public interface Game {
     CacheYaml getDataFile();
 
     /**
-     * Gets the event handler instance of this game.
-     *
-     * @return The game's event handler
-     */
-    GameEventHandler getEventHandler();
-
-    /**
      * Gets the gamemode the game is currently using.
      *
      * @return The game's gamemode
