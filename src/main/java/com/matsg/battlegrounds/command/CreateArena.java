@@ -7,7 +7,10 @@ import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.game.BattleArena;
 import com.matsg.battlegrounds.util.EnumMessage;
-import com.sk89q.worldedit.bukkit.selections.Selection;
+import com.sk89q.worldedit.LocalSession;
+import com.sk89q.worldedit.WorldEdit;
+import com.sk89q.worldedit.regions.Region;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -54,14 +57,25 @@ public class CreateArena extends SubCommand {
             return;
         }
 
-        Selection selection = BattlegroundsPlugin.getWorldEditPlugin().getSelection(player);
+        LocalSession session = BattlegroundsPlugin.getWorldEditPlugin().getSession(player);
+        Region selection;
+
+        try {
+            selection = session.getSelection(session.getSelectionWorld());
+        } catch (Exception e) {
+            return;
+        }
 
         if (selection == null) {
             EnumMessage.NO_SELECTION.send(player);
             return;
         }
 
-        Arena arena = new BattleArena(name, selection.getMaximumPoint(), selection.getMinimumPoint(), selection.getWorld());
+        Arena arena = new BattleArena(
+                name,
+                new Location(player.getWorld(), selection.getMaximumPoint().getX(), selection.getMaximumPoint().getY(), selection.getMaximumPoint().getZ()),
+                new Location(player.getWorld(), selection.getMinimumPoint().getX(), selection.getMinimumPoint().getY(), selection.getMinimumPoint().getZ()),
+                player.getWorld());
 
         game.getArenaList().add(arena);
         game.getDataFile().setLocation("arena." + name + ".max", arena.getMax(), false);

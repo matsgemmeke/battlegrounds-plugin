@@ -289,10 +289,10 @@ public class BattlePlayerManager implements PlayerManager {
                 new Placeholder("bg_players", players.size()),
                 new Placeholder("bg_maxplayers", game.getConfiguration().getMaxPlayers())));
 
-        gamePlayer.getPlayer().setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
-        gamePlayer.getPlayer().teleport(game.getSpawnPoint());
         gamePlayer.getSavedInventory().restore(gamePlayer.getPlayer());
         gamePlayer.setStatus(PlayerStatus.ACTIVE).apply(game, gamePlayer);
+        gamePlayer.getPlayer().setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
+        gamePlayer.getPlayer().teleport(game.getSpawnPoint());
 
         if (game.getState().isInProgress()) {
             playerStorage.addPlayerAttributes(gamePlayer);

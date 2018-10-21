@@ -119,6 +119,7 @@ public class BattleKnife extends BattleWeapon implements Knife {
         game.getPlayerManager().damagePlayer(gamePlayer, damage, plugin.getBattlegroundsConfig().displayBloodEffect);
         if (gamePlayer.getPlayer().isDead()) {
             plugin.getServer().getPluginManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, this.gamePlayer, this, Hitbox.TORSO));
+            game.getGameMode().onKill(gamePlayer, this.gamePlayer, this, Hitbox.TORSO);
         }
         return gamePlayer.getPlayer().getHealth();
     }

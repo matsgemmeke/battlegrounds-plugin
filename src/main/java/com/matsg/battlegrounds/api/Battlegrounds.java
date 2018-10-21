@@ -92,6 +92,13 @@ public interface Battlegrounds extends Plugin {
     Translator getTranslator();
 
     /**
+     * Gets the NMS version of the plugin.
+     *
+     * @return The battlegrounds version for handling NMS related functions
+     */
+    Version getVersion();
+
+    /**
      * Reloads the configuration files. Note that this does not reload the games and arenas content.
      *
      * @return True if the new translations configuration was loaded successfully, false otherwise

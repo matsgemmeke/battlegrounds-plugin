@@ -10,11 +10,7 @@ import com.matsg.battlegrounds.item.attributes.IntegerAttributeValue;
 import com.matsg.battlegrounds.item.attributes.ReloadTypeAttributeValue;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.ItemStackBuilder;
-import com.matsg.battlegrounds.util.Particle;
-import com.matsg.battlegrounds.util.Particle.ParticleEffect;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
@@ -173,11 +169,7 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
     }
 
     protected void displayParticle(Location location, float red, float green, float blue) {
-        Particle particle = new Particle(ParticleEffect.REDSTONE, 0, location, 0, 0, 0, 1);
-        particle.setOffSetX(red);
-        particle.setOffSetY(green);
-        particle.setOffSetZ(blue);
-        particle.display();
+        plugin.getVersion().spawnParticle(location, "REDSTONE", 0, red, green, blue, 0);
     }
 
     protected abstract String[] getLore();

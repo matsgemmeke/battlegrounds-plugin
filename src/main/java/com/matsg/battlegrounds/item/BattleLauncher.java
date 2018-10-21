@@ -12,7 +12,6 @@ import com.matsg.battlegrounds.api.player.Hitbox;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.util.BattleSound;
 import com.matsg.battlegrounds.util.EnumMessage;
-import com.matsg.battlegrounds.util.Particle.ParticleEffect;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
@@ -41,7 +40,7 @@ public class BattleLauncher extends BattleFireArm implements Launcher {
     }
 
     public void explode(Location location) {
-        displayCircleEffect(location, 2, ParticleEffect.EXPLOSION_LARGE, 2, 6);
+        displayCircleEffect(location, 2, "EXPLOSION_LARGE", 2, 6);
         inflictDamage(location, lethal.getLongRange());
         inflictUserDamage(location);
 
@@ -70,6 +69,7 @@ public class BattleLauncher extends BattleFireArm implements Launcher {
             game.getPlayerManager().damagePlayer(gamePlayer, damage);
             if (gamePlayer.getPlayer().isDead()) {
                 plugin.getServer().getPluginManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, this.gamePlayer, this, Hitbox.TORSO));
+                game.getGameMode().onKill(gamePlayer, this.gamePlayer, this, Hitbox.TORSO);
             }
         }
     }
@@ -80,6 +80,7 @@ public class BattleLauncher extends BattleFireArm implements Launcher {
             game.getPlayerManager().damagePlayer(gamePlayer, lethal.getDamage(Hitbox.TORSO, playerDistance) / 5);
             if (gamePlayer.getPlayer().isDead()) {
                 plugin.getServer().getPluginManager().callEvent(new GamePlayerDeathEvent(game, gamePlayer, DeathCause.SUICIDE));
+                game.getGameMode().onDeath(gamePlayer, DeathCause.SUICIDE);
             }
         }
     }

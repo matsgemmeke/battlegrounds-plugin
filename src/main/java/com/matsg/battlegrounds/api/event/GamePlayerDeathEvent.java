@@ -52,7 +52,7 @@ public class GamePlayerDeathEvent extends Event {
         private int id;
         private String messagePath;
 
-        private DeathCause(int id, String messagePath, EntityDamageEvent.DamageCause... damageCause) {
+        DeathCause(int id, String messagePath, EntityDamageEvent.DamageCause... damageCause) {
             this.id = id;
             this.damageCause = damageCause;
             this.messagePath = messagePath;

@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.util;
 
+import com.matsg.battlegrounds.nms.ReflectionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -153,15 +154,15 @@ public class Particle {
         this.location = location;
     }
 
-    public void setOffSetX(float x) {
+    public void setOffsetX(float x) {
         this.offsetX = x;
     }
 
-    public void setOffSetY(float y) {
+    public void setOffsetY(float y) {
         this.offsetY = y;
     }
 
-    public void setOffSetZ(float z) {
+    public void setOffsetZ(float z) {
         this.offsetZ = z;
     }
 

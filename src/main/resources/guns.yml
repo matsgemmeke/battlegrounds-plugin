@@ -370,7 +370,7 @@ QCW-05:
     Magazine: 36
     Max: 8
     Supply: 3
-  Attachments: ACOG_SCOPE, ANGLED_GRIP, EXTENDED_CLIP(50), FAST_MAG(32), MUZZLE_BRAKE, RAPID_FIRE(20), SELECT_FIRE(AUTOMATIC,10,0,0,-0.1,-0.1), SUPPRESSOR, VERTICAL_GRIP
+  Attachments: ACOG_SCOPE, ANGLED_GRIP, EXTENDED_CLIP(50), FAST_MAG(32), MUZZLE_BRAKE, SELECT_FIRE(AUTOMATIC,10,0,0,-0.1,-0.1), SUPPRESSOR, VERTICAL_GRIP
   Description: 3 round burst submachine gun. High cyclic fire rate allows for fast consecutive bursts.
   DisplayName: QCW-05
   FireMode:

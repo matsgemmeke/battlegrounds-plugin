@@ -36,5 +36,6 @@ public class PlayerDeathEventHandler implements EventHandler<PlayerDeathEvent> {
         }
 
         plugin.getServer().getPluginManager().callEvent(new GamePlayerDeathEvent(game, game.getPlayerManager().getGamePlayer(player), deathCause));
+        game.getGameMode().onDeath(game.getPlayerManager().getGamePlayer(player), DeathCause.SUICIDE);
     }
 }

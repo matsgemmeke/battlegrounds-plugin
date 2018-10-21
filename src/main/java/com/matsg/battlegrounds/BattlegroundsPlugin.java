@@ -14,8 +14,8 @@ import com.matsg.battlegrounds.command.BattlegroundsCommand;
 import com.matsg.battlegrounds.command.LoadoutCommand;
 import com.matsg.battlegrounds.config.*;
 import com.matsg.battlegrounds.event.EventListener;
-import com.matsg.battlegrounds.event.GameEventListener;
 import com.matsg.battlegrounds.event.PlayerSwapItemListener;
+import com.matsg.battlegrounds.nms.VersionManager;
 import com.matsg.battlegrounds.player.LocalPlayerStorage;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import org.bukkit.Bukkit;
@@ -41,6 +41,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
     private List<BattlegroundsExtension> extensions;
     private PlayerStorage playerStorage;
     private Translator translator;
+    private VersionManager versionManager;
 
     public void onEnable() {
         plugin = this;
@@ -117,6 +118,10 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         return translator;
     }
 
+    public Version getVersion() {
+        return versionManager.getVersion();
+    }
+
     public boolean loadConfigs() {
         try {
             cache = new BattleCacheYaml(this, "cache.yml");
@@ -186,6 +191,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
 
         eventManager = new BattleEventManager(this);
         gameManager = new BattleGameManager();
+        versionManager = new VersionManager();
 
         new DataLoader(this);
 
@@ -193,7 +199,6 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         new LoadoutCommand(this);
 
         new EventListener(this);
-        new GameEventListener(this);
         new PlayerSwapItemListener(this);
 
         for (BattlegroundsExtension extension : extensions) {

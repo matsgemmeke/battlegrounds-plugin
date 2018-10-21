@@ -3,9 +3,8 @@ package com.matsg.battlegrounds.item;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.util.BattleRunnable;
-import com.matsg.battlegrounds.util.Particle;
-import com.matsg.battlegrounds.util.Particle.ParticleEffect;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -40,7 +39,7 @@ public abstract class BattleWeapon extends BattleItem implements Weapon {
         this.gamePlayer = gamePlayer;
     }
 
-    protected void displayCircleEffect(Location location, int size, ParticleEffect effect, final int amount, int random) {
+    protected void displayCircleEffect(Location location, int size, String effect, final int amount, int random) {
         final Location center = location.clone();
 
         for (double i = 0; i <= Math.PI; i += Math.PI / size) {
@@ -55,7 +54,7 @@ public abstract class BattleWeapon extends BattleItem implements Weapon {
 
                 new BattleRunnable() {
                     public void run() {
-                        new Particle(effect, amount, center, 1, 1, 1, 0).display();
+                        plugin.getVersion().spawnParticle(location, effect, amount, 1, 1, 1, 0);
                     }
                 }.runTaskLater(new Random().nextInt(random));
 

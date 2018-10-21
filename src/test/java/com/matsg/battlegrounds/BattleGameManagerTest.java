@@ -8,95 +8,75 @@ import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.PlayerManager;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(BattlegroundsPlugin.class)
 public class BattleGameManagerTest {
+
+    private Arena arena;
+    private Game game;
+    private PlayerManager playerManager;
+
+    @Before
+    public void setUp() {
+        this.arena = mock(Arena.class);
+        this.game = mock(Game.class);
+        this.playerManager = mock(PlayerManager.class);
+
+        List<Arena> arenas = new ArrayList<>();
+        arenas.add(arena);
+
+        when(arena.getName()).thenReturn("Arena");
+        when(game.getArenaList()).thenReturn(arenas);
+        when(game.getId()).thenReturn(1);
+        when(game.getPlayerManager()).thenReturn(playerManager);
+    }
 
     @Test
     public void testGameManagerFindArenaByLocation() {
-        // Mock an arena object
-        Arena arena = mock(Arena.class);
-        Location locationOne = mock(Location.class), locationTwo = mock(Location.class);
+        Location location1 = new Location(mock(World.class), 1, 1, 1), location2 = location1.clone().add(1, 0, 1);
 
-        when(arena.contains(locationOne)).thenReturn(true);
-        when(arena.contains(locationTwo)).thenReturn(false);
+        when(arena.contains(location1)).thenReturn(true);
+        when(arena.contains(location2)).thenReturn(false);
 
-        List<Arena> list = new ArrayList<>();
-        list.add(arena);
-
-        // Mock a game object
-        Game game = mock(Game.class);
-        when(game.getArenaList()).thenReturn(list);
-
-        // Instantiate the game manager
         BattleGameManager gameManager = new BattleGameManager();
         gameManager.getGames().add(game);
 
-        assertNotNull(gameManager.getArena(locationOne));
-        assertNull(gameManager.getArena(locationTwo));
-        assertEquals(arena, gameManager.getArena(locationOne));
+        assertNotNull(gameManager.getArena(location1));
+        assertNull(gameManager.getArena(location2));
+        assertEquals(arena, gameManager.getArena(location1));
     }
 
     @Test
     public void testGameManagerFindArenaByName() {
-        // Mock an arena object
-        Arena arena = mock(Arena.class);
-        when(arena.getName()).thenReturn("Test");
-
-        List<Arena> list = new ArrayList<>();
-        list.add(arena);
-
-        // Mock a game object
-        Game game = mock(Game.class);
-        when(game.getArenaList()).thenReturn(list);
-
-        // Instantiate the game manager
         BattleGameManager gameManager = new BattleGameManager();
         gameManager.getGames().add(game);
 
-        assertEquals(arena, gameManager.getArena(game, "Test"));
+        assertEquals(arena, gameManager.getArena(game, "Arena"));
         assertEquals(null, gameManager.getArena(game, "Fail"));
     }
 
     @Test
     public void testGameManagerFindGamesByArena() {
-        // Mock an arena object
-        Arena arenaOne = mock(Arena.class), arenaTwo = mock(Arena.class);
+        Arena otherArena = mock(Arena.class);
 
-        List<Arena> list = new ArrayList<>();
-        list.add(arenaOne);
-
-        // Mock a game object
-        Game game = mock(Game.class);
-        when(game.getArenaList()).thenReturn(list);
-
-        // Instantiate the game manager
         BattleGameManager gameManager = new BattleGameManager();
         gameManager.getGames().add(game);
 
-        assertEquals(game, gameManager.getGame(arenaOne));
-        assertEquals(null, gameManager.getGame(arenaTwo));
+        assertEquals(game, gameManager.getGame(arena));
+        assertEquals(null, gameManager.getGame(otherArena));
     }
 
     @Test
     public void testGameManagerFindGamesById() {
-        // Game data
-        int id = 1;
-
-        // Mock a game object
-        Game game = mock(Game.class);
-        when(game.getId()).thenReturn(id);
-
-        // Instantiate the game manager
         BattleGameManager gameManager = new BattleGameManager();
         gameManager.getGames().add(game);
 
@@ -108,23 +88,12 @@ public class BattleGameManagerTest {
 
     @Test
     public void testGameManagerFindGamesByPlayer() {
-        // Game data
-        int id = 1;
-
-        // Create mock objects
         GamePlayer gamePlayer = mock(GamePlayer.class);
         Player playerOne = mock(Player.class), playerTwo = mock(Player.class);
-        PlayerManager playerManager = mock(PlayerManager.class);
 
         when(gamePlayer.getPlayer()).thenReturn(playerOne);
         when(playerManager.getGamePlayer(playerOne)).thenReturn(gamePlayer);
 
-        // Mock a game object
-        Game game = mock(Game.class);
-        when(game.getId()).thenReturn(id);
-        when(game.getPlayerManager()).thenReturn(playerManager);
-
-        // Instantiate the game manager
         BattleGameManager gameManager = new BattleGameManager();
         gameManager.getGames().add(game);
 
@@ -136,17 +105,6 @@ public class BattleGameManagerTest {
 
     @Test
     public void testGameManagerGetAllArenas() {
-        List<Arena> list = new ArrayList<>();
-
-        // Create mock objects
-        Arena arena = mock(Arena.class);
-        Game game = mock(Game.class);
-
-        when(game.getArenaList()).thenReturn(list);
-
-        list.add(arena);
-
-        // Instantiate the game manager
         BattleGameManager gameManager = new BattleGameManager();
         gameManager.getGames().add(game);
 
@@ -158,17 +116,12 @@ public class BattleGameManagerTest {
     public void testGameManagerGetAllPlayers() {
         List<GamePlayer> list = new ArrayList<>();
 
-        // Create mock objects
-        Game game = mock(Game.class);
         GamePlayer gamePlayer = mock(GamePlayer.class);
-        PlayerManager playerManager = mock(PlayerManager.class);
-
-        when(game.getPlayerManager()).thenReturn(playerManager);
-        when(playerManager.getPlayers()).thenReturn(list);
 
         list.add(gamePlayer);
 
-        // Instantiate the game manager
+        when(playerManager.getPlayers()).thenReturn(list);
+
         BattleGameManager gameManager = new BattleGameManager();
         gameManager.getGames().add(game);
 
@@ -178,15 +131,11 @@ public class BattleGameManagerTest {
 
     @Test
     public void testGameManagerShutdown() {
-        // Mock a game object
-        Game game = mock(Game.class);
-
-        // Instantiate the game manager
         BattleGameManager gameManager = new BattleGameManager();
         gameManager.getGames().add(game);
 
         gameManager.shutdown();
 
-        verify(game, only()).rollback();
+        verify(game, times(1)).rollback();
     }
 }

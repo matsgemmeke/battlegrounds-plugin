@@ -34,6 +34,6 @@ public class PlayerDropItemEventHandler implements EventHandler<PlayerDropItemEv
             return;
         }
 
-        ((DropListener) item).onDrop();
+        event.setCancelled(((DropListener) item).onDrop());
     }
 }

@@ -7,7 +7,6 @@ import com.matsg.battlegrounds.api.item.Lethal;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.player.Hitbox;
 import com.matsg.battlegrounds.api.util.Sound;
-import com.matsg.battlegrounds.util.Particle.ParticleEffect;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
@@ -55,7 +54,7 @@ public class BattleLethal extends BattleEquipment implements Lethal {
     }
 
     public void explode(Location location) {
-        displayCircleEffect(location, 3, ParticleEffect.EXPLOSION_LARGE, 1, 6);
+        displayCircleEffect(location, 3, "EXPLOSION_LARGE", 1, 6);
         inflictDamage(location);
         inflictUserDamage(location);
     }
@@ -85,6 +84,7 @@ public class BattleLethal extends BattleEquipment implements Lethal {
                 game.getPlayerManager().damagePlayer(gamePlayer, getDistanceDamage(gamePlayer.getLocation().distanceSquared(location) / 5));
                 if (gamePlayer.getPlayer().isDead()) {
                     plugin.getServer().getPluginManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, this.gamePlayer, this, Hitbox.TORSO));
+                    game.getGameMode().onKill(gamePlayer, this.gamePlayer, this, Hitbox.TORSO);
                 }
             }
         }
@@ -96,6 +96,7 @@ public class BattleLethal extends BattleEquipment implements Lethal {
             game.getPlayerManager().damagePlayer(gamePlayer, getDistanceDamage(playerDistance));
             if (gamePlayer.getPlayer().isDead()) {
                 plugin.getServer().getPluginManager().callEvent(new GamePlayerDeathEvent(game, gamePlayer, DeathCause.SUICIDE));
+                game.getGameMode().onDeath(gamePlayer, DeathCause.SUICIDE);
             }
         }
     }

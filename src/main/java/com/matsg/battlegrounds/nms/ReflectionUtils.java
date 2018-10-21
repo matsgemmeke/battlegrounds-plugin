@@ -1,4 +1,4 @@
-package com.matsg.battlegrounds.util;
+package com.matsg.battlegrounds.nms;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -6,9 +6,6 @@ import org.bukkit.entity.Player;
 import java.lang.reflect.Field;
 
 public class ReflectionUtils {
-
-    public static final String VERSION = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
-    public static final EnumVersion ENUM_VERSION = EnumVersion.valueOf(VERSION.toUpperCase());
 
     public static Object getField(Class<?> clazz, String fieldName, Object obj) {
         Field field;
@@ -25,10 +22,14 @@ public class ReflectionUtils {
         return object;
     }
 
+    public static EnumVersion getEnumVersion() {
+        return EnumVersion.valueOf(getVersion().toUpperCase());
+    }
+
     public static Class<?> getOBCClass(String name) {
         Class<?> clazz = null;
         try {
-            clazz = Class.forName("org.bukkit.craftbukkit." + VERSION + "." + name);
+            clazz = Class.forName("org.bukkit.craftbukkit." + getVersion() + "." + name);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -38,11 +39,15 @@ public class ReflectionUtils {
     public static Class<?> getNMSClass(String name) {
         Class<?> clazz = null;
         try {
-            clazz = Class.forName("net.minecraft.server." + VERSION + "." + name);
+            clazz = Class.forName("net.minecraft.server." + getVersion() + "." + name);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         return clazz;
+    }
+
+    public static String getVersion() {
+        return Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
     }
 
     public static void sendPacket(Player player, Object packet) {
@@ -66,7 +71,8 @@ public class ReflectionUtils {
         V1_10_R1("1.10.R1", 10),
         V1_11_R1("1.11.R1", 11),
         V1_12_R1("1.12.R1", 12),
-        V1_13_R1("1.13.R1", 13);
+        V1_13_R1("1.13.R1", 13),
+        V1_13_R2("1.13.R2", 13);
 
         private int value;
         private String version;

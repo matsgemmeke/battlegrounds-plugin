@@ -4,8 +4,6 @@ import com.matsg.battlegrounds.api.item.Launcher;
 import com.matsg.battlegrounds.api.item.Lethal;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.util.BattleRunnable;
-import com.matsg.battlegrounds.util.Particle;
-import com.matsg.battlegrounds.util.Particle.ParticleEffect;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Item;
@@ -51,7 +49,7 @@ public enum LaunchType {
                         vector.multiply(distance);
                         direction.add(vector);
 
-                        displayParticle(direction, Float.MAX_VALUE, Float.MAX_VALUE, Float.MAX_VALUE);
+                        plugin.getVersion().spawnParticle(direction, "REDSTONE", 0, Float.MAX_VALUE, Float.MAX_VALUE, Float.MAX_VALUE, 0);
 
                         GamePlayer[] players = launcher.getGame().getPlayerManager().getNearbyEnemyPlayers(launcher.getGame().getGameMode().getTeam(launcher.getGamePlayer()), direction, range);
 
@@ -86,14 +84,6 @@ public enum LaunchType {
             }
         }
         throw new IllegalArgumentException();
-    }
-
-    private static void displayParticle(Location location, float red, float green, float blue) {
-        Particle particle = new Particle(ParticleEffect.REDSTONE, 0, location, 0, 0, 0, 1);
-        particle.setOffSetX(red);
-        particle.setOffSetY(green);
-        particle.setOffSetZ(blue);
-        particle.display();
     }
 
     public abstract BukkitTask launch(Launcher launcher, Location direction);

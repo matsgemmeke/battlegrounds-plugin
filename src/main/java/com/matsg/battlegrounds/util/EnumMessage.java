@@ -121,10 +121,15 @@ public enum EnumMessage implements Message {
     private boolean prefix;
     private String message, path;
 
-    EnumMessage(String path, boolean prefix) {
+    EnumMessage(String path) {
         this.plugin = BattlegroundsPlugin.getPlugin();
         this.message = plugin.getTranslator().getTranslation(path);
         this.path = path;
+        this.prefix = false;
+    }
+
+    EnumMessage(String path, boolean prefix) {
+        this(path);
         this.prefix = prefix;
     }
 

@@ -40,9 +40,9 @@ public class PlayerMoveEventHandler implements EventHandler<PlayerMoveEvent> {
         }
 
         GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
-        Spawn spawn = arena.getSpawn(gamePlayer) != null ? arena.getSpawn(gamePlayer) : arena.getTeamBase(game.getGameMode().getTeam(gamePlayer));
+        Spawn spawn = arena.getSpawn(gamePlayer);
 
-        if (spawn == null) {
+        if (spawn == null && (spawn = arena.getTeamBase(gamePlayer.getTeam())) == null) {
             return;
         }
 

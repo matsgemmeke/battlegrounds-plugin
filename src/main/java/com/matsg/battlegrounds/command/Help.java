@@ -2,7 +2,7 @@ package com.matsg.battlegrounds.command;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.util.EnumMessage;
-import com.matsg.battlegrounds.util.JSONMessage;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -27,26 +27,26 @@ public class Help extends SubCommand {
             Player player = (Player) sender;
 
             for (SubCommand subCommand : getCommands(false)) {
-                new JSONMessage(" ● /" + subCommand.getUsage(), "§7" + subCommand.getDescription(), "/" + subCommand.getUsage()).send(player);
+                plugin.getVersion().sendJSONMessage(player, " ● /" + subCommand.getUsage(), " " + ChatColor.GRAY + subCommand.getDescription(), "/" + subCommand.getUsage());
             }
 
             sender.sendMessage(" ");
 
             for (SubCommand subCommand : getCommands(true)) {
                 if (player.hasPermission(subCommand.getPermissionNode())) {
-                    new JSONMessage(" ● /" + subCommand.getUsage(), "§7" + subCommand.getDescription(), "/" + subCommand.getUsage()).send(player);
+                    plugin.getVersion().sendJSONMessage(player, " ● /" + subCommand.getUsage(), " " + ChatColor.GRAY + subCommand.getDescription(), "/" + subCommand.getUsage());
                 }
             }
         } else {
             for (SubCommand subCommand : getCommands(false)) {
-                sender.sendMessage(" ● /" + subCommand.getUsage() + " §7" + subCommand.getDescription());
+                sender.sendMessage(" ● /" + subCommand.getUsage() + " " + ChatColor.GRAY + subCommand.getDescription());
             }
 
             sender.sendMessage(" ");
 
-            if (sender.hasPermission("zombies.admin")) {
+            if (sender.hasPermission("battlegrounds.admin")) {
                 for (SubCommand subCommand : getCommands(true)) {
-                    sender.sendMessage(" ● /" + subCommand.getUsage() + " §7" /*+ subCommand.getDescription()*/);
+                    sender.sendMessage(" ● /" + subCommand.getUsage() + " " + ChatColor.GRAY + subCommand.getDescription());
                 }
             }
         }

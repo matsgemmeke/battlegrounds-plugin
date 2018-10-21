@@ -102,15 +102,16 @@ public class TeamDeathmatch extends AbstractGameMode {
     }
 
     public void onDeath(GamePlayer gamePlayer, DeathCause deathCause) {
-        game.getPlayerManager().broadcastMessage(Placeholder.replace(plugin.getTranslator().getTranslation(deathCause.getMessagePath()),
-                new Placeholder("bg_player", getTeam(gamePlayer).getChatColor() + gamePlayer.getName() + ChatColor.WHITE)));
+        game.getPlayerManager().broadcastMessage(
+                ChatColor.translateAlternateColorCodes('&', EnumMessage.PREFIX.getMessage() + Placeholder.replace(plugin.getTranslator().getTranslation(deathCause.getMessagePath()),
+                new Placeholder("bg_player", getTeam(gamePlayer).getChatColor() + gamePlayer.getName() + ChatColor.WHITE))));
         handleDeath(gamePlayer);
     }
 
     public void onKill(GamePlayer gamePlayer, GamePlayer killer, Weapon weapon, Hitbox hitbox) {
         game.getPlayerManager().broadcastMessage(getKillMessage(hitbox).getMessage(new Placeholder[] {
-                new Placeholder("bg_killer", getTeam(killer).getChatColor() + killer.getName() + ChatColor.WHITE),
-                new Placeholder("bg_player", getTeam(gamePlayer).getChatColor() + gamePlayer.getName() + ChatColor.WHITE),
+                new Placeholder("bg_killer", killer.getTeam().getChatColor() + killer.getName() + ChatColor.WHITE),
+                new Placeholder("bg_player", gamePlayer.getTeam().getChatColor() + gamePlayer.getName() + ChatColor.WHITE),
                 new Placeholder("bg_weapon", weapon.getName())
         }));
         handleDeath(gamePlayer);
