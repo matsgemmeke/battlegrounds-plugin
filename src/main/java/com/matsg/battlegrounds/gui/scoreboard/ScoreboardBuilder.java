@@ -1,6 +1,5 @@
 package com.matsg.battlegrounds.gui.scoreboard;
 
-import com.matsg.battlegrounds.api.util.Placeholder;
 import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -8,7 +7,6 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 public class ScoreboardBuilder {
@@ -21,17 +19,6 @@ public class ScoreboardBuilder {
         this.currentLine = 0;
         this.objectives = new HashSet<>();
         this.scoreboard = Bukkit.getServer().getScoreboardManager().getNewScoreboard();
-    }
-
-    public ScoreboardBuilder(Map<String, String> layout, Placeholder... placeholders) {
-        this.currentLine = 0;
-        this.objectives = new HashSet<>();
-        this.scoreboard = Bukkit.getServer().getScoreboardManager().getNewScoreboard();
-
-        addObjective(layout.get("id"), layout.get("title"), DisplaySlot.SIDEBAR);
-        for (String line : layout.keySet()) {
-            setLine(DisplaySlot.SIDEBAR, Integer.parseInt(line.substring(4, line.length())), Placeholder.replace(line, placeholders));
-        }
     }
 
     public ScoreboardBuilder(Scoreboard scoreboard) {

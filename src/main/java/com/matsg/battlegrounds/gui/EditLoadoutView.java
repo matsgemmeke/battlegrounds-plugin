@@ -1,10 +1,11 @@
 package com.matsg.battlegrounds.gui;
 
+import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.util.Placeholder;
-import com.matsg.battlegrounds.util.EnumMessage;
-import com.matsg.battlegrounds.util.ItemStackBuilder;
+import com.matsg.battlegrounds.item.ItemStackBuilder;
+import com.matsg.battlegrounds.util.Message;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -34,11 +35,10 @@ public class EditLoadoutView implements View {
         this.attachmentGun = new HashMap<>();
         this.weapons = new HashMap<>();
 
-        this.inventory = buildInventory(plugin.getServer().createInventory(this, 27, EnumMessage.TITLE_EDIT_LOADOUT.getMessage(
-                new Placeholder("bg_loadout", loadout.getName())
-        )));
+        this.inventory = buildInventory(plugin.getServer().createInventory(this, 27,
+                Message.create(TranslationKey.VIEW_EDIT_LOADOUT, new Placeholder("bg_loadout", loadout.getName()))));
 
-        inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(EnumMessage.GO_BACK.getMessage()).build());
+        inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(Message.create(TranslationKey.GO_BACK)).build());
     }
 
     public Inventory getInventory() {
@@ -47,18 +47,18 @@ public class EditLoadoutView implements View {
 
     private void addAttachmentSlot(Inventory inventory, Gun gun, int slot) {
         Attachment attachment = gun.getAttachments().size() > 0 ? gun.getAttachments().get(0) : null;
-        String[] lore = EnumMessage.EDIT_ATTACHMENT.getMessage().split(",");
+        String[] lore = Message.create(TranslationKey.EDIT_ATTACHMENT).split(",");
 
         ItemStack itemStack = new ItemStackBuilder(attachment != null ? attachment.getItemStack() : new ItemStack(Material.BARRIER))
                 .addItemFlags(ItemFlag.values())
-                .setDisplayName(ChatColor.WHITE + EnumMessage.GUN_ATTACHMENT.getMessage(new Placeholder("bg_weapon", gun.getName())))
+                .setDisplayName(ChatColor.WHITE + Message.create(TranslationKey.GUN_ATTACHMENT, new Placeholder("bg_weapon", gun.getName())))
                 .setLore(ChatColor.WHITE + getItemName(attachment), lore[0], lore[1])
                 .setUnbreakable(true)
                 .build();
 
         inventory.setItem(slot, itemStack);
         attachments.put(inventory.getItem(slot), attachment);
-        attachmentGun.put(itemStack, gun);
+        attachmentGun.put(inventory.getItem(slot), gun);
     }
 
     private Inventory buildInventory(Inventory inventory) {
@@ -67,7 +67,7 @@ public class EditLoadoutView implements View {
             ItemStack itemStack = new ItemStackBuilder(getItemStack(weapon))
                     .addItemFlags(ItemFlag.values())
                     .setDisplayName(ChatColor.WHITE + getDisplayName(weapon))
-                    .setLore(ChatColor.WHITE + getItemName(weapon), EnumMessage.EDIT_WEAPON.getMessage())
+                    .setLore(ChatColor.WHITE + getItemName(weapon), Message.create(TranslationKey.EDIT_WEAPON))
                     .setUnbreakable(true)
                     .build();
 
@@ -96,19 +96,19 @@ public class EditLoadoutView implements View {
 
     private String getDisplayName(Weapon weapon) {
         if (weapon == loadout.getPrimary()) {
-            return EnumMessage.WEAPON_PRIMARY.getMessage();
+            return Message.create(TranslationKey.WEAPON_PRIMARY);
         } else if (weapon == loadout.getSecondary()) {
-            return EnumMessage.WEAPON_SECONDARY.getMessage();
+            return Message.create(TranslationKey.WEAPON_SECONDARY);
         } else if (weapon == loadout.getEquipment()) {
-            return EnumMessage.WEAPON_EQUIPMENT.getMessage();
+            return Message.create(TranslationKey.WEAPON_EQUIPMENT);
         } else if (weapon == loadout.getKnife()) {
-            return EnumMessage.WEAPON_KNIFE.getMessage();
+            return Message.create(TranslationKey.WEAPON_KNIFE);
         }
         return null;
     }
 
     private String getItemName(Item item) {
-        return item != null ? item.getName() : EnumMessage.NONE_SELECTED.getMessage();
+        return item != null ? item.getName() : Message.create(TranslationKey.NONE_SELECTED);
     }
 
     private ItemStack getItemStack(Weapon weapon) {

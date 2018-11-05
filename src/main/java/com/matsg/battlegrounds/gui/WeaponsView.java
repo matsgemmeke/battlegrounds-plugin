@@ -1,11 +1,12 @@
 package com.matsg.battlegrounds.gui;
 
+import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.item.EquipmentType;
 import com.matsg.battlegrounds.item.FireArmType;
-import com.matsg.battlegrounds.util.EnumMessage;
-import com.matsg.battlegrounds.util.ItemStackBuilder;
+import com.matsg.battlegrounds.item.ItemStackBuilder;
+import com.matsg.battlegrounds.util.Message;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -25,7 +26,7 @@ public class WeaponsView implements View {
 
     public WeaponsView(Battlegrounds plugin, Loadout loadout, ItemSlot weaponItemSlot) {
         this.plugin = plugin;
-        this.inventory = plugin.getServer().createInventory(this, 27, EnumMessage.TITLE_WEAPONS.getMessage());
+        this.inventory = plugin.getServer().createInventory(this, 27, Message.create(TranslationKey.VIEW_WEAPONS));
         this.loadout = loadout;
         this.weapons = getWeaponList(plugin);
 
@@ -58,7 +59,7 @@ public class WeaponsView implements View {
             }
         }
 
-        inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(EnumMessage.GO_BACK.getMessage()).build());
+        inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(Message.create(TranslationKey.GO_BACK)).build());
     }
 
     public WeaponsView(Battlegrounds plugin, Loadout loadout, ItemSlot weaponItemSlot, EditLoadoutView editLoadoutView) {

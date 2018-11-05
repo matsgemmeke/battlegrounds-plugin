@@ -2,12 +2,10 @@ package com.matsg.battlegrounds.util;
 
 import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.util.Message;
 import com.matsg.battlegrounds.api.util.Placeholder;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-public enum ActionBar implements Message {
+public enum ActionBar {
 
     CHANGE_LOADOUT("actionbar-change-loadout"),
     LEAVE_ARENA("actionbar-leave-arena"),
@@ -31,7 +29,7 @@ public enum ActionBar implements Message {
     }
 
     private String replace(Placeholder... placeholders) {
-        return ChatColor.translateAlternateColorCodes('&', Placeholder.replace(message, placeholders));
+        return Message.createSimple(message, placeholders);
     }
 
     public void send(Player player, Placeholder... placeholders) {

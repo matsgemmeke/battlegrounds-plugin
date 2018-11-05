@@ -33,7 +33,7 @@ public class EntityDamageByEntityEventHandler implements EventHandler<EntityDama
         GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer((Player) event.getEntity()), damager = game.getPlayerManager().getGamePlayer((Player) event.getDamager());
         Team team = gamePlayer.getTeam();
 
-        if (damager == null || damager.getLoadout() == null || team == damager.getTeam() || !(damager.getLoadout().getWeapon(damager.getPlayer().getItemInHand()) instanceof Knife)) {
+        if (damager.getLoadout() == null || team == damager.getTeam() || !(damager.getLoadout().getWeapon(damager.getPlayer().getItemInHand()) instanceof Knife)) {
             event.setCancelled(true);
             return;
         }

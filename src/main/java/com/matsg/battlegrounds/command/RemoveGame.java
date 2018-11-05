@@ -1,10 +1,11 @@
 package com.matsg.battlegrounds.command;
 
+import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.util.BattleRunnable;
-import com.matsg.battlegrounds.util.EnumMessage;
+import com.matsg.battlegrounds.util.Message;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
@@ -15,14 +16,14 @@ public class RemoveGame extends SubCommand {
     private List<CommandSender> senders;
 
     public RemoveGame(Battlegrounds plugin) {
-        super(plugin, "removegame", EnumMessage.DESCRIPTION_REMOVEGAME.getMessage(),
+        super(plugin, "removegame", Message.create(TranslationKey.DESCRIPTION_REMOVEGAME),
                 "bg removegame [id]", "battlegrounds.removegame", false, "rg");
         this.senders = new ArrayList<>();
     }
 
     public void execute(final CommandSender sender, String[] args) {
         if (args.length == 1) {
-            EnumMessage.SPECIFY_ID.send(sender);
+            sender.sendMessage(Message.create(TranslationKey.SPECIFY_ID));
             return;
         }
 
@@ -31,17 +32,17 @@ public class RemoveGame extends SubCommand {
         try {
             id = Integer.parseInt(args[1]);
         } catch (Exception e) {
-            EnumMessage.INVALID_ARGUMENT_TYPE.send(sender, new Placeholder("bg_arg", args[1]));
+            sender.sendMessage(Message.create(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[1])));
             return;
         }
 
         if (!plugin.getGameManager().exists(id)) {
-            EnumMessage.GAME_NOT_EXISTS.send(sender, new Placeholder("bg_game", id));
+            sender.sendMessage(Message.create(TranslationKey.GAME_NOT_EXISTS, new Placeholder("bg_game", id)));
             return;
         }
 
         if (!senders.contains(sender)) {
-            EnumMessage.GAME_CONFIRM_REMOVE.send(sender, new Placeholder("bg_game", id));
+            sender.sendMessage(Message.create(TranslationKey.GAME_CONFIRM_REMOVE, new Placeholder("bg_game", id)));
 
             senders.add(sender);
 
@@ -58,7 +59,7 @@ public class RemoveGame extends SubCommand {
 
         plugin.getGameManager().getGames().remove(game);
 
-        sender.sendMessage(EnumMessage.GAME_REMOVE.getMessage(new Placeholder("bg_game", id)));
+        sender.sendMessage(Message.create(TranslationKey.GAME_REMOVE, new Placeholder("bg_game", id)));
 
         senders.remove(sender);
     }

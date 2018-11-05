@@ -46,7 +46,7 @@ BERETTA_93R:
     Magazine: 15
     Max: 8
     Supply: 3
-  Attachments: EXTENDED_CLIP(20), FAST_MAG(24), SUPPRESSOR
+  Attachments: EXTENDED_CLIP(20), FAST_MAG(24), SELECT_FIRE(SEMI_AUTOMATIC,1,0,3,0.1,0.1), SUPPRESSOR
   Description: 3 round burst pistol. High rate of fire with moderate recoil.
   DisplayName: Beretta 93R
   FireMode:

@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.gamemode;
 
+import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.config.Yaml;
 import com.matsg.battlegrounds.api.event.GameEndEvent;
@@ -9,8 +10,6 @@ import com.matsg.battlegrounds.api.gamemode.Objective;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.player.Hitbox;
 import com.matsg.battlegrounds.api.player.PlayerStatus;
-import com.matsg.battlegrounds.api.util.Message;
-import com.matsg.battlegrounds.util.EnumMessage;
 import org.bukkit.event.Listener;
 
 import java.util.ArrayList;
@@ -79,14 +78,14 @@ public abstract class AbstractGameMode implements GameMode, Listener {
         return null;
     }
 
-    protected Message getKillMessage(Hitbox hitbox) {
+    protected TranslationKey getKillMessageKey(Hitbox hitbox) {
         switch (hitbox) {
             case HEAD:
-                return EnumMessage.DEATH_HEADSHOT;
+                return TranslationKey.DEATH_HEADSHOT;
             case LEG:
-                return EnumMessage.DEATH_PLAYER_KILL;
+                return TranslationKey.DEATH_PLAYER_KILL;
             case TORSO:
-                return EnumMessage.DEATH_PLAYER_KILL;
+                return TranslationKey.DEATH_PLAYER_KILL;
             default:
                 return null;
         }

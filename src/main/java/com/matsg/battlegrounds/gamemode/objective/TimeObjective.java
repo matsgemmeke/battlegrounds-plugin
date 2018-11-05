@@ -2,8 +2,8 @@ package com.matsg.battlegrounds.gamemode.objective;
 
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.gamemode.Objective;
+import com.matsg.battlegrounds.nms.Title;
 import com.matsg.battlegrounds.util.EnumTitle;
-import com.matsg.battlegrounds.util.Title;
 
 public class TimeObjective implements Objective {
 

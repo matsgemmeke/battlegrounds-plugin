@@ -9,7 +9,7 @@ import com.matsg.battlegrounds.api.item.AttributeValue;
 import com.matsg.battlegrounds.api.item.ItemType;
 import com.matsg.battlegrounds.item.BattleAttachment;
 import com.matsg.battlegrounds.item.BattleGunPart;
-import com.matsg.battlegrounds.util.ItemStackBuilder;
+import com.matsg.battlegrounds.item.ItemStackBuilder;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 

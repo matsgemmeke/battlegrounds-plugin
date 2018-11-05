@@ -1,15 +1,16 @@
 package com.matsg.battlegrounds.gui;
 
 import com.matsg.battlegrounds.BattlegroundsPlugin;
+import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.util.ActionBar;
-import com.matsg.battlegrounds.util.EnumMessage;
-import com.matsg.battlegrounds.util.ItemStackBuilder;
+import com.matsg.battlegrounds.util.Message;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -32,7 +33,7 @@ public class SelectLoadoutView implements View {
     public SelectLoadoutView(Game game, GamePlayer gamePlayer) {
         this.game = game;
         this.gamePlayer = gamePlayer;
-        this.inventory = plugin.getServer().createInventory(this, 27, EnumMessage.TITLE_SELECT_LOADOUT.getMessage());
+        this.inventory = plugin.getServer().createInventory(this, 27, Message.create(TranslationKey.VIEW_SELECT_LOADOUT));
         this.loadouts = new HashMap<>();
 
         for (Loadout loadout : plugin.getPlayerStorage().getStoredPlayer(gamePlayer.getUUID()).getLoadouts()) {
@@ -48,10 +49,12 @@ public class SelectLoadoutView implements View {
         int levelUnlocked = plugin.getLevelConfig().getLevelUnlocked(loadout.getName());
         boolean locked = levelUnlocked > plugin.getLevelConfig().getLevel(plugin.getPlayerStorage().getStoredPlayer(gamePlayer.getUUID()).getExp());
 
+        String displayName = locked ? Message.create(TranslationKey.ITEM_LOCKED, new Placeholder("bg_level", plugin.getLevelConfig().getLevelUnlocked(loadout.getName()))) : ChatColor.WHITE + loadout.getName();
+
         ItemStack itemStack = new ItemStackBuilder(locked ? new ItemStack(Material.BARRIER) : getLoadoutItemStack(loadout))
                 .addItemFlags(ItemFlag.values())
                 .setAmount(loadout.getId())
-                .setDisplayName(locked ? EnumMessage.ITEM_LOCKED.getMessage(new Placeholder("bg_level", plugin.getLevelConfig().getLevelUnlocked(loadout.getName()))) : ChatColor.WHITE + loadout.getName())
+                .setDisplayName(displayName)
                 .setLore(new String[0])
                 .setUnbreakable(true)
                 .build();

@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.gamemode;
 
+import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.config.Yaml;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent.DeathCause;
@@ -14,7 +15,7 @@ import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.game.BattleTeam;
 import com.matsg.battlegrounds.gui.scoreboard.AbstractScoreboard;
 import com.matsg.battlegrounds.gui.scoreboard.ScoreboardBuilder;
-import com.matsg.battlegrounds.util.EnumMessage;
+import com.matsg.battlegrounds.util.Message;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.World;
@@ -35,7 +36,7 @@ public class CombatTraining extends AbstractGameMode {
     private GameScoreboard scoreboard;
 
     public CombatTraining(Battlegrounds plugin, Game game, Yaml yaml) {
-        super(plugin, game, EnumMessage.CBT_NAME.getMessage(), EnumMessage.CBT_SHORT.getMessage(), yaml);
+        super(plugin, game, Message.create(TranslationKey.CBT_NAME), Message.create(TranslationKey.CBT_SHORT), yaml);
         this.active = false;
         this.autoJoin = yaml.getBoolean("auto-join");
         this.color = getConfigColor();
@@ -75,16 +76,15 @@ public class CombatTraining extends AbstractGameMode {
     }
 
     public void onDeath(GamePlayer gamePlayer, DeathCause deathCause) {
-        game.getPlayerManager().broadcastMessage(Placeholder.replace(plugin.getTranslator().getTranslation(deathCause.getMessagePath()),
+        game.getPlayerManager().broadcastMessage(Message.createSimple(plugin.getTranslator().getTranslation(deathCause.getMessagePath()),
                 new Placeholder("bg_player", gamePlayer.getName())));
     }
 
     public void onKill(GamePlayer gamePlayer, GamePlayer killer, Weapon weapon, Hitbox hitbox) {
-        game.getPlayerManager().broadcastMessage(getKillMessage(hitbox).getMessage(new Placeholder[] {
+        game.getPlayerManager().broadcastMessage(Message.create(getKillMessageKey(hitbox),
                 new Placeholder("bg_killer", killer.getName()),
                 new Placeholder("bg_player", gamePlayer.getName()),
-                new Placeholder("bg_weapon", weapon.getName())
-        }));
+                new Placeholder("bg_weapon", weapon.getName())));
     }
 
     public void removePlayer(GamePlayer gamePlayer) {

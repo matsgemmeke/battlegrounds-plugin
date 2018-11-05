@@ -1,10 +1,7 @@
 package com.matsg.battlegrounds.event;
 
-import static org.mockito.Mockito.*;
-
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.EventManager;
-import com.matsg.battlegrounds.game.BattleTeam;
 import org.bukkit.Server;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPhysicsEvent;
@@ -19,6 +16,8 @@ import org.bukkit.plugin.PluginManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.modules.junit4.PowerMockRunner;
+
+import static org.mockito.Mockito.*;
 
 @RunWith(PowerMockRunner.class)
 public class EventListenerTest {

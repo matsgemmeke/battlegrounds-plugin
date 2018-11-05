@@ -2,7 +2,7 @@ package com.matsg.battlegrounds.nms.version;
 
 import com.matsg.battlegrounds.api.Version;
 import com.matsg.battlegrounds.nms.ReflectionUtils;
-import com.matsg.battlegrounds.util.Title;
+import com.matsg.battlegrounds.nms.Title;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -57,13 +57,12 @@ public class Version3 implements Version {
         new Title(title, subTitle, fadeIn, time, fadeOut).send(player);
     }
 
-    public void spawnParticle(Location location, String effect, int amount, float offsetX, float offsetY, float offsetZ, float speed) {
-        Particle particle = Particle.valueOf(effect);
-        if (particle.getDataType() != null && particle.getDataType() != Void.class) {
-            location.getWorld().spawnParticle(particle, location, amount, offsetX, offsetY, offsetZ, new DustOptions(Color.WHITE, 1));
-            return;
-        }
-        location.getWorld().spawnParticle(particle, location, amount, offsetX, offsetY, offsetZ);
+    public void spawnColoredParticle(Location location, String effect, float red, float green, float blue) {
+        location.getWorld().spawnParticle(Particle.REDSTONE, location, 0, red, green, blue, new DustOptions(Color.WHITE, 1)); // Look for a way to include RBG colors
+    }
+
+    public void spawnParticle(Location location, String effect, int amount, float offsetX, float offsetY, float offsetZ, int speed) {
+        location.getWorld().spawnParticle(Particle.valueOf(effect), location, amount, offsetX, offsetY, offsetZ);
     }
 
     public boolean supports(String version) {

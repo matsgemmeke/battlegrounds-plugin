@@ -24,15 +24,6 @@ public class Placeholder {
         this.value = value;
     }
 
-    public static String replace(String arg, Placeholder... placeholders) {
-        for (Placeholder placeholder : placeholders) {
-            if (arg.contains("%" + placeholder.getIdentifier() + "%")) {
-                arg = placeholder.replace(arg);
-            }
-        }
-        return arg;
-    }
-
     public String getIdentifier() {
         return this.identifier;
     }

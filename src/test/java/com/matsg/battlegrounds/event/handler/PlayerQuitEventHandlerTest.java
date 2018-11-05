@@ -1,49 +1,51 @@
 package com.matsg.battlegrounds.event.handler;
 
+import com.matsg.battlegrounds.BattleGameManager;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.PlayerManager;
 import com.matsg.battlegrounds.api.player.GamePlayer;
+import com.matsg.battlegrounds.player.BattleGamePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.mockito.Mockito.*;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(PlayerQuitEvent.class)
 public class PlayerQuitEventHandlerTest {
 
     private Battlegrounds plugin;
+    private Game game;
     private GameManager gameManager;
+    private GamePlayer gamePlayer;
     private Player player;
     private PlayerQuitEvent event;
+    private PlayerManager playerManager;
 
     @Before
     public void setUp() {
         this.plugin = mock(Battlegrounds.class);
-        this.gameManager = mock(GameManager.class);
+        this.game = mock(Game.class);
         this.player = mock(Player.class);
-        this.event = PowerMockito.mock(PlayerQuitEvent.class);
+        this.playerManager = mock(PlayerManager.class);
 
-        when(event.getPlayer()).thenReturn(player);
+        this.event = new PlayerQuitEvent(player, null);
+        this.gameManager = new BattleGameManager();
+        this.gamePlayer = new BattleGamePlayer(player, null);
+
+        gameManager.getGames().add(game);
+
+        when(game.getPlayerManager()).thenReturn(playerManager);
         when(plugin.getGameManager()).thenReturn(gameManager);
     }
 
     @Test
-    public void testPlayerQuitWhileInGame() {
-        Game game = mock(Game.class);
-        GamePlayer gamePlayer = mock(GamePlayer.class);
-        PlayerManager playerManager = mock(PlayerManager.class);
-
-        when(game.getPlayerManager()).thenReturn(playerManager);
-        when(gameManager.getGame(player)).thenReturn(game);
+    public void testPlayerQuitWhenPlaying() {
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
 
         PlayerQuitEventHandler eventHandler = new PlayerQuitEventHandler(plugin);
@@ -53,10 +55,12 @@ public class PlayerQuitEventHandlerTest {
     }
 
     @Test
-    public void testPlayerQuitWhileNotInGame() {
-        when(gameManager.getGame(player)).thenReturn(null);
+    public void testPlayerQuitWhenNotPlaying() {
+        when(playerManager.getGamePlayer(player)).thenReturn(null);
 
         PlayerQuitEventHandler eventHandler = new PlayerQuitEventHandler(plugin);
         eventHandler.handle(event);
+
+        verify(playerManager, times(0)).removePlayer(gamePlayer);
     }
 }

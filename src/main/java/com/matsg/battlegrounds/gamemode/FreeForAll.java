@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.gamemode;
 
+import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.config.Yaml;
 import com.matsg.battlegrounds.api.event.GameEndEvent;
@@ -19,8 +20,8 @@ import com.matsg.battlegrounds.gamemode.objective.ScoreObjective;
 import com.matsg.battlegrounds.gamemode.objective.TimeObjective;
 import com.matsg.battlegrounds.gui.scoreboard.AbstractScoreboard;
 import com.matsg.battlegrounds.gui.scoreboard.ScoreboardBuilder;
-import com.matsg.battlegrounds.util.EnumMessage;
 import com.matsg.battlegrounds.util.EnumTitle;
+import com.matsg.battlegrounds.util.Message;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.World;
@@ -42,7 +43,7 @@ public class FreeForAll extends AbstractGameMode {
     private String[] endMessage;
 
     public FreeForAll(Battlegrounds plugin, Game game, Yaml yaml) {
-        super(plugin, game, EnumMessage.FFA_NAME.getMessage(), EnumMessage.FFA_SHORT.getMessage(), yaml);
+        super(plugin, game, Message.create(TranslationKey.FFA_NAME), Message.create(TranslationKey.FFA_SHORT), yaml);
         this.color = getConfigColor();
         this.killsToWin = yaml.getInt("kills-to-win");
         this.lives = yaml.getInt("lives");
@@ -81,17 +82,17 @@ public class FreeForAll extends AbstractGameMode {
     }
 
     public void onDeath(GamePlayer gamePlayer, DeathCause deathCause) {
-        game.getPlayerManager().broadcastMessage(Placeholder.replace(plugin.getTranslator().getTranslation(deathCause.getMessagePath()),
+        game.getPlayerManager().broadcastMessage(Message.createSimple(plugin.getTranslator().getTranslation(deathCause.getMessagePath()),
                 new Placeholder("bg_player", gamePlayer.getName())));
         handleDeath(gamePlayer);
     }
 
     public void onKill(GamePlayer gamePlayer, GamePlayer killer, Weapon weapon, Hitbox hitbox) {
-        game.getPlayerManager().broadcastMessage(getKillMessage(hitbox).getMessage(new Placeholder[] {
+        game.getPlayerManager().broadcastMessage(Message.create(getKillMessageKey(hitbox),
                 new Placeholder("bg_killer", killer.getName()),
                 new Placeholder("bg_player", gamePlayer.getName()),
-                new Placeholder("bg_weapon", weapon.getName())
-        }));
+                new Placeholder("bg_weapon", weapon.getName())));
+
         handleDeath(gamePlayer);
         killer.addExp(100);
         killer.setKills(killer.getKills() + 1);
@@ -108,9 +109,9 @@ public class FreeForAll extends AbstractGameMode {
 
     public void onStart() {
         super.onStart();
-        game.getPlayerManager().broadcastMessage(EnumTitle.FFA_START);
         for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
             gamePlayer.setLives(lives);
+            EnumTitle.FFA_START.send(gamePlayer.getPlayer());
         }
     }
 
@@ -127,14 +128,14 @@ public class FreeForAll extends AbstractGameMode {
         };
 
         for (String message : endMessage) {
-            game.getPlayerManager().broadcastMessage(EnumMessage.PREFIX.getMessage() + ChatColor.translateAlternateColorCodes('&', Placeholder.replace(message, placeholders)));
+            game.getPlayerManager().broadcastMessage(Message.create(TranslationKey.PREFIX) + Message.createSimple(message, placeholders));
         }
 
         for (Team team : teams) {
             Result result = Result.getResult(team, getSortedTeams());
             if (result != null) {
                 for (GamePlayer gamePlayer : team.getPlayers()) {
-                    objective.getTitle().send(gamePlayer.getPlayer(), new Placeholder("bg_result", result.getResultMessage()));
+                    objective.getTitle().send(gamePlayer.getPlayer(), new Placeholder("bg_result", plugin.getTranslator().getTranslation(result.getTranslationKey().getPath())));
                 }
             }
         }

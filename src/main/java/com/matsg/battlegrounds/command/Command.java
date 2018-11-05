@@ -1,8 +1,9 @@
 package com.matsg.battlegrounds.command;
 
 import com.matsg.battlegrounds.BattlegroundsPlugin;
+import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.util.EnumMessage;
+import com.matsg.battlegrounds.util.Message;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -65,12 +66,12 @@ public abstract class Command implements CommandBase, CommandExecutor {
 
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
         if (!(sender instanceof Player) && playerOnly) {
-            EnumMessage.INVALID_SENDER.send(sender);
+            sender.sendMessage(Message.create(TranslationKey.INVALID_SENDER));
             return true;
         }
 
         if (permissionNode != null && permissionNode.length() > 0 && !sender.hasPermission(permissionNode)) {
-            EnumMessage.NO_PERMISSION.send(sender);
+            sender.sendMessage(Message.create(TranslationKey.NO_PERMISSION));
             return true;
         }
 

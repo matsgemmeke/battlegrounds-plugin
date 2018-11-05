@@ -1,10 +1,10 @@
 package com.matsg.battlegrounds.nms.version;
 
 import com.matsg.battlegrounds.api.Version;
+import com.matsg.battlegrounds.nms.Particle;
+import com.matsg.battlegrounds.nms.Particle.ParticleEffect;
 import com.matsg.battlegrounds.nms.ReflectionUtils;
-import com.matsg.battlegrounds.util.Particle;
-import com.matsg.battlegrounds.util.Particle.ParticleEffect;
-import com.matsg.battlegrounds.util.Title;
+import com.matsg.battlegrounds.nms.Title;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -52,12 +52,16 @@ public class Version1 implements Version {
         new Title(title, subTitle, fadeIn, time, fadeOut).send(player);
     }
 
-    public void spawnParticle(Location location, String effect, int amount, float offsetX, float offsetY, float offsetZ, float speed) {
-        Particle particle = new Particle(ParticleEffect.valueOf(effect), 0, location, 0, 0, 0, speed);
-        particle.setOffsetX(offsetX);
-        particle.setOffsetY(offsetY);
-        particle.setOffsetZ(offsetZ);
+    public void spawnColoredParticle(Location location, String effect, float red, float green, float blue) {
+        Particle particle = new Particle(ParticleEffect.valueOf(effect), 0, location, 0, 0, 0, 1);
+        particle.setOffsetX(red);
+        particle.setOffsetY(green);
+        particle.setOffsetZ(blue);
         particle.display();
+    }
+
+    public void spawnParticle(Location location, String effect, int amount, float offsetX, float offsetY, float offsetZ, int speed) {
+        new Particle(ParticleEffect.valueOf(effect), amount, location, offsetX, offsetY, offsetZ, speed).display();
     }
 
     public boolean supports(String version) {

@@ -1,10 +1,10 @@
 package com.matsg.battlegrounds.event.handler;
 
-import com.matsg.battlegrounds.BattlegroundsPlugin;
+import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.event.handler.EventHandler;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.util.EnumMessage;
+import com.matsg.battlegrounds.util.Message;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
@@ -14,8 +14,8 @@ public class PlayerCommandPreprocessEventHandler implements EventHandler<PlayerC
 
     private Battlegrounds plugin;
 
-    public PlayerCommandPreprocessEventHandler() {
-        this.plugin = BattlegroundsPlugin.getPlugin();
+    public PlayerCommandPreprocessEventHandler(Battlegrounds plugin) {
+        this.plugin = plugin;
     }
 
     public void handle(PlayerCommandPreprocessEvent event) {
@@ -28,7 +28,7 @@ public class PlayerCommandPreprocessEventHandler implements EventHandler<PlayerC
             return;
         }
 
-        EnumMessage.COMMAND_NOT_ALLOWED.send(player);
+        player.sendMessage(Message.create(TranslationKey.COMMAND_NOT_ALLOWED));
 
         event.setCancelled(true);
     }

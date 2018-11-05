@@ -5,9 +5,9 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.PlayerManager;
-import com.matsg.battlegrounds.player.BattleGamePlayer;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,23 +17,25 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(PowerMockRunner.class)
-public class FoodLevelChangeEventHandlerTest {
+public class PlayerDropItemEventHandlerTest {
 
     private Battlegrounds plugin;
-    private FoodLevelChangeEvent event;
     private Game game;
     private GameManager gameManager;
+    private Item item;
     private Player player;
+    private PlayerDropItemEvent event;
     private PlayerManager playerManager;
 
     @Before
     public void setUp() {
         this.plugin = mock(Battlegrounds.class);
         this.game = mock(Game.class);
+        this.item = mock(Item.class);
         this.player = mock(Player.class);
         this.playerManager = mock(PlayerManager.class);
 
-        this.event = new FoodLevelChangeEvent(player, 0);
+        this.event = new PlayerDropItemEvent(player, item);
         this.gameManager = new BattleGameManager();
 
         gameManager.getGames().add(game);
@@ -43,21 +45,13 @@ public class FoodLevelChangeEventHandlerTest {
     }
 
     @Test
-    public void testFoodChangeWhenPlaying() {
-        when(playerManager.getGamePlayer(player)).thenReturn(new BattleGamePlayer(player, null));
-
-        FoodLevelChangeEventHandler eventHandler = new FoodLevelChangeEventHandler(plugin);
-        eventHandler.handle(event);
-
-        assertTrue(event.isCancelled());
-    }
-
-    @Test
-    public void testFoodChangeWhenNotPlaying() {
+    public void testPlayerDropItemWhenNotPlaying() {
         when(playerManager.getGamePlayer(player)).thenReturn(null);
 
-        FoodLevelChangeEventHandler eventHandler = new FoodLevelChangeEventHandler(plugin);
+        PlayerDropItemEventHandler eventHandler = new PlayerDropItemEventHandler(plugin);
         eventHandler.handle(event);
+
+        verify(playerManager, times(1)).getGamePlayer(player);
 
         assertFalse(event.isCancelled());
     }

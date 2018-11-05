@@ -1,19 +1,20 @@
 package com.matsg.battlegrounds.command;
 
+import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.Spawn;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.game.ArenaSpawn;
-import com.matsg.battlegrounds.util.EnumMessage;
+import com.matsg.battlegrounds.util.Message;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class AddSpawn extends SubCommand {
 
     public AddSpawn(Battlegrounds plugin) {
-        super(plugin, "addspawn", EnumMessage.DESCRIPTION_ADDSPAWN.getMessage(),
+        super(plugin, "addspawn", Message.create(TranslationKey.DESCRIPTION_ADDSPAWN),
                 "bg addspawn [id] [arena] [teamid]", "battlegrounds.addspawn", true, "as");
     }
 
@@ -21,7 +22,7 @@ public class AddSpawn extends SubCommand {
         Player player = (Player) sender;
 
         if (args.length == 1) {
-            EnumMessage.SPECIFY_ID.send(player);
+            player.sendMessage(Message.create(TranslationKey.SPECIFY_ID));
             return;
         }
 
@@ -30,19 +31,19 @@ public class AddSpawn extends SubCommand {
         try {
             id = Integer.parseInt(args[1]);
         } catch (Exception e) {
-            EnumMessage.INVALID_ARGUMENT_TYPE.send(player, new Placeholder("bg_arg", args[1]));
+            player.sendMessage(Message.create(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[1])));
             return;
         }
 
         if (!plugin.getGameManager().exists(id)) {
-            EnumMessage.GAME_NOT_EXISTS.send(player, new Placeholder("bg_game", id));
+            player.sendMessage(Message.create(TranslationKey.GAME_NOT_EXISTS, new Placeholder("bg_game", id)));
             return;
         }
 
         Game game = plugin.getGameManager().getGame(id);
 
         if (args.length == 2) {
-            EnumMessage.SPECIFY_NAME.send(player);
+            player.sendMessage(Message.create(TranslationKey.SPECIFY_NAME));
             return;
         }
 
@@ -50,7 +51,9 @@ public class AddSpawn extends SubCommand {
         Arena arena = plugin.getGameManager().getArena(game, name);
 
         if (arena == null) {
-            EnumMessage.ARENA_NOT_EXISTS.send(player, new Placeholder("bg_game", id), new Placeholder("bg_arena", name));
+            player.sendMessage(Message.create(TranslationKey.ARENA_NOT_EXISTS,
+                    new Placeholder("bg_game", id),
+                    new Placeholder("bg_arena", name)));
             return;
         }
 
@@ -61,7 +64,7 @@ public class AddSpawn extends SubCommand {
             try {
                 teamId = Integer.parseInt(args[3]);
             } catch (Exception e) {
-                EnumMessage.INVALID_ARGUMENT_TYPE.send(player, new Placeholder("bg_arg", args[3]));
+                player.sendMessage(Message.create(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[3])));
                 return;
             }
         }
@@ -70,7 +73,9 @@ public class AddSpawn extends SubCommand {
             teamBase = args[4].equals("-b");
 
             if (teamBase && hasTeamBase(arena, teamId)) {
-                EnumMessage.SPAWN_TEAMBASE_EXISTS.send(player, new Placeholder("bg_arena", arena.getName()), new Placeholder("bg_team", teamId));
+                player.sendMessage(Message.create(TranslationKey.SPAWN_TEAMBASE_EXISTS,
+                        new Placeholder("bg_arena", arena.getName()),
+                        new Placeholder("bg_team", teamId)));
                 return;
             }
         }
@@ -85,7 +90,7 @@ public class AddSpawn extends SubCommand {
         game.getDataFile().set("arena." + name + ".spawn." + spawn.getIndex() + ".team", teamId);
         game.getDataFile().save();
 
-        player.sendMessage(EnumMessage.SPAWN_ADD.getMessage(
+        player.sendMessage(Message.create(TranslationKey.SPAWN_ADD,
                 new Placeholder("bg_arena", name),
                 new Placeholder("bg_index", spawn.getIndex())));
     }

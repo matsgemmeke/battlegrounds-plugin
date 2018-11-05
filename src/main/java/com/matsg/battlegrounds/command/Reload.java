@@ -1,21 +1,22 @@
 package com.matsg.battlegrounds.command;
 
+import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.util.EnumMessage;
+import com.matsg.battlegrounds.util.Message;
 import org.bukkit.command.CommandSender;
 
 public class Reload extends SubCommand {
 
     public Reload(Battlegrounds plugin) {
-        super(plugin, "reload", EnumMessage.DESCRIPTION_RELOAD.getMessage(),
+        super(plugin, "reload", Message.create(TranslationKey.DESCRIPTION_RELOAD),
                 "bg reload", "battlegrounds.reload", false, "rel");
     }
 
     public void execute(CommandSender sender, String[] args) {
         if (!plugin.loadConfigs()) {
-            EnumMessage.RELOAD_FAILED.send(sender);
+            sender.sendMessage(Message.create(TranslationKey.RELOAD_FAILED));
             return;
         }
-        sender.sendMessage(EnumMessage.RELOAD_SUCCESS.getMessage());
+        sender.sendMessage(Message.create(TranslationKey.RELOAD_SUCCESS));
     }
 }

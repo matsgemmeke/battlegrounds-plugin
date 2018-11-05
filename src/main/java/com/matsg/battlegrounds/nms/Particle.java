@@ -1,6 +1,5 @@
-package com.matsg.battlegrounds.util;
+package com.matsg.battlegrounds.nms;
 
-import com.matsg.battlegrounds.nms.ReflectionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

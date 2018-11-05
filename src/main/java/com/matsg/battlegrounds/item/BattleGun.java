@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.item;
 
+import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.event.GamePlayerKillPlayerEvent;
 import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.item.*;
@@ -11,8 +12,8 @@ import com.matsg.battlegrounds.item.attributes.DoubleAttributeValue;
 import com.matsg.battlegrounds.item.attributes.FireModeAttributeValue;
 import com.matsg.battlegrounds.item.attributes.IntegerAttributeValue;
 import com.matsg.battlegrounds.util.BattleSound;
-import com.matsg.battlegrounds.util.EnumMessage;
 import com.matsg.battlegrounds.util.HalfBlocks;
+import com.matsg.battlegrounds.util.Message;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -134,10 +135,10 @@ public class BattleGun extends BattleFireArm implements Gun {
     protected String[] getLore() {
         return new String[] {
                 ChatColor.WHITE + fireArmType.getName(),
-                ChatColor.GRAY + format(6, getAccuracy() * 100.0, 100.0) + " " + EnumMessage.STAT_ACCURACY.getMessage(),
-                ChatColor.GRAY + format(6, bullet.getShortDamage(), 55.0) + " " + EnumMessage.STAT_DAMAGE.getMessage(),
-                ChatColor.GRAY + format(6, Math.max((fireRate.getAttributeValue().getValue() + 10 - cooldown.getAttributeValue().getValue() / 2) * 10.0, 40.0), 200.0) + " " + EnumMessage.STAT_FIRERATE.getMessage(),
-                ChatColor.GRAY + format(6, bullet.getMidRange(), 70.0) + " " + EnumMessage.STAT_RANGE.getMessage() };
+                ChatColor.GRAY + format(6, getAccuracy() * 100.0, 100.0) + " " + Message.create(TranslationKey.STAT_ACCURACY),
+                ChatColor.GRAY + format(6, bullet.getShortDamage(), 55.0) + " " + Message.create(TranslationKey.STAT_DAMAGE),
+                ChatColor.GRAY + format(6, Math.max((fireRate.getAttributeValue().getValue() + 10 - cooldown.getAttributeValue().getValue() / 2) * 10.0, 40.0), 200.0) + " " + Message.create(TranslationKey.STAT_FIRERATE),
+                ChatColor.GRAY + format(6, bullet.getMidRange(), 70.0) + " " + Message.create(TranslationKey.STAT_RANGE) };
     }
 
     private Sound[] getShotSound() {

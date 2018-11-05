@@ -27,16 +27,12 @@ public class BattleItemAttribute<T> implements ItemAttribute<T> {
         return null;
     }
 
-    public String getId() {
-        return id;
-    }
-
     public AttributeValue<T> getAttributeValue() {
         return attributeValue;
     }
 
-    public void setAttributeValue(AttributeValue<T> valueObject) {
-        this.attributeValue = attributeValue;
+    public String getId() {
+        return id;
     }
 
     public ItemAttribute applyModifier(AttributeModifier<T> modifier, String... args) {

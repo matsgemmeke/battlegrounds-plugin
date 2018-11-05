@@ -6,7 +6,7 @@ import com.matsg.battlegrounds.api.config.ItemConfig;
 import com.matsg.battlegrounds.api.item.ItemType;
 import com.matsg.battlegrounds.api.item.Knife;
 import com.matsg.battlegrounds.item.BattleKnife;
-import com.matsg.battlegrounds.util.ItemStackBuilder;
+import com.matsg.battlegrounds.item.ItemStackBuilder;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 

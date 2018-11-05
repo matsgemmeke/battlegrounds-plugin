@@ -1,10 +1,11 @@
 package com.matsg.battlegrounds.command;
 
 import com.matsg.battlegrounds.BattlegroundsPlugin;
+import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.config.StoredPlayer;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.gui.LoadoutManagerView;
-import com.matsg.battlegrounds.util.EnumMessage;
+import com.matsg.battlegrounds.util.Message;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -24,7 +25,7 @@ public class LoadoutCommand extends Command {
         StoredPlayer storedPlayer = plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId());
 
         if (storedPlayer == null && (storedPlayer = plugin.getPlayerStorage().registerPlayer(player.getUniqueId(), player.getName())) == null || plugin.getLevelConfig().getLevel(storedPlayer.getExp()) < minLevel) {
-            EnumMessage.CUSTOM_LOADOUT_LOCKED.send(player, new Placeholder("bg_level", minLevel));
+            player.sendMessage(Message.create(TranslationKey.CUSTOM_LOADOUT_LOCKED, new Placeholder("bg_level", minLevel)));
             return;
         }
 
@@ -42,7 +43,7 @@ public class LoadoutCommand extends Command {
         try {
             subCommand.execute(sender, args);
         } catch (Exception e) {
-            EnumMessage.COMMAND_ERROR.send(sender);
+            player.sendMessage(Message.create(TranslationKey.COMMAND_ERROR));
             e.printStackTrace();
         }
     }

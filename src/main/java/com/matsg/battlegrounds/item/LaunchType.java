@@ -49,7 +49,7 @@ public enum LaunchType {
                         vector.multiply(distance);
                         direction.add(vector);
 
-                        plugin.getVersion().spawnParticle(direction, "REDSTONE", 0, Float.MAX_VALUE, Float.MAX_VALUE, Float.MAX_VALUE, 0);
+                        plugin.getVersion().spawnColoredParticle(direction, "REDSTONE", Float.MAX_VALUE, Float.MAX_VALUE, Float.MAX_VALUE);
 
                         GamePlayer[] players = launcher.getGame().getPlayerManager().getNearbyEnemyPlayers(launcher.getGame().getGameMode().getTeam(launcher.getGamePlayer()), direction, range);
 

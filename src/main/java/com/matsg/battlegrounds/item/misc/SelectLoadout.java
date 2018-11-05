@@ -1,12 +1,13 @@
 package com.matsg.battlegrounds.item.misc;
 
+import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.gui.SelectLoadoutView;
 import com.matsg.battlegrounds.item.BattleItem;
-import com.matsg.battlegrounds.util.EnumMessage;
-import com.matsg.battlegrounds.util.ItemStackBuilder;
+import com.matsg.battlegrounds.item.ItemStackBuilder;
+import com.matsg.battlegrounds.util.Message;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -22,7 +23,7 @@ public class SelectLoadout extends BattleItem {
     }
 
     private static ItemStack getDefaultItemStack() {
-        return new ItemStackBuilder(Material.COMPASS).setDisplayName(ChatColor.WHITE + EnumMessage.CHANGE_LOADOUT.getMessage()).build();
+        return new ItemStackBuilder(Material.COMPASS).setDisplayName(ChatColor.WHITE + Message.create(TranslationKey.CHANGE_LOADOUT)).build();
     }
 
     private void onClick(Player player) {

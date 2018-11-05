@@ -30,8 +30,8 @@ public class PlayerMoveEventHandler implements EventHandler<PlayerMoveEvent> {
         Arena arena = game.getArena();
         Location from = event.getFrom(), to = event.getTo();
 
-        if (game.getState().isInProgress() && arena != null && !arena.contains(player.getLocation())) {
-            player.teleport(player.getLocation().add(from.toVector().subtract(to.toVector()).normalize()));
+        if (game.getState().isInProgress() && arena != null && !arena.contains(to)) {
+            player.teleport(from.add(from.toVector().subtract(to.toVector()).normalize()));
             ActionBar.LEAVE_ARENA.send(player);
         }
 
@@ -47,8 +47,8 @@ public class PlayerMoveEventHandler implements EventHandler<PlayerMoveEvent> {
         }
 
         Location location = spawn.getLocation();
-        location.setPitch(player.getLocation().getPitch());
-        location.setYaw(player.getLocation().getYaw());
+        location.setPitch(from.getPitch());
+        location.setYaw(from.getYaw());
         player.teleport(location);
     }
 }

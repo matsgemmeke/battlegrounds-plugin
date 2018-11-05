@@ -4,8 +4,8 @@ import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.gamemode.Objective;
 import com.matsg.battlegrounds.api.player.GamePlayer;
+import com.matsg.battlegrounds.nms.Title;
 import com.matsg.battlegrounds.util.EnumTitle;
-import com.matsg.battlegrounds.util.Title;
 
 public class EliminationObjective implements Objective {
 
@@ -26,14 +26,14 @@ public class EliminationObjective implements Objective {
     }
 
     public boolean isReached(Game game) {
-//        f: for (Team team : game.getGameMode().getTeams()) {
-//            for (GamePlayer gamePlayer : team.getPlayers()) {
-//                if (gamePlayer.getStatus().isAlive()) {
-//                    continue f;
-//                }
-//            }
-//            return true;
-//        }
+        f: for (Team team : game.getGameMode().getTeams()) {
+            for (GamePlayer gamePlayer : team.getPlayers()) {
+                if (gamePlayer.getStatus().isAlive()) {
+                    continue f;
+                }
+            }
+            return true;
+        }
         return false;
     }
 }

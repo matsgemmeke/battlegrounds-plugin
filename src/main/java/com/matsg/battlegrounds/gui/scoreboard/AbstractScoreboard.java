@@ -42,7 +42,7 @@ public abstract class AbstractScoreboard implements GameScoreboard {
         for (String line : layout.keySet()) {
             if ((line.contains("line")) && layout.get(line).length() > 0) {
                 builder.setLine(DisplaySlot.SIDEBAR, Integer.parseInt(line.substring(4, line.length())),
-                        ChatColor.translateAlternateColorCodes('&', Placeholder.replace(layout.get(line), placeholders)));
+                        ChatColor.translateAlternateColorCodes('&', replace(layout.get(line), placeholders)));
             }
         }
     }
@@ -99,6 +99,15 @@ public abstract class AbstractScoreboard implements GameScoreboard {
             map.put(string, section.getString(string));
         }
         return map;
+    }
+
+    private String replace(String arg, Placeholder... placeholders) {
+        for (Placeholder placeholder : placeholders) {
+            if (arg.contains("%" + placeholder.getIdentifier() + "%")) {
+                arg = placeholder.replace(arg);
+            }
+        }
+        return arg;
     }
 
     protected Scoreboard updateScoreboard(Map<String, String> layout, Scoreboard scoreboard, Placeholder... placeholders) {

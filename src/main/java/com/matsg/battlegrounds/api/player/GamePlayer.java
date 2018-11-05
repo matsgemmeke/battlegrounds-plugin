@@ -3,7 +3,6 @@ package com.matsg.battlegrounds.api.player;
 import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.item.Item;
 import com.matsg.battlegrounds.api.item.Loadout;
-import com.matsg.battlegrounds.api.util.Message;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -28,8 +27,6 @@ public interface GamePlayer extends OfflineGamePlayer, Comparable<GamePlayer> {
     PlayerStatus getStatus();
 
     Team getTeam();
-
-    void sendMessage(Message message);
 
     void sendMessage(String message);
 

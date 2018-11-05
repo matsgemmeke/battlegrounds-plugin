@@ -1,8 +1,5 @@
 package com.matsg.battlegrounds;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.PlayerManager;
@@ -17,6 +14,9 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 @RunWith(PowerMockRunner.class)
 public class BattleGameManagerTest {

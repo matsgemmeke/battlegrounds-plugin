@@ -13,7 +13,6 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryCreativeEvent;
 import org.bukkit.event.player.*;
 
 import java.util.HashMap;
@@ -34,7 +33,7 @@ public class BattleEventManager implements EventManager {
         addEventHandler(InventoryClickEvent.class, new InventoryClickEventHandler());
         addEventHandler(InventoryCloseEvent.class, new InventoryCloseEventHandler(plugin));
         addEventHandler(FoodLevelChangeEvent.class, new FoodLevelChangeEventHandler(plugin));
-        addEventHandler(PlayerCommandPreprocessEvent.class, new PlayerCommandPreprocessEventHandler());
+        addEventHandler(PlayerCommandPreprocessEvent.class, new PlayerCommandPreprocessEventHandler(plugin));
         addEventHandler(PlayerDeathEvent.class, new PlayerDeathEventHandler(plugin));
         addEventHandler(PlayerDropItemEvent.class, new PlayerDropItemEventHandler(plugin));
         addEventHandler(PlayerInteractEvent.class, new PlayerInteractEventHandler(plugin));

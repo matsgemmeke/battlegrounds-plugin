@@ -1,14 +1,14 @@
 package com.matsg.battlegrounds.gamemode;
 
+import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.game.Team;
-import com.matsg.battlegrounds.util.EnumMessage;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public enum Result {
 
-    VICTORY(1, EnumMessage.RESULT_VICTORY.getMessage()) {
+    VICTORY(1, TranslationKey.RESULT_VICTORY) {
         boolean applies(Team team, List<Team> sortedTeams) {
             int score = sortedTeams.get(0).getScore();
             List<Team> topscorers = new ArrayList<>();
@@ -20,12 +20,12 @@ public enum Result {
             return topscorers.size() == 1 && topscorers.contains(team);
         }
     },
-    DEFEAT(2, EnumMessage.RESULT_DEFEAT.getMessage()) {
+    DEFEAT(2, TranslationKey.RESULT_DEFEAT) {
         boolean applies(Team team, List<Team> sortedTeams) {
             return team.getScore() < sortedTeams.get(0).getScore();
         }
     },
-    DRAW(3, EnumMessage.RESULT_DRAW.getMessage()) {
+    DRAW(3, TranslationKey.RESULT_DRAW) {
         boolean applies(Team team, List<Team> sortedTeams) {
             int score = sortedTeams.get(0).getScore();
             List<Team> topscorers = new ArrayList<>();
@@ -39,11 +39,11 @@ public enum Result {
     };
 
     private int id;
-    private String resultMessage;
+    private TranslationKey translationKey;
 
-    Result(int id, String resultMessage) {
+    Result(int id, TranslationKey translationKey) {
         this.id = id;
-        this.resultMessage = resultMessage;
+        this.translationKey = translationKey;
     }
 
     public static Result getResult(Team team, List<Team> teams) {
@@ -59,8 +59,8 @@ public enum Result {
         return id;
     }
 
-    public String getResultMessage() {
-        return resultMessage;
+    public TranslationKey getTranslationKey() {
+        return translationKey;
     }
 
     abstract boolean applies(Team team, List<Team> sortedTeams);

@@ -1,4 +1,4 @@
-package com.matsg.battlegrounds.util;
+package com.matsg.battlegrounds.item;
 
 import org.bukkit.Color;
 import org.bukkit.Material;

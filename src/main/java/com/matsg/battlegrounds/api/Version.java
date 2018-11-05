@@ -11,7 +11,9 @@ public interface Version {
 
     void sendTitle(Player player, String title, String subTitle, int fadeIn, int time, int fadeOut);
 
-    void spawnParticle(Location location, String effect, int amount, float offsetX, float offsetY, float offsetZ, float speed);
+    void spawnColoredParticle(Location location, String effect, float red, float green, float blue);
+
+    void spawnParticle(Location location, String effect, int amount, float offsetX, float offsetY, float offsetZ, int speed);
 
     boolean supports(String version);
 }

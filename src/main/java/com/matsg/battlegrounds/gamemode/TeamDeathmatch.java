@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.gamemode;
 
+import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.config.Yaml;
 import com.matsg.battlegrounds.api.event.GameEndEvent;
@@ -19,8 +20,8 @@ import com.matsg.battlegrounds.gamemode.objective.ScoreObjective;
 import com.matsg.battlegrounds.gamemode.objective.TimeObjective;
 import com.matsg.battlegrounds.gui.scoreboard.AbstractScoreboard;
 import com.matsg.battlegrounds.gui.scoreboard.ScoreboardBuilder;
-import com.matsg.battlegrounds.util.EnumMessage;
 import com.matsg.battlegrounds.util.EnumTitle;
+import com.matsg.battlegrounds.util.Message;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.World;
@@ -41,7 +42,7 @@ public class TeamDeathmatch extends AbstractGameMode {
     private int killsToWin, lives;
 
     public TeamDeathmatch(Battlegrounds plugin, Game game, Yaml yaml) {
-        super(plugin, game, EnumMessage.TDM_NAME.getMessage(), EnumMessage.TDM_SHORT.getMessage(), yaml);
+        super(plugin, game, Message.create(TranslationKey.TDM_NAME), Message.create(TranslationKey.TDM_SHORT), yaml);
         this.killsToWin = yaml.getInt("kills-to-win");
         this.lives = yaml.getInt("lives");
         this.minSpawnDistance = yaml.getDouble("minimum-spawn-distance");
@@ -57,7 +58,7 @@ public class TeamDeathmatch extends AbstractGameMode {
     public void addPlayer(GamePlayer gamePlayer) {
         Team team = getEmptiestTeam();
         team.addPlayer(gamePlayer);
-        gamePlayer.sendMessage(EnumMessage.TEAM_ASSIGNMENT.getMessage(new Placeholder("bg_team", team.getChatColor() + team.getName())));
+        gamePlayer.sendMessage(Message.create(TranslationKey.TEAM_ASSIGNMENT, new Placeholder("bg_team", team.getChatColor() + team.getName())));
     }
 
     private List<Team> getConfigTeams() {
@@ -102,18 +103,16 @@ public class TeamDeathmatch extends AbstractGameMode {
     }
 
     public void onDeath(GamePlayer gamePlayer, DeathCause deathCause) {
-        game.getPlayerManager().broadcastMessage(
-                ChatColor.translateAlternateColorCodes('&', EnumMessage.PREFIX.getMessage() + Placeholder.replace(plugin.getTranslator().getTranslation(deathCause.getMessagePath()),
-                new Placeholder("bg_player", getTeam(gamePlayer).getChatColor() + gamePlayer.getName() + ChatColor.WHITE))));
+        game.getPlayerManager().broadcastMessage(ChatColor.translateAlternateColorCodes('&', Message.create(TranslationKey.PREFIX) +
+                Message.create(deathCause.getMessagePath(), new Placeholder("bg_player", gamePlayer.getTeam().getChatColor() + gamePlayer.getName() + ChatColor.WHITE))));
         handleDeath(gamePlayer);
     }
 
     public void onKill(GamePlayer gamePlayer, GamePlayer killer, Weapon weapon, Hitbox hitbox) {
-        game.getPlayerManager().broadcastMessage(getKillMessage(hitbox).getMessage(new Placeholder[] {
+        game.getPlayerManager().broadcastMessage(Message.create(getKillMessageKey(hitbox),
                 new Placeholder("bg_killer", killer.getTeam().getChatColor() + killer.getName() + ChatColor.WHITE),
                 new Placeholder("bg_player", gamePlayer.getTeam().getChatColor() + gamePlayer.getName() + ChatColor.WHITE),
-                new Placeholder("bg_weapon", weapon.getName())
-        }));
+                new Placeholder("bg_weapon", weapon.getName())));
         handleDeath(gamePlayer);
         killer.addExp(100);
         killer.setKills(killer.getKills() + 1);
@@ -130,9 +129,9 @@ public class TeamDeathmatch extends AbstractGameMode {
 
     public void onStart() {
         super.onStart();
-        game.getPlayerManager().broadcastMessage(EnumTitle.TDM_START);
         for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
             gamePlayer.setLives(lives);
+            EnumTitle.TDM_START.send(gamePlayer.getPlayer());
         }
     }
 
@@ -143,7 +142,7 @@ public class TeamDeathmatch extends AbstractGameMode {
             Result result = Result.getResult(team, getSortedTeams());
             if (result != null) {
                 for (GamePlayer gamePlayer : team.getPlayers()) {
-                    objective.getTitle().send(gamePlayer.getPlayer(), new Placeholder("bg_result", result.getResultMessage()));
+                    objective.getTitle().send(gamePlayer.getPlayer(), new Placeholder("bg_result", Message.create(result.getTranslationKey())));
                 }
             }
         }

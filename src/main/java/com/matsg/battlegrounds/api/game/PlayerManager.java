@@ -2,7 +2,6 @@ package com.matsg.battlegrounds.api.game;
 
 import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.player.GamePlayer;
-import com.matsg.battlegrounds.api.util.Message;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -17,13 +16,6 @@ public interface PlayerManager {
      * @return The created GamePlayer instance of the player
      */
     GamePlayer addPlayer(Player player);
-
-    /**
-     * Sends a message to all players in the game.
-     *
-     * @param message The message to send
-     */
-    void broadcastMessage(Message message);
 
     /**
      * Sends a message to all players in the game.

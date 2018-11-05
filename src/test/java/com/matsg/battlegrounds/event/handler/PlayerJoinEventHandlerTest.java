@@ -1,51 +1,51 @@
 package com.matsg.battlegrounds.event.handler;
 
-import static org.mockito.Mockito.*;
-
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.player.PlayerStorage;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.UUID;
 
+import static org.mockito.Mockito.*;
+
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(PlayerJoinEvent.class)
 public class PlayerJoinEventHandlerTest {
+
+    private Battlegrounds plugin;
+    private Player player;
+    private PlayerJoinEvent event;
+    private PlayerStorage playerStorage;
+
+    @Before
+    public void setUp() {
+        this.plugin = mock(Battlegrounds.class);
+        this.player = mock(Player.class);
+        this.playerStorage = mock(PlayerStorage.class);
+
+        this.event = new PlayerJoinEvent(player, null);
+
+        when(plugin.getPlayerStorage()).thenReturn(playerStorage);
+    }
 
     @Test
     public void testNewPlayerRegistration() {
-        Battlegrounds plugin = mock(Battlegrounds.class);
-        Player player = mock(Player.class);
-        PlayerJoinEvent event = PowerMockito.mock(PlayerJoinEvent.class);
-        PlayerStorage playerStorage = mock(PlayerStorage.class);
-
-        when(event.getPlayer()).thenReturn(player);
         when(playerStorage.contains(player.getUniqueId())).thenReturn(false);
-        when(plugin.getPlayerStorage()).thenReturn(playerStorage);
 
         PlayerJoinEventHandler eventHandler = new PlayerJoinEventHandler(plugin);
         eventHandler.handle(event);
 
         verify(playerStorage, times(1)).registerPlayer(any(UUID.class), anyString());
-        verify(playerStorage, times(1)).updatePlayer(player);
+        verify(playerStorage, times(0)).updatePlayer(player);
     }
 
     @Test
     public void testExistingPlayerUpdate() {
-        Battlegrounds plugin = mock(Battlegrounds.class);
-        Player player = mock(Player.class);
-        PlayerJoinEvent event = PowerMockito.mock(PlayerJoinEvent.class);
-        PlayerStorage playerStorage = mock(PlayerStorage.class);
-
-        when(event.getPlayer()).thenReturn(player);
         when(playerStorage.contains(player.getUniqueId())).thenReturn(true);
-        when(plugin.getPlayerStorage()).thenReturn(playerStorage);
 
         PlayerJoinEventHandler eventHandler = new PlayerJoinEventHandler(plugin);
         eventHandler.handle(event);

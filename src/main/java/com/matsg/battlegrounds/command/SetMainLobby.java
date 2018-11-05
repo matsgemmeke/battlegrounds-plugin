@@ -1,14 +1,15 @@
 package com.matsg.battlegrounds.command;
 
+import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.util.EnumMessage;
+import com.matsg.battlegrounds.util.Message;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class SetMainLobby extends SubCommand {
 
     public SetMainLobby(Battlegrounds plugin) {
-        super(plugin, "setmainlobby", EnumMessage.DESCRIPTION_SETMAINLOBBY.getMessage(),
+        super(plugin, "setmainlobby", Message.create(TranslationKey.DESCRIPTION_SETMAINLOBBY),
                 "bg setmainlobby", "battlegrounds.setmainlobby", true, "sml");
     }
 
@@ -18,6 +19,6 @@ public class SetMainLobby extends SubCommand {
         plugin.getBattlegroundsCache().setLocation("mainlobby", player.getLocation(), true);
         plugin.getBattlegroundsCache().save();
 
-        player.sendMessage(EnumMessage.MAINLOBBY_SET.getMessage());
+        player.sendMessage(Message.create(TranslationKey.MAINLOBBY_SET));
     }
 }

@@ -1,12 +1,13 @@
 package com.matsg.battlegrounds.gui;
 
+import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.item.Attachment;
 import com.matsg.battlegrounds.api.item.Gun;
 import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.util.Placeholder;
-import com.matsg.battlegrounds.util.EnumMessage;
-import com.matsg.battlegrounds.util.ItemStackBuilder;
+import com.matsg.battlegrounds.item.ItemStackBuilder;
+import com.matsg.battlegrounds.util.Message;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -37,8 +38,8 @@ public class SelectAttachmentView implements View {
         this.loadout = loadout;
         this.player = player;
 
-        inventory = buildInventory(plugin.getServer().createInventory(this, 27, EnumMessage.TITLE_SELECT_ATTACHMENT.getMessage(new Placeholder("bg_weapon", gun.getName()))));
-        inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(EnumMessage.GO_BACK.getMessage()).build());
+        inventory = buildInventory(plugin.getServer().createInventory(this, 27, Message.create(TranslationKey.VIEW_SELECT_ATTACHMENT, new Placeholder("bg_weapon", gun.getName()))));
+        inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(Message.create(TranslationKey.GO_BACK)).build());
     }
 
     public SelectAttachmentView(Battlegrounds plugin, Player player, Loadout loadout, Gun gun, int attachmentNr, Inventory previous) {
@@ -90,7 +91,7 @@ public class SelectAttachmentView implements View {
     private ItemStack getLockedItemStack(Attachment attachment) {
         return new ItemStackBuilder(Material.BARRIER)
                 .addItemFlags(ItemFlag.values())
-                .setDisplayName(EnumMessage.ITEM_LOCKED.getMessage(new Placeholder("bg_level", plugin.getLevelConfig().getLevelUnlocked(attachment.getName()))))
+                .setDisplayName(Message.create(TranslationKey.ITEM_LOCKED, new Placeholder("bg_level", plugin.getLevelConfig().getLevelUnlocked(attachment.getName()))))
                 .setUnbreakable(true)
                 .build();
     }

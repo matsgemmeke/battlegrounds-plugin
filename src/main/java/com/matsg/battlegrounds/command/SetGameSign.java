@@ -1,11 +1,12 @@
 package com.matsg.battlegrounds.command;
 
+import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameSign;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.game.BattleGameSign;
-import com.matsg.battlegrounds.util.EnumMessage;
+import com.matsg.battlegrounds.util.Message;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.command.CommandSender;
@@ -14,7 +15,7 @@ import org.bukkit.entity.Player;
 public class SetGameSign extends SubCommand {
 
     public SetGameSign(Battlegrounds plugin) {
-        super(plugin, "setgamesign", EnumMessage.DESCRIPTION_SETGAMESIGN.getMessage(),
+        super(plugin, "setgamesign", Message.create(TranslationKey.DESCRIPTION_SETGAMESIGN),
                 "bg setgamesign [id]", "battlegrounds.setgamesign", true, "sgs");
     }
 
@@ -22,7 +23,7 @@ public class SetGameSign extends SubCommand {
         Player player = (Player) sender;
 
         if (args.length == 1) {
-            EnumMessage.SPECIFY_ID.send(player);
+            player.sendMessage(Message.create(TranslationKey.SPECIFY_ID));
             return;
         }
 
@@ -31,12 +32,12 @@ public class SetGameSign extends SubCommand {
         try {
             id = Integer.parseInt(args[1]);
         } catch (Exception e) {
-            EnumMessage.INVALID_ARGUMENT_TYPE.send(sender, new Placeholder("bg_arg", args[1]));
+            player.sendMessage(Message.create(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[1])));
             return;
         }
 
         if (!plugin.getGameManager().exists(id)) {
-            EnumMessage.GAME_NOT_EXISTS.send(sender, new Placeholder("bg_game", id));
+            player.sendMessage(Message.create(TranslationKey.GAME_NOT_EXISTS, new Placeholder("bg_game", id)));
             return;
         }
 
@@ -44,7 +45,7 @@ public class SetGameSign extends SubCommand {
         Game game = plugin.getGameManager().getGame(id);
 
         if (!(state instanceof Sign)) {
-            EnumMessage.INVALID_BLOCK.send(player);
+            player.sendMessage(Message.create(TranslationKey.INVALID_BLOCK));
             return;
         }
 
@@ -56,6 +57,6 @@ public class SetGameSign extends SubCommand {
 
         sign.update();
 
-        player.sendMessage(EnumMessage.GAMESIGN_SET.getMessage(new Placeholder("bg_game", id)));
+        player.sendMessage(Message.create(TranslationKey.GAMESIGN_SET, new Placeholder("bg_game", id)));
     }
 }

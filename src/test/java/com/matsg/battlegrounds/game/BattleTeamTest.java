@@ -1,7 +1,5 @@
 package com.matsg.battlegrounds.game;
 
-import static org.junit.Assert.*;
-
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -11,6 +9,9 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(PowerMockRunner.class)
 public class BattleTeamTest {

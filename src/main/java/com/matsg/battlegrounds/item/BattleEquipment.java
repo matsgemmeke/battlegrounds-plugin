@@ -5,7 +5,7 @@ import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.BattleSound;
-import com.matsg.battlegrounds.util.ItemStackBuilder;
+import com.matsg.battlegrounds.util.Message;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -197,10 +197,12 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
 
     public boolean update() {
         Placeholder placeholder = new Placeholder("bg_weapon", name);
+        String displayName = Message.createSimple(plugin.getBattlegroundsConfig().getWeaponDisplayName("equipment"), placeholder);
+
         itemStack = new ItemStackBuilder(itemStack)
                 .addItemFlags(ItemFlag.values())
                 .setAmount(amount)
-                .setDisplayName(ChatColor.translateAlternateColorCodes('&', Placeholder.replace(plugin.getBattlegroundsConfig().getWeaponDisplayName("equipment"), placeholder)))
+                .setDisplayName(displayName)
                 .setDurability(durability)
                 .setLore(getLore())
                 .setUnbreakable(true)

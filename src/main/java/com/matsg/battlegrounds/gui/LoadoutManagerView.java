@@ -1,11 +1,12 @@
 package com.matsg.battlegrounds.gui;
 
+import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.config.BattlePlayerYaml;
-import com.matsg.battlegrounds.util.EnumMessage;
-import com.matsg.battlegrounds.util.ItemStackBuilder;
+import com.matsg.battlegrounds.item.ItemStackBuilder;
+import com.matsg.battlegrounds.util.Message;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -25,7 +26,7 @@ public class LoadoutManagerView implements View {
 
     public LoadoutManagerView(Battlegrounds plugin, Player player) {
         this.plugin = plugin;
-        this.inventory = plugin.getServer().createInventory(this, 27, EnumMessage.TITLE_LOADOUT_MANAGER.getMessage());
+        this.inventory = plugin.getServer().createInventory(this, 27, Message.create(TranslationKey.VIEW_LOADOUT_MANAGER));
         this.loadouts = new HashMap<>();
 
         try {
@@ -35,7 +36,7 @@ public class LoadoutManagerView implements View {
                         .addItemFlags(ItemFlag.values())
                         .setAmount(++ i)
                         .setDisplayName(ChatColor.WHITE + loadout.getName())
-                        .setLore(EnumMessage.EDIT_LOADOUT.getMessage())
+                        .setLore(Message.create(TranslationKey.EDIT_LOADOUT))
                         .setUnbreakable(true)
                         .build();
 

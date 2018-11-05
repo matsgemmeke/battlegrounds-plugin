@@ -1,8 +1,5 @@
 package com.matsg.battlegrounds.nms;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
 import com.matsg.battlegrounds.api.Version;
 import com.matsg.battlegrounds.nms.version.Version3;
 import org.junit.Test;
@@ -10,6 +7,10 @@ import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(ReflectionUtils.class)

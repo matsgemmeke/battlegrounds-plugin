@@ -6,7 +6,6 @@ import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.player.PlayerStatus;
 import com.matsg.battlegrounds.api.player.SavedInventory;
-import com.matsg.battlegrounds.api.util.Message;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -24,7 +23,7 @@ public class BattleGamePlayer implements GamePlayer {
     private SavedInventory savedInventory;
     private Team team;
 
-    public BattleGamePlayer(Player player) {
+    public BattleGamePlayer(Player player, SavedInventory savedInventory) {
         this.player = player;
         this.exp = 0;
         this.deaths = 0;
@@ -33,7 +32,7 @@ public class BattleGamePlayer implements GamePlayer {
         this.kills = 0;
         this.lives = 0;
         this.playerStatus = PlayerStatus.ACTIVE;
-        this.savedInventory = new BattleSavedInventory(player);
+        this.savedInventory = savedInventory;
     }
 
     public int getDeaths() {
@@ -142,10 +141,6 @@ public class BattleGamePlayer implements GamePlayer {
 
     public boolean isOnline() {
         return player.isOnline();
-    }
-
-    public void sendMessage(Message message) {
-        message.send(player);
     }
 
     public void sendMessage(String message) {

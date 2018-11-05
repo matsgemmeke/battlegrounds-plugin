@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.game;
 
+import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.config.LevelConfig;
 import com.matsg.battlegrounds.api.config.StoredPlayer;
 import com.matsg.battlegrounds.api.game.*;
@@ -10,15 +11,15 @@ import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.player.PlayerStatus;
 import com.matsg.battlegrounds.api.player.PlayerStorage;
-import com.matsg.battlegrounds.api.util.Message;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.gui.scoreboard.LobbyScoreboard;
+import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.item.misc.SelectLoadout;
 import com.matsg.battlegrounds.player.BattleGamePlayer;
+import com.matsg.battlegrounds.player.BattleSavedInventory;
 import com.matsg.battlegrounds.util.ActionBar;
 import com.matsg.battlegrounds.util.BattleRunnable;
-import com.matsg.battlegrounds.util.EnumMessage;
-import com.matsg.battlegrounds.util.ItemStackBuilder;
+import com.matsg.battlegrounds.util.Message;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -61,12 +62,12 @@ public class BattlePlayerManager implements PlayerManager {
     }
 
     public GamePlayer addPlayer(Player player) {
-        GamePlayer gamePlayer = new BattleGamePlayer(player);
+        GamePlayer gamePlayer = new BattleGamePlayer(player, new BattleSavedInventory(player));
         Location lobby = game.getDataFile().getLocation("lobby");
 
         players.add(gamePlayer);
 
-        broadcastMessage(EnumMessage.PLAYER_JOIN.getMessage(
+        broadcastMessage(Message.create(TranslationKey.PLAYER_JOIN,
                 new Placeholder("player_name", player.getName()),
                 new Placeholder("bg_players", players.size()),
                 new Placeholder("bg_maxplayers", game.getConfiguration().getMaxPlayers())));
@@ -90,12 +91,6 @@ public class BattlePlayerManager implements PlayerManager {
         return gamePlayer;
     }
 
-    public void broadcastMessage(Message message) {
-        for (GamePlayer gamePlayer : players) {
-            gamePlayer.sendMessage(message);
-        }
-    }
-
     public void broadcastMessage(String message) {
         for (GamePlayer gamePlayer : players) {
             gamePlayer.sendMessage(message);
@@ -106,7 +101,7 @@ public class BattlePlayerManager implements PlayerManager {
         Loadout old = gamePlayer.getLoadout();
         setSelectedLoadout(gamePlayer, loadout);
         if (!apply) {
-            gamePlayer.sendMessage(ActionBar.CHANGE_LOADOUT);
+            ActionBar.CHANGE_LOADOUT.send(gamePlayer.getPlayer());
             return;
         }
         if (old != null && old != loadout) {
@@ -264,13 +259,13 @@ public class BattlePlayerManager implements PlayerManager {
                 new ItemStackBuilder(Material.LEATHER_CHESTPLATE)
                         .addItemFlags(ItemFlag.values())
                         .setColor(game.getGameMode().getTeam(gamePlayer).getColor())
-                        .setDisplayName(ChatColor.WHITE + EnumMessage.ARMOR_VEST.getMessage())
+                        .setDisplayName(ChatColor.WHITE + Message.create(TranslationKey.ARMOR_VEST))
                         .setUnbreakable(true)
                         .build(),
                 new ItemStackBuilder(Material.LEATHER_HELMET)
                         .addItemFlags(ItemFlag.values())
                         .setColor(game.getGameMode().getTeam(gamePlayer).getColor())
-                        .setDisplayName(ChatColor.WHITE + EnumMessage.ARMOR_HELMET.getMessage())
+                        .setDisplayName(ChatColor.WHITE + Message.create(TranslationKey.ARMOR_HELMET))
                         .setUnbreakable(true)
                         .build()
         });
@@ -284,7 +279,7 @@ public class BattlePlayerManager implements PlayerManager {
     public boolean removePlayer(GamePlayer gamePlayer) {
         players.remove(gamePlayer);
 
-        broadcastMessage(EnumMessage.PLAYER_LEAVE.getMessage(
+        broadcastMessage(Message.create(TranslationKey.PLAYER_LEAVE,
                 new Placeholder("player_name", gamePlayer.getName()),
                 new Placeholder("bg_players", players.size()),
                 new Placeholder("bg_maxplayers", game.getConfiguration().getMaxPlayers())));

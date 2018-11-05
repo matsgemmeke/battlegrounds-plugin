@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.item;
 
+import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.event.GamePlayerKillPlayerEvent;
 import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.item.ItemSlot;
@@ -11,8 +12,7 @@ import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.BattleSound;
-import com.matsg.battlegrounds.util.EnumMessage;
-import com.matsg.battlegrounds.util.ItemStackBuilder;
+import com.matsg.battlegrounds.util.Message;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
@@ -40,7 +40,7 @@ public class BattleKnife extends BattleWeapon implements Knife {
         this.maxAmount = amount;
         this.throwable = throwable;
         this.throwing = false;
-        this.type = EnumMessage.TYPE_KNIFE.getMessage();
+        this.type = Message.create(TranslationKey.TYPE_KNIFE);
     }
 
     public Knife clone() {
@@ -218,10 +218,12 @@ public class BattleKnife extends BattleWeapon implements Knife {
 
     public boolean update() {
         Placeholder placeholder = new Placeholder("bg_weapon", name);
+        String displayName = Message.createSimple(plugin.getBattlegroundsConfig().getWeaponDisplayName("knife"), placeholder);
+
         itemStack = new ItemStackBuilder(itemStack)
                 .addItemFlags(ItemFlag.values())
                 .setAmount(amount)
-                .setDisplayName(ChatColor.translateAlternateColorCodes('&', Placeholder.replace(plugin.getBattlegroundsConfig().getWeaponDisplayName("knife"), placeholder)))
+                .setDisplayName(displayName)
                 .setDurability(durability)
                 .setLore(getLore())
                 .setUnbreakable(true)

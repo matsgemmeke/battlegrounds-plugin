@@ -1,14 +1,12 @@
-package com.matsg.battlegrounds.util;
+package com.matsg.battlegrounds.nms;
 
-import com.matsg.battlegrounds.api.util.Message;
 import com.matsg.battlegrounds.api.util.Placeholder;
-import com.matsg.battlegrounds.nms.ReflectionUtils;
-import org.bukkit.ChatColor;
+import com.matsg.battlegrounds.util.Message;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Constructor;
 
-public class Title implements Message {
+public class Title {
 
     private int fadeIn, fadeOut, time;
     private String subTitle, title;
@@ -30,7 +28,7 @@ public class Title implements Message {
     }
 
     private String replace(String string, Placeholder... placeholders) {
-        return ChatColor.translateAlternateColorCodes('&', Placeholder.replace(string, placeholders));
+        return Message.createSimple(string, placeholders);
     }
 
     public void send(Player player, Placeholder... placeholders) {

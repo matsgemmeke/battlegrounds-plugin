@@ -2,11 +2,11 @@ package com.matsg.battlegrounds.util;
 
 import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.util.Message;
 import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.nms.Title;
 import org.bukkit.entity.Player;
 
-public enum EnumTitle implements Message {
+public enum EnumTitle {
 
     COUNTDOWN("title-countdown"),
     FFA_START("title-ffa-start"),

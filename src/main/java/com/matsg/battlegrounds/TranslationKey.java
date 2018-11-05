@@ -1,14 +1,6 @@
-package com.matsg.battlegrounds.util;
+package com.matsg.battlegrounds;
 
-import com.matsg.battlegrounds.BattlegroundsPlugin;
-import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.util.Message;
-import com.matsg.battlegrounds.api.util.Placeholder;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-public enum EnumMessage implements Message {
+public enum TranslationKey {
 
     ALREADY_PLAYING("game-already-playing", false),
     ARENA_CONFIRM_REMOVE("setup-arena-confirm-remove", false),
@@ -106,55 +98,35 @@ public enum EnumMessage implements Message {
     TDM_NAME("gamemode-tdm-name", false),
     TDM_SHORT("gamemode-tdm-short", false),
     TEAM_ASSIGNMENT("game-team-assignment", true),
-    TITLE_EDIT_LOADOUT("view-title-edit-loadout", false),
-    TITLE_LOADOUT_MANAGER("view-title-loadout-manager", false),
-    TITLE_SELECT_ATTACHMENT("view-title-select-attachment", false),
-    TITLE_SELECT_LOADOUT("view-title-select-loadout", false),
-    TITLE_WEAPONS("view-title-weapons", false),
     TYPE_KNIFE("item-type-knife", false),
+    VIEW_EDIT_LOADOUT("view-title-edit-loadout", false),
+    VIEW_LOADOUT_MANAGER("view-title-loadout-manager", false),
+    VIEW_SELECT_ATTACHMENT("view-title-select-attachment", false),
+    VIEW_SELECT_LOADOUT("view-title-select-loadout", false),
+    VIEW_WEAPONS("view-title-weapons", false),
     WEAPON_EQUIPMENT("view-weapon-equipment", false),
     WEAPON_KNIFE("view-weapon-knife", false),
     WEAPON_PRIMARY("view-weapon-primary", false),
     WEAPON_SECONDARY("view-weapon-secondary", false);
 
-    private Battlegrounds plugin;
     private boolean prefix;
-    private String message, path;
+    private String path;
 
-    EnumMessage(String path) {
-        this.plugin = BattlegroundsPlugin.getPlugin();
-        this.message = plugin.getTranslator().getTranslation(path);
+    TranslationKey(String path) {
         this.path = path;
         this.prefix = false;
     }
 
-    EnumMessage(String path, boolean prefix) {
+    TranslationKey(String path, boolean prefix) {
         this(path);
         this.prefix = prefix;
     }
 
-    public String getMessage(Placeholder... placeholders) {
-        return replace(placeholders);
+    public String getPath() {
+        return path;
     }
 
-    // Get the String message without sending it to the player
-    private String replace(Placeholder... placeholders) {
-        StringBuilder builder = new StringBuilder();
-        if (prefix) {
-            builder.append(PREFIX.getMessage());
-        }
-        return builder.append(ChatColor.translateAlternateColorCodes('&', Placeholder.replace(message, placeholders))).toString();
-    }
-
-    public void send(CommandSender sender, Placeholder... placeholders) {
-        sender.sendMessage(replace(placeholders));
-    }
-
-    public void send(Player player, Placeholder... placeholders) {
-        send((CommandSender) player, placeholders);
-    }
-
-    public String toString() {
-        return message + "@" + path;
+    public boolean hasPrefix() {
+        return prefix;
     }
 }

@@ -13,6 +13,10 @@ public class BlockPhysicsEventHandler implements EventHandler<BlockPhysicsEvent>
     }
 
     public void handle(BlockPhysicsEvent event) {
-        event.setCancelled(plugin.getGameManager().getArena(event.getBlock().getLocation()) != null);
+        if (plugin.getGameManager().getArena(event.getBlock().getLocation()) == null) {
+            return;
+        }
+
+        event.setCancelled(true);
     }
 }

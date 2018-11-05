@@ -6,7 +6,6 @@ import com.matsg.battlegrounds.api.config.ItemConfig;
 import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.item.*;
 import com.matsg.battlegrounds.util.BattleSound;
-import com.matsg.battlegrounds.util.ItemStackBuilder;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 

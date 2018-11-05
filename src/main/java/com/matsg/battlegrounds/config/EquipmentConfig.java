@@ -7,12 +7,8 @@ import com.matsg.battlegrounds.api.item.Equipment;
 import com.matsg.battlegrounds.api.item.ItemType;
 import com.matsg.battlegrounds.api.item.Lethal;
 import com.matsg.battlegrounds.api.item.Tactical;
-import com.matsg.battlegrounds.item.BattleLethal;
-import com.matsg.battlegrounds.item.BattleTactical;
-import com.matsg.battlegrounds.item.BattleTacticalEffect;
-import com.matsg.battlegrounds.item.EquipmentType;
+import com.matsg.battlegrounds.item.*;
 import com.matsg.battlegrounds.util.BattleSound;
-import com.matsg.battlegrounds.util.ItemStackBuilder;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 

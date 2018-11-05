@@ -1,7 +1,9 @@
 package com.matsg.battlegrounds.nms;
 
 import com.matsg.battlegrounds.api.Version;
-import com.matsg.battlegrounds.nms.version.*;
+import com.matsg.battlegrounds.nms.version.Version1;
+import com.matsg.battlegrounds.nms.version.Version2;
+import com.matsg.battlegrounds.nms.version.Version3;
 
 import java.util.ArrayList;
 import java.util.List;

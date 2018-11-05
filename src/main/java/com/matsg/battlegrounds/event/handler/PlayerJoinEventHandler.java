@@ -17,7 +17,8 @@ public class PlayerJoinEventHandler implements EventHandler<PlayerJoinEvent> {
         Player player = event.getPlayer();
         if (!plugin.getPlayerStorage().contains(player.getUniqueId())) {
             plugin.getPlayerStorage().registerPlayer(player.getUniqueId(), player.getName());
+        } else {
+            plugin.getPlayerStorage().updatePlayer(player);
         }
-        plugin.getPlayerStorage().updatePlayer(player);
     }
 }
