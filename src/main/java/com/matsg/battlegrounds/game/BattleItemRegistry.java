@@ -4,7 +4,6 @@ import com.matsg.battlegrounds.api.game.ItemRegistry;
 import com.matsg.battlegrounds.api.item.Item;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.player.GamePlayer;
-import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
 
@@ -91,11 +90,11 @@ public class BattleItemRegistry implements ItemRegistry {
         return list;
     }
 
-    public void interact(Player player, Item item, Action action) {
+    public void interact(GamePlayer gamePlayer, Item item, Action action) {
         if (action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK) {
-            item.onLeftClick(player);
+            item.onLeftClick(gamePlayer);
         } else if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
-            item.onRightClick(player);
+            item.onRightClick(gamePlayer);
         }
     }
 

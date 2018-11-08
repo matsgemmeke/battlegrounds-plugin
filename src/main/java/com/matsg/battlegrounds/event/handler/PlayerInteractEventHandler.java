@@ -24,7 +24,7 @@ public class PlayerInteractEventHandler implements EventHandler<PlayerInteractEv
         handleSignInteraction(event);
     }
 
-    private void handleItemInteraction(PlayerInteractEvent event) {
+    public void handleItemInteraction(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         Game game = plugin.getGameManager().getGame(player);
 
@@ -47,10 +47,10 @@ public class PlayerInteractEventHandler implements EventHandler<PlayerInteractEv
             return;
         }
 
-        game.getItemRegistry().interact(gamePlayer.getPlayer(), item, event.getAction());
+        game.getItemRegistry().interact(gamePlayer, item, event.getAction());
     }
 
-    private void handleSignInteraction(PlayerInteractEvent event) {
+    public void handleSignInteraction(PlayerInteractEvent event) {
         if (event.getClickedBlock() == null || !(event.getClickedBlock().getState() instanceof Sign)) {
             return;
         }

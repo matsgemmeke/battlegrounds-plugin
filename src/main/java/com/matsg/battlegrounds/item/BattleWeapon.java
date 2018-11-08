@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.item;
 
+import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.util.BattleRunnable;
@@ -77,10 +78,18 @@ public abstract class BattleWeapon extends BattleItem implements Weapon {
         return string.toString();
     }
 
+    public abstract boolean onDrop();
+
+    public boolean onDrop(GamePlayer gamePlayer) {
+        if (gamePlayer == null || gamePlayer != this.gamePlayer) {
+            return true;
+        }
+        return onDrop();
+    }
+
     public abstract void onLeftClick();
 
-    public void onLeftClick(Player player) {
-        GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
+    public void onLeftClick(GamePlayer gamePlayer) {
         if (gamePlayer == null || gamePlayer != this.gamePlayer) {
             return;
         }
@@ -89,8 +98,7 @@ public abstract class BattleWeapon extends BattleItem implements Weapon {
 
     public abstract void onRightClick();
 
-    public void onRightClick(Player player) {
-        GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
+    public void onRightClick(GamePlayer gamePlayer) {
         if (gamePlayer == null || gamePlayer != this.gamePlayer) {
             return;
         }
@@ -99,8 +107,7 @@ public abstract class BattleWeapon extends BattleItem implements Weapon {
 
     public abstract void onSwitch();
 
-    public void onSwitch(Player player) {
-        GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
+    public void onSwitch(GamePlayer gamePlayer) {
         if (gamePlayer == null || gamePlayer != this.gamePlayer) {
             return;
         }

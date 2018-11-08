@@ -4,14 +4,12 @@ import com.matsg.battlegrounds.BattleGameManager;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.GameState;
-import com.matsg.battlegrounds.api.game.ItemRegistry;
 import com.matsg.battlegrounds.api.game.PlayerManager;
-import com.matsg.battlegrounds.api.item.Item;
+import com.matsg.battlegrounds.api.item.Loadout;
+import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.player.GamePlayer;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.inventory.ItemStack;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,49 +20,43 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(PowerMockRunner.class)
-public class PlayerDropItemEventHandlerTest {
+public class PlayerItemHeldEventHandlerTest {
 
     private Battlegrounds plugin;
     private Game game;
     private GameManager gameManager;
     private GamePlayer gamePlayer;
-    private Item item;
-    private org.bukkit.entity.Item itemEntity;
-    private ItemRegistry itemRegistry;
-    private ItemStack itemStack;
+    private Loadout loadout;
     private Player player;
-    private PlayerDropItemEvent event;
+    private PlayerItemHeldEvent event;
     private PlayerManager playerManager;
+    private Weapon weapon;
 
     @Before
     public void setUp() {
         this.plugin = mock(Battlegrounds.class);
         this.game = mock(Game.class);
         this.gamePlayer = mock(GamePlayer.class);
-        this.item = mock(Item.class);
-        this.itemEntity = mock(org.bukkit.entity.Item.class);
-        this.itemRegistry = mock(ItemRegistry.class);
+        this.loadout = mock(Loadout.class);
         this.player = mock(Player.class);
         this.playerManager = mock(PlayerManager.class);
+        this.weapon = mock(Weapon.class);
 
-        this.event = new PlayerDropItemEvent(player, itemEntity);
+        this.event = new PlayerItemHeldEvent(player, 0, 1);
         this.gameManager = new BattleGameManager();
-        this.itemStack = new ItemStack(Material.IRON_HOE);
 
         gameManager.getGames().add(game);
 
-        when(game.getItemRegistry()).thenReturn(itemRegistry);
         when(game.getPlayerManager()).thenReturn(playerManager);
-        when(item.getItemStack()).thenReturn(itemStack);
-        when(itemEntity.getItemStack()).thenReturn(itemStack);
+        when(gamePlayer.getLoadout()).thenReturn(loadout);
         when(plugin.getGameManager()).thenReturn(gameManager);
     }
 
     @Test
-    public void testPlayerItemDropWhenNotPlaying() {
+    public void testItemSwitchWhenNotPlaying() {
         when(playerManager.getGamePlayer(player)).thenReturn(null);
 
-        PlayerDropItemEventHandler eventHandler = new PlayerDropItemEventHandler(plugin);
+        PlayerItemHeldEventHandler eventHandler = new PlayerItemHeldEventHandler(plugin);
         eventHandler.handle(event);
 
         verify(playerManager, times(1)).getGamePlayer(player);
@@ -73,11 +65,11 @@ public class PlayerDropItemEventHandlerTest {
     }
 
     @Test
-    public void testPlayerItemDropWhenNotHoldingItem() {
-        when(itemRegistry.getItemIgnoreMetadata(itemStack)).thenReturn(null);
+    public void testItemSwitchWhenHavingNoLoadoutSelected() {
+        when(gamePlayer.getLoadout()).thenReturn(null);
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
 
-        PlayerDropItemEventHandler eventHandler = new PlayerDropItemEventHandler(plugin);
+        PlayerItemHeldEventHandler eventHandler = new PlayerItemHeldEventHandler(plugin);
         eventHandler.handle(event);
 
         verify(playerManager, times(2)).getGamePlayer(player);
@@ -86,31 +78,30 @@ public class PlayerDropItemEventHandlerTest {
     }
 
     @Test
-    public void testPlayerItemDropWhenGameDoesNotAllowItems() {
-        when(game.getState()).thenReturn(GameState.RESETTING);
-        when(itemRegistry.getItemIgnoreMetadata(itemStack)).thenReturn(item);
+    public void testItemSwitchWhenNotHoldingWeapon() {
+        when(loadout.getWeapon(any(ItemStack.class))).thenReturn(null);
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
 
-        PlayerDropItemEventHandler eventHandler = new PlayerDropItemEventHandler(plugin);
+        PlayerItemHeldEventHandler eventHandler = new PlayerItemHeldEventHandler(plugin);
         eventHandler.handle(event);
 
         verify(playerManager, times(2)).getGamePlayer(player);
+        verify(weapon, times(0)).onSwitch(gamePlayer);
 
         assertFalse(event.isCancelled());
     }
 
     @Test
-    public void testPlayerItemDropWhenHoldingItem() {
-        when(game.getState()).thenReturn(GameState.IN_GAME);
-        when(item.onDrop(gamePlayer)).thenReturn(true);
-        when(itemRegistry.getItemIgnoreMetadata(itemStack)).thenReturn(item);
+    public void testItemSwitchWhenHoldingWeapon() {
+        when(loadout.getWeapon(any(ItemStack.class))).thenReturn(weapon);
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
 
-        PlayerDropItemEventHandler eventHandler = new PlayerDropItemEventHandler(plugin);
+        PlayerItemHeldEventHandler eventHandler = new PlayerItemHeldEventHandler(plugin);
         eventHandler.handle(event);
 
         verify(playerManager, times(2)).getGamePlayer(player);
+        verify(weapon, times(1)).onSwitch(gamePlayer);
 
-        assertTrue(event.isCancelled());
+        assertFalse(event.isCancelled());
     }
 }

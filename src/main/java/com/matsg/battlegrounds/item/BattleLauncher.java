@@ -86,6 +86,10 @@ public class BattleLauncher extends BattleFireArm implements Launcher {
         }
     }
 
+    public boolean onDrop() {
+        return true;
+    }
+
     public void onLeftClick() {
         if (reloading || shooting || ammo.getAttributeValue().getValue() <= 0 || magazine.getAttributeValue().getValue() >= magazineSize.getAttributeValue().getValue()) {
             return;

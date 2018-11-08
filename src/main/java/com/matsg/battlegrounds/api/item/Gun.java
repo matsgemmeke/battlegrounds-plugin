@@ -3,7 +3,7 @@ package com.matsg.battlegrounds.api.item;
 import java.util.List;
 import java.util.Set;
 
-public interface Gun extends FireArm, DropListener {
+public interface Gun extends FireArm {
 
     void addAttachments();
 

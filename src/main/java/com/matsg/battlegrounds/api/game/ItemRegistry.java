@@ -23,7 +23,7 @@ public interface ItemRegistry {
 
     Weapon getWeaponIgnoreMetadata(GamePlayer gamePlayer, ItemStack itemStack);
 
-    void interact(Player player, Item item, Action action);
+    void interact(GamePlayer gamePlayer, Item item, Action action);
 
     void removeItem(Item item);
 }

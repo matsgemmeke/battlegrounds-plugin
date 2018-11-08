@@ -13,6 +13,7 @@ import com.matsg.battlegrounds.util.Message;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -29,6 +30,7 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
     protected ItemAttribute<Double> horizontalAccuracy, verticalAccuracy;
     protected ItemAttribute<Integer> ammo, cooldown, magazine, magazineSize, magazineSupply, maxAmmo, reloadDuration, reloadDurationOg;
     protected ItemAttribute<ReloadType> reloadType;
+    protected List<Item> droppedItems;
     protected List<Material> blocks;
     protected Sound[] reloadSound, shotSound;
 
@@ -37,6 +39,7 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
                          ReloadType reloadType, FireArmType fireArmType, Sound[] reloadSound, Sound[] shotSound) {
         super(id, name, description, itemStack, durability);
         this.blocks = new ArrayList<>();
+        this.droppedItems = new ArrayList<>();
         this.fireArmType = fireArmType;
         this.reloadCancelled = false;
         this.reloading = false;
@@ -99,6 +102,10 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
 
     public int getCooldown() {
         return cooldown.getAttributeValue().getValue();
+    }
+
+    public List<Item> getDroppedItems() {
+        return droppedItems;
     }
 
     public int getMagazine() {
@@ -203,6 +210,15 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
         Location bulletDirection = targetDirection.clone();
         bulletDirection.setDirection(new Vector(x, z, y)); // Adds the recoil effect to the gun
         return bulletDirection;
+    }
+
+    public boolean isRelated(ItemStack itemStack) {
+        for (Item item : droppedItems) {
+            if (item.getItemStack() == itemStack) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void onSwitch() {

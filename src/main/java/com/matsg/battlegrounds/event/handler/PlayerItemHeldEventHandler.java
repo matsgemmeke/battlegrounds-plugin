@@ -26,7 +26,7 @@ public class PlayerItemHeldEventHandler implements EventHandler<PlayerItemHeldEv
 
         GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
 
-        if (gamePlayer == null || gamePlayer.getLoadout() == null) {
+        if (gamePlayer.getLoadout() == null) {
             return;
         }
 
@@ -36,6 +36,6 @@ public class PlayerItemHeldEventHandler implements EventHandler<PlayerItemHeldEv
             return;
         }
 
-        weapon.onSwitch(player);
+        weapon.onSwitch(gamePlayer);
     }
 }

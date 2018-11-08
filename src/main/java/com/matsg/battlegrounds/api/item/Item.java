@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.api.item;
 
 import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.api.player.GamePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -18,11 +19,13 @@ public interface Item extends Cloneable, Comparable<Item> {
 
     String getName();
 
-    void onLeftClick(Player player);
+    boolean onDrop(GamePlayer gamePlayer);
 
-    void onRightClick(Player player);
+    void onLeftClick(GamePlayer gamePlayer);
 
-    void onSwitch(Player player);
+    void onRightClick(GamePlayer gamePlayer);
+
+    void onSwitch(GamePlayer gamePlayer);
 
     void setGame(Game game);
 

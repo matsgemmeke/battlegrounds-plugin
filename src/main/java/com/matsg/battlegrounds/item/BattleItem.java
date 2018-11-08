@@ -6,6 +6,7 @@ import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.item.Item;
 import com.matsg.battlegrounds.api.item.ItemAttribute;
 import com.matsg.battlegrounds.api.item.ItemSlot;
+import com.matsg.battlegrounds.api.player.GamePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -93,9 +94,13 @@ public abstract class BattleItem implements Item {
         return null;
     }
 
-    public void onLeftClick(Player player) { }
+    public boolean onDrop(GamePlayer gamePlayer) {
+        return false;
+    }
 
-    public void onRightClick(Player player) { }
+    public void onLeftClick(GamePlayer gamePlayer) { }
 
-    public void onSwitch(Player player) { }
+    public void onRightClick(GamePlayer gamePlayer) { }
+
+    public void onSwitch(GamePlayer gamePlayer) { }
 }

@@ -3,7 +3,6 @@ package com.matsg.battlegrounds.event.handler;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.event.handler.EventHandler;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.item.DropListener;
 import com.matsg.battlegrounds.api.item.Item;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import org.bukkit.entity.Player;
@@ -30,10 +29,10 @@ public class PlayerDropItemEventHandler implements EventHandler<PlayerDropItemEv
         ItemStack itemStack = event.getItemDrop().getItemStack();
         Item item = game.getItemRegistry().getWeaponIgnoreMetadata(gamePlayer, itemStack);
 
-        if (item == null && (item = game.getItemRegistry().getItemIgnoreMetadata(itemStack)) == null || !game.getState().isAllowItems() || !(item instanceof DropListener)) {
+        if (item == null && (item = game.getItemRegistry().getItemIgnoreMetadata(itemStack)) == null || !game.getState().isAllowItems()) {
             return;
         }
 
-        event.setCancelled(((DropListener) item).onDrop());
+        event.setCancelled(item.onDrop(gamePlayer));
     }
 }

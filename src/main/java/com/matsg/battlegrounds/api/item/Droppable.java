@@ -6,7 +6,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Collection;
 
-public interface Droppable extends DropListener {
+public interface Droppable {
 
     Collection<Item> getDroppedItems();
 

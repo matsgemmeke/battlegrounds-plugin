@@ -5,7 +5,7 @@ public enum GameState {
     WAITING(1, false, true, true, false),
     STARTING(2, true, true, false, false),
     IN_GAME(3, true, true, true, true),
-    RESETTING(4, true, true, true, false),
+    RESETTING(4, true, false, true, false),
     DISABLED(5, false, false, false, false);
 
     private boolean allowItems, allowMove, allowWeapons, inProgress;
