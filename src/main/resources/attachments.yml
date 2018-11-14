@@ -118,7 +118,7 @@ RAPID_FIRE:
   Toggleable: false
 
 SELECT_FIRE:
-  Description: Switch gun firemode with Q. Automatic fire will always have more recoil.
+  Description: Switch gun firemode with F. Automatic fire will always have more recoil.
   DisplayName: Select Fire
   GunPart: INTERNAL
   Material: IRON_CHESTPLATE,12

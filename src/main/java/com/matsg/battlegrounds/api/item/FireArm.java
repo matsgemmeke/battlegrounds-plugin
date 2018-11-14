@@ -2,7 +2,7 @@ package com.matsg.battlegrounds.api.item;
 
 import org.bukkit.entity.Entity;
 
-public interface FireArm extends Weapon {
+public interface FireArm extends Weapon, Droppable {
 
     FireArm clone();
 

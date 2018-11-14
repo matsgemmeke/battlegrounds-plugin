@@ -6,66 +6,60 @@ import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.ItemRegistry;
 import com.matsg.battlegrounds.api.game.PlayerManager;
-import com.matsg.battlegrounds.api.item.Attachment;
-import com.matsg.battlegrounds.api.item.Equipment;
 import com.matsg.battlegrounds.api.item.Item;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.ItemStack;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(PowerMockRunner.class)
-public class PlayerPickUpItemEventHandlerTest {
+public class PlayerSwapHandItemsEventHandlerTest {
 
     private Battlegrounds plugin;
     private Game game;
     private GameManager gameManager;
     private GamePlayer gamePlayer;
-    private org.bukkit.entity.Item itemEntity;
+    private Item item;
     private ItemRegistry itemRegistry;
     private ItemStack itemStack;
     private Player player;
     private PlayerManager playerManager;
-    private PlayerPickupItemEvent event;
+    private PlayerSwapHandItemsEvent event;
 
     @Before
     public void setUp() {
         this.plugin = mock(Battlegrounds.class);
         this.game = mock(Game.class);
         this.gamePlayer = mock(GamePlayer.class);
-        this.itemEntity = mock(org.bukkit.entity.Item.class);
+        this.item = mock(Item.class);
         this.itemRegistry = mock(ItemRegistry.class);
         this.player = mock(Player.class);
         this.playerManager = mock(PlayerManager.class);
 
-        this.event = new PlayerPickupItemEvent(player, itemEntity, 0);
-        this.gameManager = new BattleGameManager();
         this.itemStack = new ItemStack(Material.IRON_HOE);
+        this.event = new PlayerSwapHandItemsEvent(player, null, itemStack);
+        this.gameManager = new BattleGameManager();
 
         gameManager.getGames().add(game);
 
         when(game.getItemRegistry()).thenReturn(itemRegistry);
         when(game.getPlayerManager()).thenReturn(playerManager);
-        when(itemEntity.getItemStack()).thenReturn(itemStack);
         when(plugin.getGameManager()).thenReturn(gameManager);
     }
 
     @Test
-    public void testPlayerPickUpItemWhenNotPlaying() {
+    public void testPlayerSwapItemsWhenNotPlaying() {
         when(playerManager.getGamePlayer(player)).thenReturn(null);
 
-        PlayerPickupItemEventHandler eventHandler = new PlayerPickupItemEventHandler(plugin);
+        PlayerSwapHandItemsEventHandler eventHandler = new PlayerSwapHandItemsEventHandler(plugin);
         eventHandler.handle(event);
 
         verify(playerManager, times(1)).getGamePlayer(player);
@@ -74,40 +68,27 @@ public class PlayerPickUpItemEventHandlerTest {
     }
 
     @Test
-    public void testPlayerPickUpItemNotDroppable() {
-        Item item = mock(Attachment.class);
-        List<Item> items = new ArrayList<>();
-
-        items.add(item);
-
-        when(itemRegistry.getItems()).thenReturn(items);
+    public void testPlayerSwapItemsWhenNotHoldingItem() {
+        when(itemRegistry.getItem(itemStack)).thenReturn(null);
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
 
-        PlayerPickupItemEventHandler eventHandler = new PlayerPickupItemEventHandler(plugin);
+        PlayerSwapHandItemsEventHandler eventHandler = new PlayerSwapHandItemsEventHandler(plugin);
         eventHandler.handle(event);
 
-        verify(itemRegistry, times(1)).getItems();
         verify(playerManager, times(1)).getGamePlayer(player);
 
-        assertFalse(event.isCancelled());
+        assertTrue(event.isCancelled());
     }
 
     @Test
-    public void testPlayerPickUpItemIsDroppable() {
-        Equipment equipment = mock(Equipment.class);
-        List<Item> items = new ArrayList<>();
-
-        items.add(equipment);
-
-        when(equipment.isRelated(itemStack)).thenReturn(true);
-        when(equipment.onPickUp(gamePlayer, itemEntity)).thenReturn(true);
-        when(itemRegistry.getItems()).thenReturn(items);
+    public void testPlayerSwapItemsWhenHoldingItem() {
+        when(itemRegistry.getItem(itemStack)).thenReturn(item);
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
 
-        PlayerPickupItemEventHandler eventHandler = new PlayerPickupItemEventHandler(plugin);
+        PlayerSwapHandItemsEventHandler eventHandler = new PlayerSwapHandItemsEventHandler(plugin);
         eventHandler.handle(event);
 
-        verify(itemRegistry, times(1)).getItems();
+        verify(item, times(1)).onSwap(gamePlayer);
         verify(playerManager, times(2)).getGamePlayer(player);
 
         assertTrue(event.isCancelled());

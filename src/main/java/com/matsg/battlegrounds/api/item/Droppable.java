@@ -1,7 +1,7 @@
 package com.matsg.battlegrounds.api.item;
 
+import com.matsg.battlegrounds.api.player.GamePlayer;
 import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Collection;
@@ -12,5 +12,7 @@ public interface Droppable {
 
     boolean isRelated(ItemStack itemStack);
 
-    boolean onPickUp(Player player, Item item);
+    boolean onDrop(GamePlayer gamePlayer, Item item);
+
+    boolean onPickUp(GamePlayer gamePlayer, Item item);
 }

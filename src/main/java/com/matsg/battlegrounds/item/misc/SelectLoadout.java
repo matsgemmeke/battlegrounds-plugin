@@ -10,7 +10,6 @@ import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.util.Message;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class SelectLoadout extends BattleItem {
@@ -26,20 +25,19 @@ public class SelectLoadout extends BattleItem {
         return new ItemStackBuilder(Material.COMPASS).setDisplayName(ChatColor.WHITE + Message.create(TranslationKey.CHANGE_LOADOUT)).build();
     }
 
-    private void onClick(Player player) {
-        GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
+    private void onClick(GamePlayer gamePlayer) {
         if (gamePlayer == null) {
             return;
         }
-        player.openInventory(new SelectLoadoutView(game, gamePlayer).getInventory());
+        gamePlayer.getPlayer().openInventory(new SelectLoadoutView(plugin, game, gamePlayer).getInventory());
     }
 
-    public void onLeftClick(Player player) {
-        onClick(player);
+    public void onLeftClick(GamePlayer gamePlayer) {
+        onClick(gamePlayer);
     }
 
-    public void onRightClick(Player player) {
-        onClick(player);
+    public void onRightClick(GamePlayer gamePlayer) {
+        onClick(gamePlayer);
     }
 
     public boolean update() {

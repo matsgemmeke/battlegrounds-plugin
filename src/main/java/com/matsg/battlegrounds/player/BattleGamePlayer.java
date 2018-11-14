@@ -17,7 +17,7 @@ public class BattleGamePlayer implements GamePlayer {
 
     private int deaths, exp, headshots, kills, lives;
     private List<Item> heldItems;
-    private Loadout loadout;
+    private Loadout loadout, selectedLoadout;
     private Player player;
     private PlayerStatus playerStatus;
     private SavedInventory savedInventory;
@@ -77,6 +77,10 @@ public class BattleGamePlayer implements GamePlayer {
 
     public SavedInventory getSavedInventory() {
         return savedInventory;
+    }
+
+    public Loadout getSelectedLoadout() {
+        return selectedLoadout;
     }
 
     public PlayerStatus getStatus() {
@@ -145,5 +149,9 @@ public class BattleGamePlayer implements GamePlayer {
 
     public void sendMessage(String message) {
         player.sendMessage(message);
+    }
+
+    public void setSelectedLoadout(Loadout selectedLoadout) {
+        this.selectedLoadout = selectedLoadout;
     }
 }

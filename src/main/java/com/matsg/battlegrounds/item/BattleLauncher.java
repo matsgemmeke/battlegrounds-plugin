@@ -110,6 +110,8 @@ public class BattleLauncher extends BattleFireArm implements Launcher {
         shoot();
     }
 
+    public void onSwap() { }
+
     public void shoot() {
         shooting = true;
         setMagazine(getMagazine() - 1);

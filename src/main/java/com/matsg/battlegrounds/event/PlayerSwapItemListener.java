@@ -17,6 +17,6 @@ public class PlayerSwapItemListener implements Listener {
 
     @EventHandler
     public void onPlayerItemSwap(PlayerSwapHandItemsEvent event) {
-        event.setCancelled(plugin.getGameManager().getGame(event.getPlayer()) != null);
+        plugin.getEventManager().handleEvent(event);
     }
 }

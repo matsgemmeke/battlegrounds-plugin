@@ -14,6 +14,8 @@ import com.matsg.battlegrounds.gui.scoreboard.LobbyScoreboard;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
@@ -192,6 +194,11 @@ public class BattleGame implements Game {
 
             gamePlayer.getSavedInventory().restore(player);
             gamePlayer.setStatus(PlayerStatus.ACTIVE).apply(this, gamePlayer);
+        }
+        for (Entity entity : arena.getWorld().getEntitiesByClass(Item.class)) {
+            if (arena.contains(entity.getLocation())) {
+                entity.remove();
+            }
         }
     }
 

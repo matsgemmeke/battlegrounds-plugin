@@ -28,7 +28,7 @@ public class GameCountdown extends BattleRunnable implements Countdown {
 
         for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
             if (gamePlayer.getLoadout() == null) {
-                gamePlayer.getPlayer().openInventory(new SelectLoadoutView(game, gamePlayer).getInventory());
+                gamePlayer.getPlayer().openInventory(new SelectLoadoutView(plugin, game, gamePlayer).getInventory());
             }
         }
 

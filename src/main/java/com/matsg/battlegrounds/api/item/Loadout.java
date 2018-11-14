@@ -2,7 +2,9 @@ package com.matsg.battlegrounds.api.item;
 
 import org.bukkit.inventory.ItemStack;
 
-public interface Loadout {
+public interface Loadout extends Cloneable {
+
+    Loadout clone();
 
     Equipment getEquipment();
 
@@ -23,6 +25,8 @@ public interface Loadout {
     Weapon getWeaponIgnoreMetadata(ItemStack itemStack);
 
     Weapon[] getWeapons();
+
+    void removeWeapon(Weapon weapon);
 
     void setEquipment(Equipment equipment);
 

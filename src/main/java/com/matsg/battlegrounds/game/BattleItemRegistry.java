@@ -37,10 +37,8 @@ public class BattleItemRegistry implements ItemRegistry {
 
     public Item getItem(ItemStack itemStack) {
         for (Item item : items) {
-            if (item != null) {
-                if (item.getItemStack().equals(itemStack)) {
-                    return item;
-                }
+            if (item.getItemStack().equals(itemStack)) {
+                return item;
             }
         }
         return null;
@@ -48,11 +46,9 @@ public class BattleItemRegistry implements ItemRegistry {
 
     public Item getItemIgnoreMetadata(ItemStack itemStack) {
         for (Item item : items) {
-            if (item != null) {
-                ItemStack other = item.getItemStack();
-                if (other != null && other.getAmount() == itemStack.getAmount() && other.getDurability() == itemStack.getDurability() && other.getType() == itemStack.getType()) {
-                    return item;
-                }
+            ItemStack other = item.getItemStack();
+            if (other != null && other.getAmount() == itemStack.getAmount() && other.getDurability() == itemStack.getDurability() && other.getType() == itemStack.getType()) {
+                return item;
             }
         }
         return null;
@@ -60,7 +56,7 @@ public class BattleItemRegistry implements ItemRegistry {
 
     public Weapon getWeapon(GamePlayer gamePlayer, ItemStack itemStack) {
         for (Weapon weapon : getWeaponList()) {
-            if (weapon.getGamePlayer() == gamePlayer && weapon.getItemStack().equals(itemStack)) {
+            if (weapon.getGamePlayer() == gamePlayer && weapon.getItemStack().equals(itemStack) && weapon.getItemStack().getItemMeta().equals(itemStack.getItemMeta())) {
                 return weapon;
             }
         }
@@ -83,7 +79,7 @@ public class BattleItemRegistry implements ItemRegistry {
     private List<Weapon> getWeaponList() {
         List<Weapon> list = new ArrayList<>();
         for (Item item : items) {
-            if (item != null && item instanceof Weapon) {
+            if (item instanceof Weapon) {
                 list.add((Weapon) item);
             }
         }

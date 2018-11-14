@@ -41,9 +41,9 @@ public class PlayerInteractEventHandler implements EventHandler<PlayerInteractEv
 
         event.setCancelled(true);
 
-        Item item = game.getItemRegistry().getWeaponIgnoreMetadata(gamePlayer, itemStack);
+        Item item = game.getItemRegistry().getWeapon(gamePlayer, itemStack);
 
-        if (item == null && (item = game.getItemRegistry().getItemIgnoreMetadata(itemStack)) == null || !game.getState().isAllowWeapons() && item instanceof Weapon) {
+        if (item == null && (item = game.getItemRegistry().getItem(itemStack)) == null || !game.getState().isAllowWeapons() && item instanceof Weapon) {
             return;
         }
 

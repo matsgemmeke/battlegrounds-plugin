@@ -14,8 +14,6 @@ public interface Weapon extends Item {
 
     ItemType getType();
 
-    void remove();
-
     void resetState();
 
     void setGamePlayer(GamePlayer gamePlayer);

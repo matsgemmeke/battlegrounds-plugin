@@ -195,31 +195,6 @@ public class BattleGun extends BattleFireArm implements Gun {
         }
     }
 
-    public boolean onDrop() {
-        if (reloading || shooting || !hasToggleableAttachments()) {
-            return true;
-        }
-        BattleSound.ATTACHMENT_TOGGLE.play(game, gamePlayer.getLocation());
-        if (!toggled) {
-            for (Attachment attachment : toggleModifiers.keySet()) {
-                for (ItemAttribute attribute : attributes) {
-                    AttributeModifier modifier = attachment.getModifier(attribute.getId());
-                    if (modifier != null) {
-                        toggleAttributes.put(attribute, attribute.getAttributeValue().copy());
-                        attribute.applyModifier(modifier, compatibleAttachments.get(attachment.getId()));
-                    }
-                }
-            }
-        } else {
-            for (ItemAttribute attribute : toggleAttributes.keySet()) {
-                getAttribute(attribute.getId()).getAttributeValue().setValue(toggleAttributes.get(attribute).getValue());
-            }
-            toggleAttributes.clear();
-        }
-        toggled = !toggled;
-        return true;
-    }
-
     public void onLeftClick() {
         if (scope.getAttributeValue().getValue() && scoped) {
             setScoped(false);
@@ -246,6 +221,30 @@ public class BattleGun extends BattleFireArm implements Gun {
             return;
         }
         shoot();
+    }
+
+    public void onSwap() {
+        if (reloading || shooting || !hasToggleableAttachments()) {
+            return;
+        }
+        BattleSound.ATTACHMENT_TOGGLE.play(game, gamePlayer.getLocation());
+        if (!toggled) {
+            for (Attachment attachment : toggleModifiers.keySet()) {
+                for (ItemAttribute attribute : attributes) {
+                    AttributeModifier modifier = attachment.getModifier(attribute.getId());
+                    if (modifier != null) {
+                        toggleAttributes.put(attribute, attribute.getAttributeValue().copy());
+                        attribute.applyModifier(modifier, compatibleAttachments.get(attachment.getId()));
+                    }
+                }
+            }
+        } else {
+            for (ItemAttribute attribute : toggleAttributes.keySet()) {
+                getAttribute(attribute.getId()).getAttributeValue().setValue(toggleAttributes.get(attribute).getValue());
+            }
+            toggleAttributes.clear();
+        }
+        toggled = !toggled;
     }
 
     public void playShotSound(Entity entity) {

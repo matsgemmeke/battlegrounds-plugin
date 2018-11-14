@@ -143,14 +143,6 @@ public interface PlayerManager {
     Collection<GamePlayer> getPlayers();
 
     /**
-     * Gets the current selected loadout of a player.
-     *
-     * @param gamePlayer The gameplayer to get the selected loadout of
-     * @return The player's selected loadout or null if the player doesn't exist or has no loadout selected
-     */
-    Loadout getSelectedLoadout(GamePlayer gamePlayer);
-
-    /**
      * Equips the player with the default items.
      *
      * @param gamePlayer The player to prepare

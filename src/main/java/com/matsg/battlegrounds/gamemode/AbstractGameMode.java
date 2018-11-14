@@ -7,9 +7,13 @@ import com.matsg.battlegrounds.api.event.GameEndEvent;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.gamemode.GameMode;
 import com.matsg.battlegrounds.api.gamemode.Objective;
+import com.matsg.battlegrounds.api.item.FireArm;
+import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.player.Hitbox;
 import com.matsg.battlegrounds.api.player.PlayerStatus;
+import org.bukkit.Location;
+import org.bukkit.entity.Item;
 import org.bukkit.event.Listener;
 
 import java.util.ArrayList;
@@ -131,6 +135,13 @@ public abstract class AbstractGameMode implements GameMode, Listener {
         gamePlayer.setLives(gamePlayer.getLives() - 1);
         if (gamePlayer.getLives() <= 0) {
             gamePlayer.setStatus(PlayerStatus.SPECTATING).apply(game, gamePlayer);
+        }
+        Weapon weapon = gamePlayer.getLoadout().getWeapon(gamePlayer.getPlayer().getItemInHand());
+
+        if (weapon != null && weapon instanceof FireArm) {
+            Location location = gamePlayer.getLocation();
+            Item item = location.getWorld().dropItem(location, weapon.getItemStack());
+            ((FireArm) weapon).onDrop(gamePlayer, item);
         }
     }
 

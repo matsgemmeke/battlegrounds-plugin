@@ -15,6 +15,7 @@ import com.matsg.battlegrounds.command.LoadoutCommand;
 import com.matsg.battlegrounds.config.*;
 import com.matsg.battlegrounds.event.EventListener;
 import com.matsg.battlegrounds.event.PlayerSwapItemListener;
+import com.matsg.battlegrounds.nms.ReflectionUtils;
 import com.matsg.battlegrounds.nms.VersionManager;
 import com.matsg.battlegrounds.player.LocalPlayerStorage;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
@@ -38,7 +39,6 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
     private ItemConfig<FireArm> fireArmConfig;
     private ItemConfig<Knife> knifeConfig;
     private LevelConfig levelConfig;
-    private List<BattlegroundsExtension> extensions;
     private PlayerStorage playerStorage;
     private Translator translator;
     private VersionManager versionManager;
@@ -55,7 +55,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
             return;
         }
 
-        getLogger().info("Succesfully started Battlegrounds (" + extensions.size() + " extensions loaded)");
+        getLogger().info("Succesfully started Battlegrounds " + getDescription().getVersion());
     }
 
     public void onDisable() {
@@ -136,19 +136,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         return true;
     }
 
-    private List<BattlegroundsExtension> loadExtensions() {
-        List<BattlegroundsExtension> list = new ArrayList<>();
-        for (Plugin plugin : getServer().getPluginManager().getPlugins()) {
-            if (plugin instanceof BattlegroundsExtension) {
-                list.add((BattlegroundsExtension) plugin);
-            }
-        }
-        return list;
-    }
-
     private void startPlugin() throws StartupFailedException {
-        extensions = loadExtensions();
-
         try {
             cache = new BattleCacheYaml(this, "cache.yml");
             config = new BattlegroundsConfig(this);
@@ -189,7 +177,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
                 + knifeConfig.getList().size() + " knives and "
                 + attachmentConfig.getList().size() + " attachments from the config");
 
-        eventManager = new BattleEventManager(this);
+        eventManager = new BattleEventManager();
         gameManager = new BattleGameManager();
         versionManager = new VersionManager();
 
@@ -199,10 +187,9 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         new LoadoutCommand(this);
 
         new EventListener(this);
-        new PlayerSwapItemListener(this);
 
-        for (BattlegroundsExtension extension : extensions) {
-            extension.onInit();
+        if (ReflectionUtils.getEnumVersion().getValue() > 8) {
+            new PlayerSwapItemListener(this);
         }
     }
 }

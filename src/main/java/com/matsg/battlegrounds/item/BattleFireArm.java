@@ -1,14 +1,14 @@
 package com.matsg.battlegrounds.item;
 
-import com.matsg.battlegrounds.api.item.FireArm;
-import com.matsg.battlegrounds.api.item.ItemAttribute;
-import com.matsg.battlegrounds.api.item.ReloadType;
+import com.matsg.battlegrounds.api.item.*;
+import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.item.attributes.DoubleAttributeValue;
 import com.matsg.battlegrounds.item.attributes.IntegerAttributeValue;
 import com.matsg.battlegrounds.item.attributes.ReloadTypeAttributeValue;
 import com.matsg.battlegrounds.util.BattleRunnable;
+import com.matsg.battlegrounds.util.BattleSound;
 import com.matsg.battlegrounds.util.Message;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -214,11 +214,51 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
 
     public boolean isRelated(ItemStack itemStack) {
         for (Item item : droppedItems) {
-            if (item.getItemStack() == itemStack) {
+            if (item.getItemStack().equals(itemStack)) {
                 return true;
             }
         }
         return false;
+    }
+
+    public boolean onDrop(GamePlayer gamePlayer, Item item) {
+        if (this.gamePlayer != gamePlayer || reloading || shooting) {
+            return true;
+        }
+        droppedItems.add(item);
+        this.gamePlayer.getLoadout().removeWeapon(this);
+        this.gamePlayer = null;
+        return false;
+    }
+
+    public boolean onPickUp(GamePlayer gamePlayer, Item item) {
+        ItemSlot itemSlot = ItemSlot.fromSlot(gamePlayer.getPlayer().getInventory().getHeldItemSlot());
+        Weapon weapon = gamePlayer.getLoadout().getWeaponIgnoreMetadata(item.getItemStack());
+
+        if (weapon != null && weapon instanceof FireArm) {
+            BattleSound.AMMO_PICKUP.play(game, gamePlayer.getLocation());
+            FireArm fireArm = (FireArm) weapon;
+            fireArm.setAmmo(fireArm.getAmmo() + ammo.getAttributeValue().getValue());
+            item.remove();
+            return update();
+        }
+
+        if (itemSlot == null || itemSlot != ItemSlot.FIREARM_PRIMARY && itemSlot != ItemSlot.FIREARM_SECONDARY || gamePlayer.getLoadout().getWeapon(itemSlot) != null) {
+            return true;
+        }
+
+        if (itemSlot == ItemSlot.FIREARM_PRIMARY) {
+            gamePlayer.getLoadout().setPrimary(this);
+        } else if (itemSlot == ItemSlot.FIREARM_SECONDARY) {
+            gamePlayer.getLoadout().setSecondary(this);
+        }
+
+        BattleSound.play(BattleSound.ITEM_EQUIP, game, gamePlayer.getLocation());
+        droppedItems.clear();
+        item.remove();
+        this.gamePlayer = gamePlayer;
+        this.itemSlot = itemSlot;
+        return update();
     }
 
     public void onSwitch() {
@@ -295,6 +335,9 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
         super.remove();
         cancelReload();
         resetState();
+        for (Item item : droppedItems) {
+            item.remove();
+        }
     }
 
     public void resetState() {

@@ -28,7 +28,20 @@ public class BattleLoadout implements Loadout {
 
     public Loadout clone() {
         try {
-            return (Loadout) super.clone();
+            BattleLoadout loadout = (BattleLoadout) super.clone();
+            if (primary != null) {
+                loadout.primary = primary.clone();
+            }
+            if (secondary != null) {
+                loadout.secondary = secondary.clone();
+            }
+            if (equipment != null) {
+                loadout.equipment = equipment.clone();
+            }
+            if (knife != null) {
+                loadout.knife = knife.clone();
+            }
+            return loadout;
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
             return null;
@@ -84,12 +97,7 @@ public class BattleLoadout implements Loadout {
             return false;
         }
         Loadout loadout = (Loadout) obj;
-        return id == loadout.getId()
-                && name.equals(loadout.getName())
-                && primary.getName().equals(loadout.getPrimary().getName())
-                && secondary.getName().equals(loadout.getSecondary().getName())
-                && equipment.getName().equals(loadout.getEquipment().getName())
-                && knife.getName().equals(loadout.getKnife().getName());
+        return id == loadout.getId() && name.equals(loadout.getName());
     }
 
     public Weapon getWeapon(ItemSlot itemSlot) {
@@ -125,6 +133,18 @@ public class BattleLoadout implements Loadout {
 
     public Weapon[] getWeapons() {
         return new Weapon[] { primary, secondary, equipment, knife };
+    }
+
+    public void removeWeapon(Weapon weapon) {
+        if (primary == weapon) {
+            primary = null;
+        } else if (secondary == weapon) {
+            secondary = null;
+        } else if (equipment == weapon) {
+            equipment = null;
+        } else if (knife == weapon) {
+            knife = null;
+        }
     }
 
     public void updateInventory() {

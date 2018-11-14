@@ -16,7 +16,6 @@ import com.matsg.battlegrounds.util.Message;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
@@ -139,14 +138,14 @@ public class BattleKnife extends BattleWeapon implements Knife {
         return false;
     }
 
-    public boolean onDrop() {
+    public boolean onDrop(GamePlayer gamePlayer, Item item) {
         return true;
     }
 
     public void onLeftClick() { }
 
-    public boolean onPickUp(Player player, Item itemEntity) {
-        if (game.getPlayerManager().getGamePlayer(player) != gamePlayer) {
+    public boolean onPickUp(GamePlayer gamePlayer, Item itemEntity) {
+        if (this.gamePlayer != gamePlayer) {
             return true;
         }
         itemEntity.remove();
@@ -165,6 +164,8 @@ public class BattleKnife extends BattleWeapon implements Knife {
         }
         shoot();
     }
+
+    public void onSwap() { }
 
     public void onSwitch() { }
 

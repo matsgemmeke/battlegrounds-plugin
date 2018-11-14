@@ -24,6 +24,8 @@ public interface GamePlayer extends OfflineGamePlayer, Comparable<GamePlayer> {
 
     SavedInventory getSavedInventory();
 
+    Loadout getSelectedLoadout();
+
     PlayerStatus getStatus();
 
     Team getTeam();
@@ -33,6 +35,8 @@ public interface GamePlayer extends OfflineGamePlayer, Comparable<GamePlayer> {
     void setLives(int lives);
 
     void setLoadout(Loadout loadout);
+
+    void setSelectedLoadout(Loadout loadout);
 
     void setTeam(Team team);
 

@@ -7,6 +7,8 @@ import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameState;
 import com.matsg.battlegrounds.api.game.ItemRegistry;
 import com.matsg.battlegrounds.api.game.PlayerManager;
+import com.matsg.battlegrounds.api.item.Attachment;
+import com.matsg.battlegrounds.api.item.FireArm;
 import com.matsg.battlegrounds.api.item.Item;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import org.bukkit.Material;
@@ -28,7 +30,6 @@ public class PlayerDropItemEventHandlerTest {
     private Game game;
     private GameManager gameManager;
     private GamePlayer gamePlayer;
-    private Item item;
     private org.bukkit.entity.Item itemEntity;
     private ItemRegistry itemRegistry;
     private ItemStack itemStack;
@@ -41,7 +42,6 @@ public class PlayerDropItemEventHandlerTest {
         this.plugin = mock(Battlegrounds.class);
         this.game = mock(Game.class);
         this.gamePlayer = mock(GamePlayer.class);
-        this.item = mock(Item.class);
         this.itemEntity = mock(org.bukkit.entity.Item.class);
         this.itemRegistry = mock(ItemRegistry.class);
         this.player = mock(Player.class);
@@ -55,7 +55,6 @@ public class PlayerDropItemEventHandlerTest {
 
         when(game.getItemRegistry()).thenReturn(itemRegistry);
         when(game.getPlayerManager()).thenReturn(playerManager);
-        when(item.getItemStack()).thenReturn(itemStack);
         when(itemEntity.getItemStack()).thenReturn(itemStack);
         when(plugin.getGameManager()).thenReturn(gameManager);
     }
@@ -82,11 +81,13 @@ public class PlayerDropItemEventHandlerTest {
 
         verify(playerManager, times(2)).getGamePlayer(player);
 
-        assertFalse(event.isCancelled());
+        assertTrue(event.isCancelled());
     }
 
     @Test
     public void testPlayerItemDropWhenGameDoesNotAllowItems() {
+        Item item = mock(Item.class);
+
         when(game.getState()).thenReturn(GameState.RESETTING);
         when(itemRegistry.getItemIgnoreMetadata(itemStack)).thenReturn(item);
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
@@ -96,14 +97,32 @@ public class PlayerDropItemEventHandlerTest {
 
         verify(playerManager, times(2)).getGamePlayer(player);
 
-        assertFalse(event.isCancelled());
+        assertTrue(event.isCancelled());
     }
 
     @Test
-    public void testPlayerItemDropWhenHoldingItem() {
+    public void testPlayerItemDropWhenHoldingNonDroppableItem() {
+        Attachment attachment = mock(Attachment.class);
+
         when(game.getState()).thenReturn(GameState.IN_GAME);
-        when(item.onDrop(gamePlayer)).thenReturn(true);
-        when(itemRegistry.getItemIgnoreMetadata(itemStack)).thenReturn(item);
+        when(itemRegistry.getItemIgnoreMetadata(itemStack)).thenReturn(attachment);
+        when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
+
+        PlayerDropItemEventHandler eventHandler = new PlayerDropItemEventHandler(plugin);
+        eventHandler.handle(event);
+
+        verify(playerManager, times(2)).getGamePlayer(player);
+
+        assertTrue(event.isCancelled());
+    }
+
+    @Test
+    public void testPlayerItemDropWhenHoldinDroppableItem() {
+        FireArm fireArm = mock(FireArm.class);
+
+        when(fireArm.onDrop(gamePlayer, itemEntity)).thenReturn(true);
+        when(game.getState()).thenReturn(GameState.IN_GAME);
+        when(itemRegistry.getItemIgnoreMetadata(itemStack)).thenReturn(fireArm);
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
 
         PlayerDropItemEventHandler eventHandler = new PlayerDropItemEventHandler(plugin);

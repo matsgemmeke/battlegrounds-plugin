@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.item;
 
 import com.matsg.battlegrounds.api.item.Equipment;
+import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.util.BattleRunnable;
@@ -159,7 +160,7 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
         return false;
     }
 
-    public boolean onDrop() {
+    public boolean onDrop(GamePlayer gamePlayer, Item item) {
         return true;
     }
 
@@ -170,7 +171,7 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
         deployEquipment(velocity);
     }
 
-    public boolean onPickUp(Player player, Item item) {
+    public boolean onPickUp(GamePlayer gamePlayer, Item item) {
         return true;
     }
 
@@ -180,6 +181,8 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
         }
         deployEquipment(0.0);
     }
+
+    public void onSwap() { }
 
     public void onSwitch() { }
 

@@ -37,6 +37,6 @@ public class PlayerPickupItemEventHandler implements EventHandler<PlayerPickupIt
             return;
         }
 
-        event.setCancelled(((Droppable) item).onPickUp(player, event.getItem()));
+        event.setCancelled(((Droppable) item).onPickUp(game.getPlayerManager().getGamePlayer(player), event.getItem()));
     }
 }

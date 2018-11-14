@@ -1,11 +1,9 @@
 package com.matsg.battlegrounds.item;
 
-import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Random;
@@ -78,15 +76,6 @@ public abstract class BattleWeapon extends BattleItem implements Weapon {
         return string.toString();
     }
 
-    public abstract boolean onDrop();
-
-    public boolean onDrop(GamePlayer gamePlayer) {
-        if (gamePlayer == null || gamePlayer != this.gamePlayer) {
-            return true;
-        }
-        return onDrop();
-    }
-
     public abstract void onLeftClick();
 
     public void onLeftClick(GamePlayer gamePlayer) {
@@ -103,6 +92,15 @@ public abstract class BattleWeapon extends BattleItem implements Weapon {
             return;
         }
         onRightClick();
+    }
+
+    public abstract void onSwap();
+
+    public void onSwap(GamePlayer gamePlayer) {
+        if (gamePlayer == null || gamePlayer != this.gamePlayer) {
+            return;
+        }
+        onSwap();
     }
 
     public abstract void onSwitch();

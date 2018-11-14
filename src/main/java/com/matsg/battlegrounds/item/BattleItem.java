@@ -7,7 +7,6 @@ import com.matsg.battlegrounds.api.item.Item;
 import com.matsg.battlegrounds.api.item.ItemAttribute;
 import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.player.GamePlayer;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -94,13 +93,13 @@ public abstract class BattleItem implements Item {
         return null;
     }
 
-    public boolean onDrop(GamePlayer gamePlayer) {
-        return false;
-    }
-
     public void onLeftClick(GamePlayer gamePlayer) { }
 
     public void onRightClick(GamePlayer gamePlayer) { }
 
+    public void onSwap(GamePlayer gamePlayer) { }
+
     public void onSwitch(GamePlayer gamePlayer) { }
+
+    public void remove() { }
 }

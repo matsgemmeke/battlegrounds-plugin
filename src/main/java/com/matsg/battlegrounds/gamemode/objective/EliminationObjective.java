@@ -26,14 +26,14 @@ public class EliminationObjective implements Objective {
     }
 
     public boolean isReached(Game game) {
-        f: for (Team team : game.getGameMode().getTeams()) {
-            for (GamePlayer gamePlayer : team.getPlayers()) {
-                if (gamePlayer.getStatus().isAlive()) {
-                    continue f;
-                }
-            }
-            return true;
-        }
+//        f: for (Team team : game.getGameMode().getTeams()) {
+//            for (GamePlayer gamePlayer : team.getPlayers()) {
+//                if (gamePlayer.getStatus().isAlive()) {
+//                    continue f;
+//                }
+//            }
+//            return true;
+//        }
         return false;
     }
 }

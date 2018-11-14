@@ -24,17 +24,18 @@ import java.util.Map;
 
 public class SelectLoadoutView implements View {
 
-    private static Battlegrounds plugin = BattlegroundsPlugin.getPlugin();
+    private Battlegrounds plugin;
     private Game game;
     private GamePlayer gamePlayer;
     private Inventory inventory;
     private Map<ItemStack, Loadout> loadouts;
 
-    public SelectLoadoutView(Game game, GamePlayer gamePlayer) {
+    public SelectLoadoutView(Battlegrounds plugin, Game game, GamePlayer gamePlayer) {
         this.game = game;
         this.gamePlayer = gamePlayer;
         this.inventory = plugin.getServer().createInventory(this, 27, Message.create(TranslationKey.VIEW_SELECT_LOADOUT));
         this.loadouts = new HashMap<>();
+        this.plugin = plugin;
 
         for (Loadout loadout : plugin.getPlayerStorage().getStoredPlayer(gamePlayer.getUUID()).getLoadouts()) {
             addLoadout(loadout);
@@ -83,7 +84,8 @@ public class SelectLoadoutView implements View {
             player.closeInventory();
             return;
         }
-        game.getPlayerManager().changeLoadout(gamePlayer, loadout, gamePlayer.getLoadout() == null || game.getTimeControl().getTime() <= 10);
+        game.getPlayerManager().changeLoadout(gamePlayer, loadout.clone(), gamePlayer.getLoadout() == null || game.getTimeControl().getTime() <= 10);
+        gamePlayer.setSelectedLoadout(loadout);
         player.closeInventory();
     }
 

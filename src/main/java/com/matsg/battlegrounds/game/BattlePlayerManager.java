@@ -27,16 +27,13 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class BattlePlayerManager implements PlayerManager {
 
     private Game game;
     private LevelConfig levelConfig;
     private List<GamePlayer> players;
-    private Map<GamePlayer, Loadout> selectedLoadouts;
     private PlayerStorage playerStorage;
 
     public BattlePlayerManager(Game game, LevelConfig levelConfig, PlayerStorage playerStorage) {
@@ -44,7 +41,6 @@ public class BattlePlayerManager implements PlayerManager {
         this.levelConfig = levelConfig;
         this.players = new ArrayList<>();
         this.playerStorage = playerStorage;
-        this.selectedLoadouts = new HashMap<>();
     }
 
     public List<GamePlayer> getPlayers() {
@@ -98,14 +94,13 @@ public class BattlePlayerManager implements PlayerManager {
     }
 
     public void changeLoadout(GamePlayer gamePlayer, Loadout loadout, boolean apply) {
-        Loadout old = gamePlayer.getLoadout();
-        setSelectedLoadout(gamePlayer, loadout);
+        Loadout current = gamePlayer.getLoadout();
         if (!apply) {
             ActionBar.CHANGE_LOADOUT.send(gamePlayer.getPlayer());
             return;
         }
-        if (old != null && old != loadout) {
-            clearLoadout(old);
+        if (current != null && current.equals(loadout)) {
+            clearLoadout(current);
         }
         addLoadout(gamePlayer, loadout);
         gamePlayer.setLoadout(loadout);
@@ -243,10 +238,6 @@ public class BattlePlayerManager implements PlayerManager {
         return nearestPlayer;
     }
 
-    public Loadout getSelectedLoadout(GamePlayer gamePlayer) {
-        return selectedLoadouts.get(gamePlayer);
-    }
-
     public void preparePlayer(GamePlayer gamePlayer) {
         Player player = gamePlayer.getPlayer();
         player.setFoodLevel(20);
@@ -303,7 +294,7 @@ public class BattlePlayerManager implements PlayerManager {
     }
 
     public void respawnPlayer(GamePlayer gamePlayer, Spawn spawn) {
-        changeLoadout(gamePlayer, selectedLoadouts.get(gamePlayer), true);
+        changeLoadout(gamePlayer, gamePlayer.getSelectedLoadout().clone(), true);
         spawn.setGamePlayer(gamePlayer);
 
         new BattleRunnable() {
@@ -311,14 +302,6 @@ public class BattlePlayerManager implements PlayerManager {
                 spawn.setGamePlayer(null); // Wait 5 seconds before resetting the spawn state
             }
         }.runTaskLater(100);
-    }
-
-    private void setSelectedLoadout(GamePlayer gamePlayer, Loadout loadout) {
-        if (!selectedLoadouts.containsKey(gamePlayer)) {
-            selectedLoadouts.put(gamePlayer, loadout);
-            return;
-        }
-        selectedLoadouts.replace(gamePlayer, loadout);
     }
 
     public void setVisible(GamePlayer gamePlayer, boolean visible) {
