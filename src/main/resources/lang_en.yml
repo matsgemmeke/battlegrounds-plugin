@@ -118,10 +118,9 @@ title-tdm-start: "&fTeam Deathmatch,&6Eliminate enemy players,10,30,10"
 
 util-custom-loadout-locked: "&cYou have to be level %bg_level% or above to create custom loadouts."
 
-view-clear-weapon: "&7Right-click to clear this weapon"
 view-edit-attachment: "&7Left-click to choose an attachment,&7Right-click to remove"
 view-edit-loadout: "&7Click to edit this loadout"
-view-edit-weapon: "&7Left-click to choose a weapon"
+view-edit-weapon: "&7Left-click to choose a weapon,&7Right-click to remove"
 view-go-back: "&fGo back"
 view-gun-attachment: "%bg_weapon% attachment"
 view-item-locked: "&cUnlocked at level %bg_level%"

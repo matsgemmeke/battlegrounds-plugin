@@ -2,6 +2,7 @@ package com.matsg.battlegrounds.player;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.config.StoredPlayer;
+import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.player.OfflineGamePlayer;
 import com.matsg.battlegrounds.api.player.PlayerStorage;
 import com.matsg.battlegrounds.config.BattlePlayerYaml;
@@ -78,7 +79,8 @@ public class LocalPlayerStorage implements PlayerStorage {
             StoredPlayer storedPlayer = new BattlePlayerYaml(plugin, uuid);
             storedPlayer.createDefaultAttributes();
             for (int i = 1; i <= 5; i ++) {
-                storedPlayer.saveLoadout(defaultLoadouts.getList().get(i - 1));
+                Loadout loadout = defaultLoadouts.getList().get(i - 1);
+                storedPlayer.saveLoadout(loadout.getId(), loadout);
             }
             storedPlayers.add(storedPlayer);
         } catch (IOException e) {

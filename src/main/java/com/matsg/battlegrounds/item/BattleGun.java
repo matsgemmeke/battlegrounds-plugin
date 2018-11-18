@@ -79,7 +79,6 @@ public class BattleGun extends BattleFireArm implements Gun {
 
     public Gun clone() {
         BattleGun gun = (BattleGun) super.clone();
-        gun.attachments = new ArrayList<>(); // Gun clones have their attachments stripped
         gun.burstRounds = gun.getAttribute("shot-burstrounds");
         gun.fireMode = gun.getAttribute("shot-firemode");
         gun.fireRate = gun.getAttribute("shot-firerate");
@@ -112,9 +111,6 @@ public class BattleGun extends BattleFireArm implements Gun {
     }
 
     public void addAttachments() {
-        if (appliedModifiers.size() > 0) {
-            return;
-        }
         toggleModifiers.clear();
         for (Attachment attachment : attachments) {
             for (ItemAttribute attribute : attributes) {
@@ -257,6 +253,7 @@ public class BattleGun extends BattleFireArm implements Gun {
     }
 
     public void resetState() {
+        appliedModifiers.clear();
         addAttachments();
         setScoped(false);
         super.resetState();

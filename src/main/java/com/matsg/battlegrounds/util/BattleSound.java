@@ -12,7 +12,6 @@ public class BattleSound implements com.matsg.battlegrounds.api.util.Sound {
 
     public static final BattleSound
             ATTACHMENT_TOGGLE = new BattleSound(XSound.CLICK.bukkitSound(), (float) 0.5, (float) 1.25),
-            AMMO_PICKUP = new BattleSound(XSound.STEP_GRAVEL.bukkitSound(), 1, 2),
             COUNTDOWN_NOTE = new BattleSound(XSound.NOTE_STICKS.bukkitSound(), 1, 1),
             EXPLOSION = new BattleSound(XSound.EXPLODE.bukkitSound(), 10, (float) 0.75),
             EXPLOSIVE_THROW = new BattleSound(XSound.SHOOT_ARROW.bukkitSound(), 1, (float) 0.5),

@@ -11,11 +11,11 @@ public interface StoredPlayer extends OfflineGamePlayer, Comparable<StoredPlayer
 
     void createDefaultAttributes();
 
-    Loadout getLoadout(int loadoutId);
+    Loadout getLoadout(int loadoutNumber);
 
     Collection<Loadout> getLoadouts();
 
-    void saveLoadout(Loadout loadout);
+    void saveLoadout(int loadoutNumber, Loadout loadout);
 
     void updateName(String name);
 }

@@ -6,6 +6,7 @@ import org.bukkit.inventory.ItemStack;
 public class BattleLoadout implements Loadout {
 
     private final int id;
+    private boolean defaultLoadout;
     private Equipment equipment;
     private FireArm primary, secondary;
     private Knife knife;
@@ -18,12 +19,18 @@ public class BattleLoadout implements Loadout {
         this.secondary = secondary;
         this.equipment = equipment;
         this.knife = knife;
+        this.defaultLoadout = false;
 
         for (Weapon weapon : getWeapons()) {
             if (weapon != null) {
                 weapon.setItemSlot(weapon.getType().getDefaultItemSlot());
             }
         }
+    }
+
+    public BattleLoadout(int id, String name, FireArm primary, FireArm secondary, Equipment equipment, Knife knife, boolean defaultLoadout) {
+        this(id, name, primary, secondary, equipment, knife);
+        this.defaultLoadout = defaultLoadout;
     }
 
     public Loadout clone() {
@@ -70,6 +77,10 @@ public class BattleLoadout implements Loadout {
 
     public FireArm getSecondary() {
         return secondary;
+    }
+
+    public boolean isDefaultLoadout() {
+        return defaultLoadout;
     }
 
     public void setEquipment(Equipment equipment) {
@@ -149,7 +160,9 @@ public class BattleLoadout implements Loadout {
 
     public void updateInventory() {
         for (Weapon weapon : getWeapons()) {
-            weapon.update();
+            if (weapon != null) {
+                weapon.update();
+            }
         }
     }
 }

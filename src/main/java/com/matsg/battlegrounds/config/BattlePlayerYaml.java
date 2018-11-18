@@ -110,16 +110,17 @@ public class BattlePlayerYaml extends AbstractYaml implements StoredPlayer {
         return 0;
     }
 
-    public Loadout getLoadout(int loadoutId) {
-        ConfigurationSection section = getConfigurationSection("Loadout." + loadoutId);
+    public Loadout getLoadout(int loadoutNumber) {
+        ConfigurationSection section = getConfigurationSection("Loadout." + loadoutNumber);
 
         Loadout loadout = new BattleLoadout(
-                loadoutId,
+                loadoutNumber,
                 section.getString("Name"),
                 plugin.getFireArmConfig().get(section.getString("Primary.Id")),
                 plugin.getFireArmConfig().get(section.getString("Secondary.Id")),
                 plugin.getEquipmentConfig().get(section.getString("Equipment")),
-                plugin.getKnifeConfig().get(section.getString("Knife")));
+                plugin.getKnifeConfig().get(section.getString("Knife"))
+        );
 
         if (loadout.getPrimary() instanceof Gun) {
             for (String attachmentId : section.getString("Primary.Attachments").split(", ")) {
@@ -161,18 +162,18 @@ public class BattlePlayerYaml extends AbstractYaml implements StoredPlayer {
         return map;
     }
 
-    public void saveLoadout(Loadout loadout) {
-        set("Loadout." + loadout.getId() + ".Name", loadout.getName());
-        set("Loadout." + loadout.getId() + ".Primary.Id", loadout.getPrimary() != null ? loadout.getPrimary().getId() : null);
-        set("Loadout." + loadout.getId() + ".Secondary.Id", loadout.getSecondary() != null ? loadout.getSecondary().getId() : null);
-        set("Loadout." + loadout.getId() + ".Equipment", loadout.getEquipment() != null ? loadout.getEquipment().getId() : null);
-        set("Loadout." + loadout.getId() + ".Knife", loadout.getKnife() != null ? loadout.getKnife().getId() : null);
+    public void saveLoadout(int loadoutNumber, Loadout loadout) {
+        set("Loadout." + loadoutNumber + ".Name", loadout.getName());
+        set("Loadout." + loadoutNumber + ".Primary.Id", loadout.getPrimary() != null ? loadout.getPrimary().getId() : null);
+        set("Loadout." + loadoutNumber + ".Secondary.Id", loadout.getSecondary() != null ? loadout.getSecondary().getId() : null);
+        set("Loadout." + loadoutNumber + ".Equipment", loadout.getEquipment() != null ? loadout.getEquipment().getId() : null);
+        set("Loadout." + loadoutNumber + ".Knife", loadout.getKnife() != null ? loadout.getKnife().getId() : null);
 
         if (loadout.getPrimary() != null && loadout.getPrimary() instanceof Gun) {
-            set("Loadout." + loadout.getId() + ".Primary.Attachments", convertAttachments((Gun) loadout.getPrimary()));
+            set("Loadout." + loadoutNumber + ".Primary.Attachments", convertAttachments((Gun) loadout.getPrimary()));
         }
         if (loadout.getSecondary() != null && loadout.getSecondary() instanceof Gun) {
-            set("Loadout." + loadout.getId() + ".Secondary.Attachments", convertAttachments((Gun) loadout.getSecondary()));
+            set("Loadout." + loadoutNumber + ".Secondary.Attachments", convertAttachments((Gun) loadout.getSecondary()));
         }
 
         save();

@@ -8,6 +8,7 @@ import com.matsg.battlegrounds.config.BattlePlayerYaml;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.util.Message;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
@@ -32,7 +33,7 @@ public class LoadoutManagerView implements View {
         try {
             int i = 0;
             for (Loadout loadout : new BattlePlayerYaml(plugin, player.getUniqueId()).getLoadouts()) {
-                ItemStack itemStack = new ItemStackBuilder(getLoadoutItemStack(loadout).clone())
+                ItemStack itemStack = new ItemStackBuilder(getLoadoutItemStack(loadout))
                         .addItemFlags(ItemFlag.values())
                         .setAmount(++ i)
                         .setDisplayName(ChatColor.WHITE + loadout.getName())
@@ -58,7 +59,7 @@ public class LoadoutManagerView implements View {
                 return weapon.getItemStack();
             }
         }
-        return null;
+        return new ItemStack(Material.BARRIER);
     }
 
     public void onClick(Player player, ItemStack itemStack, ClickType clickType) {

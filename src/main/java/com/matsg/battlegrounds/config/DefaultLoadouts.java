@@ -31,7 +31,8 @@ public class DefaultLoadouts extends AbstractYaml {
                 plugin.getFireArmConfig().get(section.getString("Primary.Name")),
                 plugin.getFireArmConfig().get(section.getString("Secondary.Name")),
                 plugin.getEquipmentConfig().get(section.getString("Equipment")),
-                plugin.getKnifeConfig().get(section.getString("Knife"))
+                plugin.getKnifeConfig().get(section.getString("Knife")),
+                true
         );
     }
 }

@@ -1,6 +1,5 @@
 package com.matsg.battlegrounds.gui;
 
-import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Game;
@@ -19,8 +18,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SelectLoadoutView implements View {
 
@@ -28,13 +27,13 @@ public class SelectLoadoutView implements View {
     private Game game;
     private GamePlayer gamePlayer;
     private Inventory inventory;
-    private Map<ItemStack, Loadout> loadouts;
+    private List<SelectLoadoutViewItem> items;
 
     public SelectLoadoutView(Battlegrounds plugin, Game game, GamePlayer gamePlayer) {
         this.game = game;
         this.gamePlayer = gamePlayer;
         this.inventory = plugin.getServer().createInventory(this, 27, Message.create(TranslationKey.VIEW_SELECT_LOADOUT));
-        this.loadouts = new HashMap<>();
+        this.items = new ArrayList<>();
         this.plugin = plugin;
 
         for (Loadout loadout : plugin.getPlayerStorage().getStoredPlayer(gamePlayer.getUUID()).getLoadouts()) {
@@ -61,7 +60,7 @@ public class SelectLoadoutView implements View {
                 .build();
 
         inventory.setItem(loadout.getId() + 10, itemStack);
-        loadouts.put(inventory.getItem(loadout.getId() + 10), loadout);
+        items.add(new SelectLoadoutViewItem(inventory.getItem(loadout.getId() + 10), loadout, locked));
     }
 
     private ItemStack getLoadoutItemStack(Loadout loadout) {
@@ -70,15 +69,25 @@ public class SelectLoadoutView implements View {
                 return weapon.getItemStack();
             }
         }
+        return new ItemStack(Material.BARRIER);
+    }
+
+    private SelectLoadoutViewItem getViewItem(ItemStack itemStack) {
+        for (SelectLoadoutViewItem item : items) {
+            if (item.getItemStack().equals(itemStack)) {
+                return item;
+            }
+        }
         return null;
     }
 
     public void onClick(Player player, ItemStack itemStack, ClickType clickType) {
         GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
-        Loadout loadout = loadouts.get(itemStack);
-        if (game == null || !game.getState().isInProgress() || gamePlayer == null || loadout == null || itemStack == null || itemStack.getType() == Material.BARRIER) {
+        SelectLoadoutViewItem item = getViewItem(itemStack);
+        if (gamePlayer == null || itemStack == null || item == null || item.getLoadout() == null || item.isLocked() || !game.getState().isInProgress()) {
             return;
         }
+        Loadout loadout = item.getLoadout();
         if (loadout.equals(gamePlayer.getLoadout())) {
             ActionBar.SAME_LOADOUT.send(player);
             player.closeInventory();
@@ -91,5 +100,30 @@ public class SelectLoadoutView implements View {
 
     public boolean onClose() {
         return gamePlayer.getLoadout() != null || !game.getState().isInProgress();
+    }
+
+    public class SelectLoadoutViewItem {
+
+        private boolean locked;
+        private ItemStack itemStack;
+        private Loadout loadout;
+
+        public SelectLoadoutViewItem(ItemStack itemStack, Loadout loadout, boolean locked) {
+            this.itemStack = itemStack;
+            this.loadout = loadout;
+            this.locked = locked;
+        }
+
+        public ItemStack getItemStack() {
+            return itemStack;
+        }
+
+        public Loadout getLoadout() {
+            return loadout;
+        }
+
+        public boolean isLocked() {
+            return locked;
+        }
     }
 }

@@ -7,6 +7,7 @@ import com.matsg.battlegrounds.item.EquipmentType;
 import com.matsg.battlegrounds.item.FireArmType;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.util.Message;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -24,7 +25,7 @@ public class WeaponsView implements View {
     private Loadout loadout;
     private List<Weapon> weapons;
 
-    public WeaponsView(Battlegrounds plugin, Loadout loadout, ItemSlot weaponItemSlot) {
+    public WeaponsView(Battlegrounds plugin, Loadout loadout, ItemSlot itemSlot) {
         this.plugin = plugin;
         this.inventory = plugin.getServer().createInventory(this, 27, Message.create(TranslationKey.VIEW_WEAPONS));
         this.loadout = loadout;
@@ -35,7 +36,7 @@ public class WeaponsView implements View {
             List<FireArm> list = (List) plugin.getFireArmConfig().getList(fireArmType);
             if (list.size() > 0) {
                 FireArm fireArm = list.get(0);
-                if (fireArm.getType().getDefaultItemSlot() == weaponItemSlot) {
+                if (fireArm.getType().getDefaultItemSlot() == itemSlot) {
                     addWeapon(fireArm);
                 }
             }
@@ -45,7 +46,7 @@ public class WeaponsView implements View {
             List<Equipment> list = (List) plugin.getEquipmentConfig().getList(equipmentType);
             if (list.size() > 0) {
                 Equipment equipment = list.get(0);
-                if (equipment.getType().getDefaultItemSlot() == weaponItemSlot) {
+                if (equipment.getType().getDefaultItemSlot() == itemSlot) {
                     addWeapon(equipment);
                 }
             }
@@ -54,7 +55,7 @@ public class WeaponsView implements View {
         List<Knife> list = (List) plugin.getKnifeConfig().getList();
         if (list.size() > 0) {
             Knife knife = list.get(0);
-            if (knife.getType().getDefaultItemSlot() == weaponItemSlot) {
+            if (knife.getType().getDefaultItemSlot() == itemSlot) {
                 addWeapon(knife);
             }
         }
@@ -62,20 +63,19 @@ public class WeaponsView implements View {
         inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(Message.create(TranslationKey.GO_BACK)).build());
     }
 
-    public WeaponsView(Battlegrounds plugin, Loadout loadout, ItemSlot weaponItemSlot, EditLoadoutView editLoadoutView) {
-        this(plugin, loadout, weaponItemSlot);
-        this.previous = editLoadoutView.getInventory();
+    public WeaponsView(Battlegrounds plugin, Loadout loadout, ItemSlot itemSlot, Inventory previous) {
+        this(plugin, loadout, itemSlot);
+        this.previous = previous;
     }
 
     private void addWeapon(Weapon weapon) {
         inventory.addItem(new ItemStackBuilder(weapon.getItemStack().clone())
                 .addItemFlags(ItemFlag.values())
-                .setDisplayName("§f" + weapon.getType().getName())
+                .setDisplayName(ChatColor.WHITE + weapon.getType().getName())
                 .setLore(new String[0])
                 .setUnbreakable(true)
                 .build());
     }
-
 
     private static List<Weapon> getWeaponList(Battlegrounds plugin) {
         List<Weapon> list = new ArrayList<>();

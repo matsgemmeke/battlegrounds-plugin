@@ -49,11 +49,13 @@ public class BattlePlayerManager implements PlayerManager {
 
     private void addLoadout(GamePlayer gamePlayer, Loadout loadout) {
         for (Weapon weapon : loadout.getWeapons()) {
-            game.getItemRegistry().addItem(weapon);
-            weapon.setGame(game);
-            weapon.setGamePlayer(gamePlayer);
-            weapon.resetState();
-            weapon.update();
+            if (weapon != null) {
+                game.getItemRegistry().addItem(weapon);
+                weapon.setGame(game);
+                weapon.setGamePlayer(gamePlayer);
+                weapon.resetState();
+                weapon.update();
+            }
         }
     }
 

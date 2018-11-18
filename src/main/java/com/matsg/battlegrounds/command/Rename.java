@@ -23,16 +23,16 @@ public class Rename extends SubCommand {
             return;
         }
 
-        int loadoutId;
+        int loadoutNumber;
 
         try {
-            loadoutId = Integer.parseInt(args[1]);
+            loadoutNumber = Integer.parseInt(args[1]);
         } catch (Exception e) {
             player.sendMessage(Message.create(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[1])));
             return;
         }
 
-        Loadout loadout = plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).getLoadout(loadoutId);
+        Loadout loadout = plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).getLoadout(loadoutNumber);
 
         if (loadout == null) {
             player.sendMessage(Message.create(TranslationKey.INVALID_LOADOUT));
@@ -46,7 +46,7 @@ public class Rename extends SubCommand {
 
         String old = loadout.getName();
         loadout.setName(args[2]);
-        plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).saveLoadout(loadout);
+        plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).saveLoadout(loadoutNumber, loadout);
 
         player.sendMessage(Message.create(TranslationKey.RENAME_LOADOUT,
                 new Placeholder("bg_loadout_old", old),

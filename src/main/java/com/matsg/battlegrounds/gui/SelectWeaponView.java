@@ -6,6 +6,7 @@ import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.util.Message;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -54,6 +55,10 @@ public class SelectWeaponView implements View {
         this.previous = previous;
     }
 
+    public Inventory getInventory() {
+        return inventory;
+    }
+
     private void addWeapon(Weapon weapon, int slot) {
         ItemStack itemStack = plugin.getLevelConfig().getLevelUnlocked(weapon.getName())
                 <= plugin.getLevelConfig().getLevel(plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).getExp())
@@ -74,7 +79,7 @@ public class SelectWeaponView implements View {
     private ItemStack getUnlockedItemStack(Weapon weapon) {
         return new ItemStackBuilder(weapon.getItemStack().clone())
                 .addItemFlags(ItemFlag.values())
-                .setDisplayName("§f" + weapon.getName())
+                .setDisplayName(ChatColor.WHITE + weapon.getName())
                 .setLore(getLore(weapon))
                 .setUnbreakable(true)
                 .build();
@@ -87,7 +92,7 @@ public class SelectWeaponView implements View {
         Pattern pattern = Pattern.compile("\\G\\s*(.{1," + maxLength + "})(?=\\s|$)", Pattern.DOTALL);
         Matcher matcher = pattern.matcher(weapon.getDescription());
         while (matcher.find()) {
-            lore.add("§f" + matcher.group(1));
+            lore.add(ChatColor.WHITE + matcher.group(1));
         }
         return lore.toArray(new String[lore.size()]);
     }
@@ -104,12 +109,13 @@ public class SelectWeaponView implements View {
             return;
         }
         replaceWeapon(loadout, weapon);
-        plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).saveLoadout(loadout);
+        plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).saveLoadout(loadout.getId(), loadout);
         player.openInventory(new EditLoadoutView(plugin, loadout).getInventory());
     }
 
     private void replaceWeapon(Loadout loadout, Weapon weapon) {
         ItemSlot itemSlot = weapon.getType().getDefaultItemSlot();
+        weapon.setItemSlot(itemSlot);
         switch (itemSlot) {
             case FIREARM_PRIMARY:
                 if (loadout.getPrimary() != null && loadout.getPrimary() instanceof Gun) {
@@ -134,9 +140,5 @@ public class SelectWeaponView implements View {
 
     public boolean onClose() {
         return true;
-    }
-
-    public Inventory getInventory() {
-        return inventory;
     }
 }

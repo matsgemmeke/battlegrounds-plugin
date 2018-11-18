@@ -23,17 +23,17 @@ public class EditLoadoutView implements View {
 
     private Battlegrounds plugin;
     private Inventory inventory;
+    private List<EditLoadoutViewItem> items;
     private Loadout loadout;
     private Map<ItemStack, Attachment> attachments;
     private Map<ItemStack, Gun> attachmentGun;
-    private Map<ItemStack, Weapon> weapons;
 
     public EditLoadoutView(Battlegrounds plugin, Loadout loadout) {
         this.loadout = loadout;
         this.plugin = plugin;
         this.attachments = new HashMap<>();
         this.attachmentGun = new HashMap<>();
-        this.weapons = new HashMap<>();
+        this.items = new ArrayList<>();
 
         this.inventory = buildInventory(plugin.getServer().createInventory(this, 27,
                 Message.create(TranslationKey.VIEW_EDIT_LOADOUT, new Placeholder("bg_loadout", loadout.getName()))));
@@ -62,29 +62,36 @@ public class EditLoadoutView implements View {
     }
 
     private Inventory buildInventory(Inventory inventory) {
-        int i = -2;
-        for (Weapon weapon : loadout.getWeapons()) {
+        int slot = -2;
+        for (ItemSlot itemSlot : ItemSlot.WEAPON_SLOTS) {
+            Weapon weapon = loadout.getWeapon(itemSlot);
+
+            String[] lore = Message.create(TranslationKey.EDIT_WEAPON).split(",");
+
             ItemStack itemStack = new ItemStackBuilder(getItemStack(weapon))
                     .addItemFlags(ItemFlag.values())
-                    .setDisplayName(ChatColor.WHITE + getDisplayName(weapon))
-                    .setLore(ChatColor.WHITE + getItemName(weapon), Message.create(TranslationKey.EDIT_WEAPON))
+                    .setDisplayName(ChatColor.WHITE + getDisplayName(itemSlot))
+                    .setLore(ChatColor.WHITE + getItemName(weapon), lore[0], lore[1])
                     .setUnbreakable(true)
                     .build();
 
-            inventory.setItem(i += 2, itemStack);
-            weapons.put(inventory.getItem(i), weapon);
+            inventory.setItem(slot += 2, itemStack);
+            items.add(new EditLoadoutViewItem(inventory.getItem(slot), weapon, itemSlot));
 
             if (weapon instanceof Gun) {
-                addAttachmentSlot(inventory, (Gun) weapon, i + 9);
+                addAttachmentSlot(inventory, (Gun) weapon, slot + 9); // Add an attachment slot one row below the gun
             }
         }
         return inventory;
     }
 
     private Item findItem(ItemStack itemStack) {
-        for (Map<ItemStack, ? extends Item> map : new Map[] { attachments, weapons }) {
-            if (map.containsKey(itemStack)) {
-                return map.get(itemStack);
+        if (attachments.containsKey(itemStack)) {
+            return attachments.get(itemStack);
+        }
+        for (EditLoadoutViewItem item : items) {
+            if (item.getItemStack() == itemStack) {
+                return item.getWeapon();
             }
         }
         return null;
@@ -94,15 +101,16 @@ public class EditLoadoutView implements View {
         return new SelectAttachmentView(plugin, player, loadout, gun, attachmentNr, inventory);
     }
 
-    private String getDisplayName(Weapon weapon) {
-        if (weapon == loadout.getPrimary()) {
-            return Message.create(TranslationKey.WEAPON_PRIMARY);
-        } else if (weapon == loadout.getSecondary()) {
-            return Message.create(TranslationKey.WEAPON_SECONDARY);
-        } else if (weapon == loadout.getEquipment()) {
-            return Message.create(TranslationKey.WEAPON_EQUIPMENT);
-        } else if (weapon == loadout.getKnife()) {
-            return Message.create(TranslationKey.WEAPON_KNIFE);
+    private String getDisplayName(ItemSlot itemSlot) {
+        switch (itemSlot) {
+            case FIREARM_PRIMARY:
+                return Message.create(TranslationKey.WEAPON_PRIMARY);
+            case FIREARM_SECONDARY:
+                return Message.create(TranslationKey.WEAPON_SECONDARY);
+            case EQUIPMENT:
+                return Message.create(TranslationKey.WEAPON_EQUIPMENT);
+            case KNIFE:
+                return Message.create(TranslationKey.WEAPON_KNIFE);
         }
         return null;
     }
@@ -115,16 +123,6 @@ public class EditLoadoutView implements View {
         return weapon != null ? weapon.getItemStack() : new ItemStack(Material.BARRIER);
     }
 
-    private View getWeaponView(Player player, Weapon weapon) {
-        if (weapon.getType().hasSubTypes()) {
-            return new WeaponsView(plugin, loadout, weapon.getType().getDefaultItemSlot(), this);
-        } else {
-            List<Weapon> weapons = new ArrayList<>();
-            weapons.addAll(plugin.getKnifeConfig().getList());
-            return new SelectWeaponView(plugin, player, loadout, weapon.getType(), weapons, inventory);
-        }
-    }
-
     public void onClick(Player player, ItemStack itemStack, ClickType clickType) {
         if (itemStack == null || itemStack.getType() == Material.AIR) {
             return;
@@ -133,28 +131,70 @@ public class EditLoadoutView implements View {
             player.openInventory(new LoadoutManagerView(plugin, player).getInventory());
             return;
         }
-        Item item = findItem(itemStack);
-        if (clickType == ClickType.LEFT) {
-            if (item != null && item instanceof Weapon) {
-                player.openInventory(getWeaponView(player, (Weapon) item).getInventory());
-            }
-            // If the clicked item is the attachment placeholder
-            if (attachmentGun.get(itemStack) != null) {
+        if (attachments.containsKey(itemStack)) {
+            Attachment attachment = attachments.get(itemStack);
+            if (clickType == ClickType.LEFT) {
                 player.openInventory(getAttachmentView(player, loadout, attachmentGun.get(itemStack), 0).getInventory());
             }
+            if (clickType == ClickType.RIGHT) {
+                attachmentGun.get(itemStack).getAttachments().remove(attachment);
+                plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).saveLoadout(loadout.getId(), loadout);
+            }
         }
-        if (clickType == ClickType.RIGHT) {
-            if (item != null && item instanceof Attachment) {
-                attachmentGun.get(itemStack).getAttachments().remove(item);
-                player.openInventory(new EditLoadoutView(plugin, loadout).getInventory());
-                plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).saveLoadout(loadout);
-            } else {
-                player.openInventory(getWeaponView(player, (Weapon) item).getInventory());
+        for (EditLoadoutViewItem item : items) {
+            if (itemStack.equals(item.getItemStack())) {
+                Weapon weapon = item.getWeapon();
+                if (clickType == ClickType.LEFT) {
+                    if (weapon != null) {
+                        if (weapon.getType().hasSubTypes()) {
+                            player.openInventory(new WeaponsView(plugin, loadout, weapon.getType().getDefaultItemSlot(), inventory).getInventory());
+                        } else {
+                            List<Weapon> weapons = new ArrayList<>();
+                            weapons.addAll(plugin.getKnifeConfig().getList());
+                            player.openInventory(new SelectWeaponView(plugin, player, loadout, weapon.getType(), weapons, inventory).getInventory());
+                        }
+                    } else {
+                        player.openInventory(new WeaponsView(plugin, loadout, item.getItemSlot(), inventory).getInventory());
+                    }
+                }
+                if (clickType == ClickType.RIGHT) {
+                    if (weapon != null) {
+                        loadout.removeWeapon(weapon);
+                        plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).saveLoadout(loadout.getId(), loadout);
+                    }
+                    player.openInventory(new EditLoadoutView(plugin, loadout).getInventory());
+                }
+                break;
             }
         }
     }
 
     public boolean onClose() {
         return true;
+    }
+
+    public class EditLoadoutViewItem {
+
+        private ItemSlot itemSlot;
+        private ItemStack itemStack;
+        private Weapon weapon;
+
+        public EditLoadoutViewItem(ItemStack itemStack, Weapon weapon, ItemSlot itemSlot) {
+            this.itemSlot = itemSlot;
+            this.itemStack = itemStack;
+            this.weapon = weapon;
+        }
+
+        public ItemSlot getItemSlot() {
+            return itemSlot;
+        }
+
+        public ItemStack getItemStack() {
+            return itemStack;
+        }
+
+        public Weapon getWeapon() {
+            return weapon;
+        }
     }
 }
