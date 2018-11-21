@@ -720,7 +720,7 @@ QBZ-95:
       Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-0, BLOCK_WOODEN_DOOR_CLOSE-1-2-5, BLOCK_WOODEN_DOOR_OPEN-1-2-46, BLOCK_PISTON_EXTEND-1-2-46, BLOCK_WOODEN_DOOR_OPEN-1-2-50, BLOCK_PISTON_CONTRACT-1-2-50
     Type: MAGAZINE
   Shot:
-    ShotSound: BLOCK_PISTON_CONTRACT-4-2-0, ENTITY_BLAZE_HURT-4-2-0, ENTITY_FIREWORK_BLAST-4-0-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-4-2-0
+    ShotSound: BLOCK_PISTON_CONTRACT-4-2-0, ENTITY_BLAZE_HURT-4-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-4-2-0
     SuppressedSound: ENTITY_BLAZE_HURT-3-2-0, ENTITY_ZOMBIE_ATTACK_IRON_DOOR-0.3-2-0, ENTITY_FIREWORK_BLAST-3-1-0
 
 SCAR-H:
@@ -979,7 +979,7 @@ HK21:
     Magazine: 50
     Max: 4
     Supply: 2
-  Attachments: ACOG_SCOPE, BIPOD, EXTENDED_CLIP(80), HEAVY_BARREL, RAPID_FIRE(20)
+  Attachments: ACOG_SCOPE, BIPOD, EXTENDED_CLIP(80), HEAVY_BARREL
   Description: Fully automatic with high power. Effective at medium to long range.
   DisplayName: HK21
   FireMode:
@@ -1014,8 +1014,8 @@ M249:
     Magazine: 100
     Max: 2
     Supply: 1
-  Attachments: ACOG_SCOPE, BIPOD, HEAVY_BARREL, RAPID_FIRE(20)
-  Description: Fully automatic with high power. Effective at medium to long range.
+  Attachments: ACOG_SCOPE, BIPOD, HEAVY_BARREL
+  Description: Fully automatic with a high rate of fire. Effective at medium to long range.
   DisplayName: M249
   FireMode:
     Burst: 0
@@ -1049,7 +1049,7 @@ RPK:
     Magazine: 40
     Max: 5
     Supply: 3
-  Attachments: ACOG_SCOPE, BIPOD, EXTENDED_CLIP(75), HEAVY_BARREL, RAPID_FIRE(20)
+  Attachments: ACOG_SCOPE, BIPOD, EXTENDED_CLIP(75), HEAVY_BARREL
   Description: Fully automatic with good power and quick fire rate. Effective at medium to long range.
   DisplayName: RPK
   FireMode:

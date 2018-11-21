@@ -13,7 +13,7 @@ game-allowed-commands:
 - leave
 
 # Arenas are protected from construct and destruction modifications
-game-arena-protection: true
+game-arena-protection: false
 
 # Broadcast in-game chat message to the console
 game-broadcast-chat: false

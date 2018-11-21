@@ -68,7 +68,6 @@ public enum TranslationKey {
     LOBBY_SET("setup-lobby-set", true),
     MAINLOBBY_SET("setup-mainlobby-set", true),
     NO_PERMISSION("command-no-permission", false),
-    NO_SELECTION("setup-no-selection", false),
     NONE_SELECTED("view-none-selected", false),
     NOT_PLAYING("game-not-playing", false),
     PLAYER_JOIN("game-player-join", true),

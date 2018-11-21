@@ -7,6 +7,7 @@ import com.matsg.battlegrounds.api.gamemode.GameMode;
 import com.matsg.battlegrounds.game.*;
 import com.matsg.battlegrounds.gamemode.GameModeType;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.ConfigurationSection;
@@ -102,13 +103,9 @@ public class DataLoader {
                     logger.info("Adding arena " + name + " to game " + id);
 
                     Location max = data.getLocation("arena." + name + ".max"), min = data.getLocation("arena." + name + ".min");
+                    World world = plugin.getServer().getWorld(data.getString("arena." + name + ".world"));
 
-                    if (max == null || min == null) {
-                        logger.warning("Arena " + name + " could not be loaded because of invalid border locations");
-                        continue;
-                    }
-
-                    Arena arena = new BattleArena(name, max, min, max.getWorld());
+                    Arena arena = new BattleArena(name, max, min, world);
                     ConfigurationSection spawnSection = arenaSection.getConfigurationSection(name + ".spawn");
 
                     if (spawnSection != null) {

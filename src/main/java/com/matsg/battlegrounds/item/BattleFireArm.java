@@ -238,7 +238,11 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
         if (weapon != null && weapon instanceof FireArm) {
             BattleSound.play(BattleSound.ITEM_EQUIP, game, gamePlayer.getLocation());
             FireArm fireArm = (FireArm) weapon;
-            fireArm.setAmmo(fireArm.getAmmo() + ammo.getAttributeValue().getValue());
+
+            int maxAmmo = this.maxAmmo.getAttributeValue().getValue() * magazineSize.getAttributeValue().getValue();
+            int pickupAmmo = fireArm.getAmmo() + ammo.getAttributeValue().getValue();
+
+            fireArm.setAmmo(Math.min(maxAmmo, pickupAmmo));
             item.remove();
             return fireArm.update();
         }

@@ -7,10 +7,12 @@ import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.game.BattleArena;
+import com.matsg.battlegrounds.nms.ReflectionUtils;
 import com.matsg.battlegrounds.util.Message;
-import com.sk89q.worldedit.LocalSession;
-import com.sk89q.worldedit.regions.Region;
+import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import com.sk89q.worldedit.bukkit.selections.Selection;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -59,29 +61,28 @@ public class CreateArena extends SubCommand {
             return;
         }
 
-        LocalSession session = BattlegroundsPlugin.getWorldEditPlugin().getSession(player);
-        Region selection;
+        Location max = null, min = null;
+        WorldEditPlugin worldEdit = BattlegroundsPlugin.getWorldEditPlugin();
 
-        try {
-            selection = session.getSelection(session.getSelectionWorld());
-        } catch (Exception e) {
-            return;
+        // For the moment, only set min and max ranges for server clients running version 1.12 or lower.
+        // TODO: Add a functionality that accepts both old and new versions of WorldEdit.
+        if (worldEdit != null && ReflectionUtils.getEnumVersion().getValue() < 13) {
+            Selection selection = worldEdit.getSelection(player);
+            max = selection.getMaximumPoint();
+            min = selection.getMinimumPoint();
         }
 
-        if (selection == null) {
-            player.sendMessage(Message.create(TranslationKey.NO_SELECTION));
-            return;
-        }
-
-        Arena arena = new BattleArena(
-                name,
-                new Location(player.getWorld(), selection.getMaximumPoint().getX(), selection.getMaximumPoint().getY(), selection.getMaximumPoint().getZ()),
-                new Location(player.getWorld(), selection.getMinimumPoint().getX(), selection.getMinimumPoint().getY(), selection.getMinimumPoint().getZ()),
-                player.getWorld());
+        World world = player.getWorld();
+        Arena arena = new BattleArena(name, max, min, world);
 
         game.getArenaList().add(arena);
-        game.getDataFile().setLocation("arena." + name + ".max", arena.getMax(), false);
-        game.getDataFile().setLocation("arena." + name + ".min", arena.getMin(), false);
+        game.getDataFile().set("arena." + name + ".world", world.getName());
+
+        if (max != null && min != null) {
+            game.getDataFile().setLocation("arena." + name + ".max", arena.getMax(), false);
+            game.getDataFile().setLocation("arena." + name + ".min", arena.getMin(), false);
+        }
+
         game.getDataFile().save();
 
         if (game.getArena() == null) {

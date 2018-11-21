@@ -59,7 +59,7 @@ public class BattleArena implements Arena {
     }
 
     public boolean contains(Location location) {
-        return location != null
+        return max == null || min == null || location != null
                 && location.getX() >= min.getX() && location.getX() <= max.getX()
                 && location.getY() >= min.getY() && location.getY() <= max.getY()
                 && location.getZ() >= min.getZ() && location.getZ() <= max.getZ();

@@ -111,6 +111,9 @@ public class BattleGun extends BattleFireArm implements Gun {
     }
 
     public void addAttachments() {
+        if (appliedModifiers.size() > 0) {
+            return;
+        }
         toggleModifiers.clear();
         for (Attachment attachment : attachments) {
             for (ItemAttribute attribute : attributes) {
@@ -241,6 +244,7 @@ public class BattleGun extends BattleFireArm implements Gun {
             toggleAttributes.clear();
         }
         toggled = !toggled;
+        update();
     }
 
     public void playShotSound(Entity entity) {

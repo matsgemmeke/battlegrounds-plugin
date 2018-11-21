@@ -70,6 +70,7 @@ public class EditLoadoutView implements View {
 
             ItemStack itemStack = new ItemStackBuilder(getItemStack(weapon))
                     .addItemFlags(ItemFlag.values())
+                    .setAmount(1)
                     .setDisplayName(ChatColor.WHITE + getDisplayName(itemSlot))
                     .setLore(ChatColor.WHITE + getItemName(weapon), lore[0], lore[1])
                     .setUnbreakable(true)
@@ -83,18 +84,6 @@ public class EditLoadoutView implements View {
             }
         }
         return inventory;
-    }
-
-    private Item findItem(ItemStack itemStack) {
-        if (attachments.containsKey(itemStack)) {
-            return attachments.get(itemStack);
-        }
-        for (EditLoadoutViewItem item : items) {
-            if (item.getItemStack() == itemStack) {
-                return item.getWeapon();
-            }
-        }
-        return null;
     }
 
     private View getAttachmentView(Player player, Loadout loadout, Gun gun, int attachmentNr) {
@@ -139,6 +128,7 @@ public class EditLoadoutView implements View {
             if (clickType == ClickType.RIGHT) {
                 attachmentGun.get(itemStack).getAttachments().remove(attachment);
                 plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).saveLoadout(loadout.getId(), loadout);
+                player.openInventory(new EditLoadoutView(plugin, loadout).getInventory());
             }
         }
         for (EditLoadoutViewItem item : items) {

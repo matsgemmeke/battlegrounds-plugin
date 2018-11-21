@@ -82,11 +82,11 @@ public class BattlePlayerYaml extends AbstractYaml implements StoredPlayer {
         return name.compareTo(o.getName());
     }
 
-    private String convertAttachments(Gun gun) {
+    private String convertAttachmentsToString(Gun gun) {
         StringBuilder builder = new StringBuilder();
         for (Attachment attachment : gun.getAttachments()) {
             builder.append(attachment.getId());
-            if (gun.getAttachments().size() < gun.getAttachments().indexOf(attachment) + 1) {
+            if (gun.getAttachments().size() > gun.getAttachments().indexOf(attachment) + 1) {
                 builder.append(", ");
             }
         }
@@ -170,10 +170,10 @@ public class BattlePlayerYaml extends AbstractYaml implements StoredPlayer {
         set("Loadout." + loadoutNumber + ".Knife", loadout.getKnife() != null ? loadout.getKnife().getId() : null);
 
         if (loadout.getPrimary() != null && loadout.getPrimary() instanceof Gun) {
-            set("Loadout." + loadoutNumber + ".Primary.Attachments", convertAttachments((Gun) loadout.getPrimary()));
+            set("Loadout." + loadoutNumber + ".Primary.Attachments", convertAttachmentsToString((Gun) loadout.getPrimary()));
         }
         if (loadout.getSecondary() != null && loadout.getSecondary() instanceof Gun) {
-            set("Loadout." + loadoutNumber + ".Secondary.Attachments", convertAttachments((Gun) loadout.getSecondary()));
+            set("Loadout." + loadoutNumber + ".Secondary.Attachments", convertAttachmentsToString((Gun) loadout.getSecondary()));
         }
 
         save();

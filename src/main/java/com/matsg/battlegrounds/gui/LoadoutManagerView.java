@@ -2,9 +2,9 @@ package com.matsg.battlegrounds.gui;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.item.Gun;
 import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.item.Weapon;
-import com.matsg.battlegrounds.config.BattlePlayerYaml;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.util.Message;
 import org.bukkit.ChatColor;
@@ -15,7 +15,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,22 +29,18 @@ public class LoadoutManagerView implements View {
         this.inventory = plugin.getServer().createInventory(this, 27, Message.create(TranslationKey.VIEW_LOADOUT_MANAGER));
         this.loadouts = new HashMap<>();
 
-        try {
-            int i = 0;
-            for (Loadout loadout : new BattlePlayerYaml(plugin, player.getUniqueId()).getLoadouts()) {
-                ItemStack itemStack = new ItemStackBuilder(getLoadoutItemStack(loadout))
-                        .addItemFlags(ItemFlag.values())
-                        .setAmount(++ i)
-                        .setDisplayName(ChatColor.WHITE + loadout.getName())
-                        .setLore(Message.create(TranslationKey.EDIT_LOADOUT))
-                        .setUnbreakable(true)
-                        .build();
+        int i = 0;
+        for (Loadout loadout : plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).getLoadouts()) {
+            ItemStack itemStack = new ItemStackBuilder(getLoadoutItemStack(loadout))
+                    .addItemFlags(ItemFlag.values())
+                    .setAmount(++ i)
+                    .setDisplayName(ChatColor.WHITE + loadout.getName())
+                    .setLore(Message.create(TranslationKey.EDIT_LOADOUT))
+                    .setUnbreakable(true)
+                    .build();
 
-                inventory.setItem(i + 10, itemStack);
-                loadouts.put(inventory.getItem(i + 10), loadout);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+            inventory.setItem(i + 10, itemStack);
+            loadouts.put(inventory.getItem(i + 10), loadout);
         }
     }
 

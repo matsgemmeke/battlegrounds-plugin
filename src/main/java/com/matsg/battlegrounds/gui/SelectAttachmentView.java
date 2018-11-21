@@ -116,9 +116,7 @@ public class SelectAttachmentView implements View {
         if (attachment == null) {
             return;
         }
-        if (gun.getAttachments().size() > 0) {
-            gun.getAttachments().remove(gun.getAttachments().get(attachmentNr));
-        }
+        gun.getAttachments().clear();
         gun.getAttachments().add(attachmentNr, attachment);
         plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).saveLoadout(loadout.getId(), loadout);
         player.openInventory(new EditLoadoutView(plugin, loadout).getInventory());
