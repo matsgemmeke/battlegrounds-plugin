@@ -15,39 +15,39 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FireArmConfig extends AbstractYaml implements ItemConfig<FireArm> {
+public class FirearmConfig extends AbstractYaml implements ItemConfig<Firearm> {
 
     private List<ItemSerializer> serializers;
-    private Map<String, FireArm> fireArms;
+    private Map<String, Firearm> firearms;
 
-    public FireArmConfig(Battlegrounds plugin) throws IOException {
+    public FirearmConfig(Battlegrounds plugin) throws IOException {
         super(plugin, plugin.getDataFolder().getPath() + "/items", "guns.yml", false);
         this.serializers = prepareSerializers();
         setup();
     }
 
-    public FireArm get(String arg) {
-        for (FireArm fireArm : fireArms.values()) {
-            if (fireArm.getId().equals(arg) || fireArm.getName().equals(arg)) {
-                return fireArm.clone();
+    public Firearm get(String arg) {
+        for (Firearm firearm : firearms.values()) {
+            if (firearm.getId().equals(arg) || firearm.getName().equals(arg)) {
+                return firearm.clone();
             }
         }
         return null;
     }
 
-    public List<FireArm> getList() {
-        List<FireArm> list = new ArrayList<>();
-        for (FireArm fireArm : fireArms.values()) {
-            list.add(fireArm.clone()); // Create a deep copy of the list
+    public List<Firearm> getList() {
+        List<Firearm> list = new ArrayList<>();
+        for (Firearm firearm : firearms.values()) {
+            list.add(firearm.clone()); // Create a deep copy of the list
         }
         return list;
     }
 
-    public List<FireArm> getList(ItemType itemType) {
-        List<FireArm> list = new ArrayList<>();
-        for (FireArm fireArm : fireArms.values()) {
-            if (fireArm.getType() == itemType) {
-                list.add(fireArm.clone());
+    public List<Firearm> getList(ItemType itemType) {
+        List<Firearm> list = new ArrayList<>();
+        for (Firearm firearm : firearms.values()) {
+            if (firearm.getType() == itemType) {
+                list.add(firearm.clone());
             }
         }
         return list;
@@ -104,7 +104,7 @@ public class FireArmConfig extends AbstractYaml implements ItemConfig<FireArm> {
 
     private List<ItemSerializer> prepareSerializers() {
         List<ItemSerializer> list = new ArrayList<>();
-        list.add(new ItemSerializer<Gun>(FireArmType.GUNS) {
+        list.add(new ItemSerializer<Gun>(FirearmType.GUNS) {
             Gun getFromSection(ConfigurationSection section) throws ItemFormatException {
                 String[] material = section.getString("Material").split(",");
                 try {
@@ -124,7 +124,7 @@ public class FireArmConfig extends AbstractYaml implements ItemConfig<FireArm> {
                             new AttributeValidator(section.getDouble("Accuracy"), "Accuracy").shouldBeBetween(0.0, 1.0),
                             getBulletProjectile(section),
                             FireMode.valueOf(section.getString("FireMode.Type")),
-                            FireArmType.getValue(section.getString("GunType")),
+                            FirearmType.getValue(section.getString("GunType")),
                             ReloadType.valueOf(section.getString("Reload.Type")),
                             BattleSound.parseSoundArray(section.getString("Reload.Sound.Reload")),
                             BattleSound.parseSoundArray(section.getString("Shot.ShotSound")),
@@ -136,7 +136,7 @@ public class FireArmConfig extends AbstractYaml implements ItemConfig<FireArm> {
                 }
             }
         });
-        list.add(new ItemSerializer<Launcher>(FireArmType.LAUNCHER) {
+        list.add(new ItemSerializer<Launcher>(FirearmType.LAUNCHER) {
             Launcher getFromSection(ConfigurationSection section) throws ItemFormatException {
                 String[] material = section.getString("Material").split(",");
                 try {
@@ -167,29 +167,29 @@ public class FireArmConfig extends AbstractYaml implements ItemConfig<FireArm> {
         return list;
     }
 
-    private FireArm readFireArmConfiguration(ConfigurationSection section) throws IllegalArgumentException, ItemFormatException {
+    private Firearm readFirearmConfiguration(ConfigurationSection section) throws IllegalArgumentException, ItemFormatException {
         String typeString = section.getString("GunType");
-        FireArmType type = FireArmType.valueOf(typeString);
+        FirearmType type = FirearmType.valueOf(typeString);
         for (ItemSerializer serializer : serializers) {
             if (serializer.hasType(type)) {
-                return (FireArm) serializer.getFromSection(section);
+                return (Firearm) serializer.getFromSection(section);
             }
         }
         throw new ItemFormatException("Invalid item format " + section.getName() + ": Unknown firearm type \"" + typeString + "\"");
     }
 
     private void setup() {
-        fireArms = new HashMap<>();
+        firearms = new HashMap<>();
 
-        for (String fireArmName : getKeys(false)) {
-            FireArm fireArm;
+        for (String firearmName : getKeys(false)) {
+            Firearm firearm;
             try {
-                fireArm = readFireArmConfiguration(getConfigurationSection(fireArmName));
+                firearm = readFirearmConfiguration(getConfigurationSection(firearmName));
             } catch (Exception e) {
                 plugin.getLogger().severe(e.getMessage());
                 continue;
             }
-            fireArms.put(fireArm.getName(), fireArm);
+            firearms.put(firearm.getName(), firearm);
         }
     }
 }

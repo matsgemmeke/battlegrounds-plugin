@@ -2,9 +2,9 @@ package com.matsg.battlegrounds.api.item;
 
 import org.bukkit.entity.Entity;
 
-public interface FireArm extends Weapon, Droppable {
+public interface Firearm extends Weapon, Droppable {
 
-    FireArm clone();
+    Firearm clone();
 
     void cooldown(int time);
 

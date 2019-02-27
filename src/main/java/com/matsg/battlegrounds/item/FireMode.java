@@ -1,31 +1,31 @@
 package com.matsg.battlegrounds.item;
 
-import com.matsg.battlegrounds.api.item.FireArm;
+import com.matsg.battlegrounds.api.item.Firearm;
 import com.matsg.battlegrounds.util.BattleRunnable;
 
 public enum FireMode {
 
     AUTOMATIC(0) {
-        public void shoot(FireArm fireArm, int rateOfFire, int burstRounds) {
+        public void shoot(Firearm firearm, int rateOfFire, int burstRounds) {
             final int amount = rateOfFire / 5; // Bullets per interact event
             final long period = 4 / amount; // Period between bullets
 
             new BattleRunnable() {
                 int shots = 0;
                 public void run() {
-                    if (++ shots <= amount && fireArm.getMagazine() > 0) {
-                        fireArm.setMagazine(fireArm.getMagazine() - 1);
-                        fireArm.shootProjectile();
-                        fireArm.update();
+                    if (++ shots <= amount && firearm.getMagazine() > 0) {
+                        firearm.setMagazine(firearm.getMagazine() - 1);
+                        firearm.shootProjectile();
+                        firearm.update();
 
-                        fireArm.playShotSound();
+                        firearm.playShotSound();
 
-                        if (shots == amount || fireArm.getMagazine() <= 0) {
-                            fireArm.setShooting(false); // Preventing quicker shooting when fast right clicking
+                        if (shots == amount || firearm.getMagazine() <= 0) {
+                            firearm.setShooting(false); // Preventing quicker shooting when fast right clicking
                         }
                     }
                     if (shots > 4) { // Cancel after the runnable is relevant to prevent bullets shooting out of sync
-                        fireArm.setShooting(false); // Make sure the gun can shoot again
+                        firearm.setShooting(false); // Make sure the gun can shoot again
                         cancel();
                     }
                 }
@@ -33,22 +33,22 @@ public enum FireMode {
         }
     },
     BURST(1) {
-        public void shoot(FireArm fireArm, int rateOfFire, int burstRounds) {
+        public void shoot(Firearm firearm, int rateOfFire, int burstRounds) {
             final int amount = rateOfFire / 5; // Bullets per interact event
             final long period = 4 / amount; // Period between bullets
 
             new BattleRunnable() {
                 int shots = 0;
                 public void run() {
-                    fireArm.playShotSound();
+                    firearm.playShotSound();
                     shots ++;
 
-                    fireArm.setMagazine(fireArm.getMagazine() - 1);
-                    fireArm.shootProjectile();
-                    fireArm.update();
+                    firearm.setMagazine(firearm.getMagazine() - 1);
+                    firearm.shootProjectile();
+                    firearm.update();
 
-                    if (fireArm.getMagazine() <= 0 || shots >= burstRounds) {
-                        fireArm.cooldown(fireArm.getCooldown());
+                    if (firearm.getMagazine() <= 0 || shots >= burstRounds) {
+                        firearm.cooldown(firearm.getCooldown());
                         cancel();
                     }
                 }
@@ -56,13 +56,13 @@ public enum FireMode {
         }
     },
     SEMI_AUTOMATIC(2) {
-        public void shoot(FireArm fireArm, int rateOfFire, int burstRounds) {
-            fireArm.playShotSound();
+        public void shoot(Firearm firearm, int rateOfFire, int burstRounds) {
+            firearm.playShotSound();
 
-            fireArm.cooldown(fireArm.getCooldown());
-            fireArm.setMagazine(fireArm.getMagazine() - 1);
-            fireArm.shootProjectile();
-            fireArm.update();
+            firearm.cooldown(firearm.getCooldown());
+            firearm.setMagazine(firearm.getMagazine() - 1);
+            firearm.shootProjectile();
+            firearm.update();
         }
     };
 
@@ -81,5 +81,5 @@ public enum FireMode {
         throw new IllegalArgumentException();
     }
 
-    public abstract void shoot(FireArm fireArm, int rateOfFire, int burstRounds);
+    public abstract void shoot(Firearm firearm, int rateOfFire, int burstRounds);
 }

@@ -34,6 +34,7 @@ public class PlayerPickupItemEventHandler implements EventHandler<PlayerPickupIt
         }
 
         if (item == null) {
+            event.setCancelled(true);
             return;
         }
 

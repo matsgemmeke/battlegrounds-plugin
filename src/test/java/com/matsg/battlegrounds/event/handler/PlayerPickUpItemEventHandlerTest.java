@@ -89,7 +89,7 @@ public class PlayerPickUpItemEventHandlerTest {
         verify(itemRegistry, times(1)).getItems();
         verify(playerManager, times(1)).getGamePlayer(player);
 
-        assertFalse(event.isCancelled());
+        assertTrue(event.isCancelled());
     }
 
     @Test

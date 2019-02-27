@@ -121,13 +121,13 @@ public class SelectWeaponView implements View {
                 if (loadout.getPrimary() != null && loadout.getPrimary() instanceof Gun) {
                     ((Gun) loadout.getPrimary()).getAttachments().clear();
                 }
-                loadout.setPrimary((FireArm) weapon);
+                loadout.setPrimary((Firearm) weapon);
                 break;
             case FIREARM_SECONDARY:
                 if (loadout.getSecondary() != null && loadout.getSecondary() instanceof Gun) {
                     ((Gun) loadout.getSecondary()).getAttachments().clear();
                 }
-                loadout.setSecondary((FireArm) weapon);
+                loadout.setSecondary((Firearm) weapon);
                 break;
             case EQUIPMENT:
                 loadout.setEquipment((Equipment) weapon);

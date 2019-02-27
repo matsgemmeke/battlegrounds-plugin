@@ -77,6 +77,13 @@ public interface Arena extends Region {
     Spawn getTeamBase(Team team);
 
     /**
+     * Gets whether the arena has borders set up.
+     *
+     * @return True if the arena has borders, otherwise false
+     */
+    boolean hasBorders();
+
+    /**
      * Gets whether the arena is active or not.
      *
      * @return True if the arena is active, otherwise false

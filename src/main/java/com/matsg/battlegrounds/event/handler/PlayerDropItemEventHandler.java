@@ -28,9 +28,9 @@ public class PlayerDropItemEventHandler implements EventHandler<PlayerDropItemEv
 
         GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
         ItemStack itemStack = event.getItemDrop().getItemStack();
-        Item item = game.getItemRegistry().getWeaponIgnoreMetadata(gamePlayer, itemStack);
+        Item item = game.getItemRegistry().getWeapon(gamePlayer, itemStack);
 
-        if (item == null && (item = game.getItemRegistry().getItemIgnoreMetadata(itemStack)) == null || !(item instanceof Droppable) || !game.getState().isAllowItems()) {
+        if (item == null && (item = game.getItemRegistry().getItem(itemStack)) == null || !(item instanceof Droppable) || !game.getState().isAllowItems()) {
             event.setCancelled(true);
             return;
         }

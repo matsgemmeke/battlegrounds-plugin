@@ -28,7 +28,7 @@ import org.bukkit.util.Vector;
 
 import java.util.*;
 
-public class BattleGun extends BattleFireArm implements Gun {
+public class BattleGun extends BattleFirearm implements Gun {
 
     private boolean scoped, toggled;
     private Bullet bullet;
@@ -45,9 +45,9 @@ public class BattleGun extends BattleFireArm implements Gun {
 
     public BattleGun(String id, String name, String description, ItemStack itemStack, short durability,
                      int magazine, int ammo, int maxAmmo, int fireRate, int burstRounds, int cooldown, int reloadDuration, double accuracy,
-                     Bullet bullet, FireMode fireMode, FireArmType fireArmType, ReloadType reloadType,
+                     Bullet bullet, FireMode fireMode, FirearmType firearmType, ReloadType reloadType,
                      Sound[] reloadSound, Sound[] shootSound, Sound[] suppressedSound, Map<String, String[]> compatibleAttachments) {
-        super(id, name, description, itemStack, durability, magazine, ammo, maxAmmo, cooldown, reloadDuration, accuracy, reloadType, fireArmType, reloadSound, shootSound);
+        super(id, name, description, itemStack, durability, magazine, ammo, maxAmmo, cooldown, reloadDuration, accuracy, reloadType, firearmType, reloadSound, shootSound);
         this.appliedModifiers = new HashMap<>();
         this.attachments = new ArrayList<>();
         this.bullet = bullet;
@@ -61,7 +61,7 @@ public class BattleGun extends BattleFireArm implements Gun {
         this.burstRounds = new BattleItemAttribute<>("shot-burstrounds", new IntegerAttributeValue(burstRounds));
         this.fireMode = new BattleItemAttribute<>("shot-firemode", new FireModeAttributeValue(fireMode));
         this.fireRate = new BattleItemAttribute<>("shot-firerate", new IntegerAttributeValue(fireRate));
-        this.scope = new BattleItemAttribute<>("scope-use", new BooleanAttributeValue(fireArmType.hasScope()));
+        this.scope = new BattleItemAttribute<>("scope-use", new BooleanAttributeValue(firearmType.hasScope()));
         this.scopeNightVision = new BattleItemAttribute<>("scope-nightvision", new BooleanAttributeValue(false));
         this.scopeZoom = new BattleItemAttribute<>("scope-zoom", new IntegerAttributeValue(10));
         this.spread = new BattleItemAttribute<>("shot-spread", new DoubleAttributeValue(4.0));
@@ -133,7 +133,7 @@ public class BattleGun extends BattleFireArm implements Gun {
 
     protected String[] getLore() {
         return new String[] {
-                ChatColor.WHITE + fireArmType.getName(),
+                ChatColor.WHITE + firearmType.getName(),
                 ChatColor.GRAY + format(6, getAccuracy() * 100.0, 100.0) + " " + Message.create(TranslationKey.STAT_ACCURACY),
                 ChatColor.GRAY + format(6, bullet.getShortDamage(), 55.0) + " " + Message.create(TranslationKey.STAT_DAMAGE),
                 ChatColor.GRAY + format(6, Math.max((fireRate.getAttributeValue().getValue() + 10 - cooldown.getAttributeValue().getValue() / 2) * 10.0, 40.0), 200.0) + " " + Message.create(TranslationKey.STAT_FIRERATE),
@@ -298,7 +298,7 @@ public class BattleGun extends BattleFireArm implements Gun {
     }
 
     public void shootProjectile() {
-        shootProjectile(getShootingDirection(gamePlayer.getPlayer().getEyeLocation().subtract(0, 0.25, 0)), fireArmType.getProjectileAmount());
+        shootProjectile(getShootingDirection(gamePlayer.getPlayer().getEyeLocation().subtract(0, 0.25, 0)), firearmType.getProjectileAmount());
     }
 
     private void shootProjectile(Location direction) {
@@ -320,7 +320,7 @@ public class BattleGun extends BattleFireArm implements Gun {
 
             direction.subtract(vector); // Restore the location
             distance += 0.5;
-        } while (distance < bullet.getLongRange() && hits < fireArmType.getMaxHits()); // If the projectile distance exceeds the long range, stop the loop
+        } while (distance < bullet.getLongRange() && hits < firearmType.getMaxHits()); // If the projectile distance exceeds the long range, stop the loop
 
         hits = 0;
     }

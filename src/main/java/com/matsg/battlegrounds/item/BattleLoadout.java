@@ -8,11 +8,11 @@ public class BattleLoadout implements Loadout {
     private final int id;
     private boolean defaultLoadout;
     private Equipment equipment;
-    private FireArm primary, secondary;
+    private Firearm primary, secondary;
     private Knife knife;
     private String name;
 
-    public BattleLoadout(int id, String name, FireArm primary, FireArm secondary, Equipment equipment, Knife knife) {
+    public BattleLoadout(int id, String name, Firearm primary, Firearm secondary, Equipment equipment, Knife knife) {
         this.id = id;
         this.name = name;
         this.primary = primary;
@@ -28,7 +28,7 @@ public class BattleLoadout implements Loadout {
         }
     }
 
-    public BattleLoadout(int id, String name, FireArm primary, FireArm secondary, Equipment equipment, Knife knife, boolean defaultLoadout) {
+    public BattleLoadout(int id, String name, Firearm primary, Firearm secondary, Equipment equipment, Knife knife, boolean defaultLoadout) {
         this(id, name, primary, secondary, equipment, knife);
         this.defaultLoadout = defaultLoadout;
     }
@@ -71,11 +71,11 @@ public class BattleLoadout implements Loadout {
         return name;
     }
 
-    public FireArm getPrimary() {
+    public Firearm getPrimary() {
         return primary;
     }
 
-    public FireArm getSecondary() {
+    public Firearm getSecondary() {
         return secondary;
     }
 
@@ -95,11 +95,11 @@ public class BattleLoadout implements Loadout {
         this.name = name;
     }
 
-    public void setPrimary(FireArm primary) {
+    public void setPrimary(Firearm primary) {
         this.primary = primary;
     }
 
-    public void setSecondary(FireArm secondary) {
+    public void setSecondary(Firearm secondary) {
         this.secondary = secondary;
     }
 

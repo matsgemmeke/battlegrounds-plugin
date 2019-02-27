@@ -4,7 +4,7 @@ import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.item.EquipmentType;
-import com.matsg.battlegrounds.item.FireArmType;
+import com.matsg.battlegrounds.item.FirearmType;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.util.Message;
 import org.bukkit.ChatColor;
@@ -32,12 +32,12 @@ public class WeaponsView implements View {
         this.weapons = getWeaponList(plugin);
 
         // Add all firearm class types
-        for (FireArmType fireArmType : FireArmType.values()) {
-            List<FireArm> list = (List) plugin.getFireArmConfig().getList(fireArmType);
+        for (FirearmType firearmType : FirearmType.values()) {
+            List<Firearm> list = (List) plugin.getFirearmConfig().getList(firearmType);
             if (list.size() > 0) {
-                FireArm fireArm = list.get(0);
-                if (fireArm.getType().getDefaultItemSlot() == itemSlot) {
-                    addWeapon(fireArm);
+                Firearm firearm = list.get(0);
+                if (firearm.getType().getDefaultItemSlot() == itemSlot) {
+                    addWeapon(firearm);
                 }
             }
         }
@@ -80,7 +80,7 @@ public class WeaponsView implements View {
     private static List<Weapon> getWeaponList(Battlegrounds plugin) {
         List<Weapon> list = new ArrayList<>();
         list.addAll(plugin.getEquipmentConfig().getList());
-        list.addAll(plugin.getFireArmConfig().getList());
+        list.addAll(plugin.getFirearmConfig().getList());
         list.addAll(plugin.getKnifeConfig().getList());
         return list;
     }
@@ -113,10 +113,10 @@ public class WeaponsView implements View {
             weaponList.addAll(plugin.getEquipmentConfig().getList(equipment.getType()));
             player.openInventory(new SelectWeaponView(plugin, player, loadout, equipment.getType(), weaponList, inventory).getInventory());
         }
-        if (weapon instanceof FireArm) {
-            FireArm fireArm = (FireArm) weapon;
-            weaponList.addAll(plugin.getFireArmConfig().getList(fireArm.getType()));
-            player.openInventory(new SelectWeaponView(plugin, player, loadout, fireArm.getType(), weaponList, inventory).getInventory());
+        if (weapon instanceof Firearm) {
+            Firearm firearm = (Firearm) weapon;
+            weaponList.addAll(plugin.getFirearmConfig().getList(firearm.getType()));
+            player.openInventory(new SelectWeaponView(plugin, player, loadout, firearm.getType(), weaponList, inventory).getInventory());
         }
         if (weapon instanceof Knife) {
             weaponList.addAll(plugin.getKnifeConfig().getList());

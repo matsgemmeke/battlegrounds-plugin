@@ -7,7 +7,7 @@ import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.item.ItemType;
 import com.matsg.battlegrounds.api.item.Lethal;
 
-public enum FireArmType implements ItemType {
+public enum FirearmType implements ItemType {
 
     ASSAULT_RIFLE("item-type-assault-rifle", ItemSlot.FIREARM_PRIMARY, 1, Bullet.class, 1, false),
     HANDGUN("item-type-handgun", ItemSlot.FIREARM_SECONDARY, 1, Bullet.class, 1, false),
@@ -17,7 +17,7 @@ public enum FireArmType implements ItemType {
     SNIPER_RIFLE("item-type-sniper-rifle", ItemSlot.FIREARM_PRIMARY, 1, Bullet.class, 5, true),
     SUBMACHINE_GUN("item-type-submachine-gun", ItemSlot.FIREARM_PRIMARY,1, Bullet.class, 1, false);
 
-    public static FireArmType[] GUNS = new FireArmType[] { ASSAULT_RIFLE, HANDGUN, LIGHT_MACHINE_GUN, SHOTGUN, SNIPER_RIFLE, SUBMACHINE_GUN };
+    public static FirearmType[] GUNS = new FirearmType[] { ASSAULT_RIFLE, HANDGUN, LIGHT_MACHINE_GUN, SHOTGUN, SNIPER_RIFLE, SUBMACHINE_GUN };
 
     private Battlegrounds plugin;
     private boolean pierceable, scope;
@@ -26,7 +26,7 @@ public enum FireArmType implements ItemType {
     private ItemSlot itemSlot;
     private String name;
 
-    FireArmType(String path, ItemSlot itemSlot, int projectileAmount, Class<? extends DamageSource> damageSourceClass, int maxHits, boolean scope) {
+    FirearmType(String path, ItemSlot itemSlot, int projectileAmount, Class<? extends DamageSource> damageSourceClass, int maxHits, boolean scope) {
         this.plugin = BattlegroundsPlugin.getPlugin();
         this.damageSourceClass = damageSourceClass;
         this.itemSlot = itemSlot;
@@ -37,10 +37,10 @@ public enum FireArmType implements ItemType {
         this.scope = scope;
     }
 
-    public static FireArmType getValue(String name) {
-        for (FireArmType fireArmType : values()) {
-            if (fireArmType.toString().equals(name)) {
-                return fireArmType;
+    public static FirearmType getValue(String name) {
+        for (FirearmType firearmType : values()) {
+            if (firearmType.toString().equals(name)) {
+                return firearmType;
             }
         }
         return null;

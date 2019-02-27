@@ -30,7 +30,7 @@ public class PlayerMoveEventHandler implements EventHandler<PlayerMoveEvent> {
         Arena arena = game.getArena();
         Location from = event.getFrom(), to = event.getTo();
 
-        if (game.getState().isInProgress() && arena != null && !arena.contains(to)) {
+        if (game.getState().isInProgress() && arena != null && arena.hasBorders() && !arena.contains(to)) {
             player.teleport(from.add(from.toVector().subtract(to.toVector()).normalize()));
             ActionBar.LEAVE_ARENA.send(player);
         }

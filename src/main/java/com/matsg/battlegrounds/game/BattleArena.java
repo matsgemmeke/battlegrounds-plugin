@@ -59,7 +59,8 @@ public class BattleArena implements Arena {
     }
 
     public boolean contains(Location location) {
-        return max == null || min == null || location != null
+        return hasBorders()
+                && location != null
                 && location.getX() >= min.getX() && location.getX() <= max.getX()
                 && location.getY() >= min.getY() && location.getY() <= max.getY()
                 && location.getZ() >= min.getZ() && location.getZ() <= max.getZ();
@@ -145,6 +146,10 @@ public class BattleArena implements Arena {
             }
         }
         return null;
+    }
+
+    public boolean hasBorders() {
+        return max != null && min != null;
     }
 
     private List<Block> updateBoundingBlocks() {

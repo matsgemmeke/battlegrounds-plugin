@@ -14,9 +14,9 @@ public interface Loadout extends Cloneable {
 
     String getName();
 
-    FireArm getPrimary();
+    Firearm getPrimary();
 
-    FireArm getSecondary();
+    Firearm getSecondary();
 
     Weapon getWeapon(ItemSlot itemSlot);
 
@@ -34,9 +34,9 @@ public interface Loadout extends Cloneable {
 
     void setName(String name);
 
-    void setPrimary(FireArm primary);
+    void setPrimary(Firearm primary);
 
-    void setSecondary(FireArm secondary);
+    void setSecondary(Firearm secondary);
 
     void updateInventory();
 }

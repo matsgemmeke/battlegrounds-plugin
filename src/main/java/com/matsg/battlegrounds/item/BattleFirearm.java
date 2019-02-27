@@ -23,10 +23,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public abstract class BattleFireArm extends BattleWeapon implements FireArm {
+public abstract class BattleFirearm extends BattleWeapon implements Firearm {
 
     protected boolean reloadCancelled, reloading, shooting;
-    protected FireArmType fireArmType;
+    protected FirearmType firearmType;
     protected ItemAttribute<Double> horizontalAccuracy, verticalAccuracy;
     protected ItemAttribute<Integer> ammo, cooldown, magazine, magazineSize, magazineSupply, maxAmmo, reloadDuration, reloadDurationOg;
     protected ItemAttribute<ReloadType> reloadType;
@@ -34,13 +34,13 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
     protected List<Material> blocks;
     protected Sound[] reloadSound, shotSound;
 
-    public BattleFireArm(String id, String name, String description, ItemStack itemStack, short durability,
+    public BattleFirearm(String id, String name, String description, ItemStack itemStack, short durability,
                          int magazine, int ammo, int maxAmmo, int cooldown, int reloadDuration, double accuracy,
-                         ReloadType reloadType, FireArmType fireArmType, Sound[] reloadSound, Sound[] shotSound) {
+                         ReloadType reloadType, FirearmType firearmType, Sound[] reloadSound, Sound[] shotSound) {
         super(id, name, description, itemStack, durability);
         this.blocks = new ArrayList<>();
         this.droppedItems = new ArrayList<>();
-        this.fireArmType = fireArmType;
+        this.firearmType = firearmType;
         this.reloadCancelled = false;
         this.reloading = false;
         this.reloadSound = reloadSound;
@@ -76,20 +76,21 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
         }
     }
 
-    public FireArm clone() {
-        BattleFireArm fireArm = (BattleFireArm) super.clone();
-        fireArm.ammo = fireArm.getAttribute("ammo-reserve");
-        fireArm.cooldown = fireArm.getAttribute("shot-cooldown");
-        fireArm.horizontalAccuracy = fireArm.getAttribute("accuracy-horizontal");
-        fireArm.magazine = fireArm.getAttribute("ammo-magazine");
-        fireArm.magazineSize = fireArm.getAttribute("ammo-magazine-size");
-        fireArm.magazineSupply = fireArm.getAttribute("ammo-magazine-supply");
-        fireArm.maxAmmo = fireArm.getAttribute("ammo-max");
-        fireArm.reloadDuration = fireArm.getAttribute("reload-duration");
-        fireArm.reloadDurationOg = fireArm.getAttribute("reload-duration-og");
-        fireArm.reloadType = fireArm.getAttribute("reload-type");
-        fireArm.verticalAccuracy = fireArm.getAttribute("accuracy-vertical");
-        return fireArm;
+    public Firearm clone() {
+        BattleFirearm firearm = (BattleFirearm) super.clone();
+        firearm.ammo = firearm.getAttribute("ammo-reserve");
+        firearm.cooldown = firearm.getAttribute("shot-cooldown");
+        firearm.droppedItems = new ArrayList<>();
+        firearm.horizontalAccuracy = firearm.getAttribute("accuracy-horizontal");
+        firearm.magazine = firearm.getAttribute("ammo-magazine");
+        firearm.magazineSize = firearm.getAttribute("ammo-magazine-size");
+        firearm.magazineSupply = firearm.getAttribute("ammo-magazine-supply");
+        firearm.maxAmmo = firearm.getAttribute("ammo-max");
+        firearm.reloadDuration = firearm.getAttribute("reload-duration");
+        firearm.reloadDurationOg = firearm.getAttribute("reload-duration-og");
+        firearm.reloadType = firearm.getAttribute("reload-type");
+        firearm.verticalAccuracy = firearm.getAttribute("accuracy-vertical");
+        return firearm;
     }
 
     public double getAccuracy() {
@@ -124,8 +125,8 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
         return reloadDuration.getAttributeValue().getValue();
     }
 
-    public FireArmType getType() {
-        return fireArmType;
+    public FirearmType getType() {
+        return firearmType;
     }
 
     public boolean isReloading() {
@@ -235,16 +236,16 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
         ItemSlot itemSlot = ItemSlot.fromSlot(gamePlayer.getPlayer().getInventory().getHeldItemSlot());
         Weapon weapon = gamePlayer.getLoadout().getWeaponIgnoreMetadata(item.getItemStack());
 
-        if (weapon != null && weapon instanceof FireArm) {
+        if (weapon != null && weapon instanceof Firearm) {
             BattleSound.play(BattleSound.ITEM_EQUIP, game, gamePlayer.getLocation());
-            FireArm fireArm = (FireArm) weapon;
+            Firearm firearm = (Firearm) weapon;
 
             int maxAmmo = this.maxAmmo.getAttributeValue().getValue() * magazineSize.getAttributeValue().getValue();
-            int pickupAmmo = fireArm.getAmmo() + ammo.getAttributeValue().getValue();
+            int pickupAmmo = firearm.getAmmo() + ammo.getAttributeValue().getValue();
 
-            fireArm.setAmmo(Math.min(maxAmmo, pickupAmmo));
+            firearm.setAmmo(Math.min(maxAmmo, pickupAmmo));
             item.remove();
-            return fireArm.update();
+            return firearm.update();
         }
 
         if (itemSlot == null || itemSlot != ItemSlot.FIREARM_PRIMARY && itemSlot != ItemSlot.FIREARM_SECONDARY || gamePlayer.getLoadout().getWeapon(itemSlot) != null) {
@@ -324,7 +325,7 @@ public abstract class BattleFireArm extends BattleWeapon implements FireArm {
                     setSoundCancelled(true, reloadSound);
                     return;
                 }
-                reloadType.getAttributeValue().getValue().reloadSingle(BattleFireArm.this, reloadDuration.getAttributeValue().getValue());
+                reloadType.getAttributeValue().getValue().reloadSingle(BattleFirearm.this, reloadDuration.getAttributeValue().getValue());
                 if (ammo.getAttributeValue().getValue() <= 0 || magazine.getAttributeValue().getValue() >= magazineSize.getAttributeValue().getValue()) {
                     cancel();
                     getGamePlayer().getPlayer().setFoodLevel(20);

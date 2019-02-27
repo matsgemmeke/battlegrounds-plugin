@@ -28,8 +28,8 @@ public class DefaultLoadouts extends AbstractYaml {
         return new BattleLoadout(
                 loadoutId,
                 section.getString("Name"),
-                plugin.getFireArmConfig().get(section.getString("Primary.Name")),
-                plugin.getFireArmConfig().get(section.getString("Secondary.Name")),
+                plugin.getFirearmConfig().get(section.getString("Primary.Name")),
+                plugin.getFirearmConfig().get(section.getString("Secondary.Name")),
                 plugin.getEquipmentConfig().get(section.getString("Equipment")),
                 plugin.getKnifeConfig().get(section.getString("Knife")),
                 true

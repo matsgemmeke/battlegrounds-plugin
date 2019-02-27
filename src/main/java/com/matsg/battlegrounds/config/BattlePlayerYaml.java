@@ -116,8 +116,8 @@ public class BattlePlayerYaml extends AbstractYaml implements StoredPlayer {
         Loadout loadout = new BattleLoadout(
                 loadoutNumber,
                 section.getString("Name"),
-                plugin.getFireArmConfig().get(section.getString("Primary.Id")),
-                plugin.getFireArmConfig().get(section.getString("Secondary.Id")),
+                plugin.getFirearmConfig().get(section.getString("Primary.Id")),
+                plugin.getFirearmConfig().get(section.getString("Secondary.Id")),
                 plugin.getEquipmentConfig().get(section.getString("Equipment")),
                 plugin.getKnifeConfig().get(section.getString("Knife"))
         );

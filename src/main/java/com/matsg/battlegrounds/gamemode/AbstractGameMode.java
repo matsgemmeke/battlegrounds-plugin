@@ -7,7 +7,7 @@ import com.matsg.battlegrounds.api.event.GameEndEvent;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.gamemode.GameMode;
 import com.matsg.battlegrounds.api.gamemode.Objective;
-import com.matsg.battlegrounds.api.item.FireArm;
+import com.matsg.battlegrounds.api.item.Firearm;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.player.Hitbox;
@@ -138,10 +138,10 @@ public abstract class AbstractGameMode implements GameMode, Listener {
         }
         Weapon weapon = gamePlayer.getLoadout().getWeapon(gamePlayer.getPlayer().getItemInHand());
 
-        if (weapon != null && weapon instanceof FireArm) {
+        if (weapon != null && weapon instanceof Firearm) {
             Location location = gamePlayer.getLocation();
             Item item = location.getWorld().dropItem(location, weapon.getItemStack());
-            ((FireArm) weapon).onDrop(gamePlayer, item);
+            ((Firearm) weapon).onDrop(gamePlayer, item);
         }
     }
 

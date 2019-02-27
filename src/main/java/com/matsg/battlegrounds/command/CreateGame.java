@@ -43,6 +43,7 @@ public class CreateGame extends SubCommand {
         configuration.saveConfiguration(game.getDataFile());
         game.getDataFile().save();
         game.setConfiguration(configuration);
+        game.setGameMode(configuration.getGameModes()[0]);
 
         plugin.getGameManager().getGames().add(game);
 

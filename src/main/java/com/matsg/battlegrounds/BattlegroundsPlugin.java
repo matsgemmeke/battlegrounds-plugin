@@ -7,7 +7,7 @@ import com.matsg.battlegrounds.api.config.ItemConfig;
 import com.matsg.battlegrounds.api.config.LevelConfig;
 import com.matsg.battlegrounds.api.item.Attachment;
 import com.matsg.battlegrounds.api.item.Equipment;
-import com.matsg.battlegrounds.api.item.FireArm;
+import com.matsg.battlegrounds.api.item.Firearm;
 import com.matsg.battlegrounds.api.item.Knife;
 import com.matsg.battlegrounds.api.player.PlayerStorage;
 import com.matsg.battlegrounds.command.BattlegroundsCommand;
@@ -36,7 +36,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
     private GameManager gameManager;
     private ItemConfig<Attachment> attachmentConfig;
     private ItemConfig<Equipment> equipmentConfig;
-    private ItemConfig<FireArm> fireArmConfig;
+    private ItemConfig<Firearm> firearmConfig;
     private ItemConfig<Knife> knifeConfig;
     private LevelConfig levelConfig;
     private PlayerStorage playerStorage;
@@ -94,8 +94,8 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         return eventManager;
     }
 
-    public ItemConfig<FireArm> getFireArmConfig() {
-        return fireArmConfig;
+    public ItemConfig<Firearm> getFirearmConfig() {
+        return firearmConfig;
     }
 
     public GameManager getGameManager() {
@@ -127,7 +127,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
             cache = new BattleCacheYaml(this, "cache.yml");
             config = new BattlegroundsConfig(this);
             equipmentConfig = new EquipmentConfig(this);
-            fireArmConfig = new FireArmConfig(this);
+            firearmConfig = new FirearmConfig(this);
             knifeConfig = new KnifeConfig(this);
             translator = new PluginTranslator(this);
         } catch (IOException e) {
@@ -153,7 +153,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         try {
             attachmentConfig = new AttachmentConfig(this);
             equipmentConfig = new EquipmentConfig(this);
-            fireArmConfig = new FireArmConfig(this);
+            firearmConfig = new FirearmConfig(this);
             knifeConfig = new KnifeConfig(this);
         } catch (Exception e) {
             throw new StartupFailedException("Failed to load item configuration files!", e);
@@ -172,7 +172,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         }
 
         getLogger().info("Succesfully loaded "
-                + fireArmConfig.getList().size() + " guns, "
+                + firearmConfig.getList().size() + " guns, "
                 + equipmentConfig.getList().size() + " equipment, "
                 + knifeConfig.getList().size() + " knives and "
                 + attachmentConfig.getList().size() + " attachments from the config");

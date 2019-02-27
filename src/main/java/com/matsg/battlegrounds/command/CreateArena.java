@@ -85,9 +85,7 @@ public class CreateArena extends SubCommand {
 
         game.getDataFile().save();
 
-        if (game.getArena() == null) {
-            arena.setActive(true);
-        }
+        arena.setActive(game.getArena() == null);
 
         player.sendMessage(Message.create(TranslationKey.ARENA_CREATE,
                 new Placeholder("bg_game", id),

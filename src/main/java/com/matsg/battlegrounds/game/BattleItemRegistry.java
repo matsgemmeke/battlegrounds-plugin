@@ -56,7 +56,7 @@ public class BattleItemRegistry implements ItemRegistry {
 
     public Weapon getWeapon(GamePlayer gamePlayer, ItemStack itemStack) {
         for (Weapon weapon : getWeaponList()) {
-            if (weapon.getGamePlayer() == gamePlayer && weapon.getItemStack().equals(itemStack) && weapon.getItemStack().getItemMeta().equals(itemStack.getItemMeta())) {
+            if (weapon.getGamePlayer() == gamePlayer && weapon.getItemStack().equals(itemStack)) {
                 return weapon;
             }
         }

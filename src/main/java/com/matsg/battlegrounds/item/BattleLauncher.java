@@ -17,7 +17,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 
-public class BattleLauncher extends BattleFireArm implements Launcher {
+public class BattleLauncher extends BattleFirearm implements Launcher {
 
     private double launchSpeed;
     private LaunchType launchType;
@@ -26,7 +26,7 @@ public class BattleLauncher extends BattleFireArm implements Launcher {
     public BattleLauncher(String id, String name, String description, ItemStack itemStack, short durability,
                      int magazine, int ammo, int maxAmmo, double launchSpeed, int cooldown, int reloadDuration, double accuracy,
                      Lethal lethal, LaunchType launchType, ReloadType reloadType, Sound[] reloadSound, Sound[] shootSound) {
-        super(id, name, description, itemStack, durability, magazine, ammo, maxAmmo, cooldown, reloadDuration, accuracy, reloadType, FireArmType.LAUNCHER, reloadSound, shootSound);
+        super(id, name, description, itemStack, durability, magazine, ammo, maxAmmo, cooldown, reloadDuration, accuracy, reloadType, FirearmType.LAUNCHER, reloadSound, shootSound);
         this.launchSpeed = launchSpeed;
         this.launchType = launchType;
         this.lethal = lethal;
@@ -50,7 +50,7 @@ public class BattleLauncher extends BattleFireArm implements Launcher {
 
     protected String[] getLore() {
         return new String[] {
-                ChatColor.WHITE + fireArmType.getName(),
+                ChatColor.WHITE + firearmType.getName(),
                 ChatColor.GRAY + format(6, getAccuracy() * 100.0, 100.0) + " " + Message.create(TranslationKey.STAT_ACCURACY),
                 ChatColor.GRAY + format(6, lethal.getShortDamage(), 50.0) + " " + Message.create(TranslationKey.STAT_DAMAGE),
                 ChatColor.GRAY + format(6, Math.max((15 - getCooldown() / 2) * 10.0, 40.0), 200.0) + " " + Message.create(TranslationKey.STAT_FIRERATE),

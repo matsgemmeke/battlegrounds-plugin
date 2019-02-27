@@ -6,7 +6,7 @@ import com.matsg.battlegrounds.api.config.ItemConfig;
 import com.matsg.battlegrounds.api.config.LevelConfig;
 import com.matsg.battlegrounds.api.item.Attachment;
 import com.matsg.battlegrounds.api.item.Equipment;
-import com.matsg.battlegrounds.api.item.FireArm;
+import com.matsg.battlegrounds.api.item.Firearm;
 import com.matsg.battlegrounds.api.item.Knife;
 import com.matsg.battlegrounds.api.player.PlayerStorage;
 import org.bukkit.plugin.Plugin;
@@ -53,7 +53,7 @@ public interface Battlegrounds extends Plugin {
      *
      * @return The firearm configuration
      */
-    ItemConfig<FireArm> getFireArmConfig();
+    ItemConfig<Firearm> getFirearmConfig();
 
     /**
      * Gets the game manager of the plugin.
