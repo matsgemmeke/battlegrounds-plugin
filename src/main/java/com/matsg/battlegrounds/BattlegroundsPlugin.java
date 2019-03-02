@@ -24,8 +24,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
 
@@ -40,7 +38,6 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
     private ItemConfig<Knife> knifeConfig;
     private LevelConfig levelConfig;
     private PlayerStorage playerStorage;
-    private Translator translator;
     private VersionManager versionManager;
 
     public void onEnable() {
@@ -114,10 +111,6 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         return playerStorage;
     }
 
-    public Translator getTranslator() {
-        return translator;
-    }
-
     public Version getVersion() {
         return versionManager.getVersion();
     }
@@ -129,7 +122,6 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
             equipmentConfig = new EquipmentConfig(this);
             firearmConfig = new FirearmConfig(this);
             knifeConfig = new KnifeConfig(this);
-            translator = new PluginTranslator(this);
         } catch (IOException e) {
             return false;
         }
@@ -142,12 +134,6 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
             config = new BattlegroundsConfig(this);
         } catch (Exception e) {
             throw new StartupFailedException("Failed to load configuration files!", e);
-        }
-
-        try {
-            translator = new PluginTranslator(this);
-        } catch (Exception e) {
-            throw new StartupFailedException("Failed to initialize the translator!", e);
         }
 
         try {

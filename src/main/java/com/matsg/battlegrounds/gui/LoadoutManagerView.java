@@ -2,11 +2,10 @@ package com.matsg.battlegrounds.gui;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.item.Gun;
 import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
-import com.matsg.battlegrounds.util.Message;
+import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -23,11 +22,13 @@ public class LoadoutManagerView implements View {
     private Battlegrounds plugin;
     private Inventory inventory;
     private Map<ItemStack, Loadout> loadouts;
+    private MessageHelper messageHelper;
 
     public LoadoutManagerView(Battlegrounds plugin, Player player) {
         this.plugin = plugin;
-        this.inventory = plugin.getServer().createInventory(this, 27, Message.create(TranslationKey.VIEW_LOADOUT_MANAGER));
         this.loadouts = new HashMap<>();
+        this.messageHelper = new MessageHelper();
+        this.inventory = plugin.getServer().createInventory(this, 27, messageHelper.create(TranslationKey.VIEW_LOADOUT_MANAGER));
 
         int i = 0;
         for (Loadout loadout : plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).getLoadouts()) {
@@ -35,7 +36,7 @@ public class LoadoutManagerView implements View {
                     .addItemFlags(ItemFlag.values())
                     .setAmount(++ i)
                     .setDisplayName(ChatColor.WHITE + loadout.getName())
-                    .setLore(Message.create(TranslationKey.EDIT_LOADOUT))
+                    .setLore(messageHelper.create(TranslationKey.EDIT_LOADOUT))
                     .setUnbreakable(true)
                     .build();
 

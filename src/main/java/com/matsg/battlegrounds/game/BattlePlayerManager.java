@@ -19,7 +19,7 @@ import com.matsg.battlegrounds.player.BattleGamePlayer;
 import com.matsg.battlegrounds.player.BattleSavedInventory;
 import com.matsg.battlegrounds.util.ActionBar;
 import com.matsg.battlegrounds.util.BattleRunnable;
-import com.matsg.battlegrounds.util.Message;
+import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -34,11 +34,13 @@ public class BattlePlayerManager implements PlayerManager {
     private Game game;
     private LevelConfig levelConfig;
     private List<GamePlayer> players;
+    private MessageHelper messageHelper;
     private PlayerStorage playerStorage;
 
     public BattlePlayerManager(Game game, LevelConfig levelConfig, PlayerStorage playerStorage) {
         this.game = game;
         this.levelConfig = levelConfig;
+        this.messageHelper = new MessageHelper();
         this.players = new ArrayList<>();
         this.playerStorage = playerStorage;
     }
@@ -65,7 +67,7 @@ public class BattlePlayerManager implements PlayerManager {
 
         players.add(gamePlayer);
 
-        broadcastMessage(Message.create(TranslationKey.PLAYER_JOIN,
+        broadcastMessage(messageHelper.create(TranslationKey.PLAYER_JOIN,
                 new Placeholder("player_name", player.getName()),
                 new Placeholder("bg_players", players.size()),
                 new Placeholder("bg_maxplayers", game.getConfiguration().getMaxPlayers())));
@@ -252,13 +254,13 @@ public class BattlePlayerManager implements PlayerManager {
                 new ItemStackBuilder(Material.LEATHER_CHESTPLATE)
                         .addItemFlags(ItemFlag.values())
                         .setColor(game.getGameMode().getTeam(gamePlayer).getColor())
-                        .setDisplayName(ChatColor.WHITE + Message.create(TranslationKey.ARMOR_VEST))
+                        .setDisplayName(ChatColor.WHITE + messageHelper.create(TranslationKey.ARMOR_VEST))
                         .setUnbreakable(true)
                         .build(),
                 new ItemStackBuilder(Material.LEATHER_HELMET)
                         .addItemFlags(ItemFlag.values())
                         .setColor(game.getGameMode().getTeam(gamePlayer).getColor())
-                        .setDisplayName(ChatColor.WHITE + Message.create(TranslationKey.ARMOR_HELMET))
+                        .setDisplayName(ChatColor.WHITE + messageHelper.create(TranslationKey.ARMOR_HELMET))
                         .setUnbreakable(true)
                         .build()
         });
@@ -272,7 +274,7 @@ public class BattlePlayerManager implements PlayerManager {
     public boolean removePlayer(GamePlayer gamePlayer) {
         players.remove(gamePlayer);
 
-        broadcastMessage(Message.create(TranslationKey.PLAYER_LEAVE,
+        broadcastMessage(messageHelper.create(TranslationKey.PLAYER_LEAVE,
                 new Placeholder("player_name", gamePlayer.getName()),
                 new Placeholder("bg_players", players.size()),
                 new Placeholder("bg_maxplayers", game.getConfiguration().getMaxPlayers())));

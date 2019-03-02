@@ -13,7 +13,6 @@ import com.matsg.battlegrounds.item.attributes.FireModeAttributeValue;
 import com.matsg.battlegrounds.item.attributes.IntegerAttributeValue;
 import com.matsg.battlegrounds.util.BattleSound;
 import com.matsg.battlegrounds.util.HalfBlocks;
-import com.matsg.battlegrounds.util.Message;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -134,10 +133,10 @@ public class BattleGun extends BattleFirearm implements Gun {
     protected String[] getLore() {
         return new String[] {
                 ChatColor.WHITE + firearmType.getName(),
-                ChatColor.GRAY + format(6, getAccuracy() * 100.0, 100.0) + " " + Message.create(TranslationKey.STAT_ACCURACY),
-                ChatColor.GRAY + format(6, bullet.getShortDamage(), 55.0) + " " + Message.create(TranslationKey.STAT_DAMAGE),
-                ChatColor.GRAY + format(6, Math.max((fireRate.getAttributeValue().getValue() + 10 - cooldown.getAttributeValue().getValue() / 2) * 10.0, 40.0), 200.0) + " " + Message.create(TranslationKey.STAT_FIRERATE),
-                ChatColor.GRAY + format(6, bullet.getMidRange(), 70.0) + " " + Message.create(TranslationKey.STAT_RANGE) };
+                ChatColor.GRAY + format(6, getAccuracy() * 100.0, 100.0) + " " + messageHelper.create(TranslationKey.STAT_ACCURACY),
+                ChatColor.GRAY + format(6, bullet.getShortDamage(), 55.0) + " " + messageHelper.create(TranslationKey.STAT_DAMAGE),
+                ChatColor.GRAY + format(6, Math.max((fireRate.getAttributeValue().getValue() + 10 - cooldown.getAttributeValue().getValue() / 2) * 10.0, 40.0), 200.0) + " " + messageHelper.create(TranslationKey.STAT_FIRERATE),
+                ChatColor.GRAY + format(6, bullet.getMidRange(), 70.0) + " " + messageHelper.create(TranslationKey.STAT_RANGE) };
     }
 
     private Sound[] getShotSound() {

@@ -2,9 +2,9 @@ package com.matsg.battlegrounds.event.handler;
 
 import com.matsg.battlegrounds.BattleGameManager;
 import com.matsg.battlegrounds.BattlegroundsPlugin;
+import com.matsg.battlegrounds.Translator;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.GameManager;
-import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.config.BattlegroundsConfig;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.PlayerManager;
@@ -12,7 +12,6 @@ import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.game.BattleTeam;
 import com.matsg.battlegrounds.player.BattleGamePlayer;
-import com.matsg.battlegrounds.util.Message;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -32,7 +31,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({ BattlegroundsConfig.class, BattlegroundsPlugin.class, ChatColor.class, Message.class })
+@PrepareForTest({ BattlegroundsConfig.class, BattlegroundsPlugin.class, ChatColor.class, Translator.class})
 public class AsyncPlayerChatEventHandlerTest {
 
     private AsyncPlayerChatEvent event;
@@ -44,7 +43,6 @@ public class AsyncPlayerChatEventHandlerTest {
     private Player player;
     private PlayerManager playerManager;
     private Team team;
-    private Translator translator;
 
     @Before
     public void setUp() {
@@ -53,7 +51,6 @@ public class AsyncPlayerChatEventHandlerTest {
         this.game = mock(Game.class);
         this.player = mock(Player.class);
         this.playerManager = mock(PlayerManager.class);
-        this.translator = mock(Translator.class);
 
         this.event = new AsyncPlayerChatEvent(false, player, null, new HashSet<>());
         this.gameManager = new BattleGameManager();
@@ -65,16 +62,15 @@ public class AsyncPlayerChatEventHandlerTest {
 
         PowerMockito.mockStatic(BattlegroundsPlugin.class);
         PowerMockito.mockStatic(ChatColor.class);
+        PowerMockito.mockStatic(Translator.class);
 
         when(BattlegroundsPlugin.getPlugin()).thenReturn(plugin);
+        when(Translator.translate(any())).thenReturn("");
 
         when(game.getPlayerManager()).thenReturn(playerManager);
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
         when(plugin.getBattlegroundsConfig()).thenReturn(config);
         when(plugin.getGameManager()).thenReturn(gameManager);
-        when(plugin.getTranslator()).thenReturn(translator);
-
-        PowerMockito.mockStatic(Message.class);
     }
 
     @Test

@@ -2,7 +2,6 @@ package com.matsg.battlegrounds.command;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.util.Message;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -15,12 +14,14 @@ public class Help extends SubCommand {
     private SubCommand[] subCommands;
 
     public Help(Battlegrounds plugin, SubCommand[] subCommands) {
-        super(plugin, "help", null, "bg help", null, false, "?");
+        super(plugin);
         this.subCommands = subCommands;
+        setAliases("?");
+        setName("help");
     }
 
-    public void execute(CommandSender sender, String[] args) {
-        sender.sendMessage(Message.create(TranslationKey.HELP_MENU));
+    public void executeSubCommand(CommandSender sender, String[] args) {
+        sender.sendMessage(createMessage(TranslationKey.HELP_MENU));
         sender.sendMessage(" ");
 
         if (sender instanceof Player) {

@@ -8,7 +8,6 @@ import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.game.BattleArena;
 import com.matsg.battlegrounds.nms.ReflectionUtils;
-import com.matsg.battlegrounds.util.Message;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.bukkit.selections.Selection;
 import org.bukkit.Location;
@@ -19,15 +18,20 @@ import org.bukkit.entity.Player;
 public class CreateArena extends SubCommand {
 
     public CreateArena(Battlegrounds plugin) {
-        super(plugin, "createarena", Message.create(TranslationKey.DESCRIPTION_CREATEARENA),
-                "bg createarena [id] [arena]", "battlegrounds.createarena", true, "ca");
+        super(plugin);
+        setAliases("ca");
+        setDescription(createMessage(TranslationKey.DESCRIPTION_CREATEARENA));
+        setName("createarena");
+        setPermissionNode("battlegrounds.createarena");
+        setPlayerOnly(true);
+        setUsage("bg createarena [id] [arena]");
     }
 
-    public void execute(CommandSender sender, String[] args) {
+    public void executeSubCommand(CommandSender sender, String[] args) {
         Player player = (Player) sender;
 
         if (args.length == 1) {
-            player.sendMessage(Message.create(TranslationKey.SPECIFY_ID));
+            player.sendMessage(createMessage(TranslationKey.SPECIFY_ID));
             return;
         }
 
@@ -36,26 +40,26 @@ public class CreateArena extends SubCommand {
         try {
             id = Integer.parseInt(args[1]);
         } catch (Exception e) {
-            player.sendMessage(Message.create(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[1])));
+            player.sendMessage(createMessage(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[1])));
             return;
         }
 
         if (!plugin.getGameManager().exists(id)) {
-            player.sendMessage(Message.create(TranslationKey.GAME_NOT_EXISTS, new Placeholder("bg_game", id)));
+            player.sendMessage(createMessage(TranslationKey.GAME_NOT_EXISTS, new Placeholder("bg_game", id)));
             return;
         }
 
         Game game = plugin.getGameManager().getGame(id);
 
         if (args.length == 2) {
-            player.sendMessage(Message.create(TranslationKey.SPECIFY_NAME));
+            player.sendMessage(createMessage(TranslationKey.SPECIFY_NAME));
             return;
         }
 
         String name = args[2].replaceAll("_", " ");
 
         if (plugin.getGameManager().getArena(game, name) != null) {
-            player.sendMessage(Message.create(TranslationKey.ARENA_EXISTS,
+            player.sendMessage(createMessage(TranslationKey.ARENA_EXISTS,
                     new Placeholder("bg_game", id),
                     new Placeholder("bg_arena", name)));
             return;
@@ -87,7 +91,7 @@ public class CreateArena extends SubCommand {
 
         arena.setActive(game.getArena() == null);
 
-        player.sendMessage(Message.create(TranslationKey.ARENA_CREATE,
+        player.sendMessage(createMessage(TranslationKey.ARENA_CREATE,
                 new Placeholder("bg_game", id),
                 new Placeholder("bg_arena", name)));
     }

@@ -7,7 +7,7 @@ import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.util.Placeholder;
-import com.matsg.battlegrounds.util.Message;
+import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -15,9 +15,11 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 public class AsyncPlayerChatEventHandler implements EventHandler<AsyncPlayerChatEvent> {
 
     private Battlegrounds plugin;
+    private MessageHelper messageHelper;
 
     public AsyncPlayerChatEventHandler(Battlegrounds plugin) {
         this.plugin = plugin;
+        this.messageHelper = new MessageHelper();
     }
 
     public void handle(AsyncPlayerChatEvent event) {
@@ -38,9 +40,10 @@ public class AsyncPlayerChatEventHandler implements EventHandler<AsyncPlayerChat
             plugin.getLogger().info("[Game " + game.getId() + "] " + gamePlayer.getName() + ": " + event.getMessage());
         }
 
-        game.getPlayerManager().broadcastMessage(Message.create(TranslationKey.PLAYER_MESSAGE,
+        game.getPlayerManager().broadcastMessage(messageHelper.create(TranslationKey.PLAYER_MESSAGE,
                 new Placeholder("bg_message", event.getMessage()),
-                new Placeholder("player_name", team.getChatColor() + gamePlayer.getName() + ChatColor.WHITE)));
+                new Placeholder("player_name", team.getChatColor() + gamePlayer.getName() + ChatColor.WHITE)
+        ));
 
         event.setCancelled(true);
     }

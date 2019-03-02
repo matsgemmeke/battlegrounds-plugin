@@ -5,7 +5,6 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.util.BattleRunnable;
-import com.matsg.battlegrounds.util.Message;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
@@ -16,14 +15,19 @@ public class RemoveGame extends SubCommand {
     private List<CommandSender> senders;
 
     public RemoveGame(Battlegrounds plugin) {
-        super(plugin, "removegame", Message.create(TranslationKey.DESCRIPTION_REMOVEGAME),
-                "bg removegame [id]", "battlegrounds.removegame", false, "rg");
+        super(plugin);
         this.senders = new ArrayList<>();
+
+        setAliases("rg");
+        setDescription(createMessage(TranslationKey.DESCRIPTION_REMOVEGAME));
+        setName("removegame");
+        setPermissionNode("battlegrounds.removegame");
+        setUsage("bg removegame [id]");
     }
 
-    public void execute(final CommandSender sender, String[] args) {
+    public void executeSubCommand(final CommandSender sender, String[] args) {
         if (args.length == 1) {
-            sender.sendMessage(Message.create(TranslationKey.SPECIFY_ID));
+            sender.sendMessage(createMessage(TranslationKey.SPECIFY_ID));
             return;
         }
 
@@ -32,17 +36,17 @@ public class RemoveGame extends SubCommand {
         try {
             id = Integer.parseInt(args[1]);
         } catch (Exception e) {
-            sender.sendMessage(Message.create(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[1])));
+            sender.sendMessage(createMessage(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[1])));
             return;
         }
 
         if (!plugin.getGameManager().exists(id)) {
-            sender.sendMessage(Message.create(TranslationKey.GAME_NOT_EXISTS, new Placeholder("bg_game", id)));
+            sender.sendMessage(createMessage(TranslationKey.GAME_NOT_EXISTS, new Placeholder("bg_game", id)));
             return;
         }
 
         if (!senders.contains(sender)) {
-            sender.sendMessage(Message.create(TranslationKey.GAME_CONFIRM_REMOVE, new Placeholder("bg_game", id)));
+            sender.sendMessage(createMessage(TranslationKey.GAME_CONFIRM_REMOVE, new Placeholder("bg_game", id)));
 
             senders.add(sender);
 
@@ -59,7 +63,7 @@ public class RemoveGame extends SubCommand {
 
         plugin.getGameManager().getGames().remove(game);
 
-        sender.sendMessage(Message.create(TranslationKey.GAME_REMOVE, new Placeholder("bg_game", id)));
+        sender.sendMessage(createMessage(TranslationKey.GAME_REMOVE, new Placeholder("bg_game", id)));
 
         senders.remove(sender);
     }

@@ -5,7 +5,7 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
-import com.matsg.battlegrounds.util.Message;
+import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -27,6 +27,7 @@ public class EditLoadoutView implements View {
     private Loadout loadout;
     private Map<ItemStack, Attachment> attachments;
     private Map<ItemStack, Gun> attachmentGun;
+    private MessageHelper messageHelper;
 
     public EditLoadoutView(Battlegrounds plugin, Loadout loadout) {
         this.loadout = loadout;
@@ -34,11 +35,12 @@ public class EditLoadoutView implements View {
         this.attachments = new HashMap<>();
         this.attachmentGun = new HashMap<>();
         this.items = new ArrayList<>();
+        this.messageHelper = new MessageHelper();
 
         this.inventory = buildInventory(plugin.getServer().createInventory(this, 27,
-                Message.create(TranslationKey.VIEW_EDIT_LOADOUT, new Placeholder("bg_loadout", loadout.getName()))));
+                messageHelper.create(TranslationKey.VIEW_EDIT_LOADOUT, new Placeholder("bg_loadout", loadout.getName()))));
 
-        inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(Message.create(TranslationKey.GO_BACK)).build());
+        inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(messageHelper.create(TranslationKey.GO_BACK)).build());
     }
 
     public Inventory getInventory() {
@@ -47,11 +49,11 @@ public class EditLoadoutView implements View {
 
     private void addAttachmentSlot(Inventory inventory, Gun gun, int slot) {
         Attachment attachment = gun.getAttachments().size() > 0 ? gun.getAttachments().get(0) : null;
-        String[] lore = Message.create(TranslationKey.EDIT_ATTACHMENT).split(",");
+        String[] lore = messageHelper.create(TranslationKey.EDIT_ATTACHMENT).split(",");
 
         ItemStack itemStack = new ItemStackBuilder(attachment != null ? attachment.getItemStack() : new ItemStack(Material.BARRIER))
                 .addItemFlags(ItemFlag.values())
-                .setDisplayName(ChatColor.WHITE + Message.create(TranslationKey.GUN_ATTACHMENT, new Placeholder("bg_weapon", gun.getName())))
+                .setDisplayName(ChatColor.WHITE + messageHelper.create(TranslationKey.GUN_ATTACHMENT, new Placeholder("bg_weapon", gun.getName())))
                 .setLore(ChatColor.WHITE + getItemName(attachment), lore[0], lore[1])
                 .setUnbreakable(true)
                 .build();
@@ -66,7 +68,7 @@ public class EditLoadoutView implements View {
         for (ItemSlot itemSlot : ItemSlot.WEAPON_SLOTS) {
             Weapon weapon = loadout.getWeapon(itemSlot);
 
-            String[] lore = Message.create(TranslationKey.EDIT_WEAPON).split(",");
+            String[] lore = messageHelper.create(TranslationKey.EDIT_WEAPON).split(",");
 
             ItemStack itemStack = new ItemStackBuilder(getItemStack(weapon))
                     .addItemFlags(ItemFlag.values())
@@ -93,19 +95,19 @@ public class EditLoadoutView implements View {
     private String getDisplayName(ItemSlot itemSlot) {
         switch (itemSlot) {
             case FIREARM_PRIMARY:
-                return Message.create(TranslationKey.WEAPON_PRIMARY);
+                return messageHelper.create(TranslationKey.WEAPON_PRIMARY);
             case FIREARM_SECONDARY:
-                return Message.create(TranslationKey.WEAPON_SECONDARY);
+                return messageHelper.create(TranslationKey.WEAPON_SECONDARY);
             case EQUIPMENT:
-                return Message.create(TranslationKey.WEAPON_EQUIPMENT);
+                return messageHelper.create(TranslationKey.WEAPON_EQUIPMENT);
             case KNIFE:
-                return Message.create(TranslationKey.WEAPON_KNIFE);
+                return messageHelper.create(TranslationKey.WEAPON_KNIFE);
         }
         return null;
     }
 
     private String getItemName(Item item) {
-        return item != null ? item.getName() : Message.create(TranslationKey.NONE_SELECTED);
+        return item != null ? item.getName() : messageHelper.create(TranslationKey.NONE_SELECTED);
     }
 
     private ItemStack getItemStack(Weapon weapon) {

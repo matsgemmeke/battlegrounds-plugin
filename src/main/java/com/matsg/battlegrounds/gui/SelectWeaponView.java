@@ -5,7 +5,7 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
-import com.matsg.battlegrounds.util.Message;
+import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -24,12 +24,14 @@ public class SelectWeaponView implements View {
     private Inventory inventory, previous;
     private Loadout loadout;
     private Map<ItemStack, Weapon> weapons;
+    private MessageHelper messageHelper;
     private Player player;
 
     public SelectWeaponView(Battlegrounds plugin, Player player, Loadout loadout, ItemType itemType, List<Weapon> weapons) {
         this.plugin = plugin;
         this.loadout = loadout;
         this.player = player;
+        this.messageHelper = new MessageHelper();
         this.weapons = new HashMap<>();
 
         this.inventory = plugin.getServer().createInventory(this, 27, itemType.getName());
@@ -47,7 +49,7 @@ public class SelectWeaponView implements View {
             addWeapon(weapon, slot ++);
         }
 
-        inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(Message.create(TranslationKey.GO_BACK)).build());
+        inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(messageHelper.create(TranslationKey.GO_BACK)).build());
     }
 
     public SelectWeaponView(Battlegrounds plugin, Player player, Loadout loadout, ItemType itemType, List<Weapon> weapons, Inventory previous) {
@@ -71,7 +73,7 @@ public class SelectWeaponView implements View {
     private ItemStack getLockedItemStack(Weapon weapon) {
         return new ItemStackBuilder(Material.BARRIER)
                 .addItemFlags(ItemFlag.values())
-                .setDisplayName(Message.create(TranslationKey.ITEM_LOCKED, new Placeholder("bg_level", plugin.getLevelConfig().getLevelUnlocked(weapon.getName()))))
+                .setDisplayName(messageHelper.create(TranslationKey.ITEM_LOCKED, new Placeholder("bg_level", plugin.getLevelConfig().getLevelUnlocked(weapon.getName()))))
                 .setUnbreakable(true)
                 .build();
     }

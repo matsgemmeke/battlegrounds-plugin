@@ -2,14 +2,13 @@ package com.matsg.battlegrounds.command;
 
 import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.util.Message;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class BattlegroundsCommand extends Command {
 
     public BattlegroundsCommand(BattlegroundsPlugin plugin) {
-        super(plugin, "battlegrounds", null, false, "b", "bg", "battleground");
+        super(plugin, "battlegrounds", "b", "bg", "battleground");
 
         commands.add(new AddSpawn(plugin));
         commands.add(new CreateArena(plugin));
@@ -39,26 +38,26 @@ public class BattlegroundsCommand extends Command {
         SubCommand subCommand = getSubCommand(args[0]);
 
         if (subCommand == null) {
-            sender.sendMessage(Message.create(TranslationKey.INVALID_ARGUMENTS));
+            sender.sendMessage(createMessage(TranslationKey.INVALID_ARGUMENTS));
             return;
         }
 
         if (subCommand.isPlayerOnly() && !(sender instanceof Player)) {
-            sender.sendMessage(Message.create(TranslationKey.INVALID_SENDER));
+            sender.sendMessage(createMessage(TranslationKey.INVALID_SENDER));
             return;
         }
 
         String permissionNode = subCommand.getPermissionNode();
 
         if (permissionNode != null && permissionNode.length() > 0 && !sender.hasPermission(permissionNode)) {
-            sender.sendMessage(Message.create(TranslationKey.NO_PERMISSION));
+            sender.sendMessage(createMessage(TranslationKey.NO_PERMISSION));
             return;
         }
 
         try {
             subCommand.execute(sender, args);
         } catch (Exception e) {
-            sender.sendMessage(Message.create(TranslationKey.COMMAND_ERROR));
+            sender.sendMessage(createMessage(TranslationKey.COMMAND_ERROR));
             e.printStackTrace();
         }
     }

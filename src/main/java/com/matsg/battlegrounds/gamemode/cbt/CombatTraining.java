@@ -1,4 +1,4 @@
-package com.matsg.battlegrounds.gamemode;
+package com.matsg.battlegrounds.gamemode.cbt;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
@@ -13,9 +13,9 @@ import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.player.Hitbox;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.game.BattleTeam;
+import com.matsg.battlegrounds.gamemode.AbstractGameMode;
 import com.matsg.battlegrounds.gui.scoreboard.AbstractScoreboard;
 import com.matsg.battlegrounds.gui.scoreboard.ScoreboardBuilder;
-import com.matsg.battlegrounds.util.Message;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.World;
@@ -36,12 +36,15 @@ public class CombatTraining extends AbstractGameMode {
     private GameScoreboard scoreboard;
 
     public CombatTraining(Battlegrounds plugin, Game game, Yaml yaml) {
-        super(plugin, game, Message.create(TranslationKey.CBT_NAME), Message.create(TranslationKey.CBT_SHORT), yaml);
+        super(plugin, game, yaml);
         this.active = false;
         this.autoJoin = yaml.getBoolean("auto-join");
         this.color = getConfigColor();
         this.minSpawnDistance = yaml.getDouble("minimum-spawn-distance");
         this.scoreboard = new CBTScoreboard(game);
+        
+        setName(messageHelper.create(TranslationKey.CBT_NAME));
+        setShortName(messageHelper.create(TranslationKey.CBT_SHORT));
     }
 
     public void onEnable() {
@@ -76,15 +79,17 @@ public class CombatTraining extends AbstractGameMode {
     }
 
     public void onDeath(GamePlayer gamePlayer, DeathCause deathCause) {
-        game.getPlayerManager().broadcastMessage(Message.createSimple(plugin.getTranslator().getTranslation(deathCause.getMessagePath()),
-                new Placeholder("bg_player", gamePlayer.getName())));
+        game.getPlayerManager().broadcastMessage(messageHelper.createSimple(deathCause.getMessagePath(),
+                new Placeholder("bg_player", gamePlayer.getName())
+        ));
     }
 
     public void onKill(GamePlayer gamePlayer, GamePlayer killer, Weapon weapon, Hitbox hitbox) {
-        game.getPlayerManager().broadcastMessage(Message.create(getKillMessageKey(hitbox),
+        game.getPlayerManager().broadcastMessage(messageHelper.create(getKillMessageKey(hitbox),
                 new Placeholder("bg_killer", killer.getName()),
                 new Placeholder("bg_player", gamePlayer.getName()),
-                new Placeholder("bg_weapon", weapon.getName())));
+                new Placeholder("bg_weapon", weapon.getName())
+        ));
     }
 
     public void removePlayer(GamePlayer gamePlayer) {
@@ -112,39 +117,5 @@ public class CombatTraining extends AbstractGameMode {
             return;
         }
         game.getPlayerManager().addPlayer(event.getPlayer());
-    }
-
-    private class CBTScoreboard extends AbstractScoreboard {
-
-        private CBTScoreboard(Game game) {
-            this.game = game;
-            this.scoreboardId = "cbt";
-
-            layout.put("title", scoreboardId);
-        }
-
-        public String getScoreboardId() {
-            return scoreboardId;
-        }
-
-        public Set<World> getWorlds() {
-            return worlds;
-        }
-
-        public void addTeams(ScoreboardBuilder builder) {
-            for (Team team : game.getGameMode().getTeams()) {
-                org.bukkit.scoreboard.Team sbTeam = builder.addTeam(team.getName());
-                scoreboardTeams.add(sbTeam);
-                sbTeam.setNameTagVisibility(NameTagVisibility.HIDE_FOR_OTHER_TEAMS);
-                for (GamePlayer gamePlayer : team.getPlayers()) {
-                    sbTeam.addEntry(gamePlayer.getName());
-                }
-            }
-        }
-
-        public Scoreboard buildScoreboard(Map<String, String> layout, Scoreboard scoreboard, GamePlayer gamePlayer) {
-            return scoreboard == null || scoreboard.getObjective(DisplaySlot.SIDEBAR) == null ||
-                    !scoreboard.getObjective(DisplaySlot.SIDEBAR).getCriteria().equals(scoreboardId) ? getNewScoreboard(layout) : updateScoreboard(layout, scoreboard);
-        }
     }
 }

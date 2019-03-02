@@ -4,15 +4,16 @@ import com.matsg.battlegrounds.api.game.Spawn;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import org.bukkit.Location;
 
-public class ArenaSpawn extends Location implements Spawn {
+public class ArenaSpawn implements Spawn {
 
     private boolean teamBase;
     private GamePlayer gamePlayer;
     private int index, teamId;
+    private Location location;
 
     public ArenaSpawn(int index, Location location, int teamId) {
-        super(location.getWorld(), location.getX(), location.getY(), location.getZ());
         this.index = index;
+        this.location = location;
         this.teamId = teamId;
     }
 
@@ -25,7 +26,7 @@ public class ArenaSpawn extends Location implements Spawn {
     }
 
     public Location getLocation() {
-        return this;
+        return location;
     }
 
     public int getTeamId() {

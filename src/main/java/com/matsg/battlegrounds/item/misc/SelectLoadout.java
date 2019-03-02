@@ -7,7 +7,7 @@ import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.gui.SelectLoadoutView;
 import com.matsg.battlegrounds.item.BattleItem;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
-import com.matsg.battlegrounds.util.Message;
+import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -22,7 +22,8 @@ public class SelectLoadout extends BattleItem {
     }
 
     private static ItemStack getDefaultItemStack() {
-        return new ItemStackBuilder(Material.COMPASS).setDisplayName(ChatColor.WHITE + Message.create(TranslationKey.CHANGE_LOADOUT)).build();
+        MessageHelper messageHelper = new MessageHelper();
+        return new ItemStackBuilder(Material.COMPASS).setDisplayName(ChatColor.WHITE + messageHelper.create(TranslationKey.CHANGE_LOADOUT)).build();
     }
 
     private void onClick(GamePlayer gamePlayer) {

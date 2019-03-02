@@ -1,18 +1,14 @@
 package com.matsg.battlegrounds.util;
 
-import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import org.bukkit.ChatColor;
 
-public class Message {
+import static com.matsg.battlegrounds.Translator.translate;
 
-    private static Battlegrounds plugin = BattlegroundsPlugin.getPlugin();
-    private static Translator translator = plugin.getTranslator();
+public class MessageHelper {
 
-    private static String applyPlaceholders(String message, Placeholder... placeholders) {
+    private String applyPlaceholders(String message, Placeholder... placeholders) {
         for (Placeholder placeholder : placeholders) {
             if (message.contains("%" + placeholder.getIdentifier() + "%")) {
                 message = placeholder.replace(message);
@@ -21,15 +17,15 @@ public class Message {
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 
-    public static String create(String path, Placeholder... placeholders) {
-        return applyPlaceholders(translator.getTranslation(path), placeholders);
+    public String create(String path, Placeholder... placeholders) {
+        return applyPlaceholders(translate(path), placeholders);
     }
 
-    public static String create(TranslationKey key, Placeholder... placeholders) {
-        String message = translator.getTranslation(key.getPath());
+    public String create(TranslationKey key, Placeholder... placeholders) {
+        String message = translate(key.getPath()), prefix = translate(TranslationKey.PREFIX.getPath());
         StringBuilder builder = new StringBuilder();
-        if (key.hasPrefix()) {
-            builder.append(translator.getTranslation(TranslationKey.PREFIX.getPath()));
+        if (prefix != null && key.hasPrefix()) {
+            builder.append(prefix);
         }
         for (Placeholder placeholder : placeholders) {
             if (message.contains("%" + placeholder.getIdentifier() + "%")) {
@@ -40,7 +36,7 @@ public class Message {
         return ChatColor.translateAlternateColorCodes('&', builder.toString());
     }
 
-    public static String createSimple(String message, Placeholder... placeholders) {
+    public String createSimple(String message, Placeholder... placeholders) {
         return applyPlaceholders(message, placeholders);
     }
 }

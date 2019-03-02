@@ -12,7 +12,6 @@ import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.BattleSound;
-import com.matsg.battlegrounds.util.Message;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
@@ -39,7 +38,7 @@ public class BattleKnife extends BattleWeapon implements Knife {
         this.maxAmount = amount;
         this.throwable = throwable;
         this.throwing = false;
-        this.type = Message.create(TranslationKey.TYPE_KNIFE);
+        this.type = messageHelper.create(TranslationKey.TYPE_KNIFE);
     }
 
     public Knife clone() {
@@ -219,7 +218,7 @@ public class BattleKnife extends BattleWeapon implements Knife {
 
     public boolean update() {
         Placeholder placeholder = new Placeholder("bg_weapon", name);
-        String displayName = Message.createSimple(plugin.getBattlegroundsConfig().getWeaponDisplayName("knife"), placeholder);
+        String displayName = messageHelper.createSimple(plugin.getBattlegroundsConfig().getWeaponDisplayName("knife"), placeholder);
 
         itemStack = new ItemStackBuilder(itemStack)
                 .addItemFlags(ItemFlag.values())

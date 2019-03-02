@@ -39,11 +39,11 @@ public enum Result {
     };
 
     private int id;
-    private TranslationKey translationKey;
+    private TranslationKey key;
 
-    Result(int id, TranslationKey translationKey) {
+    Result(int id, TranslationKey key) {
         this.id = id;
-        this.translationKey = translationKey;
+        this.key = key;
     }
 
     public static Result getResult(Team team, List<Team> teams) {
@@ -60,7 +60,7 @@ public enum Result {
     }
 
     public TranslationKey getTranslationKey() {
-        return translationKey;
+        return key;
     }
 
     abstract boolean applies(Team team, List<Team> sortedTeams);

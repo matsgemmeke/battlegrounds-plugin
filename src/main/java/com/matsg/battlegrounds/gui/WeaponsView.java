@@ -6,7 +6,7 @@ import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.item.EquipmentType;
 import com.matsg.battlegrounds.item.FirearmType;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
-import com.matsg.battlegrounds.util.Message;
+import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -24,12 +24,14 @@ public class WeaponsView implements View {
     private Inventory inventory, previous;
     private Loadout loadout;
     private List<Weapon> weapons;
+    private MessageHelper messageHelper;
 
     public WeaponsView(Battlegrounds plugin, Loadout loadout, ItemSlot itemSlot) {
         this.plugin = plugin;
-        this.inventory = plugin.getServer().createInventory(this, 27, Message.create(TranslationKey.VIEW_WEAPONS));
         this.loadout = loadout;
+        this.messageHelper = new MessageHelper();
         this.weapons = getWeaponList(plugin);
+        this.inventory = plugin.getServer().createInventory(this, 27, messageHelper.create(TranslationKey.VIEW_WEAPONS));
 
         // Add all firearm class types
         for (FirearmType firearmType : FirearmType.values()) {
@@ -60,7 +62,7 @@ public class WeaponsView implements View {
             }
         }
 
-        inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(Message.create(TranslationKey.GO_BACK)).build());
+        inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(messageHelper.create(TranslationKey.GO_BACK)).build());
     }
 
     public WeaponsView(Battlegrounds plugin, Loadout loadout, ItemSlot itemSlot, Inventory previous) {

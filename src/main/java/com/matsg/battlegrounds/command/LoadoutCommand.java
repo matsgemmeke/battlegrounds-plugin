@@ -5,7 +5,6 @@ import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.config.StoredPlayer;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.gui.LoadoutManagerView;
-import com.matsg.battlegrounds.util.Message;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -14,8 +13,10 @@ public class LoadoutCommand extends Command {
     private int minLevel;
 
     public LoadoutCommand(BattlegroundsPlugin plugin) {
-        super(plugin, "loadout", null, true, "loadoutcreator");
+        super(plugin, "loadout", "loadoutcreator");
         this.minLevel = plugin.getBattlegroundsConfig().loadoutCreationLevel;
+
+        setPlayerOnly(true);
 
         commands.add(new Rename(plugin));
     }
@@ -25,7 +26,7 @@ public class LoadoutCommand extends Command {
         StoredPlayer storedPlayer = plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId());
 
         if (storedPlayer == null && (storedPlayer = plugin.getPlayerStorage().registerPlayer(player.getUniqueId(), player.getName())) == null || plugin.getLevelConfig().getLevel(storedPlayer.getExp()) < minLevel) {
-            player.sendMessage(Message.create(TranslationKey.CUSTOM_LOADOUT_LOCKED, new Placeholder("bg_level", minLevel)));
+            player.sendMessage(createMessage(TranslationKey.CUSTOM_LOADOUT_LOCKED, new Placeholder("bg_level", minLevel)));
             return;
         }
 
@@ -43,7 +44,7 @@ public class LoadoutCommand extends Command {
         try {
             subCommand.execute(sender, args);
         } catch (Exception e) {
-            player.sendMessage(Message.create(TranslationKey.COMMAND_ERROR));
+            player.sendMessage(createMessage(TranslationKey.COMMAND_ERROR));
             e.printStackTrace();
         }
     }

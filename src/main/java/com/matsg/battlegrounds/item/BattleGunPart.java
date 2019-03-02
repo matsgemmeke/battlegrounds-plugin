@@ -2,23 +2,23 @@ package com.matsg.battlegrounds.item;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.item.GunPart;
-import com.matsg.battlegrounds.util.Message;
+import com.matsg.battlegrounds.util.MessageHelper;
 
 public enum BattleGunPart implements GunPart {
 
-    INTERNAL(1, Message.create(TranslationKey.GUN_PART_INTERNAL)),
-    LOWER_RAIL(2, Message.create(TranslationKey.GUN_PART_LOWER_RAIL)),
-    MAGAZINE(3, Message.create(TranslationKey.GUN_PART_MAGAZINE)),
-    MUZZLE(4, Message.create(TranslationKey.GUN_PART_MUZZLE)),
-    STOCK(5, Message.create(TranslationKey.GUN_PART_STOCK)),
-    UPPER_RAIL(6, Message.create(TranslationKey.GUN_PART_UPPER_RAIL));
+    INTERNAL(1, TranslationKey.GUN_PART_INTERNAL),
+    LOWER_RAIL(2, TranslationKey.GUN_PART_LOWER_RAIL),
+    MAGAZINE(3, TranslationKey.GUN_PART_MAGAZINE),
+    MUZZLE(4, TranslationKey.GUN_PART_MUZZLE),
+    STOCK(5, TranslationKey.GUN_PART_STOCK),
+    UPPER_RAIL(6, TranslationKey.GUN_PART_UPPER_RAIL);
 
     private int id;
     private String name;
 
-    BattleGunPart(int id, String name) {
+    BattleGunPart(int id, TranslationKey key) {
         this.id = id;
-        this.name = name;
+        this.name = new MessageHelper().create(key);
     }
 
     public int getId() {

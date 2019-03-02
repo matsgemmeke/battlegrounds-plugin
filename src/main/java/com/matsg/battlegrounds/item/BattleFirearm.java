@@ -9,7 +9,6 @@ import com.matsg.battlegrounds.item.attributes.IntegerAttributeValue;
 import com.matsg.battlegrounds.item.attributes.ReloadTypeAttributeValue;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.BattleSound;
-import com.matsg.battlegrounds.util.Message;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -362,7 +361,7 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
                 new Placeholder("bg_magazine", magazine.getAttributeValue().getValue()),
                 new Placeholder("bg_weapon", name)
         };
-        String displayName = Message.createSimple(plugin.getBattlegroundsConfig().getWeaponDisplayName("firearm"), placeholders);
+        String displayName = messageHelper.createSimple(plugin.getBattlegroundsConfig().getWeaponDisplayName("firearm"), placeholders);
 
         itemStack = new ItemStackBuilder(itemStack)
                 .addItemFlags(ItemFlag.values())

@@ -1,7 +1,5 @@
 package com.matsg.battlegrounds.util;
 
-import com.matsg.battlegrounds.BattlegroundsPlugin;
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.nms.Title;
 import org.bukkit.entity.Player;
@@ -15,16 +13,17 @@ public enum EnumTitle {
     OBJECTIVE_TIME("title-objective-time"),
     TDM_START("title-tdm-start");
 
-    private Battlegrounds plugin;
+    private MessageHelper messageHelper;
     private String path;
     private Title title;
 
     EnumTitle(String path) {
-        this.plugin = BattlegroundsPlugin.getPlugin();
+        this.messageHelper = new MessageHelper();
+
         if (path == null || path.length() <= 0) {
             throw new TitleFormatException("Title argument cannot be null");
         }
-        String string = plugin.getTranslator().getTranslation(path);
+        String string = messageHelper.create(path);
         String[] split = string.split(",");
         if (split.length <= 4) {
             throw new TitleFormatException("Invalid title format \"" + string + "\"");
@@ -41,14 +40,6 @@ public enum EnumTitle {
             throw new TitleFormatException("An error occurred while formatting the title");
         }
         this.path = path;
-    }
-
-    public String getMessage() {
-        return title.getMessage();
-    }
-
-    public String getMessage(Placeholder... placeholders) {
-        return title.getMessage(placeholders);
     }
 
     public Title getTitle() {

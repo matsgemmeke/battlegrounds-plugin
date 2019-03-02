@@ -1,9 +1,7 @@
-package com.matsg.battlegrounds.gamemode.objective;
+package com.matsg.battlegrounds.game.objective;
 
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.Team;
-import com.matsg.battlegrounds.api.gamemode.Objective;
-import com.matsg.battlegrounds.api.player.GamePlayer;
+import com.matsg.battlegrounds.api.game.Objective;
 import com.matsg.battlegrounds.nms.Title;
 import com.matsg.battlegrounds.util.EnumTitle;
 

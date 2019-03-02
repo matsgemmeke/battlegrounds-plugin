@@ -4,7 +4,7 @@ import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.event.handler.EventHandler;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.util.Message;
+import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
@@ -13,9 +13,11 @@ import java.util.List;
 public class PlayerCommandPreprocessEventHandler implements EventHandler<PlayerCommandPreprocessEvent> {
 
     private Battlegrounds plugin;
+    private MessageHelper messageHelper;
 
     public PlayerCommandPreprocessEventHandler(Battlegrounds plugin) {
         this.plugin = plugin;
+        this.messageHelper = new MessageHelper();
     }
 
     public void handle(PlayerCommandPreprocessEvent event) {
@@ -28,7 +30,7 @@ public class PlayerCommandPreprocessEventHandler implements EventHandler<PlayerC
             return;
         }
 
-        player.sendMessage(Message.create(TranslationKey.COMMAND_NOT_ALLOWED));
+        player.sendMessage(messageHelper.create(TranslationKey.COMMAND_NOT_ALLOWED));
 
         event.setCancelled(true);
     }

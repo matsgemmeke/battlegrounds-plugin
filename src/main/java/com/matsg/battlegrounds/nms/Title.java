@@ -1,7 +1,7 @@
 package com.matsg.battlegrounds.nms;
 
 import com.matsg.battlegrounds.api.util.Placeholder;
-import com.matsg.battlegrounds.util.Message;
+import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Constructor;
@@ -9,6 +9,7 @@ import java.lang.reflect.Constructor;
 public class Title {
 
     private int fadeIn, fadeOut, time;
+    private MessageHelper messageHelper;
     private String subTitle, title;
 
     public Title(String title, String subTitle, int fadeIn, int time, int fadeOut) {
@@ -17,6 +18,7 @@ public class Title {
         this.fadeIn = fadeIn;
         this.time = time;
         this.fadeOut = fadeOut;
+        this.messageHelper = new MessageHelper();
     }
 
     public String getMessage() {
@@ -28,7 +30,7 @@ public class Title {
     }
 
     private String replace(String string, Placeholder... placeholders) {
-        return Message.createSimple(string, placeholders);
+        return messageHelper.createSimple(string, placeholders);
     }
 
     public void send(Player player, Placeholder... placeholders) {

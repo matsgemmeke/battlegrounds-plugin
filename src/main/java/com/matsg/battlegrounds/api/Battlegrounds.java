@@ -85,13 +85,6 @@ public interface Battlegrounds extends Plugin {
     PlayerStorage getPlayerStorage();
 
     /**
-     * Gets the translator of the plugin.
-     *
-     * @return The battlegrounds plugin translator
-     */
-    Translator getTranslator();
-
-    /**
      * Gets the NMS version of the plugin.
      *
      * @return The battlegrounds version for handling NMS related functions

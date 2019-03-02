@@ -7,7 +7,7 @@ import com.matsg.battlegrounds.api.item.Gun;
 import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
-import com.matsg.battlegrounds.util.Message;
+import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -28,6 +28,7 @@ public class SelectAttachmentView implements View {
     private Inventory inventory, previous;
     private Loadout loadout;
     private Map<ItemStack, Attachment> attachments;
+    private MessageHelper messageHelper;
     private Player player;
 
     public SelectAttachmentView(Battlegrounds plugin, Player player, Loadout loadout, Gun gun, int attachmentNr) {
@@ -36,10 +37,11 @@ public class SelectAttachmentView implements View {
         this.attachments = new HashMap<>();
         this.gun = gun;
         this.loadout = loadout;
+        this.messageHelper = new MessageHelper();
         this.player = player;
 
-        inventory = buildInventory(plugin.getServer().createInventory(this, 27, Message.create(TranslationKey.VIEW_SELECT_ATTACHMENT, new Placeholder("bg_weapon", gun.getName()))));
-        inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(Message.create(TranslationKey.GO_BACK)).build());
+        inventory = buildInventory(plugin.getServer().createInventory(this, 27, messageHelper.create(TranslationKey.VIEW_SELECT_ATTACHMENT, new Placeholder("bg_weapon", gun.getName()))));
+        inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(messageHelper.create(TranslationKey.GO_BACK)).build());
     }
 
     public SelectAttachmentView(Battlegrounds plugin, Player player, Loadout loadout, Gun gun, int attachmentNr, Inventory previous) {
@@ -91,7 +93,7 @@ public class SelectAttachmentView implements View {
     private ItemStack getLockedItemStack(Attachment attachment) {
         return new ItemStackBuilder(Material.BARRIER)
                 .addItemFlags(ItemFlag.values())
-                .setDisplayName(Message.create(TranslationKey.ITEM_LOCKED, new Placeholder("bg_level", plugin.getLevelConfig().getLevelUnlocked(attachment.getName()))))
+                .setDisplayName(messageHelper.create(TranslationKey.ITEM_LOCKED, new Placeholder("bg_level", plugin.getLevelConfig().getLevelUnlocked(attachment.getName()))))
                 .setUnbreakable(true)
                 .build();
     }

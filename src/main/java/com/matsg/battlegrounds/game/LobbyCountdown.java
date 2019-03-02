@@ -8,7 +8,7 @@ import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.gui.scoreboard.LobbyScoreboard;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.BattleSound;
-import com.matsg.battlegrounds.util.Message;
+import com.matsg.battlegrounds.util.MessageHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,12 +20,14 @@ public class LobbyCountdown extends BattleRunnable implements Countdown {
     private int id, time;
     private List<Integer> display;
     private LobbyScoreboard scoreboard;
+    private MessageHelper messageHelper;
 
     public LobbyCountdown(Game game, int time, int... display) {
         this.game = game;
         this.time = time;
         this.cancelled = false;
         this.display = new ArrayList<>();
+        this.messageHelper = new MessageHelper();
         this.scoreboard = new LobbyScoreboard(game);
 
         for (int i : display) {
@@ -39,7 +41,7 @@ public class LobbyCountdown extends BattleRunnable implements Countdown {
 
     public void cancelCountdown() {
         cancelled = true;
-        game.getPlayerManager().broadcastMessage(Message.create(TranslationKey.COUNTDOWN_CANCELLED));
+        game.getPlayerManager().broadcastMessage(messageHelper.create(TranslationKey.COUNTDOWN_CANCELLED));
     }
 
     public void run() {
@@ -62,7 +64,7 @@ public class LobbyCountdown extends BattleRunnable implements Countdown {
                     return;
                 }
                 if (display.contains(countdown)) {
-                    game.getPlayerManager().broadcastMessage(Message.create(TranslationKey.COUNTDOWN_NOTE, new Placeholder("bg_countdown", countdown)));
+                    game.getPlayerManager().broadcastMessage(messageHelper.create(TranslationKey.COUNTDOWN_NOTE, new Placeholder("bg_countdown", countdown)));
                     BattleSound.COUNTDOWN_NOTE.play(game);
                 }
                 scoreboard.setCountdown(countdown);

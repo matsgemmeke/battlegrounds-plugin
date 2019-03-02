@@ -12,24 +12,22 @@ public enum ActionBar {
     SAME_LOADOUT("actionbar-same-loadout");
 
     private Battlegrounds plugin;
+    private MessageHelper messageHelper;
     private String message, path;
 
     ActionBar(String path) {
-        this.plugin = BattlegroundsPlugin.getPlugin();
-        this.message = plugin.getTranslator().getTranslation(path);
         this.path = path;
+        this.plugin = BattlegroundsPlugin.getPlugin();
+        this.messageHelper = new MessageHelper();
+        this.message = messageHelper.create(path);
     }
 
     public String getMessage() {
         return message;
     }
 
-    public String getMessage(Placeholder... placeholders) {
-        return replace(placeholders);
-    }
-
     private String replace(Placeholder... placeholders) {
-        return Message.createSimple(message, placeholders);
+        return messageHelper.create(message, placeholders);
     }
 
     public void send(Player player, Placeholder... placeholders) {

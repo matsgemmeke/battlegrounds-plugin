@@ -99,24 +99,24 @@ public class BattleArena implements Arena {
         return spawn;
     }
 
-    public Spawn getRandomSpawn(Team team) {
+    public Spawn getRandomSpawn(int teamId) {
         Random random = new Random();
         Spawn spawn;
 
         do {
             spawn = spawns.get(random.nextInt(spawns.size()));
-        } while (spawn == null || spawn.isOccupied() || spawn.getTeamId() != team.getId());
+        } while (spawn == null || spawn.isOccupied() || spawn.getTeamId() != teamId);
 
         return spawn;
     }
 
-    public Spawn getRandomSpawn(Team team, double distance) {
+    public Spawn getRandomSpawn(int teamId, double distance) {
         Random random = new Random();
         Spawn spawn;
 
         do {
             spawn = spawns.get(random.nextInt(spawns.size()));
-        } while (spawn == null || spawn.isOccupied() || spawn.getTeamId() != team.getId());
+        } while (spawn == null || spawn.isOccupied() || spawn.getTeamId() != teamId);
 
         return spawn;
     }
@@ -139,9 +139,9 @@ public class BattleArena implements Arena {
         return null;
     }
 
-    public Spawn getTeamBase(Team team) {
+    public Spawn getTeamBase(int teamId) {
         for (Spawn spawn : spawns) {
-            if (spawn.getTeamId() == team.getId() && spawn.isTeamBase()) {
+            if (spawn.getTeamId() == teamId && spawn.isTeamBase()) {
                 return spawn;
             }
         }

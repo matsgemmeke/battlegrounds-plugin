@@ -1,6 +1,5 @@
-package com.matsg.battlegrounds.api.gamemode;
+package com.matsg.battlegrounds.api.game;
 
-import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.nms.Title;
 
 public interface Objective {

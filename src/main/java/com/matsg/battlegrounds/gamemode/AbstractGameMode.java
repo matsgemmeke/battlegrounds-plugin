@@ -6,12 +6,13 @@ import com.matsg.battlegrounds.api.config.Yaml;
 import com.matsg.battlegrounds.api.event.GameEndEvent;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.gamemode.GameMode;
-import com.matsg.battlegrounds.api.gamemode.Objective;
+import com.matsg.battlegrounds.api.game.Objective;
 import com.matsg.battlegrounds.api.item.Firearm;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.player.Hitbox;
 import com.matsg.battlegrounds.api.player.PlayerStatus;
+import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 import org.bukkit.event.Listener;
@@ -29,18 +30,18 @@ public abstract class AbstractGameMode implements GameMode, Listener {
     protected int timeLimit;
     protected List<Objective> objectives;
     protected List<Team> teams;
+    protected MessageHelper messageHelper;
     protected String name, shortName;
     protected Yaml yaml;
 
-    public AbstractGameMode(Battlegrounds plugin, Game game, String name, String shortName, Yaml yaml) {
+    public AbstractGameMode(Battlegrounds plugin, Game game, Yaml yaml) {
         this.plugin = plugin;
-        this.active = false;
         this.game = game;
-        this.objectives = new ArrayList<>();
-        this.name = name;
-        this.shortName = shortName;
-        this.teams = new ArrayList<>();
         this.yaml = yaml;
+        this.active = false;
+        this.objectives = new ArrayList<>();
+        this.messageHelper = new MessageHelper();
+        this.teams = new ArrayList<>();
 
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
@@ -53,12 +54,20 @@ public abstract class AbstractGameMode implements GameMode, Listener {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public List<Objective> getObjectives() {
         return objectives;
     }
 
     public String getShortName() {
         return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 
     public Iterable<Team> getTeams() {

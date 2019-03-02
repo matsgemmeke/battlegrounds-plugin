@@ -2,9 +2,9 @@ package com.matsg.battlegrounds.event.handler;
 
 import com.matsg.battlegrounds.BattleGameManager;
 import com.matsg.battlegrounds.BattlegroundsPlugin;
+import com.matsg.battlegrounds.Translator;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.GameManager;
-import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.Version;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.player.GamePlayer;
@@ -29,7 +29,13 @@ import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.*;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({ ActionBar.class, BattlegroundsPlugin.class, ChatColor.class, ReflectionUtils.class })
+@PrepareForTest({
+        ActionBar.class,
+        BattlegroundsPlugin.class,
+        ChatColor.class,
+        ReflectionUtils.class,
+        Translator.class
+})
 public class PlayerMoveEventHandlerTest {
 
     private Arena arena;
@@ -60,6 +66,7 @@ public class PlayerMoveEventHandlerTest {
         PowerMockito.mockStatic(BattlegroundsPlugin.class);
         PowerMockito.mockStatic(ChatColor.class);
         PowerMockito.mockStatic(ReflectionUtils.class);
+        PowerMockito.mockStatic(Translator.class);
 
         when(BattlegroundsPlugin.getPlugin()).thenReturn(plugin);
         when(ReflectionUtils.getEnumVersion()).thenReturn(null);
@@ -99,11 +106,9 @@ public class PlayerMoveEventHandlerTest {
     public void testPlayerMoveOutsideArenaWhileInGame() {
         event.setTo(new Location(world, 1000, 1000, 1000));
 
-        Translator translator = mock(Translator.class);
         Version version = mock(Version.class);
 
         when(game.getState()).thenReturn(GameState.IN_GAME);
-        when(plugin.getTranslator()).thenReturn(translator);
         when(plugin.getVersion()).thenReturn(version);
 
         PowerMockito.mockStatic(ActionBar.class);

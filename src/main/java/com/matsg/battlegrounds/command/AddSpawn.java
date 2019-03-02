@@ -6,56 +6,35 @@ import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.Spawn;
 import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.command.validate.ArenaNameValidator;
+import com.matsg.battlegrounds.command.validate.GameIdValidator;
 import com.matsg.battlegrounds.game.ArenaSpawn;
-import com.matsg.battlegrounds.util.Message;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class AddSpawn extends SubCommand {
 
     public AddSpawn(Battlegrounds plugin) {
-        super(plugin, "addspawn", Message.create(TranslationKey.DESCRIPTION_ADDSPAWN),
-                "bg addspawn [id] [arena] [teamid]", "battlegrounds.addspawn", true, "as");
+        super(plugin);
+        setAliases("as");
+        setDescription(createMessage(TranslationKey.DESCRIPTION_ADDSPAWN));
+        setName("addspawn");
+        setPermissionNode("battlegrounds.addspawn");
+        setPlayerOnly(true);
+        setUsage("bg addspawn [id] [arena] [teamid]");
+
+        registerValidator(new GameIdValidator(plugin));
+        registerValidator(new ArenaNameValidator(plugin));
     }
 
-    public void execute(CommandSender sender, String[] args) {
+    public void executeSubCommand(CommandSender sender, String[] args) {
         Player player = (Player) sender;
 
-        if (args.length == 1) {
-            player.sendMessage(Message.create(TranslationKey.SPECIFY_ID));
-            return;
-        }
-
-        int id;
-
-        try {
-            id = Integer.parseInt(args[1]);
-        } catch (Exception e) {
-            player.sendMessage(Message.create(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[1])));
-            return;
-        }
-
-        if (!plugin.getGameManager().exists(id)) {
-            player.sendMessage(Message.create(TranslationKey.GAME_NOT_EXISTS, new Placeholder("bg_game", id)));
-            return;
-        }
+        int id = Integer.parseInt(args[1]);
 
         Game game = plugin.getGameManager().getGame(id);
-
-        if (args.length == 2) {
-            player.sendMessage(Message.create(TranslationKey.SPECIFY_NAME));
-            return;
-        }
-
         String name = args[2].replaceAll("_", " ");
         Arena arena = plugin.getGameManager().getArena(game, name);
-
-        if (arena == null) {
-            player.sendMessage(Message.create(TranslationKey.ARENA_NOT_EXISTS,
-                    new Placeholder("bg_game", id),
-                    new Placeholder("bg_arena", name)));
-            return;
-        }
 
         boolean teamBase = false;
         int teamId = 0;
@@ -64,7 +43,7 @@ public class AddSpawn extends SubCommand {
             try {
                 teamId = Integer.parseInt(args[3]);
             } catch (Exception e) {
-                player.sendMessage(Message.create(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[3])));
+                player.sendMessage(createMessage(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[3])));
                 return;
             }
         }
@@ -72,15 +51,15 @@ public class AddSpawn extends SubCommand {
         if (args.length >= 5) {
             teamBase = args[4].equals("-b");
 
-            if (teamBase && hasTeamBase(arena, teamId)) {
-                player.sendMessage(Message.create(TranslationKey.SPAWN_TEAMBASE_EXISTS,
+            if (teamBase && arena.getTeamBase(teamId) != null) {
+                player.sendMessage(createMessage(TranslationKey.SPAWN_TEAMBASE_EXISTS,
                         new Placeholder("bg_arena", arena.getName()),
                         new Placeholder("bg_team", teamId)));
                 return;
             }
         }
 
-        Spawn spawn = new ArenaSpawn(getSpawnIndex(arena), player.getLocation(), teamId);
+        Spawn spawn = new ArenaSpawn(getFirstAvailableIndex(arena), player.getLocation(), teamId);
         spawn.setTeamBase(teamBase);
 
         arena.getSpawns().add(spawn);
@@ -90,12 +69,13 @@ public class AddSpawn extends SubCommand {
         game.getDataFile().set("arena." + name + ".spawn." + spawn.getIndex() + ".team", teamId);
         game.getDataFile().save();
 
-        player.sendMessage(Message.create(TranslationKey.SPAWN_ADD,
+        player.sendMessage(createMessage(TranslationKey.SPAWN_ADD,
                 new Placeholder("bg_arena", name),
-                new Placeholder("bg_index", spawn.getIndex())));
+                new Placeholder("bg_index", spawn.getIndex())
+        ));
     }
 
-    private int getSpawnIndex(Arena arena) {
+    private int getFirstAvailableIndex(Arena arena) {
         int i = 1;
         loop: while (true) {
             for (Spawn spawn : arena.getSpawns()) {
@@ -106,14 +86,5 @@ public class AddSpawn extends SubCommand {
             }
             return i;
         }
-    }
-
-    private boolean hasTeamBase(Arena arena, int teamid) {
-        for (Spawn spawn : arena.getSpawns()) {
-            if (spawn.isTeamBase() && spawn.getTeamId() == teamid) {
-                return true;
-            }
-        }
-        return false;
     }
 }

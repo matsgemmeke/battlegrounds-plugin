@@ -5,6 +5,9 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.config.AbstractYaml;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.gamemode.GameMode;
+import com.matsg.battlegrounds.gamemode.cbt.CombatTraining;
+import com.matsg.battlegrounds.gamemode.ffa.FreeForAll;
+import com.matsg.battlegrounds.gamemode.tdm.TeamDeathmatch;
 
 import java.io.File;
 import java.io.IOException;

@@ -3,7 +3,8 @@ package com.matsg.battlegrounds.command;
 import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.util.Message;
+import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -18,20 +19,23 @@ public abstract class Command implements CommandBase, CommandExecutor {
     protected List<SubCommand> commands;
     protected String[] aliases;
     protected String name, permissionNode;
+    private MessageHelper messageHelper;
 
-    public Command(BattlegroundsPlugin plugin, String name, String permissionNode, boolean playerOnly, String... aliases) {
-        this.aliases = aliases;
-        this.commands = new ArrayList<>();
-        this.name = name;
-        this.permissionNode = permissionNode;
-        this.playerOnly = playerOnly;
+    public Command(BattlegroundsPlugin plugin, String name, String... aliases) {
         this.plugin = plugin;
+        this.commands = new ArrayList<>();
+        this.messageHelper = new MessageHelper();
+        this.playerOnly = false;
 
-        plugin.getCommand(name).setExecutor(this); //Assign the command to this executor
+        plugin.getCommand(name).setExecutor(this); // Assign the command to this executor
 
         for (String alias : aliases) {
-            plugin.getCommand(alias).setExecutor(this); //Register all aliases as commands too
+            plugin.getCommand(alias).setExecutor(this); // Register all aliases as commands too
         }
+    }
+
+    public String[] getAliases() {
+        return aliases;
     }
 
     public String getName() {
@@ -42,8 +46,28 @@ public abstract class Command implements CommandBase, CommandExecutor {
         return permissionNode;
     }
 
+    public void setPermissionNode(String permissionNode) {
+        this.permissionNode = permissionNode;
+    }
+
     public boolean isPlayerOnly() {
         return playerOnly;
+    }
+
+    public void setPlayerOnly(boolean playerOnly) {
+        this.playerOnly = playerOnly;
+    }
+
+    public List<SubCommand> getSubCommands() {
+        return commands;
+    }
+
+    public String createMessage(TranslationKey key, Placeholder... placeholders) {
+        return messageHelper.create(key, placeholders);
+    }
+
+    public String createSimpleMessage(String message, Placeholder... placeholders) {
+        return messageHelper.createSimple(message, placeholders);
     }
 
     protected SubCommand getSubCommand(String name) {
@@ -60,18 +84,14 @@ public abstract class Command implements CommandBase, CommandExecutor {
         return null;
     }
 
-    public List<SubCommand> getSubCommands() {
-        return commands;
-    }
-
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
         if (!(sender instanceof Player) && playerOnly) {
-            sender.sendMessage(Message.create(TranslationKey.INVALID_SENDER));
+            sender.sendMessage(createMessage(TranslationKey.INVALID_SENDER));
             return true;
         }
 
         if (permissionNode != null && permissionNode.length() > 0 && !sender.hasPermission(permissionNode)) {
-            sender.sendMessage(Message.create(TranslationKey.NO_PERMISSION));
+            sender.sendMessage(createMessage(TranslationKey.NO_PERMISSION));
             return true;
         }
 

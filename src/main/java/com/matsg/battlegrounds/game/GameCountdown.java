@@ -10,7 +10,7 @@ import com.matsg.battlegrounds.gui.SelectLoadoutView;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.BattleSound;
 import com.matsg.battlegrounds.util.EnumTitle;
-import com.matsg.battlegrounds.util.Message;
+import com.matsg.battlegrounds.util.MessageHelper;
 
 public class GameCountdown extends BattleRunnable implements Countdown {
 
@@ -40,7 +40,8 @@ public class GameCountdown extends BattleRunnable implements Countdown {
         for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
             gamePlayer.getPlayer().teleport(game.getLobby());
         }
-        game.getPlayerManager().broadcastMessage(Message.create(TranslationKey.COUNTDOWN_CANCELLED));
+        MessageHelper messageHelper = new MessageHelper();
+        game.getPlayerManager().broadcastMessage(messageHelper.create(TranslationKey.COUNTDOWN_CANCELLED));
     }
 
     public void run() {

@@ -2,15 +2,14 @@ package com.matsg.battlegrounds.event.handler;
 
 import com.matsg.battlegrounds.BattleGameManager;
 import com.matsg.battlegrounds.BattlegroundsPlugin;
+import com.matsg.battlegrounds.Translator;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.GameManager;
-import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.config.BattlegroundsConfig;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.PlayerManager;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.player.BattleGamePlayer;
-import com.matsg.battlegrounds.util.Message;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.junit.Before;
@@ -27,7 +26,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({ BattlegroundsConfig.class, BattlegroundsPlugin.class, Message.class })
+@PrepareForTest({BattlegroundsConfig.class, BattlegroundsPlugin.class, Translator.class})
 public class PlayerCommandPreprocessEventHandlerTest {
 
     private Battlegrounds plugin;
@@ -48,6 +47,7 @@ public class PlayerCommandPreprocessEventHandlerTest {
         this.playerManager = mock(PlayerManager.class);
 
         PowerMockito.mockStatic(BattlegroundsPlugin.class);
+        PowerMockito.mockStatic(Translator.class);
 
         this.event = new PlayerCommandPreprocessEvent(player, null, null);
         this.gameManager = new BattleGameManager();
@@ -64,9 +64,6 @@ public class PlayerCommandPreprocessEventHandlerTest {
         when(game.getPlayerManager()).thenReturn(playerManager);
         when(plugin.getBattlegroundsConfig()).thenReturn(config);
         when(plugin.getGameManager()).thenReturn(gameManager);
-        when(plugin.getTranslator()).thenReturn(mock(Translator.class));
-
-        PowerMockito.mockStatic(Message.class);
     }
 
     @Test

@@ -4,7 +4,7 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameSign;
 import com.matsg.battlegrounds.api.util.Placeholder;
-import com.matsg.battlegrounds.util.Message;
+import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 
@@ -38,10 +38,11 @@ public class BattleGameSign implements GameSign {
         if (sign == null) {
             return false;
         }
+        MessageHelper messageHelper = new MessageHelper();
         String arena = game.getArena() != null ? game.getArena().getName() : "---";
         String[] layout = plugin.getBattlegroundsConfig().getGameSignLayout();
         for (int i = 0; i <= 3; i ++) {
-            sign.setLine(i, Message.createSimple(layout[i],
+            sign.setLine(i, messageHelper.createSimple(layout[i],
                     new Placeholder("bg_arena", arena),
                     new Placeholder("bg_game", game.getId()),
                     new Placeholder("bg_maxplayers", game.getConfiguration().getMaxPlayers()),

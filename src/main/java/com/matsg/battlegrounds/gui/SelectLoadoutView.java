@@ -9,7 +9,7 @@ import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.util.ActionBar;
-import com.matsg.battlegrounds.util.Message;
+import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -28,13 +28,15 @@ public class SelectLoadoutView implements View {
     private GamePlayer gamePlayer;
     private Inventory inventory;
     private List<SelectLoadoutViewItem> items;
+    private MessageHelper messageHelper;
 
     public SelectLoadoutView(Battlegrounds plugin, Game game, GamePlayer gamePlayer) {
+        this.plugin = plugin;
         this.game = game;
         this.gamePlayer = gamePlayer;
-        this.inventory = plugin.getServer().createInventory(this, 27, Message.create(TranslationKey.VIEW_SELECT_LOADOUT));
         this.items = new ArrayList<>();
-        this.plugin = plugin;
+        this.messageHelper = new MessageHelper();
+        this.inventory = plugin.getServer().createInventory(this, 27, messageHelper.create(TranslationKey.VIEW_SELECT_LOADOUT));
 
         for (Loadout loadout : plugin.getPlayerStorage().getStoredPlayer(gamePlayer.getUUID()).getLoadouts()) {
             addLoadout(loadout);
@@ -49,7 +51,7 @@ public class SelectLoadoutView implements View {
         int levelUnlocked = plugin.getLevelConfig().getLevelUnlocked(loadout.getName());
         boolean locked = levelUnlocked > plugin.getLevelConfig().getLevel(plugin.getPlayerStorage().getStoredPlayer(gamePlayer.getUUID()).getExp());
 
-        String displayName = locked ? Message.create(TranslationKey.ITEM_LOCKED, new Placeholder("bg_level", plugin.getLevelConfig().getLevelUnlocked(loadout.getName()))) : ChatColor.WHITE + loadout.getName();
+        String displayName = locked ? messageHelper.create(TranslationKey.ITEM_LOCKED, new Placeholder("bg_level", plugin.getLevelConfig().getLevelUnlocked(loadout.getName()))) : ChatColor.WHITE + loadout.getName();
 
         ItemStack itemStack = new ItemStackBuilder(locked ? new ItemStack(Material.BARRIER) : getLoadoutItemStack(loadout))
                 .addItemFlags(ItemFlag.values())

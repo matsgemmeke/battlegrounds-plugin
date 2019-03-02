@@ -2,8 +2,8 @@ package com.matsg.battlegrounds.command;
 
 import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.TranslationKey;
+import com.matsg.battlegrounds.Translator;
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.util.Message;
 import org.bukkit.command.CommandSender;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,7 +15,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import static org.mockito.Mockito.*;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({BattlegroundsPlugin.class, Message.class})
+@PrepareForTest({BattlegroundsPlugin.class, Translator.class})
 public class ReloadTest {
 
     private Battlegrounds plugin;
@@ -27,18 +27,17 @@ public class ReloadTest {
         this.sender = mock(CommandSender.class);
 
         PowerMockito.mockStatic(BattlegroundsPlugin.class);
+        PowerMockito.mockStatic(Translator.class);
 
         when(BattlegroundsPlugin.getPlugin()).thenReturn(plugin);
-
-        PowerMockito.mockStatic(Message.class);
     }
 
     @Test
     public void testReloadCommandWithoutFail() {
-        String message = "Test";
+        String message = "Test", messagePath = TranslationKey.RELOAD_SUCCESS.getPath();
 
         when(plugin.loadConfigs()).thenReturn(true);
-        when(Message.create(TranslationKey.RELOAD_SUCCESS)).thenReturn(message);
+        when(Translator.translate(messagePath)).thenReturn(message);
 
         Reload command = new Reload(plugin);
         command.execute(sender, new String[0]);
@@ -51,7 +50,7 @@ public class ReloadTest {
         String message = "Fail";
 
         when(plugin.loadConfigs()).thenReturn(false);
-        when(Message.create(TranslationKey.RELOAD_FAILED)).thenReturn(message);
+        when(Translator.translate(any())).thenReturn(message);
 
         Reload command = new Reload(plugin);
         command.execute(sender, new String[0]);

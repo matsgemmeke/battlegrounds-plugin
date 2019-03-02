@@ -3,6 +3,7 @@ package com.matsg.battlegrounds.item;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.util.BattleRunnable;
+import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 
@@ -11,6 +12,7 @@ import java.util.Random;
 public abstract class BattleWeapon extends BattleItem implements Weapon {
 
     protected GamePlayer gamePlayer;
+    protected MessageHelper messageHelper;
     protected short durability;
     protected String description;
 
@@ -19,6 +21,7 @@ public abstract class BattleWeapon extends BattleItem implements Weapon {
         this.description = description;
         this.durability = durability;
         this.itemStack.setDurability(durability);
+        this.messageHelper = new MessageHelper();
     }
 
     public Weapon clone() {

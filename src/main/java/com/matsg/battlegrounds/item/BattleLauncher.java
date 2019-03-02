@@ -12,7 +12,6 @@ import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.player.Hitbox;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.util.BattleSound;
-import com.matsg.battlegrounds.util.Message;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
@@ -51,10 +50,10 @@ public class BattleLauncher extends BattleFirearm implements Launcher {
     protected String[] getLore() {
         return new String[] {
                 ChatColor.WHITE + firearmType.getName(),
-                ChatColor.GRAY + format(6, getAccuracy() * 100.0, 100.0) + " " + Message.create(TranslationKey.STAT_ACCURACY),
-                ChatColor.GRAY + format(6, lethal.getShortDamage(), 50.0) + " " + Message.create(TranslationKey.STAT_DAMAGE),
-                ChatColor.GRAY + format(6, Math.max((15 - getCooldown() / 2) * 10.0, 40.0), 200.0) + " " + Message.create(TranslationKey.STAT_FIRERATE),
-                ChatColor.GRAY + format(6, lethal.getLongRange(), 35.0) + " " + Message.create(TranslationKey.STAT_RANGE) };
+                ChatColor.GRAY + format(6, getAccuracy() * 100.0, 100.0) + " " + messageHelper.create(TranslationKey.STAT_ACCURACY),
+                ChatColor.GRAY + format(6, lethal.getShortDamage(), 50.0) + " " + messageHelper.create(TranslationKey.STAT_DAMAGE),
+                ChatColor.GRAY + format(6, Math.max((15 - getCooldown() / 2) * 10.0, 40.0), 200.0) + " " + messageHelper.create(TranslationKey.STAT_FIRERATE),
+                ChatColor.GRAY + format(6, lethal.getLongRange(), 35.0) + " " + messageHelper.create(TranslationKey.STAT_RANGE) };
     }
 
     public DamageSource getProjectile() {

@@ -31,19 +31,19 @@ public interface Arena extends Region {
     /**
      * Gets a random entry of the spawn collection owned by a specific team.
      *
-     * @param team The team to find a random spawn of
+     * @param teamId The id of the team to find a random spawn of
      * @return A random spawn entry
      */
-    Spawn getRandomSpawn(Team team);
+    Spawn getRandomSpawn(int teamId);
 
     /**
      * Gets a random entry of the spawn collection owned by a specific team with a minimum distance to the nearest foe.
      *
-     * @param team The team to find a random spawn of
+     * @param teamId The id of the team to find a random spawn of
      * @param distance The minimum distance between the location and the nearest foe
      * @return A random spawn entry
      */
-    Spawn getRandomSpawn(Team team, double distance);
+    Spawn getRandomSpawn(int teamId, double distance);
 
     /**
      * Gets the spawn which currently being used by a specific player.
@@ -71,10 +71,10 @@ public interface Arena extends Region {
     /**
      * Gets the base spawn of a team.
      *
-     * @param team The team to get the base spawn of
+     * @param teamId The id of the team to get the base spawn of
      * @return The team's base spawn
      */
-    Spawn getTeamBase(Team team);
+    Spawn getTeamBase(int teamId);
 
     /**
      * Gets whether the arena has borders set up.

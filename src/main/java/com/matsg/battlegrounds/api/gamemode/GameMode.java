@@ -3,6 +3,7 @@ package com.matsg.battlegrounds.api.gamemode;
 import com.matsg.battlegrounds.api.config.Yaml;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent.DeathCause;
 import com.matsg.battlegrounds.api.game.GameScoreboard;
+import com.matsg.battlegrounds.api.game.Objective;
 import com.matsg.battlegrounds.api.game.Spawn;
 import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.item.Weapon;

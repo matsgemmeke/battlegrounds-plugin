@@ -2,7 +2,7 @@ package com.matsg.battlegrounds.api.event;
 
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.Team;
-import com.matsg.battlegrounds.api.gamemode.Objective;
+import com.matsg.battlegrounds.api.game.Objective;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
