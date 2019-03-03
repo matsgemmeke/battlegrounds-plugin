@@ -129,8 +129,6 @@ public class PlayerMoveEventHandlerTest {
 
         arena.getSpawns().add(spawn);
 
-        gamePlayer.setTeam(new BattleTeam(1, "Team", null, null));
-
         when(game.getState()).thenReturn(GameState.STARTING);
 
         PlayerMoveEventHandler eventHandler = new PlayerMoveEventHandler(plugin);
@@ -144,7 +142,10 @@ public class PlayerMoveEventHandlerTest {
 
     @Test
     public void testPlayerMoveInArenaWhileCountdownNoSpawn() {
+        Team team = new BattleTeam(1, "Team", null, null);
+
         when(game.getState()).thenReturn(GameState.STARTING);
+        when(gamePlayer.getTeam()).thenReturn(team);
 
         PlayerMoveEventHandler eventHandler = new PlayerMoveEventHandler(plugin);
         eventHandler.handle(event);
