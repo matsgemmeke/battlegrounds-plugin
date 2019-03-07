@@ -116,25 +116,33 @@ public class BattlePlayerYaml extends AbstractYaml implements StoredPlayer {
         Loadout loadout = new BattleLoadout(
                 loadoutNumber,
                 section.getString("Name"),
-                plugin.getFirearmConfig().get(section.getString("Primary.Id")),
-                plugin.getFirearmConfig().get(section.getString("Secondary.Id")),
-                plugin.getEquipmentConfig().get(section.getString("Equipment")),
-                plugin.getKnifeConfig().get(section.getString("Knife"))
+                plugin.getFirearmFactory().make(section.getString("Primary.Id")),
+                plugin.getFirearmFactory().make(section.getString("Secondary.Id")),
+                plugin.getEquipmentFactory().make(section.getString("Equipment")),
+                plugin.getKnifeFactory().make(section.getString("Knife"))
         );
 
         if (loadout.getPrimary() instanceof Gun) {
-            for (String attachmentId : section.getString("Primary.Attachments").split(", ")) {
-                Attachment attachment = plugin.getAttachmentConfig().get(attachmentId);
-                if (attachment != null) {
-                    ((Gun) loadout.getPrimary()).getAttachments().add(attachment);
+            String attachmentString = section.getString("Primary.Attachments");
+
+            if (attachmentString != null && !attachmentString.isEmpty()) {
+                for (String attachmentId : section.getString("Primary.Attachments").split(", ")) {
+                    Attachment attachment = plugin.getAttachmentFactory().make(attachmentId);
+                    if (attachment != null) {
+                        ((Gun) loadout.getPrimary()).getAttachments().add(attachment);
+                    }
                 }
             }
         }
         if (loadout.getSecondary() instanceof Gun) {
-            for (String attachmentId : section.getString("Secondary.Attachments").split(", ")) {
-                Attachment attachment = plugin.getAttachmentConfig().get(attachmentId);
-                if (attachment != null) {
-                    ((Gun) loadout.getSecondary()).getAttachments().add(attachment);
+            String attachmentString = section.getString("Secondary.Attachments");
+
+            if (attachmentString != null && !attachmentString.isEmpty()) {
+                for (String attachmentId : section.getString("Secondary.Attachments").split(", ")) {
+                    Attachment attachment = plugin.getAttachmentFactory().make(attachmentId);
+                    if (attachment != null) {
+                        ((Gun) loadout.getSecondary()).getAttachments().add(attachment);
+                    }
                 }
             }
         }

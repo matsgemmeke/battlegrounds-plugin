@@ -44,7 +44,7 @@ public class BattleGun extends BattleFirearm implements Gun {
 
     public BattleGun(String id, String name, String description, ItemStack itemStack, short durability,
                      int magazine, int ammo, int maxAmmo, int fireRate, int burstRounds, int cooldown, int reloadDuration, double accuracy,
-                     Bullet bullet, FireMode fireMode, FirearmType firearmType, ReloadType reloadType,
+                     Bullet bullet, FirearmType firearmType, FireMode fireMode, ReloadType reloadType,
                      Sound[] reloadSound, Sound[] shootSound, Sound[] suppressedSound, Map<String, String[]> compatibleAttachments) {
         super(id, name, description, itemStack, durability, magazine, ammo, maxAmmo, cooldown, reloadDuration, accuracy, reloadType, firearmType, reloadSound, shootSound);
         this.appliedModifiers = new HashMap<>();

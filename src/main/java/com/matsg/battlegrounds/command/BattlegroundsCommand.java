@@ -28,10 +28,7 @@ public class BattlegroundsCommand extends Command {
 
     public void execute(CommandSender sender, String[] args) {
         if (args.length == 0) {
-            SubCommand help = getSubCommand("help");
-            if (help != null) {
-                help.execute(sender, args);
-            }
+            getSubCommand("help").execute(sender, args);
             return;
         }
 

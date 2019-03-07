@@ -1,42 +1,44 @@
 # Gun format
 #
 # <Id>:
-#   Accuracy: Represents how accurate the firearm fires onto the proposed target
+#   Accuracy: Represents how accurate the firearm fires onto the proposed target.
 #   Ammo:
-#     Magazine: Magazine size
-#     Max: Maximum amount of magazines the player can carry
-#     Supply: Amount of supply magazines the player gets
-#   Attachments: Compatible attachments for the firearm
-#   Description: Description of the firearm
-#   DisplayName: The name of the firearm
+#     Magazine: Magazine size.
+#     Max: Maximum amount of magazines the player can carry.
+#     Supply: Amount of supply magazines the player gets.
+#   Attachments: Compatible attachments for the firearm.
+#   Description: Description of the firearm.
+#   DisplayName: The name of the firearm.
+#   FirearmType: ASSAULT_RIFLE, HANDGUN, LIGHT_MACHINE_GUN, SHOTGUN, SNIPER_RIFLE, SUBMACHINE_GUN
 #   FireMode:
-#     Burst: Amount of rounds fired with a single pull on the trigger. This option only affects guns using burst fire
-#     Cooldown: The amount of ticks the firearm needs to wait to be able to shoot again
-#     FireRate: Amount of rounds fired per second. Semi-automatic firearms always fire only one projectile at a time
+#     Burst: Amount of rounds fired with a single pull on the trigger. This option only affects guns using burst fire.
+#     Cooldown: The amount of ticks the firearm needs to wait to be able to shoot again.
+#     FireRate: Amount of rounds fired per second. Semi-automatic firearms always fire only one projectile at a time.
 #     LaunchType: GRENADE, ROCKET
 #     Type: AUTOMATIC, BURST, SEMI_AUTOMATIC
-#   GunType: ASSAULT_RIFLE, HANDGUN, LIGHT_MACHINE_GUN, SHOTGUN, SNIPER_RIFLE, SUBMACHINE_GUN
-#   HeadshotMultiplier: Damage multiplier when the projectile hits a player in the head
-#   Material: The item material and durability
+#   HeadshotMultiplier: Damage multiplier when the projectile hits a player in the head.
+#   Material: The item material and durability.
+#   Projectile:
+#     Material: Launcher projectile material.
+#     Velocity: Launcher projectile travel speed.
 #   Range:
 #     Long:
-#       Damage: Long-range damage
-#       Distance: Distance where the long range ends and the projectile gets removed
+#       Damage: Long-range damage.
+#       Distance: Distance where the long range ends and the projectile gets removed.
 #     Medium:
-#       Damage: Medium-range damage
-#       Distance: Distance where medium range ends and long range starts
+#       Damage: Medium-range damage.
+#       Distance: Distance where medium range ends and long range starts.
 #     Short:
-#       Damage: Short-range damage
-#       Distance: Distance where short range ends and medium range starts
+#       Damage: Short-range damage.
+#       Distance: Distance where short range ends and medium range starts.
 #   Reload:
-#     Duration: Reload time in ticks
+#     Duration: Reload time in ticks.
 #     Sound:
-#       Reload: Array of sounds which play when adding ammo or replacing the magazine of the gun
+#       Reload: Array of sounds which play when adding ammo or replacing the magazine of the gun.
 #     Type: MAGAZINE, SHELL
 #   Shot:
-#     ShotSound: Array of sounds which play when the firearm shoots
-#     SuppressedSound: Array of sounds which play when the firearm shoots with a suppressor attached
-#   Speed: Projectile travel speed
+#     ShotSound: Array of sounds which play when the firearm shoots.
+#     SuppressedSound: Array of sounds which play when the firearm shoots with a suppressor attached.
 
 BERETTA_93R:
   Accuracy: 0.6
@@ -47,12 +49,12 @@ BERETTA_93R:
   Attachments: EXTENDED_CLIP(20), FAST_MAG(24), SELECT_FIRE(SEMI_AUTOMATIC,1,0,3,0.1,0.1), SUPPRESSOR
   Description: 3 round burst machine pistol. High rate of fire with moderate recoil.
   DisplayName: Beretta 93R
+  FirearmType: HANDGUN
   FireMode:
     Burst: 3
     Cooldown: 2
     FireRate: 20
     Type: BURST
-  GunType: HANDGUN
   HeadshotMultiplier: 1.5
   Material: IRON_HOE,1
   Range:
@@ -83,12 +85,12 @@ FIVE-SEVEN:
   Attachments: EXTENDED_CLIP(30), FAST_MAG(24), SUPPRESSOR
   Description: Semi-automatic pistol. Versatile and strong overall with a large magazine.
   DisplayName: Five-seven
+  FirearmType: HANDGUN
   FireMode:
     Burst: 0
     Cooldown: 3
     FireRate: 1
     Type: SEMI_AUTOMATIC
-  GunType: HANDGUN
   HeadshotMultiplier: 1.4
   Material: IRON_HOE,2
   Range:
@@ -119,12 +121,12 @@ GLOCK_17:
   Attachments: EXTENDED_CLIP(33), FAST_MAG(24), SELECT_FIRE(AUTOMATIC,20,0,0,-0.1,-0.1), SUPPRESSOR
   Description: Semi-automatic pistol. Compatible with select fire to unlock full automatic.
   DisplayName: Glock 17
+  FirearmType: HANDGUN
   FireMode:
     Burst: 0
     Cooldown: 3
     FireRate: 1
     Type: SEMI_AUTOMATIC
-  GunType: HANDGUN
   HeadshotMultiplier: 1.5
   Material: IRON_HOE,3
   Range:
@@ -155,12 +157,12 @@ M1911:
   Attachments: EXTENDED_CLIP(10), FAST_MAG(24), SUPPRESSOR
   Description: Semi-automatic with medium capacity and power. Effective at close range.
   DisplayName: M1911
+  FirearmType: HANDGUN
   FireMode:
     Burst: 0
     Cooldown: 4
     FireRate: 1
     Type: SEMI_AUTOMATIC
-  GunType: HANDGUN
   HeadshotMultiplier: 1.5
   Material: IRON_HOE,4
   Range:
@@ -191,12 +193,12 @@ PYTHON:
   Attachments: FAST_MAG(24)
   Description: Double-action revolver pistol. Uses a 6 round cylinder feed system.
   DisplayName: Python
+  FirearmType: HANDGUN
   FireMode:
     Burst: 0
     Cooldown: 4
     FireRate: 1
     Type: SEMI_AUTOMATIC
-  GunType: HANDGUN
   HeadshotMultiplier: 1.5
   Material: IRON_HOE,5
   Range:
@@ -227,12 +229,12 @@ AKS-74U:
   Attachments: EXTENDED_CLIP(40), FAST_MAG(32), MUZZLE_BRAKE, SELECT_FIRE(SEMI_AUTOMATIC,1,0,3,0.2,0.2), SUPPRESSOR
   Description: Fully automatic submachine gun. Increased range and reduced recoil.
   DisplayName: AKS-74u
+  FirearmType: SUBMACHINE_GUN
   FireMode:
     Burst: 0
     Cooldown: 0
     FireRate: 10
     Type: AUTOMATIC
-  GunType: SUBMACHINE_GUN
   HeadshotMultiplier: 1.4
   Material: IRON_HOE,6
   Range:
@@ -263,12 +265,12 @@ MAC-10:
   Attachments: ANGLED_GRIP, EXTENDED_CLIP(32), FAST_MAG(27), MUZZLE_BRAKE, SELECT_FIRE(SEMI_AUTOMATIC,1,0,3,0.2,0.2), SUPPRESSOR, VERTICAL_GRIP
   Description: Fully automatic with high rate of fire. Effective at close range.
   DisplayName: MAC-10
+  FirearmType: SUBMACHINE_GUN
   FireMode:
     Burst: 0
     Cooldown: 0
     FireRate: 20
     Type: AUTOMATIC
-  GunType: SUBMACHINE_GUN
   HeadshotMultiplier: 1.4
   Material: IRON_HOE,7
   Range:
@@ -299,12 +301,12 @@ MP5:
   Attachments: ANGLED_GRIP, EXTENDED_CLIP(40), FAST_MAG(32), MUZZLE_BRAKE, RAPID_FIRE(20), SELECT_FIRE(SEMI_AUTOMATIC,1,0,3,0.2,0.2), SUPPRESSOR, VERTICAL_GRIP
   Description: Fully automatic with good accuracy. Effective at close to medium range.
   DisplayName: MP5
+  FirearmType: SUBMACHINE_GUN
   FireMode:
     Burst: 0
     Cooldown: 0
     FireRate: 10
     Type: AUTOMATIC
-  GunType: SUBMACHINE_GUN
   HeadshotMultiplier: 1.4
   Material: IRON_HOE,8
   Range:
@@ -335,12 +337,12 @@ MP7:
   Attachments: ANGLED_GRIP, EXTENDED_CLIP(40), FAST_MAG(27), MUZZLE_BRAKE, SELECT_FIRE(SEMI_AUTOMATIC,1,0,3,0.2,0.2), STOCK, SUPPRESSOR, TACTICAL_STOCK, VERTICAL_GRIP
   Description: Fully automatic personal defense weapon. Versatile and strong overall.
   DisplayName: MP7
+  FirearmType: SUBMACHINE_GUN
   FireMode:
     Burst: 0
     Cooldown: 0
     FireRate: 20
     Type: AUTOMATIC
-  GunType: SUBMACHINE_GUN
   HeadshotMultiplier: 1.4
   Material: IRON_HOE,9
   Range:
@@ -371,12 +373,12 @@ QCW-05:
   Attachments: ANGLED_GRIP, EXTENDED_CLIP(50), FAST_MAG(32), MUZZLE_BRAKE, SELECT_FIRE(AUTOMATIC,10,0,0,-0.1,-0.1), SUPPRESSOR, VERTICAL_GRIP
   Description: 3 round burst submachine gun. High cyclic fire rate allows for fast consecutive bursts.
   DisplayName: QCW-05
+  FirearmType: SUBMACHINE_GUN
   FireMode:
     Burst: 3
     Cooldown: 2
     FireRate: 20
     Type: BURST
-  GunType: SUBMACHINE_GUN
   HeadshotMultiplier: 1.4
   Material: IRON_HOE,10
   Range:
@@ -407,12 +409,12 @@ UZI:
   Attachments: ANGLED_GRIP, EXTENDED_CLIP(32), FAST_MAG(27), MUZZLE_BRAKE, RAPID_FIRE(20), SELECT_FIRE(SEMI_AUTOMATIC,1,0,3,0.2,0.2), SUPPRESSOR, VERTICAL_GRIP
   Description: Fully automatic with moderate power. Effective at close to medium range.
   DisplayName: Uzi
+  FirearmType: SUBMACHINE_GUN
   FireMode:
     Burst: 0
     Cooldown: 0
     FireRate: 10
     Type: AUTOMATIC
-  GunType: SUBMACHINE_GUN
   HeadshotMultiplier: 1.4
   Material: IRON_HOE,11
   Range:
@@ -443,12 +445,12 @@ VECTOR:
   Attachments: ANGLED_GRIP, EXTENDED_CLIP(33), FAST_MAG(32), MUZZLE_BRAKE, SELECT_FIRE(BURST,20,2,3,0.1,0.1), SUPPRESSOR, TACTICAL_STOCK, VERTICAL_GRIP
   Description: Fully automatic submachine gun. Incorporates recoil mitigation technology.
   DisplayName: Vector
+  FirearmType: SUBMACHINE_GUN
   FireMode:
     Burst: 0
     Cooldown: 0
     FireRate: 20
     Type: AUTOMATIC
-  GunType: SUBMACHINE_GUN
   HeadshotMultiplier: 1.4
   Material: IRON_HOE,12
   Range:
@@ -479,12 +481,12 @@ AK-47:
   Attachments: ACOG_SCOPE, EXTENDED_CLIP(40), FAST_MAG(36), MUZZLE_BRAKE, SELECT_FIRE(SEMI_AUTOMATIC,1,0,3,0.2,0.2), SUPPRESSOR
   Description: Fully automatic with high power. Effective at medium range.
   DisplayName: AK-47
+  FirearmType: ASSAULT_RIFLE
   FireMode:
     Burst: 0
     Cooldown: 0
     FireRate: 10
     Type: AUTOMATIC
-  GunType: ASSAULT_RIFLE
   HeadshotMultiplier: 1.5
   Material: IRON_HOE,13
   Range:
@@ -515,13 +517,12 @@ AUG:
   Attachments: ACOG_SCOPE, ANGLED_GRIP, EXTENDED_CLIP(42), FAST_MAG(36), MUZZLE_BRAKE, SELECT_FIRE(SEMI_AUTOMATIC,1,0,3,0.2,0.2), SUPPRESSOR, VERTICAL_GRIP
   Description: Bullpup rifle with high rate of fire. Effective at medium range.
   DisplayName: AUG
+  FirearmType: ASSAULT_RIFLE
   FireMode:
     Burst: 0
     Cooldown: 0
     FireRate: 10
     Type: AUTOMATIC
-  FireRate: 10
-  GunType: ASSAULT_RIFLE
   HeadshotMultiplier: 1.5
   Material: IRON_HOE,14
   Range:
@@ -552,12 +553,12 @@ FAL:
   Attachments: ACOG_SCOPE, EXTENDED_CLIP(30), FAST_MAG(36), MUZZLE_BRAKE, SELECT_FIRE(AUTOMATIC,10,0,0,-0.2,-0.2), SUPPRESSOR
   Description: Semi-automatic battle rifle with high damage. Effective at medium to long range.
   DisplayName: FAL
+  FirearmType: ASSAULT_RIFLE
   FireMode:
     Burst: 0
     Cooldown: 3
     FireRate: 1
     Type: SEMI_AUTOMATIC
-  GunType: ASSAULT_RIFLE
   HeadshotMultiplier: 1.5
   Material: IRON_HOE,15
   Range:
@@ -588,12 +589,12 @@ FAMAS:
   Attachments: ACOG_SCOPE, ANGLED_GRIP, EXTENDED_CLIP(40), FAST_MAG(36), MUZZLE_BRAKE, SELECT_FIRE(BURST,20,3,3,0.1,0.1), SUPPRESSOR, VERTICAL_GRIP
   Description: Fully automatic with high rate of fire. Effective at medium range.
   DisplayName: FAMAS
+  FirearmType: ASSAULT_RIFLE
   FireMode:
     Burst: 0
     Cooldown: 0
     FireRate: 10
     Type: AUTOMATIC
-  GunType: ASSAULT_RIFLE
   HeadshotMultiplier: 1.5
   Material: IRON_HOE,16
   Range:
@@ -624,12 +625,12 @@ GALIL:
   Attachments: ACOG_SCOPE, EXTENDED_CLIP(50), FAST_MAG(36), MUZZLE_BRAKE, SELECT_FIRE(SEMI_AUTOMATIC,1,0,3,0.2,0.2), SUPPRESSOR
   Description: Fully automatic assault rifle. Effective at medium to long range.
   DisplayName: Galil
+  FirearmType: ASSAULT_RIFLE
   FireMode:
     Burst: 0
     Cooldown: 1
     FireRate: 10
     Type: AUTOMATIC
-  GunType: ASSAULT_RIFLE
   HeadshotMultiplier: 1.5
   Material: IRON_HOE,17
   Range:
@@ -660,12 +661,12 @@ M16:
   Attachments: ACOG_SCOPE, EXTENDED_CLIP(40), FAST_MAG(32), MUZZLE_BRAKE, SELECT_FIRE(AUTOMATIC,10,0,0,-0.1,-0.1), SUPPRESSOR
   Description: Semi-automatic with 3 round burst fire. Effective at medium to long range.
   DisplayName: M16
+  FirearmType: ASSAULT_RIFLE
   FireMode:
     Burst: 3
     Cooldown: 3
     FireRate: 10
     Type: BURST
-  GunType: ASSAULT_RIFLE
   HeadshotMultiplier: 1.5
   Material: IRON_HOE,18
   Range:
@@ -696,12 +697,12 @@ QBZ-95:
   Attachments: ACOG_SCOPE, ANGLED_GRIP, EXTENDED_CLIP(40), FAST_MAG(36), MUZZLE_BRAKE, SELECT_FIRE(AUTOMATIC,10,0,0,-0.1,-0.1), SUPPRESSOR, VERTICAL_GRIP
   Description: Delivers pinpoint 3-round bursts. Effective at medium to long range.
   DisplayName: QBZ-95
+  FirearmType: ASSAULT_RIFLE
   FireMode:
     Burst: 3
     Cooldown: 3
     FireRate: 20
     Type: BURST
-  GunType: ASSAULT_RIFLE
   HeadshotMultiplier: 1.4
   Material: IRON_HOE,19
   Range:
@@ -732,12 +733,12 @@ SCAR-H:
   Attachments: ACOG_SCOPE, ANGLED_GRIP, EXTENDED_CLIP(30), FAST_MAG(36), MUZZLE_BRAKE, SELECT_FIRE(SEMI_AUTOMATIC,1,0,3,0.2,0.2), SUPPRESSOR, VERTICAL_GRIP
   Description: Fully automatic battle rifle. Increased damage and range.
   DisplayName: SCAR-H
+  FirearmType: ASSAULT_RIFLE
   FireMode:
     Burst: 0
     Cooldown: 0
     FireRate: 10
     Type: AUTOMATIC
-  GunType: ASSAULT_RIFLE
   HeadshotMultiplier: 1.4
   Material: IRON_HOE,20
   Range:
@@ -768,12 +769,12 @@ SG_550:
   Attachments: ACOG_SCOPE, ANGLED_GRIP, EXTENDED_CLIP(50), FAST_MAG(32), MUZZLE_BRAKE, SELECT_FIRE(BURST,20,3,3,-0.1,-0.1), SUPPRESSOR, TACTICAL_STOCK, VERTICAL_GRIP
   Description: Single-fire with high power. Effective at medium to long range.
   DisplayName: SG 550
+  FirearmType: ASSAULT_RIFLE
   FireMode:
     Burst: 0
     Cooldown: 3
     FireRate: 1
     Type: SEMI_AUTOMATIC
-  GunType: ASSAULT_RIFLE
   HeadshotMultiplier: 1.5
   Material: IRON_HOE,21
   Range:
@@ -804,12 +805,12 @@ ITHACA_37:
   Attachments: BULLET_LOOPS(12), CHOKE, EXTENDED_CLIP(7)
   Description: Pump action shotgun. Effective at close range.
   DisplayName: Ithaca 37
+  FirearmType: SHOTGUN
   FireMode:
     Burst: 0
     Cooldown: 15
     FireRate: 1
     Type: SEMI_AUTOMATIC
-  GunType: SHOTGUN
   HeadshotMultiplier: 1.1
   Material: IRON_HOE,22
   Range:
@@ -839,12 +840,12 @@ OLYMPIA:
   Attachments: BULLET_LOOPS(20), CHOKE
   Description: Double-barrel over/under shotgun. Effective at medium to close range.
   DisplayName: Olympia
+  FirearmType: SHOTGUN
   FireMode:
     Burst: 0
     Cooldown: 6
     FireRate: 1
     Type: SEMI_AUTOMATIC
-  GunType: SHOTGUN
   HeadshotMultiplier: 1.1
   Material: IRON_HOE,23
   Range:
@@ -874,12 +875,12 @@ REMINGTON_870:
   Attachments: BULLET_LOOPS(12), CHOKE, EXTENDED_CLIP(10), SUPPRESSOR, TACTICAL_STOCK
   Description: Pump action shotgun. Strong damage and range.
   DisplayName: Remington 870
+  FirearmType: SHOTGUN
   FireMode:
     Burst: 0
     Cooldown: 15
     FireRate: 1
     Type: SEMI_AUTOMATIC
-  GunType: SHOTGUN
   HeadshotMultiplier: 1.2
   Material: IRON_HOE,24
   Range:
@@ -910,12 +911,12 @@ SAIGA-12K:
   Attachments: EXTENDED_CLIP(8), FAST_MAG(36), MUZZLE_BRAKE, SUPPRESSOR, TACTICAL_STOCK
   Description: Semi-automatic shotgun with magazine feed system. Deadly at short range.
   DisplayName: Saiga-12K
+  FirearmType: SHOTGUN
   FireMode:
     Burst: 0
     Cooldown: 6
     FireRate: 1
     Type: SEMI_AUTOMATIC
-  GunType: SHOTGUN
   HeadshotMultiplier: 1.2
   Material: IRON_HOE,25
   Range:
@@ -946,12 +947,12 @@ SPAS-12:
   Attachments: BULLET_LOOPS(12), CHOKE, SUPPRESSOR
   Description: Semi-automatic combat shotgun. Effective at close range.
   DisplayName: SPAS-12
+  FirearmType: SHOTGUN
   FireMode:
     Burst: 0
     Cooldown: 6
     FireRate: 1
     Type: SEMI_AUTOMATIC
-  GunType: SHOTGUN
   HeadshotMultiplier: 1.2
   Material: IRON_HOE,26
   Range:
@@ -982,12 +983,12 @@ HK21:
   Attachments: ACOG_SCOPE, BIPOD, EXTENDED_CLIP(80), HEAVY_BARREL
   Description: Fully automatic with high power. Effective at medium to long range.
   DisplayName: HK21
+  FirearmType: LIGHT_MACHINE_GUN
   FireMode:
     Burst: 0
     Cooldown: 0
     FireRate: 10
     Type: AUTOMATIC
-  GunType: LIGHT_MACHINE_GUN
   HeadshotMultiplier: 1.4
   Material: IRON_HOE,27
   Range:
@@ -1017,12 +1018,12 @@ M249:
   Attachments: ACOG_SCOPE, BIPOD, HEAVY_BARREL
   Description: Fully automatic with a high rate of fire. Effective at medium to long range.
   DisplayName: M249
+  FirearmType: LIGHT_MACHINE_GUN
   FireMode:
     Burst: 0
     Cooldown: 0
     FireRate: 10
     Type: AUTOMATIC
-  GunType: LIGHT_MACHINE_GUN
   HeadshotMultiplier: 1.4
   Material: IRON_HOE,28
   Range:
@@ -1052,12 +1053,12 @@ RPK:
   Attachments: ACOG_SCOPE, BIPOD, EXTENDED_CLIP(75), HEAVY_BARREL
   Description: Fully automatic with good power and quick fire rate. Effective at medium to long range.
   DisplayName: RPK
+  FirearmType: LIGHT_MACHINE_GUN
   FireMode:
     Burst: 0
     Cooldown: 0
     FireRate: 10
     Type: AUTOMATIC
-  GunType: LIGHT_MACHINE_GUN
   HeadshotMultiplier: 1.4
   Material: IRON_HOE,29
   Range:
@@ -1087,12 +1088,12 @@ DRAGUNOV:
   Attachments: ACOG_SCOPE, BIPOD, FAST_MAG(40), HEAVY_BARREL, NIGHT_VISION_SCOPE, SUPPRESSOR
   Description: Semi-automatic sniper rifle. Effective at long range.
   DisplayName: Dragunov
+  FirearmType: SNIPER_RIFLE
   FireMode:
     Burst: 0
     Cooldown: 8
     FireRate: 1
     Type: SEMI_AUTOMATIC
-  GunType: SNIPER_RIFLE
   HeadshotMultiplier: 2.0
   Material: IRON_HOE,30
   Range:
@@ -1123,12 +1124,12 @@ M82A1:
   Attachments: ACOG_SCOPE, BIPOD, FAST_MAG(40), HEAVY_BARREL, NIGHT_VISION_SCOPE, SUPPRESSOR
   Description: Semi-automatic, high caliber sniper rifle. Effective at long range.
   DisplayName: M82A1
+  FirearmType: SNIPER_RIFLE
   FireMode:
     Burst: 0
     Cooldown: 12
     FireRate: 1
     Type: SEMI_AUTOMATIC
-  GunType: SNIPER_RIFLE
   HeadshotMultiplier: 2.0
   Material: IRON_HOE,31
   Range:
@@ -1159,12 +1160,12 @@ SV-98:
   Attachments: ACOG_SCOPE, BIPOD, FAST_MAG(40), HEAVY_BARREL, NIGHT_VISION_SCOPE, SUPPRESSOR
   Description: Bolt-action sniper rifle. Effective at long range.
   DisplayName: SV-98
+  FirearmType: SNIPER_RIFLE
   FireMode:
     Burst: 0
     Cooldown: 20
     FireRate: 1
     Type: SEMI_AUTOMATIC
-  GunType: SNIPER_RIFLE
   HeadshotMultiplier: 2.0
   Material: IRON_HOE,32
   Range:
@@ -1194,12 +1195,15 @@ CHINA_LAKE:
     Supply: 1
   Description: Pump action grenade launcher. Delivers great direct impact damage.
   DisplayName: China Lake
+  FirearmType: LAUNCHER
   FireMode:
     Cooldown: 20
     LaunchType: GRENADE
-  GunType: LAUNCHER
   HeadshotMultiplier: 1.0
   Material: IRON_HOE,33
+  Projectile:
+    Material: IRON_HELMET,1
+    Speed: 2.0
   Range:
     Long:
       Damage: 20.0
@@ -1229,12 +1233,15 @@ CROSSBOW:
     Supply: 3
   Description: Fires explosive bolts that detonate after impact.
   DisplayName: Crossbow
+  FirearmType: LAUNCHER
   FireMode:
     Cooldown: 20
     LaunchType: ROCKET
-  GunType: LAUNCHER
   HeadshotMultiplier: 1.0
   Material: IRON_HOE,34
+  Projectile:
+    Material: IRON_HELMET,1
+    Speed: 18.0
   Range:
     Long:
       Damage: 20.0
@@ -1262,12 +1269,15 @@ MGL:
     Supply: 1
   Description: 6 round semi-automatic grenade launcher.
   DisplayName: MGL
+  FirearmType: LAUNCHER
   FireMode:
     Cooldown: 10
     LaunchType: GRENADE
-  GunType: LAUNCHER
   HeadshotMultiplier: 1.0
   Material: IRON_HOE,35
+  Projectile:
+    Material: IRON_HELMET,1
+    Speed: 2.0
   Range:
     Long:
       Damage: 15.0
@@ -1285,7 +1295,6 @@ MGL:
     Type: SHELL
   Shot:
     ShotSound: BLOCK_WOODEN_DOOR_CLOSE-2-2-0, ENTITY_ARROW_SHOOT-2-1-1
-  Speed: 2.0
 
 RPG-7:
   Accuracy: 0.5
@@ -1295,12 +1304,15 @@ RPG-7:
     Supply: 1
   Description: Free-fire shoulder mounted rocket launcher.
   DisplayName: RPG-7
+  FirearmType: LAUNCHER
   FireMode:
     Cooldown: 20
     LaunchType: ROCKET
-  GunType: LAUNCHER
   HeadshotMultiplier: 1.0
   Material: IRON_HOE,36
+  Projectile:
+    Material: IRON_HELMET,1
+    Speed: 6.0
   Range:
     Long:
       Damage: 30.0
@@ -1318,7 +1330,6 @@ RPG-7:
     Type: MAGAZINE
   Shot:
     ShotSound: BLOCK_FIRE_EXTINGUISH-2-1-0, ENTITY_ZOMBIE_ATTACK_DOOR_WOOD-2-0-0
-  Speed: 6.0
 
 SMAW:
   Accuracy: 0.5
@@ -1328,12 +1339,15 @@ SMAW:
     Supply: 1
   Description: Shoulder-launched rocket launcher. Delivers splash damage upon impact.
   DisplayName: SMAW
+  FirearmType: LAUNCHER
   FireMode:
     Cooldown: 20
     LaunchType: ROCKET
-  GunType: LAUNCHER
   HeadshotMultiplier: 1.0
   Material: IRON_HOE,37
+  Projectile:
+    Material: IRON_HELMET,1
+    Speed: 6.0
   Range:
     Long:
       Damage: 30.0
@@ -1351,4 +1365,3 @@ SMAW:
     Type: MAGAZINE
   Shot:
     ShotSound: BLOCK_FIRE_EXTINGUISH-2-1-0, ENTITY_ZOMBIE_ATTACK_DOOR_WOOD-2-0-0
-  Speed: 6.0

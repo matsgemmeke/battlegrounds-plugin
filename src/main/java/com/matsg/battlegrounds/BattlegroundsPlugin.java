@@ -5,16 +5,17 @@ import com.matsg.battlegrounds.api.config.BattlegroundsConfig;
 import com.matsg.battlegrounds.api.config.CacheYaml;
 import com.matsg.battlegrounds.api.config.ItemConfig;
 import com.matsg.battlegrounds.api.config.LevelConfig;
-import com.matsg.battlegrounds.api.item.Attachment;
-import com.matsg.battlegrounds.api.item.Equipment;
-import com.matsg.battlegrounds.api.item.Firearm;
-import com.matsg.battlegrounds.api.item.Knife;
+import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.player.PlayerStorage;
 import com.matsg.battlegrounds.command.BattlegroundsCommand;
 import com.matsg.battlegrounds.command.LoadoutCommand;
 import com.matsg.battlegrounds.config.*;
 import com.matsg.battlegrounds.event.EventListener;
 import com.matsg.battlegrounds.event.PlayerSwapItemListener;
+import com.matsg.battlegrounds.item.factory.AttachmentFactory;
+import com.matsg.battlegrounds.item.factory.EquipmentFactory;
+import com.matsg.battlegrounds.item.factory.FirearmFactory;
+import com.matsg.battlegrounds.item.factory.KnifeFactory;
 import com.matsg.battlegrounds.nms.ReflectionUtils;
 import com.matsg.battlegrounds.nms.VersionManager;
 import com.matsg.battlegrounds.player.LocalPlayerStorage;
@@ -23,7 +24,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 
 public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
 
@@ -32,10 +35,10 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
     private CacheYaml cache;
     private EventManager eventManager;
     private GameManager gameManager;
-    private ItemConfig<Attachment> attachmentConfig;
-    private ItemConfig<Equipment> equipmentConfig;
-    private ItemConfig<Firearm> firearmConfig;
-    private ItemConfig<Knife> knifeConfig;
+    private ItemFactory<Attachment> attachmentFactory;
+    private ItemFactory<Equipment> equipmentFactory;
+    private ItemFactory<Firearm> firearmFactory;
+    private ItemFactory<Knife> knifeFactory;
     private LevelConfig levelConfig;
     private PlayerStorage playerStorage;
     private VersionManager versionManager;
@@ -71,8 +74,8 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         return (WorldEditPlugin) plugin;
     }
 
-    public ItemConfig<Attachment> getAttachmentConfig() {
-        return attachmentConfig;
+    public ItemFactory<Attachment> getAttachmentFactory() {
+        return attachmentFactory;
     }
 
     public CacheYaml getBattlegroundsCache() {
@@ -83,24 +86,24 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         return config;
     }
 
-    public ItemConfig<Equipment> getEquipmentConfig() {
-        return equipmentConfig;
+    public ItemFactory<Equipment> getEquipmentFactory() {
+        return equipmentFactory;
     }
 
     public EventManager getEventManager() {
         return eventManager;
     }
 
-    public ItemConfig<Firearm> getFirearmConfig() {
-        return firearmConfig;
+    public ItemFactory<Firearm> getFirearmFactory() {
+        return firearmFactory;
     }
 
     public GameManager getGameManager() {
         return gameManager;
     }
 
-    public ItemConfig<Knife> getKnifeConfig() {
-        return knifeConfig;
+    public ItemFactory<Knife> getKnifeFactory() {
+        return knifeFactory;
     }
 
     public LevelConfig getLevelConfig() {
@@ -119,9 +122,16 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         try {
             cache = new BattleCacheYaml(this, "cache.yml");
             config = new BattlegroundsConfig(this);
-            equipmentConfig = new EquipmentConfig(this);
-            firearmConfig = new FirearmConfig(this);
-            knifeConfig = new KnifeConfig(this);
+
+            ItemConfig attachmentConfig = new AttachmentConfig(this);
+            ItemConfig equipmentConfig = new EquipmentConfig(this);
+            ItemConfig firearmConfig = new FirearmConfig(this);
+            ItemConfig knifeConfig = new KnifeConfig(this);
+
+            attachmentFactory = new AttachmentFactory(attachmentConfig);
+            equipmentFactory = new EquipmentFactory(equipmentConfig);
+            firearmFactory = new FirearmFactory(firearmConfig);
+            knifeFactory = new KnifeFactory(knifeConfig);
         } catch (IOException e) {
             return false;
         }
@@ -136,11 +146,19 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
             throw new StartupFailedException("Failed to load configuration files!", e);
         }
 
+        Translator.setLanguageDirectory(new File(getDataFolder().getPath() + "/lang"));
+        Translator.setLocale(Locale.ENGLISH.getLanguage()); // TODO: Multi language support
+
         try {
-            attachmentConfig = new AttachmentConfig(this);
-            equipmentConfig = new EquipmentConfig(this);
-            firearmConfig = new FirearmConfig(this);
-            knifeConfig = new KnifeConfig(this);
+            ItemConfig attachmentConfig = new AttachmentConfig(this);
+            ItemConfig equipmentConfig = new EquipmentConfig(this);
+            ItemConfig firearmConfig = new FirearmConfig(this);
+            ItemConfig knifeConfig = new KnifeConfig(this);
+
+            attachmentFactory = new AttachmentFactory(attachmentConfig);
+            equipmentFactory = new EquipmentFactory(equipmentConfig);
+            firearmFactory = new FirearmFactory(firearmConfig);
+            knifeFactory = new KnifeFactory(knifeConfig);
         } catch (Exception e) {
             throw new StartupFailedException("Failed to load item configuration files!", e);
         }
@@ -156,12 +174,6 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         } catch (Exception e) {
             throw new StartupFailedException("Failed to load default loadout classes!", e);
         }
-
-        getLogger().info("Succesfully loaded "
-                + firearmConfig.getList().size() + " guns, "
-                + equipmentConfig.getList().size() + " equipment, "
-                + knifeConfig.getList().size() + " knives and "
-                + attachmentConfig.getList().size() + " attachments from the config");
 
         eventManager = new BattleEventManager();
         gameManager = new BattleGameManager();

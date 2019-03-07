@@ -2,7 +2,11 @@ package com.matsg.battlegrounds.gui;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.config.ItemConfig;
 import com.matsg.battlegrounds.api.item.*;
+import com.matsg.battlegrounds.config.EquipmentConfig;
+import com.matsg.battlegrounds.config.FirearmConfig;
+import com.matsg.battlegrounds.config.KnifeConfig;
 import com.matsg.battlegrounds.item.EquipmentType;
 import com.matsg.battlegrounds.item.FirearmType;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
@@ -15,6 +19,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +27,8 @@ public class WeaponsView implements View {
 
     private Battlegrounds plugin;
     private Inventory inventory, previous;
+    private ItemConfig equipmentConfig, firearmConfig, knifeConfig;
+    private ItemSlot itemSlot;
     private Loadout loadout;
     private List<Weapon> weapons;
     private MessageHelper messageHelper;
@@ -29,62 +36,24 @@ public class WeaponsView implements View {
     public WeaponsView(Battlegrounds plugin, Loadout loadout, ItemSlot itemSlot) {
         this.plugin = plugin;
         this.loadout = loadout;
+        this.itemSlot = itemSlot;
         this.messageHelper = new MessageHelper();
-        this.weapons = getWeaponList(plugin);
-        this.inventory = plugin.getServer().createInventory(this, 27, messageHelper.create(TranslationKey.VIEW_WEAPONS));
 
-        // Add all firearm class types
-        for (FirearmType firearmType : FirearmType.values()) {
-            List<Firearm> list = (List) plugin.getFirearmConfig().getList(firearmType);
-            if (list.size() > 0) {
-                Firearm firearm = list.get(0);
-                if (firearm.getType().getDefaultItemSlot() == itemSlot) {
-                    addWeapon(firearm);
-                }
-            }
-        }
-        // Add all explosive class types
-        for (EquipmentType equipmentType : EquipmentType.values()) {
-            List<Equipment> list = (List) plugin.getEquipmentConfig().getList(equipmentType);
-            if (list.size() > 0) {
-                Equipment equipment = list.get(0);
-                if (equipment.getType().getDefaultItemSlot() == itemSlot) {
-                    addWeapon(equipment);
-                }
-            }
-        }
-        // Add a knife
-        List<Knife> list = (List) plugin.getKnifeConfig().getList();
-        if (list.size() > 0) {
-            Knife knife = list.get(0);
-            if (knife.getType().getDefaultItemSlot() == itemSlot) {
-                addWeapon(knife);
-            }
+        try {
+            this.equipmentConfig = new EquipmentConfig(plugin);
+            this.firearmConfig = new FirearmConfig(plugin);
+            this.knifeConfig = new KnifeConfig(plugin);
+        } catch (IOException e) {
+            return;
         }
 
-        inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(messageHelper.create(TranslationKey.GO_BACK)).build());
+        this.weapons = getWeaponList();
+        this.inventory = prepareInventory();
     }
 
     public WeaponsView(Battlegrounds plugin, Loadout loadout, ItemSlot itemSlot, Inventory previous) {
         this(plugin, loadout, itemSlot);
         this.previous = previous;
-    }
-
-    private void addWeapon(Weapon weapon) {
-        inventory.addItem(new ItemStackBuilder(weapon.getItemStack().clone())
-                .addItemFlags(ItemFlag.values())
-                .setDisplayName(ChatColor.WHITE + weapon.getType().getName())
-                .setLore(new String[0])
-                .setUnbreakable(true)
-                .build());
-    }
-
-    private static List<Weapon> getWeaponList(Battlegrounds plugin) {
-        List<Weapon> list = new ArrayList<>();
-        list.addAll(plugin.getEquipmentConfig().getList());
-        list.addAll(plugin.getFirearmConfig().getList());
-        list.addAll(plugin.getKnifeConfig().getList());
-        return list;
     }
 
     public Inventory getInventory() {
@@ -100,6 +69,7 @@ public class WeaponsView implements View {
             return;
         }
 
+        ItemType itemType = null;
         List<Weapon> weaponList = new ArrayList<>();
         Weapon weapon = null;
 
@@ -112,21 +82,98 @@ public class WeaponsView implements View {
 
         if (weapon instanceof Equipment) {
             Equipment equipment = (Equipment) weapon;
-            weaponList.addAll(plugin.getEquipmentConfig().getList(equipment.getType()));
-            player.openInventory(new SelectWeaponView(plugin, player, loadout, equipment.getType(), weaponList, inventory).getInventory());
+            for (String id : equipmentConfig.getItemList(equipment.getType().toString())) {
+                weaponList.add(plugin.getEquipmentFactory().make(id));
+            }
+            itemType = equipment.getType();
         }
         if (weapon instanceof Firearm) {
             Firearm firearm = (Firearm) weapon;
-            weaponList.addAll(plugin.getFirearmConfig().getList(firearm.getType()));
-            player.openInventory(new SelectWeaponView(plugin, player, loadout, firearm.getType(), weaponList, inventory).getInventory());
+            for (String id : firearmConfig.getItemList(firearm.getType().toString())) {
+                weaponList.add(plugin.getFirearmFactory().make(id));
+            }
+            itemType = firearm.getType();
         }
         if (weapon instanceof Knife) {
-            weaponList.addAll(plugin.getKnifeConfig().getList());
-            player.openInventory(new SelectWeaponView(plugin, player, loadout, weapon.getType(), weaponList, inventory).getInventory());
+            for (String id : knifeConfig.getItemList()) {
+                weaponList.add(plugin.getKnifeFactory().make(id));
+            }
+            itemType = weapon.getType();
         }
+
+        player.openInventory(new SelectWeaponView(plugin, player, loadout, itemType, weaponList, inventory).getInventory());
     }
 
     public boolean onClose() {
         return true;
+    }
+
+    private void addToInventory(Inventory inventory, Weapon weapon) {
+        inventory.addItem(new ItemStackBuilder(weapon.getItemStack().clone())
+                .addItemFlags(ItemFlag.values())
+                .setDisplayName(ChatColor.WHITE + weapon.getType().getName())
+                .setLore(new String[0])
+                .setUnbreakable(true)
+                .build()
+        );
+    }
+
+    private List<Weapon> getWeaponList() {
+        List<Weapon> weaponList = new ArrayList<>();
+
+        for (String id : equipmentConfig.getItemList()) {
+            weaponList.add(plugin.getEquipmentFactory().make(id));
+        }
+        for (String id : firearmConfig.getItemList()) {
+            weaponList.add(plugin.getFirearmFactory().make(id));
+        }
+        for (String id : knifeConfig.getItemList()) {
+            weaponList.add(plugin.getKnifeFactory().make(id));
+        }
+
+        return weaponList;
+    }
+
+    private Inventory prepareInventory() {
+        Inventory inventory = plugin.getServer().createInventory(this, 27, messageHelper.create(TranslationKey.VIEW_WEAPONS));
+
+        // Add all firearm class types
+        for (FirearmType firearmType : FirearmType.values()) {
+            List<String> idList = firearmConfig.getItemList(firearmType.toString());
+
+            if (idList.size() > 0) {
+                String id = idList.get(0);
+                Firearm firearm = plugin.getFirearmFactory().make(id);
+                if (firearm.getType().getDefaultItemSlot() == itemSlot) {
+                    addToInventory(inventory, firearm);
+                }
+            }
+        }
+
+        // Add all explosive class types
+        for (EquipmentType equipmentType : EquipmentType.values()) {
+            List<String> idList = equipmentConfig.getItemList(equipmentType.toString());
+
+            if (idList.size() > 0) {
+                String id = idList.get(0);
+                Equipment equipment = plugin.getEquipmentFactory().make(id);
+                if (equipment.getType().getDefaultItemSlot() == itemSlot) {
+                    addToInventory(inventory, equipment);
+                }
+            }
+        }
+
+        // Add a knife
+        List<String> idList = knifeConfig.getItemList();
+        if (idList.size() > 0) {
+            String id = idList.get(0);
+            Knife knife = plugin.getKnifeFactory().make(id);
+            if (knife.getType().getDefaultItemSlot() == itemSlot) {
+                addToInventory(inventory, knife);
+            }
+        }
+
+        inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(messageHelper.create(TranslationKey.GO_BACK)).build());
+        return inventory;
     }
 }

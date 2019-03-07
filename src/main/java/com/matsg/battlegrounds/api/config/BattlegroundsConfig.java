@@ -21,11 +21,9 @@ public final class BattlegroundsConfig extends AbstractYaml {
     public int firearmDamageModifer = getInt("game-firearm-damage-modifier");
     public int loadoutCreationLevel = getInt("loadout-creation-level");
     public double firearmAccuracy = getDouble("game-firearm-accuracy");
-    public double launcherVelocity = getDouble("game-launcher-velocity");
     public List<String> allowedCommands = getStringList("game-allowed-commands");
     public List<String> joinableGamestates = getStringList("game-joinable-states");
     public List<String> pierceableBlocks = getStringList("game-pierceable-blocks");
-    public String launcherMaterial = getString("game-launcher-material");
 
     public BattlegroundsConfig(Battlegrounds plugin) throws IOException {
         super(plugin, "config.yml", false);

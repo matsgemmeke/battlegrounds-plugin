@@ -2,8 +2,10 @@ package com.matsg.battlegrounds.gui;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.config.ItemConfig;
 import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.config.KnifeConfig;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.ChatColor;
@@ -14,6 +16,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +26,7 @@ public class EditLoadoutView implements View {
 
     private Battlegrounds plugin;
     private Inventory inventory;
+    private ItemConfig knifeConfig;
     private List<EditLoadoutViewItem> items;
     private Loadout loadout;
     private Map<ItemStack, Attachment> attachments;
@@ -36,6 +40,12 @@ public class EditLoadoutView implements View {
         this.attachmentGun = new HashMap<>();
         this.items = new ArrayList<>();
         this.messageHelper = new MessageHelper();
+
+        try {
+            this.knifeConfig = new KnifeConfig(plugin);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         this.inventory = buildInventory(plugin.getServer().createInventory(this, 27,
                 messageHelper.create(TranslationKey.VIEW_EDIT_LOADOUT, new Placeholder("bg_loadout", loadout.getName()))));
@@ -142,7 +152,9 @@ public class EditLoadoutView implements View {
                             player.openInventory(new WeaponsView(plugin, loadout, weapon.getType().getDefaultItemSlot(), inventory).getInventory());
                         } else {
                             List<Weapon> weapons = new ArrayList<>();
-                            weapons.addAll(plugin.getKnifeConfig().getList());
+                            for (String id : knifeConfig.getItemList()) {
+                                weapons.add(plugin.getKnifeFactory().make(id));
+                            }
                             player.openInventory(new SelectWeaponView(plugin, player, loadout, weapon.getType(), weapons, inventory).getInventory());
                         }
                     } else {

@@ -71,7 +71,7 @@ public class SelectAttachmentView implements View {
     private List<Attachment> getAttachmentList(Gun gun) {
         List<Attachment> list = new ArrayList<>();
         for (String attachmentId : gun.getCompatibleAttachments()) {
-            Attachment attachment = plugin.getAttachmentConfig().get(attachmentId);
+            Attachment attachment = plugin.getAttachmentFactory().make(attachmentId);
             if (attachment != null) {
                 list.add(attachment);
             }

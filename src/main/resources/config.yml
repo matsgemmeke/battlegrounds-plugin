@@ -46,6 +46,23 @@ game-firearm-damage-modifier: 5
 game-joinable-states:
 - WAITING
 
+# Some projectiles are able to pierce through certain blocks. Add their materials here
+game-pierceable-blocks:
+- AIR
+- BARRIER
+- CARPET
+- CROPS
+- FENCE
+- IRON_FENCE
+- LADDER
+- LEAVES
+- LONG_GRASS
+- REDSTONE_WIRE
+- SIGN_POST
+- STAINED_GLASS_PANE
+- THIN_GLASS
+- WALL_SIGN
+
 # Scoreboard configurations
 game-scoreboard:
   # Set to false to disable scoreboards
@@ -63,30 +80,6 @@ game-scoreboard:
       line6: "&8%bg_date%"
       title: "&6&lBattlegrounds"
     worlds: "*"
-
-# The material and durability of the launchers' projectiles
-game-launcher-material: IRON_HELMET,1
-
-# The velocity of grenade launchers' projectiles
-# Higher values than 3.0 may cause the projectile to not launch accurately
-game-launcher-velocity: 2.0
-
-# Some projectiles are able to pierce through certain blocks. Add their materials here
-game-pierceable-blocks:
-- AIR
-- BARRIER
-- CARPET
-- CROPS
-- FENCE
-- IRON_FENCE
-- LADDER
-- LEAVES
-- LONG_GRASS
-- REDSTONE_WIRE
-- SIGN_POST
-- STAINED_GLASS_PANE
-- THIN_GLASS
-- WALL_SIGN
 
 # The layout of the game joining signs
 game-sign-layout:

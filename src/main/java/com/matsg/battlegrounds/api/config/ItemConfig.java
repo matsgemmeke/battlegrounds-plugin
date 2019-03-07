@@ -1,32 +1,31 @@
 package com.matsg.battlegrounds.api.config;
 
-import com.matsg.battlegrounds.api.item.Item;
-import com.matsg.battlegrounds.api.item.ItemType;
+import org.bukkit.configuration.ConfigurationSection;
 
-import java.util.Collection;
+import java.util.List;
 
-public interface ItemConfig<T extends Item> extends Yaml {
-
-    /**
-     * Gets the item with a certain id or name. Returns null if it doesn't exists.
-     *
-     * @param name The id or name of the item
-     * @return The item with the corresponding id or name
-     */
-    T get(String name);
+public interface ItemConfig {
 
     /**
-     * Gets the list which contains all items
+     * Gets the an item's configuration section. Returns null if it doesn't exist.
      *
-     * @return The entire item list
+     * @param id The id of the item.
+     * @return The corresponding item's configuration section.
      */
-    Collection<T> getList();
+    ConfigurationSection getItemConfigurationSection(String id);
 
     /**
-     * Gets the list which contains all items of this type
+     * Gets the list of configured items id's.
      *
-     * @param itemType The item type filter
-     * @return The whole weapon list only containing
+     * @return A list containing all item id's.
      */
-    Collection<T> getList(ItemType itemType);
+    List<String> getItemList();
+
+    /**
+     * Gets the list of configured items id's by a certain item type.
+     *
+     * @param itemType The item type.
+     * @return A list containing all item id's by the specified item type.
+     */
+    List<String> getItemList(String itemType);
 }

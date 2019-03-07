@@ -12,9 +12,9 @@ import java.util.Locale;
 
 public class Translator {
 
-    private static Battlegrounds plugin = BattlegroundsPlugin.getPlugin();
     private static File languageDirectory;
     private static Locale locale, fallbackLocale = Locale.ENGLISH;
+    private static Battlegrounds plugin = BattlegroundsPlugin.getPlugin();
     private static List<LanguageYaml> languages;
 
     public static File getLanguageDirectory() {
@@ -33,7 +33,7 @@ public class Translator {
         Translator.locale = LocaleUtils.toLocale(locale);
     }
 
-    public static List<LanguageYaml> getLanguageList(File directory) {
+    private static List<LanguageYaml> getLanguageList(File directory) {
         List<LanguageYaml> list = new ArrayList<>();
 
         // Look for language files
@@ -67,7 +67,7 @@ public class Translator {
         return list;
     }
 
-    public static LanguageYaml getLanguageYaml(Locale locale) {
+    private static LanguageYaml getLanguageYaml(Locale locale) {
         for (LanguageYaml lang : languages) {
             if (lang.getLocale().equals(locale)) {
                 return lang;

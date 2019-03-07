@@ -1,4 +1,4 @@
-package com.matsg.battlegrounds.config;
+package com.matsg.battlegrounds.item.factory;
 
 public enum AttachmentOperator {
 

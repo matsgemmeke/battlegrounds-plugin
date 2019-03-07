@@ -14,7 +14,7 @@ import com.matsg.battlegrounds.api.player.PlayerStorage;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.gui.scoreboard.LobbyScoreboard;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
-import com.matsg.battlegrounds.item.misc.SelectLoadout;
+import com.matsg.battlegrounds.item.SelectLoadout;
 import com.matsg.battlegrounds.player.BattleGamePlayer;
 import com.matsg.battlegrounds.player.BattleSavedInventory;
 import com.matsg.battlegrounds.util.ActionBar;

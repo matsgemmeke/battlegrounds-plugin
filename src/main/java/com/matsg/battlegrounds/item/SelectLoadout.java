@@ -1,4 +1,4 @@
-package com.matsg.battlegrounds.item.misc;
+package com.matsg.battlegrounds.item;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.game.Game;

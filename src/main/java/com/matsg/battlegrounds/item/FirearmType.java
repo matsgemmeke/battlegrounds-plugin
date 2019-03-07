@@ -1,7 +1,5 @@
 package com.matsg.battlegrounds.item;
 
-import com.matsg.battlegrounds.BattlegroundsPlugin;
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.item.DamageSource;
 import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.item.ItemType;
@@ -20,7 +18,6 @@ public enum FirearmType implements ItemType {
 
     public static FirearmType[] GUNS = new FirearmType[] { ASSAULT_RIFLE, HANDGUN, LIGHT_MACHINE_GUN, SHOTGUN, SNIPER_RIFLE, SUBMACHINE_GUN };
 
-    private Battlegrounds plugin;
     private boolean pierceable, scope;
     private Class<? extends DamageSource> damageSourceClass;
     private int maxHits, projectileAmount;
@@ -29,7 +26,6 @@ public enum FirearmType implements ItemType {
     private String name;
 
     FirearmType(String path, ItemSlot itemSlot, int projectileAmount, Class<? extends DamageSource> damageSourceClass, int maxHits, boolean scope) {
-        this.plugin = BattlegroundsPlugin.getPlugin();
         this.damageSourceClass = damageSourceClass;
         this.itemSlot = itemSlot;
         this.maxHits = maxHits;
@@ -38,15 +34,6 @@ public enum FirearmType implements ItemType {
         this.pierceable = maxHits > 1;
         this.scope = scope;
         this.name = messageHelper.create(path);
-    }
-
-    public static FirearmType getValue(String name) {
-        for (FirearmType firearmType : values()) {
-            if (firearmType.toString().equals(name)) {
-                return firearmType;
-            }
-        }
-        return null;
     }
 
     public ItemSlot getDefaultItemSlot() {

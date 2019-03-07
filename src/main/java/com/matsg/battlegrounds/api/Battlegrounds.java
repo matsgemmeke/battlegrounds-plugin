@@ -2,23 +2,19 @@ package com.matsg.battlegrounds.api;
 
 import com.matsg.battlegrounds.api.config.BattlegroundsConfig;
 import com.matsg.battlegrounds.api.config.CacheYaml;
-import com.matsg.battlegrounds.api.config.ItemConfig;
 import com.matsg.battlegrounds.api.config.LevelConfig;
-import com.matsg.battlegrounds.api.item.Attachment;
-import com.matsg.battlegrounds.api.item.Equipment;
-import com.matsg.battlegrounds.api.item.Firearm;
-import com.matsg.battlegrounds.api.item.Knife;
+import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.player.PlayerStorage;
 import org.bukkit.plugin.Plugin;
 
 public interface Battlegrounds extends Plugin {
 
     /**
-     * Gets the attachment configrations of the plugin.
+     * Gets the attachment factory of the plugin.
      *
-     * @return The attachment configuration
+     * @return The attachment factory
      */
-    ItemConfig<Attachment> getAttachmentConfig();
+    ItemFactory<Attachment> getAttachmentFactory();
 
     /**
      * Gets the cache storage of the plugin.
@@ -35,11 +31,11 @@ public interface Battlegrounds extends Plugin {
     BattlegroundsConfig getBattlegroundsConfig();
 
     /**
-     * Gets the equipment configrations of the plugin.
+     * Gets the equipment factory of the plugin.
      *
-     * @return The equipment configuration
+     * @return The equipment factory
      */
-    ItemConfig<Equipment> getEquipmentConfig();
+    ItemFactory<Equipment> getEquipmentFactory();
 
     /**
      * Gets the event manager of the plugin.
@@ -49,11 +45,11 @@ public interface Battlegrounds extends Plugin {
     EventManager getEventManager();
 
     /**
-     * Gets the firearms configrations of the plugin.
+     * Gets the firearm factory of the plugin.
      *
-     * @return The firearm configuration
+     * @return The firearm factory
      */
-    ItemConfig<Firearm> getFirearmConfig();
+    ItemFactory<Firearm> getFirearmFactory();
 
     /**
      * Gets the game manager of the plugin.
@@ -63,11 +59,11 @@ public interface Battlegrounds extends Plugin {
     GameManager getGameManager();
 
     /**
-     * Gets the knives configrations of the plugin.
+     * Gets the knife factory of the plugin.
      *
-     * @return The knife configuration
+     * @return The knife factory
      */
-    ItemConfig<Knife> getKnifeConfig();
+    ItemFactory<Knife> getKnifeFactory();
 
     /**
      * Gets the level configurations of the plugin
@@ -80,7 +76,7 @@ public interface Battlegrounds extends Plugin {
      * Gets the player data storage of the plugin. This method will either return the factory
      * of the MySQL or local storage depending on whether the MySQL feature is enabled.
      *
-     * @return The MySQL factory if enabled, local storage otherwise
+     * @return The MySQL storage if enabled, local storage otherwise
      */
     PlayerStorage getPlayerStorage();
 

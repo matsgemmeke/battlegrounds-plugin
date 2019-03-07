@@ -33,8 +33,8 @@ public class AddSpawn extends SubCommand {
         int id = Integer.parseInt(args[1]);
 
         Game game = plugin.getGameManager().getGame(id);
-        String name = args[2].replaceAll("_", " ");
-        Arena arena = plugin.getGameManager().getArena(game, name);
+        String arenaName = args[2].replaceAll("_", " ");
+        Arena arena = plugin.getGameManager().getArena(game, arenaName);
 
         boolean teamBase = false;
         int teamId = 0;
@@ -64,13 +64,13 @@ public class AddSpawn extends SubCommand {
 
         arena.getSpawns().add(spawn);
 
-        game.getDataFile().set("arena." + name + ".spawn." + spawn.getIndex() + ".base", teamBase);
-        game.getDataFile().setLocation("arena." + name + ".spawn." + spawn.getIndex() + ".location", spawn.getLocation(), true);
-        game.getDataFile().set("arena." + name + ".spawn." + spawn.getIndex() + ".team", teamId);
+        game.getDataFile().set("arena." + arenaName + ".spawn." + spawn.getIndex() + ".base", teamBase);
+        game.getDataFile().setLocation("arena." + arenaName + ".spawn." + spawn.getIndex() + ".location", spawn.getLocation(), true);
+        game.getDataFile().set("arena." + arenaName + ".spawn." + spawn.getIndex() + ".team", teamId);
         game.getDataFile().save();
 
         player.sendMessage(createMessage(TranslationKey.SPAWN_ADD,
-                new Placeholder("bg_arena", name),
+                new Placeholder("bg_arena", arenaName),
                 new Placeholder("bg_index", spawn.getIndex())
         ));
     }
