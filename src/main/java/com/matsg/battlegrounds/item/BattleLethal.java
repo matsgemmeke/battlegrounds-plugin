@@ -16,9 +16,9 @@ public class BattleLethal extends BattleEquipment implements Lethal {
     private double longDamage, midDamage, shortDamage;
 
     public BattleLethal(String id, String name, String description, ItemStack itemStack, short durability,
-                        int amount, double longDamage, double longRange, double midDamage, double midRange,
+                        int amount, int cooldown, double longDamage, double longRange, double midDamage, double midRange,
                         double shortDamage, double shortRange, double velocity, int ignitionTime, Sound[] ignitionSound) {
-        super(id, name, description, itemStack, durability, EquipmentType.LETHAL, amount, longRange, midRange, shortRange, velocity,
+        super(id, name, description, itemStack, durability, EquipmentType.LETHAL, amount, cooldown, longRange, midRange, shortRange, velocity,
                 ignitionTime == 0 ? IgnitionType.PASSIVE : IgnitionType.AGGRESSIVE, ignitionTime, ignitionSound);
         this.longDamage = longDamage;
         this.midDamage = midDamage;

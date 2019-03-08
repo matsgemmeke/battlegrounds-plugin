@@ -31,9 +31,6 @@ game-display-name:
   equipment: "&f%bg_weapon%"
   melee-weapon: "&f%bg_weapon%"
 
-# Explosive throwing cooldown in ticks
-game-explosive-cooldown: 20
-
 # The general accuracy of firearms in the game
 # Change to higher number for lower accuracy, change to lower number for higher accuracy
 game-firearm-accuracy: 10.0

@@ -1,6 +1,5 @@
 package com.matsg.battlegrounds.item;
 
-import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.item.ItemType;
 import com.matsg.battlegrounds.util.MessageHelper;

@@ -37,6 +37,7 @@ public class EquipmentFactory implements ItemFactory<Equipment> {
                         new ItemStackBuilder(Material.valueOf(material[0])).build(),
                         AttributeValidator.shouldEqualOrBeHigherThan(Short.valueOf(material[1]), (short) 0),
                         AttributeValidator.shouldBeHigherThan(section.getInt("Amount"), 0),
+                        AttributeValidator.shouldBeHigherThan(section.getInt("Cooldown"), 0),
                         AttributeValidator.shouldEqualOrBeHigherThan(section.getDouble("Range.Long.Damage"), 0.0),
                         AttributeValidator.shouldEqualOrBeHigherThan(section.getDouble("Range.Long.Distance"), 0.0),
                         AttributeValidator.shouldEqualOrBeHigherThan(section.getDouble("Range.Medium.Damage"), 0.0),
@@ -50,7 +51,7 @@ public class EquipmentFactory implements ItemFactory<Equipment> {
             } catch (ValidationFailedException e) {
                 throw new FactoryCreationException(e.getMessage(), e);
             }
-        } else  if (equipmentType == EquipmentType.TACTICAL) {
+        } else {
             try {
                 return new BattleTactical(
                         section.getName(),
@@ -59,6 +60,7 @@ public class EquipmentFactory implements ItemFactory<Equipment> {
                         new ItemStackBuilder(Material.valueOf(material[0])).build(),
                         AttributeValidator.shouldEqualOrBeHigherThan(Short.valueOf(material[1]), (short) 0),
                         AttributeValidator.shouldBeHigherThan(section.getInt("Amount"), 0),
+                        AttributeValidator.shouldBeHigherThan(section.getInt("Cooldown"), 0),
                         BattleTacticalEffect.valueOf(section.getString("Effect")),
                         AttributeValidator.shouldBeHigherThan(section.getInt("Duration"), 0),
                         AttributeValidator.shouldEqualOrBeHigherThan(section.getDouble("Range.Long.Distance"), 0.0),
@@ -72,7 +74,5 @@ public class EquipmentFactory implements ItemFactory<Equipment> {
                 throw new FactoryCreationException(e.getMessage(), e);
             }
         }
-
-        throw new FactoryCreationException("No instance could be created from item id " + id);
     }
 }

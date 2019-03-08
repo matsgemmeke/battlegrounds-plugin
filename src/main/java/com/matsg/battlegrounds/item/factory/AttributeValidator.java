@@ -1,6 +1,6 @@
 package com.matsg.battlegrounds.item.factory;
 
-public class AttributeValidator {
+public final class AttributeValidator {
 
     public static <T extends Number> T shouldBeBetween(T attribute, T low, T high) throws ValidationFailedException {
         return validate(attribute, attribute.doubleValue() >= low.doubleValue() && attribute.doubleValue() <= high.doubleValue(), "Value must be between " + low + " and " + high);

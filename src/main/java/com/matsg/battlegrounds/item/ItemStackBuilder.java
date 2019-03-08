@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
@@ -66,7 +67,9 @@ public class ItemStackBuilder {
 	}
 
 	public ItemStackBuilder setDurability(short durability) {
-		item.setDurability(durability);
+		if (meta instanceof Damageable) {
+			((Damageable) meta).setDamage(durability);
+		}
 		return this;
 	}
 	

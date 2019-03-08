@@ -2,6 +2,7 @@
 #
 # <Id>:
 #   Amount: The maximum amount a player can carry
+#   Cooldown: The amount of ticks the players needs to wait to be able to use the equipment again.
 #   Description: Description of the equipment
 #   DisplayName: The name of the explosive
 #   Duration: The duration of the explosive effects in ticks. Only required for tacticals
@@ -24,6 +25,7 @@
 
 GRENADE:
   Amount: 1
+  Cooldown: 20
   Description: Fragmentation grenade. Detonates shortly after ignition, causing splash damage to the enemy.
   DisplayName: Grenade
   EquipmentType: LETHAL
@@ -44,6 +46,7 @@ GRENADE:
 
 SEMTEX:
   Amount: 1
+  Cooldown: 20
   Description: Powerful frag grenade. Detonates shortly after ignition, causing splash damage to the enemy.
   DisplayName: Semtex
   EquipmentType: LETHAL
@@ -64,6 +67,7 @@ SEMTEX:
 
 CLAYMORE:
   Amount: 1
+  Cooldown: 20
   Description: Directional anti-personnel mine that triggers a proximity-based explosion.
   DisplayName: Claymore
   EquipmentType: LETHAL
@@ -84,6 +88,7 @@ CLAYMORE:
 
 DECOY:
   Amount: 1
+  Cooldown: 20
   Description: Distraction device that simulates enemy gunfire and radar indicators.
   DisplayName: Decoy
   Duration: 100
@@ -106,6 +111,7 @@ DECOY:
 
 FLASHBANG:
   Amount: 1
+  Cooldown: 20
   Description: Device that blinds the target when detonated.
   DisplayName: Flashbang
   Duration: 100
@@ -128,6 +134,7 @@ FLASHBANG:
 
 SHOCK_CHARGE:
   Amount: 1
+  Cooldown: 20
   Description: Electrocutes and stuns nearby enemies.
   DisplayName: Shock Charge
   Duration: 60
@@ -150,6 +157,7 @@ SHOCK_CHARGE:
 
 SMOKE_GRENADE:
   Amount: 1
+  Cooldown: 20
   Description: Device that creates a smoke screen when detonated.
   DisplayName: Smoke Grenade
   Duration: 100

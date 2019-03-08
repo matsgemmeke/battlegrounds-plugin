@@ -43,15 +43,15 @@ public class MeleeWeaponFactoryTest {
         when(Bukkit.getItemFactory()).thenReturn(itemFactory);
         when(itemFactory.getItemMeta(any())).thenReturn(mock(ItemMeta.class));
         when(meleeWeaponConfig.getItemConfigurationSection(id)).thenReturn(section);
+        when(section.getString("Material")).thenReturn("AIR,1");
     }
 
     @Test
     public void testMakeMeleeWeapon() {
-        when(section.getDouble("Damage")).thenReturn(10.0);
         when(section.getInt("Amount")).thenReturn(1);
         when(section.getInt("Cooldown")).thenReturn(1);
+        when(section.getDouble("Damage")).thenReturn(10.0);
         when(section.getName()).thenReturn(id);
-        when(section.getString("Material")).thenReturn("AIR,1");
 
         MeleeWeaponFactory factory = new MeleeWeaponFactory(meleeWeaponConfig);
         MeleeWeapon meleeWeapon = factory.make(id);
@@ -62,10 +62,9 @@ public class MeleeWeaponFactoryTest {
 
     @Test(expected = FactoryCreationException.class)
     public void testMakeMeleeWeaponWithFailingValidation() {
-        when(section.getDouble("Damage")).thenReturn(-10.0);
         when(section.getInt("Amount")).thenReturn(-1);
         when(section.getInt("Cooldown")).thenReturn(-1);
-        when(section.getString("Material")).thenReturn("AIR,1");
+        when(section.getDouble("Damage")).thenReturn(-10.0);
 
         MeleeWeaponFactory factory = new MeleeWeaponFactory(meleeWeaponConfig);
         factory.make(id);

@@ -1,6 +1,6 @@
-package com.matsg.battlegrounds.item.factory;
+package com.matsg.battlegrounds.item.attributes;
 
-public enum AttachmentOperator {
+public enum AttributeOperator {
 
     ADDITION("+") {
         public Object apply(Object x1, Object x2) {
@@ -30,12 +30,12 @@ public enum AttachmentOperator {
 
     private final String text;
 
-    AttachmentOperator(String text) {
+    AttributeOperator(String text) {
         this.text = text;
     }
 
-    public static AttachmentOperator fromText(String text) {
-        for (AttachmentOperator operator : values()) {
+    public static AttributeOperator fromText(String text) {
+        for (AttributeOperator operator : values()) {
             if (operator.text.equals(text)) {
                 return operator;
             }

@@ -73,7 +73,7 @@ public class FirearmFactory implements ItemFactory<Firearm> {
             } catch (ValidationFailedException e) {
                 throw new FactoryCreationException(e.getMessage(), e);
             }
-        } else if (firearmType == FirearmType.LAUNCHER) {
+        } else {
             String[] projectileMaterial = section.getString("Projectile.Material").split(",");
 
             try {
@@ -97,6 +97,7 @@ public class FirearmFactory implements ItemFactory<Firearm> {
                                 new ItemStackBuilder(Material.valueOf(projectileMaterial[0])).setDurability(Short.parseShort(projectileMaterial[1])).build(),
                                 (short) 0,
                                 0,
+                                0,
                                 AttributeValidator.shouldEqualOrBeHigherThan(section.getDouble("Range.Long.Damage"), 0.0),
                                 AttributeValidator.shouldEqualOrBeHigherThan(section.getDouble("Range.Long.Distance"), 0.0),
                                 AttributeValidator.shouldEqualOrBeHigherThan(section.getDouble("Range.Medium.Damage"), 0.0),
@@ -116,8 +117,6 @@ public class FirearmFactory implements ItemFactory<Firearm> {
                 throw new FactoryCreationException(e.getMessage(), e);
             }
         }
-
-        throw new FactoryCreationException("No instance could be created from item id " + id);
     }
 
     private Map<String, String[]> getCompatibleAttachments(String string) {
