@@ -65,6 +65,7 @@ public enum TranslationKey {
     INVALID_LOADOUT("command-invalid-loadout", false),
     INVALID_SENDER("command-invalid-sender", false),
     ITEM_LOCKED("view-item-locked", false),
+    ITEM_TYPE_MELEE_WEAPON("item-type-melee-weapon", false),
     LOBBY_SET("setup-lobby-set", true),
     MAINLOBBY_SET("setup-mainlobby-set", true),
     NO_PERMISSION("command-no-permission", false),
@@ -97,14 +98,13 @@ public enum TranslationKey {
     TDM_NAME("gamemode-tdm-name", false),
     TDM_SHORT("gamemode-tdm-short", false),
     TEAM_ASSIGNMENT("game-team-assignment", true),
-    TYPE_KNIFE("item-type-knife", false),
     VIEW_EDIT_LOADOUT("view-title-edit-loadout", false),
     VIEW_LOADOUT_MANAGER("view-title-loadout-manager", false),
     VIEW_SELECT_ATTACHMENT("view-title-select-attachment", false),
     VIEW_SELECT_LOADOUT("view-title-select-loadout", false),
     VIEW_WEAPONS("view-title-weapons", false),
     WEAPON_EQUIPMENT("view-weapon-equipment", false),
-    WEAPON_KNIFE("view-weapon-knife", false),
+    WEAPON_MELEE_WEAPON("view-weapon-melee-weapon", false),
     WEAPON_PRIMARY("view-weapon-primary", false),
     WEAPON_SECONDARY("view-weapon-secondary", false);
 

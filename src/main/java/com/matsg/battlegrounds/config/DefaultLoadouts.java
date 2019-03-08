@@ -13,7 +13,7 @@ import java.util.List;
 public class DefaultLoadouts extends AbstractYaml {
 
     public DefaultLoadouts(Battlegrounds plugin) throws IOException {
-        super(plugin, "default-loadouts.yml", true);
+        super(plugin, "default_loadouts.yml", true);
     }
 
     public List<Loadout> getList() {
@@ -31,7 +31,7 @@ public class DefaultLoadouts extends AbstractYaml {
                 plugin.getFirearmFactory().make(section.getString("Primary.Id")),
                 plugin.getFirearmFactory().make(section.getString("Secondary.Id")),
                 plugin.getEquipmentFactory().make(section.getString("Equipment")),
-                plugin.getKnifeFactory().make(section.getString("Knife")),
+                plugin.getMeleeWeaponFactory().make(section.getString("MeleeWeapon")),
                 true
         );
     }

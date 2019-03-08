@@ -15,7 +15,7 @@ import com.matsg.battlegrounds.event.PlayerSwapItemListener;
 import com.matsg.battlegrounds.item.factory.AttachmentFactory;
 import com.matsg.battlegrounds.item.factory.EquipmentFactory;
 import com.matsg.battlegrounds.item.factory.FirearmFactory;
-import com.matsg.battlegrounds.item.factory.KnifeFactory;
+import com.matsg.battlegrounds.item.factory.MeleeWeaponFactory;
 import com.matsg.battlegrounds.nms.ReflectionUtils;
 import com.matsg.battlegrounds.nms.VersionManager;
 import com.matsg.battlegrounds.player.LocalPlayerStorage;
@@ -38,7 +38,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
     private ItemFactory<Attachment> attachmentFactory;
     private ItemFactory<Equipment> equipmentFactory;
     private ItemFactory<Firearm> firearmFactory;
-    private ItemFactory<Knife> knifeFactory;
+    private ItemFactory<MeleeWeapon> meleeWeaponFactory;
     private LevelConfig levelConfig;
     private PlayerStorage playerStorage;
     private VersionManager versionManager;
@@ -102,12 +102,12 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         return gameManager;
     }
 
-    public ItemFactory<Knife> getKnifeFactory() {
-        return knifeFactory;
-    }
-
     public LevelConfig getLevelConfig() {
         return levelConfig;
+    }
+
+    public ItemFactory<MeleeWeapon> getMeleeWeaponFactory() {
+        return meleeWeaponFactory;
     }
 
     public PlayerStorage getPlayerStorage() {
@@ -126,12 +126,12 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
             ItemConfig attachmentConfig = new AttachmentConfig(this);
             ItemConfig equipmentConfig = new EquipmentConfig(this);
             ItemConfig firearmConfig = new FirearmConfig(this);
-            ItemConfig knifeConfig = new KnifeConfig(this);
+            ItemConfig meleeWeaponConfig = new MeleeWeaponConfig(this);
 
             attachmentFactory = new AttachmentFactory(attachmentConfig);
             equipmentFactory = new EquipmentFactory(equipmentConfig);
             firearmFactory = new FirearmFactory(firearmConfig);
-            knifeFactory = new KnifeFactory(knifeConfig);
+            meleeWeaponFactory = new MeleeWeaponFactory(meleeWeaponConfig);
         } catch (IOException e) {
             return false;
         }
@@ -153,12 +153,12 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
             ItemConfig attachmentConfig = new AttachmentConfig(this);
             ItemConfig equipmentConfig = new EquipmentConfig(this);
             ItemConfig firearmConfig = new FirearmConfig(this);
-            ItemConfig knifeConfig = new KnifeConfig(this);
+            ItemConfig meleeWeaponConfig = new MeleeWeaponConfig(this);
 
             attachmentFactory = new AttachmentFactory(attachmentConfig);
             equipmentFactory = new EquipmentFactory(equipmentConfig);
             firearmFactory = new FirearmFactory(firearmConfig);
-            knifeFactory = new KnifeFactory(knifeConfig);
+            meleeWeaponFactory = new MeleeWeaponFactory(meleeWeaponConfig);
         } catch (Exception e) {
             throw new StartupFailedException("Failed to load item configuration files!", e);
         }

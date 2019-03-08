@@ -119,7 +119,7 @@ public class BattlePlayerYaml extends AbstractYaml implements StoredPlayer {
                 plugin.getFirearmFactory().make(section.getString("Primary.Id")),
                 plugin.getFirearmFactory().make(section.getString("Secondary.Id")),
                 plugin.getEquipmentFactory().make(section.getString("Equipment")),
-                plugin.getKnifeFactory().make(section.getString("Knife"))
+                plugin.getMeleeWeaponFactory().make(section.getString("MeleeWeapon"))
         );
 
         if (loadout.getPrimary() instanceof Gun) {
@@ -175,7 +175,7 @@ public class BattlePlayerYaml extends AbstractYaml implements StoredPlayer {
         set("Loadout." + loadoutNumber + ".Primary.Id", loadout.getPrimary() != null ? loadout.getPrimary().getId() : null);
         set("Loadout." + loadoutNumber + ".Secondary.Id", loadout.getSecondary() != null ? loadout.getSecondary().getId() : null);
         set("Loadout." + loadoutNumber + ".Equipment", loadout.getEquipment() != null ? loadout.getEquipment().getId() : null);
-        set("Loadout." + loadoutNumber + ".Knife", loadout.getKnife() != null ? loadout.getKnife().getId() : null);
+        set("Loadout." + loadoutNumber + ".MeleeWeapon", loadout.getMeleeWeapon() != null ? loadout.getMeleeWeapon().getId() : null);
 
         if (loadout.getPrimary() != null && loadout.getPrimary() instanceof Gun) {
             set("Loadout." + loadoutNumber + ".Primary.Attachments", convertAttachmentsToString((Gun) loadout.getPrimary()));

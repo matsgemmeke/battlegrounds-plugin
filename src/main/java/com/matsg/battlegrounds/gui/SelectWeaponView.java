@@ -134,8 +134,8 @@ public class SelectWeaponView implements View {
             case EQUIPMENT:
                 loadout.setEquipment((Equipment) weapon);
                 break;
-            case KNIFE:
-                loadout.setKnife((Knife) weapon);
+            case MELEE_WEAPON:
+                loadout.setMeleeWeapon((MeleeWeapon) weapon);
                 break;
         }
     }

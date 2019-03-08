@@ -59,18 +59,18 @@ public interface Battlegrounds extends Plugin {
     GameManager getGameManager();
 
     /**
-     * Gets the knife factory of the plugin.
-     *
-     * @return The knife factory
-     */
-    ItemFactory<Knife> getKnifeFactory();
-
-    /**
      * Gets the level configurations of the plugin
      *
      * @return The level configuration
      */
     LevelConfig getLevelConfig();
+
+    /**
+     * Gets the melee weapon factory of the plugin.
+     *
+     * @return The melee weapon factory
+     */
+    ItemFactory<MeleeWeapon> getMeleeWeaponFactory();
 
     /**
      * Gets the player data storage of the plugin. This method will either return the factory

@@ -27,9 +27,9 @@ game-display-blood-effect: false
 
 # The display names of different weapon types
 game-display-name:
-  equipment: "&f%bg_weapon%"
   firearm: "&f%bg_weapon%  %bg_magazine%/%bg_ammo%"
-  knife: "&f%bg_weapon%"
+  equipment: "&f%bg_weapon%"
+  melee-weapon: "&f%bg_weapon%"
 
 # Explosive throwing cooldown in ticks
 game-explosive-cooldown: 20

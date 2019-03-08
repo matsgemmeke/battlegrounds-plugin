@@ -10,7 +10,7 @@ public interface Loadout extends Cloneable {
 
     int getId();
 
-    Knife getKnife();
+    MeleeWeapon getMeleeWeapon();
 
     String getName();
 
@@ -30,7 +30,7 @@ public interface Loadout extends Cloneable {
 
     void setEquipment(Equipment equipment);
 
-    void setKnife(Knife knife);
+    void setMeleeWeapon(MeleeWeapon meleeWeapon);
 
     void setName(String name);
 

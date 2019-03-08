@@ -9,10 +9,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KnifeConfig extends AbstractYaml implements ItemConfig {
+public class MeleeWeaponConfig extends AbstractYaml implements ItemConfig {
 
-    public KnifeConfig(Battlegrounds plugin) throws IOException {
-        super(plugin, plugin.getDataFolder().getPath() + "/items", "knives.yml", false);
+    public MeleeWeaponConfig(Battlegrounds plugin) throws IOException {
+        super(plugin, plugin.getDataFolder().getPath() + "/items", "melee_weapons.yml", false);
     }
 
     public ConfigurationSection getItemConfigurationSection(String id) {

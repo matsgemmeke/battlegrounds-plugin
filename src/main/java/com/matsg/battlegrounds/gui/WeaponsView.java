@@ -6,7 +6,7 @@ import com.matsg.battlegrounds.api.config.ItemConfig;
 import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.config.EquipmentConfig;
 import com.matsg.battlegrounds.config.FirearmConfig;
-import com.matsg.battlegrounds.config.KnifeConfig;
+import com.matsg.battlegrounds.config.MeleeWeaponConfig;
 import com.matsg.battlegrounds.item.EquipmentType;
 import com.matsg.battlegrounds.item.FirearmType;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
@@ -27,7 +27,7 @@ public class WeaponsView implements View {
 
     private Battlegrounds plugin;
     private Inventory inventory, previous;
-    private ItemConfig equipmentConfig, firearmConfig, knifeConfig;
+    private ItemConfig equipmentConfig, firearmConfig, meleeWeaponConfig;
     private ItemSlot itemSlot;
     private Loadout loadout;
     private List<Weapon> weapons;
@@ -42,7 +42,7 @@ public class WeaponsView implements View {
         try {
             this.equipmentConfig = new EquipmentConfig(plugin);
             this.firearmConfig = new FirearmConfig(plugin);
-            this.knifeConfig = new KnifeConfig(plugin);
+            this.meleeWeaponConfig = new MeleeWeaponConfig(plugin);
         } catch (IOException e) {
             return;
         }
@@ -94,9 +94,9 @@ public class WeaponsView implements View {
             }
             itemType = firearm.getType();
         }
-        if (weapon instanceof Knife) {
-            for (String id : knifeConfig.getItemList()) {
-                weaponList.add(plugin.getKnifeFactory().make(id));
+        if (weapon instanceof MeleeWeapon) {
+            for (String id : meleeWeaponConfig.getItemList()) {
+                weaponList.add(plugin.getMeleeWeaponFactory().make(id));
             }
             itemType = weapon.getType();
         }
@@ -127,8 +127,8 @@ public class WeaponsView implements View {
         for (String id : firearmConfig.getItemList()) {
             weaponList.add(plugin.getFirearmFactory().make(id));
         }
-        for (String id : knifeConfig.getItemList()) {
-            weaponList.add(plugin.getKnifeFactory().make(id));
+        for (String id : meleeWeaponConfig.getItemList()) {
+            weaponList.add(plugin.getMeleeWeaponFactory().make(id));
         }
 
         return weaponList;
@@ -163,13 +163,13 @@ public class WeaponsView implements View {
             }
         }
 
-        // Add a knife
-        List<String> idList = knifeConfig.getItemList();
+        // Add a melee weapon
+        List<String> idList = meleeWeaponConfig.getItemList();
         if (idList.size() > 0) {
             String id = idList.get(0);
-            Knife knife = plugin.getKnifeFactory().make(id);
-            if (knife.getType().getDefaultItemSlot() == itemSlot) {
-                addToInventory(inventory, knife);
+            MeleeWeapon meleeWeapon = plugin.getMeleeWeaponFactory().make(id);
+            if (meleeWeapon.getType().getDefaultItemSlot() == itemSlot) {
+                addToInventory(inventory, meleeWeapon);
             }
         }
 

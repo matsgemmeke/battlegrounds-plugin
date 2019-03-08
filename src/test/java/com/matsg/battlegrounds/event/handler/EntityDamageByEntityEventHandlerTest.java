@@ -7,8 +7,8 @@ import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.PlayerManager;
 import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.item.ItemSlot;
-import com.matsg.battlegrounds.api.item.Knife;
 import com.matsg.battlegrounds.api.item.Loadout;
+import com.matsg.battlegrounds.api.item.MeleeWeapon;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.game.BattleTeam;
 import com.matsg.battlegrounds.player.BattleGamePlayer;
@@ -112,7 +112,7 @@ public class EntityDamageByEntityEventHandlerTest {
     }
 
     @Test
-    public void testPlayerDamageWithoutKnife() {
+    public void testPlayerDamageWithoutMeleeWeapon() {
         when(playerManager.getGamePlayer(damagerPlayer)).thenReturn(damager);
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
 
@@ -131,16 +131,16 @@ public class EntityDamageByEntityEventHandlerTest {
     }
 
     @Test
-    public void testPlayerDamageWithKnife() {
+    public void testPlayerDamageWithMeleeWeapon() {
         when(playerManager.getGamePlayer(damagerPlayer)).thenReturn(damager);
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
 
-        Knife knife = mock(Knife.class);
         Loadout loadout = mock(Loadout.class);
+        MeleeWeapon meleeWeapon = mock(MeleeWeapon.class);
         Team team = new BattleTeam(1, "Team", null, null), enemyTeam = new BattleTeam(2, "Team", null, null);
 
-        when(loadout.getWeapon(any(ItemSlot.class))).thenReturn(knife);
-        when(loadout.getWeapon(any(ItemStack.class))).thenReturn(knife);
+        when(loadout.getWeapon(any(ItemSlot.class))).thenReturn(meleeWeapon);
+        when(loadout.getWeapon(any(ItemStack.class))).thenReturn(meleeWeapon);
 
         damager.setLoadout(loadout);
         damager.setTeam(enemyTeam);

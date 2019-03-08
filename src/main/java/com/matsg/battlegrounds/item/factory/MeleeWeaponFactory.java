@@ -2,26 +2,26 @@ package com.matsg.battlegrounds.item.factory;
 
 import com.matsg.battlegrounds.api.config.ItemConfig;
 import com.matsg.battlegrounds.api.item.ItemFactory;
-import com.matsg.battlegrounds.api.item.Knife;
-import com.matsg.battlegrounds.item.BattleKnife;
+import com.matsg.battlegrounds.api.item.MeleeWeapon;
+import com.matsg.battlegrounds.item.BattleMeleeWeapon;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 
-public class KnifeFactory implements ItemFactory<Knife> {
+public class MeleeWeaponFactory implements ItemFactory<MeleeWeapon> {
 
-    private ItemConfig knifeConfig;
+    private ItemConfig meleeWeaponConfig;
 
-    public KnifeFactory(ItemConfig knifeConfig) {
-        this.knifeConfig = knifeConfig;
+    public MeleeWeaponFactory(ItemConfig meleeWeaponConfig) {
+        this.meleeWeaponConfig = meleeWeaponConfig;
     }
 
-    public Knife make(String id) {
-        ConfigurationSection section = knifeConfig.getItemConfigurationSection(id);
+    public MeleeWeapon make(String id) {
+        ConfigurationSection section = meleeWeaponConfig.getItemConfigurationSection(id);
         String[] material = section.getString("Material").split(",");
 
         try {
-            return new BattleKnife(
+            return new BattleMeleeWeapon(
                     section.getName(),
                     section.getString("DisplayName"),
                     section.getString("Description"),

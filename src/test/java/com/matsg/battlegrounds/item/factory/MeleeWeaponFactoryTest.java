@@ -2,7 +2,7 @@ package com.matsg.battlegrounds.item.factory;
 
 import com.matsg.battlegrounds.Translator;
 import com.matsg.battlegrounds.api.config.ItemConfig;
-import com.matsg.battlegrounds.api.item.Knife;
+import com.matsg.battlegrounds.api.item.MeleeWeapon;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemFactory;
@@ -22,16 +22,16 @@ import static org.mockito.Mockito.*;
         Bukkit.class,
         Translator.class
 })
-public class KnifeFactoryTest {
+public class MeleeWeaponFactoryTest {
 
     private ConfigurationSection section;
-    private ItemConfig knifeConfig;
+    private ItemConfig meleeWeaponConfig;
     private String id;
 
     @Before
     public void setUp() {
         this.section = mock(ConfigurationSection.class);
-        this.knifeConfig = mock(ItemConfig.class);
+        this.meleeWeaponConfig = mock(ItemConfig.class);
 
         this.id = "Id";
 
@@ -42,32 +42,32 @@ public class KnifeFactoryTest {
 
         when(Bukkit.getItemFactory()).thenReturn(itemFactory);
         when(itemFactory.getItemMeta(any())).thenReturn(mock(ItemMeta.class));
-        when(knifeConfig.getItemConfigurationSection(id)).thenReturn(section);
+        when(meleeWeaponConfig.getItemConfigurationSection(id)).thenReturn(section);
     }
 
     @Test
-    public void testMakeKnife() {
+    public void testMakeMeleeWeapon() {
         when(section.getDouble("Damage")).thenReturn(10.0);
         when(section.getInt("Amount")).thenReturn(1);
         when(section.getInt("Cooldown")).thenReturn(1);
         when(section.getName()).thenReturn(id);
         when(section.getString("Material")).thenReturn("AIR,1");
 
-        KnifeFactory factory = new KnifeFactory(knifeConfig);
-        Knife knife = factory.make(id);
+        MeleeWeaponFactory factory = new MeleeWeaponFactory(meleeWeaponConfig);
+        MeleeWeapon meleeWeapon = factory.make(id);
 
-        assertNotNull(knife);
-        assertEquals(id, knife.getId());
+        assertNotNull(meleeWeapon);
+        assertEquals(id, meleeWeapon.getId());
     }
 
     @Test(expected = FactoryCreationException.class)
-    public void testMakeKnifeWithFailingValidation() {
+    public void testMakeMeleeWeaponWithFailingValidation() {
         when(section.getDouble("Damage")).thenReturn(-10.0);
         when(section.getInt("Amount")).thenReturn(-1);
         when(section.getInt("Cooldown")).thenReturn(-1);
         when(section.getString("Material")).thenReturn("AIR,1");
 
-        KnifeFactory factory = new KnifeFactory(knifeConfig);
+        MeleeWeaponFactory factory = new MeleeWeaponFactory(meleeWeaponConfig);
         factory.make(id);
     }
 }

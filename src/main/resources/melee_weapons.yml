@@ -1,13 +1,13 @@
-# Knife format
+# Melee weapon format
 #
 # <Id>:
 #   Amount: The maximum amount a player can carry (will only affect throwables)
-#   Cooldown: The amount of ticks the players needs to wait to be able to throw a knife again (will only affect throwables)
-#   Damage: The damage the knife inflicts.
-#   Description: Description of the knife
-#   DisplayName: The name of the knife.
+#   Cooldown: The amount of ticks the players needs to wait to be able to throw a the item again (will only affect throwables)
+#   Damage: The damage the melee weapon inflicts.
+#   Description: Description of the melee weapon
+#   DisplayName: The name of the melee weapon.
 #   Material: The item material and durability
-#   Throwable: true, false; if true, this knife can be throw towards monsters
+#   Throwable: true, false; if true, this melee weapon can be throw towards enemies
 
 BALLISTIC_KNIFE:
   Amount: 4

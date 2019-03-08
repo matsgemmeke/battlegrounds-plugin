@@ -56,9 +56,9 @@ CHOKE:
     shot-spread: "-1.0"
   Toggleable: false
 
-EXTENDED_CLIP:
-  Description: More ammo in each clip.
-  DisplayName: Extended Clip
+EXTENDED_MAGAZINE:
+  Description: More ammo in each magazine.
+  DisplayName: Extended Magazine
   GunPart: MAGAZINE
   Material: IRON_CHESTPLATE,6
   Modifiers:

@@ -5,7 +5,7 @@ import com.matsg.battlegrounds.api.event.GamePlayerKillPlayerEvent;
 import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.item.ItemType;
-import com.matsg.battlegrounds.api.item.Knife;
+import com.matsg.battlegrounds.api.item.MeleeWeapon;
 import com.matsg.battlegrounds.api.player.GamePlayer;
 import com.matsg.battlegrounds.api.player.Hitbox;
 import com.matsg.battlegrounds.api.util.Placeholder;
@@ -21,7 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BattleKnife extends BattleWeapon implements Knife {
+public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
 
     private boolean throwing, throwable;
     private double damage;
@@ -29,7 +29,7 @@ public class BattleKnife extends BattleWeapon implements Knife {
     private List<Item> droppedItems;
     private String type;
 
-    public BattleKnife(String id, String name, String description, ItemStack itemStack, short durability, double damage, int amount, boolean throwable, int cooldown) {
+    public BattleMeleeWeapon(String id, String name, String description, ItemStack itemStack, short durability, double damage, int amount, boolean throwable, int cooldown) {
         super(id, name, description, itemStack, durability);
         this.amount = amount;
         this.cooldown = cooldown;
@@ -38,11 +38,11 @@ public class BattleKnife extends BattleWeapon implements Knife {
         this.maxAmount = amount;
         this.throwable = throwable;
         this.throwing = false;
-        this.type = messageHelper.create(TranslationKey.TYPE_KNIFE);
+        this.type = messageHelper.create(TranslationKey.ITEM_TYPE_MELEE_WEAPON);
     }
 
-    public Knife clone() {
-        return (Knife) super.clone();
+    public MeleeWeapon clone() {
+        return (MeleeWeapon) super.clone();
     }
 
     public int getAmount() {
@@ -68,7 +68,7 @@ public class BattleKnife extends BattleWeapon implements Knife {
     public ItemType getType() {
         return new ItemType() {
             public ItemSlot getDefaultItemSlot() {
-                return ItemSlot.KNIFE;
+                return ItemSlot.MELEE_WEAPON;
             }
 
             public String getName() {
@@ -201,7 +201,7 @@ public class BattleKnife extends BattleWeapon implements Knife {
                 Team team = gamePlayer.getTeam();
                 if (players.length > 0) {
                     GamePlayer gamePlayer = players[0];
-                    if (gamePlayer == null || gamePlayer == BattleKnife.this.gamePlayer || gamePlayer.getPlayer().isDead() || team != null && gamePlayer.getTeam() == team) {
+                    if (gamePlayer == null || gamePlayer == BattleMeleeWeapon.this.gamePlayer || gamePlayer.getPlayer().isDead() || team != null && gamePlayer.getTeam() == team) {
                         return;
                     }
                     item.remove();
@@ -218,7 +218,7 @@ public class BattleKnife extends BattleWeapon implements Knife {
 
     public boolean update() {
         Placeholder placeholder = new Placeholder("bg_weapon", name);
-        String displayName = messageHelper.createSimple(plugin.getBattlegroundsConfig().getWeaponDisplayName("knife"), placeholder);
+        String displayName = messageHelper.createSimple(plugin.getBattlegroundsConfig().getWeaponDisplayName("melee-weapon"), placeholder);
 
         itemStack = new ItemStackBuilder(itemStack)
                 .addItemFlags(ItemFlag.values())

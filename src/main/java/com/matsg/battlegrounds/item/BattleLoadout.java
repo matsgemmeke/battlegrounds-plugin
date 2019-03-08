@@ -9,16 +9,16 @@ public class BattleLoadout implements Loadout {
     private boolean defaultLoadout;
     private Equipment equipment;
     private Firearm primary, secondary;
-    private Knife knife;
+    private MeleeWeapon meleeWeapon;
     private String name;
 
-    public BattleLoadout(int id, String name, Firearm primary, Firearm secondary, Equipment equipment, Knife knife) {
+    public BattleLoadout(int id, String name, Firearm primary, Firearm secondary, Equipment equipment, MeleeWeapon meleeWeapon) {
         this.id = id;
         this.name = name;
         this.primary = primary;
         this.secondary = secondary;
         this.equipment = equipment;
-        this.knife = knife;
+        this.meleeWeapon = meleeWeapon;
         this.defaultLoadout = false;
 
         for (Weapon weapon : getWeapons()) {
@@ -28,8 +28,8 @@ public class BattleLoadout implements Loadout {
         }
     }
 
-    public BattleLoadout(int id, String name, Firearm primary, Firearm secondary, Equipment equipment, Knife knife, boolean defaultLoadout) {
-        this(id, name, primary, secondary, equipment, knife);
+    public BattleLoadout(int id, String name, Firearm primary, Firearm secondary, Equipment equipment, MeleeWeapon meleeWeapon, boolean defaultLoadout) {
+        this(id, name, primary, secondary, equipment, meleeWeapon);
         this.defaultLoadout = defaultLoadout;
     }
 
@@ -45,8 +45,8 @@ public class BattleLoadout implements Loadout {
             if (equipment != null) {
                 loadout.equipment = equipment.clone();
             }
-            if (knife != null) {
-                loadout.knife = knife.clone();
+            if (meleeWeapon != null) {
+                loadout.meleeWeapon = meleeWeapon.clone();
             }
             return loadout;
         } catch (CloneNotSupportedException e) {
@@ -63,8 +63,8 @@ public class BattleLoadout implements Loadout {
         return id;
     }
 
-    public Knife getKnife() {
-        return knife;
+    public MeleeWeapon getMeleeWeapon() {
+        return meleeWeapon;
     }
 
     public String getName() {
@@ -87,8 +87,8 @@ public class BattleLoadout implements Loadout {
         this.equipment = equipment;
     }
 
-    public void setKnife(Knife knife) {
-        this.knife = knife;
+    public void setMeleeWeapon(MeleeWeapon meleeWeapon) {
+        this.meleeWeapon = meleeWeapon;
     }
 
     public void setName(String name) {
@@ -143,7 +143,7 @@ public class BattleLoadout implements Loadout {
     }
 
     public Weapon[] getWeapons() {
-        return new Weapon[] { primary, secondary, equipment, knife };
+        return new Weapon[] { primary, secondary, equipment, meleeWeapon };
     }
 
     public void removeWeapon(Weapon weapon) {
@@ -153,8 +153,8 @@ public class BattleLoadout implements Loadout {
             secondary = null;
         } else if (equipment == weapon) {
             equipment = null;
-        } else if (knife == weapon) {
-            knife = null;
+        } else if (meleeWeapon == weapon) {
+            meleeWeapon = null;
         }
     }
 

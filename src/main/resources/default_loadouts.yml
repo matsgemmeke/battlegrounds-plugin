@@ -1,40 +1,40 @@
 '1':
-  Equipment: GRENADE
-  Knife: COMBAT_KNIFE
   Name: Balanced
   Primary:
     Id: M16
   Secondary:
     Id: M1911
+  Equipment: GRENADE
+  MeleeWeapon: COMBAT_KNIFE
 '2':
-  Equipment: SMOKE_GRENADE
-  Knife: COMBAT_KNIFE
   Name: Close Quarters
   Primary:
     Id: OLYMPIA
   Secondary:
     Id: FIVE-SEVEN
+  Equipment: SMOKE_GRENADE
+  MeleeWeapon: COMBAT_KNIFE
 '3':
-  Equipment: GRENADE
-  Knife: COMBAT_KNIFE
   Name: Operative
   Primary:
     Id: MP5
   Secondary:
     Id: SMAW
-'4':
   Equipment: GRENADE
-  Knife: COMBAT_KNIFE
+  MeleeWeapon: COMBAT_KNIFE
+'4':
   Name: Heavy Gunner
   Primary:
     Id: HK21
   Secondary:
     Id: SMAW
+  Equipment: GRENADE
+  MeleeWeapon: COMBAT_KNIFE
 '5':
-  Equipment: SMOKE_GRENADE
-  Knife: COMBAT_KNIFE
   Name: Marksman
   Primary:
     Id: DRAGUNOV
   Secondary:
     Id: M1911
+  Equipment: SMOKE_GRENADE
+  MeleeWeapon: COMBAT_KNIFE

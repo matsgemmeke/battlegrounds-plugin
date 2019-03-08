@@ -5,7 +5,7 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.config.ItemConfig;
 import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.util.Placeholder;
-import com.matsg.battlegrounds.config.KnifeConfig;
+import com.matsg.battlegrounds.config.MeleeWeaponConfig;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.ChatColor;
@@ -26,7 +26,7 @@ public class EditLoadoutView implements View {
 
     private Battlegrounds plugin;
     private Inventory inventory;
-    private ItemConfig knifeConfig;
+    private ItemConfig meleeWeaponConfig;
     private List<EditLoadoutViewItem> items;
     private Loadout loadout;
     private Map<ItemStack, Attachment> attachments;
@@ -42,7 +42,7 @@ public class EditLoadoutView implements View {
         this.messageHelper = new MessageHelper();
 
         try {
-            this.knifeConfig = new KnifeConfig(plugin);
+            this.meleeWeaponConfig = new MeleeWeaponConfig(plugin);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -110,8 +110,8 @@ public class EditLoadoutView implements View {
                 return messageHelper.create(TranslationKey.WEAPON_SECONDARY);
             case EQUIPMENT:
                 return messageHelper.create(TranslationKey.WEAPON_EQUIPMENT);
-            case KNIFE:
-                return messageHelper.create(TranslationKey.WEAPON_KNIFE);
+            case MELEE_WEAPON:
+                return messageHelper.create(TranslationKey.WEAPON_MELEE_WEAPON);
         }
         return null;
     }
@@ -152,8 +152,8 @@ public class EditLoadoutView implements View {
                             player.openInventory(new WeaponsView(plugin, loadout, weapon.getType().getDefaultItemSlot(), inventory).getInventory());
                         } else {
                             List<Weapon> weapons = new ArrayList<>();
-                            for (String id : knifeConfig.getItemList()) {
-                                weapons.add(plugin.getKnifeFactory().make(id));
+                            for (String id : meleeWeaponConfig.getItemList()) {
+                                weapons.add(plugin.getMeleeWeaponFactory().make(id));
                             }
                             player.openInventory(new SelectWeaponView(plugin, player, loadout, weapon.getType(), weapons, inventory).getInventory());
                         }
