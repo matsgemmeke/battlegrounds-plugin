@@ -20,7 +20,6 @@ public abstract class BattleWeapon extends BattleItem implements Weapon {
         super(id, name, itemStack);
         this.description = description;
         this.durability = durability;
-        this.itemStack.setDurability(durability);
         this.messageHelper = new MessageHelper();
     }
 
