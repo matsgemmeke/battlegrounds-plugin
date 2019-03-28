@@ -2,31 +2,22 @@ package com.matsg.battlegrounds.gamemode.cbt;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.config.Yaml;
+import com.matsg.battlegrounds.api.storage.Yaml;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent.DeathCause;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameScoreboard;
 import com.matsg.battlegrounds.api.game.Spawn;
 import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.item.Weapon;
-import com.matsg.battlegrounds.api.player.GamePlayer;
-import com.matsg.battlegrounds.api.player.Hitbox;
+import com.matsg.battlegrounds.api.entity.GamePlayer;
+import com.matsg.battlegrounds.api.entity.Hitbox;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.game.BattleTeam;
 import com.matsg.battlegrounds.gamemode.AbstractGameMode;
-import com.matsg.battlegrounds.gui.scoreboard.AbstractScoreboard;
-import com.matsg.battlegrounds.gui.scoreboard.ScoreboardBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
-import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.NameTagVisibility;
-import org.bukkit.scoreboard.Scoreboard;
-
-import java.util.Map;
-import java.util.Set;
 
 public class CombatTraining extends AbstractGameMode {
 

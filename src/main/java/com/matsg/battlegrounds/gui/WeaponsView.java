@@ -2,11 +2,11 @@ package com.matsg.battlegrounds.gui;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.config.ItemConfig;
+import com.matsg.battlegrounds.api.storage.ItemConfig;
 import com.matsg.battlegrounds.api.item.*;
-import com.matsg.battlegrounds.config.EquipmentConfig;
-import com.matsg.battlegrounds.config.FirearmConfig;
-import com.matsg.battlegrounds.config.MeleeWeaponConfig;
+import com.matsg.battlegrounds.storage.EquipmentConfig;
+import com.matsg.battlegrounds.storage.FirearmConfig;
+import com.matsg.battlegrounds.storage.MeleeWeaponConfig;
 import com.matsg.battlegrounds.item.EquipmentType;
 import com.matsg.battlegrounds.item.FirearmType;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
@@ -109,6 +109,7 @@ public class WeaponsView implements View {
     }
 
     private void addToInventory(Inventory inventory, Weapon weapon) {
+        weapon.update();
         inventory.addItem(new ItemStackBuilder(weapon.getItemStack().clone())
                 .addItemFlags(ItemFlag.values())
                 .setDisplayName(ChatColor.WHITE + weapon.getType().getName())

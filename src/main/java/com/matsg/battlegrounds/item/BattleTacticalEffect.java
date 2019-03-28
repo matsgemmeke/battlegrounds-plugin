@@ -4,7 +4,7 @@ import com.matsg.battlegrounds.api.item.Gun;
 import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.item.Tactical;
 import com.matsg.battlegrounds.api.item.TacticalEffect;
-import com.matsg.battlegrounds.api.player.GamePlayer;
+import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.XMaterial;
 import org.bukkit.Location;

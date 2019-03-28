@@ -4,7 +4,7 @@ import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.Translator;
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.config.CacheYaml;
+import com.matsg.battlegrounds.api.storage.CacheYaml;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.junit.Test;

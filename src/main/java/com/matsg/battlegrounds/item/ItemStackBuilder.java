@@ -5,7 +5,6 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
@@ -67,9 +66,7 @@ public class ItemStackBuilder {
 	}
 
 	public ItemStackBuilder setDurability(short durability) {
-		if (meta instanceof Damageable) {
-			((Damageable) meta).setDamage(durability);
-		}
+		item.setDurability(durability);
 		return this;
 	}
 	
@@ -81,15 +78,10 @@ public class ItemStackBuilder {
 
 	public ItemStackBuilder setUnbreakable(boolean unbreakable) {
 		try {
-			meta.getClass().getMethod("setUnbreakable", boolean.class);
 			meta.setUnbreakable(unbreakable);
 		} catch (Exception e) {
 			meta.spigot().setUnbreakable(unbreakable);
 		}
 		return this;
-	}
-	
-	public ItemMeta toItemMeta() {
-		return item.getItemMeta();
 	}
 }

@@ -4,7 +4,7 @@ import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameScoreboard;
-import com.matsg.battlegrounds.api.player.GamePlayer;
+import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import org.bukkit.ChatColor;
 import org.bukkit.World;

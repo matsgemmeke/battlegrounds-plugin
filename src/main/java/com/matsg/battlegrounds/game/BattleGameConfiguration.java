@@ -1,6 +1,6 @@
 package com.matsg.battlegrounds.game;
 
-import com.matsg.battlegrounds.api.config.Yaml;
+import com.matsg.battlegrounds.api.storage.Yaml;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameConfiguration;
 import com.matsg.battlegrounds.api.gamemode.GameMode;

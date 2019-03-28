@@ -2,7 +2,7 @@ package com.matsg.battlegrounds.item;
 
 import com.matsg.battlegrounds.api.item.Launcher;
 import com.matsg.battlegrounds.api.item.Lethal;
-import com.matsg.battlegrounds.api.player.GamePlayer;
+import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;

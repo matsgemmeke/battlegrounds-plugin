@@ -1,11 +1,11 @@
 package com.matsg.battlegrounds.event.handler;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.event.handler.EventHandler;
+import com.matsg.battlegrounds.api.event.EventHandler;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.Spawn;
-import com.matsg.battlegrounds.api.player.GamePlayer;
+import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.util.ActionBar;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

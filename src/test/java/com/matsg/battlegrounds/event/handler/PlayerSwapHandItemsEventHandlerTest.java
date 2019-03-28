@@ -7,7 +7,7 @@ import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.ItemRegistry;
 import com.matsg.battlegrounds.api.game.PlayerManager;
 import com.matsg.battlegrounds.api.item.Item;
-import com.matsg.battlegrounds.api.player.GamePlayer;
+import com.matsg.battlegrounds.api.entity.GamePlayer;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;

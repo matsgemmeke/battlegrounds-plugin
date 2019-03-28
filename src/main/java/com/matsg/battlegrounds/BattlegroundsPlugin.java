@@ -1,15 +1,13 @@
 package com.matsg.battlegrounds;
 
 import com.matsg.battlegrounds.api.*;
-import com.matsg.battlegrounds.api.config.BattlegroundsConfig;
-import com.matsg.battlegrounds.api.config.CacheYaml;
-import com.matsg.battlegrounds.api.config.ItemConfig;
-import com.matsg.battlegrounds.api.config.LevelConfig;
+import com.matsg.battlegrounds.api.event.EventDispatcher;
+import com.matsg.battlegrounds.api.storage.*;
 import com.matsg.battlegrounds.api.item.*;
-import com.matsg.battlegrounds.api.player.PlayerStorage;
 import com.matsg.battlegrounds.command.BattlegroundsCommand;
 import com.matsg.battlegrounds.command.LoadoutCommand;
-import com.matsg.battlegrounds.config.*;
+import com.matsg.battlegrounds.event.BattleEventDispatcher;
+import com.matsg.battlegrounds.storage.*;
 import com.matsg.battlegrounds.event.EventListener;
 import com.matsg.battlegrounds.event.PlayerSwapItemListener;
 import com.matsg.battlegrounds.item.factory.AttachmentFactory;
@@ -18,7 +16,8 @@ import com.matsg.battlegrounds.item.factory.FirearmFactory;
 import com.matsg.battlegrounds.item.factory.MeleeWeaponFactory;
 import com.matsg.battlegrounds.nms.ReflectionUtils;
 import com.matsg.battlegrounds.nms.VersionManager;
-import com.matsg.battlegrounds.player.LocalPlayerStorage;
+import com.matsg.battlegrounds.storage.local.LocalPlayerStorage;
+import com.matsg.battlegrounds.storage.sql.SQLPlayerStorage;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -33,7 +32,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
     private static Battlegrounds plugin;
     private BattlegroundsConfig config;
     private CacheYaml cache;
-    private EventManager eventManager;
+    private EventDispatcher eventDispatcher;
     private GameManager gameManager;
     private ItemFactory<Attachment> attachmentFactory;
     private ItemFactory<Equipment> equipmentFactory;
@@ -90,8 +89,8 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         return equipmentFactory;
     }
 
-    public EventManager getEventManager() {
-        return eventManager;
+    public EventDispatcher getEventDispatcher() {
+        return eventDispatcher;
     }
 
     public ItemFactory<Firearm> getFirearmFactory() {
@@ -170,12 +169,18 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         }
 
         try {
-            playerStorage = new LocalPlayerStorage(this);
+            SQLConfig sqlConfig = new SQLConfig(this);
+
+            if (sqlConfig.isEnabled()) {
+                playerStorage = new SQLPlayerStorage(this, sqlConfig);
+            } else {
+                playerStorage = new LocalPlayerStorage(this);
+            }
         } catch (Exception e) {
-            throw new StartupFailedException("Failed to load default loadout classes!", e);
+            throw new StartupFailedException("Failed to set up player storage!", e);
         }
 
-        eventManager = new BattleEventManager();
+        eventDispatcher = new BattleEventDispatcher();
         gameManager = new BattleGameManager();
         versionManager = new VersionManager();
 

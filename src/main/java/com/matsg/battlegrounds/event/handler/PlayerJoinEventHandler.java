@@ -1,7 +1,7 @@
 package com.matsg.battlegrounds.event.handler;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.event.handler.EventHandler;
+import com.matsg.battlegrounds.api.event.EventHandler;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 
@@ -16,7 +16,7 @@ public class PlayerJoinEventHandler implements EventHandler<PlayerJoinEvent> {
     public void handle(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         if (!plugin.getPlayerStorage().contains(player.getUniqueId())) {
-            plugin.getPlayerStorage().registerPlayer(player.getUniqueId(), player.getName());
+            plugin.getPlayerStorage().registerPlayer(player);
         } else {
             plugin.getPlayerStorage().updatePlayer(player);
         }

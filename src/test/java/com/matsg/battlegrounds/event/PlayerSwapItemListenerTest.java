@@ -1,7 +1,7 @@
 package com.matsg.battlegrounds.event;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.EventManager;
+import com.matsg.battlegrounds.api.event.EventDispatcher;
 import org.bukkit.Server;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.plugin.PluginManager;
@@ -18,19 +18,19 @@ public class PlayerSwapItemListenerTest {
     public void testEventHandling() {
         // Create dependency mocks
         Battlegrounds plugin = mock(Battlegrounds.class);
-        EventManager eventManager = mock(EventManager.class);
+        EventDispatcher eventDispatcher = mock(EventDispatcher.class);
         PluginManager pluginManager = mock(PluginManager.class);
         Server server = mock(Server.class);
 
-        when(plugin.getEventManager()).thenReturn(eventManager);
+        when(plugin.getEventDispatcher()).thenReturn(eventDispatcher);
         when(plugin.getServer()).thenReturn(server);
         when(server.getPluginManager()).thenReturn(pluginManager);
 
         PlayerSwapItemListener listener = new PlayerSwapItemListener(plugin);
 
-        // Test PlayerSwapHandItemsEvent handling
+        // Test PlayerSwapHandItemsEvent dispatching
         PlayerSwapHandItemsEvent playerSwapHandItemsEvent = mock(PlayerSwapHandItemsEvent.class);
         listener.onPlayerItemSwap(playerSwapHandItemsEvent);
-        verify(eventManager, times(1)).handleEvent(playerSwapHandItemsEvent);
+        verify(eventDispatcher, times(1)).dispatchEvent(playerSwapHandItemsEvent);
     }
 }

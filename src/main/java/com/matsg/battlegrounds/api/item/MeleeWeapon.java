@@ -1,6 +1,6 @@
 package com.matsg.battlegrounds.api.item;
 
-import com.matsg.battlegrounds.api.player.GamePlayer;
+import com.matsg.battlegrounds.api.entity.GamePlayer;
 
 public interface MeleeWeapon extends Weapon, Droppable {
 

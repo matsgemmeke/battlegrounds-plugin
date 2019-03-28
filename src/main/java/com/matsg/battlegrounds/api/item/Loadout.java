@@ -8,7 +8,7 @@ public interface Loadout extends Cloneable {
 
     Equipment getEquipment();
 
-    int getId();
+    int getLoadoutNr();
 
     MeleeWeapon getMeleeWeapon();
 

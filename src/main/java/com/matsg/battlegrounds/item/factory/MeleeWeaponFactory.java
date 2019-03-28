@@ -1,6 +1,6 @@
 package com.matsg.battlegrounds.item.factory;
 
-import com.matsg.battlegrounds.api.config.ItemConfig;
+import com.matsg.battlegrounds.api.storage.ItemConfig;
 import com.matsg.battlegrounds.api.item.ItemFactory;
 import com.matsg.battlegrounds.api.item.MeleeWeapon;
 import com.matsg.battlegrounds.item.BattleMeleeWeapon;
@@ -25,8 +25,7 @@ public class MeleeWeaponFactory implements ItemFactory<MeleeWeapon> {
                     section.getName(),
                     section.getString("DisplayName"),
                     section.getString("Description"),
-                    new ItemStackBuilder(Material.valueOf(material[0])).build(),
-                    AttributeValidator.shouldEqualOrBeHigherThan(Short.valueOf(material[1]), (short) 0),
+                    new ItemStackBuilder(Material.valueOf(material[0])).setDurability(Short.valueOf(material[1])).build(),
                     AttributeValidator.shouldEqualOrBeHigherThan(section.getDouble("Damage"), 0.0),
                     AttributeValidator.shouldBeHigherThan(section.getInt("Amount"), 0),
                     section.getBoolean("Throwable"),

@@ -1,7 +1,7 @@
 package com.matsg.battlegrounds.event.handler;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.event.handler.EventHandler;
+import com.matsg.battlegrounds.api.event.EventHandler;
 import org.bukkit.event.block.BlockPlaceEvent;
 
 public class BlockPlaceEventHandler implements EventHandler<BlockPlaceEvent> {

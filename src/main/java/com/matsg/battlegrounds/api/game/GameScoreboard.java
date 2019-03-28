@@ -1,6 +1,6 @@
 package com.matsg.battlegrounds.api.game;
 
-import com.matsg.battlegrounds.api.player.GamePlayer;
+import com.matsg.battlegrounds.api.entity.GamePlayer;
 import org.bukkit.World;
 import org.bukkit.scoreboard.Scoreboard;
 

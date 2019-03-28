@@ -1,6 +1,6 @@
 package com.matsg.battlegrounds.api.item;
 
-import com.matsg.battlegrounds.api.player.GamePlayer;
+import com.matsg.battlegrounds.api.entity.GamePlayer;
 import org.bukkit.Location;
 
 public interface TacticalEffect {

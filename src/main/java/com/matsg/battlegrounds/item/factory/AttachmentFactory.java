@@ -1,13 +1,13 @@
 package com.matsg.battlegrounds.item.factory;
 
-import com.matsg.battlegrounds.api.config.ItemConfig;
+import com.matsg.battlegrounds.api.storage.ItemConfig;
 import com.matsg.battlegrounds.api.item.Attachment;
 import com.matsg.battlegrounds.api.item.AttributeModifier;
 import com.matsg.battlegrounds.api.item.ItemFactory;
 import com.matsg.battlegrounds.item.BattleAttachment;
 import com.matsg.battlegrounds.item.BattleGunPart;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
-import com.matsg.battlegrounds.item.attributes.RegexAttributeModifier;
+import com.matsg.battlegrounds.item.attribute.RegexAttributeModifier;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -31,8 +31,7 @@ public class AttachmentFactory implements ItemFactory<Attachment> {
                     id,
                     section.getString("DisplayName"),
                     section.getString("Description"),
-                    new ItemStackBuilder(Material.valueOf(material[0])).build(),
-                    AttributeValidator.shouldEqualOrBeHigherThan(Short.valueOf(material[1]), (short) 0),
+                    new ItemStackBuilder(Material.valueOf(material[0])).setDurability(Short.valueOf(material[1])).build(),
                     BattleGunPart.valueOf(section.getString("GunPart")),
                     getModifiers(section),
                     section.getBoolean("Toggleable")

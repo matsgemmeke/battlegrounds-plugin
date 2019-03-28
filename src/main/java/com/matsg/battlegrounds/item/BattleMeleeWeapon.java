@@ -6,8 +6,8 @@ import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.item.ItemType;
 import com.matsg.battlegrounds.api.item.MeleeWeapon;
-import com.matsg.battlegrounds.api.player.GamePlayer;
-import com.matsg.battlegrounds.api.player.Hitbox;
+import com.matsg.battlegrounds.api.entity.GamePlayer;
+import com.matsg.battlegrounds.api.entity.Hitbox;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.util.BattleRunnable;
@@ -29,8 +29,8 @@ public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
     private List<Item> droppedItems;
     private String type;
 
-    public BattleMeleeWeapon(String id, String name, String description, ItemStack itemStack, short durability, double damage, int amount, boolean throwable, int cooldown) {
-        super(id, name, description, itemStack, durability);
+    public BattleMeleeWeapon(String id, String name, String description, ItemStack itemStack, double damage, int amount, boolean throwable, int cooldown) {
+        super(id, name, description, itemStack);
         this.amount = amount;
         this.cooldown = cooldown;
         this.damage = damage;
@@ -224,7 +224,6 @@ public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
                 .addItemFlags(ItemFlag.values())
                 .setAmount(amount)
                 .setDisplayName(displayName)
-                .setDurability(durability)
                 .setLore(getLore())
                 .setUnbreakable(true)
                 .build();

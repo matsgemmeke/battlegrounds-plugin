@@ -1,15 +1,16 @@
 package com.matsg.battlegrounds.game;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.config.CacheYaml;
+import com.matsg.battlegrounds.api.storage.CacheYaml;
 import com.matsg.battlegrounds.api.event.GameStartEvent;
 import com.matsg.battlegrounds.api.event.GameStateChangeEvent;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.gamemode.GameMode;
 import com.matsg.battlegrounds.api.item.Loadout;
-import com.matsg.battlegrounds.api.player.GamePlayer;
-import com.matsg.battlegrounds.api.player.PlayerStatus;
-import com.matsg.battlegrounds.config.BattleCacheYaml;
+import com.matsg.battlegrounds.api.entity.GamePlayer;
+import com.matsg.battlegrounds.api.entity.PlayerStatus;
+import com.matsg.battlegrounds.api.storage.StatisticContext;
+import com.matsg.battlegrounds.storage.BattleCacheYaml;
 import com.matsg.battlegrounds.gui.scoreboard.LobbyScoreboard;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import org.bukkit.Bukkit;
@@ -258,7 +259,12 @@ public class BattleGame implements Game {
                 loadout.getSecondary().setReloadCancelled(true);
             }
             playerManager.setVisible(gamePlayer, true);
-            plugin.getPlayerStorage().addPlayerAttributes(gamePlayer);
+
+            StatisticContext context = new StatisticContext();
+            context.setGame(this);
+            context.setPlayer(gamePlayer);
+
+            plugin.getPlayerStorage().getStoredPlayer(gamePlayer.getUUID()).addStatisticAttributes(context);
         }
 
         timeControl.stop();

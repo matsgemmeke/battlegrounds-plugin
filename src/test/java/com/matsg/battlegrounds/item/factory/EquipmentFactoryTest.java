@@ -1,13 +1,14 @@
 package com.matsg.battlegrounds.item.factory;
 
 import com.matsg.battlegrounds.Translator;
-import com.matsg.battlegrounds.api.config.ItemConfig;
+import com.matsg.battlegrounds.api.storage.ItemConfig;
 import com.matsg.battlegrounds.api.item.Equipment;
 import com.matsg.battlegrounds.api.item.Lethal;
 import com.matsg.battlegrounds.api.item.Tactical;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemFactory;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,9 +42,10 @@ public class EquipmentFactoryTest {
         PowerMockito.mockStatic(Translator.class);
 
         ItemFactory itemFactory = mock(ItemFactory.class);
+        ItemMeta itemMeta = mock(ItemMeta.class, withSettings().extraInterfaces(Damageable.class)); // Add the Damageable interface so the ItemMeta can be casted when setting the durability
 
         when(Bukkit.getItemFactory()).thenReturn(itemFactory);
-        when(itemFactory.getItemMeta(any())).thenReturn(mock(ItemMeta.class));
+        when(itemFactory.getItemMeta(any())).thenReturn(itemMeta);
         when(equipmentConfig.getItemConfigurationSection(id)).thenReturn(section);
         when(section.getString("Material")).thenReturn("AIR,1");
         when(Translator.translate(anyString())).thenReturn("test");

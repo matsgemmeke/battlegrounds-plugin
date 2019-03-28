@@ -1,7 +1,7 @@
 package com.matsg.battlegrounds.api.event;
 
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.player.GamePlayer;
+import com.matsg.battlegrounds.api.entity.GamePlayer;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.EntityDamageEvent;

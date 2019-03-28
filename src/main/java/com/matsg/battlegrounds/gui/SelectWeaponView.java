@@ -111,7 +111,7 @@ public class SelectWeaponView implements View {
             return;
         }
         replaceWeapon(loadout, weapon);
-        plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).saveLoadout(loadout.getId(), loadout);
+        plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).saveLoadout(loadout.getLoadoutNr(), loadout);
         player.openInventory(new EditLoadoutView(plugin, loadout).getInventory());
     }
 

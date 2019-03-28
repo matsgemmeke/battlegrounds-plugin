@@ -1,6 +1,6 @@
 package com.matsg.battlegrounds.item.factory;
 
-import com.matsg.battlegrounds.api.config.ItemConfig;
+import com.matsg.battlegrounds.api.storage.ItemConfig;
 import com.matsg.battlegrounds.api.item.Firearm;
 import com.matsg.battlegrounds.api.item.ItemFactory;
 import com.matsg.battlegrounds.api.item.ReloadType;
@@ -43,8 +43,7 @@ public class FirearmFactory implements ItemFactory<Firearm> {
                         section.getName(),
                         section.getString("DisplayName"),
                         section.getString("Description"),
-                        new ItemStackBuilder(Material.valueOf(material[0])).build(),
-                        AttributeValidator.shouldEqualOrBeHigherThan(Short.valueOf(material[1]), (short) 0),
+                        new ItemStackBuilder(Material.valueOf(material[0])).setDurability(Short.valueOf(material[1])).build(),
                         AttributeValidator.shouldBeHigherThan(section.getInt("Ammo.Magazine"), 0),
                         AttributeValidator.shouldEqualOrBeHigherThan(section.getInt("Ammo.Supply"), 0),
                         AttributeValidator.shouldEqualOrBeHigherThan(section.getInt("Ammo.Max"), 0),
@@ -81,8 +80,7 @@ public class FirearmFactory implements ItemFactory<Firearm> {
                         section.getName(),
                         section.getString("DisplayName"),
                         section.getString("Description"),
-                        new ItemStackBuilder(Material.valueOf(material[0])).build(),
-                        AttributeValidator.shouldEqualOrBeHigherThan(Short.parseShort(material[1]), (short) 0),
+                        new ItemStackBuilder(Material.valueOf(material[0])).setDurability(Short.valueOf(material[1])).build(),
                         AttributeValidator.shouldBeHigherThan(section.getInt("Ammo.Magazine"), 0),
                         AttributeValidator.shouldBeHigherThan(section.getInt("Ammo.Supply"), 0),
                         AttributeValidator.shouldBeHigherThan(section.getInt("Ammo.Max"), 0),
@@ -95,7 +93,6 @@ public class FirearmFactory implements ItemFactory<Firearm> {
                                 null,
                                 null,
                                 new ItemStackBuilder(Material.valueOf(projectileMaterial[0])).setDurability(Short.parseShort(projectileMaterial[1])).build(),
-                                (short) 0,
                                 0,
                                 0,
                                 AttributeValidator.shouldEqualOrBeHigherThan(section.getDouble("Range.Long.Damage"), 0.0),

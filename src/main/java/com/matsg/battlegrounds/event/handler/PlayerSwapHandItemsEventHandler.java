@@ -1,7 +1,7 @@
 package com.matsg.battlegrounds.event.handler;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.event.handler.EventHandler;
+import com.matsg.battlegrounds.api.event.EventHandler;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.item.Item;
 import org.bukkit.entity.Player;

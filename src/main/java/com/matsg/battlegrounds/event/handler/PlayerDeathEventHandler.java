@@ -3,7 +3,7 @@ package com.matsg.battlegrounds.event.handler;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent.DeathCause;
-import com.matsg.battlegrounds.api.event.handler.EventHandler;
+import com.matsg.battlegrounds.api.event.EventHandler;
 import com.matsg.battlegrounds.api.game.Game;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.PlayerDeathEvent;

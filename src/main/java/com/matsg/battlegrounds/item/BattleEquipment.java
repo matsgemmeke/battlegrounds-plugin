@@ -1,7 +1,7 @@
 package com.matsg.battlegrounds.item;
 
 import com.matsg.battlegrounds.api.item.Equipment;
-import com.matsg.battlegrounds.api.player.GamePlayer;
+import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.util.BattleRunnable;
@@ -24,10 +24,10 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
     protected List<Item> droppedItems;
     protected Sound[] ignitionSound;
 
-    public BattleEquipment(String id, String name, String description, ItemStack itemStack, short durability, EquipmentType type, int amount, int cooldown,
+    public BattleEquipment(String id, String name, String description, ItemStack itemStack, EquipmentType type, int amount, int cooldown,
                             double longRange, double midRange, double shortRange, double velocity,
                             IgnitionType ignitionType, int ignitionTime, Sound[] ignitionSound) {
-        super(id, name, description, itemStack, durability);
+        super(id, name, description, itemStack);
         this.amount = amount;
         this.beingThrown = false;
         this.cooldown = cooldown;
@@ -204,7 +204,6 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
                 .addItemFlags(ItemFlag.values())
                 .setAmount(amount)
                 .setDisplayName(displayName)
-                .setDurability(durability)
                 .setLore(getLore())
                 .setUnbreakable(true)
                 .build();

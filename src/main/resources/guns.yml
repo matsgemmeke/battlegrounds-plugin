@@ -46,7 +46,7 @@ BERETTA_93R:
     Magazine: 15
     Max: 8
     Supply: 3
-  Attachments: EXTENDED_CLIP(20), FAST_MAG(24), SELECT_FIRE(SEMI_AUTOMATIC,1,0,3,0.1,0.1), SUPPRESSOR
+  Attachments: EXTENDED_MAGAZINE(20), FAST_MAG(24), SELECT_FIRE(SEMI_AUTOMATIC,1,0,3,0.1,0.1), SUPPRESSOR
   Description: 3 round burst machine pistol. High rate of fire with moderate recoil.
   DisplayName: Beretta 93R
   FirearmType: HANDGUN
@@ -82,7 +82,7 @@ FIVE-SEVEN:
     Magazine: 20
     Max: 8
     Supply: 3
-  Attachments: EXTENDED_CLIP(30), FAST_MAG(24), SUPPRESSOR
+  Attachments: EXTENDED_MAGAZINE(30), FAST_MAG(24), SUPPRESSOR
   Description: Semi-automatic pistol. Versatile and strong overall with a large magazine.
   DisplayName: Five-seven
   FirearmType: HANDGUN
@@ -118,7 +118,7 @@ GLOCK_17:
     Magazine: 17
     Max: 8
     Supply: 3
-  Attachments: EXTENDED_CLIP(33), FAST_MAG(24), SELECT_FIRE(AUTOMATIC,20,0,0,-0.1,-0.1), SUPPRESSOR
+  Attachments: EXTENDED_MAGAZINE(33), FAST_MAG(24), SELECT_FIRE(AUTOMATIC,20,0,0,-0.1,-0.1), SUPPRESSOR
   Description: Semi-automatic pistol. Compatible with select fire to unlock full automatic.
   DisplayName: Glock 17
   FirearmType: HANDGUN
@@ -154,7 +154,7 @@ M1911:
     Magazine: 7
     Max: 8
     Supply: 3
-  Attachments: EXTENDED_CLIP(10), FAST_MAG(24), SUPPRESSOR
+  Attachments: EXTENDED_MAGAZINE(10), FAST_MAG(24), SUPPRESSOR
   Description: Semi-automatic with medium capacity and power. Effective at close range.
   DisplayName: M1911
   FirearmType: HANDGUN
@@ -226,7 +226,7 @@ AKS-74U:
     Magazine: 30
     Max: 8
     Supply: 3
-  Attachments: EXTENDED_CLIP(40), FAST_MAG(32), MUZZLE_BRAKE, SELECT_FIRE(SEMI_AUTOMATIC,1,0,3,0.2,0.2), SUPPRESSOR
+  Attachments: EXTENDED_MAGAZINE(40), FAST_MAG(32), MUZZLE_BRAKE, SELECT_FIRE(SEMI_AUTOMATIC,1,0,3,0.2,0.2), SUPPRESSOR
   Description: Fully automatic submachine gun. Increased range and reduced recoil.
   DisplayName: AKS-74u
   FirearmType: SUBMACHINE_GUN
@@ -262,7 +262,7 @@ MAC-10:
     Magazine: 20
     Max: 8
     Supply: 3
-  Attachments: ANGLED_GRIP, EXTENDED_CLIP(32), FAST_MAG(27), MUZZLE_BRAKE, SELECT_FIRE(SEMI_AUTOMATIC,1,0,3,0.2,0.2), SUPPRESSOR, VERTICAL_GRIP
+  Attachments: ANGLED_GRIP, EXTENDED_MAGAZINE(32), FAST_MAG(27), MUZZLE_BRAKE, SELECT_FIRE(SEMI_AUTOMATIC,1,0,3,0.2,0.2), SUPPRESSOR, VERTICAL_GRIP
   Description: Fully automatic with high rate of fire. Effective at close range.
   DisplayName: MAC-10
   FirearmType: SUBMACHINE_GUN
@@ -298,7 +298,7 @@ MP5:
     Magazine: 30
     Max: 8
     Supply: 3
-  Attachments: ANGLED_GRIP, EXTENDED_CLIP(40), FAST_MAG(32), MUZZLE_BRAKE, RAPID_FIRE(20), SELECT_FIRE(SEMI_AUTOMATIC,1,0,3,0.2,0.2), SUPPRESSOR, VERTICAL_GRIP
+  Attachments: ANGLED_GRIP, EXTENDED_MAGAZINE(40), FAST_MAG(32), MUZZLE_BRAKE, RAPID_FIRE(20), SELECT_FIRE(SEMI_AUTOMATIC,1,0,3,0.2,0.2), SUPPRESSOR, VERTICAL_GRIP
   Description: Fully automatic with good accuracy. Effective at close to medium range.
   DisplayName: MP5
   FirearmType: SUBMACHINE_GUN
@@ -334,7 +334,7 @@ MP7:
     Magazine: 30
     Max: 8
     Supply: 3
-  Attachments: ANGLED_GRIP, EXTENDED_CLIP(40), FAST_MAG(27), MUZZLE_BRAKE, SELECT_FIRE(SEMI_AUTOMATIC,1,0,3,0.2,0.2), STOCK, SUPPRESSOR, TACTICAL_STOCK, VERTICAL_GRIP
+  Attachments: ANGLED_GRIP, EXTENDED_MAGAZINE(40), FAST_MAG(27), MUZZLE_BRAKE, SELECT_FIRE(SEMI_AUTOMATIC,1,0,3,0.2,0.2), STOCK, SUPPRESSOR, TACTICAL_STOCK, VERTICAL_GRIP
   Description: Fully automatic personal defense weapon. Versatile and strong overall.
   DisplayName: MP7
   FirearmType: SUBMACHINE_GUN
@@ -370,7 +370,7 @@ QCW-05:
     Magazine: 36
     Max: 8
     Supply: 3
-  Attachments: ANGLED_GRIP, EXTENDED_CLIP(50), FAST_MAG(32), MUZZLE_BRAKE, SELECT_FIRE(AUTOMATIC,10,0,0,-0.1,-0.1), SUPPRESSOR, VERTICAL_GRIP
+  Attachments: ANGLED_GRIP, EXTENDED_MAGAZINE(50), FAST_MAG(32), MUZZLE_BRAKE, SELECT_FIRE(AUTOMATIC,10,0,0,-0.1,-0.1), SUPPRESSOR, VERTICAL_GRIP
   Description: 3 round burst submachine gun. High cyclic fire rate allows for fast consecutive bursts.
   DisplayName: QCW-05
   FirearmType: SUBMACHINE_GUN
@@ -406,7 +406,7 @@ UZI:
     Magazine: 25
     Max: 8
     Supply: 3
-  Attachments: ANGLED_GRIP, EXTENDED_CLIP(32), FAST_MAG(27), MUZZLE_BRAKE, RAPID_FIRE(20), SELECT_FIRE(SEMI_AUTOMATIC,1,0,3,0.2,0.2), SUPPRESSOR, VERTICAL_GRIP
+  Attachments: ANGLED_GRIP, EXTENDED_MAGAZINE(32), FAST_MAG(27), MUZZLE_BRAKE, RAPID_FIRE(20), SELECT_FIRE(SEMI_AUTOMATIC,1,0,3,0.2,0.2), SUPPRESSOR, VERTICAL_GRIP
   Description: Fully automatic with moderate power. Effective at close to medium range.
   DisplayName: Uzi
   FirearmType: SUBMACHINE_GUN
@@ -442,7 +442,7 @@ VECTOR:
     Magazine: 25
     Max: 8
     Supply: 3
-  Attachments: ANGLED_GRIP, EXTENDED_CLIP(33), FAST_MAG(32), MUZZLE_BRAKE, SELECT_FIRE(BURST,20,2,3,0.1,0.1), SUPPRESSOR, TACTICAL_STOCK, VERTICAL_GRIP
+  Attachments: ANGLED_GRIP, EXTENDED_MAGAZINE(33), FAST_MAG(32), MUZZLE_BRAKE, SELECT_FIRE(BURST,20,2,3,0.1,0.1), SUPPRESSOR, TACTICAL_STOCK, VERTICAL_GRIP
   Description: Fully automatic submachine gun. Incorporates recoil mitigation technology.
   DisplayName: Vector
   FirearmType: SUBMACHINE_GUN
@@ -478,7 +478,7 @@ AK-47:
     Magazine: 30
     Max: 8
     Supply: 3
-  Attachments: ACOG_SCOPE, EXTENDED_CLIP(40), FAST_MAG(36), MUZZLE_BRAKE, SELECT_FIRE(SEMI_AUTOMATIC,1,0,3,0.2,0.2), SUPPRESSOR
+  Attachments: ACOG_SCOPE, EXTENDED_MAGAZINE(40), FAST_MAG(36), MUZZLE_BRAKE, SELECT_FIRE(SEMI_AUTOMATIC,1,0,3,0.2,0.2), SUPPRESSOR
   Description: Fully automatic with high power. Effective at medium range.
   DisplayName: AK-47
   FirearmType: ASSAULT_RIFLE
@@ -514,7 +514,7 @@ AUG:
     Magazine: 30
     Max: 8
     Supply: 3
-  Attachments: ACOG_SCOPE, ANGLED_GRIP, EXTENDED_CLIP(42), FAST_MAG(36), MUZZLE_BRAKE, SELECT_FIRE(SEMI_AUTOMATIC,1,0,3,0.2,0.2), SUPPRESSOR, VERTICAL_GRIP
+  Attachments: ACOG_SCOPE, ANGLED_GRIP, EXTENDED_MAGAZINE(42), FAST_MAG(36), MUZZLE_BRAKE, SELECT_FIRE(SEMI_AUTOMATIC,1,0,3,0.2,0.2), SUPPRESSOR, VERTICAL_GRIP
   Description: Bullpup rifle with high rate of fire. Effective at medium range.
   DisplayName: AUG
   FirearmType: ASSAULT_RIFLE
@@ -550,7 +550,7 @@ FAL:
     Magazine: 20
     Max: 8
     Supply: 3
-  Attachments: ACOG_SCOPE, EXTENDED_CLIP(30), FAST_MAG(36), MUZZLE_BRAKE, SELECT_FIRE(AUTOMATIC,10,0,0,-0.2,-0.2), SUPPRESSOR
+  Attachments: ACOG_SCOPE, EXTENDED_MAGAZINE(30), FAST_MAG(36), MUZZLE_BRAKE, SELECT_FIRE(AUTOMATIC,10,0,0,-0.2,-0.2), SUPPRESSOR
   Description: Semi-automatic battle rifle with high damage. Effective at medium to long range.
   DisplayName: FAL
   FirearmType: ASSAULT_RIFLE
@@ -586,7 +586,7 @@ FAMAS:
     Magazine: 30
     Max: 8
     Supply: 3
-  Attachments: ACOG_SCOPE, ANGLED_GRIP, EXTENDED_CLIP(40), FAST_MAG(36), MUZZLE_BRAKE, SELECT_FIRE(BURST,20,3,3,0.1,0.1), SUPPRESSOR, VERTICAL_GRIP
+  Attachments: ACOG_SCOPE, ANGLED_GRIP, EXTENDED_MAGAZINE(40), FAST_MAG(36), MUZZLE_BRAKE, SELECT_FIRE(BURST,20,3,3,0.1,0.1), SUPPRESSOR, VERTICAL_GRIP
   Description: Fully automatic with high rate of fire. Effective at medium range.
   DisplayName: FAMAS
   FirearmType: ASSAULT_RIFLE
@@ -622,7 +622,7 @@ GALIL:
     Magazine: 35
     Max: 8
     Supply: 3
-  Attachments: ACOG_SCOPE, EXTENDED_CLIP(50), FAST_MAG(36), MUZZLE_BRAKE, SELECT_FIRE(SEMI_AUTOMATIC,1,0,3,0.2,0.2), SUPPRESSOR
+  Attachments: ACOG_SCOPE, EXTENDED_MAGAZINE(50), FAST_MAG(36), MUZZLE_BRAKE, SELECT_FIRE(SEMI_AUTOMATIC,1,0,3,0.2,0.2), SUPPRESSOR
   Description: Fully automatic assault rifle. Effective at medium to long range.
   DisplayName: Galil
   FirearmType: ASSAULT_RIFLE
@@ -658,7 +658,7 @@ M16:
     Magazine: 30
     Max: 8
     Supply: 3
-  Attachments: ACOG_SCOPE, EXTENDED_CLIP(40), FAST_MAG(32), MUZZLE_BRAKE, SELECT_FIRE(AUTOMATIC,10,0,0,-0.1,-0.1), SUPPRESSOR
+  Attachments: ACOG_SCOPE, EXTENDED_MAGAZINE(40), FAST_MAG(32), MUZZLE_BRAKE, SELECT_FIRE(AUTOMATIC,10,0,0,-0.1,-0.1), SUPPRESSOR
   Description: Semi-automatic with 3 round burst fire. Effective at medium to long range.
   DisplayName: M16
   FirearmType: ASSAULT_RIFLE
@@ -694,7 +694,7 @@ QBZ-95:
     Magazine: 30
     Max: 8
     Supply: 3
-  Attachments: ACOG_SCOPE, ANGLED_GRIP, EXTENDED_CLIP(40), FAST_MAG(36), MUZZLE_BRAKE, SELECT_FIRE(AUTOMATIC,10,0,0,-0.1,-0.1), SUPPRESSOR, VERTICAL_GRIP
+  Attachments: ACOG_SCOPE, ANGLED_GRIP, EXTENDED_MAGAZINE(40), FAST_MAG(36), MUZZLE_BRAKE, SELECT_FIRE(AUTOMATIC,10,0,0,-0.1,-0.1), SUPPRESSOR, VERTICAL_GRIP
   Description: Delivers pinpoint 3-round bursts. Effective at medium to long range.
   DisplayName: QBZ-95
   FirearmType: ASSAULT_RIFLE
@@ -730,7 +730,7 @@ SCAR-H:
     Magazine: 20
     Max: 8
     Supply: 3
-  Attachments: ACOG_SCOPE, ANGLED_GRIP, EXTENDED_CLIP(30), FAST_MAG(36), MUZZLE_BRAKE, SELECT_FIRE(SEMI_AUTOMATIC,1,0,3,0.2,0.2), SUPPRESSOR, VERTICAL_GRIP
+  Attachments: ACOG_SCOPE, ANGLED_GRIP, EXTENDED_MAGAZINE(30), FAST_MAG(36), MUZZLE_BRAKE, SELECT_FIRE(SEMI_AUTOMATIC,1,0,3,0.2,0.2), SUPPRESSOR, VERTICAL_GRIP
   Description: Fully automatic battle rifle. Increased damage and range.
   DisplayName: SCAR-H
   FirearmType: ASSAULT_RIFLE
@@ -766,7 +766,7 @@ SG_550:
     Magazine: 20
     Max: 8
     Supply: 3
-  Attachments: ACOG_SCOPE, ANGLED_GRIP, EXTENDED_CLIP(50), FAST_MAG(32), MUZZLE_BRAKE, SELECT_FIRE(BURST,20,3,3,-0.1,-0.1), SUPPRESSOR, TACTICAL_STOCK, VERTICAL_GRIP
+  Attachments: ACOG_SCOPE, ANGLED_GRIP, EXTENDED_MAGAZINE(50), FAST_MAG(32), MUZZLE_BRAKE, SELECT_FIRE(BURST,20,3,3,-0.1,-0.1), SUPPRESSOR, TACTICAL_STOCK, VERTICAL_GRIP
   Description: Single-fire with high power. Effective at medium to long range.
   DisplayName: SG 550
   FirearmType: ASSAULT_RIFLE
@@ -802,7 +802,7 @@ ITHACA_37:
     Magazine: 5
     Max: 8
     Supply: 3
-  Attachments: BULLET_LOOPS(12), CHOKE, EXTENDED_CLIP(7)
+  Attachments: BULLET_LOOPS(12), CHOKE, EXTENDED_MAGAZINE(7)
   Description: Pump action shotgun. Effective at close range.
   DisplayName: Ithaca 37
   FirearmType: SHOTGUN
@@ -872,7 +872,7 @@ REMINGTON_870:
     Magazine: 8
     Max: 8
     Supply: 3
-  Attachments: BULLET_LOOPS(12), CHOKE, EXTENDED_CLIP(10), SUPPRESSOR, TACTICAL_STOCK
+  Attachments: BULLET_LOOPS(12), CHOKE, EXTENDED_MAGAZINE(10), SUPPRESSOR, TACTICAL_STOCK
   Description: Pump action shotgun. Strong damage and range.
   DisplayName: Remington 870
   FirearmType: SHOTGUN
@@ -908,7 +908,7 @@ SAIGA-12K:
     Magazine: 5
     Max: 8
     Supply: 3
-  Attachments: EXTENDED_CLIP(8), FAST_MAG(36), MUZZLE_BRAKE, SUPPRESSOR, TACTICAL_STOCK
+  Attachments: EXTENDED_MAGAZINE(8), FAST_MAG(36), MUZZLE_BRAKE, SUPPRESSOR, TACTICAL_STOCK
   Description: Semi-automatic shotgun with magazine feed system. Deadly at short range.
   DisplayName: Saiga-12K
   FirearmType: SHOTGUN
@@ -980,7 +980,7 @@ HK21:
     Magazine: 50
     Max: 4
     Supply: 2
-  Attachments: ACOG_SCOPE, BIPOD, EXTENDED_CLIP(80), HEAVY_BARREL
+  Attachments: ACOG_SCOPE, BIPOD, EXTENDED_MAGAZINE(80), HEAVY_BARREL
   Description: Fully automatic with high power. Effective at medium to long range.
   DisplayName: HK21
   FirearmType: LIGHT_MACHINE_GUN
@@ -1050,7 +1050,7 @@ RPK:
     Magazine: 40
     Max: 5
     Supply: 3
-  Attachments: ACOG_SCOPE, BIPOD, EXTENDED_CLIP(75), HEAVY_BARREL
+  Attachments: ACOG_SCOPE, BIPOD, EXTENDED_MAGAZINE(75), HEAVY_BARREL
   Description: Fully automatic with good power and quick fire rate. Effective at medium to long range.
   DisplayName: RPK
   FirearmType: LIGHT_MACHINE_GUN

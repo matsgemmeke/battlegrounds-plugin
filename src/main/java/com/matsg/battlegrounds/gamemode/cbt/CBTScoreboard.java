@@ -2,7 +2,7 @@ package com.matsg.battlegrounds.gamemode.cbt;
 
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.Team;
-import com.matsg.battlegrounds.api.player.GamePlayer;
+import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.gui.scoreboard.AbstractScoreboard;
 import com.matsg.battlegrounds.gui.scoreboard.ScoreboardBuilder;
 import org.bukkit.World;

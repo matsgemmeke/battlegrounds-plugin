@@ -1,0 +1,16 @@
+# SQL Configurations.
+sql:
+    # Enable the usage of SQL storage.
+    enabled: false
+
+    # The IP to the SQL database.
+    ip: 127.0.0.1
+
+    # The database name where data will be stored.
+    database: default
+
+    # The username for access to the database.
+    username: root
+
+    # The password for access to the database.
+    password: root

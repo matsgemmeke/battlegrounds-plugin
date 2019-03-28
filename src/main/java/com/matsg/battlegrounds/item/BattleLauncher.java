@@ -8,8 +8,8 @@ import com.matsg.battlegrounds.api.item.DamageSource;
 import com.matsg.battlegrounds.api.item.Launcher;
 import com.matsg.battlegrounds.api.item.Lethal;
 import com.matsg.battlegrounds.api.item.ReloadType;
-import com.matsg.battlegrounds.api.player.GamePlayer;
-import com.matsg.battlegrounds.api.player.Hitbox;
+import com.matsg.battlegrounds.api.entity.GamePlayer;
+import com.matsg.battlegrounds.api.entity.Hitbox;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.util.BattleSound;
 import org.bukkit.ChatColor;
@@ -22,10 +22,10 @@ public class BattleLauncher extends BattleFirearm implements Launcher {
     private LaunchType launchType;
     private Lethal lethal;
 
-    public BattleLauncher(String id, String name, String description, ItemStack itemStack, short durability,
+    public BattleLauncher(String id, String name, String description, ItemStack itemStack,
                      int magazine, int ammo, int maxAmmo, double launchSpeed, int cooldown, int reloadDuration, double accuracy,
                      Lethal lethal, LaunchType launchType, ReloadType reloadType, Sound[] reloadSound, Sound[] shootSound) {
-        super(id, name, description, itemStack, durability, magazine, ammo, maxAmmo, cooldown, reloadDuration, accuracy, reloadType, FirearmType.LAUNCHER, reloadSound, shootSound);
+        super(id, name, description, itemStack, magazine, ammo, maxAmmo, cooldown, reloadDuration, accuracy, reloadType, FirearmType.LAUNCHER, reloadSound, shootSound);
         this.launchSpeed = launchSpeed;
         this.launchType = launchType;
         this.lethal = lethal;

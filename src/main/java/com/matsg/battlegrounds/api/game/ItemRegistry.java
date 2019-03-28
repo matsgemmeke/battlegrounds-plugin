@@ -2,7 +2,7 @@ package com.matsg.battlegrounds.api.game;
 
 import com.matsg.battlegrounds.api.item.Item;
 import com.matsg.battlegrounds.api.item.Weapon;
-import com.matsg.battlegrounds.api.player.GamePlayer;
+import com.matsg.battlegrounds.api.entity.GamePlayer;
 import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
 

@@ -3,7 +3,7 @@ package com.matsg.battlegrounds.event.handler;
 import com.matsg.battlegrounds.BattleGameManager;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.GameManager;
-import com.matsg.battlegrounds.api.config.BattlegroundsConfig;
+import com.matsg.battlegrounds.api.storage.BattlegroundsConfig;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.game.BattleArena;

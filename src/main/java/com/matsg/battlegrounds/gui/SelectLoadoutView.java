@@ -5,7 +5,7 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.item.Weapon;
-import com.matsg.battlegrounds.api.player.GamePlayer;
+import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.util.ActionBar;
@@ -55,14 +55,14 @@ public class SelectLoadoutView implements View {
 
         ItemStack itemStack = new ItemStackBuilder(locked ? new ItemStack(Material.BARRIER) : getLoadoutItemStack(loadout))
                 .addItemFlags(ItemFlag.values())
-                .setAmount(loadout.getId())
+                .setAmount(loadout.getLoadoutNr())
                 .setDisplayName(displayName)
                 .setLore(new String[0])
                 .setUnbreakable(true)
                 .build();
 
-        inventory.setItem(loadout.getId() + 10, itemStack);
-        items.add(new SelectLoadoutViewItem(inventory.getItem(loadout.getId() + 10), loadout, locked));
+        inventory.setItem(loadout.getLoadoutNr() + 10, itemStack);
+        items.add(new SelectLoadoutViewItem(inventory.getItem(loadout.getLoadoutNr() + 10), loadout, locked));
     }
 
     private ItemStack getLoadoutItemStack(Loadout loadout) {

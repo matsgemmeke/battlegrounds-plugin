@@ -1,7 +1,7 @@
 package com.matsg.battlegrounds.event;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.EventManager;
+import com.matsg.battlegrounds.api.event.EventDispatcher;
 import org.bukkit.Server;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPhysicsEvent;
@@ -23,112 +23,112 @@ import static org.mockito.Mockito.*;
 public class EventListenerTest {
 
     @Test
-    public void testEventHandling() {
+    public void testEventDispatching() {
         // Create dependency mocks
         Battlegrounds plugin = mock(Battlegrounds.class);
-        EventManager eventManager = mock(EventManager.class);
+        EventDispatcher eventDispatcher = mock(EventDispatcher.class);
         PluginManager pluginManager = mock(PluginManager.class);
         Server server = mock(Server.class);
 
-        when(plugin.getEventManager()).thenReturn(eventManager);
+        when(plugin.getEventDispatcher()).thenReturn(eventDispatcher);
         when(plugin.getServer()).thenReturn(server);
         when(server.getPluginManager()).thenReturn(pluginManager);
 
         EventListener listener = new EventListener(plugin);
 
-        // Test AsyncPlayerChatEvent handling
+        // Test AsyncPlayerChatEvent dispatching
         AsyncPlayerChatEvent asyncPlayerChatEvent = mock(AsyncPlayerChatEvent.class);
         listener.onChat(asyncPlayerChatEvent);
-        verify(eventManager, times(1)).handleEvent(asyncPlayerChatEvent);
+        verify(eventDispatcher, times(1)).dispatchEvent(asyncPlayerChatEvent);
 
-        // Test BlockBreakEvent handling
+        // Test BlockBreakEvent dispatching
         BlockBreakEvent blockBreakEvent = mock(BlockBreakEvent.class);
         listener.onBlockBreak(blockBreakEvent);
-        verify(eventManager, times(1)).handleEvent(blockBreakEvent);
+        verify(eventDispatcher, times(1)).dispatchEvent(blockBreakEvent);
 
-        // Test BlockPlaceEvent handling
+        // Test BlockPlaceEvent dispatching
         BlockPlaceEvent blockPlaceEvent = mock(BlockPlaceEvent.class);
         listener.onBlockPlace(blockPlaceEvent);
-        verify(eventManager, times(1)).handleEvent(blockPlaceEvent);
+        verify(eventDispatcher, times(1)).dispatchEvent(blockPlaceEvent);
 
-        // Test BlockPhysicsEvent handling
+        // Test BlockPhysicsEvent dispatching
         BlockPhysicsEvent blockPhysicsEvent = mock(BlockPhysicsEvent.class);
         listener.onBlockUpdate(blockPhysicsEvent);
-        verify(eventManager, times(1)).handleEvent(blockPhysicsEvent);
+        verify(eventDispatcher, times(1)).dispatchEvent(blockPhysicsEvent);
 
-        // Test EntityDamageByEntityEvent handling
+        // Test EntityDamageByEntityEvent dispatching
         EntityDamageByEntityEvent entityDamageByEntityEvent = mock(EntityDamageByEntityEvent.class);
         listener.onPlayerDamageByPlayer(entityDamageByEntityEvent);
-        verify(eventManager, times(1)).handleEvent(entityDamageByEntityEvent);
+        verify(eventDispatcher, times(1)).dispatchEvent(entityDamageByEntityEvent);
 
-        // Test FoodLevelChangeEvent handling
+        // Test FoodLevelChangeEvent dispatching
         FoodLevelChangeEvent foodLevelChangeEvent = mock(FoodLevelChangeEvent.class);
         listener.onPlayerFoodLevelChange(foodLevelChangeEvent);
-        verify(eventManager, times(1)).handleEvent(foodLevelChangeEvent);
+        verify(eventDispatcher, times(1)).dispatchEvent(foodLevelChangeEvent);
 
-        // Test InventoryClickEvent handling
+        // Test InventoryClickEvent dispatching
         InventoryClickEvent inventoryClickEvent = mock(InventoryClickEvent.class);
         listener.onViewItemClick(inventoryClickEvent);
-        verify(eventManager, times(1)).handleEvent(inventoryClickEvent);
+        verify(eventDispatcher, times(1)).dispatchEvent(inventoryClickEvent);
 
-        // Test InventoryCloseEvent handling
+        // Test InventoryCloseEvent dispatching
         InventoryCloseEvent inventoryCloseEvent = mock(InventoryCloseEvent.class);
         listener.onViewItemClose(inventoryCloseEvent);
-        verify(eventManager, times(1)).handleEvent(inventoryCloseEvent);
+        verify(eventDispatcher, times(1)).dispatchEvent(inventoryCloseEvent);
 
-        // Test PlayerCommandPreprocessEvent handling
+        // Test PlayerCommandPreprocessEvent dispatching
         PlayerCommandPreprocessEvent playerCommandPreprocessEvent = mock(PlayerCommandPreprocessEvent.class);
         listener.onCommandSend(playerCommandPreprocessEvent);
-        verify(eventManager, times(1)).handleEvent(playerCommandPreprocessEvent);
+        verify(eventDispatcher, times(1)).dispatchEvent(playerCommandPreprocessEvent);
 
-        // Test PlayerDeathEvent handling
+        // Test PlayerDeathEvent dispatching
         PlayerDeathEvent playerDeathEvent = mock(PlayerDeathEvent.class);
         listener.onPlayerDeath(playerDeathEvent);
-        verify(eventManager, times(1)).handleEvent(playerDeathEvent);
+        verify(eventDispatcher, times(1)).dispatchEvent(playerDeathEvent);
 
-        // Test PlayerDropItemEvent handling
+        // Test PlayerDropItemEvent dispatching
         PlayerDropItemEvent playerDropItemEvent = mock(PlayerDropItemEvent.class);
         listener.onPlayerItemDrop(playerDropItemEvent);
-        verify(eventManager, times(1)).handleEvent(playerDropItemEvent);
+        verify(eventDispatcher, times(1)).dispatchEvent(playerDropItemEvent);
 
-        // Test PlayerInteractEvent handling
+        // Test PlayerInteractEvent dispatching
         PlayerInteractEvent playerInteractEvent = mock(PlayerInteractEvent.class);
         listener.onPlayerInteract(playerInteractEvent);
-        verify(eventManager, times(1)).handleEvent(playerInteractEvent);
+        verify(eventDispatcher, times(1)).dispatchEvent(playerInteractEvent);
 
-        // Test PlayerItemHeldEvent handling
+        // Test PlayerItemHeldEvent dispatching
         PlayerItemHeldEvent playerItemHeldEvent = mock(PlayerItemHeldEvent.class);
         listener.onItemSwitch(playerItemHeldEvent);
-        verify(eventManager, times(1)).handleEvent(playerItemHeldEvent);
+        verify(eventDispatcher, times(1)).dispatchEvent(playerItemHeldEvent);
 
-        // Test PlayerJoinEvent handling
+        // Test PlayerJoinEvent dispatching
         PlayerJoinEvent playerJoinEvent = mock(PlayerJoinEvent.class);
         listener.onPlayerJoin(playerJoinEvent);
-        verify(eventManager, times(1)).handleEvent(playerJoinEvent);
+        verify(eventDispatcher, times(1)).dispatchEvent(playerJoinEvent);
 
-        // Test PlayerKickEvent handling
+        // Test PlayerKickEvent dispatching
         PlayerKickEvent playerKickEvent = mock(PlayerKickEvent.class);
         listener.onPlayerKick(playerKickEvent);
-        verify(eventManager, times(1)).handleEvent(playerKickEvent);
+        verify(eventDispatcher, times(1)).dispatchEvent(playerKickEvent);
 
-        // Test PlayerMoveEvent handling
+        // Test PlayerMoveEvent dispatching
         PlayerMoveEvent playerMoveEvent = mock(PlayerMoveEvent.class);
         listener.onPlayerMove(playerMoveEvent);
-        verify(eventManager, times(1)).handleEvent(playerMoveEvent);
+        verify(eventDispatcher, times(1)).dispatchEvent(playerMoveEvent);
 
-        // Test PlayerPickupItemEvent handling
+        // Test PlayerPickupItemEvent dispatching
         PlayerPickupItemEvent playerPickupItemEvent = mock(PlayerPickupItemEvent.class);
         listener.onPlayerItemPickUp(playerPickupItemEvent);
-        verify(eventManager, times(1)).handleEvent(playerPickupItemEvent);
+        verify(eventDispatcher, times(1)).dispatchEvent(playerPickupItemEvent);
 
-        // Test PlayerQuitEvent handling
+        // Test PlayerQuitEvent dispatching
         PlayerQuitEvent playerQuitEvent = mock(PlayerQuitEvent.class);
         listener.onPlayerQuit(playerQuitEvent);
-        verify(eventManager, times(1)).handleEvent(playerQuitEvent);
+        verify(eventDispatcher, times(1)).dispatchEvent(playerQuitEvent);
 
-        // Test PlayerRespawnEvent handling
+        // Test PlayerRespawnEvent dispatching
         PlayerRespawnEvent playerRespawnEvent = mock(PlayerRespawnEvent.class);
         listener.onRespawn(playerRespawnEvent);
-        verify(eventManager, times(1)).handleEvent(playerRespawnEvent);
+        verify(eventDispatcher, times(1)).dispatchEvent(playerRespawnEvent);
     }
 }

@@ -7,7 +7,7 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.PlayerManager;
-import com.matsg.battlegrounds.api.player.GamePlayer;
+import com.matsg.battlegrounds.api.entity.GamePlayer;
 import org.bukkit.entity.Player;
 import org.junit.Before;
 import org.junit.Test;

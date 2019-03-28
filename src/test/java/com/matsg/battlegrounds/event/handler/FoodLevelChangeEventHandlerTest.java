@@ -5,7 +5,7 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.PlayerManager;
-import com.matsg.battlegrounds.player.BattleGamePlayer;
+import com.matsg.battlegrounds.entity.BattleGamePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.junit.Before;

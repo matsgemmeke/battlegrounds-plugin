@@ -2,8 +2,8 @@ package com.matsg.battlegrounds.api.event;
 
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.item.Weapon;
-import com.matsg.battlegrounds.api.player.GamePlayer;
-import com.matsg.battlegrounds.api.player.Hitbox;
+import com.matsg.battlegrounds.api.entity.GamePlayer;
+import com.matsg.battlegrounds.api.entity.Hitbox;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 

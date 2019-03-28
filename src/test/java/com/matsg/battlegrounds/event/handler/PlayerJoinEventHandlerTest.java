@@ -1,15 +1,13 @@
 package com.matsg.battlegrounds.event.handler;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.player.PlayerStorage;
+import com.matsg.battlegrounds.api.storage.PlayerStorage;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.modules.junit4.PowerMockRunner;
-
-import java.util.UUID;
 
 import static org.mockito.Mockito.*;
 
@@ -39,7 +37,7 @@ public class PlayerJoinEventHandlerTest {
         PlayerJoinEventHandler eventHandler = new PlayerJoinEventHandler(plugin);
         eventHandler.handle(event);
 
-        verify(playerStorage, times(1)).registerPlayer(any(UUID.class), anyString());
+        verify(playerStorage, times(1)).registerPlayer(player);
         verify(playerStorage, times(0)).updatePlayer(player);
     }
 
@@ -50,7 +48,7 @@ public class PlayerJoinEventHandlerTest {
         PlayerJoinEventHandler eventHandler = new PlayerJoinEventHandler(plugin);
         eventHandler.handle(event);
 
-        verify(playerStorage, times(0)).registerPlayer(any(UUID.class), anyString());
+        verify(playerStorage, times(0)).registerPlayer(player);
         verify(playerStorage, times(1)).updatePlayer(player);
     }
 }

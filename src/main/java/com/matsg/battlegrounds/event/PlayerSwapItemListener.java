@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.event;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.event.EventChannel;
 import com.matsg.battlegrounds.event.handler.PlayerSwapHandItemsEventHandler;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,11 +16,13 @@ public class PlayerSwapItemListener implements Listener {
 
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
 
-        plugin.getEventManager().addEventHandler(PlayerSwapHandItemsEvent.class, new PlayerSwapHandItemsEventHandler(plugin));
+        plugin.getEventDispatcher().registerEventChannel(PlayerSwapHandItemsEvent.class, new EventChannel<>(
+                new PlayerSwapHandItemsEventHandler(plugin)
+        ));
     }
 
     @EventHandler
     public void onPlayerItemSwap(PlayerSwapHandItemsEvent event) {
-        plugin.getEventManager().handleEvent(event);
+        plugin.getEventDispatcher().dispatchEvent(event);
     }
 }

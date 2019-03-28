@@ -2,8 +2,7 @@ package com.matsg.battlegrounds.game;
 
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Spawn;
-import com.matsg.battlegrounds.api.game.Team;
-import com.matsg.battlegrounds.api.player.GamePlayer;
+import com.matsg.battlegrounds.api.entity.GamePlayer;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;

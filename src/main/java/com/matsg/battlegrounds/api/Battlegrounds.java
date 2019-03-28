@@ -1,10 +1,11 @@
 package com.matsg.battlegrounds.api;
 
-import com.matsg.battlegrounds.api.config.BattlegroundsConfig;
-import com.matsg.battlegrounds.api.config.CacheYaml;
-import com.matsg.battlegrounds.api.config.LevelConfig;
+import com.matsg.battlegrounds.api.event.EventDispatcher;
+import com.matsg.battlegrounds.api.storage.BattlegroundsConfig;
+import com.matsg.battlegrounds.api.storage.CacheYaml;
+import com.matsg.battlegrounds.api.storage.LevelConfig;
 import com.matsg.battlegrounds.api.item.*;
-import com.matsg.battlegrounds.api.player.PlayerStorage;
+import com.matsg.battlegrounds.api.storage.PlayerStorage;
 import org.bukkit.plugin.Plugin;
 
 public interface Battlegrounds extends Plugin {
@@ -38,11 +39,11 @@ public interface Battlegrounds extends Plugin {
     ItemFactory<Equipment> getEquipmentFactory();
 
     /**
-     * Gets the event manager of the plugin.
+     * Gets the event dispatcher of the plugin.
      *
-     * @return The event manager
+     * @return The event dispatcher
      */
-    EventManager getEventManager();
+    EventDispatcher getEventDispatcher();
 
     /**
      * Gets the firearm factory of the plugin.

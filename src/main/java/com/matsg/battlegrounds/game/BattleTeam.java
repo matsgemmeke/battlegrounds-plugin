@@ -1,7 +1,7 @@
 package com.matsg.battlegrounds.game;
 
 import com.matsg.battlegrounds.api.game.Team;
-import com.matsg.battlegrounds.api.player.GamePlayer;
+import com.matsg.battlegrounds.api.entity.GamePlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 

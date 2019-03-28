@@ -1,22 +1,23 @@
 package com.matsg.battlegrounds.game;
 
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.config.LevelConfig;
-import com.matsg.battlegrounds.api.config.StoredPlayer;
+import com.matsg.battlegrounds.api.storage.LevelConfig;
+import com.matsg.battlegrounds.api.storage.StatisticContext;
+import com.matsg.battlegrounds.api.storage.StoredPlayer;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.item.Item;
 import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.item.Weapon;
-import com.matsg.battlegrounds.api.player.GamePlayer;
-import com.matsg.battlegrounds.api.player.PlayerStatus;
-import com.matsg.battlegrounds.api.player.PlayerStorage;
+import com.matsg.battlegrounds.api.entity.GamePlayer;
+import com.matsg.battlegrounds.api.entity.PlayerStatus;
+import com.matsg.battlegrounds.api.storage.PlayerStorage;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.gui.scoreboard.LobbyScoreboard;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.item.SelectLoadout;
-import com.matsg.battlegrounds.player.BattleGamePlayer;
-import com.matsg.battlegrounds.player.BattleSavedInventory;
+import com.matsg.battlegrounds.entity.BattleGamePlayer;
+import com.matsg.battlegrounds.entity.BattleSavedInventory;
 import com.matsg.battlegrounds.util.ActionBar;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.MessageHelper;
@@ -285,7 +286,11 @@ public class BattlePlayerManager implements PlayerManager {
         gamePlayer.getPlayer().teleport(game.getSpawnPoint());
 
         if (game.getState().isInProgress()) {
-            playerStorage.addPlayerAttributes(gamePlayer);
+            StatisticContext context = new StatisticContext();
+            context.setGame(game);
+            context.setPlayer(gamePlayer);
+
+            playerStorage.getStoredPlayer(gamePlayer.getUUID()).addStatisticAttributes(context);
         }
 
         if (game.getPlayerManager().getPlayers().size() < game.getConfiguration().getMinPlayers()) {

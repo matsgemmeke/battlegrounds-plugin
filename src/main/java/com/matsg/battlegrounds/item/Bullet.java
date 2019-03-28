@@ -1,7 +1,7 @@
 package com.matsg.battlegrounds.item;
 
 import com.matsg.battlegrounds.api.item.DamageSource;
-import com.matsg.battlegrounds.api.player.Hitbox;
+import com.matsg.battlegrounds.api.entity.Hitbox;
 
 public class Bullet implements DamageSource {
 

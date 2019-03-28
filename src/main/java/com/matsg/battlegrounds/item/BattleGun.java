@@ -4,13 +4,13 @@ import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.event.GamePlayerKillPlayerEvent;
 import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.item.*;
-import com.matsg.battlegrounds.api.player.GamePlayer;
-import com.matsg.battlegrounds.api.player.Hitbox;
+import com.matsg.battlegrounds.api.entity.GamePlayer;
+import com.matsg.battlegrounds.api.entity.Hitbox;
 import com.matsg.battlegrounds.api.util.Sound;
-import com.matsg.battlegrounds.item.attributes.BooleanAttributeValue;
-import com.matsg.battlegrounds.item.attributes.DoubleAttributeValue;
-import com.matsg.battlegrounds.item.attributes.FireModeAttributeValue;
-import com.matsg.battlegrounds.item.attributes.IntegerAttributeValue;
+import com.matsg.battlegrounds.item.attribute.BooleanAttributeValue;
+import com.matsg.battlegrounds.item.attribute.DoubleAttributeValue;
+import com.matsg.battlegrounds.item.attribute.FireModeAttributeValue;
+import com.matsg.battlegrounds.item.attribute.IntegerAttributeValue;
 import com.matsg.battlegrounds.util.BattleSound;
 import com.matsg.battlegrounds.util.HalfBlocks;
 import org.bukkit.ChatColor;
@@ -42,11 +42,11 @@ public class BattleGun extends BattleFirearm implements Gun {
     private Map<String, String[]> compatibleAttachments;
     private Sound[] suppressedSound;
 
-    public BattleGun(String id, String name, String description, ItemStack itemStack, short durability,
+    public BattleGun(String id, String name, String description, ItemStack itemStack,
                      int magazine, int ammo, int maxAmmo, int fireRate, int burstRounds, int cooldown, int reloadDuration, double accuracy,
                      Bullet bullet, FirearmType firearmType, FireMode fireMode, ReloadType reloadType,
                      Sound[] reloadSound, Sound[] shootSound, Sound[] suppressedSound, Map<String, String[]> compatibleAttachments) {
-        super(id, name, description, itemStack, durability, magazine, ammo, maxAmmo, cooldown, reloadDuration, accuracy, reloadType, firearmType, reloadSound, shootSound);
+        super(id, name, description, itemStack, magazine, ammo, maxAmmo, cooldown, reloadDuration, accuracy, reloadType, firearmType, reloadSound, shootSound);
         this.appliedModifiers = new HashMap<>();
         this.attachments = new ArrayList<>();
         this.bullet = bullet;

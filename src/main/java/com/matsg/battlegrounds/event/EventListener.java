@@ -1,6 +1,8 @@
 package com.matsg.battlegrounds.event;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.event.EventDispatcher;
+import com.matsg.battlegrounds.api.event.EventChannel;
 import com.matsg.battlegrounds.event.handler.*;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -17,134 +19,168 @@ import org.bukkit.event.player.*;
 
 public class EventListener implements Listener {
 
-    private Battlegrounds plugin;
+    private EventDispatcher eventDispatcher;
 
     public EventListener(Battlegrounds plugin) {
-        this.plugin = plugin;
+        this.eventDispatcher = plugin.getEventDispatcher();
 
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
 
-        addEventHandler(AsyncPlayerChatEvent.class, new AsyncPlayerChatEventHandler(plugin));
-        addEventHandler(BlockBreakEvent.class, new BlockBreakEventHandler(plugin));
-        addEventHandler(BlockPlaceEvent.class, new BlockPlaceEventHandler(plugin));
-        addEventHandler(BlockPhysicsEvent.class, new BlockPhysicsEventHandler(plugin));
-        addEventHandler(EntityDamageByEntityEvent.class, new EntityDamageByEntityEventHandler(plugin));
-        addEventHandler(InventoryClickEvent.class, new InventoryClickEventHandler());
-        addEventHandler(InventoryCloseEvent.class, new InventoryCloseEventHandler(plugin));
-        addEventHandler(FoodLevelChangeEvent.class, new FoodLevelChangeEventHandler(plugin));
-        addEventHandler(PlayerCommandPreprocessEvent.class, new PlayerCommandPreprocessEventHandler(plugin));
-        addEventHandler(PlayerDeathEvent.class, new PlayerDeathEventHandler(plugin));
-        addEventHandler(PlayerDropItemEvent.class, new PlayerDropItemEventHandler(plugin));
-        addEventHandler(PlayerInteractEvent.class, new PlayerInteractEventHandler(plugin));
-        addEventHandler(PlayerItemHeldEvent.class, new PlayerItemHeldEventHandler(plugin));
-        addEventHandler(PlayerJoinEvent.class, new PlayerJoinEventHandler(plugin));
-        addEventHandler(PlayerKickEvent.class, new PlayerKickEventHandler(plugin));
-        addEventHandler(PlayerMoveEvent.class, new PlayerMoveEventHandler(plugin));
-        addEventHandler(PlayerPickupItemEvent.class, new PlayerPickupItemEventHandler(plugin));
-        addEventHandler(PlayerQuitEvent.class, new PlayerQuitEventHandler(plugin));
-        addEventHandler(PlayerRespawnEvent.class, new PlayerRespawnEventHandler(plugin));
-    }
-
-    private void addEventHandler(Class<? extends Event> eventClass, com.matsg.battlegrounds.api.event.handler.EventHandler eventHandler) {
-        plugin.getEventManager().addEventHandler(eventClass, eventHandler);
-    }
-
-    private void handleEvent(Event event) {
-        plugin.getEventManager().handleEvent(event);
+        eventDispatcher.registerEventChannel(AsyncPlayerChatEvent.class, new EventChannel<>(
+                new AsyncPlayerChatEventHandler(plugin)
+        ));
+        eventDispatcher.registerEventChannel(BlockBreakEvent.class, new EventChannel<>(
+                new BlockBreakEventHandler(plugin)
+        ));
+        eventDispatcher.registerEventChannel(BlockPhysicsEvent.class, new EventChannel<>(
+                new BlockPhysicsEventHandler(plugin)
+        ));
+        eventDispatcher.registerEventChannel(BlockPlaceEvent.class, new EventChannel<>(
+                new BlockPlaceEventHandler(plugin)
+        ));
+        eventDispatcher.registerEventChannel(EntityDamageByEntityEvent.class, new EventChannel<>(
+                new EntityDamageByEntityEventHandler(plugin)
+        ));
+        eventDispatcher.registerEventChannel(FoodLevelChangeEvent.class, new EventChannel<>(
+                new FoodLevelChangeEventHandler(plugin)
+        ));
+        eventDispatcher.registerEventChannel(InventoryClickEvent.class, new EventChannel<>(
+                new InventoryClickEventHandler()
+        ));
+        eventDispatcher.registerEventChannel(InventoryCloseEvent.class, new EventChannel<>(
+                new InventoryCloseEventHandler(plugin)
+        ));
+        eventDispatcher.registerEventChannel(PlayerCommandPreprocessEvent.class, new EventChannel<>(
+                new PlayerCommandPreprocessEventHandler(plugin)
+        ));
+        eventDispatcher.registerEventChannel(PlayerDeathEvent.class, new EventChannel<>(
+                new PlayerDeathEventHandler(plugin)
+        ));
+        eventDispatcher.registerEventChannel(PlayerDropItemEvent.class, new EventChannel<>(
+                new PlayerDropItemEventHandler(plugin)
+        ));
+        eventDispatcher.registerEventChannel(PlayerInteractEvent.class, new EventChannel<>(
+                new PlayerInteractEventHandler(plugin)
+        ));
+        eventDispatcher.registerEventChannel(PlayerItemHeldEvent.class, new EventChannel<>(
+                new PlayerItemHeldEventHandler(plugin)
+        ));
+        eventDispatcher.registerEventChannel(PlayerJoinEvent.class, new EventChannel<>(
+                new PlayerJoinEventHandler(plugin)
+        ));
+        eventDispatcher.registerEventChannel(PlayerKickEvent.class, new EventChannel<>(
+                new PlayerKickEventHandler(plugin)
+        ));
+        eventDispatcher.registerEventChannel(PlayerMoveEvent.class, new EventChannel<>(
+                new PlayerMoveEventHandler(plugin)
+        ));
+        eventDispatcher.registerEventChannel(PlayerPickupItemEvent.class, new EventChannel<>(
+                new PlayerPickupItemEventHandler(plugin)
+        ));
+        eventDispatcher.registerEventChannel(PlayerQuitEvent.class, new EventChannel<>(
+                new PlayerQuitEventHandler(plugin)
+        ));
+        eventDispatcher.registerEventChannel(PlayerRespawnEvent.class, new EventChannel<>(
+                new PlayerRespawnEventHandler(plugin)
+        ));
     }
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        handleEvent(event);
+        dispatchEvent(event);
     }
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
-        handleEvent(event);
+        dispatchEvent(event);
     }
 
     @EventHandler
     public void onBlockUpdate(BlockPhysicsEvent event) {
-        handleEvent(event);
+        dispatchEvent(event);
     }
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
-        handleEvent(event);
+        dispatchEvent(event);
     }
 
     @EventHandler
     public void onCommandSend(PlayerCommandPreprocessEvent event) {
-        handleEvent(event);
+        dispatchEvent(event);
     }
 
     @EventHandler
     public void onItemSwitch(PlayerItemHeldEvent event) {
-        handleEvent(event);
+        dispatchEvent(event);
     }
 
     @EventHandler
     public void onPlayerDamageByPlayer(EntityDamageByEntityEvent event) {
-        handleEvent(event);
+        dispatchEvent(event);
     }
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
-        handleEvent(event);
+        dispatchEvent(event);
     }
 
     @EventHandler
     public void onPlayerFoodLevelChange(FoodLevelChangeEvent event) {
-        handleEvent(event);
+        dispatchEvent(event);
     }
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        handleEvent(event);
+        dispatchEvent(event);
     }
 
     @EventHandler
     public void onPlayerItemDrop(PlayerDropItemEvent event) {
-        handleEvent(event);
+        dispatchEvent(event);
     }
 
     @EventHandler
     public void onPlayerItemPickUp(PlayerPickupItemEvent event) {
-        handleEvent(event);
+        dispatchEvent(event);
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        handleEvent(event);
+        dispatchEvent(event);
     }
 
     @EventHandler
     public void onPlayerKick(PlayerKickEvent event) {
-        handleEvent(event);
+        dispatchEvent(event);
     }
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
-        handleEvent(event);
+        dispatchEvent(event);
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        handleEvent(event);
+        dispatchEvent(event);
     }
 
     @EventHandler
     public void onRespawn(PlayerRespawnEvent event) {
-        handleEvent(event);
+        dispatchEvent(event);
     }
 
     @EventHandler
     public void onViewItemClick(InventoryClickEvent event) {
-        handleEvent(event);
+        dispatchEvent(event);
     }
 
     @EventHandler
     public void onViewItemClose(InventoryCloseEvent event) {
-        handleEvent(event);
+        dispatchEvent(event);
+    }
+
+    private void dispatchEvent(Event event) {
+        eventDispatcher.dispatchEvent(event);
     }
 }

@@ -1,8 +1,8 @@
 package com.matsg.battlegrounds;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.config.LanguageYaml;
-import com.matsg.battlegrounds.api.config.Yaml;
+import com.matsg.battlegrounds.api.storage.LanguageYaml;
+import com.matsg.battlegrounds.api.storage.Yaml;
 import org.apache.commons.lang.LocaleUtils;
 
 import java.io.File;
@@ -63,7 +63,6 @@ public class Translator {
             e.printStackTrace();
         }
 
-        plugin.getLogger().info("Succesfully loaded " + list.size() + " language file(s). Using " + locale.getDisplayLanguage(Locale.ENGLISH) + " as the default");
         return list;
     }
 

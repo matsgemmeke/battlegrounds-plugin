@@ -2,7 +2,7 @@ package com.matsg.battlegrounds.gamemode;
 
 import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.config.AbstractYaml;
+import com.matsg.battlegrounds.api.storage.AbstractYaml;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.gamemode.GameMode;
 import com.matsg.battlegrounds.gamemode.cbt.CombatTraining;

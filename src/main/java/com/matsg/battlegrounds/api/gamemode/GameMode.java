@@ -1,14 +1,14 @@
 package com.matsg.battlegrounds.api.gamemode;
 
-import com.matsg.battlegrounds.api.config.Yaml;
+import com.matsg.battlegrounds.api.storage.Yaml;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent.DeathCause;
 import com.matsg.battlegrounds.api.game.GameScoreboard;
 import com.matsg.battlegrounds.api.game.Objective;
 import com.matsg.battlegrounds.api.game.Spawn;
 import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.item.Weapon;
-import com.matsg.battlegrounds.api.player.GamePlayer;
-import com.matsg.battlegrounds.api.player.Hitbox;
+import com.matsg.battlegrounds.api.entity.GamePlayer;
+import com.matsg.battlegrounds.api.entity.Hitbox;
 
 public interface GameMode extends StateListener {
 

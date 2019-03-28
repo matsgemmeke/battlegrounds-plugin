@@ -1,6 +1,6 @@
 package com.matsg.battlegrounds.item.factory;
 
-import com.matsg.battlegrounds.api.config.ItemConfig;
+import com.matsg.battlegrounds.api.storage.ItemConfig;
 import com.matsg.battlegrounds.api.item.Equipment;
 import com.matsg.battlegrounds.api.item.ItemFactory;
 import com.matsg.battlegrounds.item.*;
@@ -34,8 +34,7 @@ public class EquipmentFactory implements ItemFactory<Equipment> {
                         section.getName(),
                         section.getString("DisplayName"),
                         section.getString("Description"),
-                        new ItemStackBuilder(Material.valueOf(material[0])).build(),
-                        AttributeValidator.shouldEqualOrBeHigherThan(Short.valueOf(material[1]), (short) 0),
+                        new ItemStackBuilder(Material.valueOf(material[0])).setDurability(Short.valueOf(material[1])).build(),
                         AttributeValidator.shouldBeHigherThan(section.getInt("Amount"), 0),
                         AttributeValidator.shouldBeHigherThan(section.getInt("Cooldown"), 0),
                         AttributeValidator.shouldEqualOrBeHigherThan(section.getDouble("Range.Long.Damage"), 0.0),
@@ -57,8 +56,7 @@ public class EquipmentFactory implements ItemFactory<Equipment> {
                         section.getName(),
                         section.getString("DisplayName"),
                         section.getString("Description"),
-                        new ItemStackBuilder(Material.valueOf(material[0])).build(),
-                        AttributeValidator.shouldEqualOrBeHigherThan(Short.valueOf(material[1]), (short) 0),
+                        new ItemStackBuilder(Material.valueOf(material[0])).setDurability(Short.valueOf(material[1])).build(),
                         AttributeValidator.shouldBeHigherThan(section.getInt("Amount"), 0),
                         AttributeValidator.shouldBeHigherThan(section.getInt("Cooldown"), 0),
                         BattleTacticalEffect.valueOf(section.getString("Effect")),

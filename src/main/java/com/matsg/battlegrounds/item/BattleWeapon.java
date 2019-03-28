@@ -1,7 +1,7 @@
 package com.matsg.battlegrounds.item;
 
 import com.matsg.battlegrounds.api.item.Weapon;
-import com.matsg.battlegrounds.api.player.GamePlayer;
+import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.Location;
@@ -13,13 +13,11 @@ public abstract class BattleWeapon extends BattleItem implements Weapon {
 
     protected GamePlayer gamePlayer;
     protected MessageHelper messageHelper;
-    protected short durability;
     protected String description;
 
-    public BattleWeapon(String id, String name, String description, ItemStack itemStack, short durability) {
+    public BattleWeapon(String id, String name, String description, ItemStack itemStack) {
         super(id, name, itemStack);
         this.description = description;
-        this.durability = durability;
         this.messageHelper = new MessageHelper();
     }
 

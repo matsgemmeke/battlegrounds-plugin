@@ -5,15 +5,15 @@ import org.bukkit.inventory.ItemStack;
 
 public class BattleLoadout implements Loadout {
 
-    private final int id;
+    private final int loadoutNr;
     private boolean defaultLoadout;
     private Equipment equipment;
     private Firearm primary, secondary;
     private MeleeWeapon meleeWeapon;
     private String name;
 
-    public BattleLoadout(int id, String name, Firearm primary, Firearm secondary, Equipment equipment, MeleeWeapon meleeWeapon) {
-        this.id = id;
+    public BattleLoadout(int loadoutNr, String name, Firearm primary, Firearm secondary, Equipment equipment, MeleeWeapon meleeWeapon) {
+        this.loadoutNr = loadoutNr;
         this.name = name;
         this.primary = primary;
         this.secondary = secondary;
@@ -28,8 +28,8 @@ public class BattleLoadout implements Loadout {
         }
     }
 
-    public BattleLoadout(int id, String name, Firearm primary, Firearm secondary, Equipment equipment, MeleeWeapon meleeWeapon, boolean defaultLoadout) {
-        this(id, name, primary, secondary, equipment, meleeWeapon);
+    public BattleLoadout(int loadoutNr, String name, Firearm primary, Firearm secondary, Equipment equipment, MeleeWeapon meleeWeapon, boolean defaultLoadout) {
+        this(loadoutNr, name, primary, secondary, equipment, meleeWeapon);
         this.defaultLoadout = defaultLoadout;
     }
 
@@ -59,8 +59,8 @@ public class BattleLoadout implements Loadout {
         return equipment;
     }
 
-    public int getId() {
-        return id;
+    public int getLoadoutNr() {
+        return loadoutNr;
     }
 
     public MeleeWeapon getMeleeWeapon() {
@@ -108,7 +108,7 @@ public class BattleLoadout implements Loadout {
             return false;
         }
         Loadout loadout = (Loadout) obj;
-        return id == loadout.getId() && name.equals(loadout.getName());
+        return loadoutNr == loadout.getLoadoutNr() && name.equals(loadout.getName());
     }
 
     public Weapon getWeapon(ItemSlot itemSlot) {

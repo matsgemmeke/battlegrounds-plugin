@@ -1,7 +1,7 @@
 package com.matsg.battlegrounds.api.game;
 
 import com.matsg.battlegrounds.api.item.Loadout;
-import com.matsg.battlegrounds.api.player.GamePlayer;
+import com.matsg.battlegrounds.api.entity.GamePlayer;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 

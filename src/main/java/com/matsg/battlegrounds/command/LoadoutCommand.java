@@ -2,7 +2,7 @@ package com.matsg.battlegrounds.command;
 
 import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.config.StoredPlayer;
+import com.matsg.battlegrounds.api.storage.StoredPlayer;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.gui.LoadoutManagerView;
 import org.bukkit.command.CommandSender;
@@ -25,7 +25,7 @@ public class LoadoutCommand extends Command {
         Player player = (Player) sender;
         StoredPlayer storedPlayer = plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId());
 
-        if (storedPlayer == null && (storedPlayer = plugin.getPlayerStorage().registerPlayer(player.getUniqueId(), player.getName())) == null || plugin.getLevelConfig().getLevel(storedPlayer.getExp()) < minLevel) {
+        if (storedPlayer == null && (storedPlayer = plugin.getPlayerStorage().registerPlayer(player)) == null || plugin.getLevelConfig().getLevel(storedPlayer.getExp()) < minLevel) {
             player.sendMessage(createMessage(TranslationKey.CUSTOM_LOADOUT_LOCKED, new Placeholder("bg_level", minLevel)));
             return;
         }

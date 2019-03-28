@@ -2,10 +2,10 @@ package com.matsg.battlegrounds.gui;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.config.ItemConfig;
+import com.matsg.battlegrounds.api.storage.ItemConfig;
 import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.util.Placeholder;
-import com.matsg.battlegrounds.config.MeleeWeaponConfig;
+import com.matsg.battlegrounds.storage.MeleeWeaponConfig;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.ChatColor;
@@ -139,7 +139,7 @@ public class EditLoadoutView implements View {
             }
             if (clickType == ClickType.RIGHT) {
                 attachmentGun.get(itemStack).getAttachments().remove(attachment);
-                plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).saveLoadout(loadout.getId(), loadout);
+                plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).saveLoadout(loadout.getLoadoutNr(), loadout);
                 player.openInventory(new EditLoadoutView(plugin, loadout).getInventory());
             }
         }
@@ -164,7 +164,7 @@ public class EditLoadoutView implements View {
                 if (clickType == ClickType.RIGHT) {
                     if (weapon != null) {
                         loadout.removeWeapon(weapon);
-                        plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).saveLoadout(loadout.getId(), loadout);
+                        plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).saveLoadout(loadout.getLoadoutNr(), loadout);
                     }
                     player.openInventory(new EditLoadoutView(plugin, loadout).getInventory());
                 }

@@ -4,8 +4,8 @@ import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent.DeathCause;
 import com.matsg.battlegrounds.api.event.GamePlayerKillPlayerEvent;
 import com.matsg.battlegrounds.api.item.Lethal;
-import com.matsg.battlegrounds.api.player.GamePlayer;
-import com.matsg.battlegrounds.api.player.Hitbox;
+import com.matsg.battlegrounds.api.entity.GamePlayer;
+import com.matsg.battlegrounds.api.entity.Hitbox;
 import com.matsg.battlegrounds.api.util.Sound;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
@@ -15,10 +15,10 @@ public class BattleLethal extends BattleEquipment implements Lethal {
 
     private double longDamage, midDamage, shortDamage;
 
-    public BattleLethal(String id, String name, String description, ItemStack itemStack, short durability,
+    public BattleLethal(String id, String name, String description, ItemStack itemStack,
                         int amount, int cooldown, double longDamage, double longRange, double midDamage, double midRange,
                         double shortDamage, double shortRange, double velocity, int ignitionTime, Sound[] ignitionSound) {
-        super(id, name, description, itemStack, durability, EquipmentType.LETHAL, amount, cooldown, longRange, midRange, shortRange, velocity,
+        super(id, name, description, itemStack, EquipmentType.LETHAL, amount, cooldown, longRange, midRange, shortRange, velocity,
                 ignitionTime == 0 ? IgnitionType.PASSIVE : IgnitionType.AGGRESSIVE, ignitionTime, ignitionSound);
         this.longDamage = longDamage;
         this.midDamage = midDamage;

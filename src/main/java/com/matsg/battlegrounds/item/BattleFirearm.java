@@ -1,12 +1,12 @@
 package com.matsg.battlegrounds.item;
 
 import com.matsg.battlegrounds.api.item.*;
-import com.matsg.battlegrounds.api.player.GamePlayer;
+import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.api.util.Sound;
-import com.matsg.battlegrounds.item.attributes.DoubleAttributeValue;
-import com.matsg.battlegrounds.item.attributes.IntegerAttributeValue;
-import com.matsg.battlegrounds.item.attributes.ReloadTypeAttributeValue;
+import com.matsg.battlegrounds.item.attribute.DoubleAttributeValue;
+import com.matsg.battlegrounds.item.attribute.IntegerAttributeValue;
+import com.matsg.battlegrounds.item.attribute.ReloadTypeAttributeValue;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.BattleSound;
 import org.bukkit.Location;
@@ -33,10 +33,10 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
     protected List<Material> blocks;
     protected Sound[] reloadSound, shotSound;
 
-    public BattleFirearm(String id, String name, String description, ItemStack itemStack, short durability,
+    public BattleFirearm(String id, String name, String description, ItemStack itemStack,
                          int magazine, int ammo, int maxAmmo, int cooldown, int reloadDuration, double accuracy,
                          ReloadType reloadType, FirearmType firearmType, Sound[] reloadSound, Sound[] shotSound) {
-        super(id, name, description, itemStack, durability);
+        super(id, name, description, itemStack);
         this.blocks = new ArrayList<>();
         this.droppedItems = new ArrayList<>();
         this.firearmType = firearmType;
@@ -327,7 +327,7 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
                 reloadType.getAttributeValue().getValue().reloadSingle(BattleFirearm.this, reloadDuration.getAttributeValue().getValue());
                 if (ammo.getAttributeValue().getValue() <= 0 || magazine.getAttributeValue().getValue() >= magazineSize.getAttributeValue().getValue()) {
                     cancel();
-                    getGamePlayer().getPlayer().setFoodLevel(20);
+                    gamePlayer.getPlayer().setFoodLevel(20);
                     reloading = false;
                     update();
                 }
@@ -367,7 +367,6 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
                 .addItemFlags(ItemFlag.values())
                 .setAmount(1)
                 .setDisplayName(displayName)
-                .setDurability(durability)
                 .setLore(getLore())
                 .setUnbreakable(true)
                 .build();
