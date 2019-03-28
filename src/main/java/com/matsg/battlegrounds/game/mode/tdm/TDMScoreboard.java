@@ -1,4 +1,4 @@
-package com.matsg.battlegrounds.gamemode.tdm;
+package com.matsg.battlegrounds.game.mode.tdm;
 
 import com.matsg.battlegrounds.api.storage.Yaml;
 import com.matsg.battlegrounds.api.game.Game;

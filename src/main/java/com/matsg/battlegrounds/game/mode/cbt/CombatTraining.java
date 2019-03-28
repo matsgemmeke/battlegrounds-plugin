@@ -1,4 +1,4 @@
-package com.matsg.battlegrounds.gamemode.cbt;
+package com.matsg.battlegrounds.game.mode.cbt;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
@@ -13,7 +13,7 @@ import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.Hitbox;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.game.BattleTeam;
-import com.matsg.battlegrounds.gamemode.AbstractGameMode;
+import com.matsg.battlegrounds.game.mode.AbstractGameMode;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.event.EventHandler;

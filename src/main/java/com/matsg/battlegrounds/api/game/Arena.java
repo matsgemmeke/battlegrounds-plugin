@@ -4,7 +4,7 @@ import com.matsg.battlegrounds.api.entity.GamePlayer;
 
 import java.util.Collection;
 
-public interface Arena extends Region {
+public interface Arena extends Extent {
 
     /**
      * Gets the name of the arena.

@@ -1,4 +1,4 @@
-package com.matsg.battlegrounds.gamemode.cbt;
+package com.matsg.battlegrounds.game.mode.cbt;
 
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.Team;

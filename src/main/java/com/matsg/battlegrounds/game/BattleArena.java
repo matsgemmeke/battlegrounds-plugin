@@ -14,27 +14,26 @@ import java.util.Random;
 public class BattleArena implements Arena {
 
     private boolean active;
-    private List<Block> boundingBlocks;
     private List<Spawn> spawns;
-    private Location max, min;
+    private Location maximumPoint, minimumPoint;
     private String name;
     private World world;
 
-    public BattleArena(String name, Location max, Location min, World world) {
+    public BattleArena(String name, Location maximumPoint, Location minimumPoint, World world) {
         this.active = false;
-        this.max = max;
-        this.min = min;
+        this.maximumPoint = maximumPoint;
+        this.minimumPoint = minimumPoint;
         this.name = name;
         this.spawns = new ArrayList<>();
         this.world = world;
     }
 
-    public Location getMax() {
-        return max;
+    public Location getMaximumPoint() {
+        return maximumPoint;
     }
 
-    public Location getMin() {
-        return min;
+    public Location getMinimumPoint() {
+        return minimumPoint;
     }
 
     public String getName() {
@@ -60,20 +59,34 @@ public class BattleArena implements Arena {
     public boolean contains(Location location) {
         return hasBorders()
                 && location != null
-                && location.getX() >= min.getX() && location.getX() <= max.getX()
-                && location.getY() >= min.getY() && location.getY() <= max.getY()
-                && location.getZ() >= min.getZ() && location.getZ() <= max.getZ();
+                && location.getX() >= minimumPoint.getX() && location.getX() <= maximumPoint.getX()
+                && location.getY() >= minimumPoint.getY() && location.getY() <= maximumPoint.getY()
+                && location.getZ() >= minimumPoint.getZ() && location.getZ() <= maximumPoint.getZ();
     }
 
-    private List<Block> getBoundingBlocks() {
-        if (boundingBlocks == null || boundingBlocks.size() <= 0 || boundingBlocks.isEmpty()) {
-            boundingBlocks = updateBoundingBlocks();
+    public int getArea() {
+        return getWidth() * getHeight() * getLength();
+    }
+
+    public Location getCenter() {
+        if (!hasBorders()) {
+            return null;
         }
-        return boundingBlocks;
+        return maximumPoint.toVector().add(minimumPoint.toVector()).multiply(0.5).toLocation(world);
     }
 
-    public int getSize() {
-        return getBoundingBlocks().size();
+    public int getHeight() {
+        if (!hasBorders()) {
+            return -1;
+        }
+        return maximumPoint.getBlockY() - minimumPoint.getBlockY();
+    }
+
+    public int getLength() {
+        if (!hasBorders()) {
+            return -1;
+        }
+        return maximumPoint.getBlockZ() - minimumPoint.getBlockZ();
     }
 
     public Spawn getRandomSpawn() {
@@ -131,7 +144,7 @@ public class BattleArena implements Arena {
 
     public Spawn getSpawn(int index) {
         for (Spawn spawn : spawns) {
-            if (spawn.getIndex() == index) {
+            if (spawn.getId() == index) {
                 return spawn;
             }
         }
@@ -147,15 +160,22 @@ public class BattleArena implements Arena {
         return null;
     }
 
+    public int getWidth() {
+        if (!hasBorders()) {
+            return -1;
+        }
+        return maximumPoint.getBlockX() - minimumPoint.getBlockX();
+    }
+
     public boolean hasBorders() {
-        return max != null && min != null;
+        return maximumPoint != null && minimumPoint != null;
     }
 
     private List<Block> updateBoundingBlocks() {
         List<Block> list = new ArrayList<>();
-        for (int x = (int) min.getX(); x <= max.getX(); x += 1.0) {
-            for (int y = (int) min.getY(); y <= max.getY(); y += 1.0) {
-                for (int z = (int) min.getZ(); z <= max.getZ(); z += 1.0) {
+        for (int x = (int) minimumPoint.getX(); x <= maximumPoint.getX(); x += 1.0) {
+            for (int y = (int) minimumPoint.getY(); y <= maximumPoint.getY(); y += 1.0) {
+                for (int z = (int) minimumPoint.getZ(); z <= maximumPoint.getZ(); z += 1.0) {
                     list.add(world.getBlockAt(x, y, z));
                 }
             }

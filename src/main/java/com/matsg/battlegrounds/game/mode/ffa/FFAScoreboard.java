@@ -1,4 +1,4 @@
-package com.matsg.battlegrounds.gamemode.ffa;
+package com.matsg.battlegrounds.game.mode.ffa;
 
 import com.matsg.battlegrounds.api.storage.Yaml;
 import com.matsg.battlegrounds.api.game.Game;

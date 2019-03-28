@@ -64,14 +64,14 @@ public class AddSpawn extends SubCommand {
 
         arena.getSpawns().add(spawn);
 
-        game.getDataFile().set("arena." + arenaName + ".spawn." + spawn.getIndex() + ".base", teamBase);
-        game.getDataFile().setLocation("arena." + arenaName + ".spawn." + spawn.getIndex() + ".location", spawn.getLocation(), true);
-        game.getDataFile().set("arena." + arenaName + ".spawn." + spawn.getIndex() + ".team", teamId);
+        game.getDataFile().set("arena." + arenaName + ".spawn." + spawn.getId() + ".base", teamBase);
+        game.getDataFile().setLocation("arena." + arenaName + ".spawn." + spawn.getId() + ".location", spawn.getLocation(), true);
+        game.getDataFile().set("arena." + arenaName + ".spawn." + spawn.getId() + ".team", teamId);
         game.getDataFile().save();
 
         player.sendMessage(createMessage(TranslationKey.SPAWN_ADD,
                 new Placeholder("bg_arena", arenaName),
-                new Placeholder("bg_index", spawn.getIndex())
+                new Placeholder("bg_index", spawn.getId())
         ));
     }
 
@@ -79,7 +79,7 @@ public class AddSpawn extends SubCommand {
         int i = 1;
         loop: while (true) {
             for (Spawn spawn : arena.getSpawns()) {
-                if (spawn.getIndex() == i) {
+                if (spawn.getId() == i) {
                     i ++;
                     continue loop;
                 }

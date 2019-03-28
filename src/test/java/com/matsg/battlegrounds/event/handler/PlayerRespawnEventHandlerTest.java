@@ -5,7 +5,7 @@ import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.PlayerManager;
 import com.matsg.battlegrounds.api.game.Spawn;
-import com.matsg.battlegrounds.api.gamemode.GameMode;
+import com.matsg.battlegrounds.api.game.GameMode;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.game.ArenaSpawn;
 import com.matsg.battlegrounds.entity.BattleGamePlayer;

@@ -8,11 +8,11 @@ public class ArenaSpawn implements Spawn {
 
     private boolean teamBase;
     private GamePlayer gamePlayer;
-    private int index, teamId;
+    private int id, teamId;
     private Location location;
 
-    public ArenaSpawn(int index, Location location, int teamId) {
-        this.index = index;
+    public ArenaSpawn(int id, Location location, int teamId) {
+        this.id = id;
         this.location = location;
         this.teamId = teamId;
     }
@@ -21,8 +21,8 @@ public class ArenaSpawn implements Spawn {
         return gamePlayer;
     }
 
-    public int getIndex() {
-        return index;
+    public int getId() {
+        return id;
     }
 
     public Location getLocation() {

@@ -1,4 +1,4 @@
-package com.matsg.battlegrounds.gamemode;
+package com.matsg.battlegrounds.game.mode;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.game.Team;

@@ -1,11 +1,11 @@
-package com.matsg.battlegrounds.gamemode;
+package com.matsg.battlegrounds.game.mode;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.storage.Yaml;
 import com.matsg.battlegrounds.api.event.GameEndEvent;
 import com.matsg.battlegrounds.api.game.*;
-import com.matsg.battlegrounds.api.gamemode.GameMode;
+import com.matsg.battlegrounds.api.game.GameMode;
 import com.matsg.battlegrounds.api.game.Objective;
 import com.matsg.battlegrounds.api.item.Firearm;
 import com.matsg.battlegrounds.api.item.Weapon;

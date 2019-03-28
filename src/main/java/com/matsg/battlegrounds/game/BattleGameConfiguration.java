@@ -3,8 +3,8 @@ package com.matsg.battlegrounds.game;
 import com.matsg.battlegrounds.api.storage.Yaml;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameConfiguration;
-import com.matsg.battlegrounds.api.gamemode.GameMode;
-import com.matsg.battlegrounds.gamemode.GameModeType;
+import com.matsg.battlegrounds.api.game.GameMode;
+import com.matsg.battlegrounds.game.mode.GameModeType;
 
 import java.util.ArrayList;
 import java.util.List;

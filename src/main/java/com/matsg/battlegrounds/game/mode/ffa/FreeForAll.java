@@ -1,4 +1,4 @@
-package com.matsg.battlegrounds.gamemode.ffa;
+package com.matsg.battlegrounds.game.mode.ffa;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
@@ -15,8 +15,8 @@ import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.Hitbox;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.game.BattleTeam;
-import com.matsg.battlegrounds.gamemode.AbstractGameMode;
-import com.matsg.battlegrounds.gamemode.Result;
+import com.matsg.battlegrounds.game.mode.AbstractGameMode;
+import com.matsg.battlegrounds.game.mode.Result;
 import com.matsg.battlegrounds.game.objective.EliminationObjective;
 import com.matsg.battlegrounds.game.objective.ScoreObjective;
 import com.matsg.battlegrounds.game.objective.TimeObjective;

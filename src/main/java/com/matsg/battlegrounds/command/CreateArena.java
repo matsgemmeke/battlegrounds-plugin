@@ -70,8 +70,8 @@ public class CreateArena extends SubCommand {
         game.getDataFile().set("arena." + arenaName + ".world", world.getName());
 
         if (max != null && min != null) {
-            game.getDataFile().setLocation("arena." + arenaName + ".max", arena.getMax(), false);
-            game.getDataFile().setLocation("arena." + arenaName + ".min", arena.getMin(), false);
+            game.getDataFile().setLocation("arena." + arenaName + ".max", arena.getMaximumPoint(), false);
+            game.getDataFile().setLocation("arena." + arenaName + ".min", arena.getMinimumPoint(), false);
         }
 
         game.getDataFile().save();
