@@ -143,6 +143,21 @@ public interface PlayerManager {
     Collection<GamePlayer> getPlayers();
 
     /**
+     * Gives a specific player a certain amount of points.
+     *
+     * @param gamePlayer The player to be given points.
+     * @param points The amount of points.
+     */
+    void givePoints(GamePlayer gamePlayer, int points);
+
+    /**
+     * Gives all players a certain amount of points.
+     *
+     * @param points The amount of points.
+     */
+    void givePointsAll(int points);
+
+    /**
      * Equips the player with the default items.
      *
      * @param gamePlayer The player to prepare

@@ -8,8 +8,12 @@ import org.bukkit.entity.Player;
 public enum ActionBar {
 
     CHANGE_LOADOUT("actionbar-change-loadout"),
+    DOOR("actionbar-door"),
     LEAVE_ARENA("actionbar-leave-arena"),
-    SAME_LOADOUT("actionbar-same-loadout");
+    POINTS_DEDUCT("actionbar-points-deduct"),
+    POINTS_INCREASE("actionbar-points-increase"),
+    SAME_LOADOUT("actionbar-same-loadout"),
+    UNSUFFICIENT_POINTS("actionbar-unsufficient-points");
 
     private Battlegrounds plugin;
     private MessageHelper messageHelper;

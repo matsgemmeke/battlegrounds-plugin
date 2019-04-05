@@ -8,5 +8,5 @@ public interface Objective {
 
     Title getTitle();
 
-    boolean isReached(Game game);
+    boolean isAchieved(Game game);
 }

@@ -6,10 +6,13 @@ import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameSign;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.game.BattleGameSign;
+import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Set;
 
 public class SetGameSign extends SubCommand {
 
@@ -45,7 +48,7 @@ public class SetGameSign extends SubCommand {
             return;
         }
 
-        BlockState state = player.getTargetBlock(null, 5).getState();
+        BlockState state = player.getTargetBlock((Set<Material>) null, 5).getState();
         Game game = plugin.getGameManager().getGame(id);
 
         if (!(state instanceof Sign)) {

@@ -16,6 +16,9 @@ public class BattleEventDispatcher implements EventDispatcher {
     }
 
     public void dispatchEvent(Event event) {
+        if (!eventChannels.containsKey(event.getClass())) {
+            return;
+        }
         eventChannels.get(event.getClass()).handleEvent(event);
     }
 

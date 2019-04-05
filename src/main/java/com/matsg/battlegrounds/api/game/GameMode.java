@@ -1,19 +1,32 @@
 package com.matsg.battlegrounds.api.game;
 
-import com.matsg.battlegrounds.api.storage.Yaml;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent.DeathCause;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.Hitbox;
+import com.matsg.battlegrounds.game.mode.GameModeType;
 
-public interface GameMode extends StateListener {
+public interface GameMode {
 
+    /**
+     * Adds a player to the game mode.
+     *
+     * @param gamePlayer The player to be added.
+     */
     void addPlayer(GamePlayer gamePlayer);
 
-    Yaml getConfig();
-
+    /**
+     * Gets the name of the game mode.
+     *
+     * @return The game mode name.
+     */
     String getName();
 
+    /**
+     * Gets the list of objectives that can be achieved to win the game mode.
+     *
+     * @return The list of objectives.
+     */
     Iterable<Objective> getObjectives();
 
     Spawn getRespawnPoint(GamePlayer gamePlayer);
@@ -28,9 +41,9 @@ public interface GameMode extends StateListener {
 
     Iterable<Team> getTeams();
 
-    int getTimeLimit();
-
     Team getTopTeam();
+
+    GameModeType getType();
 
     void onDeath(GamePlayer gamePlayer, DeathCause deathCause);
 
@@ -42,9 +55,11 @@ public interface GameMode extends StateListener {
 
     void removePlayer(GamePlayer gamePlayer);
 
-    void setTimeLimit(int timeLimit);
-
     void spawnPlayers(GamePlayer... players);
+
+    void start();
+
+    void stop();
 
     void tick();
 }

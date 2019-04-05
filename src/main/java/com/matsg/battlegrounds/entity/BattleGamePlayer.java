@@ -16,7 +16,7 @@ import java.util.UUID;
 
 public class BattleGamePlayer implements GamePlayer {
 
-    private int deaths, exp, headshots, kills, lives;
+    private int deaths, exp, headshots, kills, lives, points;
     private List<Item> heldItems;
     private Loadout loadout, selectedLoadout;
     private Player player;
@@ -68,6 +68,10 @@ public class BattleGamePlayer implements GamePlayer {
         return player;
     }
 
+    public int getPoints() {
+        return points;
+    }
+
     public SavedInventory getSavedInventory() {
         return savedInventory;
     }
@@ -112,6 +116,10 @@ public class BattleGamePlayer implements GamePlayer {
         this.loadout = loadout;
     }
 
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
     public void setSelectedLoadout(Loadout selectedLoadout) {
         this.selectedLoadout = selectedLoadout;
     }
@@ -144,16 +152,16 @@ public class BattleGamePlayer implements GamePlayer {
         return player;
     }
 
-    public double getHealth() {
-        return player.getHealth();
+    public float getHealth() {
+        return (float) player.getHealth();
     }
 
     public Location getLocation() {
         return player.getLocation();
     }
 
-    public double getMaxHealth() {
-        return player.getMaxHealth();
+    public float getMaxHealth() {
+        return (float) player.getMaxHealth();
     }
 
     public String getName() {
@@ -172,11 +180,11 @@ public class BattleGamePlayer implements GamePlayer {
         player.sendMessage(message);
     }
 
-    public void setHealth(double health) {
+    public void setHealth(float health) {
         player.setHealth(health);
     }
 
-    public void setMaxHealth(double maxHealth) {
+    public void setMaxHealth(float maxHealth) {
         player.setMaxHealth(maxHealth);
     }
 }

@@ -7,15 +7,15 @@ public interface BaseEntity {
 
     Entity getBukkitEntity();
 
-    double getHealth();
+    float getHealth();
 
-    double getMaxHealth();
+    float getMaxHealth();
 
     Location getLocation();
 
     void remove();
 
-    void setHealth(double health);
+    void setHealth(float health);
 
-    void setMaxHealth(double maxHealth);
+    void setMaxHealth(float maxHealth);
 }

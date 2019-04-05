@@ -11,6 +11,8 @@ import com.matsg.battlegrounds.api.item.Attachment;
 import com.matsg.battlegrounds.api.item.Firearm;
 import com.matsg.battlegrounds.api.item.Item;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
+import com.matsg.battlegrounds.game.state.InGameState;
+import com.matsg.battlegrounds.game.state.ResettingState;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -86,10 +88,10 @@ public class PlayerDropItemEventHandlerTest {
 
     @Test
     public void testPlayerItemDropWhenGameDoesNotAllowItems() {
-        Item item = mock(Item.class);
+        Firearm firearm = mock(Firearm.class);
 
-        when(game.getState()).thenReturn(GameState.RESETTING);
-        when(itemRegistry.getItemIgnoreMetadata(itemStack)).thenReturn(item);
+        when(game.getState()).thenReturn(new ResettingState());
+        when(itemRegistry.getItem(itemStack)).thenReturn(firearm);
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
 
         PlayerDropItemEventHandler eventHandler = new PlayerDropItemEventHandler(plugin);
@@ -104,7 +106,7 @@ public class PlayerDropItemEventHandlerTest {
     public void testPlayerItemDropWhenHoldingNonDroppableItem() {
         Attachment attachment = mock(Attachment.class);
 
-        when(game.getState()).thenReturn(GameState.IN_GAME);
+        when(game.getState()).thenReturn(new InGameState());
         when(itemRegistry.getItemIgnoreMetadata(itemStack)).thenReturn(attachment);
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
 
@@ -121,7 +123,7 @@ public class PlayerDropItemEventHandlerTest {
         Firearm firearm = mock(Firearm.class);
 
         when(firearm.onDrop(gamePlayer, itemEntity)).thenReturn(true);
-        when(game.getState()).thenReturn(GameState.IN_GAME);
+        when(game.getState()).thenReturn(new InGameState());
         when(itemRegistry.getItemIgnoreMetadata(itemStack)).thenReturn(firearm);
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
 

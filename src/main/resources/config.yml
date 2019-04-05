@@ -1,5 +1,5 @@
 # Do not touch
-version: 1.2.2
+version: 2.0.0
 
 # The language locale which the plugin will translate its messages to
 locale: en
@@ -41,7 +41,7 @@ game-firearm-damage-modifier: 5
 
 # Game states where players are able to join games
 game-joinable-states:
-- WAITING
+- Waiting
 
 # Some projectiles are able to pierce through certain blocks. Add their materials here
 game-pierceable-blocks:

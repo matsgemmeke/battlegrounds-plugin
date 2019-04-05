@@ -1,16 +1,13 @@
 package com.matsg.battlegrounds.command;
 
-import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Selection;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.command.validate.GameIdValidator;
 import com.matsg.battlegrounds.game.BattleArena;
-import com.matsg.battlegrounds.nms.ReflectionUtils;
-import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import com.sk89q.worldedit.bukkit.selections.Selection;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -52,26 +49,19 @@ public class CreateArena extends SubCommand {
             return;
         }
 
-        Location max = null, min = null;
-        WorldEditPlugin worldEdit = BattlegroundsPlugin.getWorldEditPlugin();
-
-        // For the moment, only set min and max ranges for server clients running version 1.12 or lower.
-        // TODO: Add a functionality that accepts both old and new versions of WorldEdit.
-        if (worldEdit != null && ReflectionUtils.getEnumVersion().getValue() < 13) {
-            Selection selection = worldEdit.getSelection(player);
-            max = selection.getMaximumPoint();
-            min = selection.getMinimumPoint();
-        }
+        Selection selection = plugin.getSelectionManager().getSelection(player);
+        Location max = selection.getMaximumPoint();
+        Location min = selection.getMinimumPoint();
 
         World world = player.getWorld();
-        Arena arena = new BattleArena(arenaName, max, min, world);
+        Arena arena = new BattleArena(arenaName, world, max, min);
 
         game.getArenaList().add(arena);
         game.getDataFile().set("arena." + arenaName + ".world", world.getName());
 
         if (max != null && min != null) {
-            game.getDataFile().setLocation("arena." + arenaName + ".max", arena.getMaximumPoint(), false);
-            game.getDataFile().setLocation("arena." + arenaName + ".min", arena.getMinimumPoint(), false);
+            game.getDataFile().setLocation("arena." + arenaName + ".max", max, false);
+            game.getDataFile().setLocation("arena." + arenaName + ".min", min, false);
         }
 
         game.getDataFile().save();

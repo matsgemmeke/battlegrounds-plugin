@@ -27,8 +27,8 @@ public class BattleGameSign implements GameSign {
     public void click(Player player) {
         if (game == null
                 || game.getPlayerManager().getGamePlayer(player) != null
-                || !plugin.getBattlegroundsConfig().joinableGamestates.contains(game.getState().toString())
-                || game.getPlayerManager().getPlayers().size() > game.getConfiguration().getMaxPlayers()) {
+                || game.getPlayerManager().getPlayers().size() > game.getConfiguration().getMaxPlayers()
+                || !plugin.getBattlegroundsConfig().joinableGamestates.contains(game.getState().toString())) {
             return;
         }
         game.getPlayerManager().addPlayer(player);
@@ -47,7 +47,8 @@ public class BattleGameSign implements GameSign {
                     new Placeholder("bg_game", game.getId()),
                     new Placeholder("bg_maxplayers", game.getConfiguration().getMaxPlayers()),
                     new Placeholder("bg_players", game.getPlayerManager().getPlayers().size()),
-                    new Placeholder("bg_state", plugin.getBattlegroundsConfig().getGameSignState(game.getState()))));
+                    new Placeholder("bg_state", plugin.getBattlegroundsConfig().getGameSignState(game.getState().toString().toLowerCase())))
+            );
         }
         return sign.update();
     }

@@ -2,6 +2,7 @@ package com.matsg.battlegrounds.event.handler;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.event.EventHandler;
+import com.matsg.battlegrounds.api.game.Action;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.item.Item;
 import com.matsg.battlegrounds.api.item.Weapon;
@@ -35,7 +36,7 @@ public class PlayerInteractEventHandler implements EventHandler<PlayerInteractEv
         GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
         ItemStack itemStack = event.getItem();
 
-        if (itemStack == null || game.getArena() == null || !game.getState().isAllowItems()) {
+        if (itemStack == null || game.getArena() == null || !game.getState().isAllowed(Action.USE_ITEM)) {
             return;
         }
 
@@ -43,7 +44,7 @@ public class PlayerInteractEventHandler implements EventHandler<PlayerInteractEv
 
         Item item = game.getItemRegistry().getWeapon(gamePlayer, itemStack);
 
-        if (item == null && (item = game.getItemRegistry().getItem(itemStack)) == null || !game.getState().isAllowWeapons() && item instanceof Weapon) {
+        if (item == null && (item = game.getItemRegistry().getItem(itemStack)) == null || !game.getState().isAllowed(Action.USE_WEAPON) && item instanceof Weapon) {
             return;
         }
 

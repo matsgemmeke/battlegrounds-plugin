@@ -1,46 +1,33 @@
 package com.matsg.battlegrounds.api.game;
 
-public enum GameState {
+public interface GameState {
 
-    WAITING(1, false, true, true, false),
-    STARTING(2, true, true, false, false),
-    IN_GAME(3, true, true, true, true),
-    RESETTING(4, true, false, true, false),
-    DISABLED(5, false, false, false, false);
+    /**
+     * Gets whether a certain allowed in the game state.
+     *
+     * @param action The action type performed.
+     * @return Whether the action is allowed.
+     */
+    boolean isAllowed(Action action);
 
-    private boolean allowItems, allowMove, allowWeapons, inProgress;
-    private int id;
+    /**
+     * Gets whether the game state is in progress.
+     *
+     * @return Whether the game state is in progress.
+     */
+    boolean isInProgress();
 
-    GameState(int id, boolean inProgress, boolean allowItems, boolean allowMove, boolean allowWeapons) {
-        this.id = id;
-        this.inProgress = inProgress;
-        this.allowItems = allowItems;
-        this.allowMove = allowMove;
-        this.allowWeapons = allowWeapons;
-    }
+    /**
+     * Goes to the next game state.
+     *
+     * @return The next game state.
+     */
+    GameState next();
 
-    public static GameState getById(int id) {
-        for (GameState state : values()) {
-            if (state.id == id) {
-                return state;
-            }
-        }
-        return null;
-    }
-
-    public boolean isAllowItems() {
-        return allowItems;
-    }
-
-    public boolean isAllowMove() {
-        return allowMove;
-    }
-
-    public boolean isAllowWeapons() {
-        return allowWeapons;
-    }
-
-    public boolean isInProgress() {
-        return inProgress;
-    }
+    /**
+     * Goes back to the previous game state.
+     *
+     * @return The previous game state.
+     */
+    GameState previous();
 }

@@ -82,6 +82,13 @@ public interface Battlegrounds extends Plugin {
     PlayerStorage getPlayerStorage();
 
     /**
+     * Gets the selection manager of the plugin.
+     *
+     * @return The selection manager.
+     */
+    SelectionManager getSelectionManager();
+
+    /**
      * Gets the NMS version of the plugin.
      *
      * @return The battlegrounds version for handling NMS related functions

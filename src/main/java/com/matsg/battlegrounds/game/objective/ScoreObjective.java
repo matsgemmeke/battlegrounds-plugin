@@ -25,7 +25,7 @@ public class ScoreObjective implements Objective {
         return title;
     }
 
-    public boolean isReached(Game game) {
+    public boolean isAchieved(Game game) {
         return game.getGameMode().getTopTeam().getScore() >= goal;
     }
 }

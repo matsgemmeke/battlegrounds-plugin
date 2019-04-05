@@ -14,7 +14,6 @@ public class PlayerQuitEventHandler implements EventHandler<PlayerQuitEvent> {
         this.plugin = plugin;
     }
 
-    @Override
     public void handle(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         Game game = plugin.getGameManager().getGame(player);

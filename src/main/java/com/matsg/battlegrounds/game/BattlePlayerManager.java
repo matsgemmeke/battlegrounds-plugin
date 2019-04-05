@@ -243,6 +243,17 @@ public class BattlePlayerManager implements PlayerManager {
         return nearestPlayer;
     }
 
+    public void givePoints(GamePlayer gamePlayer, int points) {
+        ActionBar.POINTS_INCREASE.send(gamePlayer.getPlayer(), new Placeholder("bg_points", points));
+        gamePlayer.setPoints(gamePlayer.getPoints() + points);
+    }
+
+    public void givePointsAll(int points) {
+        for (GamePlayer gamePlayer : players) {
+            givePoints(gamePlayer, points);
+        }
+    }
+
     public void preparePlayer(GamePlayer gamePlayer) {
         Player player = gamePlayer.getPlayer();
         player.setFoodLevel(20);

@@ -55,7 +55,7 @@ public class BlockPlaceEventHandlerTest {
         this.playerManager = mock(PlayerManager.class);
         this.world = mock(World.class);
 
-        this.arena = new BattleArena("Arena", new Location(world, 100, 100, 100), new Location(world, 0, 0, 0), world);
+        this.arena = new BattleArena("Arena", world, new Location(world, 100, 100, 100), new Location(world, 0, 0, 0));
         this.gameManager = new BattleGameManager();
         this.gamePlayer = new BattleGamePlayer(player, null);
 

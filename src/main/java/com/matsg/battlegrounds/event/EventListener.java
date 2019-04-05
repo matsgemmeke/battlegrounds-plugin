@@ -60,7 +60,8 @@ public class EventListener implements Listener {
                 new PlayerDropItemEventHandler(plugin)
         ));
         eventDispatcher.registerEventChannel(PlayerInteractEvent.class, new EventChannel<>(
-                new PlayerInteractEventHandler(plugin)
+                new PlayerInteractEventHandler(plugin),
+                new SelectionInteractionHandler(plugin)
         ));
         eventDispatcher.registerEventChannel(PlayerItemHeldEvent.class, new EventChannel<>(
                 new PlayerItemHeldEventHandler(plugin)

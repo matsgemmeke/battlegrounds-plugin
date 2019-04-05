@@ -3,7 +3,7 @@ package com.matsg.battlegrounds.api.game;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import org.bukkit.Location;
 
-public interface Spawn extends GameComponent {
+public interface Spawn extends ArenaComponent {
 
     GamePlayer getGamePlayer();
 

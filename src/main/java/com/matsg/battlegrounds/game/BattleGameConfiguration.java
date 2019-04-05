@@ -4,6 +4,7 @@ import com.matsg.battlegrounds.api.storage.Yaml;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameConfiguration;
 import com.matsg.battlegrounds.api.game.GameMode;
+import com.matsg.battlegrounds.game.mode.GameModeFactory;
 import com.matsg.battlegrounds.game.mode.GameModeType;
 
 import java.util.ArrayList;
@@ -23,8 +24,13 @@ public class BattleGameConfiguration implements GameConfiguration {
     }
 
     public static BattleGameConfiguration getDefaultConfiguration(Game game) {
+        GameModeFactory gameModeFactory = new GameModeFactory();
+
         return new BattleGameConfiguration(
-                new GameMode[] { GameModeType.FREE_FOR_ALL.getInstance(game), GameModeType.TEAM_DEATHMATCH.getInstance(game) },
+                new GameMode[] {
+                        gameModeFactory.make(game, GameModeType.FREE_FOR_ALL),
+                        gameModeFactory.make(game, GameModeType.TEAM_DEATHMATCH)
+                },
                 12,
                 2,
                 15,
@@ -55,7 +61,7 @@ public class BattleGameConfiguration implements GameConfiguration {
     private List<String> getGameModeNames() {
         List<String> list = new ArrayList<>();
         for (GameMode gameMode : gameModes) {
-            list.add(GameModeType.getByGameMode(gameMode.getClass()).toString());
+            list.add(gameMode.getType().toString());
         }
         return list;
     }

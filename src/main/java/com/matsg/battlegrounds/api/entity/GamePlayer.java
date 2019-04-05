@@ -19,6 +19,8 @@ public interface GamePlayer extends BaseEntity, OfflineGamePlayer, Comparable<Ga
 
     Player getPlayer();
 
+    int getPoints();
+
     SavedInventory getSavedInventory();
 
     Loadout getSelectedLoadout();
@@ -32,6 +34,8 @@ public interface GamePlayer extends BaseEntity, OfflineGamePlayer, Comparable<Ga
     void setLives(int lives);
 
     void setLoadout(Loadout loadout);
+
+    void setPoints(int points);
 
     void setSelectedLoadout(Loadout loadout);
 

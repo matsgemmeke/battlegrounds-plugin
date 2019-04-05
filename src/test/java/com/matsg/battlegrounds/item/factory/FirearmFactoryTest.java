@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.item.factory;
 
 import com.matsg.battlegrounds.BattlegroundsPlugin;
+import com.matsg.battlegrounds.FactoryCreationException;
 import com.matsg.battlegrounds.Translator;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.storage.BattlegroundsConfig;

@@ -7,6 +7,7 @@ import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.command.BattlegroundsCommand;
 import com.matsg.battlegrounds.command.LoadoutCommand;
 import com.matsg.battlegrounds.event.BattleEventDispatcher;
+import com.matsg.battlegrounds.nms.VersionFactory;
 import com.matsg.battlegrounds.storage.*;
 import com.matsg.battlegrounds.event.EventListener;
 import com.matsg.battlegrounds.event.PlayerSwapItemListener;
@@ -15,12 +16,8 @@ import com.matsg.battlegrounds.item.factory.EquipmentFactory;
 import com.matsg.battlegrounds.item.factory.FirearmFactory;
 import com.matsg.battlegrounds.item.factory.MeleeWeaponFactory;
 import com.matsg.battlegrounds.nms.ReflectionUtils;
-import com.matsg.battlegrounds.nms.VersionManager;
 import com.matsg.battlegrounds.storage.local.LocalPlayerStorage;
 import com.matsg.battlegrounds.storage.sql.SQLPlayerStorage;
-import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -39,8 +36,9 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
     private ItemFactory<Firearm> firearmFactory;
     private ItemFactory<MeleeWeapon> meleeWeaponFactory;
     private LevelConfig levelConfig;
+    private SelectionManager selectionManager;
     private PlayerStorage playerStorage;
-    private VersionManager versionManager;
+    private Version version;
 
     public void onEnable() {
         plugin = this;
@@ -63,14 +61,6 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
 
     public static Battlegrounds getPlugin() {
         return plugin;
-    }
-
-    public static WorldEditPlugin getWorldEditPlugin() {
-        Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
-        if (plugin == null || !(plugin instanceof WorldEditPlugin)) {
-            return null;
-        }
-        return (WorldEditPlugin) plugin;
     }
 
     public ItemFactory<Attachment> getAttachmentFactory() {
@@ -113,8 +103,12 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         return playerStorage;
     }
 
+    public SelectionManager getSelectionManager() {
+        return selectionManager;
+    }
+
     public Version getVersion() {
-        return versionManager.getVersion();
+        return version;
     }
 
     public boolean loadConfigs() {
@@ -180,9 +174,12 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
             throw new StartupFailedException("Failed to set up player storage!", e);
         }
 
+        VersionFactory versionFactory = new VersionFactory();
+        version = versionFactory.make(ReflectionUtils.getEnumVersion());
+
         eventDispatcher = new BattleEventDispatcher();
         gameManager = new BattleGameManager();
-        versionManager = new VersionManager();
+        selectionManager = new BattleSelectionManager();
 
         new DataLoader(this);
 

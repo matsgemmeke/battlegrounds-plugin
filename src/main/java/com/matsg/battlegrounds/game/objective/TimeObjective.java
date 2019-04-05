@@ -25,7 +25,7 @@ public class TimeObjective implements Objective {
         return title;
     }
 
-    public boolean isReached(Game game) {
+    public boolean isAchieved(Game game) {
         return game.getTimeControl().getTime() >= timeLimit;
     }
 }

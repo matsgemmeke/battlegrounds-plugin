@@ -2,6 +2,7 @@ package com.matsg.battlegrounds.event.handler;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.event.EventHandler;
+import com.matsg.battlegrounds.api.game.Action;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.Spawn;
@@ -35,7 +36,7 @@ public class PlayerMoveEventHandler implements EventHandler<PlayerMoveEvent> {
             ActionBar.LEAVE_ARENA.send(player);
         }
 
-        if (arena == null || game.getState().isAllowMove() || from.getX() == to.getX() && from.getZ() == to.getZ()) {
+        if (arena == null || game.getState().isAllowed(Action.MOVEMENT) || from.getX() == to.getX() && from.getZ() == to.getZ()) {
             return;
         }
 

@@ -13,6 +13,7 @@ public class BattleSound implements com.matsg.battlegrounds.api.util.Sound {
     public static final BattleSound
             ATTACHMENT_TOGGLE = new BattleSound(XSound.CLICK.bukkitSound(), (float) 0.5, (float) 1.25),
             COUNTDOWN_NOTE = new BattleSound(XSound.NOTE_STICKS.bukkitSound(), 1, 1),
+            DOOR_OPEN = new BattleSound(XSound.DOOR_OPEN.bukkitSound(), 1, (float) 0.75),
             EXPLOSION = new BattleSound(XSound.EXPLODE.bukkitSound(), 10, (float) 0.75),
             EXPLOSIVE_THROW = new BattleSound(XSound.SHOOT_ARROW.bukkitSound(), 1, (float) 0.5),
             KNIFE_THROW = new BattleSound(XSound.SHOOT_ARROW.bukkitSound(), 1, (float) 1.25);

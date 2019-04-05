@@ -8,9 +8,11 @@ import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.Version;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
-import com.matsg.battlegrounds.game.ArenaSpawn;
+import com.matsg.battlegrounds.game.component.ArenaSpawn;
 import com.matsg.battlegrounds.game.BattleArena;
 import com.matsg.battlegrounds.game.BattleTeam;
+import com.matsg.battlegrounds.game.state.InGameState;
+import com.matsg.battlegrounds.game.state.StartingState;
 import com.matsg.battlegrounds.nms.ReflectionUtils;
 import com.matsg.battlegrounds.util.ActionBar;
 import org.bukkit.ChatColor;
@@ -57,7 +59,7 @@ public class PlayerMoveEventHandlerTest {
         this.playerManager = mock(PlayerManager.class);
         this.world = mock(World.class);
 
-        this.arena = new BattleArena("Arena", new Location(world, 100, 100, 100), new Location(world, 0, 0, 0), world);
+        this.arena = new BattleArena("Arena", world, new Location(world, 100, 100, 100), new Location(world, 0, 0, 0));
         this.event = new PlayerMoveEvent(player, new Location(world, 0, 0, 0), new Location(world, 1, 1, 1));
         this.gameManager = new BattleGameManager();
 
@@ -91,7 +93,7 @@ public class PlayerMoveEventHandlerTest {
 
     @Test
     public void testPlayerMoveInArenaWhileInGame() {
-        when(game.getState()).thenReturn(GameState.IN_GAME);
+        when(game.getState()).thenReturn(new InGameState());
 
         PlayerMoveEventHandler eventHandler = new PlayerMoveEventHandler(plugin);
         eventHandler.handle(event);
@@ -108,7 +110,7 @@ public class PlayerMoveEventHandlerTest {
 
         Version version = mock(Version.class);
 
-        when(game.getState()).thenReturn(GameState.IN_GAME);
+        when(game.getState()).thenReturn(new InGameState());
         when(plugin.getVersion()).thenReturn(version);
 
         PowerMockito.mockStatic(ActionBar.class);
@@ -129,7 +131,7 @@ public class PlayerMoveEventHandlerTest {
 
         arena.getSpawns().add(spawn);
 
-        when(game.getState()).thenReturn(GameState.STARTING);
+        when(game.getState()).thenReturn(new StartingState());
 
         PlayerMoveEventHandler eventHandler = new PlayerMoveEventHandler(plugin);
         eventHandler.handle(event);
@@ -144,7 +146,7 @@ public class PlayerMoveEventHandlerTest {
     public void testPlayerMoveInArenaWhileCountdownNoSpawn() {
         Team team = new BattleTeam(1, "Team", null, null);
 
-        when(game.getState()).thenReturn(GameState.STARTING);
+        when(game.getState()).thenReturn(new StartingState());
         when(gamePlayer.getTeam()).thenReturn(team);
 
         PlayerMoveEventHandler eventHandler = new PlayerMoveEventHandler(plugin);

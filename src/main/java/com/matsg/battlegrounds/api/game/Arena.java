@@ -7,6 +7,14 @@ import java.util.Collection;
 public interface Arena extends Extent {
 
     /**
+     * Searches for a component from the arena with a certain id. Includes section components.
+     *
+     * @param id The component id.
+     * @return The component with the corresponding id or null if there are no matching components.
+     */
+    ArenaComponent getComponent(int id);
+
+    /**
      * Gets the name of the arena.
      *
      * @return The arena name
@@ -44,6 +52,21 @@ public interface Arena extends Extent {
      * @return A random spawn entry
      */
     Spawn getRandomSpawn(int teamId, double distance);
+
+    /**
+     * Gets a section from the name with a certain name.
+     *
+     * @param name The section name.
+     * @return The section with the corresponding name or null if it does not exist.
+     */
+    Section getSection(String name);
+
+    /**
+     * Gets the collection of sections in the arena.
+     *
+     * @return The section collection.
+     */
+    Collection<Section> getSections();
 
     /**
      * Gets the spawn which currently being used by a specific player.

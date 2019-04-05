@@ -1,7 +1,6 @@
 package com.matsg.battlegrounds.api.storage;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.game.GameState;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -40,8 +39,8 @@ public final class BattlegroundsConfig extends AbstractYaml {
         return list.toArray(new String[list.size()]);
     }
 
-    public String getGameSignState(GameState gameState) {
-        return ChatColor.translateAlternateColorCodes('&', getString("game-sign-state." + gameState.toString().toLowerCase().replaceAll("_", "-")));
+    public String getGameSignState(String gameState) {
+        return ChatColor.translateAlternateColorCodes('&', getString("game-sign-state." + gameState));
     }
 
     public Map<String, String> getLobbyScoreboardLayout() {

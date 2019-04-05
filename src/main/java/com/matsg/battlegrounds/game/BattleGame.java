@@ -10,6 +10,7 @@ import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.PlayerStatus;
 import com.matsg.battlegrounds.api.storage.StatisticContext;
+import com.matsg.battlegrounds.game.state.WaitingState;
 import com.matsg.battlegrounds.storage.BattleCacheYaml;
 import com.matsg.battlegrounds.gui.scoreboard.LobbyScoreboard;
 import com.matsg.battlegrounds.util.BattleRunnable;
@@ -46,7 +47,7 @@ public class BattleGame implements Game {
         this.arenaList = new ArrayList<>();
         this.itemRegistry = new BattleItemRegistry();
         this.playerManager = new BattlePlayerManager(this, plugin.getLevelConfig(), plugin.getPlayerStorage());
-        this.state = GameState.WAITING;
+        this.state = new WaitingState();
 
         try {
             this.dataFile = new BattleCacheYaml(plugin, plugin.getDataFolder().getPath() + "/data/game_" + id, "game_" + id + ".yml");
@@ -126,7 +127,6 @@ public class BattleGame implements Game {
     public void setState(GameState state) {
         this.plugin.getServer().getPluginManager().callEvent(new GameStateChangeEvent(this, this.state, state));
         this.state = state;
-        this.gameMode.onStateChange(state);
     }
 
     public void callEvent(Event event) {
@@ -158,7 +158,7 @@ public class BattleGame implements Game {
                 itemRegistry.clear();
                 playerManager.getPlayers().clear();
 
-                setState(GameState.WAITING);
+                resetState();
                 updateSign();
             }
         }.runTaskLater(200);
@@ -181,6 +181,10 @@ public class BattleGame implements Game {
     public Location getSpawnPoint() {
         Location mainLobby = plugin.getBattlegroundsCache().getLocation("mainlobby");
         return mainLobby != null ? mainLobby : plugin.getServer().getWorlds().get(0).getSpawnLocation(); // Return the main lobby, otherwise the world spawn
+    }
+
+    private void resetState() {
+        setState(new WaitingState());
     }
 
     public void rollback() {
@@ -225,17 +229,17 @@ public class BattleGame implements Game {
     public void startGame() {
         countdown = null;
         timeControl.start();
-        setState(GameState.IN_GAME);
+        setState(state.next());
         updateSign();
         callEvent(new GameStartEvent(this));
     }
 
     public void stop() {
-        if (state == GameState.WAITING || state == GameState.STARTING) {
+        if (!state.isInProgress()) {
             if (countdown != null) {
                 countdown.cancelCountdown();
             }
-            setState(GameState.WAITING);
+            resetState();
             updateSign();
             for (GamePlayer gamePlayer : playerManager.getPlayers()) {
                 gamePlayer.getPlayer().setScoreboard(new LobbyScoreboard(this).createScoreboard());
@@ -270,7 +274,7 @@ public class BattleGame implements Game {
         timeControl.stop();
 
         clearGameData();
-        setState(GameState.RESETTING);
+        setState(state.next());
         updateSign();
     }
 

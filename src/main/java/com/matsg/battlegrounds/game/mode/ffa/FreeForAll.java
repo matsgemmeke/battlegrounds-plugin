@@ -15,7 +15,8 @@ import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.Hitbox;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.game.BattleTeam;
-import com.matsg.battlegrounds.game.mode.AbstractGameMode;
+import com.matsg.battlegrounds.game.mode.ArenaGameMode;
+import com.matsg.battlegrounds.game.mode.GameModeType;
 import com.matsg.battlegrounds.game.mode.Result;
 import com.matsg.battlegrounds.game.objective.EliminationObjective;
 import com.matsg.battlegrounds.game.objective.ScoreObjective;
@@ -26,12 +27,12 @@ import org.bukkit.Color;
 
 import java.util.List;
 
-public class FreeForAll extends AbstractGameMode {
+public class FreeForAll extends ArenaGameMode {
 
     private boolean scoreboardEnabled;
     private Color color;
     private double minSpawnDistance;
-    private int killsToWin, lives;
+    private int killsToWin, lives, timeLimit;
     private String[] endMessage;
 
     public FreeForAll(Battlegrounds plugin, Game game, Yaml yaml) {
@@ -54,6 +55,10 @@ public class FreeForAll extends AbstractGameMode {
         objectives.add(new TimeObjective(timeLimit));
     }
 
+    public GameModeType getType() {
+        return GameModeType.FREE_FOR_ALL;
+    }
+
     public void addPlayer(GamePlayer gamePlayer) {
         if (getTeam(gamePlayer) != null) {
             return;
@@ -64,7 +69,7 @@ public class FreeForAll extends AbstractGameMode {
     }
 
     private Color getConfigColor() {
-        String[] array = yaml.getString("armor-color").split(",");
+        String[] array = config.getString("armor-color").split(",");
         return Color.fromRGB(Integer.parseInt(array[0]), Integer.parseInt(array[1]), Integer.parseInt(array[2]));
     }
 
@@ -73,7 +78,7 @@ public class FreeForAll extends AbstractGameMode {
     }
 
     public GameScoreboard getScoreboard() {
-        return scoreboardEnabled ? new FFAScoreboard(game, yaml) : null;
+        return scoreboardEnabled ? new FFAScoreboard(game, config) : null;
     }
 
     public void onDeath(GamePlayer gamePlayer, DeathCause deathCause) {
@@ -96,7 +101,7 @@ public class FreeForAll extends AbstractGameMode {
         killer.getTeam().setScore(killer.getTeam().getScore() + 1);
         game.getPlayerManager().updateExpBar(killer);
 
-        Objective objective = getReachedObjective();
+        Objective objective = getAchievedObjective();
 
         if (objective != null) {
             game.callEvent(new GameEndEvent(game, objective, getTopTeam(), getSortedTeams()));
@@ -104,7 +109,25 @@ public class FreeForAll extends AbstractGameMode {
         }
     }
 
-    public void onStart() {
+    public void removePlayer(GamePlayer gamePlayer) {
+        Team team = getTeam(gamePlayer);
+        if (team == null) {
+            return;
+        }
+        teams.remove(team);
+    }
+
+    public void spawnPlayers(GamePlayer... players) {
+        for (Team team : teams) {
+            for (GamePlayer gamePlayer : team.getPlayers()) {
+                Spawn spawn = game.getArena().getRandomSpawn();
+                spawn.setGamePlayer(gamePlayer);
+                gamePlayer.getPlayer().teleport(spawn.getLocation());
+            }
+        }
+    }
+
+    public void start() {
         super.onStart();
         for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
             gamePlayer.setLives(lives);
@@ -112,9 +135,9 @@ public class FreeForAll extends AbstractGameMode {
         }
     }
 
-    public void onStop() {
+    public void stop() {
         List<Team> teams = getSortedTeams();
-        Objective objective = getReachedObjective();
+        Objective objective = getAchievedObjective();
         Placeholder[] placeholders = new Placeholder[] {
                 new Placeholder("bg_first", teams.size() > 0 && teams.get(0) != null ? teams.get(0).getPlayers().iterator().next().getName() : "---"),
                 new Placeholder("bg_first_score", teams.size() > 0 && teams.get(0) != null ? teams.get(0).getPlayers().iterator().next().getKills() : 0),
@@ -138,23 +161,5 @@ public class FreeForAll extends AbstractGameMode {
         }
 
         this.teams.clear();
-    }
-
-    public void removePlayer(GamePlayer gamePlayer) {
-        Team team = getTeam(gamePlayer);
-        if (team == null) {
-            return;
-        }
-        teams.remove(team);
-    }
-
-    public void spawnPlayers(GamePlayer... players) {
-        for (Team team : teams) {
-            for (GamePlayer gamePlayer : team.getPlayers()) {
-                Spawn spawn = game.getArena().getRandomSpawn();
-                spawn.setGamePlayer(gamePlayer);
-                gamePlayer.getPlayer().teleport(spawn.getLocation());
-            }
-        }
     }
 }

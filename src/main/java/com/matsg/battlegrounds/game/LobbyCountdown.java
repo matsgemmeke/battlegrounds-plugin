@@ -3,7 +3,6 @@ package com.matsg.battlegrounds.game;
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.game.Countdown;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.GameState;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.gui.scoreboard.LobbyScoreboard;
 import com.matsg.battlegrounds.util.BattleRunnable;
@@ -49,8 +48,6 @@ public class LobbyCountdown extends BattleRunnable implements Countdown {
             int countdown = time;
             public void run() {
                 if (cancelled) {
-                    game.setState(GameState.WAITING);
-                    game.updateSign();
                     cancel();
                     return;
                 }

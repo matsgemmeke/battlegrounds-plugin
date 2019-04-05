@@ -131,14 +131,4 @@ public class ItemStackBuilderTest {
 
         verify(itemMeta, times(1)).setLore(loreList);
     }
-
-    @Test
-    public void testSetUnbreakable() {
-        boolean unbreakable = true;
-
-        ItemStackBuilder builder = new ItemStackBuilder(itemStack).setUnbreakable(unbreakable);
-        builder.build();
-
-        verify(itemMeta, times(1)).setUnbreakable(unbreakable);
-    }
 }

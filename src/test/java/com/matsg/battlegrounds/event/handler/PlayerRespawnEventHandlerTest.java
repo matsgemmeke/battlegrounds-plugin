@@ -7,7 +7,7 @@ import com.matsg.battlegrounds.api.game.PlayerManager;
 import com.matsg.battlegrounds.api.game.Spawn;
 import com.matsg.battlegrounds.api.game.GameMode;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
-import com.matsg.battlegrounds.game.ArenaSpawn;
+import com.matsg.battlegrounds.game.component.ArenaSpawn;
 import com.matsg.battlegrounds.entity.BattleGamePlayer;
 import org.bukkit.Location;
 import org.bukkit.World;

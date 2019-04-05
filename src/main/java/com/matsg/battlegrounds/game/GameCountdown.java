@@ -23,7 +23,7 @@ public class GameCountdown extends BattleRunnable implements Countdown {
         this.countdown = countdown;
         this.cancelled = false;
 
-        game.setState(GameState.STARTING);
+        game.setState(game.getState().next());
         game.updateSign();
 
         for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {

@@ -5,6 +5,8 @@ import com.matsg.battlegrounds.api.storage.CacheYaml;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.game.GameMode;
 import com.matsg.battlegrounds.game.*;
+import com.matsg.battlegrounds.game.component.ArenaSpawn;
+import com.matsg.battlegrounds.game.mode.GameModeFactory;
 import com.matsg.battlegrounds.game.mode.GameModeType;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -55,6 +57,8 @@ public class DataLoader {
             e.printStackTrace();
         }
 
+        GameModeFactory gameModeFactory = new GameModeFactory();
+
         // Setting configurations
         try {
             for (Game game : plugin.getGameManager().getGames()) {
@@ -64,7 +68,7 @@ public class DataLoader {
                 for (String gameModeType : config.getStringList("gamemodes")) {
                     GameMode gameMode;
                     try {
-                        gameMode = GameModeType.valueOf(gameModeType.toUpperCase()).getInstance(game);
+                        gameMode = gameModeFactory.make(game, GameModeType.valueOf(gameModeType.toUpperCase()));
                     } catch (IllegalArgumentException e) {
                         plugin.getLogger().severe("Invalid gamemode type \"" + gameModeType + "\"");
                         continue;
@@ -105,7 +109,7 @@ public class DataLoader {
                     Location max = data.getLocation("arena." + name + ".max"), min = data.getLocation("arena." + name + ".min");
                     World world = plugin.getServer().getWorld(data.getString("arena." + name + ".world"));
 
-                    Arena arena = new BattleArena(name, max, min, world);
+                    Arena arena = new BattleArena(name, world, max, min);
                     ConfigurationSection spawnSection = arenaSection.getConfigurationSection(name + ".spawn");
 
                     if (spawnSection != null) {
