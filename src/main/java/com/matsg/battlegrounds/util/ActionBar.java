@@ -10,6 +10,7 @@ public enum ActionBar {
     CHANGE_LOADOUT("actionbar-change-loadout"),
     DOOR("actionbar-door"),
     LEAVE_ARENA("actionbar-leave-arena"),
+    PERKMACHINE_SOLD_OUT("actionbar-perkmachine-sold-out"),
     POINTS_DEDUCT("actionbar-points-deduct"),
     POINTS_INCREASE("actionbar-points-increase"),
     SAME_LOADOUT("actionbar-same-loadout"),

@@ -22,6 +22,8 @@ public interface Loadout extends Cloneable {
 
     Weapon getWeapon(ItemStack itemStack);
 
+    Weapon getWeapon(String name);
+
     Weapon getWeaponIgnoreMetadata(ItemStack itemStack);
 
     Weapon[] getWeapons();

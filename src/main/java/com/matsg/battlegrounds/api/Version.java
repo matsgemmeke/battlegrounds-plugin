@@ -6,6 +6,9 @@ import com.matsg.battlegrounds.api.game.Game;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+/**
+ * Contains miscellaneous functions of whose executions depend on the server version.
+ */
 public interface Version {
 
     Hellhound createHellhound(Game game);

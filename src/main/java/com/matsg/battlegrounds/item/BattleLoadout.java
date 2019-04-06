@@ -129,6 +129,15 @@ public class BattleLoadout implements Loadout {
         return null;
     }
 
+    public Weapon getWeapon(String name) {
+        for (Weapon weapon : getWeapons()) {
+            if (weapon != null && weapon.getName().equals(name)) {
+                return weapon;
+            }
+        }
+        return null;
+    }
+
     public Weapon getWeaponIgnoreMetadata(ItemStack itemStack) {
         for (Weapon weapon : getWeapons()) {
             if (weapon != null) {

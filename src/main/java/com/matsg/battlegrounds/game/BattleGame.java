@@ -278,7 +278,7 @@ public class BattleGame implements Game {
         updateSign();
     }
 
-    private boolean updateScoreboard() {
+    public boolean updateScoreboard() {
         boolean scoreboard = gameMode.getScoreboard() != null;
         if (scoreboard) {
             gameMode.getScoreboard().display(this);

@@ -1,22 +1,16 @@
 package com.matsg.battlegrounds.api.item;
 
-import com.matsg.battlegrounds.api.entity.GamePlayer;
-
-public interface Weapon extends Item {
+public interface Weapon extends Item, Property {
 
     Weapon clone();
 
     String getDescription();
-
-    GamePlayer getGamePlayer();
 
     ItemSlot getItemSlot();
 
     ItemType getType();
 
     void resetState();
-
-    void setGamePlayer(GamePlayer gamePlayer);
 
     void setItemSlot(ItemSlot itemSlot);
 }

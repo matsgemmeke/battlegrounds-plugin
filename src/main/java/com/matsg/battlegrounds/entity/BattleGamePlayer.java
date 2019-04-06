@@ -6,13 +6,12 @@ import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.PlayerStatus;
 import com.matsg.battlegrounds.api.entity.SavedInventory;
+import com.matsg.battlegrounds.api.item.Perk;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class BattleGamePlayer implements GamePlayer {
 
@@ -22,6 +21,7 @@ public class BattleGamePlayer implements GamePlayer {
     private Player player;
     private PlayerStatus playerStatus;
     private SavedInventory savedInventory;
+    private Set<Perk> perks;
     private Team team;
 
     public BattleGamePlayer(Player player, SavedInventory savedInventory) {
@@ -33,6 +33,7 @@ public class BattleGamePlayer implements GamePlayer {
         this.kills = 0;
         this.lives = 0;
         this.playerStatus = PlayerStatus.ACTIVE;
+        this.perks = new HashSet<>();
         this.savedInventory = savedInventory;
     }
 
@@ -62,6 +63,10 @@ public class BattleGamePlayer implements GamePlayer {
 
     public Loadout getLoadout() {
         return loadout;
+    }
+
+    public Set<Perk> getPerks() {
+        return perks;
     }
 
     public Player getPlayer() {

@@ -3,9 +3,11 @@ package com.matsg.battlegrounds.api.entity;
 import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.item.Item;
 import com.matsg.battlegrounds.api.item.Loadout;
+import com.matsg.battlegrounds.api.item.Perk;
 import org.bukkit.entity.Player;
 
 import java.util.Collection;
+import java.util.Set;
 
 public interface GamePlayer extends BaseEntity, OfflineGamePlayer, Comparable<GamePlayer> {
 
@@ -16,6 +18,8 @@ public interface GamePlayer extends BaseEntity, OfflineGamePlayer, Comparable<Ga
     int getLives();
 
     Loadout getLoadout();
+
+    Set<Perk> getPerks();
 
     Player getPlayer();
 

@@ -176,6 +176,13 @@ public interface Game {
     void stop();
 
     /**
+     * Updates the scoreboard that is currently being displayed.
+     *
+     * @return Whether the scoreboard was updated.
+     */
+    boolean updateScoreboard();
+
+    /**
      * Updates the game joining sign.
      *
      * @return Whether the game sign has updated or not

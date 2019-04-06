@@ -7,4 +7,8 @@ public interface MysteryBox extends ArenaComponent, Interactable, Lockable, Watc
     Block getLeftSide();
 
     Block getRightSide();
+
+    boolean isActive();
+
+    void setActive(boolean active);
 }
