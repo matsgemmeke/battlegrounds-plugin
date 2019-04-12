@@ -1,16 +1,6 @@
 package com.matsg.battlegrounds.api.game;
 
-import java.util.Collection;
-
 public interface Section extends ArenaComponent, Lockable {
-
-    /**
-     * Gets a component from the section with a certain id.
-     *
-     * @param id The component id.
-     * @return The component with the corresponding id or null if there are no matching components.
-     */
-    ArenaComponent getComponent(int id);
 
     /**
      * Gets all components that the section has. This collection is immutable. If a component needs to be added to the
@@ -75,4 +65,12 @@ public interface Section extends ArenaComponent, Lockable {
      * @param price The section price.
      */
     void setPrice(int price);
+
+    /**
+     * Gets a component from the section with a certain id.
+     *
+     * @param id The component id.
+     * @return The component with the corresponding id or null if there are no matching components.
+     */
+    ArenaComponent getComponent(int id);
 }

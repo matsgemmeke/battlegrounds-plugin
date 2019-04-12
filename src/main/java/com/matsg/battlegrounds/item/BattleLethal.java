@@ -33,20 +33,20 @@ public class BattleLethal extends BattleEquipment implements Lethal {
         return longDamage;
     }
 
-    public double getMidDamage() {
-        return midDamage;
-    }
-
-    public double getShortDamage() {
-        return shortDamage;
-    }
-
     public void setLongDamage(double longDamage) {
         this.longDamage = longDamage;
     }
 
+    public double getMidDamage() {
+        return midDamage;
+    }
+
     public void setMidDamage(double midDamage) {
         this.midDamage = midDamage;
+    }
+
+    public double getShortDamage() {
+        return shortDamage;
     }
 
     public void setShortDamage(double shortDamage) {

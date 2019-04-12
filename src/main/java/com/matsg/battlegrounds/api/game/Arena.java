@@ -7,19 +7,47 @@ import java.util.Collection;
 public interface Arena extends Extent {
 
     /**
+     * Gets the name of the arena.
+     *
+     * @return The arena name
+     */
+    String getName();
+
+    /**
+     * Gets the collection of sections in the arena.
+     *
+     * @return The section collection.
+     */
+    Collection<Section> getSections();
+
+    /**
+     * Gets the collection of spawns.
+     *
+     * @return The spawn collection
+     */
+    Collection<Spawn> getSpawns();
+
+    /**
+     * Gets whether the arena is active or not.
+     *
+     * @return True if the arena is active, otherwise false
+     */
+    boolean isActive();
+
+    /**
+     * Sets the active state of the arena
+     *
+     * @param active Whether the arena should be active or not
+     */
+    void setActive(boolean active);
+
+    /**
      * Searches for a component from the arena with a certain id. Includes section components.
      *
      * @param id The component id.
      * @return The component with the corresponding id or null if there are no matching components.
      */
     ArenaComponent getComponent(int id);
-
-    /**
-     * Gets the name of the arena.
-     *
-     * @return The arena name
-     */
-    String getName();
 
     /**
      * Gets a random entry of the spawn collection.
@@ -62,13 +90,6 @@ public interface Arena extends Extent {
     Section getSection(String name);
 
     /**
-     * Gets the collection of sections in the arena.
-     *
-     * @return The section collection.
-     */
-    Collection<Section> getSections();
-
-    /**
      * Gets the spawn which currently being used by a specific player.
      *
      * @param gamePlayer The player to find the spawn of
@@ -85,13 +106,6 @@ public interface Arena extends Extent {
     Spawn getSpawn(int index);
 
     /**
-     * Gets the collection of spawns.
-     *
-     * @return The spawn collection
-     */
-    Collection<Spawn> getSpawns();
-
-    /**
      * Gets the base spawn of a team.
      *
      * @param teamId The id of the team to get the base spawn of
@@ -105,18 +119,4 @@ public interface Arena extends Extent {
      * @return True if the arena has borders, otherwise false
      */
     boolean hasBorders();
-
-    /**
-     * Gets whether the arena is active or not.
-     *
-     * @return True if the arena is active, otherwise false
-     */
-    boolean isActive();
-
-    /**
-     * Sets the active state of the arena
-     *
-     * @param active Whether the arena should be active or not
-     */
-    void setActive(boolean active);
 }

@@ -11,6 +11,13 @@ import java.util.Collection;
 public interface GameManager {
 
     /**
+     * Gets all existing games
+     *
+     * @return All existing games
+     */
+    Collection<Game> getGames();
+
+    /**
      * Gets if a game by a particular id exists.
      *
      * @param id The id to check
@@ -80,13 +87,6 @@ public interface GameManager {
      * @return The GamePlayer instance of this player
      */
     GamePlayer getGamePlayer(Player player);
-
-    /**
-     * Gets all existing games
-     *
-     * @return All existing games
-     */
-    Collection<Game> getGames();
 
     /**
      * Stops all currently running games

@@ -2,15 +2,15 @@ package com.matsg.battlegrounds.api.item;
 
 public interface Weapon extends Item, Property {
 
-    Weapon clone();
-
     String getDescription();
 
     ItemSlot getItemSlot();
 
+    void setItemSlot(ItemSlot itemSlot);
+
     ItemType getType();
 
-    void resetState();
+    Weapon clone();
 
-    void setItemSlot(ItemSlot itemSlot);
+    void resetState();
 }

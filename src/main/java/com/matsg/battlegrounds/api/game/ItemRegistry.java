@@ -8,6 +8,8 @@ import org.bukkit.inventory.ItemStack;
 
 public interface ItemRegistry {
 
+    Iterable<Item> getItems();
+
     void addItem(Item item);
 
     void clear();
@@ -15,8 +17,6 @@ public interface ItemRegistry {
     Item getItem(ItemStack itemStack);
 
     Item getItemIgnoreMetadata(ItemStack itemStack);
-
-    Iterable<Item> getItems();
 
     Weapon getWeapon(GamePlayer gamePlayer, ItemStack itemStack);
 

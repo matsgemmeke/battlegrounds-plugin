@@ -5,11 +5,11 @@ import org.bukkit.inventory.ItemStack;
 
 public interface PerkEffect {
 
-    void apply(GamePlayer gamePlayer);
-
     ItemStack getItemStack();
 
     String getName();
+
+    void apply(GamePlayer gamePlayer);
 
     void remove(GamePlayer gamePlayer);
 }

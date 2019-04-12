@@ -7,6 +7,8 @@ public interface Spawn extends ArenaComponent {
 
     GamePlayer getGamePlayer();
 
+    void setGamePlayer(GamePlayer gamePlayer);
+
     Location getLocation();
 
     int getTeamId();
@@ -14,8 +16,6 @@ public interface Spawn extends ArenaComponent {
     boolean isOccupied();
 
     boolean isTeamBase();
-
-    void setGamePlayer(GamePlayer gamePlayer);
 
     void setTeamBase(boolean teamBase);
 }

@@ -6,9 +6,9 @@ public interface GameConfiguration {
 
     int getGameCountdown();
 
-    int getLobbyCountdown();
-
     GameMode[] getGameModes();
+
+    int getLobbyCountdown();
 
     int getMaxPlayers();
 

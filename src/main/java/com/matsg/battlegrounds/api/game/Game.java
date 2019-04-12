@@ -9,18 +9,18 @@ import java.util.List;
 public interface Game {
 
     /**
-     * Calls an event to the plugin manager.
-     *
-     * @param event The event to call
-     */
-    void callEvent(Event event);
-
-    /**
      * Gets the currently active arena the game is using.
      *
      * @return The active arena or null if the game has no arenas set up
      */
     Arena getArena();
+
+    /**
+     * Sets the game's active arena.
+     *
+     * @param arena The arena to activate
+     */
+    void setArena(Arena arena);
 
     /**
      * Gets the list of all arenas added to the game.
@@ -37,11 +37,25 @@ public interface Game {
     GameConfiguration getConfiguration();
 
     /**
+     * Sets the game configuration.
+     *
+     * @param configuration The new game configuration
+     */
+    void setConfiguration(GameConfiguration configuration);
+
+    /**
      * Gets the current countdown of the game.
      *
      * @return The countdown of the game or null if the game is not in its starting state
      */
     Countdown getCountdown();
+
+    /**
+     * Sets the countdown of the game.
+     *
+     * @param countdown The new game countdown
+     */
+    void setCountdown(Countdown countdown);
 
     /**
      * Gets the data file of the game where all of its settings are stored.
@@ -58,11 +72,25 @@ public interface Game {
     GameMode getGameMode();
 
     /**
+     * Sets the active gamemode of the game.
+     *
+     * @param gameMode The gamemode to activate
+     */
+    void setGameMode(GameMode gameMode);
+
+    /**
      * Gets the game joining sign of this game.
      *
      * @return The game joining sign
      */
     GameSign getGameSign();
+
+    /**
+     * Sets the game joining sign.
+     *
+     * @param gameSign The game joining sign of this game
+     */
+    void setGameSign(GameSign gameSign);
 
     /**
      * Gets the id of this game.
@@ -107,6 +135,13 @@ public interface Game {
     GameState getState();
 
     /**
+     * Sets the state of the game.
+     *
+     * @param state The state to set the game to
+     */
+    void setState(GameState state);
+
+    /**
      * Gets the time control of the game.
      *
      * @return The game's time control
@@ -114,51 +149,16 @@ public interface Game {
     TimeControl getTimeControl();
 
     /**
+     * Calls an event to the plugin manager.
+     *
+     * @param event The event to call
+     */
+    void callEvent(Event event);
+
+    /**
      * Restores all changes in the game and arena so it is ready to start a new game.
      */
     void rollback();
-
-    /**
-     * Sets the game's active arena.
-     *
-     * @param arena The arena to activate
-     */
-    void setArena(Arena arena);
-
-    /**
-     * Sets the game configuration.
-     *
-     * @param configuration The new game configuration
-     */
-    void setConfiguration(GameConfiguration configuration);
-
-    /**
-     * Sets the countdown of the game.
-     *
-     * @param countdown The new game countdown
-     */
-    void setCountdown(Countdown countdown);
-
-    /**
-     * Sets the active gamemode of the game.
-     *
-     * @param gameMode The gamemode to activate
-     */
-    void setGameMode(GameMode gameMode);
-
-    /**
-     * Sets the game joining sign.
-     *
-     * @param gameSign The game joining sign of this game
-     */
-    void setGameSign(GameSign gameSign);
-
-    /**
-     * Sets the state of the game.
-     *
-     * @param state The state to set the game to
-     */
-    void setState(GameState state);
 
     /**
      * Starts the countdown which prepares the arena and players to start the game.

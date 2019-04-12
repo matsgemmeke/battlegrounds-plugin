@@ -6,7 +6,6 @@ import org.bukkit.inventory.ItemStack;
 public class BattleLoadout implements Loadout {
 
     private final int loadoutNr;
-    private boolean defaultLoadout;
     private Equipment equipment;
     private Firearm primary, secondary;
     private MeleeWeapon meleeWeapon;
@@ -19,7 +18,6 @@ public class BattleLoadout implements Loadout {
         this.secondary = secondary;
         this.equipment = equipment;
         this.meleeWeapon = meleeWeapon;
-        this.defaultLoadout = false;
 
         for (Weapon weapon : getWeapons()) {
             if (weapon != null) {
@@ -28,9 +26,48 @@ public class BattleLoadout implements Loadout {
         }
     }
 
-    public BattleLoadout(int loadoutNr, String name, Firearm primary, Firearm secondary, Equipment equipment, MeleeWeapon meleeWeapon, boolean defaultLoadout) {
-        this(loadoutNr, name, primary, secondary, equipment, meleeWeapon);
-        this.defaultLoadout = defaultLoadout;
+    public Equipment getEquipment() {
+        return equipment;
+    }
+
+    public void setEquipment(Equipment equipment) {
+        this.equipment = equipment;
+    }
+
+    public int getLoadoutNr() {
+        return loadoutNr;
+    }
+
+    public MeleeWeapon getMeleeWeapon() {
+        return meleeWeapon;
+    }
+
+    public void setMeleeWeapon(MeleeWeapon meleeWeapon) {
+        this.meleeWeapon = meleeWeapon;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Firearm getPrimary() {
+        return primary;
+    }
+
+    public void setPrimary(Firearm primary) {
+        this.primary = primary;
+    }
+
+    public Firearm getSecondary() {
+        return secondary;
+    }
+
+    public void setSecondary(Firearm secondary) {
+        this.secondary = secondary;
     }
 
     public Loadout clone() {
@@ -53,54 +90,6 @@ public class BattleLoadout implements Loadout {
             e.printStackTrace();
             return null;
         }
-    }
-
-    public Equipment getEquipment() {
-        return equipment;
-    }
-
-    public int getLoadoutNr() {
-        return loadoutNr;
-    }
-
-    public MeleeWeapon getMeleeWeapon() {
-        return meleeWeapon;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Firearm getPrimary() {
-        return primary;
-    }
-
-    public Firearm getSecondary() {
-        return secondary;
-    }
-
-    public boolean isDefaultLoadout() {
-        return defaultLoadout;
-    }
-
-    public void setEquipment(Equipment equipment) {
-        this.equipment = equipment;
-    }
-
-    public void setMeleeWeapon(MeleeWeapon meleeWeapon) {
-        this.meleeWeapon = meleeWeapon;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setPrimary(Firearm primary) {
-        this.primary = primary;
-    }
-
-    public void setSecondary(Firearm secondary) {
-        this.secondary = secondary;
     }
 
     public boolean equals(Object obj) {

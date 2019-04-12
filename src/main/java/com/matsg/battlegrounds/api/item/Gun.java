@@ -5,10 +5,6 @@ import java.util.Set;
 
 public interface Gun extends Firearm {
 
-    void addAttachments();
-
-    Gun clone();
-
     List<Attachment> getAttachments();
 
     int getBurstRounds();
@@ -16,6 +12,10 @@ public interface Gun extends Firearm {
     Set<String> getCompatibleAttachments();
 
     int getFireRate();
+
+    void addAttachments();
+
+    Gun clone();
 
     void setScoped(boolean scoped);
 }

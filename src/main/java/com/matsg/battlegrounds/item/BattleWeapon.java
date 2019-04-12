@@ -21,10 +21,6 @@ public abstract class BattleWeapon extends BattleItem implements Weapon {
         this.messageHelper = new MessageHelper();
     }
 
-    public Weapon clone() {
-        return (Weapon) super.clone();
-    }
-
     public String getDescription() {
         return description;
     }
@@ -35,6 +31,10 @@ public abstract class BattleWeapon extends BattleItem implements Weapon {
 
     public void setGamePlayer(GamePlayer gamePlayer) {
         this.gamePlayer = gamePlayer;
+    }
+
+    public Weapon clone() {
+        return (Weapon) super.clone();
     }
 
     protected void displayCircleEffect(Location location, int size, String effect, final int amount, int random) {

@@ -10,6 +10,13 @@ import java.util.Collection;
 public interface PlayerManager {
 
     /**
+     * Gets all players.
+     *
+     * @return All players in the game
+     */
+    Collection<GamePlayer> getPlayers();
+
+    /**
      * Adds a player to a game.
      *
      * @param player The player to add to the game
@@ -134,13 +141,6 @@ public interface PlayerManager {
      * @return The nearest player of this team or null if there are no players in this team or there are no players from this team in the range
      */
     GamePlayer getNearestPlayer(Location location, Team team, double range);
-
-    /**
-     * Gets all players.
-     *
-     * @return All players in the game
-     */
-    Collection<GamePlayer> getPlayers();
 
     /**
      * Gives a specific player a certain amount of points.

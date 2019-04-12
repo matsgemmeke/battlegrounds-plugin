@@ -7,17 +7,21 @@ import org.bukkit.inventory.ItemStack;
 
 public interface Item extends Cloneable, Comparable<Item> {
 
-    GenericAttribute getAttribute(String id);
-
     Game getGame();
 
-    Item clone();
+    void setGame(Game game);
 
     String getId();
 
     ItemStack getItemStack();
 
+    void setItemStack(ItemStack itemStack);
+
     String getName();
+
+    GenericAttribute getAttribute(String id);
+
+    Item clone();
 
     void onLeftClick(GamePlayer gamePlayer);
 
@@ -30,10 +34,6 @@ public interface Item extends Cloneable, Comparable<Item> {
     void remove();
 
     void setAttribute(String id, GenericAttribute attribute);
-
-    void setGame(Game game);
-
-    void setItemStack(ItemStack itemStack);
 
     boolean update();
 }

@@ -4,21 +4,21 @@ import com.matsg.battlegrounds.api.entity.GamePlayer;
 
 public interface MeleeWeapon extends Weapon, Droppable {
 
-    MeleeWeapon clone();
-
-    double damage(GamePlayer gamePlayer);
-
     int getAmount();
 
+    void setAmount(int amount);
+
     double getDamage();
+
+    void setDamage(double damage);
 
     int getMaxAmount();
 
     boolean isThrowable();
 
-    void setAmount(int amount);
+    MeleeWeapon clone();
 
-    void setDamage(double damage);
+    double damage(GamePlayer gamePlayer);
 
     void shoot();
 }

@@ -5,10 +5,6 @@ import org.bukkit.block.Block;
 
 public interface Barricade extends ArenaComponent, Extent, Interactable {
 
-    boolean breakBlock(Block block);
-
-    void close();
-
     Block[] getBlocks();
 
     Material getMaterial();
@@ -16,6 +12,10 @@ public interface Barricade extends ArenaComponent, Extent, Interactable {
     boolean isClosed();
 
     boolean isOpen();
+
+    boolean breakBlock(Block block);
+
+    void close();
 
     void open();
 

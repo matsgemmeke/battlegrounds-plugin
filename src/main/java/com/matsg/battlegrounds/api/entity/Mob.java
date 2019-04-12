@@ -9,25 +9,25 @@ public interface Mob extends BaseEntity {
 
     double getAttackDamage();
 
-    double getFollowRange();
-
-    double getMovementSpeed();
-
-    boolean hasKnockback();
-
-    boolean isHostile();
-
-    void resetDefaultPathfinderGoals();
-
     void setAttackDamage(double attackDamage);
+
+    double getFollowRange();
 
     void setFollowRange(double followRange);
 
-    void setHostile(boolean hostile);
+    double getMovementSpeed();
+
+    void setMovementSpeed(double walkSpeed);
+
+    boolean hasKnockback();
 
     void setKnockback(boolean knockback);
 
-    void setMovementSpeed(double walkSpeed);
+    boolean isHostile();
+
+    void setHostile(boolean hostile);
+
+    void resetDefaultPathfinderGoals();
 
     void setTarget(Location location);
 

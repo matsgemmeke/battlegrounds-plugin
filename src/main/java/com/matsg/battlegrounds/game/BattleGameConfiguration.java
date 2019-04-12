@@ -42,12 +42,12 @@ public class BattleGameConfiguration implements GameConfiguration {
         return gameCountdown;
     }
 
-    public int getLobbyCountdown() {
-        return lobbyCountdown;
-    }
-
     public GameMode[] getGameModes() {
         return gameModes;
+    }
+
+    public int getLobbyCountdown() {
+        return lobbyCountdown;
     }
 
     public int getMaxPlayers() {

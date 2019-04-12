@@ -23,10 +23,6 @@ public class BattleAttachment extends BattleItem implements Attachment {
         this.toggleable = toggleable;
     }
 
-    public Attachment clone() {
-        return (Attachment) super.clone();
-    }
-
     public String getDescription() {
         return description;
     }
@@ -37,6 +33,10 @@ public class BattleAttachment extends BattleItem implements Attachment {
 
     public boolean isToggleable() {
         return toggleable;
+    }
+
+    public Attachment clone() {
+        return (Attachment) super.clone();
     }
 
     public AttributeModifier getModifier(String attribute) {

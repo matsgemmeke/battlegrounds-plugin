@@ -11,7 +11,7 @@ public interface PerkMachine extends ArenaComponent, Interactable, Lockable {
 
     int getPrice();
 
-    Sign getSign();
-
     void setPrice(int price);
+
+    Sign getSign();
 }

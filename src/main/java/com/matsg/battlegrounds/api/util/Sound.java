@@ -6,15 +6,23 @@ import org.bukkit.entity.Entity;
 
 public interface Sound {
 
+    org.bukkit.Sound getBukkitSound();
+
     long getDelay();
 
-    org.bukkit.Sound getBukkitSound();
+    void setDelay(long delay);
 
     float getPitch();
 
+    void setPitch(float pitch);
+
     float getVolume();
 
+    void setVolume(float volume);
+
     boolean isCancelled();
+
+    void setCancelled(boolean cancelled);
 
     void play(Game game);
 
@@ -23,12 +31,4 @@ public interface Sound {
     void play(Game game, Location location);
 
     void play(Game game, Location location, float pitch);
-
-    void setCancelled(boolean cancelled);
-
-    void setDelay(long delay);
-
-    void setPitch(float pitch);
-
-    void setVolume(float volume);
 }

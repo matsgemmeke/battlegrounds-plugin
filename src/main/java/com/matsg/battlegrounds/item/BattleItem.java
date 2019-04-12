@@ -53,6 +53,10 @@ public abstract class BattleItem implements Item {
         return game;
     }
 
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
     public String getId() {
         return id;
     }
@@ -61,24 +65,20 @@ public abstract class BattleItem implements Item {
         return itemSlot;
     }
 
-    public ItemStack getItemStack() {
-        return itemStack;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setGame(Game game) {
-        this.game = game;
-    }
-
     public void setItemSlot(ItemSlot itemSlot) {
         this.itemSlot = itemSlot;
     }
 
+    public ItemStack getItemStack() {
+        return itemStack;
+    }
+
     public void setItemStack(ItemStack itemStack) {
         this.itemStack = itemStack;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public int compareTo(Item item) {

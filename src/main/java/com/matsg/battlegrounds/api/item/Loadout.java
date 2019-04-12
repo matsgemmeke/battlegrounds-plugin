@@ -4,19 +4,29 @@ import org.bukkit.inventory.ItemStack;
 
 public interface Loadout extends Cloneable {
 
-    Loadout clone();
-
     Equipment getEquipment();
+
+    void setEquipment(Equipment equipment);
 
     int getLoadoutNr();
 
     MeleeWeapon getMeleeWeapon();
 
+    void setMeleeWeapon(MeleeWeapon meleeWeapon);
+
     String getName();
+
+    void setName(String name);
 
     Firearm getPrimary();
 
+    void setPrimary(Firearm primary);
+
     Firearm getSecondary();
+
+    void setSecondary(Firearm secondary);
+
+    Loadout clone();
 
     Weapon getWeapon(ItemSlot itemSlot);
 
@@ -29,16 +39,6 @@ public interface Loadout extends Cloneable {
     Weapon[] getWeapons();
 
     void removeWeapon(Weapon weapon);
-
-    void setEquipment(Equipment equipment);
-
-    void setMeleeWeapon(MeleeWeapon meleeWeapon);
-
-    void setName(String name);
-
-    void setPrimary(Firearm primary);
-
-    void setSecondary(Firearm secondary);
 
     void updateInventory();
 }

@@ -9,13 +9,13 @@ public interface BaseEntity {
 
     float getHealth();
 
-    float getMaxHealth();
+    void setHealth(float health);
 
     Location getLocation();
 
-    void remove();
-
-    void setHealth(float health);
+    float getMaxHealth();
 
     void setMaxHealth(float maxHealth);
+
+    void remove();
 }

@@ -103,6 +103,10 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
         return ammo.getValue();
     }
 
+    public void setAmmo(int ammo) {
+        this.ammo.applyModifier(new IntegerAttributeModifier(ammo));
+    }
+
     public int getCooldown() {
         return cooldown.getValue();
     }
@@ -115,6 +119,10 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
         return magazine.getValue();
     }
 
+    public void setMagazine(int magazine) {
+        this.magazine.applyModifier(new IntegerAttributeModifier(magazine));
+    }
+
     public int getMagazineSize() {
         return magazineSize.getValue();
     }
@@ -123,8 +131,16 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
         return maxAmmo.getValue();
     }
 
+    public void setReloadCancelled(boolean reloadCancelled) {
+        this.reloadCancelled = reloadCancelled;
+    }
+
     public int getReloadDuration() {
         return reloadDuration.getValue();
+    }
+
+    public void setReloadDuration(int reloadDuration) {
+        this.reloadDuration.applyModifier(new IntegerAttributeModifier(reloadDuration));
     }
 
     public FirearmType getType() {
@@ -135,28 +151,12 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
         return reloading;
     }
 
-    public boolean isShooting() {
-        return shooting;
-    }
-
-    public void setAmmo(int ammo) {
-        this.ammo.applyModifier(new IntegerAttributeModifier(ammo));
-    }
-
-    public void setMagazine(int magazine) {
-        this.magazine.applyModifier(new IntegerAttributeModifier(magazine));
-    }
-
-    public void setReloadCancelled(boolean reloadCancelled) {
-        this.reloadCancelled = reloadCancelled;
-    }
-
-    public void setReloadDuration(int reloadDuration) {
-        this.reloadDuration.applyModifier(new IntegerAttributeModifier(reloadDuration));
-    }
-
     public void setReloading(boolean reloading) {
         this.reloading = reloading;
+    }
+
+    public boolean isShooting() {
+        return shooting;
     }
 
     public void setShooting(boolean shooting) {

@@ -4,15 +4,15 @@ import org.bukkit.entity.Entity;
 
 public interface Firearm extends Weapon, Droppable {
 
-    Firearm clone();
-
-    void cooldown(int time);
-
     int getAmmo();
+
+    void setAmmo(int ammo);
 
     int getCooldown();
 
     int getMagazine();
+
+    void setMagazine(int magazine);
 
     int getMagazineSize();
 
@@ -20,11 +20,23 @@ public interface Firearm extends Weapon, Droppable {
 
     DamageSource getProjectile();
 
+    void setReloadCancelled(boolean reloadCancelled);
+
     int getReloadDuration();
+
+    void setReloadDuration(int reloadDuration);
 
     boolean isReloading();
 
+    void setReloading(boolean reloading);
+
     boolean isShooting();
+
+    void setShooting(boolean shooting);
+
+    Firearm clone();
+
+    void cooldown(int time);
 
     void playReloadSound();
 
@@ -35,18 +47,6 @@ public interface Firearm extends Weapon, Droppable {
     void playShotSound(Entity entity);
 
     void reload();
-
-    void setAmmo(int ammo);
-
-    void setMagazine(int magazine);
-
-    void setReloadCancelled(boolean reloadCancelled);
-
-    void setReloadDuration(int reloadDuration);
-
-    void setReloading(boolean reloading);
-
-    void setShooting(boolean shooting);
 
     void shoot();
 

@@ -5,13 +5,9 @@ import org.bukkit.entity.Item;
 
 public interface Equipment extends Weapon, DamageSource, Droppable {
 
-    Equipment clone();
-
-    void deployEquipment();
-
-    void deployEquipment(double velocity);
-
     int getAmount();
+
+    void setAmount(int amount);
 
     Item getFirstDroppedItem();
 
@@ -23,11 +19,15 @@ public interface Equipment extends Weapon, DamageSource, Droppable {
 
     double getVelocity();
 
-    void ignite(Item item);
+    void setVelocity(double velocity);
 
     boolean isBeingThrown();
 
-    void setAmount(int amount);
+    Equipment clone();
 
-    void setVelocity(double velocity);
+    void deployEquipment();
+
+    void deployEquipment(double velocity);
+
+    void ignite(Item item);
 }

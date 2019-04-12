@@ -6,8 +6,6 @@ import org.bukkit.Color;
 
 public interface Team {
 
-    void addPlayer(GamePlayer gamePlayer);
-
     ChatColor getChatColor();
 
     Color getColor();
@@ -22,11 +20,13 @@ public interface Team {
 
     int getScore();
 
+    void setScore(int score);
+
     int getTeamSize();
+
+    void addPlayer(GamePlayer gamePlayer);
 
     boolean hasPlayer(GamePlayer gamePlayer);
 
     void removePlayer(GamePlayer gamePlayer);
-
-    void setScore(int score);
 }

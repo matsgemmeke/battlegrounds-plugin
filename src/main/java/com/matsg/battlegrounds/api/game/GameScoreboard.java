@@ -8,13 +8,13 @@ import java.util.Set;
 
 public interface GameScoreboard {
 
+    String getScoreboardId();
+
+    Set<World> getWorlds();
+
     Scoreboard createScoreboard();
 
     void display(Game game);
 
     void display(GamePlayer gamePlayer);
-
-    String getScoreboardId();
-
-    Set<World> getWorlds();
 }

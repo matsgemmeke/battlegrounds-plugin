@@ -43,16 +43,20 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
         this.velocity = velocity;
     }
 
-    public Equipment clone() {
-        return (Equipment) super.clone();
-    }
-
     public int getAmount() {
         return amount;
     }
 
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
     public List<Item> getDroppedItems() {
         return droppedItems;
+    }
+
+    public Item getFirstDroppedItem() {
+        return droppedItems.get(0);
     }
 
     public Sound[] getIgnitionSound() {
@@ -67,6 +71,10 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
         return longRange;
     }
 
+    public void setLongRange(double longRange) {
+        this.longRange = longRange;
+    }
+
     public int getMaxAmount() {
         return maxAmount;
     }
@@ -75,8 +83,16 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
         return midRange;
     }
 
+    public void setMidRange(double midRange) {
+        this.midRange = midRange;
+    }
+
     public double getShortRange() {
         return shortRange;
+    }
+
+    public void setShortRange(double shortRange) {
+        this.shortRange = shortRange;
     }
 
     public EquipmentType getType() {
@@ -87,28 +103,12 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
         return velocity;
     }
 
-    public boolean isBeingThrown() {
-        return beingThrown;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
-    public void setLongRange(double longRange) {
-        this.longRange = longRange;
-    }
-
-    public void setMidRange(double midRange) {
-        this.midRange = midRange;
-    }
-
-    public void setShortRange(double shortRange) {
-        this.shortRange = shortRange;
-    }
-
     public void setVelocity(double velocity) {
         this.velocity = velocity;
+    }
+
+    public boolean isBeingThrown() {
+        return beingThrown;
     }
 
     public void cooldown(int time) {
@@ -117,6 +117,10 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
                 beingThrown = false;
             }
         }.runTaskLater(time);
+    }
+
+    public Equipment clone() {
+        return (Equipment) super.clone();
     }
 
     public void deployEquipment() {
@@ -137,10 +141,6 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
         update();
 
         BattleSound.EXPLOSIVE_THROW.play(game, item.getLocation());
-    }
-
-    public Item getFirstDroppedItem() {
-        return droppedItems.get(0);
     }
 
     private String[] getLore() {

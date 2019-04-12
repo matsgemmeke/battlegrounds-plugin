@@ -9,13 +9,6 @@ import com.matsg.battlegrounds.game.mode.GameModeType;
 public interface GameMode {
 
     /**
-     * Adds a player to the game mode.
-     *
-     * @param gamePlayer The player to be added.
-     */
-    void addPlayer(GamePlayer gamePlayer);
-
-    /**
      * Gets the name of the game mode.
      *
      * @return The game mode name.
@@ -29,21 +22,28 @@ public interface GameMode {
      */
     Iterable<Objective> getObjectives();
 
-    Spawn getRespawnPoint(GamePlayer gamePlayer);
-
     GameScoreboard getScoreboard();
 
     String getShortName();
+
+    Iterable<Team> getTeams();
+
+    GameModeType getType();
+
+    /**
+     * Adds a player to the game mode.
+     *
+     * @param gamePlayer The player to be added.
+     */
+    void addPlayer(GamePlayer gamePlayer);
+
+    Spawn getRespawnPoint(GamePlayer gamePlayer);
 
     Team getTeam(GamePlayer gamePlayer);
 
     Team getTeam(int id);
 
-    Iterable<Team> getTeams();
-
     Team getTopTeam();
-
-    GameModeType getType();
 
     void onDeath(GamePlayer gamePlayer, DeathCause deathCause);
 

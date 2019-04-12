@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class BattleTactical extends BattleEquipment implements Tactical {
 
+    private static final double TACTICAL_DAMAGE = 0.0;
     private int duration;
     private TacticalEffect effect;
 
@@ -23,10 +24,6 @@ public class BattleTactical extends BattleEquipment implements Tactical {
         this.effect = effect;
     }
 
-    public Tactical clone() {
-        return (Tactical) super.clone();
-    }
-
     public int getDuration() {
         return duration;
     }
@@ -36,19 +33,23 @@ public class BattleTactical extends BattleEquipment implements Tactical {
     }
 
     public double getLongDamage() {
-        return 0.0;
+        return TACTICAL_DAMAGE;
     }
 
     public double getMidDamage() {
-        return 0.0;
+        return TACTICAL_DAMAGE;
     }
 
     public double getShortDamage() {
-        return 0.0;
+        return TACTICAL_DAMAGE;
     }
 
     public void setEffect(TacticalEffect effect) {
         this.effect = effect;
+    }
+
+    public Tactical clone() {
+        return (Tactical) super.clone();
     }
 
     private void effectPlayers(Location location) {

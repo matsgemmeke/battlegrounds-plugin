@@ -4,7 +4,7 @@ public interface ItemFactory<T extends Item> {
 
     /**
      * Make a new item based on the given id.
-     * This id is used to obtain item data from ItemConfig instances.
+     * This id is used to obtain item data from configuration files.
      *
      * @param id The id of the item.
      * @return A new instance of the corresponding item.

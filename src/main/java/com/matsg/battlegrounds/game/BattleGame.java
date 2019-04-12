@@ -68,8 +68,16 @@ public class BattleGame implements Game {
         return configuration;
     }
 
+    public void setConfiguration(GameConfiguration configuration) {
+        this.configuration = configuration;
+    }
+
     public Countdown getCountdown() {
         return countdown;
+    }
+
+    public void setCountdown(Countdown countdown) {
+        this.countdown = countdown;
     }
 
     public CacheYaml getDataFile() {
@@ -80,8 +88,20 @@ public class BattleGame implements Game {
         return gameMode;
     }
 
+    public void setGameMode(GameMode gameMode) {
+        if (this.gameMode != null) {
+            this.gameMode.onDisable();
+        }
+        this.gameMode = gameMode;
+        this.gameMode.onEnable();
+    }
+
     public GameSign getGameSign() {
         return gameSign;
+    }
+
+    public void setGameSign(GameSign gameSign) {
+        this.gameSign = gameSign;
     }
 
     public int getId() {
@@ -100,33 +120,13 @@ public class BattleGame implements Game {
         return state;
     }
 
-    public TimeControl getTimeControl() {
-        return timeControl;
-    }
-
-    public void setConfiguration(GameConfiguration configuration) {
-        this.configuration = configuration;
-    }
-
-    public void setCountdown(Countdown countdown) {
-        this.countdown = countdown;
-    }
-
-    public void setGameMode(GameMode gameMode) {
-        if (this.gameMode != null) {
-            this.gameMode.onDisable();
-        }
-        this.gameMode = gameMode;
-        this.gameMode.onEnable();
-    }
-
-    public void setGameSign(GameSign gameSign) {
-        this.gameSign = gameSign;
-    }
-
     public void setState(GameState state) {
         this.plugin.getServer().getPluginManager().callEvent(new GameStateChangeEvent(this, this.state, state));
         this.state = state;
+    }
+
+    public TimeControl getTimeControl() {
+        return timeControl;
     }
 
     public void callEvent(Event event) {

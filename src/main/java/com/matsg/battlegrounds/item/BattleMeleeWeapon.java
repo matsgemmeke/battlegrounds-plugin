@@ -49,12 +49,20 @@ public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
         return amount;
     }
 
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
     public int getCooldown() {
         return cooldown;
     }
 
     public double getDamage() {
         return damage;
+    }
+
+    public void setDamage(double damage) {
+        this.damage = damage;
     }
 
     public List<Item> getDroppedItems() {
@@ -87,14 +95,6 @@ public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
 
     public boolean isThrowable() {
         return throwable;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
-    public void setDamage(double damage) {
-        this.damage = damage;
     }
 
     public void cooldown(int time) {

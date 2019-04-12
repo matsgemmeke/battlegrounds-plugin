@@ -45,20 +45,48 @@ public class BattleGamePlayer implements GamePlayer {
         this.reviveSpeed = new BattleAttribute<>("revive-speed", new FloatValueObject((float) 1.0));
     }
 
+    public Entity getBukkitEntity() {
+        return player;
+    }
+
     public int getDeaths() {
         return deaths;
+    }
+
+    public void setDeaths(int deaths) {
+        this.deaths = deaths;
     }
 
     public int getExp() {
         return exp;
     }
 
+    public void setExp(int exp) {
+        this.exp = exp;
+    }
+
     public double getFirearmDamage() {
         return fireArmDamage.getValue();
     }
 
+    public void setFirearmDamage(double firearmDamage) {
+        this.fireArmDamage.applyModifier(new FloatAttributeModifier((float) firearmDamage));
+    }
+
     public int getHeadshots() {
         return headshots;
+    }
+
+    public void setHeadshots(int headshots) {
+        this.headshots = headshots;
+    }
+
+    public float getHealth() {
+        return (float) player.getHealth();
+    }
+
+    public void setHealth(float health) {
+        player.setHealth(health);
     }
 
     public List<Item> getHeldItems() {
@@ -69,12 +97,40 @@ public class BattleGamePlayer implements GamePlayer {
         return kills;
     }
 
+    public void setKills(int kills) {
+        this.kills = kills;
+    }
+
     public int getLives() {
         return lives;
     }
 
+    public void setLives(int lives) {
+        this.lives = lives;
+    }
+
     public Loadout getLoadout() {
         return loadout;
+    }
+
+    public void setLoadout(Loadout loadout) {
+        this.loadout = loadout;
+    }
+
+    public Location getLocation() {
+        return player.getLocation();
+    }
+
+    public float getMaxHealth() {
+        return (float) player.getMaxHealth();
+    }
+
+    public void setMaxHealth(float maxHealth) {
+        player.setMaxHealth(maxHealth);
+    }
+
+    public String getName() {
+        return player.getName();
     }
 
     public Set<Perk> getPerks() {
@@ -89,12 +145,24 @@ public class BattleGamePlayer implements GamePlayer {
         return points;
     }
 
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
     public double getReloadSpeed() {
         return reloadSpeed.getValue();
     }
 
+    public void setReloadSpeed(double reloadSpeed) {
+        this.reloadSpeed.applyModifier(new FloatAttributeModifier((float) reloadSpeed));
+    }
+
     public double getReviveSpeed() {
         return reviveSpeed.getValue();
+    }
+
+    public void setReviveSpeed(double reviveSpeed) {
+        this.reviveSpeed.applyModifier(new FloatAttributeModifier((float) reviveSpeed));
     }
 
     public SavedInventory getSavedInventory() {
@@ -105,68 +173,32 @@ public class BattleGamePlayer implements GamePlayer {
         return selectedLoadout;
     }
 
-    public PlayerState getState() {
-        return playerState;
-    }
-
-    public Team getTeam() {
-        return team;
-    }
-
-    public UUID getUUID() {
-        return player.getUniqueId();
-    }
-
-    public void setDeaths(int deaths) {
-        this.deaths = deaths;
-    }
-
-    public void setExp(int exp) {
-        this.exp = exp;
-    }
-
-    public void setFirearmDamage(double firearmDamage) {
-        this.fireArmDamage.applyModifier(new FloatAttributeModifier((float) firearmDamage));
-    }
-
-    public void setHeadshots(int headshots) {
-        this.headshots = headshots;
-    }
-
-    public void setKills(int kills) {
-        this.kills = kills;
-    }
-
-    public void setLives(int lives) {
-        this.lives = lives;
-    }
-
-    public void setLoadout(Loadout loadout) {
-        this.loadout = loadout;
-    }
-
-    public void setPoints(int points) {
-        this.points = points;
-    }
-
-    public void setReloadSpeed(double reloadSpeed) {
-        this.reloadSpeed.applyModifier(new FloatAttributeModifier((float) reloadSpeed));
-    }
-
-    public void setReviveSpeed(double reviveSpeed) {
-        this.reviveSpeed.applyModifier(new FloatAttributeModifier((float) reviveSpeed));
-    }
-
     public void setSelectedLoadout(Loadout selectedLoadout) {
         this.selectedLoadout = selectedLoadout;
+    }
+
+    public PlayerState getState() {
+        return playerState;
     }
 
     public void setState(PlayerState playerState) {
         this.playerState = playerState;
     }
 
+    public Team getTeam() {
+        return team;
+    }
+
     public void setTeam(Team team) {
         this.team = team;
+    }
+
+    public UUID getUUID() {
+        return player.getUniqueId();
+    }
+
+    public boolean isOnline() {
+        return player.isOnline();
     }
 
     public int addExp(int exp) {
@@ -184,43 +216,11 @@ public class BattleGamePlayer implements GamePlayer {
         return 0;
     }
 
-    public Entity getBukkitEntity() {
-        return player;
-    }
-
-    public float getHealth() {
-        return (float) player.getHealth();
-    }
-
-    public Location getLocation() {
-        return player.getLocation();
-    }
-
-    public float getMaxHealth() {
-        return (float) player.getMaxHealth();
-    }
-
-    public String getName() {
-        return player.getName();
-    }
-
-    public boolean isOnline() {
-        return player.isOnline();
-    }
-
     public void remove() {
         player.remove();
     }
 
     public void sendMessage(String message) {
         player.sendMessage(message);
-    }
-
-    public void setHealth(float health) {
-        player.setHealth(health);
-    }
-
-    public void setMaxHealth(float maxHealth) {
-        player.setMaxHealth(maxHealth);
     }
 }

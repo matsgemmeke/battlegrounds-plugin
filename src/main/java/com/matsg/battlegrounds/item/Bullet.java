@@ -22,44 +22,44 @@ public class Bullet implements DamageSource {
         return longDamage;
     }
 
-    public double getLongRange() {
-        return longRange;
-    }
-
-    public double getMidDamage() {
-        return midDamage;
-    }
-
-    public double getMidRange() {
-        return midRange;
-    }
-
-    public double getShortDamage() {
-        return shortDamage;
-    }
-
-    public double getShortRange() {
-        return shortRange;
-    }
-
     public void setLongDamage(double longDamage) {
         this.longDamage = longDamage;
+    }
+
+    public double getLongRange() {
+        return longRange;
     }
 
     public void setLongRange(double longRange) {
         this.longRange = longRange;
     }
 
+    public double getMidDamage() {
+        return midDamage;
+    }
+
     public void setMidDamage(double midDamage) {
         this.midDamage = midDamage;
+    }
+
+    public double getMidRange() {
+        return midRange;
     }
 
     public void setMidRange(double midRange) {
         this.midRange = midRange;
     }
 
+    public double getShortDamage() {
+        return shortDamage;
+    }
+
     public void setShortDamage(double shortDamage) {
         this.shortDamage = shortDamage;
+    }
+
+    public double getShortRange() {
+        return shortRange;
     }
 
     public void setShortRange(double shortRange) {

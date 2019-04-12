@@ -15,10 +15,6 @@ public class BattlePerk extends BattleItem implements Perk {
         this.effect = effect;
     }
 
-    public Perk clone() {
-        return (Perk) super.clone();
-    }
-
     public GamePlayer getGamePlayer() {
         return gamePlayer;
     }
@@ -29,6 +25,10 @@ public class BattlePerk extends BattleItem implements Perk {
 
     public PerkEffect getEffect() {
         return effect;
+    }
+
+    public Perk clone() {
+        return (Perk) super.clone();
     }
 
     public void handleTransaction(Transaction transaction) {
