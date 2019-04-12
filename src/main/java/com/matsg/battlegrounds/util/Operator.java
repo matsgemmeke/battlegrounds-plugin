@@ -1,6 +1,6 @@
-package com.matsg.battlegrounds.item.attribute;
+package com.matsg.battlegrounds.util;
 
-public enum AttributeOperator {
+public enum Operator {
 
     ADDITION("+") {
         public Object apply(Object x1, Object x2) {
@@ -30,12 +30,12 @@ public enum AttributeOperator {
 
     private final String text;
 
-    AttributeOperator(String text) {
+    Operator(String text) {
         this.text = text;
     }
 
-    public static AttributeOperator fromText(String text) {
-        for (AttributeOperator operator : values()) {
+    public static Operator fromText(String text) {
+        for (Operator operator : values()) {
             if (operator.text.equals(text)) {
                 return operator;
             }

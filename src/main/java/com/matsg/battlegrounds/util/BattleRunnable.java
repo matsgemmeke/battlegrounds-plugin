@@ -10,6 +10,11 @@ public abstract class BattleRunnable implements Runnable {
     protected static Battlegrounds plugin = BattlegroundsPlugin.getPlugin();
     private BukkitTask task;
 
+    public synchronized boolean isCancelled() throws IllegalStateException {
+        checkScheduled();
+        return task.isCancelled();
+    }
+
     public synchronized void cancel() throws IllegalStateException {
         Bukkit.getScheduler().cancelTask(getTaskId());
     }

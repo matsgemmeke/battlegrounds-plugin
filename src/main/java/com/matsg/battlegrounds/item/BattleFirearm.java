@@ -2,11 +2,14 @@ package com.matsg.battlegrounds.item;
 
 import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
+import com.matsg.battlegrounds.api.util.GenericAttribute;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.api.util.Sound;
-import com.matsg.battlegrounds.item.attribute.DoubleAttributeValue;
-import com.matsg.battlegrounds.item.attribute.IntegerAttributeValue;
-import com.matsg.battlegrounds.item.attribute.ReloadTypeAttributeValue;
+import com.matsg.battlegrounds.item.modifier.IntegerAttributeModifier;
+import com.matsg.battlegrounds.util.BattleAttribute;
+import com.matsg.battlegrounds.util.valueobject.FloatValueObject;
+import com.matsg.battlegrounds.util.valueobject.IntegerValueObject;
+import com.matsg.battlegrounds.util.valueobject.ReloadTypeValueObject;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.BattleSound;
 import org.bukkit.Location;
@@ -26,9 +29,9 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
 
     protected boolean reloadCancelled, reloading, shooting;
     protected FirearmType firearmType;
-    protected ItemAttribute<Double> horizontalAccuracy, verticalAccuracy;
-    protected ItemAttribute<Integer> ammo, cooldown, magazine, magazineSize, magazineSupply, maxAmmo, reloadDuration, reloadDurationOg;
-    protected ItemAttribute<ReloadType> reloadType;
+    protected GenericAttribute<Float> horizontalAccuracy, verticalAccuracy;
+    protected GenericAttribute<Integer> ammo, cooldown, magazine, magazineSize, magazineSupply, maxAmmo, reloadDuration, reloadDurationOg;
+    protected GenericAttribute<ReloadType> reloadType;
     protected List<Item> droppedItems;
     protected List<Material> blocks;
     protected Sound[] reloadSound, shotSound;
@@ -46,17 +49,17 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
         this.shooting = false;
         this.shotSound = shotSound;
 
-        this.ammo = new BattleItemAttribute<>("ammo-reserve", new IntegerAttributeValue(magazine * ammo));
-        this.cooldown = new BattleItemAttribute<>("shot-cooldown", new IntegerAttributeValue(cooldown));
-        this.horizontalAccuracy = new BattleItemAttribute<>("accuracy-horizontal", new DoubleAttributeValue(accuracy));
-        this.magazine = new BattleItemAttribute<>("ammo-magazine", new IntegerAttributeValue(magazine));
-        this.magazineSize = new BattleItemAttribute<>("ammo-magazine-size", new IntegerAttributeValue(magazine));
-        this.magazineSupply = new BattleItemAttribute<>("ammo-magazine-supply", new IntegerAttributeValue(ammo));
-        this.maxAmmo = new BattleItemAttribute<>("ammo-max", new IntegerAttributeValue(magazine * maxAmmo));
-        this.reloadDuration = new BattleItemAttribute<>("reload-duration", new IntegerAttributeValue(reloadDuration));
-        this.reloadDurationOg = new BattleItemAttribute<>("reload-duration-og", new IntegerAttributeValue(reloadDuration));
-        this.reloadType = new BattleItemAttribute<>("reload-type", new ReloadTypeAttributeValue(reloadType));
-        this.verticalAccuracy = new BattleItemAttribute<>("accuracy-vertical", new DoubleAttributeValue(accuracy));
+        this.ammo = new BattleAttribute<>("ammo-reserve", new IntegerValueObject(magazine * ammo));
+        this.cooldown = new BattleAttribute<>("shot-cooldown", new IntegerValueObject(cooldown));
+        this.horizontalAccuracy = new BattleAttribute<>("accuracy-horizontal", new FloatValueObject((float) accuracy));
+        this.magazine = new BattleAttribute<>("ammo-magazine", new IntegerValueObject(magazine));
+        this.magazineSize = new BattleAttribute<>("ammo-magazine-size", new IntegerValueObject(magazine));
+        this.magazineSupply = new BattleAttribute<>("ammo-magazine-supply", new IntegerValueObject(ammo));
+        this.maxAmmo = new BattleAttribute<>("ammo-max", new IntegerValueObject(magazine * maxAmmo));
+        this.reloadDuration = new BattleAttribute<>("reload-duration", new IntegerValueObject(reloadDuration));
+        this.reloadDurationOg = new BattleAttribute<>("reload-duration-og", new IntegerValueObject(reloadDuration));
+        this.reloadType = new BattleAttribute<>("reload-type", new ReloadTypeValueObject(reloadType));
+        this.verticalAccuracy = new BattleAttribute<>("accuracy-vertical", new FloatValueObject((float) accuracy));
 
         attributes.add(this.ammo);
         attributes.add(this.cooldown);
@@ -93,15 +96,15 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
     }
 
     public double getAccuracy() {
-        return (horizontalAccuracy.getAttributeValue().getValue() + verticalAccuracy.getAttributeValue().getValue()) / 2;
+        return (horizontalAccuracy.getValue() + verticalAccuracy.getValue()) / 2;
     }
 
     public int getAmmo() {
-        return ammo.getAttributeValue().getValue();
+        return ammo.getValue();
     }
 
     public int getCooldown() {
-        return cooldown.getAttributeValue().getValue();
+        return cooldown.getValue();
     }
 
     public List<Item> getDroppedItems() {
@@ -109,19 +112,19 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
     }
 
     public int getMagazine() {
-        return magazine.getAttributeValue().getValue();
+        return magazine.getValue();
     }
 
     public int getMagazineSize() {
-        return magazineSize.getAttributeValue().getValue();
+        return magazineSize.getValue();
     }
 
     public int getMaxAmmo() {
-        return maxAmmo.getAttributeValue().getValue();
+        return maxAmmo.getValue();
     }
 
     public int getReloadDuration() {
-        return reloadDuration.getAttributeValue().getValue();
+        return reloadDuration.getValue();
     }
 
     public FirearmType getType() {
@@ -137,11 +140,11 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
     }
 
     public void setAmmo(int ammo) {
-        this.ammo.getAttributeValue().setValue(ammo);
+        this.ammo.applyModifier(new IntegerAttributeModifier(ammo));
     }
 
     public void setMagazine(int magazine) {
-        this.magazine.getAttributeValue().setValue(magazine);
+        this.magazine.applyModifier(new IntegerAttributeModifier(magazine));
     }
 
     public void setReloadCancelled(boolean reloadCancelled) {
@@ -149,7 +152,7 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
     }
 
     public void setReloadDuration(int reloadDuration) {
-        this.reloadDuration.getAttributeValue().setValue(reloadDuration);
+        this.reloadDuration.applyModifier(new IntegerAttributeModifier(reloadDuration));
     }
 
     public void setReloading(boolean reloading) {
@@ -183,7 +186,7 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
     protected abstract String[] getLore();
 
     private double getReloadSpeed() {
-        return (double) reloadDurationOg.getAttributeValue().getValue() / (double) reloadDuration.getAttributeValue().getValue();
+        return (double) reloadDurationOg.getValue() / (double) reloadDuration.getValue();
     }
 
     protected Location getShootingDirection(Location targetDirection) {
@@ -198,8 +201,8 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
             accuracyAmplifier /= 0.5;
         }
 
-        double horizontalRecoil = (1 - horizontalAccuracy.getAttributeValue().getValue()) * accuracyAmplifier;
-        double verticalRecoil = (1 - verticalAccuracy.getAttributeValue().getValue()) * accuracyAmplifier;
+        double horizontalRecoil = (1 - horizontalAccuracy.getValue()) * accuracyAmplifier;
+        double verticalRecoil = (1 - verticalAccuracy.getValue()) * accuracyAmplifier;
         int horizontalOffset = (int) (Math.round(horizontalRecoil / 2) * 2) + 1;
         int verticalOffset = (int) (Math.round(verticalRecoil / 2) * 2) + 1;
 
@@ -239,8 +242,8 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
             BattleSound.play(BattleSound.ITEM_EQUIP, game, gamePlayer.getLocation());
             Firearm firearm = (Firearm) weapon;
 
-            int maxAmmo = this.maxAmmo.getAttributeValue().getValue() * magazineSize.getAttributeValue().getValue();
-            int pickupAmmo = firearm.getAmmo() + ammo.getAttributeValue().getValue();
+            int maxAmmo = this.maxAmmo.getValue() * magazineSize.getValue();
+            int pickupAmmo = firearm.getAmmo() + ammo.getValue();
 
             firearm.setAmmo(Math.min(maxAmmo, pickupAmmo));
             item.remove();
@@ -304,7 +307,7 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
     }
 
     public void reload() {
-        reload(reloadDuration.getAttributeValue().getValue());
+        reload(reloadDuration.getValue());
     }
 
     protected void reload(int reloadTime) {
@@ -317,15 +320,15 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
 
         new BattleRunnable() {
             public void run() {
-                if (reloadCancelled || gamePlayer == null || !gamePlayer.getStatus().isAlive()) {
+                if (reloadCancelled || gamePlayer == null || !gamePlayer.getState().isAlive()) {
                     cancel();
                     reloadCancelled = false;
                     reloading = false;
                     setSoundCancelled(true, reloadSound);
                     return;
                 }
-                reloadType.getAttributeValue().getValue().reloadSingle(BattleFirearm.this, reloadDuration.getAttributeValue().getValue());
-                if (ammo.getAttributeValue().getValue() <= 0 || magazine.getAttributeValue().getValue() >= magazineSize.getAttributeValue().getValue()) {
+                reloadType.getValue().reloadSingle(BattleFirearm.this, reloadDuration.getValue());
+                if (ammo.getValue() <= 0 || magazine.getValue() >= magazineSize.getValue()) {
                     cancel();
                     gamePlayer.getPlayer().setFoodLevel(20);
                     reloading = false;
@@ -345,8 +348,8 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
     }
 
     public void resetState() {
-        ammo.getAttributeValue().setValue(magazineSupply.getAttributeValue().getValue() * magazineSize.getAttributeValue().getValue());
-        magazine.getAttributeValue().setValue(magazineSize.getAttributeValue().getValue());
+        ammo.applyModifier(new IntegerAttributeModifier(magazineSupply.getValue() * magazineSize.getValue()));
+        magazine.applyModifier(new IntegerAttributeModifier(magazineSize.getValue()));
     }
 
     private void setSoundCancelled(boolean cancelled, Sound... sounds) {
@@ -357,8 +360,8 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
 
     public boolean update() {
         Placeholder[] placeholders = new Placeholder[] {
-                new Placeholder("bg_ammo", ammo.getAttributeValue().getValue()),
-                new Placeholder("bg_magazine", magazine.getAttributeValue().getValue()),
+                new Placeholder("bg_ammo", ammo.getValue()),
+                new Placeholder("bg_magazine", magazine.getValue()),
                 new Placeholder("bg_weapon", name)
         };
         String displayName = messageHelper.createSimple(plugin.getBattlegroundsConfig().getWeaponDisplayName("firearm"), placeholders);

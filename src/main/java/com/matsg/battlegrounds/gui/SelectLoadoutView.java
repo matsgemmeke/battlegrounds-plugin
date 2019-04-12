@@ -101,7 +101,7 @@ public class SelectLoadoutView implements View {
     }
 
     public boolean onClose() {
-        return gamePlayer.getLoadout() != null || !game.getState().isInProgress();
+        return gamePlayer.getSelectedLoadout() != null;
     }
 
     public class SelectLoadoutViewItem {

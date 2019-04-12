@@ -4,12 +4,13 @@ import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.item.Item;
-import com.matsg.battlegrounds.api.item.ItemAttribute;
+import com.matsg.battlegrounds.api.util.GenericAttribute;
 import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public abstract class BattleItem implements Item {
@@ -18,7 +19,7 @@ public abstract class BattleItem implements Item {
     protected Game game;
     protected ItemSlot itemSlot;
     protected ItemStack itemStack;
-    protected List<ItemAttribute> attributes;
+    protected List<GenericAttribute> attributes;
     protected String id, name;
 
     public BattleItem(String id, String name, ItemStack itemStack) {
@@ -35,8 +36,8 @@ public abstract class BattleItem implements Item {
                 item.itemStack = itemStack.clone();
             }
             if (attributes != null && attributes.size() > 0) {
-                List<ItemAttribute> attributes = new ArrayList<>();
-                for (ItemAttribute attribute : this.attributes) {
+                List<GenericAttribute> attributes = new ArrayList<>();
+                for (GenericAttribute attribute : this.attributes) {
                     attributes.add(attribute.clone());
                 }
                 item.attributes = attributes;
@@ -84,8 +85,8 @@ public abstract class BattleItem implements Item {
         return game == item.getGame() && itemStack.equals(item.getItemStack()) ? 0 : -1;
     }
 
-    public ItemAttribute getAttribute(String id) {
-        for (ItemAttribute attribute : attributes) {
+    public GenericAttribute getAttribute(String id) {
+        for (GenericAttribute attribute : attributes) {
             if (attribute.getId().equals(id)) {
                 return attribute;
             }
@@ -102,4 +103,17 @@ public abstract class BattleItem implements Item {
     public void onSwitch(GamePlayer gamePlayer) { }
 
     public void remove() { }
+
+    public void setAttribute(String id, GenericAttribute attribute) {
+        Iterator<GenericAttribute> iterator = attributes.iterator();
+
+        while (iterator.hasNext()) {
+            GenericAttribute other = iterator.next();
+            if (other.getId().equals(id)) {
+                attributes.remove(other);
+                attributes.add(attribute);
+                break;
+            }
+        }
+    }
 }

@@ -1,7 +1,7 @@
 package com.matsg.battlegrounds.item;
 
 import com.matsg.battlegrounds.api.item.Attachment;
-import com.matsg.battlegrounds.api.item.AttributeModifier;
+import com.matsg.battlegrounds.api.util.AttributeModifier;
 import com.matsg.battlegrounds.api.item.GunPart;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;

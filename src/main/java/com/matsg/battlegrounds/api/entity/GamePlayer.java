@@ -11,13 +11,19 @@ import java.util.Set;
 
 public interface GamePlayer extends BaseEntity, OfflineGamePlayer, Comparable<GamePlayer> {
 
-    int addExp(int exp);
-
     Collection<Item> getHeldItems();
+
+    double getFirearmDamage();
+
+    void setFirearmDamage(double firearmDamage);
 
     int getLives();
 
+    void setLives(int lives);
+
     Loadout getLoadout();
+
+    void setLoadout(Loadout loadout);
 
     Set<Perk> getPerks();
 
@@ -25,25 +31,31 @@ public interface GamePlayer extends BaseEntity, OfflineGamePlayer, Comparable<Ga
 
     int getPoints();
 
+    void setPoints(int points);
+
+    double getReloadSpeed();
+
+    void setReloadSpeed(double reloadSpeed);
+
+    double getReviveSpeed();
+
+    void setReviveSpeed(double reviveSpeed);
+
     SavedInventory getSavedInventory();
 
     Loadout getSelectedLoadout();
 
-    PlayerStatus getStatus();
+    void setSelectedLoadout(Loadout loadout);
+
+    PlayerState getState();
+
+    void setState(PlayerState playerState);
 
     Team getTeam();
 
-    void sendMessage(String message);
-
-    void setLives(int lives);
-
-    void setLoadout(Loadout loadout);
-
-    void setPoints(int points);
-
-    void setSelectedLoadout(Loadout loadout);
-
     void setTeam(Team team);
 
-    PlayerStatus setStatus(PlayerStatus playerStatus);
+    int addExp(int exp);
+
+    void sendMessage(String message);
 }

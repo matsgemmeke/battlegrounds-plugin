@@ -4,7 +4,7 @@ import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.Hitbox;
-import com.matsg.battlegrounds.api.entity.PlayerStatus;
+import com.matsg.battlegrounds.api.entity.PlayerState;
 import com.matsg.battlegrounds.api.event.GameEndEvent;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.item.Firearm;
@@ -36,7 +36,8 @@ public abstract class ArenaGameMode extends AbstractGameMode {
         gamePlayer.setDeaths(gamePlayer.getDeaths() + 1);
         gamePlayer.setLives(gamePlayer.getLives() - 1);
         if (gamePlayer.getLives() <= 0) {
-            gamePlayer.setStatus(PlayerStatus.SPECTATING).apply(game, gamePlayer);
+            gamePlayer.setState(PlayerState.SPECTATING);
+            gamePlayer.getState().apply(game, gamePlayer);
         }
         Weapon weapon = gamePlayer.getLoadout().getWeapon(gamePlayer.getPlayer().getItemInHand());
 
@@ -52,8 +53,6 @@ public abstract class ArenaGameMode extends AbstractGameMode {
             spawn.setGamePlayer(null);
         }
     }
-
-    public void onStop() { }
 
     public void tick() {
         GameScoreboard scoreboard = getScoreboard();

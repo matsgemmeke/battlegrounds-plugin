@@ -88,7 +88,7 @@ game-sign-layout:
 # Gamestate notations on game joining signs
 game-sign-state:
   disabled: "&8&l[ DISABLED ]"
-  in-game: "&4&l[ IN GAME ]"
+  ingame: "&4&l[ IN GAME ]"
   resetting: "&9&l[ RESETTING ]"
   starting: "&6&l[ STARTING ]"
   waiting: "&2&l[ WAITING ]"

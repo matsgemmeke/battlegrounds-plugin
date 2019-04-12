@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.game;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.entity.PlayerState;
 import com.matsg.battlegrounds.api.storage.CacheYaml;
 import com.matsg.battlegrounds.api.event.GameStartEvent;
 import com.matsg.battlegrounds.api.event.GameStateChangeEvent;
@@ -8,7 +9,6 @@ import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.game.GameMode;
 import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
-import com.matsg.battlegrounds.api.entity.PlayerStatus;
 import com.matsg.battlegrounds.api.storage.StatisticContext;
 import com.matsg.battlegrounds.game.state.WaitingState;
 import com.matsg.battlegrounds.storage.BattleCacheYaml;
@@ -198,7 +198,8 @@ public class BattleGame implements Game {
             player.teleport(getSpawnPoint());
 
             gamePlayer.getSavedInventory().restore(player);
-            gamePlayer.setStatus(PlayerStatus.ACTIVE).apply(this, gamePlayer);
+            gamePlayer.setState(PlayerState.ACTIVE);
+            gamePlayer.getState().apply(this, gamePlayer);
         }
         for (Entity entity : arena.getWorld().getEntitiesByClass(Item.class)) {
             if (arena.contains(entity.getLocation())) {

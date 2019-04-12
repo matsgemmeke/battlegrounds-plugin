@@ -53,7 +53,7 @@ public class BattleTactical extends BattleEquipment implements Tactical {
 
     private void effectPlayers(Location location) {
         for (GamePlayer gamePlayer : game.getPlayerManager().getNearbyPlayers(location, longRange)) {
-            if (gamePlayer != null && gamePlayer.getStatus().isAlive()
+            if (gamePlayer != null && gamePlayer.getState().isAlive()
                     && !(gamePlayer != this.gamePlayer && game.getGameMode().getTeam(gamePlayer) == game.getGameMode().getTeam(this.gamePlayer))) {
                 effect.applyEffect(gamePlayer, location, duration);
             }

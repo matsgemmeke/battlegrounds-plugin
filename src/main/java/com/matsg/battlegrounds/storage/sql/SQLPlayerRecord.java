@@ -101,7 +101,7 @@ public class SQLPlayerRecord implements StoredPlayer {
             ps.execute();
             ps.close();
 
-            ps = connection.prepareStatement("UPDATE `battlegrounds_players` SET exp = exp + ? WHERE player_uuid = ?");
+            ps = connection.prepareStatement("UPDATE `battlegrounds_player` SET exp = exp + ? WHERE player_uuid = ?");
             ps.setInt(1, player.getExp());
             ps.setString(2, player.getUUID().toString());
             ps.executeUpdate();
@@ -291,7 +291,13 @@ public class SQLPlayerRecord implements StoredPlayer {
         this.name = name;
 
         try {
-            PreparedStatement ps = connection.prepareStatement("");
+            PreparedStatement ps = connection.prepareStatement("UPDATE `battlegrounds_player`" +
+                    "SET `player_name` = ?" +
+                    "WHERE `player_uuid` = ?"
+            );
+            ps.setString(1, name);
+            ps.setString(2, uuid.toString());
+            ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

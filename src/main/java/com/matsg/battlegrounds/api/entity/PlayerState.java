@@ -3,7 +3,7 @@ package com.matsg.battlegrounds.api.entity;
 import com.matsg.battlegrounds.api.game.Game;
 import org.bukkit.GameMode;
 
-public enum PlayerStatus {
+public enum PlayerState {
 
     ACTIVE(0, true, 'f', GameMode.SURVIVAL, true, true),
     DOWNED(1, true, 'f', GameMode.SURVIVAL, false, false),
@@ -14,7 +14,7 @@ public enum PlayerStatus {
     private GameMode gameMode;
     private int id;
 
-    PlayerStatus(int id, boolean alive, char hex, GameMode gameMode, boolean interact, boolean move) {
+    PlayerState(int id, boolean alive, char hex, GameMode gameMode, boolean interact, boolean move) {
         this.id = id;
         this.alive = alive;
         this.gameMode = gameMode;
@@ -23,10 +23,10 @@ public enum PlayerStatus {
         this.move = move;
     }
 
-    public static PlayerStatus valueOf(int id) {
-        for (PlayerStatus playerStatus : values()) {
-            if (playerStatus.id == id) {
-                return playerStatus;
+    public static PlayerState valueOf(int id) {
+        for (PlayerState playerState : values()) {
+            if (playerState.id == id) {
+                return playerState;
             }
         }
         return null;

@@ -85,12 +85,8 @@ public class BattleLauncher extends BattleFirearm implements Launcher {
         }
     }
 
-    public boolean onDrop() {
-        return true;
-    }
-
     public void onLeftClick() {
-        if (reloading || shooting || ammo.getAttributeValue().getValue() <= 0 || magazine.getAttributeValue().getValue() >= magazineSize.getAttributeValue().getValue()) {
+        if (reloading || shooting || ammo.getValue() <= 0 || magazine.getValue() >= magazineSize.getValue()) {
             return;
         }
         reload(getReloadDuration());
@@ -100,9 +96,9 @@ public class BattleLauncher extends BattleFirearm implements Launcher {
         if (reloading || shooting) {
             return;
         }
-        if (magazine.getAttributeValue().getValue() <= 0) {
-            if (ammo.getAttributeValue().getValue() > 0) {
-                reload(reloadDuration.getAttributeValue().getValue()); //Call a reload event if the magazine is empty
+        if (magazine.getValue() <= 0) {
+            if (ammo.getValue() > 0) {
+                reload(reloadDuration.getValue()); //Call a reload event if the magazine is empty
             }
             return;
         }
@@ -113,7 +109,7 @@ public class BattleLauncher extends BattleFirearm implements Launcher {
 
     public void shoot() {
         shooting = true;
-        setMagazine(getMagazine() - 1);
+        setMagazine(magazine.getValue() - 1);
 
         for (Sound sound : shotSound) {
             sound.play(game, gamePlayer.getPlayer().getLocation());

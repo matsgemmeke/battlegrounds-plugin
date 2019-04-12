@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.game;
 
 import com.matsg.battlegrounds.TranslationKey;
+import com.matsg.battlegrounds.api.entity.PlayerState;
 import com.matsg.battlegrounds.api.storage.LevelConfig;
 import com.matsg.battlegrounds.api.storage.StatisticContext;
 import com.matsg.battlegrounds.api.storage.StoredPlayer;
@@ -10,7 +11,6 @@ import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
-import com.matsg.battlegrounds.api.entity.PlayerStatus;
 import com.matsg.battlegrounds.api.storage.PlayerStorage;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.gui.scoreboard.LobbyScoreboard;
@@ -41,9 +41,9 @@ public class BattlePlayerManager implements PlayerManager {
     public BattlePlayerManager(Game game, LevelConfig levelConfig, PlayerStorage playerStorage) {
         this.game = game;
         this.levelConfig = levelConfig;
+        this.playerStorage = playerStorage;
         this.messageHelper = new MessageHelper();
         this.players = new ArrayList<>();
-        this.playerStorage = playerStorage;
     }
 
     public List<GamePlayer> getPlayers() {
@@ -77,7 +77,8 @@ public class BattlePlayerManager implements PlayerManager {
         game.updateSign();
 
         gamePlayer.getPlayer().setScoreboard(new LobbyScoreboard(game).createScoreboard());
-        gamePlayer.setStatus(PlayerStatus.ACTIVE).apply(game, gamePlayer);
+        gamePlayer.setState(PlayerState.ACTIVE);
+        gamePlayer.getState().apply(game, gamePlayer);
 
         updateExpBar(gamePlayer);
 
@@ -133,7 +134,7 @@ public class BattlePlayerManager implements PlayerManager {
     }
 
     public void damagePlayer(GamePlayer gamePlayer, double damage) {
-        if (gamePlayer == null || !gamePlayer.getStatus().isAlive() || gamePlayer.getPlayer().isDead()) {
+        if (gamePlayer == null || !gamePlayer.getState().isAlive() || gamePlayer.getPlayer().isDead()) {
             return;
         }
         double finalHealth = gamePlayer.getPlayer().getHealth() - damage;
@@ -161,7 +162,7 @@ public class BattlePlayerManager implements PlayerManager {
     public GamePlayer[] getLivingPlayers() {
         List<GamePlayer> list = new ArrayList<>();
         for (GamePlayer gamePlayer : players) {
-            if (gamePlayer.getStatus().canInteract()) {
+            if (gamePlayer.getState().canInteract()) {
                 list.add(gamePlayer);
             }
         }
@@ -171,7 +172,7 @@ public class BattlePlayerManager implements PlayerManager {
     public GamePlayer[] getLivingPlayers(Team team) {
         List<GamePlayer> list = new ArrayList<>();
         for (GamePlayer gamePlayer : players) {
-            if (gamePlayer.getStatus().canInteract() && game.getGameMode().getTeam(gamePlayer) == team) {
+            if (gamePlayer.getState().canInteract() && game.getGameMode().getTeam(gamePlayer) == team) {
                 list.add(gamePlayer);
             }
         }
@@ -213,7 +214,7 @@ public class BattlePlayerManager implements PlayerManager {
         GamePlayer nearestPlayer = null;
         for (GamePlayer gamePlayer : getLivingPlayers()) {
             if (gamePlayer != null
-                    && gamePlayer.getStatus().canInteract()
+                    && gamePlayer.getState().canInteract()
                     && location.getWorld() == gamePlayer.getPlayer().getWorld()
                     && location.distanceSquared(gamePlayer.getPlayer().getLocation()) < distance) {
                 distance = location.distanceSquared(gamePlayer.getPlayer().getLocation());
@@ -232,7 +233,7 @@ public class BattlePlayerManager implements PlayerManager {
         GamePlayer nearestPlayer = null;
         for (GamePlayer gamePlayer : team.getPlayers()) {
             if (gamePlayer != null
-                    && gamePlayer.getStatus().isAlive()
+                    && gamePlayer.getState().isAlive()
                     && game.getGameMode().getTeam(gamePlayer) == team
                     && location.getWorld() == gamePlayer.getPlayer().getWorld()
                     && location.distanceSquared(gamePlayer.getPlayer().getLocation()) < distance) {
@@ -292,7 +293,8 @@ public class BattlePlayerManager implements PlayerManager {
                 new Placeholder("bg_maxplayers", game.getConfiguration().getMaxPlayers())));
 
         gamePlayer.getSavedInventory().restore(gamePlayer.getPlayer());
-        gamePlayer.setStatus(PlayerStatus.ACTIVE).apply(game, gamePlayer);
+        gamePlayer.setState(PlayerState.ACTIVE);
+        gamePlayer.getState().apply(game, gamePlayer);
         gamePlayer.getPlayer().setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
         gamePlayer.getPlayer().teleport(game.getSpawnPoint());
 

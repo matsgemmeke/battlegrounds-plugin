@@ -7,17 +7,20 @@ import org.bukkit.Color;
 
 public class Juggernog extends AbstractPerkEffect {
 
+    private static final double BUFFED_PLAYER_HEALTH = 40.0;
+    private static final double NORMAL_PLAYER_HEALTH = 20.0;
+
     public Juggernog() {
         super(new MessageHelper().create(TranslationKey.PERK_JUGGERNOG), Color.fromRGB(200, 50, 50));
     }
 
     public void apply(GamePlayer gamePlayer) {
-        gamePlayer.getPlayer().setMaxHealth(40.0);
-        gamePlayer.getPlayer().setHealth(40.0);
+        gamePlayer.getPlayer().setMaxHealth(BUFFED_PLAYER_HEALTH);
+        gamePlayer.getPlayer().setHealth(BUFFED_PLAYER_HEALTH);
     }
 
     public void remove(GamePlayer gamePlayer) {
-        gamePlayer.getPlayer().setHealth(20.0);
-        gamePlayer.getPlayer().setMaxHealth(20.0);
+        gamePlayer.getPlayer().setHealth(NORMAL_PLAYER_HEALTH);
+        gamePlayer.getPlayer().setMaxHealth(NORMAL_PLAYER_HEALTH);
     }
 }

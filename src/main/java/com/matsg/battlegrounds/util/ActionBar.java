@@ -32,7 +32,7 @@ public enum ActionBar {
     }
 
     private String replace(Placeholder... placeholders) {
-        return messageHelper.create(message, placeholders);
+        return messageHelper.create(path, placeholders);
     }
 
     public void send(Player player, Placeholder... placeholders) {

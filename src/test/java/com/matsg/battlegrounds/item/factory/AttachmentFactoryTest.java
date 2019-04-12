@@ -75,7 +75,8 @@ public class AttachmentFactoryTest {
 
         modifierSet.add(attributeId);
 
-        when(modifiers.getString(attributeId)).thenReturn("=1");
+        when(modifiers.getString(attributeId + ".regex")).thenReturn("=1");
+        when(modifiers.getString(attributeId + ".type")).thenReturn("integer");
         when(section.getName()).thenReturn(id);
         when(section.getString("GunPart")).thenReturn("MAGAZINE");
 

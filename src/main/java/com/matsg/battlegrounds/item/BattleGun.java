@@ -6,13 +6,16 @@ import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.Hitbox;
+import com.matsg.battlegrounds.api.util.AttributeModifier;
+import com.matsg.battlegrounds.api.util.GenericAttribute;
 import com.matsg.battlegrounds.api.util.Sound;
-import com.matsg.battlegrounds.item.attribute.BooleanAttributeValue;
-import com.matsg.battlegrounds.item.attribute.DoubleAttributeValue;
-import com.matsg.battlegrounds.item.attribute.FireModeAttributeValue;
-import com.matsg.battlegrounds.item.attribute.IntegerAttributeValue;
 import com.matsg.battlegrounds.util.BattleSound;
 import com.matsg.battlegrounds.util.HalfBlocks;
+import com.matsg.battlegrounds.util.BattleAttribute;
+import com.matsg.battlegrounds.util.valueobject.BooleanValueObject;
+import com.matsg.battlegrounds.util.valueobject.FireModeValueObject;
+import com.matsg.battlegrounds.util.valueobject.FloatValueObject;
+import com.matsg.battlegrounds.util.valueobject.IntegerValueObject;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -31,14 +34,14 @@ public class BattleGun extends BattleFirearm implements Gun {
 
     private boolean scoped, toggled;
     private Bullet bullet;
+    private GenericAttribute<Boolean> scopeNightVision, scope, suppressed;
+    private GenericAttribute<FireMode> fireMode;
+    private GenericAttribute<Float> spread;
+    private GenericAttribute<Integer> burstRounds, fireRate, scopeZoom;
     private int hits;
-    private ItemAttribute<Boolean> scopeNightVision, scope, suppressed;
-    private ItemAttribute<Double> spread;
-    private ItemAttribute<FireMode> fireMode;
-    private ItemAttribute<Integer> burstRounds, fireRate, scopeZoom;
     private List<Attachment> attachments;
     private Map<Attachment, AttributeModifier> appliedModifiers, toggleModifiers;
-    private Map<ItemAttribute, AttributeValue> toggleAttributes;
+    private Map<String, GenericAttribute> toggleAttributes;
     private Map<String, String[]> compatibleAttachments;
     private Sound[] suppressedSound;
 
@@ -57,14 +60,14 @@ public class BattleGun extends BattleFirearm implements Gun {
         this.toggled = false;
         this.toggleModifiers = new HashMap<>();
 
-        this.burstRounds = new BattleItemAttribute<>("shot-burstrounds", new IntegerAttributeValue(burstRounds));
-        this.fireMode = new BattleItemAttribute<>("shot-firemode", new FireModeAttributeValue(fireMode));
-        this.fireRate = new BattleItemAttribute<>("shot-firerate", new IntegerAttributeValue(fireRate));
-        this.scope = new BattleItemAttribute<>("scope-use", new BooleanAttributeValue(firearmType.hasScope()));
-        this.scopeNightVision = new BattleItemAttribute<>("scope-nightvision", new BooleanAttributeValue(false));
-        this.scopeZoom = new BattleItemAttribute<>("scope-zoom", new IntegerAttributeValue(10));
-        this.spread = new BattleItemAttribute<>("shot-spread", new DoubleAttributeValue(4.0));
-        this.suppressed = new BattleItemAttribute<>("shot-suppressed", new BooleanAttributeValue(false));
+        this.burstRounds = new BattleAttribute<>("shot-burstrounds", new IntegerValueObject(burstRounds));
+        this.fireMode = new BattleAttribute<>("shot-firemode", new FireModeValueObject(fireMode));
+        this.fireRate = new BattleAttribute<>("shot-firerate", new IntegerValueObject(fireRate));
+        this.scope = new BattleAttribute<>("scope-use", new BooleanValueObject(firearmType.hasScope()));
+        this.scopeNightVision = new BattleAttribute<>("scope-nightvision", new BooleanValueObject(false));
+        this.scopeZoom = new BattleAttribute<>("scope-zoom", new IntegerValueObject(10));
+        this.spread = new BattleAttribute<>("shot-spread", new FloatValueObject((float) 4.0));
+        this.suppressed = new BattleAttribute<>("shot-suppressed", new BooleanValueObject(false));
 
         attributes.add(this.burstRounds);
         attributes.add(this.fireMode);
@@ -94,7 +97,7 @@ public class BattleGun extends BattleFirearm implements Gun {
     }
 
     public int getBurstRounds() {
-        return burstRounds.getAttributeValue().getValue();
+        return burstRounds.getValue();
     }
 
     public Set<String> getCompatibleAttachments() {
@@ -102,7 +105,7 @@ public class BattleGun extends BattleFirearm implements Gun {
     }
 
     public int getFireRate() {
-        return fireRate.getAttributeValue().getValue();
+        return fireRate.getValue();
     }
 
     public DamageSource getProjectile() {
@@ -115,13 +118,12 @@ public class BattleGun extends BattleFirearm implements Gun {
         }
         toggleModifiers.clear();
         for (Attachment attachment : attachments) {
-            for (ItemAttribute attribute : attributes) {
+            for (GenericAttribute attribute : attributes) {
                 AttributeModifier modifier = attachment.getModifier(attribute.getId());
-                String[] args = compatibleAttachments.get(attachment.getId());
                 if (modifier != null) {
                     if (!attachment.isToggleable()) {
                         appliedModifiers.put(attachment, modifier);
-                        attribute.applyModifier(modifier, args);
+                        attribute.applyModifier(modifier, compatibleAttachments.get(attachment.getId()));
                     } else {
                         toggleModifiers.put(attachment, modifier);
                     }
@@ -135,19 +137,20 @@ public class BattleGun extends BattleFirearm implements Gun {
                 ChatColor.WHITE + firearmType.getName(),
                 ChatColor.GRAY + format(6, getAccuracy() * 100.0, 100.0) + " " + messageHelper.create(TranslationKey.STAT_ACCURACY),
                 ChatColor.GRAY + format(6, bullet.getShortDamage(), 55.0) + " " + messageHelper.create(TranslationKey.STAT_DAMAGE),
-                ChatColor.GRAY + format(6, Math.max((fireRate.getAttributeValue().getValue() + 10 - cooldown.getAttributeValue().getValue() / 2) * 10.0, 40.0), 200.0) + " " + messageHelper.create(TranslationKey.STAT_FIRERATE),
-                ChatColor.GRAY + format(6, bullet.getMidRange(), 70.0) + " " + messageHelper.create(TranslationKey.STAT_RANGE) };
+                ChatColor.GRAY + format(6, Math.max((fireRate.getValue() + 10 - cooldown.getValue() / 2) * 10.0, 40.0), 200.0) + " " + messageHelper.create(TranslationKey.STAT_FIRERATE),
+                ChatColor.GRAY + format(6, bullet.getMidRange(), 70.0) + " " + messageHelper.create(TranslationKey.STAT_RANGE)
+        };
     }
 
     private Sound[] getShotSound() {
-        return suppressed.getAttributeValue().getValue() ? suppressedSound : shotSound;
+        return suppressed.getValue() ? suppressedSound : shotSound;
     }
 
     private List<Location> getSpreadDirections(Location direction, int amount) {
         if (amount <= 0) {
             return Collections.EMPTY_LIST;
         }
-        Float spread = this.spread.getAttributeValue().getValue().floatValue();
+        Float spread = this.spread.getValue();
         List<Location> list = new ArrayList<>();
         Random random = new Random();
 
@@ -194,27 +197,27 @@ public class BattleGun extends BattleFirearm implements Gun {
     }
 
     public void onLeftClick() {
-        if (scope.getAttributeValue().getValue() && scoped) {
+        if (scope.getValue() && scoped) {
             setScoped(false);
             return;
         }
-        if (reloading || shooting || ammo.getAttributeValue().getValue() <= 0 || magazine.getAttributeValue().getValue() >= magazineSize.getAttributeValue().getValue()) {
+        if (reloading || shooting || ammo.getValue() <= 0 || magazine.getValue() >= magazineSize.getValue()) {
             return;
         }
-        reload(reloadDuration.getAttributeValue().getValue());
+        reload(reloadDuration.getValue());
     }
 
     public void onRightClick() {
         if (reloading || shooting) {
             return;
         }
-        if (scope.getAttributeValue().getValue() && !scoped) {
+        if (scope.getValue() && !scoped) {
             setScoped(true);
             return;
         }
-        if (magazine.getAttributeValue().getValue() <= 0) {
-            if (ammo.getAttributeValue().getValue() > 0) {
-                reload(reloadDuration.getAttributeValue().getValue()); // Reload if the magazine is empty
+        if (magazine.getValue() <= 0) {
+            if (ammo.getValue() > 0) {
+                reload(reloadDuration.getValue()); // Reload if the magazine is empty
             }
             return;
         }
@@ -228,19 +231,20 @@ public class BattleGun extends BattleFirearm implements Gun {
         BattleSound.ATTACHMENT_TOGGLE.play(game, gamePlayer.getLocation());
         if (!toggled) {
             for (Attachment attachment : toggleModifiers.keySet()) {
-                for (ItemAttribute attribute : attributes) {
+                for (GenericAttribute attribute : attributes) {
                     AttributeModifier modifier = attachment.getModifier(attribute.getId());
                     if (modifier != null) {
-                        toggleAttributes.put(attribute, attribute.getAttributeValue().copy());
+                        toggleAttributes.put(attribute.getId(), attribute.clone());
                         attribute.applyModifier(modifier, compatibleAttachments.get(attachment.getId()));
                     }
                 }
             }
         } else {
-            for (ItemAttribute attribute : toggleAttributes.keySet()) {
-                getAttribute(attribute.getId()).getAttributeValue().setValue(toggleAttributes.get(attribute).getValue());
+            for (String attributeId : toggleAttributes.keySet()) {
+                setAttribute(attributeId, toggleAttributes.get(attributeId));
             }
             toggleAttributes.clear();
+            updateAttributes();
         }
         toggled = !toggled;
         update();
@@ -263,7 +267,7 @@ public class BattleGun extends BattleFirearm implements Gun {
     }
 
     public void setScoped(boolean scoped) {
-        if (!scope.getAttributeValue().getValue() || scoped == this.scoped) {
+        if (!scope.getValue() || scoped == this.scoped) {
             return;
         }
 
@@ -275,11 +279,11 @@ public class BattleGun extends BattleFirearm implements Gun {
             for (Sound sound : BattleSound.GUN_SCOPE) {
                 sound.play(game, player.getLocation());
             }
-            if (scopeNightVision.getAttributeValue().getValue()) {
+            if (scopeNightVision.getValue()) {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 1000, 1));
             }
             cooldown(1);
-            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 1000, -scopeZoom.getAttributeValue().getValue())); // Zoom effect
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 1000, -scopeZoom.getValue())); // Zoom effect
             player.getInventory().setHelmet(new ItemStack(Material.PUMPKIN, 1));
         } else {
             BattleSound.GUN_SCOPE[0].play(game, player.getLocation(), (float) 0.75);
@@ -293,7 +297,7 @@ public class BattleGun extends BattleFirearm implements Gun {
 
     public void shoot() {
         shooting = true;
-        fireMode.getAttributeValue().getValue().shoot(this, getFireRate(), getBurstRounds());
+        fireMode.getValue().shoot(this, getFireRate(), getBurstRounds());
     }
 
     public void shootProjectile() {
@@ -332,5 +336,27 @@ public class BattleGun extends BattleFirearm implements Gun {
             shootProjectile(spreadDirection);
         }
         shootProjectile(direction);
+    }
+
+    private void updateAttributes() {
+        ammo = getAttribute("ammo-reserve");
+        burstRounds = getAttribute("shot-burstrounds");
+        cooldown = getAttribute("shot-cooldown");
+        horizontalAccuracy = getAttribute("accuracy-horizontal");
+        fireMode = getAttribute("shot-firemode");
+        fireRate = getAttribute("shot-firerate");
+        magazine = getAttribute("ammo-magazine");
+        magazineSize = getAttribute("ammo-magazine-size");
+        magazineSupply = getAttribute("ammo-magazine-supply");
+        maxAmmo = getAttribute("ammo-max");
+        reloadDuration = getAttribute("reload-duration");
+        reloadDurationOg = getAttribute("reload-duration-og");
+        reloadType = getAttribute("reload-type");
+        scope = getAttribute("scope-use");
+        scopeNightVision = getAttribute("scope-nightvision");
+        scopeZoom = getAttribute("scope-zoom");
+        spread = getAttribute("shot-spread");
+        suppressed = getAttribute("shot-suppressed");
+        verticalAccuracy = getAttribute("accuracy-vertical");
     }
 }
