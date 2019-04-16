@@ -203,7 +203,7 @@ public class BattleGamePlayer implements GamePlayer {
 
     public int addExp(int exp) {
         this.exp += exp;
-        return exp;
+        return this.exp;
     }
 
     public int compareTo(GamePlayer gamePlayer) {

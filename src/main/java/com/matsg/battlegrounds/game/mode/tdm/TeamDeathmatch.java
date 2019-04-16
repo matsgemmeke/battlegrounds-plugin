@@ -87,7 +87,7 @@ public class TeamDeathmatch extends ArenaGameMode {
     }
 
     public Spawn getRespawnPoint(GamePlayer gamePlayer) {
-        return game.getArena().getRandomSpawn(gamePlayer.getTeam().getId(), minSpawnDistance);
+        return game.getArena().getRandomSpawn(gamePlayer.getTeam().getId());
     }
 
     public GameScoreboard getScoreboard() {

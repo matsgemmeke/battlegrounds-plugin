@@ -19,7 +19,7 @@ public class ArenaNameValidator implements CommandValidator {
 
     public ValidationResponse validate(String[] args) {
         if (args.length < 3) {
-            return new ValidationResponse(messageHelper.create(TranslationKey.SPECIFY_NAME));
+            return new ValidationResponse(messageHelper.create(TranslationKey.SPECIFY_ARENA_NAME));
         }
 
         int id = Integer.parseInt(args[1]);

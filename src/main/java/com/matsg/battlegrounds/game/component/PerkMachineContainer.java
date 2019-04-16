@@ -32,7 +32,11 @@ public class PerkMachineContainer implements ComponentContainer<PerkMachine> {
         return Collections.unmodifiableSet(perkMachines);
     }
 
-    public void remove(PerkMachine perkMachine) {
+    public void remove(int id) {
+        PerkMachine perkMachine = get(id);
+        if (perkMachine == null) {
+            return;
+        }
         perkMachines.remove(perkMachine);
     }
 }

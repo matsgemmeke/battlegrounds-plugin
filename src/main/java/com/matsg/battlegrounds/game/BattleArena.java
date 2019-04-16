@@ -1,23 +1,19 @@
 package com.matsg.battlegrounds.game;
 
-import com.matsg.battlegrounds.api.game.Arena;
-import com.matsg.battlegrounds.api.game.ArenaComponent;
-import com.matsg.battlegrounds.api.game.Section;
-import com.matsg.battlegrounds.api.game.Spawn;
+import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
+import com.matsg.battlegrounds.game.component.SectionContainer;
+import com.matsg.battlegrounds.game.component.SpawnContainer;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class BattleArena implements Arena {
 
     private boolean active;
-    private List<Section> sections;
-    private List<Spawn> spawns;
+    private ComponentContainer<Section> sectionContainer;
+    private ComponentContainer<Spawn> spawnContainer;
     private Location maximumPoint, minimumPoint;
     private String name;
     private World world;
@@ -28,8 +24,8 @@ public class BattleArena implements Arena {
         this.maximumPoint = maximumPoint;
         this.minimumPoint = minimumPoint;
         this.active = false;
-        this.sections = new ArrayList<>();
-        this.spawns = new ArrayList<>();
+        this.sectionContainer = new SectionContainer();
+        this.spawnContainer = new SpawnContainer();
     }
 
     public Location getMaximumPoint() {
@@ -44,12 +40,12 @@ public class BattleArena implements Arena {
         return name;
     }
 
-    public List<Section> getSections() {
-        return sections;
+    public ComponentContainer<Section> getSectionContainer() {
+        return sectionContainer;
     }
 
-    public List<Spawn> getSpawns() {
-        return spawns;
+    public ComponentContainer<Spawn> getSpawnContainer() {
+        return spawnContainer;
     }
 
     public World getWorld() {
@@ -84,6 +80,16 @@ public class BattleArena implements Arena {
     }
 
     public ArenaComponent getComponent(int id) {
+        ArenaComponent component = spawnContainer.get(id);
+        if (component != null || (component = sectionContainer.get(id)) != null) {
+            return component;
+        }
+        for (Section section : sectionContainer.getAll()) {
+            component = section.getComponent(id);
+            if (component != null) {
+                return component;
+            }
+        }
         return null;
     }
 
@@ -102,6 +108,7 @@ public class BattleArena implements Arena {
     }
 
     public Spawn getRandomSpawn() {
+        List<Spawn> spawns = getSpawns();
         Random random = new Random();
         Spawn spawn;
 
@@ -112,18 +119,20 @@ public class BattleArena implements Arena {
         return spawn;
     }
 
-    public Spawn getRandomSpawn(double distance) {
+    public Spawn getRandomSpawn(Location location, double distance) {
+        List<Spawn> spawns = getSpawns();
         Random random = new Random();
         Spawn spawn;
 
         do {
             spawn = spawns.get(random.nextInt(spawns.size()));
-        } while (spawn == null || spawn.isOccupied());
+        } while (spawn == null || spawn.isOccupied() || location.distance(spawn.getLocation()) < distance);
 
         return spawn;
     }
 
     public Spawn getRandomSpawn(int teamId) {
+        List<Spawn> spawns = getSpawns();
         Random random = new Random();
         Spawn spawn;
 
@@ -134,19 +143,20 @@ public class BattleArena implements Arena {
         return spawn;
     }
 
-    public Spawn getRandomSpawn(int teamId, double distance) {
+    public Spawn getRandomSpawn(int teamId, Location location, double distance) {
+        List<Spawn> spawns = getSpawns();
         Random random = new Random();
         Spawn spawn;
 
         do {
             spawn = spawns.get(random.nextInt(spawns.size()));
-        } while (spawn == null || spawn.isOccupied() || spawn.getTeamId() != teamId);
+        } while (spawn == null || spawn.isOccupied() || spawn.getTeamId() != teamId || location.distance(spawn.getLocation()) < distance);
 
         return spawn;
     }
 
     public Section getSection(String name) {
-        for (Section section : sections) {
+        for (Section section : sectionContainer.getAll()) {
             if (section.getName().equals(name)) {
                 return section;
             }
@@ -155,7 +165,7 @@ public class BattleArena implements Arena {
     }
 
     public Spawn getSpawn(GamePlayer gamePlayer) {
-        for (Spawn spawn : spawns) {
+        for (Spawn spawn : getSpawns()) {
             if (spawn.getGamePlayer() == gamePlayer) {
                 return spawn;
             }
@@ -164,7 +174,7 @@ public class BattleArena implements Arena {
     }
 
     public Spawn getSpawn(int index) {
-        for (Spawn spawn : spawns) {
+        for (Spawn spawn : getSpawns()) {
             if (spawn.getId() == index) {
                 return spawn;
             }
@@ -173,7 +183,7 @@ public class BattleArena implements Arena {
     }
 
     public Spawn getTeamBase(int teamId) {
-        for (Spawn spawn : spawns) {
+        for (Spawn spawn : getSpawns()) {
             if (spawn.getTeamId() == teamId && spawn.isTeamBase()) {
                 return spawn;
             }
@@ -192,15 +202,28 @@ public class BattleArena implements Arena {
         return maximumPoint != null && minimumPoint != null;
     }
 
-    private List<Block> updateBoundingBlocks() {
-        List<Block> list = new ArrayList<>();
-        for (int x = (int) minimumPoint.getX(); x <= maximumPoint.getX(); x += 1.0) {
-            for (int y = (int) minimumPoint.getY(); y <= maximumPoint.getY(); y += 1.0) {
-                for (int z = (int) minimumPoint.getZ(); z <= maximumPoint.getZ(); z += 1.0) {
-                    list.add(world.getBlockAt(x, y, z));
-                }
+    public boolean removeComponent(ArenaComponent component) {
+        if (spawnContainer.get(component.getId()) != null) {
+            spawnContainer.remove(component.getId());
+            return true;
+        }
+        if (sectionContainer.get(component.getId()) != null) {
+            sectionContainer.remove(component.getId());
+            return true;
+        }
+        for (Section section : sectionContainer.getAll()) {
+            if (section.removeComponent(component)) {
+                return true;
             }
         }
-        return list;
+        return false;
+    }
+
+    private List<Spawn> getSpawns() {
+        List<Spawn> spawns = new ArrayList<>();
+        for (Spawn spawn : spawnContainer.getAll()) {
+            spawns.add(spawn);
+        }
+        return spawns;
     }
 }

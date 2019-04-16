@@ -74,7 +74,8 @@ public class FreeForAll extends ArenaGameMode {
     }
 
     public Spawn getRespawnPoint(GamePlayer gamePlayer) {
-        return game.getArena().getRandomSpawn(minSpawnDistance);
+        GamePlayer nearestPlayer = game.getPlayerManager().getNearestPlayer(gamePlayer.getLocation());
+        return game.getArena().getRandomSpawn(nearestPlayer.getLocation(), minSpawnDistance);
     }
 
     public GameScoreboard getScoreboard() {

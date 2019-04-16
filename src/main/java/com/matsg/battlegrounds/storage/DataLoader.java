@@ -5,6 +5,7 @@ import com.matsg.battlegrounds.api.storage.CacheYaml;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.game.GameMode;
 import com.matsg.battlegrounds.game.*;
+import com.matsg.battlegrounds.game.component.ArenaSection;
 import com.matsg.battlegrounds.game.component.ArenaSpawn;
 import com.matsg.battlegrounds.game.mode.GameModeFactory;
 import com.matsg.battlegrounds.game.mode.GameModeType;
@@ -110,6 +111,9 @@ public class DataLoader {
                     World world = plugin.getServer().getWorld(data.getString("arena." + name + ".world"));
 
                     Arena arena = new BattleArena(name, world, max, min);
+
+                    addSections(game, arena);
+
                     ConfigurationSection spawnSection = arenaSection.getConfigurationSection(name + ".spawn");
 
                     if (spawnSection != null) {
@@ -117,14 +121,14 @@ public class DataLoader {
                             Spawn spawn = new ArenaSpawn(Integer.parseInt(spawnIndex), data.getLocation("arena." + name + ".spawn." + spawnIndex + ".location"), spawnSection.getInt(spawnIndex + ".team"));
                             spawn.setTeamBase(spawnSection.getBoolean(spawnIndex + ".base"));
                             if (spawn.getLocation() != null) {
-                                arena.getSpawns().add(spawn);
+                                arena.getSpawnContainer().add(spawn);
                             }
                         }
                     }
 
                     game.getArenaList().add(arena);
 
-                    logger.info("Succesfully added arena " + name + " with " + arena.getSpawns().size() + " spawns to game " + id);
+                    logger.info("Succesfully added arena " + arena.getName() + " to game " + id);
                 }
 
                 // Assign an arena to this game
@@ -162,5 +166,42 @@ public class DataLoader {
         }
 
         logger.info("Loaded " + plugin.getGameManager().getGames().size() + " game(s) from the cache");
+    }
+
+    private void addSections(Game game, Arena arena) {
+        CacheYaml data = game.getDataFile();
+        ConfigurationSection configurationSection = data.getConfigurationSection("arena." + arena.getName() + ".component");
+
+        if (configurationSection == null) {
+            logger.info("No components found for arena " + arena.getName() + "!");
+            return;
+        }
+
+        for (String componentId : configurationSection.getKeys(false)) {
+            String type = data.getString("arena." + arena.getName() + ".component." + componentId + ".type");
+
+            if (type.equals("section")) {
+                String name = data.getString("arena." + arena.getName() + ".component." + componentId + ".name");
+                int price = configurationSection.getInt(componentId + ".price");
+
+                Section section = new ArenaSection(Integer.parseInt(componentId), name);
+                section.setPrice(price);
+
+                arena.getSectionContainer().add(section);
+
+                logger.info("Added section " + section.getName());
+            }
+
+            if (type.equals("spawn")) {
+                Location location = data.getLocation("arena." + arena.getName() + ".component." + componentId + ".location");
+                boolean teamBase = configurationSection.getBoolean(componentId + ".base");
+                int teamId = configurationSection.getInt(componentId + ".team");
+
+                Spawn spawn = new ArenaSpawn(Integer.parseInt(componentId), location, teamId);
+                spawn.setTeamBase(teamBase);
+
+                arena.getSpawnContainer().add(spawn);
+            }
+        }
     }
 }

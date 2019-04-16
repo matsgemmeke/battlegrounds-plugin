@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.storage.sql;
 
+import com.matsg.battlegrounds.StartupFailedException;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.storage.PlayerStorage;
@@ -21,7 +22,7 @@ public class SQLPlayerStorage implements PlayerStorage {
     private DefaultLoadouts defaultLoadouts;
     private String address, database, password, username;
 
-    public SQLPlayerStorage(Battlegrounds plugin, SQLConfig sqlConfig) throws IOException {
+    public SQLPlayerStorage(Battlegrounds plugin, SQLConfig sqlConfig) throws IOException, StartupFailedException {
         this.plugin = plugin;
         this.defaultLoadouts = new DefaultLoadouts(plugin);
         this.address = sqlConfig.getAddress();
@@ -37,7 +38,7 @@ public class SQLPlayerStorage implements PlayerStorage {
             TableCreator tableCreator = new TableCreator(connection);
             tableCreator.createTables();
         } catch (Exception e) {
-            plugin.getLogger().warning("Could not connect to the SQL database! Have you configured everything correctly?");
+            throw new StartupFailedException("Could not connect to the SQL database! Have you configured everything correctly?");
         } finally {
             closeConnection();
         }

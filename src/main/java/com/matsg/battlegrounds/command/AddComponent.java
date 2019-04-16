@@ -5,6 +5,7 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.Section;
+import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.command.component.*;
 import com.matsg.battlegrounds.command.validate.ArenaNameValidator;
 import com.matsg.battlegrounds.command.validate.GameIdValidator;
@@ -26,7 +27,7 @@ public class AddComponent extends SubCommand {
         setName("addcomponent");
         setPermissionNode("bg.addcomponent");
         setPlayerOnly(true);
-        setUsage("bg addcomponent [id] [arena] [section] [type]");
+        setUsage("bg addcomponent [id] [arena] [section] [component]");
 
         commands = new HashMap<>();
         commands.put("door", new AddDoor(plugin));
@@ -34,6 +35,7 @@ public class AddComponent extends SubCommand {
         commands.put("mobspawn", new AddMobSpawn());
 //        commands.put("mysterybox", new AddMysteryBox(plugin));
 //        commands.put("perkmachine", new AddPerkMachine(plugin));
+        commands.put("section", new AddSection());
         commands.put("spawn", new AddSpawn());
 
         registerValidator(new GameIdValidator(plugin));
@@ -42,14 +44,11 @@ public class AddComponent extends SubCommand {
 
     public void executeSubCommand(CommandSender sender, String[] args) {
         Player player = (Player) sender;
-
-        int id = Integer.parseInt(args[1]);
-
-        Game game = plugin.getGameManager().getGame(id);
+        Game game = plugin.getGameManager().getGame(Integer.parseInt(args[1]));
         Arena arena = plugin.getGameManager().getArena(game, args[2].replaceAll("_", " "));
 
         if (args.length == 3) {
-            player.sendMessage(createMessage(TranslationKey.SPECIFY_NAME));
+            player.sendMessage(createMessage(TranslationKey.SPECIFY_COMPONENT_TYPE));
             return;
         }
 
@@ -58,7 +57,7 @@ public class AddComponent extends SubCommand {
         ComponentCommand command = commands.get(args[typePos]);
 
         if (command == null) {
-            player.sendMessage(createMessage(TranslationKey.INVALID_COMPONENT_TYPE));
+            player.sendMessage(createMessage(TranslationKey.INVALID_COMPONENT_TYPE, new Placeholder("bg_component", args[typePos])));
             return;
         }
 

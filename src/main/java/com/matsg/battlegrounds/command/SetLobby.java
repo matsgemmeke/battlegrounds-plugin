@@ -4,6 +4,7 @@ import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.command.validate.GameIdValidator;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -17,34 +18,17 @@ public class SetLobby extends SubCommand {
         setPermissionNode("battlegrounds.setlobby");
         setPlayerOnly(true);
         setUsage("bg setlobby [id]");
+
+        registerValidator(new GameIdValidator(plugin));
     }
 
     public void executeSubCommand(CommandSender sender, String[] args) {
         Player player = (Player) sender;
+        Game game = plugin.getGameManager().getGame(Integer.parseInt(args[1]));
 
-        if (args.length == 1) {
-            player.sendMessage(createMessage(TranslationKey.SPECIFY_ID));
-            return;
-        }
-
-        int id;
-
-        try {
-            id = Integer.parseInt(args[1]);
-        } catch (Exception e) {
-            player.sendMessage(createMessage(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[1])));
-            return;
-        }
-
-        if (!plugin.getGameManager().exists(id)) {
-            player.sendMessage(createMessage(TranslationKey.GAME_NOT_EXISTS, new Placeholder("bg_game", id)));
-            return;
-        }
-
-        Game game = plugin.getGameManager().getGame(id);
         game.getDataFile().setLocation("lobby", player.getLocation(), true);
         game.getDataFile().save();
 
-        player.sendMessage(createMessage(TranslationKey.LOBBY_SET, new Placeholder("bg_game", id)));
+        player.sendMessage(createMessage(TranslationKey.LOBBY_SET, new Placeholder("bg_game", game.getId())));
     }
 }

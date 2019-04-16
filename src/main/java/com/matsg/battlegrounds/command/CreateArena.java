@@ -35,7 +35,7 @@ public class CreateArena extends SubCommand {
         Game game = plugin.getGameManager().getGame(id);
 
         if (args.length == 2) {
-            player.sendMessage(createMessage(TranslationKey.SPECIFY_NAME));
+            player.sendMessage(createMessage(TranslationKey.SPECIFY_ARENA_NAME));
             return;
         }
 

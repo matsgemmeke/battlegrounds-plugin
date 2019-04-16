@@ -21,7 +21,7 @@ public class Rename extends SubCommand {
         Player player = (Player) sender;
 
         if (args.length == 1) {
-            player.sendMessage(createMessage(TranslationKey.SPECIFY_LOADOUT));
+            player.sendMessage(createMessage(TranslationKey.SPECIFY_LOADOUT_ID));
             return;
         }
 
@@ -42,7 +42,7 @@ public class Rename extends SubCommand {
         }
 
         if (args.length == 2) {
-            player.sendMessage(createMessage(TranslationKey.SPECIFY_NAME));
+            player.sendMessage(createMessage(TranslationKey.SPECIFY_LOADOUT_NAME));
             return;
         }
 

@@ -49,7 +49,7 @@ public abstract class ArenaGameMode extends AbstractGameMode {
     }
 
     public void onStart() {
-        for (Spawn spawn : game.getArena().getSpawns()) {
+        for (Spawn spawn : game.getArena().getSpawnContainer().getAll()) {
             spawn.setGamePlayer(null);
         }
     }

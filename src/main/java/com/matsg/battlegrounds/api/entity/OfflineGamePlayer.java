@@ -25,6 +25,4 @@ public interface OfflineGamePlayer {
     UUID getUUID();
 
     boolean isOnline();
-
-    int addExp(int exp);
 }

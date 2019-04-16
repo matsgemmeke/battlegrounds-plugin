@@ -17,7 +17,7 @@ public class GameIdValidator implements CommandValidator {
 
     public ValidationResponse validate(String[] args) {
         if (args.length < 2) {
-            return new ValidationResponse(messageHelper.create(TranslationKey.SPECIFY_ID));
+            return new ValidationResponse(messageHelper.create(TranslationKey.SPECIFY_GAME_ID));
         }
 
         int id;

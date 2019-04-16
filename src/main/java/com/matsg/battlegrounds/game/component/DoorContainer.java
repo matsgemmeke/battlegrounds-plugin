@@ -32,7 +32,11 @@ public class DoorContainer implements ComponentContainer<Door> {
         return Collections.unmodifiableSet(doors);
     }
 
-    public void remove(Door door) {
+    public void remove(int id) {
+        Door door = get(id);
+        if (door == null) {
+            return;
+        }
         doors.remove(door);
     }
 }

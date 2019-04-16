@@ -50,7 +50,7 @@ public class CreateArenaTest {
 
     @Test
     public void testCommandNoNameSpecified() {
-        String message = "Test", messagePath = TranslationKey.SPECIFY_NAME.getPath();
+        String message = "Test", messagePath = TranslationKey.SPECIFY_ARENA_NAME.getPath();
 
         when(Translator.translate(messagePath)).thenReturn(message);
 

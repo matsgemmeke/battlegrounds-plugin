@@ -44,7 +44,7 @@ public class ArenaNameValidatorTest {
 
     @Test
     public void testValidationNoNameSpecified() {
-        String responseMessage = "Test", responsePath = TranslationKey.SPECIFY_NAME.getPath();
+        String responseMessage = "Test", responsePath = TranslationKey.SPECIFY_ARENA_NAME.getPath();
         String[] input = new String[] { "command", String.valueOf(gameId) };
 
         when(Translator.translate(responsePath)).thenReturn(responseMessage);

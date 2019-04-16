@@ -32,7 +32,11 @@ public class MobSpawnContainer implements ComponentContainer<MobSpawn> {
         return Collections.unmodifiableSet(mobSpawns);
     }
 
-    public void remove(MobSpawn mobSpawn) {
+    public void remove(int id) {
+        MobSpawn mobSpawn = get(id);
+        if (mobSpawn == null) {
+            return;
+        }
         mobSpawns.remove(mobSpawn);
     }
 }

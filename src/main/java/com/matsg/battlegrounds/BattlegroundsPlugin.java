@@ -55,10 +55,6 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         getLogger().info("Succesfully started Battlegrounds " + getDescription().getVersion());
     }
 
-    public void onDisable() {
-        gameManager.shutdown();
-    }
-
     public static Battlegrounds getPlugin() {
         return plugin;
     }
@@ -170,7 +166,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
             } else {
                 playerStorage = new LocalPlayerStorage(this);
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             throw new StartupFailedException("Failed to set up player storage!", e);
         }
 

@@ -18,7 +18,9 @@ public interface ComponentContainer<T extends ArenaComponent> {
     T get(int id);
 
     /**
-     * Gets all components that the container has.
+     * Gets all components that the container has. The returned collection is immutable and should only be used for
+     * iterations. To add and remove components the methods {@link #add(ArenaComponent)} and {@link #remove(int)}
+     * should be used.
      *
      * @return All container components.
      */
@@ -27,7 +29,7 @@ public interface ComponentContainer<T extends ArenaComponent> {
     /**
      * Removes a component from the container.
      *
-     * @param component The component to be removed.
+     * @param id The id of the component to be removed.
      */
-    void remove(T component);
+    void remove(int id);
 }

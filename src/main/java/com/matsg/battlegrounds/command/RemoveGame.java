@@ -4,6 +4,7 @@ import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.command.validate.GameIdValidator;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import org.bukkit.command.CommandSender;
 
@@ -23,30 +24,15 @@ public class RemoveGame extends SubCommand {
         setName("removegame");
         setPermissionNode("battlegrounds.removegame");
         setUsage("bg removegame [id]");
+
+        registerValidator(new GameIdValidator(plugin));
     }
 
     public void executeSubCommand(final CommandSender sender, String[] args) {
-        if (args.length == 1) {
-            sender.sendMessage(createMessage(TranslationKey.SPECIFY_ID));
-            return;
-        }
-
-        int id;
-
-        try {
-            id = Integer.parseInt(args[1]);
-        } catch (Exception e) {
-            sender.sendMessage(createMessage(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[1])));
-            return;
-        }
-
-        if (!plugin.getGameManager().exists(id)) {
-            sender.sendMessage(createMessage(TranslationKey.GAME_NOT_EXISTS, new Placeholder("bg_game", id)));
-            return;
-        }
+        Game game = plugin.getGameManager().getGame(Integer.parseInt(args[1]));
 
         if (!senders.contains(sender)) {
-            sender.sendMessage(createMessage(TranslationKey.GAME_CONFIRM_REMOVE, new Placeholder("bg_game", id)));
+            sender.sendMessage(createMessage(TranslationKey.GAME_CONFIRM_REMOVE, new Placeholder("bg_game", game.getId())));
 
             senders.add(sender);
 
@@ -58,12 +44,11 @@ public class RemoveGame extends SubCommand {
             return;
         }
 
-        Game game = plugin.getGameManager().getGame(id);
         game.getDataFile().removeFile();
 
         plugin.getGameManager().getGames().remove(game);
 
-        sender.sendMessage(createMessage(TranslationKey.GAME_REMOVE, new Placeholder("bg_game", id)));
+        sender.sendMessage(createMessage(TranslationKey.GAME_REMOVE, new Placeholder("bg_game", game.getId())));
 
         senders.remove(sender);
     }

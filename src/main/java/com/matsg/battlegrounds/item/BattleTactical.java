@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 public class BattleTactical extends BattleEquipment implements Tactical {
 
     private static final double TACTICAL_DAMAGE = 0.0;
+
     private int duration;
     private TacticalEffect effect;
 

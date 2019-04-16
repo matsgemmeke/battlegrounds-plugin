@@ -27,7 +27,7 @@ public class Join extends SubCommand {
         }
 
         if (args.length == 1) {
-            player.sendMessage(createMessage(TranslationKey.SPECIFY_ID));
+            player.sendMessage(createMessage(TranslationKey.SPECIFY_GAME_ID));
             return;
         }
 

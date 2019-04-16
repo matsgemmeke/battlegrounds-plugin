@@ -1,10 +1,11 @@
 package com.matsg.battlegrounds.api.game;
 
 import com.matsg.battlegrounds.api.entity.GamePlayer;
+import org.bukkit.Location;
 
 import java.util.Collection;
 
-public interface Arena extends Extent {
+public interface Arena extends ComponentWrapper, Extent {
 
     /**
      * Gets the name of the arena.
@@ -14,18 +15,18 @@ public interface Arena extends Extent {
     String getName();
 
     /**
-     * Gets the collection of sections in the arena.
+     * Gets the section container of the arena.
      *
-     * @return The section collection.
+     * @return The section container.
      */
-    Collection<Section> getSections();
+    ComponentContainer<Section> getSectionContainer();
 
     /**
-     * Gets the collection of spawns.
+     * Gets the spawn container of the arena.
      *
-     * @return The spawn collection
+     * @return The spawn container.
      */
-    Collection<Spawn> getSpawns();
+    ComponentContainer<Spawn> getSpawnContainer();
 
     /**
      * Gets whether the arena is active or not.
@@ -42,14 +43,6 @@ public interface Arena extends Extent {
     void setActive(boolean active);
 
     /**
-     * Searches for a component from the arena with a certain id. Includes section components.
-     *
-     * @param id The component id.
-     * @return The component with the corresponding id or null if there are no matching components.
-     */
-    ArenaComponent getComponent(int id);
-
-    /**
      * Gets a random entry of the spawn collection.
      *
      * @return A random spawn entry
@@ -57,12 +50,13 @@ public interface Arena extends Extent {
     Spawn getRandomSpawn();
 
     /**
-     * Gets a random entry of the spawn collection with a minimum distance to the nearest foe.
+     * Gets a random entry of the spawn collection with a minimum distance from a location.
      *
-     * @param distance The minimum distance between the location and the nearest foe
-     * @return A random spawn entry
+     * @param location The location to calculate the distance from.
+     * @param distance The minimum distance between the spawn and given location.
+     * @return A random spawn entry with minimum distance.
      */
-    Spawn getRandomSpawn(double distance);
+    Spawn getRandomSpawn(Location location, double distance);
 
     /**
      * Gets a random entry of the spawn collection owned by a specific team.
@@ -73,13 +67,14 @@ public interface Arena extends Extent {
     Spawn getRandomSpawn(int teamId);
 
     /**
-     * Gets a random entry of the spawn collection owned by a specific team with a minimum distance to the nearest foe.
+     * Gets a random entry of the spawn collection owned by a specific team with a minimum distance from a location.
      *
-     * @param teamId The id of the team to find a random spawn of
-     * @param distance The minimum distance between the location and the nearest foe
+     * @param teamId The id of the team to find a random spawn of.
+     * @param location The location to calculate the distance from.
+     * @param distance The minimum distance between the spawn and given location.
      * @return A random spawn entry
      */
-    Spawn getRandomSpawn(int teamId, double distance);
+    Spawn getRandomSpawn(int teamId, Location location, double distance);
 
     /**
      * Gets a section from the name with a certain name.

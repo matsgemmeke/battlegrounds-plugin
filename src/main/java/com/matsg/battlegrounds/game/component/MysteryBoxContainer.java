@@ -32,7 +32,11 @@ public class MysteryBoxContainer implements ComponentContainer<MysteryBox> {
         return Collections.unmodifiableSet(mysteryBoxes);
     }
 
-    public void remove(MysteryBox mysteryBox) {
+    public void remove(int id) {
+        MysteryBox mysteryBox = get(id);
+        if (mysteryBox == null) {
+            return;
+        }
         mysteryBoxes.remove(mysteryBox);
     }
 }

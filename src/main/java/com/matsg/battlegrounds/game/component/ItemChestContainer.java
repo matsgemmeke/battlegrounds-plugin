@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.game.component;
 
+import com.avaje.ebeaninternal.server.cluster.Packet;
 import com.matsg.battlegrounds.api.game.ComponentContainer;
 import com.matsg.battlegrounds.api.game.ItemChest;
 
@@ -32,7 +33,11 @@ public class ItemChestContainer implements ComponentContainer<ItemChest> {
         return Collections.unmodifiableSet(itemChests);
     }
 
-    public void remove(ItemChest itemChest) {
+    public void remove(int id) {
+        ItemChest itemChest = get(id);
+        if (itemChest == null) {
+            return;
+        }
         itemChests.remove(itemChest);
     }
 }

@@ -37,7 +37,7 @@ public class GameIdValidatorTest {
 
     @Test
     public void testValidationNoIdSpecified() {
-        String responseMessage = "Test", responsePath = TranslationKey.SPECIFY_ID.getPath();
+        String responseMessage = "Test", responsePath = TranslationKey.SPECIFY_GAME_ID.getPath();
         String[] input = new String[] { "command" };
 
         when(Translator.translate(responsePath)).thenReturn(responseMessage);

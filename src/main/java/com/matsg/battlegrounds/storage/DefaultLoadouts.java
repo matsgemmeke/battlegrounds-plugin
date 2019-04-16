@@ -31,8 +31,7 @@ public class DefaultLoadouts extends AbstractYaml {
                 plugin.getFirearmFactory().make(section.getString("Primary.Id")),
                 plugin.getFirearmFactory().make(section.getString("Secondary.Id")),
                 plugin.getEquipmentFactory().make(section.getString("Equipment")),
-                plugin.getMeleeWeaponFactory().make(section.getString("MeleeWeapon")),
-                true
+                plugin.getMeleeWeaponFactory().make(section.getString("MeleeWeapon"))
         );
     }
 }

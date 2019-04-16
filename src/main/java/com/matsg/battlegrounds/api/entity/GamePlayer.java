@@ -55,5 +55,7 @@ public interface GamePlayer extends BaseEntity, OfflineGamePlayer, Comparable<Ga
 
     void setTeam(Team team);
 
+    int addExp(int exp);
+
     void sendMessage(String message);
 }

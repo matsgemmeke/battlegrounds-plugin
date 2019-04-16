@@ -1,6 +1,6 @@
 package com.matsg.battlegrounds.api.game;
 
-public interface Section extends ArenaComponent, Lockable {
+public interface Section extends ArenaComponent, ComponentWrapper, Lockable {
 
     /**
      * Gets all components that the section has. This collection is immutable. If a component needs to be added to the

@@ -101,4 +101,18 @@ public class ArenaSection implements Section {
 
         return list;
     }
+
+    public boolean removeComponent(ArenaComponent component) {
+        for (ComponentContainer container : getContainers()) {
+            if (container.get(component.getId()) != null) {
+                container.remove(component.getId());
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private ComponentContainer[] getContainers() {
+        return new ComponentContainer[] { doorContainer, itemChestContainer, mobSpawnContainer, mysteryBoxContainer, perkMachineContainer };
+    }
 }

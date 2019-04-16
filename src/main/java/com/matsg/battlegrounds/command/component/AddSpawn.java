@@ -25,16 +25,16 @@ public class AddSpawn implements ComponentCommand {
         boolean teamBase = false;
         int teamId = 0;
 
-        if (args.length >= 0) {
+        if (args.length >= 1) {
             try {
                 teamId = Integer.parseInt(args[0]);
             } catch (Exception e) {
-                player.sendMessage(messageHelper.create(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[3])));
+                player.sendMessage(messageHelper.create(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[0])));
                 return;
             }
         }
 
-        if (args.length >= 1) {
+        if (args.length >= 2) {
             teamBase = args[1].equals("-b");
 
             if (teamBase && arena.getTeamBase(teamId) != null) {
@@ -48,16 +48,17 @@ public class AddSpawn implements ComponentCommand {
         Spawn spawn = new ArenaSpawn(componentId, player.getLocation(), teamId);
         spawn.setTeamBase(teamBase);
 
-        arena.getSpawns().add(spawn);
+        arena.getSpawnContainer().add(spawn);
 
-        game.getDataFile().set("arena." + arena.getName() + ".spawn." + spawn.getId() + ".base", teamBase);
-        game.getDataFile().setLocation("arena." + arena.getName() + ".spawn." + spawn.getId() + ".location", spawn.getLocation(), true);
-        game.getDataFile().set("arena." + arena.getName() + ".spawn." + spawn.getId() + ".team", teamId);
+        game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".base", teamBase);
+        game.getDataFile().setLocation("arena." + arena.getName() + ".component." + componentId + ".location", spawn.getLocation(), true);
+        game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".team", teamId);
+        game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".type", "spawn");
         game.getDataFile().save();
 
         player.sendMessage(messageHelper.create(TranslationKey.SPAWN_ADD,
                 new Placeholder("bg_arena", arena.getName()),
-                new Placeholder("bg_index", spawn.getId())
+                new Placeholder("bg_component_id", componentId)
         ));
     }
 }

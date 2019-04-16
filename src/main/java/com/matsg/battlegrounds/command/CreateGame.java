@@ -22,7 +22,7 @@ public class CreateGame extends SubCommand {
 
     public void executeSubCommand(CommandSender sender, String[] args) {
         if (args.length == 1) {
-            sender.sendMessage(createMessage(TranslationKey.SPECIFY_ID));
+            sender.sendMessage(createMessage(TranslationKey.SPECIFY_GAME_ID));
             return;
         }
 

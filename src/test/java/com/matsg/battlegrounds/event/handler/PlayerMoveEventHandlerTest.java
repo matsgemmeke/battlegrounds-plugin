@@ -129,7 +129,7 @@ public class PlayerMoveEventHandlerTest {
         Spawn spawn = new ArenaSpawn(1, new Location(world, 50, 50, 50), 1);
         spawn.setGamePlayer(gamePlayer);
 
-        arena.getSpawns().add(spawn);
+        arena.getSpawnContainer().add(spawn);
 
         when(game.getState()).thenReturn(new StartingState());
 

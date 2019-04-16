@@ -5,7 +5,11 @@ import com.matsg.battlegrounds.api.entity.Hellhound;
 import com.matsg.battlegrounds.api.entity.Zombie;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.nms.Particle;
+import com.matsg.battlegrounds.nms.ReflectionUtils;
 import com.matsg.battlegrounds.nms.Title;
+import net.minecraft.server.v1_12_R1.ChatMessageType;
+import net.minecraft.server.v1_12_R1.IChatBaseComponent;
+import net.minecraft.server.v1_12_R1.PacketPlayOutChat;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -24,7 +28,13 @@ public class Version112R1 implements Version {
     }
 
     public void sendJSONMessage(Player player, String message, String command, String hoverMessage) {
+        String text = "{\"text\":\"\",\"extra\":[{\"text\":\"" + message + "\"," +
+                "\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"" + hoverMessage + "\"}," +
+                "\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"" + command + "\"}}]}";
 
+        PacketPlayOutChat packet = new PacketPlayOutChat(IChatBaseComponent.ChatSerializer.a(text), ChatMessageType.CHAT);
+
+        ReflectionUtils.sendPacket(player, packet);
     }
 
     public void sendTitle(Player player, String title, String subTitle, int fadeIn, int time, int fadeOut) {
