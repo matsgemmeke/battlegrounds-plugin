@@ -3,6 +3,12 @@ package com.matsg.battlegrounds.command.component;
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Selection;
+import com.matsg.battlegrounds.api.game.Arena;
+import com.matsg.battlegrounds.api.game.Door;
+import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.api.game.Section;
+import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.game.component.ArenaDoor;
 import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -19,6 +25,24 @@ public class AddDoor implements ComponentCommand {
 
     public void execute(ComponentContext context, int componentId, String[] args) {
         Player player = context.getPlayer();
+        Game game = context.getGame();
+        Arena arena = context.getArena();
+
+        if (args.length == 0) {
+            player.sendMessage(messageHelper.create(TranslationKey.SPECIFY_SECTION_NAME));
+            return;
+        }
+
+        Section section = arena.getSection(args[0]);
+
+        if (section == null) {
+            player.sendMessage(messageHelper.create(TranslationKey.SECTION_NOT_EXISTS,
+                    new Placeholder("bg_arena", arena.getName()),
+                    new Placeholder("bg_section", args[0])
+            ));
+            return;
+        }
+
         Selection selection = plugin.getSelectionManager().getSelection(player);
 
         if (!selection.isComplete()) {
@@ -27,5 +51,28 @@ public class AddDoor implements ComponentCommand {
         }
 
         Block block = selection.getCenter().getBlock();
+
+        Door door = new ArenaDoor(
+                componentId,
+                game,
+                section,
+                selection.getWorld(),
+                selection.getMaximumPoint(),
+                selection.getMinimumPoint(),
+                block.getType()
+        );
+
+        section.getDoorContainer().add(door);
+
+        game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".material", block.getType());
+        game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".type", "door");
+        game.getDataFile().setLocation("arena." + arena.getName() + ".component." + componentId + ".max", selection.getMaximumPoint(), false);
+        game.getDataFile().setLocation("arena." + arena.getName() + ".component." + componentId + ".min", selection.getMinimumPoint(), false);
+        game.getDataFile().save();
+
+        player.sendMessage(messageHelper.create(TranslationKey.DOOR_ADD,
+                new Placeholder("bg_component_id", componentId),
+                new Placeholder("bg_section", section.getName())
+        ));
     }
 }

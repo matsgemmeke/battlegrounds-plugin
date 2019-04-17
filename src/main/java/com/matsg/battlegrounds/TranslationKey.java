@@ -40,6 +40,7 @@ public enum TranslationKey {
     DESCRIPTION_SETGAMESIGN("command-description-setgamesign", false),
     DESCRIPTION_SETLOBBY("command-description-setlobby", false),
     DESCRIPTION_SETMAINLOBBY("command-description-setmainlobby", false),
+    DOOR_ADD("setup-door-add", false),
     EDIT_ATTACHMENT("view-edit-attachment", false),
     EDIT_LOADOUT("view-edit-loadout", false),
     EDIT_WEAPON("view-edit-weapon", false),

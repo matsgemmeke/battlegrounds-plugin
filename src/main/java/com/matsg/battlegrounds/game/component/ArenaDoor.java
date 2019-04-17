@@ -20,7 +20,7 @@ public class ArenaDoor implements Door {
     private Game game;
     private int id;
     private Location maximumPoint, minimumPoint;
-    private MaterialData materialData;
+    private Material material;
     private Section section;
     private World world;
 
@@ -31,7 +31,7 @@ public class ArenaDoor implements Door {
             World world,
             Location maximumPoint,
             Location minimumPoint,
-            MaterialData materialData
+            Material material
     ) {
         this.id = id;
         this.game = game;
@@ -39,7 +39,7 @@ public class ArenaDoor implements Door {
         this.world = world;
         this.maximumPoint = maximumPoint;
         this.minimumPoint = minimumPoint;
-        this.materialData = materialData;
+        this.material = material;
         this.locked = true;
     }
 
@@ -129,13 +129,13 @@ public class ArenaDoor implements Door {
     public void setLocked(boolean locked) {
         this.locked = locked;
 
-        MaterialData materialData = locked ? this.materialData : new MaterialData(Material.AIR);
+        Material material = locked ? this.material : Material.AIR;
 
         for (int x = minimumPoint.getBlockX(); x <= maximumPoint.getBlockX(); x ++) {
             for (int y = minimumPoint.getBlockY(); y <= maximumPoint.getBlockY(); y ++) {
                 for (int z = minimumPoint.getBlockZ(); z <= maximumPoint.getBlockZ(); z ++) {
                     Block block = world.getBlockAt(x, y, z);
-                    block.setType(materialData.getItemType());
+                    block.setType(material);
                 }
             }
         }
