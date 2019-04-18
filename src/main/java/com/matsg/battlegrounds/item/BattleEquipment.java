@@ -2,6 +2,7 @@ package com.matsg.battlegrounds.item;
 
 import com.matsg.battlegrounds.api.item.Equipment;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
+import com.matsg.battlegrounds.api.item.Transaction;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.util.BattleRunnable;
@@ -147,6 +148,10 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
         return new String[] {
                 ChatColor.WHITE + type.getName()
         };
+    }
+
+    public void handleTransaction(Transaction transaction) {
+        this.gamePlayer = transaction.getGamePlayer();
     }
 
     public boolean isRelated(ItemStack itemStack) {

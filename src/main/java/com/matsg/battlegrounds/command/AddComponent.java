@@ -9,6 +9,7 @@ import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.command.component.*;
 import com.matsg.battlegrounds.command.validate.ArenaNameValidator;
 import com.matsg.battlegrounds.command.validate.GameIdValidator;
+import com.matsg.battlegrounds.item.ItemFinder;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -31,7 +32,7 @@ public class AddComponent extends SubCommand {
 
         commands = new HashMap<>();
         commands.put("door", new AddDoor(plugin));
-//        commands.put("itemchest", new AddItemChest(plugin));
+        commands.put("itemchest", new AddItemChest(new ItemFinder(plugin)));
         commands.put("mobspawn", new AddMobSpawn());
 //        commands.put("mysterybox", new AddMysteryBox(plugin));
 //        commands.put("perkmachine", new AddPerkMachine(plugin));
@@ -52,8 +53,14 @@ public class AddComponent extends SubCommand {
             return;
         }
 
-        Section section = arena.getSection(args[2]);
+        Section section = arena.getSection(args[3]);
         int typePos = section != null ? 4 : 3;
+
+        if (args.length == typePos) {
+            player.sendMessage(createMessage(TranslationKey.SPECIFY_COMPONENT_TYPE));
+            return;
+        }
+
         ComponentCommand command = commands.get(args[typePos]);
 
         if (command == null) {

@@ -67,11 +67,11 @@ public class BattleGameConfiguration implements GameConfiguration {
     }
     
     public void saveConfiguration(Yaml yaml) {
-        yaml.set("_config.gamecountdown", gameCountdown);
-        yaml.set("_config.gamemodes", getGameModeNames());
-        yaml.set("_config.lobbycountdown", lobbyCountdown);
-        yaml.set("_config.maxplayers", maxPlayers);
-        yaml.set("_config.minplayers", minPlayers);
+        yaml.set("config.gamecountdown", gameCountdown);
+        yaml.set("config.gamemodes", getGameModeNames());
+        yaml.set("config.lobbycountdown", lobbyCountdown);
+        yaml.set("config.maxplayers", maxPlayers);
+        yaml.set("config.minplayers", minPlayers);
         yaml.save();
     }
 }

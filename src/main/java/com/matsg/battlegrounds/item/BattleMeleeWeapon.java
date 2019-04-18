@@ -8,6 +8,7 @@ import com.matsg.battlegrounds.api.item.ItemType;
 import com.matsg.battlegrounds.api.item.MeleeWeapon;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.Hitbox;
+import com.matsg.battlegrounds.api.item.Transaction;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.util.BattleRunnable;
@@ -126,6 +127,10 @@ public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
         return new String[] {
                 ChatColor.WHITE + type
         };
+    }
+
+    public void handleTransaction(Transaction transaction) {
+        this.gamePlayer = transaction.getGamePlayer();
     }
 
     public boolean isRelated(ItemStack itemStack) {

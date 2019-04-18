@@ -1,6 +1,6 @@
 package com.matsg.battlegrounds.api.item;
 
-public interface Weapon extends Item, Property {
+public interface Weapon extends Item, Property, TransactionItem {
 
     String getDescription();
 
