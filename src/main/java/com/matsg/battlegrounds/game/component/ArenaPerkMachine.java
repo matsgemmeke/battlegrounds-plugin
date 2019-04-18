@@ -67,13 +67,21 @@ public class ArenaPerkMachine implements PerkMachine {
     }
 
     public boolean onInteract(GamePlayer gamePlayer, Block block) {
+        // In case the perk machine is locked or the player has too many perks or the player already has bought the
+        // perk, it does not accept interactions.
         if (locked
-                || gamePlayer.getPoints() < price
                 || gamePlayer.getPerks().size() <= MAX_NUMBER_PERKS
                 || hasPerkType(gamePlayer, perk.getEffect())) {
             return false;
         }
 
+        // If the player does not have enough points they can not buy the perk.
+        if (gamePlayer.getPoints() < price) {
+            ActionBar.UNSUFFICIENT_POINTS.send(gamePlayer.getPlayer());
+            return true;
+        }
+
+        // If the player has bought the perk too many times they can not buy the perk.
         if (buys.containsKey(gamePlayer) && buys.get(gamePlayer) > maxBuys) {
             ActionBar.PERKMACHINE_SOLD_OUT.send(gamePlayer.getPlayer());
             return true;

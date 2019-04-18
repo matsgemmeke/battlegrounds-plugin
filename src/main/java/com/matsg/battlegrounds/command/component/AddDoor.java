@@ -27,25 +27,16 @@ public class AddDoor implements ComponentCommand {
         Player player = context.getPlayer();
         Game game = context.getGame();
         Arena arena = context.getArena();
-
-        if (args.length == 0) {
-            player.sendMessage(messageHelper.create(TranslationKey.SPECIFY_SECTION_NAME));
-            return;
-        }
-
-        Section section = arena.getSection(args[0]);
+        Section section = context.getSection();
 
         if (section == null) {
-            player.sendMessage(messageHelper.create(TranslationKey.SECTION_NOT_EXISTS,
-                    new Placeholder("bg_arena", arena.getName()),
-                    new Placeholder("bg_section", args[0])
-            ));
+            player.sendMessage(messageHelper.create(TranslationKey.SPECIFY_SECTION_NAME));
             return;
         }
 
         Selection selection = plugin.getSelectionManager().getSelection(player);
 
-        if (!selection.isComplete()) {
+        if (selection == null || !selection.isComplete()) {
             player.sendMessage(messageHelper.create(TranslationKey.NO_SELECTION));
             return;
         }
@@ -64,10 +55,11 @@ public class AddDoor implements ComponentCommand {
 
         section.getDoorContainer().add(door);
 
-        game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".material", block.getType());
-        game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".type", "door");
+        game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".material", block.getType().toString());
         game.getDataFile().setLocation("arena." + arena.getName() + ".component." + componentId + ".max", selection.getMaximumPoint(), false);
         game.getDataFile().setLocation("arena." + arena.getName() + ".component." + componentId + ".min", selection.getMinimumPoint(), false);
+        game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".section", section.getName());
+        game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".type", "door");
         game.getDataFile().save();
 
         player.sendMessage(messageHelper.create(TranslationKey.DOOR_ADD,

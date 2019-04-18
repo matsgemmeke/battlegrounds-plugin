@@ -24,11 +24,18 @@ public class AddMobSpawn implements ComponentCommand {
         Player player = context.getPlayer();
         Section section = context.getSection();
 
+        if (section == null) {
+            player.sendMessage(messageHelper.create(TranslationKey.SPECIFY_SECTION_NAME));
+            return;
+        }
+
         MobSpawn mobSpawn = new ArenaMobSpawn(componentId, player.getLocation());
 
         section.getMobSpawnContainer().add(mobSpawn);
 
-        game.getDataFile().setLocation("arena." + arena.getName() + ".section." + section.getName() + ".monsterspawn." + componentId + ".location", player.getLocation(), true);
+        game.getDataFile().setLocation("arena." + arena.getName() + ".component." + componentId + ".location", player.getLocation(), true);
+        game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".section", section.getName());
+        game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".type", "mobspawn");
         game.getDataFile().save();
 
         player.sendMessage(messageHelper.create(TranslationKey.MOBSPAWN_ADD_NO_BARRICADE,

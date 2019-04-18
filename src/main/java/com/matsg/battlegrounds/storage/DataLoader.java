@@ -1,21 +1,25 @@
 package com.matsg.battlegrounds.storage;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.storage.CacheYaml;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.game.GameMode;
 import com.matsg.battlegrounds.game.*;
-import com.matsg.battlegrounds.game.component.ArenaSection;
-import com.matsg.battlegrounds.game.component.ArenaSpawn;
+import com.matsg.battlegrounds.game.component.*;
 import com.matsg.battlegrounds.game.mode.GameModeFactory;
 import com.matsg.battlegrounds.game.mode.GameModeType;
+import com.matsg.battlegrounds.item.ItemFinder;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.Chest;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -25,10 +29,12 @@ public class DataLoader {
 
     private final Battlegrounds plugin;
     private final Logger logger;
+    private ItemFinder itemFinder;
 
     public DataLoader(Battlegrounds plugin) {
-        this.logger = plugin.getLogger();
         this.plugin = plugin;
+        this.itemFinder = new ItemFinder(plugin);
+        this.logger = plugin.getLogger();
 
         plugin.getGameManager().getGames().clear();
 
@@ -63,7 +69,7 @@ public class DataLoader {
         // Setting configurations
         try {
             for (Game game : plugin.getGameManager().getGames()) {
-                ConfigurationSection config = game.getDataFile().getConfigurationSection("_config");
+                ConfigurationSection config = game.getDataFile().getConfigurationSection("config");
                 List<GameMode> gameModes = new ArrayList<>();
 
                 for (String gameModeType : config.getStringList("gamemodes")) {
@@ -177,8 +183,9 @@ public class DataLoader {
             return;
         }
 
+        // Make sure the sections are loaded before the other components are being added.
         for (String componentId : configurationSection.getKeys(false)) {
-            String type = data.getString("arena." + arena.getName() + ".component." + componentId + ".type");
+            String type = configurationSection.getString(componentId + ".type");
 
             if (type.equals("section")) {
                 String name = data.getString("arena." + arena.getName() + ".component." + componentId + ".name");
@@ -190,6 +197,58 @@ public class DataLoader {
                 arena.getSectionContainer().add(section);
 
                 logger.info("Added section " + section.getName());
+            }
+        }
+
+        for (String componentId : configurationSection.getKeys(false)) {
+            String type = configurationSection.getString(componentId + ".type");
+
+            if (type.equals("door")) {
+                String locationPath = "arena." + arena.getName() + ".component." + componentId;
+                Location max = data.getLocation(locationPath + ".max");
+                Location min = data.getLocation(locationPath + ".min");
+                Material material = Material.valueOf(configurationSection.getString(componentId + ".material"));
+                Section section = arena.getSection(configurationSection.getString(componentId + ".section"));
+
+                Door door = new ArenaDoor(
+                        Integer.parseInt(componentId),
+                        game,
+                        section,
+                        arena.getWorld(),
+                        max,
+                        min,
+                        material
+                );
+
+                section.getDoorContainer().add(door);
+            }
+
+            if (type.equals("itemchest")) {
+                Location location = data.getLocation("arena." + arena.getName() + ".component." + componentId + ".location");
+                Chest chest = (Chest) location.getBlock().getState();
+                int price = configurationSection.getInt(componentId + ".price");
+                Section section = arena.getSection(configurationSection.getString(componentId + ".section"));
+                Weapon weapon = itemFinder.findWeapon(configurationSection.getString(componentId + ".item"));
+
+                ItemChest itemChest = new ArenaItemChest(
+                        Integer.parseInt(componentId),
+                        chest,
+                        weapon,
+                        weapon.getName(),
+                        weapon.getItemStack(),
+                        price
+                );
+
+                section.getItemChestContainer().add(itemChest);
+            }
+
+            if (type.equals("mobspawn")) {
+                Location location = data.getLocation("arena." + arena.getName() + ".component." + componentId + ".location");
+                Section section = arena.getSection(configurationSection.getString(componentId + ".section"));
+
+                MobSpawn mobSpawn = new ArenaMobSpawn(Integer.parseInt(componentId), location);
+
+                section.getMobSpawnContainer().add(mobSpawn);
             }
 
             if (type.equals("spawn")) {

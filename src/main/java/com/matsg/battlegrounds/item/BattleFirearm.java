@@ -215,6 +215,21 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
         return bulletDirection;
     }
 
+    public void handleTransaction(Transaction transaction) {
+        GamePlayer gamePlayer = transaction.getGamePlayer();
+        ItemSlot itemSlot = transaction.getItemSlot();
+
+        if (itemSlot == ItemSlot.FIREARM_PRIMARY) {
+            gamePlayer.getLoadout().setPrimary(this);
+            this.gamePlayer = gamePlayer;
+        }
+
+        if (itemSlot == ItemSlot.FIREARM_SECONDARY) {
+            gamePlayer.getLoadout().setSecondary(this);
+            this.gamePlayer = gamePlayer;
+        }
+    }
+
     public boolean isRelated(ItemStack itemStack) {
         for (Item item : droppedItems) {
             if (item.getItemStack().equals(itemStack)) {
