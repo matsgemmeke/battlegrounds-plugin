@@ -3,6 +3,7 @@ package com.matsg.battlegrounds.game.component;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.game.ItemChest;
 import com.matsg.battlegrounds.api.item.TransactionItem;
+import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.util.ActionBar;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -14,12 +15,14 @@ public class ArenaItemChest implements ItemChest {
     private Chest chest;
     private int id, price;
     private ItemStack itemStack;
+    private String itemName;
     private TransactionItem item;
 
-    public ArenaItemChest(int id, Chest chest, TransactionItem item, ItemStack itemStack, int price) {
+    public ArenaItemChest(int id, Chest chest, TransactionItem item, String itemName, ItemStack itemStack, int price) {
         this.id = id;
         this.chest = chest;
         this.item = item;
+        this.itemName = itemName;
         this.itemStack = itemStack;
         this.price = price;
     }
@@ -58,7 +61,7 @@ public class ArenaItemChest implements ItemChest {
             return false;
         }
 
-        // If the player does not have enough price they can not open the item chest.
+        // If the player does not have enough points they can not open the item chest.
         if (gamePlayer.getPoints() < getPrice(gamePlayer)) {
             ActionBar.UNSUFFICIENT_POINTS.send(gamePlayer.getPlayer());
             return true;
@@ -73,7 +76,12 @@ public class ArenaItemChest implements ItemChest {
             return false;
         }
 
-        return false;
+        ActionBar.ITEMCHEST.send(gamePlayer.getPlayer(),
+                new Placeholder("bg_item", itemName),
+                new Placeholder("bg_price", getPrice(gamePlayer))
+        );
+
+        return true;
     }
 
     private double getPrice(GamePlayer gamePlayer) {

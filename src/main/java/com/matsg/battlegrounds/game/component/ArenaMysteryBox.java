@@ -57,11 +57,21 @@ public class ArenaMysteryBox implements MysteryBox {
     }
 
     public boolean onInteract(GamePlayer gamePlayer, Block block) {
+        // If the mystery box is locked or is not active, it does not accept interactions.
+        if (locked || !active) {
+            return false;
+        }
+
         return false;
     }
 
     public boolean onLook(GamePlayer gamePlayer, Block block) {
-        return false;
+        // If the mystery box is locked or is not active, it does not accept look interactions.
+        if (locked || !active) {
+            return false;
+        }
+
+        return true;
     }
 
     private void startWeaponRotation(GamePlayer gamePlayer) {

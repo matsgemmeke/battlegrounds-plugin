@@ -101,7 +101,7 @@ public class ArenaDoor implements Door {
             return false;
         }
 
-        // If the player does not have enough price they can not unlock the door.
+        // If the player does not have enough points they can not unlock the door.
         if (gamePlayer.getPoints() < section.getPrice()) {
             ActionBar.UNSUFFICIENT_POINTS.send(gamePlayer.getPlayer());
             return true;

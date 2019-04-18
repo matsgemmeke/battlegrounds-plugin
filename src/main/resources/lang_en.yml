@@ -2,6 +2,7 @@ prefix: "[&6BG&f] "
 
 actionbar-change-loadout: "&fYour loadout will change the next time you spawn"
 actionbar-door: "&fDoor / Price: &e%bg_price%"
+actionbar-item-chest: "&f%bg_item% / Price: &e%bg_price%"
 actionbar-leave-arena: "&cYou are not allowed to leave the arena"
 actionbar-perkmachine-sold-out: "&cYou cannot buy this perk anymore"
 actionbar-points-deduct: "&c-%bg_points%"

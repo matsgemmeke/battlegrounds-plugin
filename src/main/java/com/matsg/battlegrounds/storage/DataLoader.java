@@ -230,7 +230,14 @@ public class DataLoader {
                 Section section = arena.getSection(configurationSection.getString(componentId + ".section"));
                 Weapon weapon = itemFinder.findWeapon(configurationSection.getString(componentId + ".item"));
 
-                ItemChest itemChest = new ArenaItemChest(Integer.parseInt(componentId), chest, weapon, weapon.getItemStack(), price);
+                ItemChest itemChest = new ArenaItemChest(
+                        Integer.parseInt(componentId),
+                        chest,
+                        weapon,
+                        weapon.getName(),
+                        weapon.getItemStack(),
+                        price
+                );
 
                 section.getItemChestContainer().add(itemChest);
             }

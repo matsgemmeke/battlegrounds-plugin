@@ -71,7 +71,14 @@ public class AddItemChest implements ComponentCommand {
             return;
         }
 
-        ItemChest itemChest = new ArenaItemChest(componentId, (Chest) blockState, weapon, weapon.getItemStack(), price);
+        ItemChest itemChest = new ArenaItemChest(
+                componentId,
+                (Chest) blockState,
+                weapon,
+                weapon.getName(),
+                weapon.getItemStack(),
+                price
+        );
 
         section.getItemChestContainer().add(itemChest);
 
