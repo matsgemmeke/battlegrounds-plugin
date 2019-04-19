@@ -1,6 +1,6 @@
 package com.matsg.battlegrounds.api.game;
 
-public interface Section extends ArenaComponent, ComponentWrapper, Lockable {
+public interface Section extends ArenaComponent, ComponentWrapper, Lockable, Priceable {
 
     /**
      * Gets all components that the section has. This collection is immutable. If a component needs to be added to the
@@ -51,20 +51,6 @@ public interface Section extends ArenaComponent, ComponentWrapper, Lockable {
      * @return The perk machine container.
      */
     ComponentContainer<PerkMachine> getPerkMachineContainer();
-
-    /**
-     * Gets the price of the section.
-     *
-     * @return The section price.
-     */
-    int getPrice();
-
-    /**
-     * Sets the price of the section.
-     *
-     * @param price The section price.
-     */
-    void setPrice(int price);
 
     /**
      * Gets a component from the section with a certain id.

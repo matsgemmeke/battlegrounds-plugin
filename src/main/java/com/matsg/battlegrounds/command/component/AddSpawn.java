@@ -51,7 +51,7 @@ public class AddSpawn implements ComponentCommand {
         arena.getSpawnContainer().add(spawn);
 
         game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".base", teamBase);
-        game.getDataFile().setLocation("arena." + arena.getName() + ".component." + componentId + ".location", spawn.getLocation(), true);
+        game.getDataFile().setLocation("arena." + arena.getName() + ".component." + componentId + ".location", spawn.getLocation(), false);
         game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".team", teamId);
         game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".type", "spawn");
         game.getDataFile().save();

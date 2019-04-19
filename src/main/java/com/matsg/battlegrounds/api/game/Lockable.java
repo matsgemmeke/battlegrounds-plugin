@@ -1,5 +1,8 @@
 package com.matsg.battlegrounds.api.game;
 
+/**
+ * Represents a component that be locked depending on the state of the game.
+ */
 public interface Lockable {
 
     /**

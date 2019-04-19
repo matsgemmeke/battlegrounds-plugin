@@ -26,7 +26,7 @@ public class SetLobby extends SubCommand {
         Player player = (Player) sender;
         Game game = plugin.getGameManager().getGame(Integer.parseInt(args[1]));
 
-        game.getDataFile().setLocation("lobby", player.getLocation(), true);
+        game.getDataFile().setLocation("lobby", player.getLocation(), false);
         game.getDataFile().save();
 
         player.sendMessage(createMessage(TranslationKey.LOBBY_SET, new Placeholder("bg_game", game.getId())));

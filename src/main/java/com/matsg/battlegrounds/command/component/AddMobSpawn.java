@@ -33,7 +33,7 @@ public class AddMobSpawn implements ComponentCommand {
 
         section.getMobSpawnContainer().add(mobSpawn);
 
-        game.getDataFile().setLocation("arena." + arena.getName() + ".component." + componentId + ".location", player.getLocation(), true);
+        game.getDataFile().setLocation("arena." + arena.getName() + ".component." + componentId + ".location", player.getLocation(), false);
         game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".section", section.getName());
         game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".type", "mobspawn");
         game.getDataFile().save();

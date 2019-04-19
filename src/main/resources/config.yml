@@ -43,6 +43,13 @@ game-firearm-damage-modifier: 5
 game-joinable-states:
 - Waiting
 
+# The layout of the perk machine signs
+game-perk-sign-layout:
+  line0: ""
+  line1: "&l%bg_perk%"
+  line2: "&4&lPrice: &0%bg_price%"
+  line3: ""
+
 # Some projectiles are able to pierce through certain blocks. Add their materials here
 game-pierceable-blocks:
 - AIR

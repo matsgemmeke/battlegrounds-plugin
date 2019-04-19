@@ -6,8 +6,10 @@ import com.matsg.battlegrounds.api.game.PerkMachine;
 import com.matsg.battlegrounds.api.item.Perk;
 import com.matsg.battlegrounds.api.item.PerkEffect;
 import com.matsg.battlegrounds.api.item.Transaction;
+import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.gui.TransactionView;
 import com.matsg.battlegrounds.util.ActionBar;
+import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 
@@ -22,16 +24,20 @@ public class ArenaPerkMachine implements PerkMachine {
     private Game game;
     private int id, maxBuys, price;
     private Map<GamePlayer, Integer> buys;
+    private MessageHelper messageHelper;
     private Perk perk;
     private Sign sign;
+    private String[] signLayout;
 
-    public ArenaPerkMachine(int id, Game game, Sign sign, Perk perk, int maxBuys) {
+    public ArenaPerkMachine(int id, Game game, Sign sign, Perk perk, int price, int maxBuys) {
         this.id = id;
         this.game = game;
         this.sign = sign;
         this.perk = perk;
+        this.price = price;
         this.maxBuys = maxBuys;
         this.buys = new HashMap<>();
+        this.messageHelper = new MessageHelper();
     }
 
     public int getId() {
@@ -56,6 +62,14 @@ public class ArenaPerkMachine implements PerkMachine {
 
     public Sign getSign() {
         return sign;
+    }
+
+    public String[] getSignLayout() {
+        return signLayout;
+    }
+
+    public void setSignLayout(String[] signLayout) {
+        this.signLayout = signLayout;
     }
 
     public boolean isLocked() {
@@ -95,6 +109,21 @@ public class ArenaPerkMachine implements PerkMachine {
         }.getInventory());
 
         return false;
+    }
+
+    public boolean updateSign() {
+        if (signLayout == null || signLayout.length < 4) {
+            return false;
+        }
+
+        for (int i = 0; i <= 3; i ++) {
+            sign.setLine(i, messageHelper.createSimple(signLayout[i],
+                    new Placeholder("bg_perk", perk.getEffect().getName()),
+                    new Placeholder("bg_price", price)
+            ));
+        }
+
+        return sign.update();
     }
 
     private boolean hasPerkType(GamePlayer gamePlayer, PerkEffect perkEffect) {

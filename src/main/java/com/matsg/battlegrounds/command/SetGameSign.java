@@ -41,7 +41,7 @@ public class SetGameSign extends SubCommand {
 
         GameSign sign = new BattleGameSign(plugin, game, (Sign) state);
 
-        game.getDataFile().setLocation("sign", state.getLocation(), false);
+        game.getDataFile().setLocation("sign", state.getLocation(), true);
         game.getDataFile().save();
         game.setGameSign(sign);
 

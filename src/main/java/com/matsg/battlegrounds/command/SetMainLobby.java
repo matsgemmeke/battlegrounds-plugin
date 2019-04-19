@@ -20,7 +20,7 @@ public class SetMainLobby extends SubCommand {
     public void executeSubCommand(CommandSender sender, String[] args) {
         Player player = (Player) sender;
 
-        plugin.getBattlegroundsCache().setLocation("mainlobby", player.getLocation(), true);
+        plugin.getBattlegroundsCache().setLocation("mainlobby", player.getLocation(), false);
         plugin.getBattlegroundsCache().save();
 
         player.sendMessage(createMessage(TranslationKey.MAINLOBBY_SET));

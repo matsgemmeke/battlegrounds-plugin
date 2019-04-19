@@ -31,11 +31,11 @@ public class AddComponent extends SubCommand {
         setUsage("bg addcomponent [id] [arena] [section] [component]");
 
         commands = new HashMap<>();
-        commands.put("door", new AddDoor(plugin));
+        commands.put("door", new AddDoor(plugin.getSelectionManager()));
         commands.put("itemchest", new AddItemChest(new ItemFinder(plugin)));
         commands.put("mobspawn", new AddMobSpawn());
-//        commands.put("mysterybox", new AddMysteryBox(plugin));
-//        commands.put("perkmachine", new AddPerkMachine(plugin));
+        commands.put("mysterybox", new AddMysteryBox());
+        commands.put("perk", new AddPerkMachine(plugin.getBattlegroundsConfig()));
         commands.put("section", new AddSection());
         commands.put("spawn", new AddSpawn());
 

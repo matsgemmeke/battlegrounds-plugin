@@ -4,7 +4,9 @@ import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.MysteryBox;
 import com.matsg.battlegrounds.api.item.Weapon;
+import com.matsg.battlegrounds.util.Hologram;
 import com.matsg.battlegrounds.util.Pair;
+import com.matsg.battlegrounds.util.XMaterial;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Item;
 
@@ -14,14 +16,16 @@ public class ArenaMysteryBox implements MysteryBox {
     private byte direction;
     private Game game;
     private GamePlayer currentUser;
-    private int hits, id;
+    private Hologram hologram;
+    private int hits, id, price;
     private Item item;
     private Pair<Block, Block> blocks;
     private Weapon[] weapons;
 
-    public ArenaMysteryBox(int id, Game game, Pair<Block, Block> blocks) {
+    public ArenaMysteryBox(int id, Game game, int price, Pair<Block, Block> blocks) {
         this.id = id;
         this.game = game;
+        this.price = price;
         this.blocks = blocks;
         this.active = false;
         this.hits = 0;
@@ -40,12 +44,16 @@ public class ArenaMysteryBox implements MysteryBox {
         return blocks.right();
     }
 
-    public boolean isActive() {
-        return active;
+    public int getPrice() {
+        return price;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public boolean isActive() {
+        return active;
     }
 
     public boolean isLocked() {
@@ -72,6 +80,20 @@ public class ArenaMysteryBox implements MysteryBox {
         }
 
         return true;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+
+        XMaterial material = active ? XMaterial.CHEST : XMaterial.END_PORTAL_FRAME;
+
+        for (Block block : getBlocks()) {
+            block.setType(material.parseMaterial());
+        }
+    }
+
+    private Block[] getBlocks() {
+        return new Block[] { blocks.left(), blocks.right() };
     }
 
     private void startWeaponRotation(GamePlayer gamePlayer) {

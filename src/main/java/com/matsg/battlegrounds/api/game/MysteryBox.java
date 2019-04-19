@@ -2,7 +2,7 @@ package com.matsg.battlegrounds.api.game;
 
 import org.bukkit.block.Block;
 
-public interface MysteryBox extends ArenaComponent, Interactable, Lockable, Watchable {
+public interface MysteryBox extends ArenaComponent, Interactable, Lockable, Priceable, Watchable {
 
     Block getLeftSide();
 

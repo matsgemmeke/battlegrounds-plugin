@@ -39,7 +39,7 @@ public class BattleCacheYaml extends AbstractYaml implements CacheYaml {
     }
 
     public void setLocation(String path, Location location, boolean block) {
-        if (!block) {
+        if (block) {
             set(path, location.getWorld().getName() + "," + location.getBlockX() + "," + location.getBlockY() + "," +
                     location.getBlockZ() + "," + location.getYaw() + "," + 0.0);
         } else {

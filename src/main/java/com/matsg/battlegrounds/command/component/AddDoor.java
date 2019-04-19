@@ -3,6 +3,7 @@ package com.matsg.battlegrounds.command.component;
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Selection;
+import com.matsg.battlegrounds.api.SelectionManager;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Door;
 import com.matsg.battlegrounds.api.game.Game;
@@ -15,11 +16,11 @@ import org.bukkit.entity.Player;
 
 public class AddDoor implements ComponentCommand {
 
-    private Battlegrounds plugin;
     private MessageHelper messageHelper;
+    private SelectionManager selectionManager;
 
-    public AddDoor(Battlegrounds plugin) {
-        this.plugin = plugin;
+    public AddDoor(SelectionManager selectionManager) {
+        this.selectionManager = selectionManager;
         this.messageHelper = new MessageHelper();
     }
 
@@ -34,7 +35,7 @@ public class AddDoor implements ComponentCommand {
             return;
         }
 
-        Selection selection = plugin.getSelectionManager().getSelection(player);
+        Selection selection = selectionManager.getSelection(player);
 
         if (selection == null || !selection.isComplete()) {
             player.sendMessage(messageHelper.create(TranslationKey.NO_SELECTION));
@@ -56,8 +57,8 @@ public class AddDoor implements ComponentCommand {
         section.getDoorContainer().add(door);
 
         game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".material", block.getType().toString());
-        game.getDataFile().setLocation("arena." + arena.getName() + ".component." + componentId + ".max", selection.getMaximumPoint(), false);
-        game.getDataFile().setLocation("arena." + arena.getName() + ".component." + componentId + ".min", selection.getMinimumPoint(), false);
+        game.getDataFile().setLocation("arena." + arena.getName() + ".component." + componentId + ".max", selection.getMaximumPoint(), true);
+        game.getDataFile().setLocation("arena." + arena.getName() + ".component." + componentId + ".min", selection.getMinimumPoint(), true);
         game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".section", section.getName());
         game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".type", "door");
         game.getDataFile().save();

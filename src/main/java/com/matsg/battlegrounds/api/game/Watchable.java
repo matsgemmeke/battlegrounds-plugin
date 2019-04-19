@@ -3,6 +3,9 @@ package com.matsg.battlegrounds.api.game;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import org.bukkit.block.Block;
 
+/**
+ * Represents a component that is capable of reacting to players looking at it.
+ */
 public interface Watchable {
 
     /**

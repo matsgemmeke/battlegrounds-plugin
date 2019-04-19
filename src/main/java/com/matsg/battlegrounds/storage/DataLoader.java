@@ -10,9 +10,13 @@ import com.matsg.battlegrounds.game.component.*;
 import com.matsg.battlegrounds.game.mode.GameModeFactory;
 import com.matsg.battlegrounds.game.mode.GameModeType;
 import com.matsg.battlegrounds.item.ItemFinder;
+import com.matsg.battlegrounds.item.factory.PerkFactory;
+import com.matsg.battlegrounds.item.perk.PerkEffectType;
+import com.matsg.battlegrounds.util.Pair;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Sign;
@@ -30,11 +34,13 @@ public class DataLoader {
     private final Battlegrounds plugin;
     private final Logger logger;
     private ItemFinder itemFinder;
+    private PerkFactory perkFactory;
 
     public DataLoader(Battlegrounds plugin) {
         this.plugin = plugin;
         this.itemFinder = new ItemFinder(plugin);
         this.logger = plugin.getLogger();
+        this.perkFactory = new PerkFactory();
 
         plugin.getGameManager().getGames().clear();
 
@@ -249,6 +255,44 @@ public class DataLoader {
                 MobSpawn mobSpawn = new ArenaMobSpawn(Integer.parseInt(componentId), location);
 
                 section.getMobSpawnContainer().add(mobSpawn);
+            }
+
+            if (type.equals("mysterybox")) {
+                Block left = data.getLocation("arena." + arena.getName() + ".component." + componentId + ".leftside").getBlock();
+                Block right = data.getLocation("arena." + arena.getName() + ".component." + componentId + ".rightside").getBlock();
+                int price = configurationSection.getInt(componentId + ".price");
+                Section section = arena.getSection(configurationSection.getString(componentId + ".section"));
+
+                MysteryBox mysteryBox = new ArenaMysteryBox(
+                        Integer.parseInt(componentId),
+                        game,
+                        price,
+                        new Pair<>(left, right)
+                );
+
+                section.getMysteryBoxContainer().add(mysteryBox);
+            }
+
+            if (type.equals("perkmachine")) {
+                Location location = data.getLocation("arena." + arena.getName() + ".component." + componentId + ".location");
+                Sign sign = (Sign) location.getBlock().getState();
+                int maxBuys = configurationSection.getInt(componentId + ".maxbuys");
+                int price = configurationSection.getInt(componentId + ".price");
+                PerkEffectType perkEffectType = PerkEffectType.valueOf(configurationSection.getString(componentId + ".effect"));
+                Section section = arena.getSection(configurationSection.getString(componentId + ".section"));
+
+                PerkMachine perkMachine = new ArenaPerkMachine(
+                        Integer.parseInt(componentId),
+                        game,
+                        sign,
+                        perkFactory.make(perkEffectType),
+                        price,
+                        maxBuys
+                );
+                perkMachine.setSignLayout(plugin.getBattlegroundsConfig().getPerkSignLayout());
+                perkMachine.updateSign();
+
+                section.getPerkMachineContainer().add(perkMachine);
             }
 
             if (type.equals("spawn")) {
