@@ -11,7 +11,7 @@ import org.bukkit.command.CommandSender;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RemoveGame extends SubCommand {
+public class RemoveGame extends Command {
 
     private List<CommandSender> senders;
 
@@ -28,7 +28,7 @@ public class RemoveGame extends SubCommand {
         registerValidator(new GameIdValidator(plugin));
     }
 
-    public void executeSubCommand(final CommandSender sender, String[] args) {
+    public void execute(final CommandSender sender, String[] args) {
         Game game = plugin.getGameManager().getGame(Integer.parseInt(args[1]));
 
         if (!senders.contains(sender)) {

@@ -1,13 +1,17 @@
 package com.matsg.battlegrounds.command.component;
 
 import com.matsg.battlegrounds.TranslationKey;
+import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.ItemChest;
-import com.matsg.battlegrounds.api.game.Section;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.util.Placeholder;
-import com.matsg.battlegrounds.game.component.ArenaItemChest;
+import com.matsg.battlegrounds.command.validate.GameModeUsageValidator;
+import com.matsg.battlegrounds.command.validate.SectionNameValidator;
+import com.matsg.battlegrounds.game.mode.GameModeType;
+import com.matsg.battlegrounds.game.mode.zombies.ItemChest;
+import com.matsg.battlegrounds.game.mode.zombies.Section;
+import com.matsg.battlegrounds.game.mode.zombies.Zombies;
 import com.matsg.battlegrounds.item.ItemFinder;
 import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.Material;
@@ -17,14 +21,18 @@ import org.bukkit.entity.Player;
 
 import java.util.Set;
 
-public class AddItemChest implements ComponentCommand {
+public class AddItemChest extends ComponentCommand {
 
     private ItemFinder itemFinder;
     private MessageHelper messageHelper;
 
-    public AddItemChest(ItemFinder itemFinder) {
-        this.itemFinder = itemFinder;
+    public AddItemChest(Battlegrounds plugin) {
+        super(plugin);
+        this.itemFinder = new ItemFinder(plugin);
         this.messageHelper = new MessageHelper();
+
+        registerValidator(new GameModeUsageValidator(plugin, GameModeType.ZOMBIES));
+        registerValidator(new SectionNameValidator(plugin));
     }
 
     public void execute(ComponentContext context, int componentId, String[] args) {
@@ -38,26 +46,23 @@ public class AddItemChest implements ComponentCommand {
 
         Game game = context.getGame();
         Arena arena = context.getArena();
-        Section section = context.getSection();
 
-        if (section == null) {
-            player.sendMessage(messageHelper.create(TranslationKey.SPECIFY_SECTION_NAME));
-            return;
-        }
+        Zombies zombies = game.getGameMode(Zombies.class);
+        Section section = zombies.getSection(args[3]);
 
-        if (args.length == 0) {
+        if (args.length == 4) {
             player.sendMessage(messageHelper.create(TranslationKey.SPECIFY_WEAPON_ID));
             return;
         }
 
-        Weapon weapon = itemFinder.findWeapon(args[0]);
+        Weapon weapon = itemFinder.findWeapon(args[4]);
 
         if (weapon == null) {
-            player.sendMessage(messageHelper.create(TranslationKey.INVALID_WEAPON, new Placeholder("bg_weapon", args[0])));
+            player.sendMessage(messageHelper.create(TranslationKey.INVALID_WEAPON, new Placeholder("bg_weapon", args[1])));
             return;
         }
 
-        if (args.length == 1) {
+        if (args.length == 5) {
             player.sendMessage(messageHelper.create(TranslationKey.SPECIFY_ITEM_PRICE));
             return;
         }
@@ -65,13 +70,13 @@ public class AddItemChest implements ComponentCommand {
         int price;
 
         try {
-            price = Integer.parseInt(args[1]);
+            price = Integer.parseInt(args[5]);
         } catch (Exception e) {
-            player.sendMessage(messageHelper.create(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[1])));
+            player.sendMessage(messageHelper.create(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[5])));
             return;
         }
 
-        ItemChest itemChest = new ArenaItemChest(
+        ItemChest itemChest = new ItemChest(
                 componentId,
                 (Chest) blockState,
                 weapon,

@@ -156,6 +156,14 @@ public interface Game {
     void callEvent(Event event);
 
     /**
+     * Gets the instance of a certain gamemode the game is using.
+     *
+     * @param gameModeClass The gamemode class.
+     * @return The instance of the corresponding gamemode or null if the game does not use the gamemode type.
+     */
+    <T extends GameMode> T getGameMode(Class<T> gameModeClass);
+
+    /**
      * Restores all changes in the game and arena so it is ready to start a new game.
      */
     void rollback();

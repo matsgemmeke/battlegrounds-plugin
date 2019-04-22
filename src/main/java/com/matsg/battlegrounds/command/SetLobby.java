@@ -8,7 +8,7 @@ import com.matsg.battlegrounds.command.validate.GameIdValidator;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class SetLobby extends SubCommand {
+public class SetLobby extends Command {
 
     public SetLobby(Battlegrounds plugin) {
         super(plugin);
@@ -22,7 +22,7 @@ public class SetLobby extends SubCommand {
         registerValidator(new GameIdValidator(plugin));
     }
 
-    public void executeSubCommand(CommandSender sender, String[] args) {
+    public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         Game game = plugin.getGameManager().getGame(Integer.parseInt(args[1]));
 

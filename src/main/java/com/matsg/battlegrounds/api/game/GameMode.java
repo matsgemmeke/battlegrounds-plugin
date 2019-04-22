@@ -4,6 +4,7 @@ import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent.DeathCause;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.Hitbox;
+import com.matsg.battlegrounds.api.storage.CacheYaml;
 import com.matsg.battlegrounds.game.mode.GameModeType;
 
 public interface GameMode {
@@ -52,6 +53,13 @@ public interface GameMode {
     void onEnable();
 
     void onKill(GamePlayer gamePlayer, GamePlayer killer, Weapon weapon, Hitbox hitbox);
+
+    /**
+     * Loads extra gamemode prerequisites of an arena from the game's data file.
+     *
+     * @param arena The arena being used.
+     */
+    void loadData(Arena arena);
 
     void removePlayer(GamePlayer gamePlayer);
 

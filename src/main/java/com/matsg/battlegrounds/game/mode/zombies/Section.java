@@ -1,11 +1,11 @@
-package com.matsg.battlegrounds.game.component;
+package com.matsg.battlegrounds.game.mode.zombies;
 
 import com.matsg.battlegrounds.api.game.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArenaSection implements Section {
+public class Section implements ArenaComponent, ComponentWrapper, Lockable, Priceable {
 
     private boolean locked;
     private ComponentContainer<Door> doorContainer;
@@ -16,7 +16,7 @@ public class ArenaSection implements Section {
     private int id, price;
     private String name;
 
-    public ArenaSection(int id, String name) {
+    public Section(int id, String name) {
         this.id = id;
         this.name = name;
         this.doorContainer = new DoorContainer();

@@ -5,6 +5,7 @@ import com.matsg.battlegrounds.api.event.EventDispatcher;
 import com.matsg.battlegrounds.api.storage.*;
 import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.command.BattlegroundsCommand;
+import com.matsg.battlegrounds.command.Command;
 import com.matsg.battlegrounds.command.LoadoutCommand;
 import com.matsg.battlegrounds.event.BattleEventDispatcher;
 import com.matsg.battlegrounds.nms.VersionFactory;
@@ -22,6 +23,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
@@ -179,8 +182,17 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
 
         new DataLoader(this);
 
-        new BattlegroundsCommand(this);
-        new LoadoutCommand(this);
+        List<Command> commands = new ArrayList<>();
+        commands.add(new BattlegroundsCommand(this));
+        commands.add(new LoadoutCommand(this));
+
+        for (Command command : commands) {
+            getCommand(command.getName()).setExecutor(command);
+
+            for (String alias : command.getAliases()) {
+                getCommand(alias).setExecutor(command);
+            }
+        }
 
         new EventListener(this);
 

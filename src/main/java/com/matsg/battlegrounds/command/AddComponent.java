@@ -4,20 +4,18 @@ import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.Section;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.command.component.*;
 import com.matsg.battlegrounds.command.validate.ArenaNameValidator;
 import com.matsg.battlegrounds.command.validate.GameIdValidator;
-import com.matsg.battlegrounds.item.ItemFinder;
+import com.matsg.battlegrounds.command.validate.ValidationResponse;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AddComponent extends SubCommand {
+public class AddComponent extends Command {
 
     private Map<String, ComponentCommand> commands;
 
@@ -31,19 +29,19 @@ public class AddComponent extends SubCommand {
         setUsage("bg addcomponent [id] [arena] [section] [component]");
 
         commands = new HashMap<>();
-        commands.put("door", new AddDoor(plugin.getSelectionManager()));
-        commands.put("itemchest", new AddItemChest(new ItemFinder(plugin)));
-        commands.put("mobspawn", new AddMobSpawn());
-        commands.put("mysterybox", new AddMysteryBox());
-        commands.put("perk", new AddPerkMachine(plugin.getBattlegroundsConfig()));
-        commands.put("section", new AddSection());
-        commands.put("spawn", new AddSpawn());
+        commands.put("door", new AddDoor(plugin));
+        commands.put("itemchest", new AddItemChest(plugin));
+        commands.put("mobspawn", new AddMobSpawn(plugin));
+        commands.put("mysterybox", new AddMysteryBox(plugin));
+        commands.put("perk", new AddPerkMachine(plugin));
+        commands.put("section", new AddSection(plugin));
+        commands.put("spawn", new AddSpawn(plugin));
 
         registerValidator(new GameIdValidator(plugin));
         registerValidator(new ArenaNameValidator(plugin));
     }
 
-    public void executeSubCommand(CommandSender sender, String[] args) {
+    public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         Game game = plugin.getGameManager().getGame(Integer.parseInt(args[1]));
         Arena arena = plugin.getGameManager().getArena(game, args[2].replaceAll("_", " "));
@@ -53,30 +51,33 @@ public class AddComponent extends SubCommand {
             return;
         }
 
-        Section section = arena.getSection(args[3]);
-        int typePos = section != null ? 4 : 3;
-
-        if (args.length == typePos) {
-            player.sendMessage(createMessage(TranslationKey.SPECIFY_COMPONENT_TYPE));
-            return;
-        }
-
-        ComponentCommand command = commands.get(args[typePos]);
+        ComponentCommand command = commands.get(args[3]);
 
         if (command == null) {
-            player.sendMessage(createMessage(TranslationKey.INVALID_COMPONENT_TYPE, new Placeholder("bg_component", args[typePos])));
+            player.sendMessage(createMessage(TranslationKey.INVALID_COMPONENT_TYPE, new Placeholder("bg_component", args[3])));
             return;
         }
-
-        String[] splitArgs = Arrays.copyOfRange(args, typePos + 1, args.length);
 
         ComponentContext context = new ComponentContext();
         context.setArena(arena);
         context.setGame(game);
         context.setPlayer(player);
-        context.setSection(section);
 
-        command.execute(context, getFirstAvailableId(arena), splitArgs);
+        // Validate the input for the component command
+        ValidationResponse response = command.validateInput(args);
+
+        if (!response.passed()) {
+            player.sendMessage(response.getMessage());
+        }
+
+        // Order of input arguments:
+        // 0: Addcomponent
+        // 1: Game id
+        // 2: Arena name
+        // 3: Component type
+        // 4: Section name if required
+        // >4: Anything else
+        command.execute(context, getFirstAvailableId(arena), args);
     }
 
     private int getFirstAvailableId(Arena arena) {

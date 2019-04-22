@@ -7,12 +7,17 @@ import com.matsg.battlegrounds.api.game.GameConfiguration;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.game.BattleGame;
 import com.matsg.battlegrounds.game.BattleGameConfiguration;
+import com.matsg.battlegrounds.game.mode.GameModeFactory;
 import org.bukkit.command.CommandSender;
 
-public class CreateGame extends SubCommand {
+public class CreateGame extends Command {
+
+    private GameModeFactory gameModeFactory;
 
     public CreateGame(Battlegrounds plugin) {
         super(plugin);
+        this.gameModeFactory = new GameModeFactory();
+
         setAliases("cg");
         setDescription(createMessage(TranslationKey.DESCRIPTION_CREATEGAME));
         setName("creategame");
@@ -20,7 +25,7 @@ public class CreateGame extends SubCommand {
         setUsage("bg creategame [id]");
     }
 
-    public void executeSubCommand(CommandSender sender, String[] args) {
+    public void execute(CommandSender sender, String[] args) {
         if (args.length == 1) {
             sender.sendMessage(createMessage(TranslationKey.SPECIFY_GAME_ID));
             return;

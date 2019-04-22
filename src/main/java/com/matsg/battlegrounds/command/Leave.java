@@ -6,7 +6,7 @@ import com.matsg.battlegrounds.api.game.Game;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class Leave extends SubCommand {
+public class Leave extends Command {
 
     public Leave(Battlegrounds plugin) {
         super(plugin);
@@ -17,7 +17,7 @@ public class Leave extends SubCommand {
         setUsage("bg leave");
     }
 
-    public void executeSubCommand(CommandSender sender, String[] args) {
+    public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         Game game = plugin.getGameManager().getGame(player);
 

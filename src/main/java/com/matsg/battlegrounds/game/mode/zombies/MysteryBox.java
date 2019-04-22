@@ -1,8 +1,7 @@
-package com.matsg.battlegrounds.game.component;
+package com.matsg.battlegrounds.game.mode.zombies;
 
 import com.matsg.battlegrounds.api.entity.GamePlayer;
-import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.MysteryBox;
+import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.util.Hologram;
 import com.matsg.battlegrounds.util.Pair;
@@ -10,7 +9,7 @@ import com.matsg.battlegrounds.util.XMaterial;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Item;
 
-public class ArenaMysteryBox implements MysteryBox {
+public class MysteryBox implements ArenaComponent, Interactable, Lockable, Priceable, Watchable {
 
     private boolean active, locked;
     private byte direction;
@@ -22,7 +21,7 @@ public class ArenaMysteryBox implements MysteryBox {
     private Pair<Block, Block> blocks;
     private Weapon[] weapons;
 
-    public ArenaMysteryBox(int id, Game game, int price, Pair<Block, Block> blocks) {
+    public MysteryBox(int id, Game game, int price, Pair<Block, Block> blocks) {
         this.id = id;
         this.game = game;
         this.price = price;

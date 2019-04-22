@@ -7,7 +7,7 @@ import com.matsg.battlegrounds.api.util.Placeholder;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class Join extends SubCommand {
+public class Join extends Command {
 
     public Join(Battlegrounds plugin) {
         super(plugin);
@@ -18,7 +18,7 @@ public class Join extends SubCommand {
         setUsage("bg join [id]");
     }
 
-    public void executeSubCommand(CommandSender sender, String[] args) {
+    public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
 
         if (plugin.getGameManager().getGame(player) != null) {

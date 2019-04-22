@@ -4,7 +4,7 @@ import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.Hellhound;
 import com.matsg.battlegrounds.api.entity.MobType;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.MobSpawn;
+import com.matsg.battlegrounds.game.mode.zombies.MobSpawn;
 import com.matsg.battlegrounds.nms.MobSpawnException;
 import com.matsg.battlegrounds.nms.ReflectionUtils;
 import net.minecraft.server.v1_12_R1.*;
@@ -127,8 +127,8 @@ public class CustomWolf extends EntityWolf implements Hellhound {
         getNavigation().a(navigation.a(location.getX(), location.getY(), location.getZ()), 1.0D);
     }
 
-    public void spawn(MobSpawn spawn) {
-        Location location = spawn.getSpawnLocation(MobType.HELLHOUND);
+    public void spawn(MobSpawn mobSpawn) {
+        Location location = mobSpawn.getSpawnLocation(MobType.HELLHOUND);
         location.getWorld().strikeLightningEffect(location);
 
         setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());

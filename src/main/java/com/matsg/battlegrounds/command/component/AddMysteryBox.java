@@ -1,12 +1,16 @@
 package com.matsg.battlegrounds.command.component;
 
 import com.matsg.battlegrounds.TranslationKey;
+import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.MysteryBox;
-import com.matsg.battlegrounds.api.game.Section;
 import com.matsg.battlegrounds.api.util.Placeholder;
-import com.matsg.battlegrounds.game.component.ArenaMysteryBox;
+import com.matsg.battlegrounds.command.validate.GameModeUsageValidator;
+import com.matsg.battlegrounds.command.validate.SectionNameValidator;
+import com.matsg.battlegrounds.game.mode.GameModeType;
+import com.matsg.battlegrounds.game.mode.zombies.MysteryBox;
+import com.matsg.battlegrounds.game.mode.zombies.Section;
+import com.matsg.battlegrounds.game.mode.zombies.Zombies;
 import com.matsg.battlegrounds.util.MessageHelper;
 import com.matsg.battlegrounds.util.Pair;
 import org.bukkit.Location;
@@ -16,12 +20,16 @@ import org.bukkit.entity.Player;
 
 import java.util.Set;
 
-public class AddMysteryBox implements ComponentCommand {
+public class AddMysteryBox extends ComponentCommand {
 
     private MessageHelper messageHelper;
 
-    public AddMysteryBox() {
+    public AddMysteryBox(Battlegrounds plugin) {
+        super(plugin);
         this.messageHelper = new MessageHelper();
+
+        registerValidator(new GameModeUsageValidator(plugin, GameModeType.ZOMBIES));
+        registerValidator(new SectionNameValidator(plugin));
     }
 
     public void execute(ComponentContext context, int componentId, String[] args) {
@@ -50,14 +58,11 @@ public class AddMysteryBox implements ComponentCommand {
 
         Game game = context.getGame();
         Arena arena = context.getArena();
-        Section section = context.getSection();
 
-        if (section == null) {
-            player.sendMessage(messageHelper.create(TranslationKey.SPECIFY_SECTION_NAME));
-            return;
-        }
+        Zombies zombies = game.getGameMode(Zombies.class);
+        Section section = zombies.getSection(args[3]);
 
-        if (args.length == 0) {
+        if (args.length == 4) {
             player.sendMessage(messageHelper.create(TranslationKey.SPECIFY_MYSTERYBOX_PRICE));
             return;
         }
@@ -65,9 +70,9 @@ public class AddMysteryBox implements ComponentCommand {
         int price;
 
         try {
-            price = Integer.parseInt(args[0]);
+            price = Integer.parseInt(args[4]);
         } catch (Exception e) {
-            player.sendMessage(messageHelper.create(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[0])));
+            player.sendMessage(messageHelper.create(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[4])));
             return;
         }
 
@@ -81,7 +86,7 @@ public class AddMysteryBox implements ComponentCommand {
         // The location of the double chest always refers to the block with the lowest coordinates.
         Pair<Block, Block> blocks = new Pair<>(doubleChest.getLocation().getBlock(), max.getBlock());
 
-        MysteryBox mysteryBox = new ArenaMysteryBox(componentId, game, price, blocks);
+        MysteryBox mysteryBox = new MysteryBox(componentId, game, price, blocks);
         mysteryBox.setActive(false);
 
         section.getMysteryBoxContainer().add(mysteryBox);

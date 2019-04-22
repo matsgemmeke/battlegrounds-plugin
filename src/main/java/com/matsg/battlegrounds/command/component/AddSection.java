@@ -1,20 +1,26 @@
 package com.matsg.battlegrounds.command.component;
 
 import com.matsg.battlegrounds.TranslationKey;
+import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.Section;
 import com.matsg.battlegrounds.api.util.Placeholder;
-import com.matsg.battlegrounds.game.component.ArenaSection;
+import com.matsg.battlegrounds.command.validate.GameModeUsageValidator;
+import com.matsg.battlegrounds.game.mode.GameModeType;
+import com.matsg.battlegrounds.game.mode.zombies.Section;
+import com.matsg.battlegrounds.game.mode.zombies.Zombies;
 import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.entity.Player;
 
-public class AddSection implements ComponentCommand {
+public class AddSection extends ComponentCommand {
 
     private MessageHelper messageHelper;
 
-    public AddSection() {
+    public AddSection(Battlegrounds plugin) {
+        super(plugin);
         this.messageHelper = new MessageHelper();
+
+        registerValidator(new GameModeUsageValidator(plugin, GameModeType.ZOMBIES));
     }
 
     public void execute(ComponentContext context, int componentId, String[] args) {
@@ -22,20 +28,22 @@ public class AddSection implements ComponentCommand {
         Game game = context.getGame();
         Player player = context.getPlayer();
 
-        if (args.length == 0) {
+        Zombies zombies = game.getGameMode(Zombies.class);
+
+        if (args.length == 3) {
             player.sendMessage(messageHelper.create(TranslationKey.SPECIFY_SECTION_NAME));
             return;
         }
 
-        if (arena.getSection(args[0]) != null) {
+        if (zombies.getSection(args[3]) != null) {
             player.sendMessage(messageHelper.create(TranslationKey.SECTION_EXISTS,
                     new Placeholder("bg_arena", arena.getName()),
-                    new Placeholder("bg_section", args[0])
+                    new Placeholder("bg_section", args[3])
             ));
             return;
         }
 
-        if (args.length == 1) {
+        if (args.length == 4) {
             player.sendMessage(messageHelper.create(TranslationKey.SPECIFY_SECTION_PRICE));
             return;
         }
@@ -43,16 +51,16 @@ public class AddSection implements ComponentCommand {
         int price;
 
         try {
-            price = Integer.parseInt(args[1]);
+            price = Integer.parseInt(args[4]);
         } catch (Exception e) {
-            player.sendMessage(messageHelper.create(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[1])));
+            player.sendMessage(messageHelper.create(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[4])));
             return;
         }
 
-        Section section = new ArenaSection(componentId, args[0]);
+        Section section = new Section(componentId, args[3]);
         section.setPrice(price);
 
-        arena.getSectionContainer().add(section);
+        zombies.getSectionContainer().add(section);
 
         game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".name", section.getName());
         game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".price", price);

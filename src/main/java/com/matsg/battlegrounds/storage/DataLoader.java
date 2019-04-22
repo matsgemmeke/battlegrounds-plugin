@@ -6,9 +6,13 @@ import com.matsg.battlegrounds.api.storage.CacheYaml;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.game.GameMode;
 import com.matsg.battlegrounds.game.*;
-import com.matsg.battlegrounds.game.component.*;
 import com.matsg.battlegrounds.game.mode.GameModeFactory;
 import com.matsg.battlegrounds.game.mode.GameModeType;
+import com.matsg.battlegrounds.game.mode.zombies.ItemChest;
+import com.matsg.battlegrounds.game.mode.zombies.MobSpawn;
+import com.matsg.battlegrounds.game.mode.zombies.MysteryBox;
+import com.matsg.battlegrounds.game.mode.zombies.PerkMachine;
+import com.matsg.battlegrounds.game.mode.zombies.Section;
 import com.matsg.battlegrounds.item.ItemFinder;
 import com.matsg.battlegrounds.item.factory.PerkFactory;
 import com.matsg.battlegrounds.item.perk.PerkEffectType;
@@ -23,7 +27,6 @@ import org.bukkit.block.Sign;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -33,14 +36,14 @@ public class DataLoader {
 
     private final Battlegrounds plugin;
     private final Logger logger;
+    private GameModeFactory gameModeFactory;
     private ItemFinder itemFinder;
-    private PerkFactory perkFactory;
 
     public DataLoader(Battlegrounds plugin) {
         this.plugin = plugin;
+        this.gameModeFactory = new GameModeFactory();
         this.itemFinder = new ItemFinder(plugin);
         this.logger = plugin.getLogger();
-        this.perkFactory = new PerkFactory();
 
         plugin.getGameManager().getGames().clear();
 
@@ -79,14 +82,11 @@ public class DataLoader {
                 List<GameMode> gameModes = new ArrayList<>();
 
                 for (String gameModeType : config.getStringList("gamemodes")) {
-                    GameMode gameMode;
                     try {
-                        gameMode = gameModeFactory.make(game, GameModeType.valueOf(gameModeType.toUpperCase()));
+                        gameModes.add(gameModeFactory.make(game, GameModeType.valueOf(gameModeType.toUpperCase())));
                     } catch (IllegalArgumentException e) {
                         plugin.getLogger().severe("Invalid gamemode type \"" + gameModeType + "\"");
-                        continue;
                     }
-                    gameModes.add(gameMode);
                 }
 
                 GameConfiguration configuration = new BattleGameConfiguration(
@@ -96,9 +96,10 @@ public class DataLoader {
                         config.getInt("gamecountdown"),
                         config.getInt("lobbycountdown")
                 );
+                GameMode gameMode = configuration.getGameModes()[new Random().nextInt(configuration.getGameModes().length)];
 
                 game.setConfiguration(configuration);
-                game.setGameMode(game.getConfiguration().getGameModes()[new Random().nextInt(game.getConfiguration().getGameModes().length)]);
+                game.setGameMode(gameMode);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -124,7 +125,7 @@ public class DataLoader {
 
                     Arena arena = new BattleArena(name, world, max, min);
 
-                    addSections(game, arena);
+                    addComponents(game, arena);
 
                     ConfigurationSection spawnSection = arenaSection.getConfigurationSection(name + ".spawn");
 
@@ -145,6 +146,7 @@ public class DataLoader {
 
                 // Assign an arena to this game
                 game.setArena(game.getArenaList().get(new Random().nextInt(game.getArenaList().size())));
+                game.getGameMode().loadData(game.getArena());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -180,7 +182,7 @@ public class DataLoader {
         logger.info("Loaded " + plugin.getGameManager().getGames().size() + " game(s) from the cache");
     }
 
-    private void addSections(Game game, Arena arena) {
+    private void addComponents(Game game, Arena arena) {
         CacheYaml data = game.getDataFile();
         ConfigurationSection configurationSection = data.getConfigurationSection("arena." + arena.getName() + ".component");
 
@@ -189,111 +191,8 @@ public class DataLoader {
             return;
         }
 
-        // Make sure the sections are loaded before the other components are being added.
         for (String componentId : configurationSection.getKeys(false)) {
             String type = configurationSection.getString(componentId + ".type");
-
-            if (type.equals("section")) {
-                String name = data.getString("arena." + arena.getName() + ".component." + componentId + ".name");
-                int price = configurationSection.getInt(componentId + ".price");
-
-                Section section = new ArenaSection(Integer.parseInt(componentId), name);
-                section.setPrice(price);
-
-                arena.getSectionContainer().add(section);
-
-                logger.info("Added section " + section.getName());
-            }
-        }
-
-        for (String componentId : configurationSection.getKeys(false)) {
-            String type = configurationSection.getString(componentId + ".type");
-
-            if (type.equals("door")) {
-                String locationPath = "arena." + arena.getName() + ".component." + componentId;
-                Location max = data.getLocation(locationPath + ".max");
-                Location min = data.getLocation(locationPath + ".min");
-                Material material = Material.valueOf(configurationSection.getString(componentId + ".material"));
-                Section section = arena.getSection(configurationSection.getString(componentId + ".section"));
-
-                Door door = new ArenaDoor(
-                        Integer.parseInt(componentId),
-                        game,
-                        section,
-                        arena.getWorld(),
-                        max,
-                        min,
-                        material
-                );
-
-                section.getDoorContainer().add(door);
-            }
-
-            if (type.equals("itemchest")) {
-                Location location = data.getLocation("arena." + arena.getName() + ".component." + componentId + ".location");
-                Chest chest = (Chest) location.getBlock().getState();
-                int price = configurationSection.getInt(componentId + ".price");
-                Section section = arena.getSection(configurationSection.getString(componentId + ".section"));
-                Weapon weapon = itemFinder.findWeapon(configurationSection.getString(componentId + ".item"));
-
-                ItemChest itemChest = new ArenaItemChest(
-                        Integer.parseInt(componentId),
-                        chest,
-                        weapon,
-                        weapon.getName(),
-                        weapon.getItemStack(),
-                        price
-                );
-
-                section.getItemChestContainer().add(itemChest);
-            }
-
-            if (type.equals("mobspawn")) {
-                Location location = data.getLocation("arena." + arena.getName() + ".component." + componentId + ".location");
-                Section section = arena.getSection(configurationSection.getString(componentId + ".section"));
-
-                MobSpawn mobSpawn = new ArenaMobSpawn(Integer.parseInt(componentId), location);
-
-                section.getMobSpawnContainer().add(mobSpawn);
-            }
-
-            if (type.equals("mysterybox")) {
-                Block left = data.getLocation("arena." + arena.getName() + ".component." + componentId + ".leftside").getBlock();
-                Block right = data.getLocation("arena." + arena.getName() + ".component." + componentId + ".rightside").getBlock();
-                int price = configurationSection.getInt(componentId + ".price");
-                Section section = arena.getSection(configurationSection.getString(componentId + ".section"));
-
-                MysteryBox mysteryBox = new ArenaMysteryBox(
-                        Integer.parseInt(componentId),
-                        game,
-                        price,
-                        new Pair<>(left, right)
-                );
-
-                section.getMysteryBoxContainer().add(mysteryBox);
-            }
-
-            if (type.equals("perkmachine")) {
-                Location location = data.getLocation("arena." + arena.getName() + ".component." + componentId + ".location");
-                Sign sign = (Sign) location.getBlock().getState();
-                int maxBuys = configurationSection.getInt(componentId + ".maxbuys");
-                int price = configurationSection.getInt(componentId + ".price");
-                PerkEffectType perkEffectType = PerkEffectType.valueOf(configurationSection.getString(componentId + ".effect"));
-                Section section = arena.getSection(configurationSection.getString(componentId + ".section"));
-
-                PerkMachine perkMachine = new ArenaPerkMachine(
-                        Integer.parseInt(componentId),
-                        game,
-                        sign,
-                        perkFactory.make(perkEffectType),
-                        price,
-                        maxBuys
-                );
-                perkMachine.setSignLayout(plugin.getBattlegroundsConfig().getPerkSignLayout());
-                perkMachine.updateSign();
-
-                section.getPerkMachineContainer().add(perkMachine);
-            }
 
             if (type.equals("spawn")) {
                 Location location = data.getLocation("arena." + arena.getName() + ".component." + componentId + ".location");

@@ -1,29 +1,31 @@
 package com.matsg.battlegrounds.command;
 
-import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.TranslationKey;
+import com.matsg.battlegrounds.api.Battlegrounds;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class BattlegroundsCommand extends Command {
 
-    public BattlegroundsCommand(BattlegroundsPlugin plugin) {
-        super(plugin, "battlegrounds", "b", "bg", "battleground");
+    public BattlegroundsCommand(Battlegrounds plugin) {
+        super(plugin);
+        setAliases("b", "bg", "battleground");
+        setName("battlegrounds");
 
-        commands.add(new AddComponent(plugin));
-        commands.add(new CreateArena(plugin));
-        commands.add(new CreateGame(plugin));
-        commands.add(new Join(plugin));
-        commands.add(new Leave(plugin));
-        commands.add(new Reload(plugin));
-        commands.add(new RemoveArena(plugin));
-        commands.add(new RemoveComponent(plugin));
-        commands.add(new RemoveGame(plugin));
-        commands.add(new SetGameSign(plugin));
-        commands.add(new SetLobby(plugin));
-        commands.add(new SetMainLobby(plugin));
+        subCommands.add(new AddComponent(plugin));
+        subCommands.add(new CreateArena(plugin));
+        subCommands.add(new CreateGame(plugin));
+        subCommands.add(new Join(plugin));
+        subCommands.add(new Leave(plugin));
+        subCommands.add(new Reload(plugin));
+        subCommands.add(new RemoveArena(plugin));
+        subCommands.add(new RemoveComponent(plugin));
+        subCommands.add(new RemoveGame(plugin));
+        subCommands.add(new SetGameSign(plugin));
+        subCommands.add(new SetLobby(plugin));
+        subCommands.add(new SetMainLobby(plugin));
 
-        commands.add(new Help(plugin, commands.toArray(new SubCommand[commands.size()])));
+        subCommands.add(new Help(plugin, subCommands.toArray(new Command[subCommands.size()])));
     }
 
     public void execute(CommandSender sender, String[] args) {
@@ -32,7 +34,7 @@ public class BattlegroundsCommand extends Command {
             return;
         }
 
-        SubCommand subCommand = getSubCommand(args[0]);
+        Command subCommand = getSubCommand(args[0]);
 
         if (subCommand == null) {
             sender.sendMessage(createMessage(TranslationKey.INVALID_ARGUMENTS));

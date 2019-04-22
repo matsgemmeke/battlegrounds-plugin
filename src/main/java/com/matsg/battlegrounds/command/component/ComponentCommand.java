@@ -1,6 +1,20 @@
 package com.matsg.battlegrounds.command.component;
 
-public interface ComponentCommand {
+import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.command.Command;
 
-    void execute(ComponentContext context, int componentId, String[] args);
+public abstract class ComponentCommand extends Command {
+
+    public ComponentCommand(Battlegrounds plugin) {
+        super(plugin);
+    }
+
+    /**
+     * Executes the component command with the context in which the component should be added.
+     *
+     * @param context The context in which the component should be added.
+     * @param componentId The first available component id of the arena.
+     * @param args The given command arguments.
+     */
+    public abstract void execute(ComponentContext context, int componentId, String[] args);
 }

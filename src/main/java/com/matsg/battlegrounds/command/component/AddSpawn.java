@@ -1,19 +1,21 @@
 package com.matsg.battlegrounds.command.component;
 
 import com.matsg.battlegrounds.TranslationKey;
+import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.Spawn;
 import com.matsg.battlegrounds.api.util.Placeholder;
-import com.matsg.battlegrounds.game.component.ArenaSpawn;
+import com.matsg.battlegrounds.game.ArenaSpawn;
 import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.entity.Player;
 
-public class AddSpawn implements ComponentCommand {
+public class AddSpawn extends ComponentCommand {
 
     private MessageHelper messageHelper;
 
-    public AddSpawn() {
+    public AddSpawn(Battlegrounds plugin) {
+        super(plugin);
         this.messageHelper = new MessageHelper();
     }
 
@@ -25,22 +27,23 @@ public class AddSpawn implements ComponentCommand {
         boolean teamBase = false;
         int teamId = 0;
 
-        if (args.length >= 1) {
+        if (args.length >= 3) {
             try {
-                teamId = Integer.parseInt(args[0]);
+                teamId = Integer.parseInt(args[3]);
             } catch (Exception e) {
                 player.sendMessage(messageHelper.create(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[0])));
                 return;
             }
         }
 
-        if (args.length >= 2) {
-            teamBase = args[1].equals("-b");
+        if (args.length >= 4) {
+            teamBase = args[4].equals("-b");
 
             if (teamBase && arena.getTeamBase(teamId) != null) {
                 player.sendMessage(messageHelper.create(TranslationKey.SPAWN_TEAMBASE_EXISTS,
                         new Placeholder("bg_arena", arena.getName()),
-                        new Placeholder("bg_team", teamId)));
+                        new Placeholder("bg_team", teamId)
+                ));
                 return;
             }
         }

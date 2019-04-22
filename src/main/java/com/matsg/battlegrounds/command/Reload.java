@@ -4,7 +4,7 @@ import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import org.bukkit.command.CommandSender;
 
-public class Reload extends SubCommand {
+public class Reload extends Command {
 
     public Reload(Battlegrounds plugin) {
         super(plugin);
@@ -14,7 +14,7 @@ public class Reload extends SubCommand {
         setUsage("bg reload");
     }
 
-    public void executeSubCommand(CommandSender sender, String[] args) {
+    public void execute(CommandSender sender, String[] args) {
         if (!plugin.loadConfigs()) {
             sender.sendMessage(createMessage(TranslationKey.RELOAD_FAILED));
             return;

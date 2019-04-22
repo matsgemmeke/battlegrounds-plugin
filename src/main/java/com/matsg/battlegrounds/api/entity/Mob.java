@@ -1,6 +1,6 @@
 package com.matsg.battlegrounds.api.entity;
 
-import com.matsg.battlegrounds.api.game.MobSpawn;
+import com.matsg.battlegrounds.game.mode.zombies.MobSpawn;
 import org.bukkit.Location;
 
 public interface Mob extends BaseEntity {
@@ -31,7 +31,7 @@ public interface Mob extends BaseEntity {
 
     void setTarget(Location location);
 
-    void spawn(MobSpawn spawn);
+    void spawn(MobSpawn mobSpawn);
 
     void updatePath();
 }

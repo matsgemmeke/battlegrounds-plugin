@@ -9,51 +9,51 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Help extends SubCommand {
+public class Help extends Command {
 
-    private SubCommand[] subCommands;
+    private Command[] subCommands;
 
-    public Help(Battlegrounds plugin, SubCommand[] subCommands) {
+    public Help(Battlegrounds plugin, Command[] subCommands) {
         super(plugin);
         this.subCommands = subCommands;
         setAliases("?");
         setName("help");
     }
 
-    public void executeSubCommand(CommandSender sender, String[] args) {
+    public void execute(CommandSender sender, String[] args) {
         sender.sendMessage(createMessage(TranslationKey.HELP_MENU));
         sender.sendMessage(" ");
 
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            for (SubCommand subCommand : getCommands(false)) {
+            for (Command subCommand : getCommands(false)) {
                 plugin.getVersion().sendJSONMessage(player, " ● /" + subCommand.getUsage(), "/" + ChatColor.GRAY + subCommand.getUsage(), subCommand.getDescription());
             }
 
             sender.sendMessage(" ");
 
-            for (SubCommand subCommand : getCommands(true)) {
+            for (Command subCommand : getCommands(true)) {
                 if (player.hasPermission(subCommand.getPermissionNode())) {
                     plugin.getVersion().sendJSONMessage(player, " ● /" + subCommand.getUsage(), "/" + ChatColor.GRAY + subCommand.getUsage(), subCommand.getDescription());
                 }
             }
         } else {
-            for (SubCommand subCommand : getCommands(false)) {
+            for (Command subCommand : getCommands(false)) {
                 sender.sendMessage(" ● /" + subCommand.getUsage() + " " + ChatColor.GRAY + subCommand.getDescription());
             }
 
             sender.sendMessage(" ");
 
-            for (SubCommand subCommand : getCommands(true)) {
+            for (Command subCommand : getCommands(true)) {
                 sender.sendMessage(" ● /" + subCommand.getUsage() + " " + ChatColor.GRAY + subCommand.getDescription());
             }
         }
     }
 
-    private SubCommand[] getCommands(boolean permission) {
-        List<SubCommand> list = new ArrayList<>();
-        for (SubCommand subCommand : subCommands) {
+    private Command[] getCommands(boolean permission) {
+        List<Command> list = new ArrayList<>();
+        for (Command subCommand : subCommands) {
             if (permission) {
                 if (subCommand.getPermissionNode() != null && subCommand.getPermissionNode().length() > 0) {
                     list.add(subCommand);
@@ -64,6 +64,6 @@ public class Help extends SubCommand {
                 }
             }
         }
-        return list.toArray(new SubCommand[list.size()]);
+        return list.toArray(new Command[list.size()]);
     }
 }

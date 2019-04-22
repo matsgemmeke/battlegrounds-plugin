@@ -8,7 +8,7 @@ import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.Version;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
-import com.matsg.battlegrounds.game.component.ArenaSpawn;
+import com.matsg.battlegrounds.game.ArenaSpawn;
 import com.matsg.battlegrounds.game.BattleArena;
 import com.matsg.battlegrounds.game.BattleTeam;
 import com.matsg.battlegrounds.game.state.InGameState;

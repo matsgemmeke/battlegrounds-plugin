@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Set;
 
-public class SetGameSign extends SubCommand {
+public class SetGameSign extends Command {
 
     public SetGameSign(Battlegrounds plugin) {
         super(plugin);
@@ -29,7 +29,7 @@ public class SetGameSign extends SubCommand {
         registerValidator(new GameIdValidator(plugin));
     }
 
-    public void executeSubCommand(CommandSender sender, String[] args) {
+    public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         BlockState state = player.getTargetBlock((Set<Material>) null, 5).getState();
         Game game = plugin.getGameManager().getGame(Integer.parseInt(args[1]));

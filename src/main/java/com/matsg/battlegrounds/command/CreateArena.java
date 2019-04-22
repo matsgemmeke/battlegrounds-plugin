@@ -13,7 +13,7 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class CreateArena extends SubCommand {
+public class CreateArena extends Command {
 
     public CreateArena(Battlegrounds plugin) {
         super(plugin);
@@ -27,7 +27,7 @@ public class CreateArena extends SubCommand {
         registerValidator(new GameIdValidator(plugin));
     }
 
-    public void executeSubCommand(CommandSender sender, String[] args) {
+    public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
 
         int id = Integer.parseInt(args[1]);

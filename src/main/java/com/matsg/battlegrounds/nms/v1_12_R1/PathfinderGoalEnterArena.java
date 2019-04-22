@@ -2,7 +2,7 @@ package com.matsg.battlegrounds.nms.v1_12_R1;
 
 import com.matsg.battlegrounds.api.game.Barricade;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.MobSpawn;
+import com.matsg.battlegrounds.game.mode.zombies.MobSpawn;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import net.minecraft.server.v1_12_R1.Navigation;
 import net.minecraft.server.v1_12_R1.PathEntity;

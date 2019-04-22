@@ -155,6 +155,7 @@ public class BattleGame implements Game {
 
                 rollback();
 
+                gameMode.loadData(getActiveArena());
                 itemRegistry.clear();
                 playerManager.getPlayers().clear();
 
@@ -168,6 +169,15 @@ public class BattleGame implements Game {
         for (Arena arena : arenaList) {
             if (arena.isActive()) {
                 return arena;
+            }
+        }
+        return null;
+    }
+
+    public <T extends GameMode> T getGameMode(Class<T> gameModeClass) {
+        for (GameMode gameMode : configuration.getGameModes()) {
+            if (gameMode.getClass().isInstance(gameModeClass)) {
+                return (T) gameMode;
             }
         }
         return null;

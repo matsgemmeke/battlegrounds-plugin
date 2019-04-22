@@ -3,8 +3,6 @@ package com.matsg.battlegrounds.api.game;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import org.bukkit.Location;
 
-import java.util.Collection;
-
 public interface Arena extends ComponentWrapper, Extent {
 
     /**
@@ -13,13 +11,6 @@ public interface Arena extends ComponentWrapper, Extent {
      * @return The arena name
      */
     String getName();
-
-    /**
-     * Gets the section container of the arena.
-     *
-     * @return The section container.
-     */
-    ComponentContainer<Section> getSectionContainer();
 
     /**
      * Gets the spawn container of the arena.
@@ -75,14 +66,6 @@ public interface Arena extends ComponentWrapper, Extent {
      * @return A random spawn entry
      */
     Spawn getRandomSpawn(int teamId, Location location, double distance);
-
-    /**
-     * Gets a section from the name with a certain name.
-     *
-     * @param name The section name.
-     * @return The section with the corresponding name or null if it does not exist.
-     */
-    Section getSection(String name);
 
     /**
      * Gets the spawn which currently being used by a specific player.

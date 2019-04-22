@@ -1,10 +1,7 @@
-package com.matsg.battlegrounds.game.component;
+package com.matsg.battlegrounds.game.mode.zombies;
 
 import com.matsg.battlegrounds.api.entity.GamePlayer;
-import com.matsg.battlegrounds.api.game.Arena;
-import com.matsg.battlegrounds.api.game.Door;
-import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.Section;
+import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.util.ActionBar;
 import com.matsg.battlegrounds.util.BattleSound;
@@ -12,9 +9,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.material.MaterialData;
 
-public class ArenaDoor implements Door {
+public class Door implements ArenaComponent, Extent, Interactable, Lockable, Watchable {
 
     private boolean locked;
     private Game game;
@@ -24,7 +20,7 @@ public class ArenaDoor implements Door {
     private Section section;
     private World world;
 
-    public ArenaDoor(
+    public Door(
             int id,
             Game game,
             Section section,

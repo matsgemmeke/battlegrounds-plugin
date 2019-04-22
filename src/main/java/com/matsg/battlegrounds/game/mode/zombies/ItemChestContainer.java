@@ -1,8 +1,6 @@
-package com.matsg.battlegrounds.game.component;
+package com.matsg.battlegrounds.game.mode.zombies;
 
-import com.avaje.ebeaninternal.server.cluster.Packet;
 import com.matsg.battlegrounds.api.game.ComponentContainer;
-import com.matsg.battlegrounds.api.game.ItemChest;
 
 import java.util.Collections;
 import java.util.HashSet;

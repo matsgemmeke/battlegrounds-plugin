@@ -51,6 +51,7 @@ public enum TranslationKey {
     GAME_EXISTS("setup-game-exists", false),
     GAME_NOT_EXISTS("setup-game-not-exists", false),
     GAME_REMOVE("setup-game-remove", true),
+    GAMEMODE_NOT_USED("setup-gamemode-not-used", false),
     GAMESIGN_SET("setup-gamesign-set", true),
     GO_BACK("view-go-back", false),
     GUN_ATTACHMENT("view-gun-attachment", false),

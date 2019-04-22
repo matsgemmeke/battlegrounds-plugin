@@ -1,7 +1,7 @@
-package com.matsg.battlegrounds.game.component;
+package com.matsg.battlegrounds.game.mode.zombies;
 
 import com.matsg.battlegrounds.api.entity.GamePlayer;
-import com.matsg.battlegrounds.api.game.ItemChest;
+import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.item.TransactionItem;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.util.ActionBar;
@@ -9,7 +9,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.inventory.ItemStack;
 
-public class ArenaItemChest implements ItemChest {
+public class ItemChest implements ArenaComponent, Interactable, Lockable, Priceable, Watchable {
 
     private boolean locked;
     private Chest chest;
@@ -18,7 +18,7 @@ public class ArenaItemChest implements ItemChest {
     private String itemName;
     private TransactionItem item;
 
-    public ArenaItemChest(int id, Chest chest, TransactionItem item, String itemName, ItemStack itemStack, int price) {
+    public ItemChest(int id, Chest chest, TransactionItem item, String itemName, ItemStack itemStack, int price) {
         this.id = id;
         this.chest = chest;
         this.item = item;

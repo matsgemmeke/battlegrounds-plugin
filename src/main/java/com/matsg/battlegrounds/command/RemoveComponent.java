@@ -10,7 +10,7 @@ import com.matsg.battlegrounds.command.validate.ArenaNameValidator;
 import com.matsg.battlegrounds.command.validate.GameIdValidator;
 import org.bukkit.command.CommandSender;
 
-public class RemoveComponent extends SubCommand {
+public class RemoveComponent extends Command {
 
     public RemoveComponent(Battlegrounds plugin) {
         super(plugin);
@@ -24,7 +24,7 @@ public class RemoveComponent extends SubCommand {
         registerValidator(new ArenaNameValidator(plugin));
     }
 
-    public void executeSubCommand(CommandSender sender, String[] args) {
+    public void execute(CommandSender sender, String[] args) {
         Game game = plugin.getGameManager().getGame(Integer.parseInt(args[1]));
         Arena arena = plugin.getGameManager().getArena(game, args[2].replaceAll("_", " "));
 

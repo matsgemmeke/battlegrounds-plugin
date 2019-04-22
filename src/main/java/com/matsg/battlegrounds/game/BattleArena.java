@@ -2,8 +2,6 @@ package com.matsg.battlegrounds.game;
 
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
-import com.matsg.battlegrounds.game.component.SectionContainer;
-import com.matsg.battlegrounds.game.component.SpawnContainer;
 import org.bukkit.Location;
 import org.bukkit.World;
 
@@ -12,7 +10,6 @@ import java.util.*;
 public class BattleArena implements Arena {
 
     private boolean active;
-    private ComponentContainer<Section> sectionContainer;
     private ComponentContainer<Spawn> spawnContainer;
     private Location maximumPoint, minimumPoint;
     private String name;
@@ -24,7 +21,6 @@ public class BattleArena implements Arena {
         this.maximumPoint = maximumPoint;
         this.minimumPoint = minimumPoint;
         this.active = false;
-        this.sectionContainer = new SectionContainer();
         this.spawnContainer = new SpawnContainer();
     }
 
@@ -38,10 +34,6 @@ public class BattleArena implements Arena {
 
     public String getName() {
         return name;
-    }
-
-    public ComponentContainer<Section> getSectionContainer() {
-        return sectionContainer;
     }
 
     public ComponentContainer<Spawn> getSpawnContainer() {
@@ -80,17 +72,7 @@ public class BattleArena implements Arena {
     }
 
     public ArenaComponent getComponent(int id) {
-        ArenaComponent component = spawnContainer.get(id);
-        if (component != null || (component = sectionContainer.get(id)) != null) {
-            return component;
-        }
-        for (Section section : sectionContainer.getAll()) {
-            component = section.getComponent(id);
-            if (component != null) {
-                return component;
-            }
-        }
-        return null;
+        return spawnContainer.get(id);
     }
 
     public int getHeight() {
@@ -155,15 +137,6 @@ public class BattleArena implements Arena {
         return spawn;
     }
 
-    public Section getSection(String name) {
-        for (Section section : sectionContainer.getAll()) {
-            if (section.getName().equals(name)) {
-                return section;
-            }
-        }
-        return null;
-    }
-
     public Spawn getSpawn(GamePlayer gamePlayer) {
         for (Spawn spawn : getSpawns()) {
             if (spawn.getGamePlayer() == gamePlayer) {
@@ -206,15 +179,6 @@ public class BattleArena implements Arena {
         if (spawnContainer.get(component.getId()) != null) {
             spawnContainer.remove(component.getId());
             return true;
-        }
-        if (sectionContainer.get(component.getId()) != null) {
-            sectionContainer.remove(component.getId());
-            return true;
-        }
-        for (Section section : sectionContainer.getAll()) {
-            if (section.removeComponent(component)) {
-                return true;
-            }
         }
         return false;
     }

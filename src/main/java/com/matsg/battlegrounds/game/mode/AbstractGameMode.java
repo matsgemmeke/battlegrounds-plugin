@@ -101,6 +101,8 @@ public abstract class AbstractGameMode implements GameMode {
         return getSortedTeams().get(0);
     }
 
+    public void loadData(Arena arena) { }
+
     public void onDisable() { }
 
     public void onEnable() { }

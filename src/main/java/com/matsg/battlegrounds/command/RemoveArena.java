@@ -13,7 +13,7 @@ import org.bukkit.command.CommandSender;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RemoveArena extends SubCommand {
+public class RemoveArena extends Command {
 
     private List<CommandSender> senders;
 
@@ -31,7 +31,7 @@ public class RemoveArena extends SubCommand {
         registerValidator(new ArenaNameValidator(plugin));
     }
 
-    public void executeSubCommand(final CommandSender sender, String[] args) {
+    public void execute(CommandSender sender, String[] args) {
         Game game = plugin.getGameManager().getGame(Integer.parseInt(args[1]));
         Arena arena = plugin.getGameManager().getArena(game, args[2].replaceAll("_", " "));
 

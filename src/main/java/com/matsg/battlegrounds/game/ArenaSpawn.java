@@ -1,4 +1,4 @@
-package com.matsg.battlegrounds.game.component;
+package com.matsg.battlegrounds.game;
 
 import com.matsg.battlegrounds.api.game.Spawn;
 import com.matsg.battlegrounds.api.entity.GamePlayer;

@@ -13,12 +13,13 @@ public class LoadoutCommand extends Command {
     private int minLevel;
 
     public LoadoutCommand(BattlegroundsPlugin plugin) {
-        super(plugin, "loadout", "loadoutcreator");
+        super(plugin);
         this.minLevel = plugin.getBattlegroundsConfig().loadoutCreationLevel;
 
+        setName("loadout");
         setPlayerOnly(true);
 
-        commands.add(new Rename(plugin));
+        subCommands.add(new Rename(plugin));
     }
 
     public void execute(CommandSender sender, String[] args) {
@@ -35,7 +36,7 @@ public class LoadoutCommand extends Command {
             return;
         }
 
-        SubCommand subCommand = getSubCommand(args[0]);
+        Command subCommand = getSubCommand(args[0]);
 
         if (subCommand == null) {
             return;

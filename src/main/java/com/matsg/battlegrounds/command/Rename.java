@@ -7,7 +7,7 @@ import com.matsg.battlegrounds.api.util.Placeholder;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class Rename extends SubCommand {
+public class Rename extends Command {
 
     public Rename(Battlegrounds plugin) {
         super(plugin);
@@ -17,7 +17,7 @@ public class Rename extends SubCommand {
         setUsage("loadout rename [loadoutid] [name]");
     }
 
-    public void executeSubCommand(CommandSender sender, String[] args) {
+    public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
 
         if (args.length == 1) {

@@ -1,14 +1,18 @@
 package com.matsg.battlegrounds.command.component;
 
 import com.matsg.battlegrounds.TranslationKey;
+import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.PerkMachine;
-import com.matsg.battlegrounds.api.game.Section;
 import com.matsg.battlegrounds.api.item.Perk;
 import com.matsg.battlegrounds.api.storage.BattlegroundsConfig;
 import com.matsg.battlegrounds.api.util.Placeholder;
-import com.matsg.battlegrounds.game.component.ArenaPerkMachine;
+import com.matsg.battlegrounds.command.validate.GameModeUsageValidator;
+import com.matsg.battlegrounds.command.validate.SectionNameValidator;
+import com.matsg.battlegrounds.game.mode.GameModeType;
+import com.matsg.battlegrounds.game.mode.zombies.PerkMachine;
+import com.matsg.battlegrounds.game.mode.zombies.Section;
+import com.matsg.battlegrounds.game.mode.zombies.Zombies;
 import com.matsg.battlegrounds.item.factory.PerkFactory;
 import com.matsg.battlegrounds.item.perk.PerkEffectType;
 import com.matsg.battlegrounds.util.MessageHelper;
@@ -19,16 +23,18 @@ import org.bukkit.entity.Player;
 
 import java.util.Set;
 
-public class AddPerkMachine implements ComponentCommand {
+public class AddPerkMachine extends ComponentCommand {
 
-    private BattlegroundsConfig config;
     private MessageHelper messageHelper;
     private PerkFactory perkFactory;
 
-    public AddPerkMachine(BattlegroundsConfig config) {
-        this.config = config;
+    public AddPerkMachine(Battlegrounds plugin) {
+        super(plugin);
         this.messageHelper = new MessageHelper();
         this.perkFactory = new PerkFactory();
+
+        registerValidator(new GameModeUsageValidator(plugin, GameModeType.ZOMBIES));
+        registerValidator(new SectionNameValidator(plugin));
     }
 
     public void execute(ComponentContext context, int componentId, String[] args) {
@@ -42,14 +48,11 @@ public class AddPerkMachine implements ComponentCommand {
 
         Game game = context.getGame();
         Arena arena = context.getArena();
-        Section section = context.getSection();
 
-        if (section == null) {
-            player.sendMessage(messageHelper.create(TranslationKey.SPECIFY_SECTION_NAME));
-            return;
-        }
+        Zombies zombies = game.getGameMode(Zombies.class);
+        Section section = zombies.getSection(args[3]);
 
-        if (args.length == 0) {
+        if (args.length == 4) {
             player.sendMessage(messageHelper.create(TranslationKey.SPECIFY_PERK_TYPE));
             return;
         }
@@ -57,13 +60,13 @@ public class AddPerkMachine implements ComponentCommand {
         PerkEffectType perkEffectType;
 
         try {
-            perkEffectType = PerkEffectType.valueOf(args[0]);
+            perkEffectType = PerkEffectType.valueOf(args[4]);
         } catch (IllegalArgumentException e) {
-            player.sendMessage(messageHelper.create(TranslationKey.INVALID_PERK_TYPE, new Placeholder("bg_perk", args[0])));
+            player.sendMessage(messageHelper.create(TranslationKey.INVALID_PERK_TYPE, new Placeholder("bg_perk", args[4])));
             return;
         }
 
-        if (args.length == 1) {
+        if (args.length == 5) {
             player.sendMessage(messageHelper.create(TranslationKey.SPECIFY_PERK_PRICE));
             return;
         }
@@ -71,27 +74,27 @@ public class AddPerkMachine implements ComponentCommand {
         int price;
 
         try {
-            price = Integer.parseInt(args[1]);
+            price = Integer.parseInt(args[5]);
         } catch (Exception e) {
-            player.sendMessage(messageHelper.create(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[1])));
+            player.sendMessage(messageHelper.create(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[5])));
             return;
         }
 
         int maxBuys = 3;
 
-        if (args.length >= 3) {
+        if (args.length > 6) {
             try {
-                maxBuys = Integer.parseInt(args[2]);
+                maxBuys = Integer.parseInt(args[6]);
             } catch (IllegalArgumentException e) {
-                player.sendMessage(messageHelper.create(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[2])));
+                player.sendMessage(messageHelper.create(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[6])));
                 return;
             }
         }
 
         Perk perk = perkFactory.make(perkEffectType);
 
-        PerkMachine perkMachine = new ArenaPerkMachine(componentId, game, (Sign) blockState, perk, price, maxBuys);
-        perkMachine.setSignLayout(config.getPerkSignLayout());
+        PerkMachine perkMachine = new PerkMachine(componentId, game, (Sign) blockState, perk, price, maxBuys);
+        perkMachine.setSignLayout(plugin.getBattlegroundsConfig().getPerkSignLayout());
         perkMachine.updateSign();
 
         section.getPerkMachineContainer().add(perkMachine);

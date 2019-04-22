@@ -1,7 +1,6 @@
-package com.matsg.battlegrounds.game.component;
+package com.matsg.battlegrounds.game.mode.zombies;
 
 import com.matsg.battlegrounds.api.game.ComponentContainer;
-import com.matsg.battlegrounds.api.game.MysteryBox;
 
 import java.util.Collections;
 import java.util.HashSet;

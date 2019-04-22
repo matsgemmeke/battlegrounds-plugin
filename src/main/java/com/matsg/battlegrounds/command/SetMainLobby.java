@@ -5,7 +5,7 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class SetMainLobby extends SubCommand {
+public class SetMainLobby extends Command {
 
     public SetMainLobby(Battlegrounds plugin) {
         super(plugin);
@@ -17,7 +17,7 @@ public class SetMainLobby extends SubCommand {
         setUsage("bg setmainlobby");
     }
 
-    public void executeSubCommand(CommandSender sender, String[] args) {
+    public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
 
         plugin.getBattlegroundsCache().setLocation("mainlobby", player.getLocation(), false);

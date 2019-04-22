@@ -1,8 +1,7 @@
-package com.matsg.battlegrounds.game.component;
+package com.matsg.battlegrounds.game.mode.zombies;
 
 import com.matsg.battlegrounds.api.entity.GamePlayer;
-import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.PerkMachine;
+import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.item.Perk;
 import com.matsg.battlegrounds.api.item.PerkEffect;
 import com.matsg.battlegrounds.api.item.Transaction;
@@ -16,7 +15,7 @@ import org.bukkit.block.Sign;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ArenaPerkMachine implements PerkMachine {
+public class PerkMachine implements ArenaComponent, Interactable, Lockable, Priceable {
 
     private static final int MAX_NUMBER_PERKS = 4;
 
@@ -29,7 +28,7 @@ public class ArenaPerkMachine implements PerkMachine {
     private Sign sign;
     private String[] signLayout;
 
-    public ArenaPerkMachine(int id, Game game, Sign sign, Perk perk, int price, int maxBuys) {
+    public PerkMachine(int id, Game game, Sign sign, Perk perk, int price, int maxBuys) {
         this.id = id;
         this.game = game;
         this.sign = sign;
