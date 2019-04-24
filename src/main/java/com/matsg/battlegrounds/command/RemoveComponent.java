@@ -6,8 +6,8 @@ import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.ArenaComponent;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.util.Placeholder;
-import com.matsg.battlegrounds.command.validate.ArenaNameValidator;
-import com.matsg.battlegrounds.command.validate.GameIdValidator;
+import com.matsg.battlegrounds.command.validator.ArenaNameValidator;
+import com.matsg.battlegrounds.command.validator.GameIdValidator;
 import org.bukkit.command.CommandSender;
 
 public class RemoveComponent extends Command {

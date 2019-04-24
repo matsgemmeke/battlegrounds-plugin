@@ -4,7 +4,7 @@ import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.util.Placeholder;
-import com.matsg.battlegrounds.command.validate.GameIdValidator;
+import com.matsg.battlegrounds.command.validator.GameIdValidator;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import org.bukkit.command.CommandSender;
 

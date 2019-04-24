@@ -1,4 +1,4 @@
-package com.matsg.battlegrounds.command.validate;
+package com.matsg.battlegrounds.command.validator;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;

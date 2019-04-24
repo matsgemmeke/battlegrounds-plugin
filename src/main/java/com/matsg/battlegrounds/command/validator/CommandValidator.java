@@ -1,6 +1,4 @@
-package com.matsg.battlegrounds.command.validate;
-
-import org.bukkit.command.CommandSender;
+package com.matsg.battlegrounds.command.validator;
 
 public interface CommandValidator {
 

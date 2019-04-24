@@ -6,9 +6,9 @@ import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.command.component.*;
-import com.matsg.battlegrounds.command.validate.ArenaNameValidator;
-import com.matsg.battlegrounds.command.validate.GameIdValidator;
-import com.matsg.battlegrounds.command.validate.ValidationResponse;
+import com.matsg.battlegrounds.command.validator.ArenaNameValidator;
+import com.matsg.battlegrounds.command.validator.GameIdValidator;
+import com.matsg.battlegrounds.command.validator.ValidationResponse;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

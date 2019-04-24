@@ -1,4 +1,4 @@
-package com.matsg.battlegrounds.command.validate;
+package com.matsg.battlegrounds.command.validator;
 
 public class ValidationResponse {
 

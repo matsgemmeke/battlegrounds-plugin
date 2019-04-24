@@ -5,7 +5,7 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameSign;
 import com.matsg.battlegrounds.api.util.Placeholder;
-import com.matsg.battlegrounds.command.validate.GameIdValidator;
+import com.matsg.battlegrounds.command.validator.GameIdValidator;
 import com.matsg.battlegrounds.game.BattleGameSign;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;

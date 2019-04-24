@@ -1,4 +1,4 @@
-package com.matsg.battlegrounds.command.validate;
+package com.matsg.battlegrounds.command.validator;
 
 import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.TranslationKey;
@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({BattlegroundsPlugin.class, Translator.class})
+@PrepareForTest({Translator.class})
 public class GameIdValidatorTest {
 
     private Battlegrounds plugin;
@@ -29,7 +29,6 @@ public class GameIdValidatorTest {
         this.validator = new GameIdValidator(plugin);
         this.gameManager = mock(GameManager.class);
 
-        PowerMockito.mockStatic(BattlegroundsPlugin.class);
         PowerMockito.mockStatic(Translator.class);
 
         when(plugin.getGameManager()).thenReturn(gameManager);
