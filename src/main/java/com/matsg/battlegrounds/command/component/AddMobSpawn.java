@@ -24,7 +24,7 @@ public class AddMobSpawn extends ComponentCommand {
         this.messageHelper = new MessageHelper();
 
         registerValidator(new GameModeUsageValidator(plugin, GameModeType.ZOMBIES));
-        registerValidator(new SectionNameValidator(plugin));
+        registerValidator(new SectionNameValidator(plugin, 4));
     }
 
     public void execute(ComponentContext context, int componentId, String[] args) {
@@ -33,7 +33,7 @@ public class AddMobSpawn extends ComponentCommand {
         Game game = context.getGame();
 
         Zombies zombies = game.getGameMode(Zombies.class);
-        Section section = zombies.getSection(args[3]);
+        Section section = zombies.getSection(args[4]);
 
         MobSpawn mobSpawn = new ZombiesMobSpawn(componentId, player.getLocation());
 

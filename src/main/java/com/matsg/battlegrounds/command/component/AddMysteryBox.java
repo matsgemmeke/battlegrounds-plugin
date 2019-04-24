@@ -30,7 +30,7 @@ public class AddMysteryBox extends ComponentCommand {
         this.messageHelper = new MessageHelper();
 
         registerValidator(new GameModeUsageValidator(plugin, GameModeType.ZOMBIES));
-        registerValidator(new SectionNameValidator(plugin));
+        registerValidator(new SectionNameValidator(plugin, 4));
     }
 
     public void execute(ComponentContext context, int componentId, String[] args) {
@@ -61,9 +61,9 @@ public class AddMysteryBox extends ComponentCommand {
         Arena arena = context.getArena();
 
         Zombies zombies = game.getGameMode(Zombies.class);
-        Section section = zombies.getSection(args[3]);
+        Section section = zombies.getSection(args[4]);
 
-        if (args.length == 4) {
+        if (args.length == 5) {
             player.sendMessage(messageHelper.create(TranslationKey.SPECIFY_MYSTERYBOX_PRICE));
             return;
         }
@@ -71,9 +71,9 @@ public class AddMysteryBox extends ComponentCommand {
         int price;
 
         try {
-            price = Integer.parseInt(args[4]);
+            price = Integer.parseInt(args[5]);
         } catch (Exception e) {
-            player.sendMessage(messageHelper.create(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[4])));
+            player.sendMessage(messageHelper.create(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[5])));
             return;
         }
 

@@ -68,6 +68,7 @@ public class AddComponent extends Command {
 
         if (!response.passed()) {
             player.sendMessage(response.getMessage());
+            return;
         }
 
         // Order of input arguments:

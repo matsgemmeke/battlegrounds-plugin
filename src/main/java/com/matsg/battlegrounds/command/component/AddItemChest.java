@@ -33,7 +33,7 @@ public class AddItemChest extends ComponentCommand {
         this.messageHelper = new MessageHelper();
 
         registerValidator(new GameModeUsageValidator(plugin, GameModeType.ZOMBIES));
-        registerValidator(new SectionNameValidator(plugin));
+        registerValidator(new SectionNameValidator(plugin, 4));
     }
 
     public void execute(ComponentContext context, int componentId, String[] args) {
@@ -49,21 +49,21 @@ public class AddItemChest extends ComponentCommand {
         Arena arena = context.getArena();
 
         Zombies zombies = game.getGameMode(Zombies.class);
-        Section section = zombies.getSection(args[3]);
+        Section section = zombies.getSection(args[4]);
 
-        if (args.length == 4) {
+        if (args.length == 5) {
             player.sendMessage(messageHelper.create(TranslationKey.SPECIFY_WEAPON_ID));
             return;
         }
 
-        Weapon weapon = itemFinder.findWeapon(args[4]);
+        Weapon weapon = itemFinder.findWeapon(args[5]);
 
         if (weapon == null) {
-            player.sendMessage(messageHelper.create(TranslationKey.INVALID_WEAPON, new Placeholder("bg_weapon", args[1])));
+            player.sendMessage(messageHelper.create(TranslationKey.INVALID_WEAPON, new Placeholder("bg_weapon", args[5])));
             return;
         }
 
-        if (args.length == 5) {
+        if (args.length == 6) {
             player.sendMessage(messageHelper.create(TranslationKey.SPECIFY_ITEM_PRICE));
             return;
         }
@@ -71,9 +71,9 @@ public class AddItemChest extends ComponentCommand {
         int price;
 
         try {
-            price = Integer.parseInt(args[5]);
+            price = Integer.parseInt(args[6]);
         } catch (Exception e) {
-            player.sendMessage(messageHelper.create(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[5])));
+            player.sendMessage(messageHelper.create(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[6])));
             return;
         }
 

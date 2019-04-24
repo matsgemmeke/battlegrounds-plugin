@@ -37,7 +37,7 @@ public class SectionNameValidatorTest {
 
         this.gameId = 1;
         this.name = "Section";
-        this.validator = new SectionNameValidator(plugin);
+        this.validator = new SectionNameValidator(plugin, 3);
 
         PowerMockito.mockStatic(Translator.class);
 
@@ -48,7 +48,7 @@ public class SectionNameValidatorTest {
     @Test
     public void testValidationNoNameSpecified() {
         String responseMessage = "Test", responsePath = TranslationKey.SPECIFY_SECTION_NAME.getPath();
-        String[] input = new String[] { "command", String.valueOf(gameId), "arena" };
+        String[] input = new String[] { "command", String.valueOf(gameId) };
 
         when(Translator.translate(responsePath)).thenReturn(responseMessage);
 
@@ -63,7 +63,7 @@ public class SectionNameValidatorTest {
         Zombies zombies = mock(Zombies.class);
 
         String responseMessage = "Test", responsePath = TranslationKey.SECTION_NOT_EXISTS.getPath();
-        String[] input = new String[] { "command", String.valueOf(gameId), "arena", name };
+        String[] input = new String[] { "command", String.valueOf(gameId), name };
 
         when(game.getArena()).thenReturn(mock(Arena.class));
         when(game.getGameMode(Zombies.class)).thenReturn(zombies);
@@ -80,7 +80,7 @@ public class SectionNameValidatorTest {
     public void testValidationSectionWithSpecifiedNameExists() {
         Zombies zombies = mock(Zombies.class);
 
-        String[] input = new String[] { "command", String.valueOf(gameId), "arena", name };
+        String[] input = new String[] { "command", String.valueOf(gameId), name };
 
         when(game.getGameMode(Zombies.class)).thenReturn(zombies);
         when(zombies.getSection(name)).thenReturn(mock(Section.class));

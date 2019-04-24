@@ -34,7 +34,7 @@ public class AddPerkMachine extends ComponentCommand {
         this.perkFactory = new PerkFactory();
 
         registerValidator(new GameModeUsageValidator(plugin, GameModeType.ZOMBIES));
-        registerValidator(new SectionNameValidator(plugin));
+        registerValidator(new SectionNameValidator(plugin, 4));
     }
 
     public void execute(ComponentContext context, int componentId, String[] args) {
@@ -50,9 +50,9 @@ public class AddPerkMachine extends ComponentCommand {
         Arena arena = context.getArena();
 
         Zombies zombies = game.getGameMode(Zombies.class);
-        Section section = zombies.getSection(args[3]);
+        Section section = zombies.getSection(args[4]);
 
-        if (args.length == 4) {
+        if (args.length == 5) {
             player.sendMessage(messageHelper.create(TranslationKey.SPECIFY_PERK_TYPE));
             return;
         }
@@ -60,13 +60,13 @@ public class AddPerkMachine extends ComponentCommand {
         PerkEffectType perkEffectType;
 
         try {
-            perkEffectType = PerkEffectType.valueOf(args[4]);
+            perkEffectType = PerkEffectType.valueOf(args[5]);
         } catch (IllegalArgumentException e) {
-            player.sendMessage(messageHelper.create(TranslationKey.INVALID_PERK_TYPE, new Placeholder("bg_perk", args[4])));
+            player.sendMessage(messageHelper.create(TranslationKey.INVALID_PERK_TYPE, new Placeholder("bg_perk", args[5])));
             return;
         }
 
-        if (args.length == 5) {
+        if (args.length == 6) {
             player.sendMessage(messageHelper.create(TranslationKey.SPECIFY_PERK_PRICE));
             return;
         }
@@ -74,19 +74,19 @@ public class AddPerkMachine extends ComponentCommand {
         int price;
 
         try {
-            price = Integer.parseInt(args[5]);
+            price = Integer.parseInt(args[6]);
         } catch (Exception e) {
-            player.sendMessage(messageHelper.create(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[5])));
+            player.sendMessage(messageHelper.create(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[6])));
             return;
         }
 
         int maxBuys = 3;
 
-        if (args.length > 6) {
+        if (args.length > 7) {
             try {
-                maxBuys = Integer.parseInt(args[6]);
+                maxBuys = Integer.parseInt(args[7]);
             } catch (IllegalArgumentException e) {
-                player.sendMessage(messageHelper.create(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[6])));
+                player.sendMessage(messageHelper.create(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[7])));
                 return;
             }
         }

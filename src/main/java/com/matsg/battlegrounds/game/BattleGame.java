@@ -176,7 +176,7 @@ public class BattleGame implements Game {
 
     public <T extends GameMode> T getGameMode(Class<T> gameModeClass) {
         for (GameMode gameMode : configuration.getGameModes()) {
-            if (gameMode.getClass().isInstance(gameModeClass)) {
+            if (gameMode.getClass() == gameModeClass) {
                 return (T) gameMode;
             }
         }
