@@ -7,7 +7,6 @@ import com.matsg.battlegrounds.api.entity.Hitbox;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.item.Weapon;
-import com.matsg.battlegrounds.api.storage.CacheYaml;
 import com.matsg.battlegrounds.api.storage.Yaml;
 import com.matsg.battlegrounds.game.BattleTeam;
 import com.matsg.battlegrounds.game.mode.AbstractGameMode;

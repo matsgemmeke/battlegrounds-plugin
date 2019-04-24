@@ -4,15 +4,15 @@ import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.api.game.PerkMachine;
+import com.matsg.battlegrounds.api.game.Section;
 import com.matsg.battlegrounds.api.item.Perk;
-import com.matsg.battlegrounds.api.storage.BattlegroundsConfig;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.command.validate.GameModeUsageValidator;
 import com.matsg.battlegrounds.command.validate.SectionNameValidator;
 import com.matsg.battlegrounds.game.mode.GameModeType;
-import com.matsg.battlegrounds.game.mode.zombies.PerkMachine;
-import com.matsg.battlegrounds.game.mode.zombies.Section;
 import com.matsg.battlegrounds.game.mode.zombies.Zombies;
+import com.matsg.battlegrounds.game.mode.zombies.ZombiesPerkMachine;
 import com.matsg.battlegrounds.item.factory.PerkFactory;
 import com.matsg.battlegrounds.item.perk.PerkEffectType;
 import com.matsg.battlegrounds.util.MessageHelper;
@@ -93,7 +93,7 @@ public class AddPerkMachine extends ComponentCommand {
 
         Perk perk = perkFactory.make(perkEffectType);
 
-        PerkMachine perkMachine = new PerkMachine(componentId, game, (Sign) blockState, perk, price, maxBuys);
+        PerkMachine perkMachine = new ZombiesPerkMachine(componentId, game, (Sign) blockState, perk, price, maxBuys);
         perkMachine.setSignLayout(plugin.getBattlegroundsConfig().getPerkSignLayout());
         perkMachine.updateSign();
 

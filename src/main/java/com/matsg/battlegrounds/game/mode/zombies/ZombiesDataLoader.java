@@ -1,7 +1,6 @@
 package com.matsg.battlegrounds.game.mode.zombies;
 
-import com.matsg.battlegrounds.api.game.Arena;
-import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.storage.BattlegroundsConfig;
 import com.matsg.battlegrounds.api.storage.CacheYaml;
@@ -50,7 +49,7 @@ public class ZombiesDataLoader {
                 String name = data.getString("arena." + arena.getName() + ".component." + componentId + ".name");
                 int price = configurationSection.getInt(componentId + ".price");
 
-                Section section = new Section(Integer.parseInt(componentId), name);
+                Section section = new ZombiesSection(Integer.parseInt(componentId), name);
                 section.setPrice(price);
 
                 zombies.getSectionContainer().add(section);
@@ -68,7 +67,7 @@ public class ZombiesDataLoader {
                 Material material = Material.valueOf(configurationSection.getString(componentId + ".material"));
                 Section section = zombies.getSection(configurationSection.getString(componentId + ".section"));
 
-                Door door = new Door(
+                ZombiesDoor door = new ZombiesDoor(
                         Integer.parseInt(componentId),
                         game,
                         section,
@@ -88,7 +87,7 @@ public class ZombiesDataLoader {
                 Section section = zombies.getSection(configurationSection.getString(componentId + ".section"));
                 Weapon weapon = itemFinder.findWeapon(configurationSection.getString(componentId + ".item"));
 
-                ItemChest itemChest = new ItemChest(
+                ItemChest itemChest = new ZombiesItemChest(
                         Integer.parseInt(componentId),
                         chest,
                         weapon,
@@ -104,7 +103,7 @@ public class ZombiesDataLoader {
                 Location location = data.getLocation("arena." + arena.getName() + ".component." + componentId + ".location");
                 Section section = zombies.getSection(configurationSection.getString(componentId + ".section"));
 
-                MobSpawn mobSpawn = new MobSpawn(Integer.parseInt(componentId), location);
+                MobSpawn mobSpawn = new ZombiesMobSpawn(Integer.parseInt(componentId), location);
 
                 section.getMobSpawnContainer().add(mobSpawn);
             }
@@ -115,7 +114,7 @@ public class ZombiesDataLoader {
                 int price = configurationSection.getInt(componentId + ".price");
                 Section section = zombies.getSection(configurationSection.getString(componentId + ".section"));
 
-                MysteryBox mysteryBox = new MysteryBox(
+                MysteryBox mysteryBox = new ZombiesMysteryBox(
                         Integer.parseInt(componentId),
                         game,
                         price,
@@ -133,7 +132,7 @@ public class ZombiesDataLoader {
                 PerkEffectType perkEffectType = PerkEffectType.valueOf(configurationSection.getString(componentId + ".effect"));
                 Section section = zombies.getSection(configurationSection.getString(componentId + ".section"));
 
-                PerkMachine perkMachine = new PerkMachine(
+                PerkMachine perkMachine = new ZombiesPerkMachine(
                         Integer.parseInt(componentId),
                         game,
                         sign,

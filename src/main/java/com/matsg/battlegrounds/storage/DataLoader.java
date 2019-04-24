@@ -1,28 +1,15 @@
 package com.matsg.battlegrounds.storage;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.storage.CacheYaml;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.game.GameMode;
 import com.matsg.battlegrounds.game.*;
 import com.matsg.battlegrounds.game.mode.GameModeFactory;
 import com.matsg.battlegrounds.game.mode.GameModeType;
-import com.matsg.battlegrounds.game.mode.zombies.ItemChest;
-import com.matsg.battlegrounds.game.mode.zombies.MobSpawn;
-import com.matsg.battlegrounds.game.mode.zombies.MysteryBox;
-import com.matsg.battlegrounds.game.mode.zombies.PerkMachine;
-import com.matsg.battlegrounds.game.mode.zombies.Section;
-import com.matsg.battlegrounds.item.ItemFinder;
-import com.matsg.battlegrounds.item.factory.PerkFactory;
-import com.matsg.battlegrounds.item.perk.PerkEffectType;
-import com.matsg.battlegrounds.util.Pair;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
-import org.bukkit.block.Chest;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -36,13 +23,9 @@ public class DataLoader {
 
     private final Battlegrounds plugin;
     private final Logger logger;
-    private GameModeFactory gameModeFactory;
-    private ItemFinder itemFinder;
 
     public DataLoader(Battlegrounds plugin) {
         this.plugin = plugin;
-        this.gameModeFactory = new GameModeFactory();
-        this.itemFinder = new ItemFinder(plugin);
         this.logger = plugin.getLogger();
 
         plugin.getGameManager().getGames().clear();

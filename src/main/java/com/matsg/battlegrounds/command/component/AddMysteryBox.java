@@ -4,13 +4,14 @@ import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.api.game.MysteryBox;
+import com.matsg.battlegrounds.api.game.Section;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.command.validate.GameModeUsageValidator;
 import com.matsg.battlegrounds.command.validate.SectionNameValidator;
 import com.matsg.battlegrounds.game.mode.GameModeType;
-import com.matsg.battlegrounds.game.mode.zombies.MysteryBox;
-import com.matsg.battlegrounds.game.mode.zombies.Section;
 import com.matsg.battlegrounds.game.mode.zombies.Zombies;
+import com.matsg.battlegrounds.game.mode.zombies.ZombiesMysteryBox;
 import com.matsg.battlegrounds.util.MessageHelper;
 import com.matsg.battlegrounds.util.Pair;
 import org.bukkit.Location;
@@ -86,7 +87,7 @@ public class AddMysteryBox extends ComponentCommand {
         // The location of the double chest always refers to the block with the lowest coordinates.
         Pair<Block, Block> blocks = new Pair<>(doubleChest.getLocation().getBlock(), max.getBlock());
 
-        MysteryBox mysteryBox = new MysteryBox(componentId, game, price, blocks);
+        MysteryBox mysteryBox = new ZombiesMysteryBox(componentId, game, price, blocks);
         mysteryBox.setActive(false);
 
         section.getMysteryBoxContainer().add(mysteryBox);

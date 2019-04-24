@@ -4,13 +4,14 @@ import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Selection;
 import com.matsg.battlegrounds.api.game.Arena;
+import com.matsg.battlegrounds.api.game.Door;
 import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.api.game.Section;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.command.validate.GameModeUsageValidator;
 import com.matsg.battlegrounds.command.validate.SectionNameValidator;
 import com.matsg.battlegrounds.game.mode.GameModeType;
-import com.matsg.battlegrounds.game.mode.zombies.Door;
-import com.matsg.battlegrounds.game.mode.zombies.Section;
+import com.matsg.battlegrounds.game.mode.zombies.ZombiesDoor;
 import com.matsg.battlegrounds.game.mode.zombies.Zombies;
 import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.block.Block;
@@ -44,7 +45,7 @@ public class AddDoor extends ComponentCommand {
 
         Block block = selection.getCenter().getBlock();
 
-        Door door = new Door(
+        Door door = new ZombiesDoor(
                 componentId,
                 game,
                 section,

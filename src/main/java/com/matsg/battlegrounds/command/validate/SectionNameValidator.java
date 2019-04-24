@@ -4,8 +4,8 @@ import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.api.game.Section;
 import com.matsg.battlegrounds.api.util.Placeholder;
-import com.matsg.battlegrounds.game.mode.zombies.Section;
 import com.matsg.battlegrounds.game.mode.zombies.Zombies;
 import com.matsg.battlegrounds.util.MessageHelper;
 

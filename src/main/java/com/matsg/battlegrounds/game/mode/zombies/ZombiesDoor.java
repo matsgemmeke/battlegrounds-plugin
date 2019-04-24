@@ -10,7 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
-public class Door implements ArenaComponent, Extent, Interactable, Lockable, Watchable {
+public class ZombiesDoor implements Door {
 
     private boolean locked;
     private Game game;
@@ -20,7 +20,7 @@ public class Door implements ArenaComponent, Extent, Interactable, Lockable, Wat
     private Section section;
     private World world;
 
-    public Door(
+    public ZombiesDoor(
             int id,
             Game game,
             Section section,

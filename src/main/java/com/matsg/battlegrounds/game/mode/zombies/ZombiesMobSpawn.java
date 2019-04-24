@@ -1,19 +1,18 @@
 package com.matsg.battlegrounds.game.mode.zombies;
 
 import com.matsg.battlegrounds.api.entity.MobType;
-import com.matsg.battlegrounds.api.game.ArenaComponent;
 import com.matsg.battlegrounds.api.game.Barricade;
-import com.matsg.battlegrounds.api.game.Lockable;
+import com.matsg.battlegrounds.api.game.MobSpawn;
 import org.bukkit.Location;
 
-public class MobSpawn implements ArenaComponent, Lockable {
+public class ZombiesMobSpawn implements MobSpawn {
 
     private Barricade barricade;
     private boolean locked;
     private int id;
     private Location location;
 
-    public MobSpawn(int id, Location location) {
+    public ZombiesMobSpawn(int id, Location location) {
         this.id = id;
         this.location = location;
         this.locked = true;

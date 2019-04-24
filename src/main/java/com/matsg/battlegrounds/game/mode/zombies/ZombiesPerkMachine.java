@@ -15,7 +15,7 @@ import org.bukkit.block.Sign;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PerkMachine implements ArenaComponent, Interactable, Lockable, Priceable {
+public class ZombiesPerkMachine implements PerkMachine {
 
     private static final int MAX_NUMBER_PERKS = 4;
 
@@ -28,7 +28,7 @@ public class PerkMachine implements ArenaComponent, Interactable, Lockable, Pric
     private Sign sign;
     private String[] signLayout;
 
-    public PerkMachine(int id, Game game, Sign sign, Perk perk, int price, int maxBuys) {
+    public ZombiesPerkMachine(int id, Game game, Sign sign, Perk perk, int price, int maxBuys) {
         this.id = id;
         this.game = game;
         this.sign = sign;

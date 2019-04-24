@@ -1,6 +1,6 @@
 package com.matsg.battlegrounds.api.entity;
 
-import com.matsg.battlegrounds.game.mode.zombies.MobSpawn;
+import com.matsg.battlegrounds.api.game.MobSpawn;
 import org.bukkit.Location;
 
 public interface Mob extends BaseEntity {

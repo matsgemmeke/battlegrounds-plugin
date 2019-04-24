@@ -4,11 +4,12 @@ import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.api.game.Section;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.command.validate.GameModeUsageValidator;
 import com.matsg.battlegrounds.game.mode.GameModeType;
-import com.matsg.battlegrounds.game.mode.zombies.Section;
 import com.matsg.battlegrounds.game.mode.zombies.Zombies;
+import com.matsg.battlegrounds.game.mode.zombies.ZombiesSection;
 import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.entity.Player;
 
@@ -57,7 +58,7 @@ public class AddSection extends ComponentCommand {
             return;
         }
 
-        Section section = new Section(componentId, args[3]);
+        Section section = new ZombiesSection(componentId, args[3]);
         section.setPrice(price);
 
         zombies.getSectionContainer().add(section);

@@ -9,7 +9,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.inventory.ItemStack;
 
-public class ItemChest implements ArenaComponent, Interactable, Lockable, Priceable, Watchable {
+public class ZombiesItemChest implements ItemChest {
 
     private boolean locked;
     private Chest chest;
@@ -18,7 +18,7 @@ public class ItemChest implements ArenaComponent, Interactable, Lockable, Pricea
     private String itemName;
     private TransactionItem item;
 
-    public ItemChest(int id, Chest chest, TransactionItem item, String itemName, ItemStack itemStack, int price) {
+    public ZombiesItemChest(int id, Chest chest, TransactionItem item, String itemName, ItemStack itemStack, int price) {
         this.id = id;
         this.chest = chest;
         this.item = item;

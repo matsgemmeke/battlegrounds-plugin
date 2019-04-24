@@ -4,7 +4,7 @@ import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.MobType;
 import com.matsg.battlegrounds.api.entity.Zombie;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.game.mode.zombies.MobSpawn;
+import com.matsg.battlegrounds.api.game.MobSpawn;
 import com.matsg.battlegrounds.nms.MobSpawnException;
 import com.matsg.battlegrounds.nms.ReflectionUtils;
 import net.minecraft.server.v1_12_R1.*;
@@ -22,7 +22,7 @@ public class CustomZombie extends EntityZombie implements Zombie {
     private boolean hostile;
     private Game game;
     private Mob entity;
-    private MobSpawn spawn;
+    private MobSpawn mobSpawn;
 
     public CustomZombie(Game game) {
         super(((CraftWorld) game.getArena().getWorld()).getHandle());
@@ -130,10 +130,10 @@ public class CustomZombie extends EntityZombie implements Zombie {
         getNavigation().a(navigation.a(location.getX(), location.getY(), location.getZ()), 1.0D);
     }
 
-    public void spawn(MobSpawn spawn) {
-        this.spawn = spawn;
+    public void spawn(MobSpawn mobSpawn) {
+        this.mobSpawn = mobSpawn;
 
-        Location location = spawn.getSpawnLocation(MobType.ZOMBIE);
+        Location location = mobSpawn.getSpawnLocation(MobType.ZOMBIE);
 
         setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 
@@ -145,7 +145,7 @@ public class CustomZombie extends EntityZombie implements Zombie {
         toCreature().getEquipment().setItemInMainHand(null);
 
         clearPathfinderGoals();
-        goalSelector.a(9, new PathfinderGoalEnterArena(game, this, spawn));
+        goalSelector.a(9, new PathfinderGoalEnterArena(game, this, mobSpawn));
     }
 
     public Creature toCreature() {

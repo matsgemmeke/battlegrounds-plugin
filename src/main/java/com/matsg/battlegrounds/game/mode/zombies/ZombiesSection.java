@@ -5,7 +5,7 @@ import com.matsg.battlegrounds.api.game.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Section implements ArenaComponent, ComponentWrapper, Lockable, Priceable {
+public class ZombiesSection implements Section {
 
     private boolean locked;
     private ComponentContainer<Door> doorContainer;
@@ -16,7 +16,7 @@ public class Section implements ArenaComponent, ComponentWrapper, Lockable, Pric
     private int id, price;
     private String name;
 
-    public Section(int id, String name) {
+    public ZombiesSection(int id, String name) {
         this.id = id;
         this.name = name;
         this.doorContainer = new DoorContainer();

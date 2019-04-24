@@ -4,14 +4,15 @@ import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.api.game.ItemChest;
+import com.matsg.battlegrounds.api.game.Section;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.command.validate.GameModeUsageValidator;
 import com.matsg.battlegrounds.command.validate.SectionNameValidator;
 import com.matsg.battlegrounds.game.mode.GameModeType;
-import com.matsg.battlegrounds.game.mode.zombies.ItemChest;
-import com.matsg.battlegrounds.game.mode.zombies.Section;
 import com.matsg.battlegrounds.game.mode.zombies.Zombies;
+import com.matsg.battlegrounds.game.mode.zombies.ZombiesItemChest;
 import com.matsg.battlegrounds.item.ItemFinder;
 import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.Material;
@@ -76,7 +77,7 @@ public class AddItemChest extends ComponentCommand {
             return;
         }
 
-        ItemChest itemChest = new ItemChest(
+        ItemChest itemChest = new ZombiesItemChest(
                 componentId,
                 (Chest) blockState,
                 weapon,

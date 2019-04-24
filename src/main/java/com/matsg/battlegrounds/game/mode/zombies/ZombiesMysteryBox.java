@@ -9,7 +9,7 @@ import com.matsg.battlegrounds.util.XMaterial;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Item;
 
-public class MysteryBox implements ArenaComponent, Interactable, Lockable, Priceable, Watchable {
+public class ZombiesMysteryBox implements MysteryBox {
 
     private boolean active, locked;
     private byte direction;
@@ -21,7 +21,7 @@ public class MysteryBox implements ArenaComponent, Interactable, Lockable, Price
     private Pair<Block, Block> blocks;
     private Weapon[] weapons;
 
-    public MysteryBox(int id, Game game, int price, Pair<Block, Block> blocks) {
+    public ZombiesMysteryBox(int id, Game game, int price, Pair<Block, Block> blocks) {
         this.id = id;
         this.game = game;
         this.price = price;
