@@ -1,0 +1,74 @@
+# The mob healthbar (custom name) configurations
+mob-healthbar:
+  # The end symbol of the monster health bar
+  end-symbol: "&8]"
+  # The health symbol of the current health of the monster on the health bar
+  health-symbol: "|"
+  # Amount of health symbols shown in the monster health bar
+  length: 20
+  # The first symbol of the monster health bar
+  start-symbol: "&8["
+
+# The layout of the perk machine signs
+perk-sign-layout:
+  line0: ""
+  line1: "&l%bg_perk%"
+  line2: "&4&lPrice: &0%bg_price%"
+  line3: ""
+
+# The starting round of game
+# Should be set to 1 at all times except for testing purposes
+starting-round: 1
+
+# Need a bigger challenge or an easy go? Change this value for more or less monster health
+wave-health-multiplier: 1.0
+
+# The relative amount of hellhounds spawning compared to a normal zombie wave
+wave-hellhound-amount: 0.5
+
+# The relative amount of health hellhounds have compared to normal zombies
+wave-hellhound-health: 0.75
+
+# The first round a hellhound wave can take place in
+wave-hellhound-min-round: 5
+
+# The maximum health monsters can receive in a round
+# Make sure to edit the max health attribute in the spigot.yml if you wish to go over the 2048.0 value
+wave-max-health: 2048.0
+
+# The maximum amount of monsters allowed in a game when x players are playing
+wave-max-monsters-1: 24
+wave-max-monsters-2: 32
+wave-max-monsters-3: 40
+wave-max-monsters-4: 48
+
+# The attack damage of the monsters
+wave-monster-attack-damage: 15.0
+
+# The size of the follow range of the monsters
+# Higher values will make monsters able to track players from longer distances but will put more strain on the CPU
+wave-monster-follow-range: 64.0
+
+# The X% amount more monsters will spawn when there are Y amount of players
+# Feel free to add more lines if you allow more than 4 players to play
+wave-monster-multiplier-1: 1
+wave-monster-multiplier-2: 1.5
+wave-monster-multiplier-3: 1.75
+wave-monster-multiplier-4: 2
+
+# The maximum distance between the location where a monster spawns and the nearest player
+wave-monster-spawn-distance: 24.0
+
+# Amount of time between the ending of a round and the new one in seconds
+wave-rest-period: 15
+
+# Monsters transform into these if they are the last one in a round. Prevents players wasting time
+wave-running-monsters: true
+wave-running-monsters-round: 4
+
+# Change this to make monsters spawn faster or slower
+wave-spawn-rate: 1.0
+
+# Variation of amount of monsters spawning in percentages
+# A value of 10 were to give a result of up to 10% more or less monsters spawning in a round
+wave-variation: 10

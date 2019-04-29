@@ -3,14 +3,6 @@ package com.matsg.battlegrounds.api.game;
 public interface Section extends ArenaComponent, ComponentWrapper, Lockable, Priceable {
 
     /**
-     * Gets all components that the section has. This collection is immutable. If a component needs to be added to the
-     * section then it must use its specific container.
-     *
-     * @return All container components.
-     */
-    Iterable<ArenaComponent> getComponents();
-
-    /**
      * Gets the door container of the section.
      *
      * @return The door container.

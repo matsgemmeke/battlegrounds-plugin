@@ -2,7 +2,6 @@ package com.matsg.battlegrounds.game.mode.ffa;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.storage.Yaml;
 import com.matsg.battlegrounds.api.event.GameEndEvent;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent.DeathCause;
 import com.matsg.battlegrounds.api.game.Game;
@@ -23,36 +22,27 @@ import com.matsg.battlegrounds.game.objective.ScoreObjective;
 import com.matsg.battlegrounds.game.objective.TimeObjective;
 import com.matsg.battlegrounds.util.EnumTitle;
 import org.bukkit.ChatColor;
-import org.bukkit.Color;
 
 import java.util.List;
 
 public class FreeForAll extends ArenaGameMode {
 
-    private boolean scoreboardEnabled;
-    private Color color;
-    private double minSpawnDistance;
-    private int killsToWin, lives, timeLimit;
-    private String[] endMessage;
+    private FFAConfig config;
 
-    public FreeForAll(Battlegrounds plugin, Game game, Yaml yaml) {
-        super(plugin, game, yaml);
-        this.color = getConfigColor();
-        this.killsToWin = yaml.getInt("kills-to-win");
-        this.lives = yaml.getInt("lives");
-        this.minSpawnDistance = yaml.getDouble("minimum-spawn-distance");
-        this.scoreboardEnabled = yaml.getBoolean("scoreboard.enabled");
-        this.timeLimit = yaml.getInt("time-limit");
+    public FreeForAll(Battlegrounds plugin, Game game, FFAConfig config) {
+        super(plugin, game);
+        this.config = config;
         
         setName(messageHelper.create(TranslationKey.FFA_NAME));
         setShortName(messageHelper.create(TranslationKey.FFA_SHORT));
 
-        List<String> endMessage = yaml.getStringList("end-message");
-        this.endMessage = endMessage.toArray(new String[endMessage.size()]);
-
         objectives.add(new EliminationObjective());
-        objectives.add(new ScoreObjective(killsToWin));
-        objectives.add(new TimeObjective(timeLimit));
+        objectives.add(new ScoreObjective(config.getKillsToWin()));
+        objectives.add(new TimeObjective(config.getTimeLimit()));
+    }
+
+    public FFAConfig getConfig() {
+        return config;
     }
 
     public GameModeType getType() {
@@ -63,23 +53,22 @@ public class FreeForAll extends ArenaGameMode {
         if (getTeam(gamePlayer) != null) {
             return;
         }
-        Team team = new BattleTeam(0, gamePlayer.getName(), color, ChatColor.WHITE);
+        Team team = new BattleTeam(0, gamePlayer.getName(), config.getArmorColor(), ChatColor.WHITE);
         team.addPlayer(gamePlayer);
         teams.add(team);
     }
 
-    private Color getConfigColor() {
-        String[] array = config.getString("armor-color").split(",");
-        return Color.fromRGB(Integer.parseInt(array[0]), Integer.parseInt(array[1]), Integer.parseInt(array[2]));
-    }
-
     public Spawn getRespawnPoint(GamePlayer gamePlayer) {
         GamePlayer nearestPlayer = game.getPlayerManager().getNearestPlayer(gamePlayer.getLocation());
-        return game.getArena().getRandomSpawn(nearestPlayer.getLocation(), minSpawnDistance);
+        return game.getArena().getRandomSpawn(nearestPlayer.getLocation(), config.getMinimumSpawnDistance());
     }
 
     public GameScoreboard getScoreboard() {
-        return scoreboardEnabled ? new FFAScoreboard(game, config) : null;
+        GameScoreboard scoreboard = new FFAScoreboard(game, config);
+        scoreboard.getWorlds().addAll(config.getScoreboardWorlds());
+        scoreboard.setLayout(config.getScoreboardLayout());
+
+        return config.isScoreboardEnabled() ? scoreboard : null;
     }
 
     public void onDeath(GamePlayer gamePlayer, DeathCause deathCause) {
@@ -129,9 +118,9 @@ public class FreeForAll extends ArenaGameMode {
     }
 
     public void start() {
-        super.onStart();
+        super.start();
         for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
-            gamePlayer.setLives(lives);
+            gamePlayer.setLives(config.getLives());
             EnumTitle.FFA_START.send(gamePlayer.getPlayer());
         }
     }
@@ -148,7 +137,7 @@ public class FreeForAll extends ArenaGameMode {
                 new Placeholder("bg_third_score", teams.size() > 2 && teams.get(2) != null ? teams.get(2).getPlayers().iterator().next().getKills() : 0)
         };
 
-        for (String message : endMessage) {
+        for (String message : config.getEndMessage()) {
             game.getPlayerManager().broadcastMessage(messageHelper.create(TranslationKey.PREFIX) + messageHelper.createSimple(message, placeholders));
         }
 

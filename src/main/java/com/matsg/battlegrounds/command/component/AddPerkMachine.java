@@ -94,7 +94,7 @@ public class AddPerkMachine extends ComponentCommand {
         Perk perk = perkFactory.make(perkEffectType);
 
         PerkMachine perkMachine = new ZombiesPerkMachine(componentId, game, (Sign) blockState, perk, price, maxBuys);
-        perkMachine.setSignLayout(plugin.getBattlegroundsConfig().getPerkSignLayout());
+        perkMachine.setSignLayout(zombies.getConfig().getPerkSignLayout());
         perkMachine.updateSign();
 
         section.getPerkMachineContainer().add(perkMachine);

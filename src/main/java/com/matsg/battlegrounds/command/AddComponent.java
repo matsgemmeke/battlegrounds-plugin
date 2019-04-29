@@ -4,6 +4,7 @@ import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.api.game.GameMode;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.command.component.*;
 import com.matsg.battlegrounds.command.validator.ArenaNameValidator;
@@ -78,15 +79,27 @@ public class AddComponent extends Command {
         // 3: Component type
         // 4: Section name if required
         // >4: Anything else
-        command.execute(context, getFirstAvailableId(arena), args);
+        command.execute(context, getFirstAvailableId(game), args);
     }
 
-    private int getFirstAvailableId(Arena arena) {
+    private int getFirstAvailableId(Game game) {
         int i = 1;
+
         while (true) {
-            if (arena.getComponent(i) == null) {
+            boolean available = false;
+
+            // Check if the gamemodes contain components with the same id.
+            for (GameMode gameMode : game.getConfiguration().getGameModes()) {
+                if (gameMode.getComponent(i) == null) {
+                    available = true;
+                }
+            }
+
+            // Check if the arena itself contains components with the same id.
+            if (available && game.getArena().getComponent(i) == null) {
                 return i;
             }
+
             i ++;
         }
     }

@@ -1,5 +1,10 @@
 package com.matsg.battlegrounds.api.game;
 
+import java.util.Collection;
+
+/**
+ * Represents an object that encapsulates instance types of {@link ArenaComponent}.
+ */
 public interface ComponentWrapper {
 
     /**
@@ -11,10 +16,25 @@ public interface ComponentWrapper {
     ArenaComponent getComponent(int id);
 
     /**
+     * Gets the amount of components in the wrapper instance.
+     *
+     * @return the component count
+     */
+    int getComponentCount();
+
+    /**
+     * Gets all components that the wrapper has. This collection is immutable. If a component needs to be added to the
+     * section then it must use its specific container.
+     *
+     * @return All container components.
+     */
+    Collection<ArenaComponent> getComponents();
+
+    /**
      * Removes a component from the wrapper instance.
      *
      * @param component The component to be removed.
-     * @return Whether the arena was removed.
+     * @return Whether the component was removed.
      */
     boolean removeComponent(ArenaComponent component);
 }

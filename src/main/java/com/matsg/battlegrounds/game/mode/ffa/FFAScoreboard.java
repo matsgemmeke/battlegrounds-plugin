@@ -7,14 +7,12 @@ import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.gui.scoreboard.AbstractScoreboard;
 import com.matsg.battlegrounds.gui.scoreboard.ScoreboardBuilder;
-import org.bukkit.World;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.NameTagVisibility;
 import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 public class FFAScoreboard extends AbstractScoreboard {
 
@@ -33,14 +31,6 @@ public class FFAScoreboard extends AbstractScoreboard {
             }
             worlds.add(plugin.getServer().getWorld(world));
         }
-    }
-
-    public String getScoreboardId() {
-        return scoreboardId;
-    }
-
-    public Set<World> getWorlds() {
-        return worlds;
     }
 
     public void addLayout(ScoreboardBuilder builder, Map<String, String> layout, Placeholder... placeholders) {

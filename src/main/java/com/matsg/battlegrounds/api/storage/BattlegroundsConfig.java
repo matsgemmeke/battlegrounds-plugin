@@ -51,14 +51,6 @@ public final class BattlegroundsConfig extends AbstractYaml {
         return map;
     }
 
-    public String[] getPerkSignLayout() {
-        List<String> list = new ArrayList<>();
-        for (String string : getConfigurationSection("game-perk-sign-layout").getKeys(false)) {
-            list.add(getString("game-perk-sign-layout." + string));
-        }
-        return list.toArray(new String[list.size()]);
-    }
-
     public String getWeaponDisplayName(String weaponType) {
         return getString("game-display-name." + weaponType);
     }

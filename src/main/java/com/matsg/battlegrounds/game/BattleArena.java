@@ -21,7 +21,7 @@ public class BattleArena implements Arena {
         this.maximumPoint = maximumPoint;
         this.minimumPoint = minimumPoint;
         this.active = false;
-        this.spawnContainer = new SpawnContainer();
+        this.spawnContainer = new BattleComponentContainer<>();
     }
 
     public Location getMaximumPoint() {
@@ -73,6 +73,16 @@ public class BattleArena implements Arena {
 
     public ArenaComponent getComponent(int id) {
         return spawnContainer.get(id);
+    }
+
+    public int getComponentCount() {
+        return spawnContainer.getAll().size();
+    }
+
+    public Collection<ArenaComponent> getComponents() {
+        List<ArenaComponent> list = new ArrayList<>();
+        list.addAll(spawnContainer.getAll());
+        return Collections.unmodifiableList(list);
     }
 
     public int getHeight() {

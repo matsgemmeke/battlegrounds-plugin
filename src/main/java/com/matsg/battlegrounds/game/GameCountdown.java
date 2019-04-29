@@ -25,12 +25,7 @@ public class GameCountdown extends BattleRunnable implements Countdown {
 
         game.setState(game.getState().next());
         game.updateSign();
-
-        for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
-            if (gamePlayer.getLoadout() == null) {
-                gamePlayer.getPlayer().openInventory(new SelectLoadoutView(plugin, game, gamePlayer).getInventory());
-            }
-        }
+        game.getGameMode().start();
 
         runTaskTimer(0, 20);
     }

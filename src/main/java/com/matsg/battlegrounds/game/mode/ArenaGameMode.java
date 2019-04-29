@@ -9,14 +9,29 @@ import com.matsg.battlegrounds.api.event.GameEndEvent;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.item.Firearm;
 import com.matsg.battlegrounds.api.item.Weapon;
-import com.matsg.battlegrounds.api.storage.Yaml;
+import com.matsg.battlegrounds.gui.SelectLoadoutView;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 
+import java.util.Collection;
+import java.util.Collections;
+
 public abstract class ArenaGameMode extends AbstractGameMode {
 
-    public ArenaGameMode(Battlegrounds plugin, Game game, Yaml config) {
-        super(plugin, game, config);
+    public ArenaGameMode(Battlegrounds plugin, Game game) {
+        super(plugin, game);
+    }
+
+    public ArenaComponent getComponent(int id) {
+        return null;
+    }
+
+    public Collection<ArenaComponent> getComponents() {
+        return Collections.EMPTY_SET;
+    }
+
+    public int getComponentCount() {
+        return 0;
     }
 
     protected TranslationKey getKillMessageKey(Hitbox hitbox) {
@@ -48,7 +63,13 @@ public abstract class ArenaGameMode extends AbstractGameMode {
         }
     }
 
-    public void onStart() {
+    public void start() {
+        for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
+            if (gamePlayer.getLoadout() == null) {
+                gamePlayer.getPlayer().openInventory(new SelectLoadoutView(plugin, game, gamePlayer).getInventory());
+            }
+        }
+
         for (Spawn spawn : game.getArena().getSpawnContainer().getAll()) {
             spawn.setGamePlayer(null);
         }

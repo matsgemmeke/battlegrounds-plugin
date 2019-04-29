@@ -1,8 +1,10 @@
 package com.matsg.battlegrounds.game.mode.zombies;
 
 import com.matsg.battlegrounds.api.game.*;
+import com.matsg.battlegrounds.game.BattleComponentContainer;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class ZombiesSection implements Section {
@@ -19,12 +21,12 @@ public class ZombiesSection implements Section {
     public ZombiesSection(int id, String name) {
         this.id = id;
         this.name = name;
-        this.doorContainer = new DoorContainer();
-        this.itemChestContainer = new ItemChestContainer();
+        this.doorContainer = new BattleComponentContainer<>();
+        this.itemChestContainer = new BattleComponentContainer<>();
         this.locked = true;
-        this.mobSpawnContainer = new MobSpawnContainer();
-        this.mysteryBoxContainer = new MysteryBoxContainer();
-        this.perkMachineContainer = new PerkMachineContainer();
+        this.mobSpawnContainer = new BattleComponentContainer<>();
+        this.mysteryBoxContainer = new BattleComponentContainer<>();
+        this.perkMachineContainer = new BattleComponentContainer<>();
     }
 
     public int getId() {
@@ -80,25 +82,21 @@ public class ZombiesSection implements Section {
         return null;
     }
 
-    public Iterable<ArenaComponent> getComponents() {
+    public int getComponentCount() {
+        int count = 0;
+        for (ComponentContainer container : getContainers()) {
+            count += container.getAll().size();
+        }
+        return count;
+    }
+
+    public Collection<ArenaComponent> getComponents() {
         List<ArenaComponent> list = new ArrayList<>();
-
-        for (Door door : doorContainer.getAll()) {
-            list.add(door);
-        }
-        for (ItemChest itemChest : itemChestContainer.getAll()) {
-            list.add(itemChest);
-        }
-        for (MobSpawn mobSpawn : mobSpawnContainer.getAll()) {
-            list.add(mobSpawn);
-        }
-        for (MysteryBox mysteryBox : mysteryBoxContainer.getAll()) {
-            list.add(mysteryBox);
-        }
-        for (PerkMachine perkMachine : perkMachineContainer.getAll()) {
-            list.add(perkMachine);
-        }
-
+        list.addAll(doorContainer.getAll());
+        list.addAll(itemChestContainer.getAll());
+        list.addAll(mobSpawnContainer.getAll());
+        list.addAll(mysteryBoxContainer.getAll());
+        list.addAll(perkMachineContainer.getAll());
         return list;
     }
 

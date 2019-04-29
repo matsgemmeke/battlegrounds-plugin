@@ -30,6 +30,14 @@ public abstract class AbstractScoreboard implements GameScoreboard {
         this.worlds = new HashSet<>();
     }
 
+    public Map<String, String> getLayout() {
+        return layout;
+    }
+
+    public void setLayout(Map<String, String> layout) {
+        this.layout = layout;
+    }
+
     public String getScoreboardId() {
         return scoreboardId;
     }

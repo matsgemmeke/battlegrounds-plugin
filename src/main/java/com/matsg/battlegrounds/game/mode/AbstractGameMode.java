@@ -17,17 +17,17 @@ public abstract class AbstractGameMode implements GameMode {
     protected Battlegrounds plugin;
     protected boolean active;
     protected Game game;
+    protected List<ArenaComponent> components;
     protected List<Objective> objectives;
     protected List<Team> teams;
     protected MessageHelper messageHelper;
     protected String name, shortName;
-    protected Yaml config;
 
-    public AbstractGameMode(Battlegrounds plugin, Game game, Yaml config) {
+    public AbstractGameMode(Battlegrounds plugin, Game game) {
         this.plugin = plugin;
         this.game = game;
-        this.config = config;
         this.active = false;
+        this.components = new ArrayList<>();
         this.messageHelper = new MessageHelper();
         this.objectives = new ArrayList<>();
         this.teams = new ArrayList<>();
@@ -106,4 +106,8 @@ public abstract class AbstractGameMode implements GameMode {
     public void onDisable() { }
 
     public void onEnable() { }
+
+    public boolean removeComponent(ArenaComponent component) {
+        return false;
+    }
 }

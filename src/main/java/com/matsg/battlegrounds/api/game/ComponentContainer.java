@@ -1,5 +1,12 @@
 package com.matsg.battlegrounds.api.game;
 
+import java.util.Collection;
+
+/**
+ * Represents an object that encapsulates a certain type of {@link ArenaComponent}.
+ *
+ * @param <T> the type of {@link ArenaComponent}
+ */
 public interface ComponentContainer<T extends ArenaComponent> {
 
     /**
@@ -24,7 +31,7 @@ public interface ComponentContainer<T extends ArenaComponent> {
      *
      * @return All container components.
      */
-    Iterable<T> getAll();
+    Collection<T> getAll();
 
     /**
      * Removes a component from the container.

@@ -2,19 +2,13 @@ package com.matsg.battlegrounds.game.mode.tdm;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.storage.Yaml;
+import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.event.GameEndEvent;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent.DeathCause;
-import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.GameScoreboard;
-import com.matsg.battlegrounds.api.game.Spawn;
-import com.matsg.battlegrounds.api.game.Team;
-import com.matsg.battlegrounds.api.game.Objective;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.Hitbox;
 import com.matsg.battlegrounds.api.util.Placeholder;
-import com.matsg.battlegrounds.game.BattleTeam;
 import com.matsg.battlegrounds.game.mode.ArenaGameMode;
 import com.matsg.battlegrounds.game.mode.GameModeType;
 import com.matsg.battlegrounds.game.mode.Result;
@@ -23,33 +17,26 @@ import com.matsg.battlegrounds.game.objective.ScoreObjective;
 import com.matsg.battlegrounds.game.objective.TimeObjective;
 import com.matsg.battlegrounds.util.EnumTitle;
 import org.bukkit.ChatColor;
-import org.bukkit.Color;
-import org.bukkit.configuration.ConfigurationSection;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class TeamDeathmatch extends ArenaGameMode {
 
-    private boolean scoreboardEnabled;
-    private double minSpawnDistance;
-    private int killsToWin, lives, timeLimit;
+    private TDMConfig config;
 
-    public TeamDeathmatch(Battlegrounds plugin, Game game, Yaml yaml) {
-        super(plugin, game, yaml);
-        this.killsToWin = yaml.getInt("kills-to-win");
-        this.lives = yaml.getInt("lives");
-        this.minSpawnDistance = yaml.getDouble("minimum-spawn-distance");
-        this.scoreboardEnabled = yaml.getBoolean("scoreboard.enabled");
-        this.teams.addAll(getConfigTeams());
-        this.timeLimit = yaml.getInt("time-limit");
+    public TeamDeathmatch(Battlegrounds plugin, Game game, TDMConfig config) {
+        super(plugin, game);
+        this.config = config;
+        this.teams.addAll(config.getTeams());
         
         setName(messageHelper.create(TranslationKey.TDM_NAME));
         setShortName(messageHelper.create(TranslationKey.TDM_SHORT));
 
         objectives.add(new EliminationObjective());
-        objectives.add(new ScoreObjective(killsToWin));
-        objectives.add(new TimeObjective(timeLimit));
+        objectives.add(new ScoreObjective(config.getKillsToWin()));
+        objectives.add(new TimeObjective(config.getTimeLimit()));
+    }
+
+    public TDMConfig getConfig() {
+        return config;
     }
 
     public GameModeType getType() {
@@ -62,36 +49,16 @@ public class TeamDeathmatch extends ArenaGameMode {
         gamePlayer.sendMessage(messageHelper.create(TranslationKey.TEAM_ASSIGNMENT, new Placeholder("bg_team", team.getChatColor() + team.getName())));
     }
 
-    private List<Team> getConfigTeams() {
-        List<Team> list = new ArrayList<>();
-        for (String teamId : config.getConfigurationSection("teams").getKeys(false)) {
-            ConfigurationSection section = config.getConfigurationSection("teams." + teamId);
-            String[] array = section.getString("armor-color").split(",");
-            Color color = Color.fromRGB(Integer.parseInt(array[0]), Integer.parseInt(array[1]), Integer.parseInt(array[2]));
-
-            list.add(new BattleTeam(Integer.parseInt(teamId), section.getString("name"), color, ChatColor.getByChar(section.getString("chatcolor").charAt(0))));
-        }
-        return list;
-    }
-
-    private Team getEmptiestTeam() {
-        int size = Integer.MAX_VALUE;
-        Team emptiestTeam = null;
-        for (Team team : teams) {
-            if (team.getTeamSize() < size) {
-                emptiestTeam = team;
-                size = team.getTeamSize();
-            }
-        }
-        return emptiestTeam;
-    }
-
     public Spawn getRespawnPoint(GamePlayer gamePlayer) {
         return game.getArena().getRandomSpawn(gamePlayer.getTeam().getId());
     }
 
     public GameScoreboard getScoreboard() {
-        return scoreboardEnabled ? new TDMScoreboard(game, config) : null;
+        GameScoreboard scoreboard = new TDMScoreboard(game, config);
+        scoreboard.getWorlds().addAll(config.getScoreboardWorlds());
+        scoreboard.setLayout(config.getScoreboardLayout());
+
+        return config.isScoreboardEnabled() ? scoreboard : null;
     }
 
     public void onDeath(GamePlayer gamePlayer, DeathCause deathCause) {
@@ -140,8 +107,9 @@ public class TeamDeathmatch extends ArenaGameMode {
     }
 
     public void start() {
+        super.start();
         for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
-            gamePlayer.setLives(lives);
+            gamePlayer.setLives(config.getLives());
             EnumTitle.TDM_START.send(gamePlayer.getPlayer());
         }
     }
@@ -159,6 +127,18 @@ public class TeamDeathmatch extends ArenaGameMode {
         }
 
         teams.clear();
-        teams = getConfigTeams();
+        teams = config.getTeams();
+    }
+
+    private Team getEmptiestTeam() {
+        int size = Integer.MAX_VALUE;
+        Team emptiestTeam = null;
+        for (Team team : teams) {
+            if (team.getTeamSize() < size) {
+                emptiestTeam = team;
+                size = team.getTeamSize();
+            }
+        }
+        return emptiestTeam;
     }
 }

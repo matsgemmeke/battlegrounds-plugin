@@ -18,17 +18,15 @@ import org.bukkit.configuration.ConfigurationSection;
 public class ZombiesDataLoader {
 
     private Arena arena;
-    private BattlegroundsConfig config;
     private Game game;
     private ItemFinder itemFinder;
     private PerkFactory perkFactory;
     private Zombies zombies;
 
-    public ZombiesDataLoader(Zombies zombies, Game game, Arena arena, BattlegroundsConfig config, ItemFinder itemFinder) {
+    public ZombiesDataLoader(Zombies zombies, Game game, Arena arena, ItemFinder itemFinder) {
         this.zombies = zombies;
         this.game = game;
         this.arena = arena;
-        this.config = config;
         this.itemFinder = itemFinder;
         this.perkFactory = new PerkFactory();
     }
@@ -140,7 +138,7 @@ public class ZombiesDataLoader {
                         price,
                         maxBuys
                 );
-                perkMachine.setSignLayout(config.getPerkSignLayout());
+                perkMachine.setSignLayout(zombies.getConfig().getPerkSignLayout());
                 perkMachine.updateSign();
 
                 section.getPerkMachineContainer().add(perkMachine);
