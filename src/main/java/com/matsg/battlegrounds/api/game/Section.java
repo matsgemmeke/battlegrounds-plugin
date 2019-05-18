@@ -43,4 +43,11 @@ public interface Section extends ArenaComponent, ComponentWrapper, Lockable, Pri
      * @return The perk machine container.
      */
     ComponentContainer<PerkMachine> getPerkMachineContainer();
+
+    /**
+     * Gets whether the section is the first one unlocked.
+     *
+     * @return whether the section is unlocked by default
+     */
+    boolean isUnlockedByDefault();
 }

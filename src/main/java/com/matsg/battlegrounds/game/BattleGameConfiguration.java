@@ -13,10 +13,9 @@ import java.util.List;
 public class BattleGameConfiguration implements GameConfiguration {
 
     private GameMode[] gameModes;
-    private int gameCountdown, lobbyCountdown, maxPlayers, minPlayers;
+    private int lobbyCountdown, maxPlayers, minPlayers;
 
-    public BattleGameConfiguration(GameMode[] gameModes, int maxPlayers, int minPlayers, int gameCountdown, int lobbyCountdown) {
-        this.gameCountdown = gameCountdown;
+    public BattleGameConfiguration(GameMode[] gameModes, int maxPlayers, int minPlayers, int lobbyCountdown) {
         this.gameModes = gameModes;
         this.lobbyCountdown = lobbyCountdown;
         this.maxPlayers = maxPlayers;
@@ -33,13 +32,8 @@ public class BattleGameConfiguration implements GameConfiguration {
                 },
                 12,
                 2,
-                15,
                 60
         );
-    }
-
-    public int getGameCountdown() {
-        return gameCountdown;
     }
 
     public GameMode[] getGameModes() {
@@ -67,7 +61,6 @@ public class BattleGameConfiguration implements GameConfiguration {
     }
     
     public void saveConfiguration(Yaml yaml) {
-        yaml.set("config.gamecountdown", gameCountdown);
         yaml.set("config.gamemodes", getGameModeNames());
         yaml.set("config.lobbycountdown", lobbyCountdown);
         yaml.set("config.maxplayers", maxPlayers);

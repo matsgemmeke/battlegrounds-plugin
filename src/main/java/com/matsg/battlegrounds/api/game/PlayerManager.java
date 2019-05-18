@@ -158,13 +158,6 @@ public interface PlayerManager {
     void givePointsAll(int points);
 
     /**
-     * Equips the player with the default items.
-     *
-     * @param gamePlayer The player to prepare
-     */
-    void preparePlayer(GamePlayer gamePlayer);
-
-    /**
      * Removes a player from the game.
      *
      * @param gamePlayer The player to remove

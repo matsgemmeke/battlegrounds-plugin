@@ -11,7 +11,8 @@ public enum EnumTitle {
     OBJECTIVE_ELIMINATION("title-objective-elimination"),
     OBJECTIVE_SCORE("title-objective-score"),
     OBJECTIVE_TIME("title-objective-time"),
-    TDM_START("title-tdm-start");
+    TDM_START("title-tdm-start"),
+    ZOMBIES_START("title-zombies-start");
 
     private MessageHelper messageHelper;
     private String path;

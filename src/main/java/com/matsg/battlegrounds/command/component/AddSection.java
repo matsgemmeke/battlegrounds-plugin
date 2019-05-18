@@ -31,12 +31,12 @@ public class AddSection extends ComponentCommand {
 
         Zombies zombies = game.getGameMode(Zombies.class);
 
-        if (args.length == 3) {
+        if (args.length == 4) {
             player.sendMessage(messageHelper.create(TranslationKey.SPECIFY_SECTION_NAME));
             return;
         }
 
-        if (zombies.getSection(args[3]) != null) {
+        if (zombies.getSection(args[4]) != null) {
             player.sendMessage(messageHelper.create(TranslationKey.SECTION_EXISTS,
                     new Placeholder("bg_arena", arena.getName()),
                     new Placeholder("bg_section", args[3])
@@ -44,7 +44,7 @@ public class AddSection extends ComponentCommand {
             return;
         }
 
-        if (args.length == 4) {
+        if (args.length == 5) {
             player.sendMessage(messageHelper.create(TranslationKey.SPECIFY_SECTION_PRICE));
             return;
         }
@@ -52,20 +52,22 @@ public class AddSection extends ComponentCommand {
         int price;
 
         try {
-            price = Integer.parseInt(args[4]);
+            price = Integer.parseInt(args[5]);
         } catch (Exception e) {
-            player.sendMessage(messageHelper.create(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[4])));
+            player.sendMessage(messageHelper.create(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[5])));
             return;
         }
 
-        Section section = new ZombiesSection(componentId, args[3]);
+        Section section = new ZombiesSection(componentId, args[4], zombies.getSectionContainer().getAll().size() <= 0);
         section.setPrice(price);
 
         zombies.getSectionContainer().add(section);
 
         game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".name", section.getName());
+        game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".name", section.getName());
         game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".price", price);
         game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".type", "section");
+        game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".unlocked", section.isUnlockedByDefault());
         game.getDataFile().save();
 
         player.sendMessage(messageHelper.create(TranslationKey.SECTION_ADD,

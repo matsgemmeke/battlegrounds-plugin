@@ -229,19 +229,20 @@ public class BattleGame implements Game {
 
     public void startCountdown() {
         for (GamePlayer gamePlayer : playerManager.getPlayers()) {
-            playerManager.preparePlayer(gamePlayer);
+            gameMode.preparePlayer(gamePlayer);
         }
-        countdown = new GameCountdown(this, configuration.getGameCountdown());
         timeControl = new BattleTimeControl(this);
         gameMode.spawnPlayers(playerManager.getPlayers().toArray(new GamePlayer[playerManager.getPlayers().size()]));
+        gameMode.startCountdown();
         updateScoreboard();
     }
 
     public void startGame() {
         countdown = null;
-        timeControl.start();
         setState(state.next());
         updateSign();
+        gameMode.start();
+        timeControl.start();
         callEvent(new GameStartEvent(this));
     }
 

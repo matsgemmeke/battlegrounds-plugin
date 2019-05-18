@@ -10,6 +10,7 @@ public enum TranslationKey {
     ARENA_REMOVE("setup-arena-remove", false),
     ARMOR_HELMET("item-armor-helmet", false),
     ARMOR_VEST("item-armor-vest", false),
+    BARRICADE_TOOL("item-barricade-tool", false),
     CBT_NAME("gamemode-cbt-name", false),
     CBT_SHORT("gamemode-cbt-short", false),
     CHANGE_LOADOUT("item-change-loadout", false),

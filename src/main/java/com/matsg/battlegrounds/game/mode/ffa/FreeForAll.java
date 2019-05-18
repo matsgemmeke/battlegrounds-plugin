@@ -15,6 +15,7 @@ import com.matsg.battlegrounds.api.entity.Hitbox;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.game.BattleTeam;
 import com.matsg.battlegrounds.game.mode.ArenaGameMode;
+import com.matsg.battlegrounds.game.mode.GameModeCountdown;
 import com.matsg.battlegrounds.game.mode.GameModeType;
 import com.matsg.battlegrounds.game.mode.Result;
 import com.matsg.battlegrounds.game.objective.EliminationObjective;
@@ -36,9 +37,9 @@ public class FreeForAll extends ArenaGameMode {
         setName(messageHelper.create(TranslationKey.FFA_NAME));
         setShortName(messageHelper.create(TranslationKey.FFA_SHORT));
 
-        objectives.add(new EliminationObjective());
-        objectives.add(new ScoreObjective(config.getKillsToWin()));
-        objectives.add(new TimeObjective(config.getTimeLimit()));
+        objectives.add(new EliminationObjective(game, 2));
+        objectives.add(new ScoreObjective(game, config.getKillsToWin()));
+        objectives.add(new TimeObjective(game, config.getTimeLimit()));
     }
 
     public FFAConfig getConfig() {
@@ -125,16 +126,23 @@ public class FreeForAll extends ArenaGameMode {
         }
     }
 
+    public void startCountdown() {
+        GameModeCountdown countdown = new GameModeCountdown(game, config.getCountdownLength());
+        countdown.runTaskTimer(0, 20);
+
+        game.setCountdown(countdown);
+    }
+
     public void stop() {
         List<Team> teams = getSortedTeams();
         Objective objective = getAchievedObjective();
         Placeholder[] placeholders = new Placeholder[] {
-                new Placeholder("bg_first", teams.size() > 0 && teams.get(0) != null ? teams.get(0).getPlayers().iterator().next().getName() : "---"),
-                new Placeholder("bg_first_score", teams.size() > 0 && teams.get(0) != null ? teams.get(0).getPlayers().iterator().next().getKills() : 0),
-                new Placeholder("bg_second", teams.size() > 1 && teams.get(1) != null ? teams.get(1).getPlayers().iterator().next().getName() : "---"),
-                new Placeholder("bg_second_score", teams.size() > 1 && teams.get(1) != null ? teams.get(1).getPlayers().iterator().next().getKills() : 0),
-                new Placeholder("bg_third", teams.size() > 2 && teams.get(2) != null ? teams.get(2).getPlayers().iterator().next().getName() : "---"),
-                new Placeholder("bg_third_score", teams.size() > 2 && teams.get(2) != null ? teams.get(2).getPlayers().iterator().next().getKills() : 0)
+                new Placeholder("bg_first", teams.size() > 0 && teams.get(0) != null ? teams.get(0).getPlayers()[0].getName() : "---"),
+                new Placeholder("bg_first_score", teams.size() > 0 && teams.get(0) != null ? teams.get(0).getPlayers()[0].getKills() : 0),
+                new Placeholder("bg_second", teams.size() > 1 && teams.get(1) != null ? teams.get(1).getPlayers()[0].getName() : "---"),
+                new Placeholder("bg_second_score", teams.size() > 1 && teams.get(1) != null ? teams.get(1).getPlayers()[0].getKills() : 0),
+                new Placeholder("bg_third", teams.size() > 2 && teams.get(2) != null ? teams.get(2).getPlayers()[0].getName() : "---"),
+                new Placeholder("bg_third_score", teams.size() > 2 && teams.get(2) != null ? teams.get(2).getPlayers()[0].getKills() : 0)
         };
 
         for (String message : config.getEndMessage()) {

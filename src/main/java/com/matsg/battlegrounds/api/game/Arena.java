@@ -34,14 +34,16 @@ public interface Arena extends ComponentWrapper, Extent {
     void setActive(boolean active);
 
     /**
-     * Gets a random entry of the spawn collection.
+     * Gets a random entry of the spawn collection which is not occupied by another
+     * player.
      *
      * @return A random spawn entry
      */
     Spawn getRandomSpawn();
 
     /**
-     * Gets a random entry of the spawn collection with a minimum distance from a location.
+     * Gets a random entry of the spawn collection which is not occupied by another
+     * player with a minimum distance from a location.
      *
      * @param location The location to calculate the distance from.
      * @param distance The minimum distance between the spawn and given location.
@@ -58,7 +60,8 @@ public interface Arena extends ComponentWrapper, Extent {
     Spawn getRandomSpawn(int teamId);
 
     /**
-     * Gets a random entry of the spawn collection owned by a specific team with a minimum distance from a location.
+     * Gets a random entry of the spawn collection owned by a specific team with a
+     * minimum distance from a location.
      *
      * @param teamId The id of the team to find a random spawn of.
      * @param location The location to calculate the distance from.

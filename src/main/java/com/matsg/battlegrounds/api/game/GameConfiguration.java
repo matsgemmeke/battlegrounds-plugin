@@ -4,8 +4,6 @@ import com.matsg.battlegrounds.api.storage.Yaml;
 
 public interface GameConfiguration {
 
-    int getGameCountdown();
-
     GameMode[] getGameModes();
 
     int getLobbyCountdown();

@@ -9,7 +9,7 @@ import java.util.List;
 
 public class ZombiesSection implements Section {
 
-    private boolean locked;
+    private boolean locked, unlockedByDefault;
     private ComponentContainer<Door> doorContainer;
     private ComponentContainer<ItemChest> itemChestContainer;
     private ComponentContainer<MobSpawn> mobSpawnContainer;
@@ -18,9 +18,10 @@ public class ZombiesSection implements Section {
     private int id, price;
     private String name;
 
-    public ZombiesSection(int id, String name) {
+    public ZombiesSection(int id, String name, boolean unlockedByDefault) {
         this.id = id;
         this.name = name;
+        this.unlockedByDefault = unlockedByDefault;
         this.doorContainer = new BattleComponentContainer<>();
         this.itemChestContainer = new BattleComponentContainer<>();
         this.locked = true;
@@ -71,6 +72,10 @@ public class ZombiesSection implements Section {
 
     public void setLocked(boolean locked) {
         this.locked = locked;
+    }
+
+    public boolean isUnlockedByDefault() {
+        return unlockedByDefault;
     }
 
     public ArenaComponent getComponent(int id) {

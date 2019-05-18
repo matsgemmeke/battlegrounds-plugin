@@ -85,6 +85,7 @@ gui-transaction-title: "Buy item (Slot %bg_slot%)"
 
 item-armor-helmet: "Kevlar helmet"
 item-armor-vest: "Ballistic vest"
+item-barricade-tool: "Barricade tool"
 item-change-loadout: "Change loadout"
 item-gun-part-internal: "Internal"
 item-gun-part-lower-rail: "Lower rail"
@@ -157,6 +158,7 @@ title-objective-elimination: "%bg_result%,&fAll hostiles were defeated,20,160,20
 title-objective-score: "%bg_result%,&fScore limit reached,20,160,20"
 title-objective-time: "%bg_result%,&fTime limit reached,20,160,20"
 title-tdm-start: "&fTeam Deathmatch,&6Eliminate enemy players,10,30,10"
+title-zombies-start: "&4&lINCOMING,&7Zombie waves,20,100,20"
 
 util-custom-loadout-locked: "&cYou have to be level %bg_level% or above to create custom loadouts."
 

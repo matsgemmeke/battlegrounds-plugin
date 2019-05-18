@@ -179,7 +179,9 @@ public class SQLPlayerRecord implements StoredPlayer {
                     plugin.getEquipmentFactory().make(rs.getString("equipment")),
                     plugin.getMeleeWeaponFactory().make(rs.getString("melee_weapon")),
                     primaryAttachments.toArray(new Attachment[primaryAttachments.size()]),
-                    secondaryAttachments.toArray(new Attachment[secondaryAttachments.size()])
+                    secondaryAttachments.toArray(new Attachment[secondaryAttachments.size()]),
+                    null,
+                    null
             );
 
             rs.close();

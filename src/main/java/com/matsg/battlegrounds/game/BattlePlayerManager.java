@@ -6,16 +6,12 @@ import com.matsg.battlegrounds.api.storage.LevelConfig;
 import com.matsg.battlegrounds.api.storage.StatisticContext;
 import com.matsg.battlegrounds.api.storage.StoredPlayer;
 import com.matsg.battlegrounds.api.game.*;
-import com.matsg.battlegrounds.api.item.Item;
-import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.storage.PlayerStorage;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.gui.scoreboard.LobbyScoreboard;
-import com.matsg.battlegrounds.item.ItemStackBuilder;
-import com.matsg.battlegrounds.item.SelectLoadout;
 import com.matsg.battlegrounds.entity.BattleGamePlayer;
 import com.matsg.battlegrounds.entity.BattleSavedInventory;
 import com.matsg.battlegrounds.util.ActionBar;
@@ -24,8 +20,6 @@ import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -253,35 +247,6 @@ public class BattlePlayerManager implements PlayerManager {
         for (GamePlayer gamePlayer : players) {
             givePoints(gamePlayer, points);
         }
-    }
-
-    public void preparePlayer(GamePlayer gamePlayer) {
-        Player player = gamePlayer.getPlayer();
-        player.setFoodLevel(20);
-        player.setGameMode(org.bukkit.GameMode.SURVIVAL);
-        player.setHealth(20.0);
-        player.setSaturation((float) 10);
-        player.getInventory().setArmorContents(new ItemStack[] {
-                null,
-                null,
-                new ItemStackBuilder(Material.LEATHER_CHESTPLATE)
-                        .addItemFlags(ItemFlag.values())
-                        .setColor(game.getGameMode().getTeam(gamePlayer).getColor())
-                        .setDisplayName(ChatColor.WHITE + messageHelper.create(TranslationKey.ARMOR_VEST))
-                        .setUnbreakable(true)
-                        .build(),
-                new ItemStackBuilder(Material.LEATHER_HELMET)
-                        .addItemFlags(ItemFlag.values())
-                        .setColor(game.getGameMode().getTeam(gamePlayer).getColor())
-                        .setDisplayName(ChatColor.WHITE + messageHelper.create(TranslationKey.ARMOR_HELMET))
-                        .setUnbreakable(true)
-                        .build()
-        });
-
-        Item selectLoadout = new SelectLoadout(game);
-        game.getItemRegistry().addItem(selectLoadout);
-        gamePlayer.getHeldItems().add(selectLoadout);
-        player.getInventory().setItem(ItemSlot.MISCELLANEOUS.getSlot(), selectLoadout.getItemStack());
     }
 
     public boolean removePlayer(GamePlayer gamePlayer) {

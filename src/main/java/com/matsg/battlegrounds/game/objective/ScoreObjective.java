@@ -7,11 +7,13 @@ import com.matsg.battlegrounds.util.EnumTitle;
 
 public class ScoreObjective implements Objective {
 
+    private Game game;
     private int goal;
     private String id;
     private Title title;
 
-    public ScoreObjective(int goal) {
+    public ScoreObjective(Game game, int goal) {
+        this.game = game;
         this.goal = goal;
         this.id = "Score";
         this.title = EnumTitle.OBJECTIVE_SCORE.getTitle();
@@ -25,7 +27,7 @@ public class ScoreObjective implements Objective {
         return title;
     }
 
-    public boolean isAchieved(Game game) {
+    public boolean isAchieved() {
         return game.getGameMode().getTopTeam().getScore() >= goal;
     }
 }

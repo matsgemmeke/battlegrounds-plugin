@@ -10,6 +10,7 @@ import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.Hitbox;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.game.mode.ArenaGameMode;
+import com.matsg.battlegrounds.game.mode.GameModeCountdown;
 import com.matsg.battlegrounds.game.mode.GameModeType;
 import com.matsg.battlegrounds.game.mode.Result;
 import com.matsg.battlegrounds.game.objective.EliminationObjective;
@@ -30,9 +31,9 @@ public class TeamDeathmatch extends ArenaGameMode {
         setName(messageHelper.create(TranslationKey.TDM_NAME));
         setShortName(messageHelper.create(TranslationKey.TDM_SHORT));
 
-        objectives.add(new EliminationObjective());
-        objectives.add(new ScoreObjective(config.getKillsToWin()));
-        objectives.add(new TimeObjective(config.getTimeLimit()));
+        objectives.add(new EliminationObjective(game, 2));
+        objectives.add(new ScoreObjective(game, config.getKillsToWin()));
+        objectives.add(new TimeObjective(game, config.getTimeLimit()));
     }
 
     public TDMConfig getConfig() {
@@ -112,6 +113,13 @@ public class TeamDeathmatch extends ArenaGameMode {
             gamePlayer.setLives(config.getLives());
             EnumTitle.TDM_START.send(gamePlayer.getPlayer());
         }
+    }
+
+    public void startCountdown() {
+        GameModeCountdown countdown = new GameModeCountdown(game, config.getCountdownLength());
+        countdown.runTaskTimer(0, 20);
+
+        game.setCountdown(countdown);
     }
 
     public void stop() {

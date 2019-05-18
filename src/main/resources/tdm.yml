@@ -1,15 +1,18 @@
+# The countdown length in seconds
+tdm-countdown-length: 15
+
 # Amount of kills needed to win a game
-kills-to-win: 75
+tdm-kills-to-win: 75
 
 # The amount of lives players have
-lives: 100
+tdm-lives: 100
 
 # The mininum distance between a spawn point and the nearest foe upon respawning
 # Warning: setting this value too high may cause a server crash!
-minimum-distance-spawn: 10.0
+tdm-minimum-distance-spawn: 10.0
 
 # Scoreboard configurations
-scoreboard:
+tdm-scoreboard:
   # Set to false to disable scoreboards
   enabled: true
   # The layout of the game scoreboards
@@ -25,7 +28,7 @@ scoreboard:
   worlds: "*"
 
 # Team settings
-teams:
+tdm-teams:
   '1':
     armor-color: 255,0,0
     chatcolor: 'c'
@@ -36,4 +39,4 @@ teams:
     name: Team Blue
 
 # The length of a game in seconds
-time-limit: 600
+tdm-time-limit: 600

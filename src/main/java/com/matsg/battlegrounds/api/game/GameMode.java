@@ -60,11 +60,20 @@ public interface GameMode extends ComponentWrapper {
      */
     void loadData(Arena arena);
 
+    /**
+     * Prepares the player for the gamemode.
+     *
+     * @param gamePlayer the player to prepare
+     */
+    void preparePlayer(GamePlayer gamePlayer);
+
     void removePlayer(GamePlayer gamePlayer);
 
     void spawnPlayers(GamePlayer... players);
 
     void start();
+
+    void startCountdown();
 
     void stop();
 

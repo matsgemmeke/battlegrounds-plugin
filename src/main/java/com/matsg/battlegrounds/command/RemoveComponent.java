@@ -5,6 +5,7 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.ArenaComponent;
 import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.api.game.GameMode;
 import com.matsg.battlegrounds.api.util.Placeholder;
 import com.matsg.battlegrounds.command.validator.ArenaNameValidator;
 import com.matsg.battlegrounds.command.validator.GameIdValidator;
@@ -42,9 +43,9 @@ public class RemoveComponent extends Command {
             return;
         }
 
-        ArenaComponent component = arena.getComponent(id);
+        ArenaComponent component;
 
-        if (component == null) {
+        if ((component = arena.getComponent(id)) == null && (component = game.getGameMode().getComponent(id)) == null) {
             sender.sendMessage(createMessage(TranslationKey.COMPONENT_NOT_EXISTS,
                     new Placeholder("bg_arena", arena.getName()),
                     new Placeholder("bg_component_id", id)
@@ -53,6 +54,10 @@ public class RemoveComponent extends Command {
         }
 
         arena.removeComponent(component);
+
+        for (GameMode gameMode : game.getConfiguration().getGameModes()) {
+            gameMode.removeComponent(component);
+        }
 
         game.getDataFile().set("arena." + arena.getName() + ".component." + id, null);
         game.getDataFile().save();

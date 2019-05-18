@@ -16,15 +16,20 @@ public class TDMConfig extends BattleCacheYaml {
 
     private boolean scoreboardEnabled;
     private double minimumSpawnDistance;
-    private int killsToWin, lives, timeLimit;
+    private int countdownLength, killsToWin, lives, timeLimit;
 
     public TDMConfig(Battlegrounds plugin, String path) throws IOException {
         super(plugin, path, "tdm.yml");
-        this.killsToWin = getInt("kills-to-win");
-        this.lives = getInt("lives");
-        this.minimumSpawnDistance = getDouble("minimum-distance-spawn");
-        this.scoreboardEnabled = getBoolean("scoreboard.enabled");
-        this.timeLimit = getInt("time-limit");
+        this.countdownLength = getInt("tdm-countdown-length");
+        this.killsToWin = getInt("tdm-kills-to-win");
+        this.lives = getInt("tdm-lives");
+        this.minimumSpawnDistance = getDouble("tdm-minimum-distance-spawn");
+        this.scoreboardEnabled = getBoolean("tdm-scoreboard.enabled");
+        this.timeLimit = getInt("tdm-time-limit");
+    }
+
+    public int getCountdownLength() {
+        return countdownLength;
     }
 
     public int getKillsToWin() {
@@ -49,14 +54,14 @@ public class TDMConfig extends BattleCacheYaml {
 
     public Map<String, String> getScoreboardLayout() {
         Map<String, String> map = new HashMap<>();
-        for (String string : getConfigurationSection("scoreboard.layout").getKeys(false)) {
-            map.put(string, getString("scoreboard.layout." + string));
+        for (String string : getConfigurationSection("tdm-scoreboard.layout").getKeys(false)) {
+            map.put(string, getString("tdm-scoreboard.layout." + string));
         }
         return map;
     }
 
     public List<World> getScoreboardWorlds() {
-        List<String> list = Arrays.asList(getString("scoreboard.worlds").split(","));
+        List<String> list = Arrays.asList(getString("tdm-scoreboard.worlds").split(","));
         List<World> worlds = new ArrayList<>();
 
         if (list.contains("*")) {
@@ -73,9 +78,9 @@ public class TDMConfig extends BattleCacheYaml {
     public List<Team> getTeams() {
         List<Team> list = new ArrayList<>();
 
-        for (String teamId : config.getConfigurationSection("teams").getKeys(false)) {
-            ConfigurationSection section = config.getConfigurationSection("teams." + teamId);
-            String[] array = section.getString("armor-color").split(",");
+        for (String teamId : config.getConfigurationSection("tdm-teams").getKeys(false)) {
+            ConfigurationSection section = config.getConfigurationSection("tdm-teams." + teamId);
+            String[] array = section.getString("tdm-armor-color").split(",");
             Color color = Color.fromRGB(Integer.parseInt(array[0]), Integer.parseInt(array[1]), Integer.parseInt(array[2]));
 
             list.add(new BattleTeam(Integer.parseInt(teamId), section.getString("name"), color, ChatColor.getByChar(section.getString("chatcolor").charAt(0))));

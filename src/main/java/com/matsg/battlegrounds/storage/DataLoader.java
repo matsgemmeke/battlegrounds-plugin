@@ -76,7 +76,6 @@ public class DataLoader {
                         gameModes.toArray(new GameMode[gameModes.size()]),
                         config.getInt("maxplayers"),
                         config.getInt("minplayers"),
-                        config.getInt("gamecountdown"),
                         config.getInt("lobbycountdown")
                 );
                 GameMode gameMode = configuration.getGameModes()[new Random().nextInt(configuration.getGameModes().length)];

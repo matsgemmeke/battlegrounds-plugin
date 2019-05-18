@@ -2,16 +2,20 @@ package com.matsg.battlegrounds.game.mode;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
-import com.matsg.battlegrounds.api.storage.Yaml;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.game.GameMode;
 import com.matsg.battlegrounds.util.MessageHelper;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * General abstract gamemode class containing functions that apply for all
+ * gamemodes by default.
+ */
 public abstract class AbstractGameMode implements GameMode {
 
     protected Battlegrounds plugin;
@@ -59,7 +63,7 @@ public abstract class AbstractGameMode implements GameMode {
 
     protected Objective getAchievedObjective() {
         for (Objective objective : objectives) {
-            if (objective.isAchieved(game)) {
+            if (objective.isAchieved()) {
                 return objective;
             }
         }
@@ -107,7 +111,21 @@ public abstract class AbstractGameMode implements GameMode {
 
     public void onEnable() { }
 
+    public void preparePlayer(GamePlayer gamePlayer) {
+        Player player = gamePlayer.getPlayer();
+        player.setFoodLevel(20);
+        player.setGameMode(org.bukkit.GameMode.SURVIVAL);
+        player.setHealth(20.0);
+        player.setSaturation((float) 10);
+    }
+
     public boolean removeComponent(ArenaComponent component) {
         return false;
+    }
+
+    public void start() {
+        for (Spawn spawn : game.getArena().getSpawnContainer().getAll()) {
+            spawn.setGamePlayer(null);
+        }
     }
 }

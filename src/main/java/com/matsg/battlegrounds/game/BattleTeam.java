@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.game;
 
+import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import org.bukkit.ChatColor;
@@ -42,8 +43,8 @@ public class BattleTeam implements Team {
         return name;
     }
 
-    public List<GamePlayer> getPlayers() {
-        return players;
+    public GamePlayer[] getPlayers() {
+        return players.toArray(new GamePlayer[players.size()]);
     }
 
     public int getScore() {
@@ -68,6 +69,16 @@ public class BattleTeam implements Team {
             kills += gamePlayer.getKills();
         }
         return kills;
+    }
+
+    public GamePlayer[] getLivingPlayers() {
+        List<GamePlayer> list = new ArrayList<>();
+        for (GamePlayer gamePlayer : players) {
+            if (gamePlayer.getState().isAlive()) {
+                list.add(gamePlayer);
+            }
+        }
+        return list.toArray(new GamePlayer[list.size()]);
     }
 
     public int getTeamSize() {

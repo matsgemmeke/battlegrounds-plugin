@@ -1,24 +1,22 @@
-package com.matsg.battlegrounds.game;
+package com.matsg.battlegrounds.game.mode;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.game.Countdown;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.GameState;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.util.Placeholder;
-import com.matsg.battlegrounds.gui.SelectLoadoutView;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.BattleSound;
 import com.matsg.battlegrounds.util.EnumTitle;
 import com.matsg.battlegrounds.util.MessageHelper;
 
-public class GameCountdown extends BattleRunnable implements Countdown {
+public class GameModeCountdown extends BattleRunnable implements Countdown {
 
     private boolean cancelled;
     private Game game;
     private int countdown;
 
-    public GameCountdown(Game game, int countdown) {
+    public GameModeCountdown(Game game, int countdown) {
         this.game = game;
         this.countdown = countdown;
         this.cancelled = false;
@@ -44,21 +42,26 @@ public class GameCountdown extends BattleRunnable implements Countdown {
             cancel();
             return;
         }
+
         if (game.getArena() == null || game.getPlayerManager().getPlayers().size() < game.getConfiguration().getMinPlayers()) {
             game.stop();
+            cancel();
             return;
         }
+
         if (countdown <= 0) {
             game.startGame();
             cancel();
             return;
         }
+
         if (countdown <= 10) {
             for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
                 EnumTitle.COUNTDOWN.send(gamePlayer.getPlayer(), new Placeholder("bg_countdown", countdown));
             }
             BattleSound.COUNTDOWN_NOTE.play(game);
         }
+
         countdown --;
     }
 }

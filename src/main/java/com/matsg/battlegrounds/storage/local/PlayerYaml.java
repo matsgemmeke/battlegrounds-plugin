@@ -145,7 +145,9 @@ public class PlayerYaml extends AbstractYaml implements StoredPlayer {
                 plugin.getEquipmentFactory().make(section.getString("Equipment")),
                 plugin.getMeleeWeaponFactory().make(section.getString("MeleeWeapon")),
                 primaryAttachments.toArray(new Attachment[primaryAttachments.size()]),
-                secondaryAttachments.toArray(new Attachment[secondaryAttachments.size()])
+                secondaryAttachments.toArray(new Attachment[secondaryAttachments.size()]),
+                null,
+                null
         );
     }
 

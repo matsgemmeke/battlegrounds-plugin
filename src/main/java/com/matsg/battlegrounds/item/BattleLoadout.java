@@ -18,12 +18,6 @@ public class BattleLoadout implements Loadout {
         this.secondary = secondary;
         this.equipment = equipment;
         this.meleeWeapon = meleeWeapon;
-
-        for (Weapon weapon : getWeapons()) {
-            if (weapon != null) {
-                weapon.setItemSlot(weapon.getType().getDefaultItemSlot());
-            }
-        }
     }
 
     public Equipment getEquipment() {

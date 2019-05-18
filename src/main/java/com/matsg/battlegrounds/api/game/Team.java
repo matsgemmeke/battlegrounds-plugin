@@ -14,9 +14,11 @@ public interface Team {
 
     int getKills();
 
+    GamePlayer[] getLivingPlayers();
+
     String getName();
 
-    Iterable<GamePlayer> getPlayers();
+    GamePlayer[] getPlayers();
 
     int getScore();
 

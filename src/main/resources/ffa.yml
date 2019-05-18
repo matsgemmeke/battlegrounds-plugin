@@ -1,8 +1,11 @@
 # Player armor color
-armor-color: 100,100,100
+ffa-armor-color: 100,100,100
+
+# The countdown length in seconds
+ffa-countdown-length: 15
 
 # The message sent after a game has ended
-end-message:
+ffa-end-message:
 - "&6&m------------------------------"
 - "&f1st: %bg_first% (%bg_first_score%)"
 - "&f2nd: %bg_second% (%bg_second_score%)"
@@ -10,17 +13,17 @@ end-message:
 - "&6&m------------------------------"
 
 # The amount of kills needed to win a game
-kills-to-win: 30
+ffa-kills-to-win: 30
 
 # The amount of lives players have
-lives: 100
+ffa-lives: 100
 
 # The mininum distance between a spawn point and the nearest foe upon respawning
 # Warning: setting this value too high may cause a server crash!
-minimum-distance-spawn: 10.0
+ffa-minimum-distance-spawn: 10.0
 
 # Scoreboard configurations
-scoreboard:
+ffa-scoreboard:
   # Set to false to disable scoreboards
   enabled: true
   # The layout of the game scoreboards
@@ -33,4 +36,4 @@ scoreboard:
   worlds: "*"
 
 # The length of a game in seconds
-time-limit: 600
+ffa-time-limit: 600

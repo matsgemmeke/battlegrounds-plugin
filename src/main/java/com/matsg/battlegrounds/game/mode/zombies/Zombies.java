@@ -6,33 +6,45 @@ import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.Hitbox;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent;
 import com.matsg.battlegrounds.api.game.*;
-import com.matsg.battlegrounds.api.item.Weapon;
+import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.game.BattleComponentContainer;
 import com.matsg.battlegrounds.game.BattleTeam;
 import com.matsg.battlegrounds.game.mode.AbstractGameMode;
 import com.matsg.battlegrounds.game.mode.GameModeType;
+import com.matsg.battlegrounds.game.objective.EliminationObjective;
 import com.matsg.battlegrounds.item.ItemFinder;
+import com.matsg.battlegrounds.item.ItemStackBuilder;
+import com.matsg.battlegrounds.item.factory.LoadoutFactory;
+import com.matsg.battlegrounds.nms.Title;
+import com.matsg.battlegrounds.util.BattleSound;
+import com.matsg.battlegrounds.util.EnumTitle;
+import com.matsg.battlegrounds.util.MessageHelper;
+import com.matsg.battlegrounds.util.XMaterial;
 import org.bukkit.ChatColor;
+import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Zombies extends AbstractGameMode {
 
     private ComponentContainer<Section> sectionContainer;
+    private LoadoutFactory loadoutFactory;
+    private MessageHelper messageHelper;
     private Team team;
     private ZombiesConfig config;
 
     public Zombies(Battlegrounds plugin, Game game, ZombiesConfig config) {
         super(plugin, game);
         this.config = config;
+        this.loadoutFactory = new LoadoutFactory();
+        this.messageHelper = new MessageHelper();
         this.sectionContainer = new BattleComponentContainer<>();
         this.team = new BattleTeam(1, "Players", null, ChatColor.WHITE);
 
         setName(messageHelper.create(TranslationKey.ZOMBIES_NAME));
         setShortName(messageHelper.create(TranslationKey.ZOMBIES_SHORT));
+
+        objectives.add(new EliminationObjective(game, 1));
 
         teams.add(team);
     }
@@ -117,6 +129,42 @@ public class Zombies extends AbstractGameMode {
 
     }
 
+    public void preparePlayer(GamePlayer gamePlayer) {
+        super.preparePlayer(gamePlayer);
+
+        Map<String, String> defaultLoadout = config.getDefaultLoadout();
+
+        Firearm primary = defaultLoadout.get("primary") != null ? plugin.getFirearmFactory().make(defaultLoadout.get("primary")) : null;
+        Equipment equipment = defaultLoadout.get("equipment") != null ? plugin.getEquipmentFactory().make(defaultLoadout.get("equipment")) : null;
+        MeleeWeapon meleeWeapon = defaultLoadout.get("melee-weapon") != null ? plugin.getMeleeWeaponFactory().make(defaultLoadout.get("melee-weapon")) : null;
+
+        if (primary != null) {
+            primary.setAmmo(config.getDefaultMagazines() * primary.getMagazineSize());
+        }
+
+        ItemStack barricadeTool = new ItemStackBuilder(XMaterial.OAK_FENCE.parseMaterial())
+                .setDisplayName(messageHelper.create(TranslationKey.BARRICADE_TOOL))
+                .build();
+
+        Loadout loadout = loadoutFactory.make(
+                1,
+                null,
+                primary,
+                null,
+                equipment,
+                meleeWeapon,
+                new Attachment[0],
+                new Attachment[0],
+                game,
+                gamePlayer
+        );
+
+        gamePlayer.getPlayer().getInventory().setItem(ItemSlot.MISCELLANEOUS.getSlot(), barricadeTool);
+        gamePlayer.setLoadout(loadout);
+        gamePlayer.setPoints(config.getDefaultPoints());
+        loadout.updateInventory();
+    }
+
     public boolean removeComponent(ArenaComponent component) {
         int id = component.getId();
         if (sectionContainer.get(id) != null) {
@@ -131,11 +179,29 @@ public class Zombies extends AbstractGameMode {
     }
 
     public void spawnPlayers(GamePlayer... players) {
-
+        for (GamePlayer gamePlayer : team.getPlayers()) {
+            Spawn spawn = game.getArena().getRandomSpawn();
+            spawn.setGamePlayer(gamePlayer);
+            gamePlayer.getPlayer().teleport(spawn.getLocation());
+        }
     }
 
     public void start() {
+        super.start();
 
+        for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
+            Title title = EnumTitle.ZOMBIES_START.getTitle();
+            title.send(gamePlayer.getPlayer());
+        }
+
+        Section section = getFirstSection();
+        section.setLocked(false);
+
+        BattleSound.THUNDER.play(game);
+    }
+
+    public void startCountdown() {
+        start();
     }
 
     public void stop() {
@@ -144,5 +210,14 @@ public class Zombies extends AbstractGameMode {
 
     public void tick() {
 
+    }
+
+    private Section getFirstSection() {
+        for (Section section : sectionContainer.getAll()) {
+            if (section.isUnlockedByDefault()) {
+                return section;
+            }
+        }
+        return null;
     }
 }
