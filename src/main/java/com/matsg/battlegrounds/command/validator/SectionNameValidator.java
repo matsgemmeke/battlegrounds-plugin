@@ -12,12 +12,12 @@ import com.matsg.battlegrounds.util.MessageHelper;
 public class SectionNameValidator implements CommandValidator {
 
     private Battlegrounds plugin;
-    private int pos;
+    private int sectionPos; // The position in the input args where the section should be specified
     private MessageHelper messageHelper;
 
-    public SectionNameValidator(Battlegrounds plugin, int pos) {
+    public SectionNameValidator(Battlegrounds plugin, int sectionPos) {
         this.plugin = plugin;
-        this.pos = pos;
+        this.sectionPos = sectionPos;
         this.messageHelper = new MessageHelper();
     }
 
@@ -27,17 +27,17 @@ public class SectionNameValidator implements CommandValidator {
         Game game = plugin.getGameManager().getGame(id);
         Arena arena = game.getArena();
 
-        if (args.length <= pos) {
+        if (args.length < sectionPos) {
             return new ValidationResponse(messageHelper.create(TranslationKey.SPECIFY_SECTION_NAME));
         }
 
         Zombies zombies = game.getGameMode(Zombies.class);
-        Section section = zombies.getSection(args[pos]);
+        Section section = zombies.getSection(args[sectionPos - 1]);
 
         if (section == null) {
             return new ValidationResponse(messageHelper.create(TranslationKey.SECTION_NOT_EXISTS,
                     new Placeholder("bg_arena", arena.getName()),
-                    new Placeholder("bg_section", args[pos])
+                    new Placeholder("bg_section", args[sectionPos - 1])
             ));
         }
 

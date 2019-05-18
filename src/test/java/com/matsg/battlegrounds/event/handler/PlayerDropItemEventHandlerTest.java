@@ -4,12 +4,10 @@ import com.matsg.battlegrounds.BattleGameManager;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.GameState;
 import com.matsg.battlegrounds.api.game.ItemRegistry;
 import com.matsg.battlegrounds.api.game.PlayerManager;
 import com.matsg.battlegrounds.api.item.Attachment;
 import com.matsg.battlegrounds.api.item.Firearm;
-import com.matsg.battlegrounds.api.item.Item;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.game.state.InGameState;
 import com.matsg.battlegrounds.game.state.ResettingState;
@@ -19,13 +17,10 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-@RunWith(PowerMockRunner.class)
 public class PlayerDropItemEventHandlerTest {
 
     private Battlegrounds plugin;

@@ -4,16 +4,9 @@ import com.matsg.battlegrounds.api.entity.GamePlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.util.ArrayList;
-import java.util.List;
+import static org.junit.Assert.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-@RunWith(PowerMockRunner.class)
 public class BattleTeamTest {
 
     @Test
@@ -21,7 +14,6 @@ public class BattleTeamTest {
         int id = 1;
         ChatColor chatColor = ChatColor.WHITE;
         Color color = Color.AQUA;
-        List<GamePlayer> list = new ArrayList<>();
         String name = "Test";
 
         BattleTeam team = new BattleTeam(id, name, color, chatColor);
@@ -31,7 +23,7 @@ public class BattleTeamTest {
         assertEquals(color, team.getColor());
         assertEquals(chatColor, team.getChatColor());
 
-        assertEquals(list, team.getPlayers());
+        assertArrayEquals(new GamePlayer[0], team.getPlayers());
         assertEquals(0, team.getScore());
         assertNotNull(team.getPlayers());
 

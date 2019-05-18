@@ -6,12 +6,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.mockito.Mockito.*;
 
-@RunWith(PowerMockRunner.class)
 public class PlayerJoinEventHandlerTest {
 
     private Battlegrounds plugin;

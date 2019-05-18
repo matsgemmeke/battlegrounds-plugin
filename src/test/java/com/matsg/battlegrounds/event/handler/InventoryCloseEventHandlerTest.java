@@ -8,12 +8,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.mockito.Mockito.*;
 
-@RunWith(PowerMockRunner.class)
 public class InventoryCloseEventHandlerTest {
 
     private Battlegrounds plugin;
