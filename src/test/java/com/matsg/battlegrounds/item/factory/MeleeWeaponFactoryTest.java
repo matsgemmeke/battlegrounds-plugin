@@ -57,7 +57,7 @@ public class MeleeWeaponFactoryTest {
     }
 
     @Test
-    public void testMakeMeleeWeapon() {
+    public void makeMeleeWeapon() {
         when(section.getInt("Amount")).thenReturn(1);
         when(section.getInt("Cooldown")).thenReturn(1);
         when(section.getDouble("Damage")).thenReturn(10.0);
@@ -71,7 +71,7 @@ public class MeleeWeaponFactoryTest {
     }
 
     @Test(expected = FactoryCreationException.class)
-    public void testMakeMeleeWeaponWithFailingValidation() {
+    public void makeMeleeWeaponWithFailingValidation() {
         when(section.getInt("Amount")).thenReturn(-1);
         when(section.getInt("Cooldown")).thenReturn(-1);
         when(section.getDouble("Damage")).thenReturn(-10.0);

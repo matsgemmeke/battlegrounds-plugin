@@ -51,7 +51,7 @@ public class CreateArenaTest {
     }
 
     @Test
-    public void testCreateArenaWithoutSelection() {
+    public void createArenaWithoutSelection() {
         String[] input = new String[] { "command", String.valueOf(gameId), arenaName };
         TranslationKey key = TranslationKey.NO_SELECTION;
 
@@ -65,7 +65,7 @@ public class CreateArenaTest {
     }
 
     @Test
-    public void testCreateArenaWithoutBounds() {
+    public void createArenaWithoutBounds() {
         Selection selection = mock(Selection.class);
         String[] input = new String[] { "command", String.valueOf(gameId), arenaName };
         TranslationKey key = TranslationKey.ARENA_CREATE;
@@ -81,7 +81,7 @@ public class CreateArenaTest {
     }
 
     @Test
-    public void testCreateArenaWithBounds() {
+    public void createArenaWithBounds() {
         Location location = new Location(world, 0, 0, 0);
         Selection selection = mock(Selection.class);
         String[] input = new String[] { "command", String.valueOf(gameId), arenaName };

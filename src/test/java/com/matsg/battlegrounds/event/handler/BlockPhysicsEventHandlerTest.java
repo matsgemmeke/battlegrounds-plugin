@@ -53,7 +53,7 @@ public class BlockPhysicsEventHandlerTest {
     }
 
     @Test
-    public void testBlockPhysicsNotAllowedInsideArena() {
+    public void blockPhysicsNotAllowedInsideArena() {
         BlockPhysicsEventHandler eventHandler = new BlockPhysicsEventHandler(plugin);
         eventHandler.handle(event);
 
@@ -61,7 +61,7 @@ public class BlockPhysicsEventHandlerTest {
     }
 
     @Test
-    public void testBlockPhysicsAllowedOutsideArena() {
+    public void blockPhysicsAllowedOutsideArena() {
         when(block.getLocation()).thenReturn(new Location(world, 1000, 1000, 1000));
 
         BlockPhysicsEventHandler eventHandler = new BlockPhysicsEventHandler(plugin);

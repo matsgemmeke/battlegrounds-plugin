@@ -57,7 +57,7 @@ public class PlayerDropItemEventHandlerTest {
     }
 
     @Test
-    public void testPlayerItemDropWhenNotPlaying() {
+    public void playerItemDropWhenNotPlaying() {
         when(playerManager.getGamePlayer(player)).thenReturn(null);
 
         PlayerDropItemEventHandler eventHandler = new PlayerDropItemEventHandler(plugin);
@@ -69,7 +69,7 @@ public class PlayerDropItemEventHandlerTest {
     }
 
     @Test
-    public void testPlayerItemDropWhenNotHoldingItem() {
+    public void playerItemDropWhenNotHoldingItem() {
         when(itemRegistry.getItemIgnoreMetadata(itemStack)).thenReturn(null);
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
 
@@ -82,7 +82,7 @@ public class PlayerDropItemEventHandlerTest {
     }
 
     @Test
-    public void testPlayerItemDropWhenGameDoesNotAllowItems() {
+    public void playerItemDropWhenGameDoesNotAllowItems() {
         Firearm firearm = mock(Firearm.class);
 
         when(game.getState()).thenReturn(new ResettingState());
@@ -98,7 +98,7 @@ public class PlayerDropItemEventHandlerTest {
     }
 
     @Test
-    public void testPlayerItemDropWhenHoldingNonDroppableItem() {
+    public void playerItemDropWhenHoldingNonDroppableItem() {
         Attachment attachment = mock(Attachment.class);
 
         when(game.getState()).thenReturn(new InGameState());
@@ -114,7 +114,7 @@ public class PlayerDropItemEventHandlerTest {
     }
 
     @Test
-    public void testPlayerItemDropWhenHoldinDroppableItem() {
+    public void playerItemDropWhenHoldinDroppableItem() {
         Firearm firearm = mock(Firearm.class);
 
         when(firearm.onDrop(gamePlayer, itemEntity)).thenReturn(true);

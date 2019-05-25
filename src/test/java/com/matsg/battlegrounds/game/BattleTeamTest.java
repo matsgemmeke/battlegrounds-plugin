@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 public class BattleTeamTest {
 
     @Test
-    public void testTeam() {
+    public void teamCreation() {
         int id = 1;
         ChatColor chatColor = ChatColor.WHITE;
         Color color = Color.AQUA;

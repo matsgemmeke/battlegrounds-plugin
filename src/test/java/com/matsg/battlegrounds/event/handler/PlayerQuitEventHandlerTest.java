@@ -42,7 +42,7 @@ public class PlayerQuitEventHandlerTest {
     }
 
     @Test
-    public void testPlayerQuitWhenPlaying() {
+    public void playerQuitWhenPlaying() {
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
 
         PlayerQuitEventHandler eventHandler = new PlayerQuitEventHandler(plugin);
@@ -52,7 +52,7 @@ public class PlayerQuitEventHandlerTest {
     }
 
     @Test
-    public void testPlayerQuitWhenNotPlaying() {
+    public void playerQuitWhenNotPlaying() {
         when(playerManager.getGamePlayer(player)).thenReturn(null);
 
         PlayerQuitEventHandler eventHandler = new PlayerQuitEventHandler(plugin);

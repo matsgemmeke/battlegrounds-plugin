@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
 public class EventListenerTest {
 
     @Test
-    public void testEventDispatching() {
+    public void eventDispatching() {
         // Create dependency mocks
         Battlegrounds plugin = mock(Battlegrounds.class);
         EventDispatcher eventDispatcher = mock(EventDispatcher.class);

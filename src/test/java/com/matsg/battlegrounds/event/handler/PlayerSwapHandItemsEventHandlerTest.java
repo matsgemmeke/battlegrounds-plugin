@@ -53,7 +53,7 @@ public class PlayerSwapHandItemsEventHandlerTest {
     }
 
     @Test
-    public void testPlayerSwapItemsWhenNotPlaying() {
+    public void playerSwapItemsWhenNotPlaying() {
         when(playerManager.getGamePlayer(player)).thenReturn(null);
 
         PlayerSwapHandItemsEventHandler eventHandler = new PlayerSwapHandItemsEventHandler(plugin);
@@ -65,7 +65,7 @@ public class PlayerSwapHandItemsEventHandlerTest {
     }
 
     @Test
-    public void testPlayerSwapItemsWhenNotHoldingItem() {
+    public void playerSwapItemsWhenNotHoldingItem() {
         when(itemRegistry.getItem(itemStack)).thenReturn(null);
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
 
@@ -78,7 +78,7 @@ public class PlayerSwapHandItemsEventHandlerTest {
     }
 
     @Test
-    public void testPlayerSwapItemsWhenHoldingItem() {
+    public void playerSwapItemsWhenHoldingItem() {
         when(itemRegistry.getItem(itemStack)).thenReturn(item);
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
 

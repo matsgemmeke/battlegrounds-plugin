@@ -40,7 +40,7 @@ public class FoodLevelChangeEventHandlerTest {
     }
 
     @Test
-    public void testFoodChangeWhenPlaying() {
+    public void foodChangeWhenPlaying() {
         when(playerManager.getGamePlayer(player)).thenReturn(new BattleGamePlayer(player, null));
 
         FoodLevelChangeEventHandler eventHandler = new FoodLevelChangeEventHandler(plugin);
@@ -50,7 +50,7 @@ public class FoodLevelChangeEventHandlerTest {
     }
 
     @Test
-    public void testFoodChangeWhenNotPlaying() {
+    public void foodChangeWhenNotPlaying() {
         when(playerManager.getGamePlayer(player)).thenReturn(null);
 
         FoodLevelChangeEventHandler eventHandler = new FoodLevelChangeEventHandler(plugin);

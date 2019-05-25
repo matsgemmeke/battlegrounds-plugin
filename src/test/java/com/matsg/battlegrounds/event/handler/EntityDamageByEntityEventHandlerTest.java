@@ -52,7 +52,7 @@ public class EntityDamageByEntityEventHandlerTest {
     }
 
     @Test
-    public void testPlayerCheck() {
+    public void playerDamageNotByAnotherPlayer() {
         event = new EntityDamageByEntityEvent(mock(Entity.class), mock(Entity.class), null, 10.0);
 
         EntityDamageByEntityEventHandler eventHandler = new EntityDamageByEntityEventHandler(plugin);
@@ -64,7 +64,7 @@ public class EntityDamageByEntityEventHandlerTest {
     }
 
     @Test
-    public void testPlayerDamageWhenNotPlaying() {
+    public void playerDamageWhenNotPlaying() {
         when(playerManager.getGamePlayer(player)).thenReturn(null);
 
         EntityDamageByEntityEventHandler eventHandler = new EntityDamageByEntityEventHandler(plugin);
@@ -76,7 +76,7 @@ public class EntityDamageByEntityEventHandlerTest {
     }
 
     @Test
-    public void testPlayerDamageWithoutLoadout() {
+    public void playerDamageWithoutLoadout() {
         when(playerManager.getGamePlayer(damagerPlayer)).thenReturn(damager);
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
 
@@ -91,7 +91,7 @@ public class EntityDamageByEntityEventHandlerTest {
     }
 
     @Test
-    public void testPlayerDamageSameTeam() {
+    public void playerDamageSameTeam() {
         when(playerManager.getGamePlayer(damagerPlayer)).thenReturn(damager);
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
 
@@ -109,7 +109,7 @@ public class EntityDamageByEntityEventHandlerTest {
     }
 
     @Test
-    public void testPlayerDamageWithoutMeleeWeapon() {
+    public void playerDamageWithoutMeleeWeapon() {
         when(playerManager.getGamePlayer(damagerPlayer)).thenReturn(damager);
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
 
@@ -128,7 +128,7 @@ public class EntityDamageByEntityEventHandlerTest {
     }
 
     @Test
-    public void testPlayerDamageWithMeleeWeapon() {
+    public void playerDamageWithMeleeWeapon() {
         when(playerManager.getGamePlayer(damagerPlayer)).thenReturn(damager);
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
 

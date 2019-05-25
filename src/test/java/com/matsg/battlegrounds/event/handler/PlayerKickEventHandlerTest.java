@@ -42,7 +42,7 @@ public class PlayerKickEventHandlerTest {
     }
 
     @Test
-    public void testPlayerKickWhenPlaying() {
+    public void playerKickWhenPlaying() {
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
 
         PlayerKickEventHandler eventHandler = new PlayerKickEventHandler(plugin);
@@ -52,7 +52,7 @@ public class PlayerKickEventHandlerTest {
     }
 
     @Test
-    public void testPlayerKickWhenNotPlaying() {
+    public void playerKickWhenNotPlaying() {
         when(playerManager.getGamePlayer(player)).thenReturn(null);
 
         PlayerKickEventHandler eventHandler = new PlayerKickEventHandler(plugin);

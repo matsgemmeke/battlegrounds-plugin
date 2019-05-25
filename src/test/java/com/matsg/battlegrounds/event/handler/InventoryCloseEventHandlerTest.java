@@ -35,7 +35,7 @@ public class InventoryCloseEventHandlerTest {
     }
 
     @Test
-    public void testInventoryCloseNoView() {
+    public void inventoryCloseNoView() {
         InventoryCloseEventHandler eventHandler = new InventoryCloseEventHandler(plugin);
         eventHandler.handle(event);
 
@@ -43,7 +43,7 @@ public class InventoryCloseEventHandlerTest {
     }
 
     @Test
-    public void testInventoryCloseWithViewAllowClose() {
+    public void inventoryCloseWithViewAllowClose() {
         when(inventory.getHolder()).thenReturn(view);
         when(view.onClose()).thenReturn(true);
 
@@ -54,7 +54,7 @@ public class InventoryCloseEventHandlerTest {
     }
 
     @Test
-    public void testInventoryCloseWithViewDisallowClose() {
+    public void inventoryCloseWithViewDisallowClose() {
         when(inventory.getHolder()).thenReturn(view);
         when(view.onClose()).thenReturn(false);
 

@@ -58,7 +58,7 @@ public class PlayerCommandPreprocessEventHandlerTest {
     }
 
     @Test
-    public void testCommandDispatchWhenNotPlaying() {
+    public void commandDispatchWhenNotPlaying() {
         when(playerManager.getGamePlayer(player)).thenReturn(null);
 
         PlayerCommandPreprocessEventHandler eventHandler = new PlayerCommandPreprocessEventHandler(plugin, translator);
@@ -70,7 +70,7 @@ public class PlayerCommandPreprocessEventHandlerTest {
     }
 
     @Test
-    public void testCommandDispatchAllCommandsAllowed() {
+    public void commandDispatchAllCommandsAllowed() {
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
 
         config.allowedCommands.add("*");
@@ -84,7 +84,7 @@ public class PlayerCommandPreprocessEventHandlerTest {
     }
 
     @Test
-    public void testCommandDispatchAllowedCommand() {
+    public void commandDispatchAllowedCommand() {
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
 
         event.setMessage("/cmd");
@@ -98,7 +98,7 @@ public class PlayerCommandPreprocessEventHandlerTest {
     }
 
     @Test
-    public void testCommandDispatchDisallowedCommand() {
+    public void commandDispatchDisallowedCommand() {
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
 
         event.setMessage("/test");

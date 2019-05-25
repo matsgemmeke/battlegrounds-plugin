@@ -44,7 +44,7 @@ public class PlayerRespawnEventHandlerTest {
     }
 
     @Test
-    public void testRespawnNotPlaying() {
+    public void respawnNotPlaying() {
         when(gameManager.getGame(player)).thenReturn(null);
 
         PlayerRespawnEventHandler eventHandler = new PlayerRespawnEventHandler(plugin);
@@ -54,7 +54,7 @@ public class PlayerRespawnEventHandlerTest {
     }
 
     @Test
-    public void testRespawnLocationFromGameMode() {
+    public void respawnLocationFromGameMode() {
         GameMode gameMode = mock(GameMode.class);
 
         GamePlayer gamePlayer = new BattleGamePlayer(player, null);

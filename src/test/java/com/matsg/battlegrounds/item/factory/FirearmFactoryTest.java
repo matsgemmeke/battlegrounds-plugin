@@ -68,7 +68,7 @@ public class FirearmFactoryTest {
     }
 
     @Test(expected = FactoryCreationException.class)
-    public void testMakeFirearmInvalidType() {
+    public void makeFirearmInvalidType() {
         when(section.getString("FirearmType")).thenReturn("INVALID");
 
         FirearmFactory factory = new FirearmFactory(plugin, firearmConfig);
@@ -76,7 +76,7 @@ public class FirearmFactoryTest {
     }
 
     @Test(expected = FactoryCreationException.class)
-    public void testMakeGunWithFailingValidation() {
+    public void makeGunWithFailingValidation() {
         when(section.getInt("Ammo.Magazine")).thenReturn(-1);
         when(section.getString("FirearmType")).thenReturn("ASSAULT_RIFLE");
 
@@ -85,7 +85,7 @@ public class FirearmFactoryTest {
     }
 
     @Test(expected = FactoryCreationException.class)
-    public void testMakeLauncherWithFailingValidation() {
+    public void makeLauncherWithFailingValidation() {
         when(section.getInt("Ammo.Magazine")).thenReturn(-1);
         when(section.getString("FirearmType")).thenReturn("LAUNCHER");
 
@@ -94,7 +94,7 @@ public class FirearmFactoryTest {
     }
 
     @Test
-    public void testMakeGun() {
+    public void makeGun() {
         when(section.getDouble("Accuracy")).thenReturn(0.5);
         when(section.getInt("Ammo.Magazine")).thenReturn(1);
         when(section.getInt("Ammo.Max")).thenReturn(1);
@@ -125,7 +125,7 @@ public class FirearmFactoryTest {
     }
 
     @Test
-    public void testMakeLauncher() {
+    public void makeLauncher() {
         when(section.getDouble("Accuracy")).thenReturn(0.5);
         when(section.getInt("Ammo.Magazine")).thenReturn(1);
         when(section.getInt("Ammo.Max")).thenReturn(1);

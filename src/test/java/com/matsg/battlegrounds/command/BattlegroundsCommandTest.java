@@ -39,7 +39,7 @@ public class BattlegroundsCommandTest {
     }
 
     @Test
-    public void testCommandNoArgumentsWithHelp() {
+    public void executeCommandWithoutArguments() {
         BattlegroundsCommand command = new BattlegroundsCommand(plugin);
 
         command.onCommand(sender, null, "battlegrounds", new String[0]);
@@ -48,7 +48,7 @@ public class BattlegroundsCommandTest {
     }
 
     @Test
-    public void testCommandSubcommandDoesNotExist() {
+    public void executeSubcommandWhichDoesNotExist() {
         BattlegroundsCommand command = new BattlegroundsCommand(plugin);
         TranslationKey key = TranslationKey.INVALID_ARGUMENTS;
 
@@ -60,7 +60,7 @@ public class BattlegroundsCommandTest {
     }
 
     @Test
-    public void testCommandSubcommandIsPlayerOnly() {
+    public void executePlayerOnlySubcommand() {
         BattlegroundsCommand command = new BattlegroundsCommand(plugin);
         CommandSender sender = mock(ConsoleCommandSender.class);
         TranslationKey key = TranslationKey.INVALID_SENDER;
@@ -75,7 +75,7 @@ public class BattlegroundsCommandTest {
     }
 
     @Test
-    public void testCommandSubcommandRequiresPermission() {
+    public void executeSubcommandRequiresPermission() {
         BattlegroundsCommand command = new BattlegroundsCommand(plugin);
         String permission = "permission";
         TranslationKey key = TranslationKey.NO_PERMISSION;
@@ -91,7 +91,7 @@ public class BattlegroundsCommandTest {
     }
 
     @Test
-    public void testCommandExecuteSubcommand() {
+    public void executeSubcommand() {
         BattlegroundsCommand command = new BattlegroundsCommand(plugin);
         String[] args = new String[] { fakeCommandName };
 
@@ -102,7 +102,7 @@ public class BattlegroundsCommandTest {
     }
 
     @Test
-    public void testCommandExecuteSubcommandWithException() {
+    public void executeSubcommandWithException() {
         BattlegroundsCommand command = new BattlegroundsCommand(plugin);
         String[] args = new String[] { fakeCommandName };
         TranslationKey key = TranslationKey.COMMAND_ERROR;

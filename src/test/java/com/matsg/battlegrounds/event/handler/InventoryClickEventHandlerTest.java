@@ -26,7 +26,7 @@ public class InventoryClickEventHandlerTest {
     }
 
     @Test
-    public void testInventoryClickNoView() {
+    public void inventoryClickNoView() {
         InventoryClickEventHandler eventHandler = new InventoryClickEventHandler();
         eventHandler.handle(event);
 
@@ -34,7 +34,7 @@ public class InventoryClickEventHandlerTest {
     }
 
     @Test
-    public void testInventoryClickWithView() {
+    public void inventoryClickWithView() {
         when(inventory.getHolder()).thenReturn(mock(View.class));
 
         InventoryClickEventHandler eventHandler = new InventoryClickEventHandler();

@@ -65,7 +65,7 @@ public class AttachmentFactoryTest {
     }
 
     @Test
-    public void testMakeAttachmentWithoutModifiers() {
+    public void makeAttachmentWithoutModifiers() {
         when(section.getName()).thenReturn(id);
         when(section.getString("GunPart")).thenReturn("MAGAZINE");
 
@@ -77,7 +77,7 @@ public class AttachmentFactoryTest {
     }
 
     @Test
-    public void testMakeAttachmentWithModifiers() {
+    public void makeAttachmentWithModifiers() {
         String attributeId = "ammo-magazine-size";
 
         modifierSet.add(attributeId);
@@ -95,7 +95,7 @@ public class AttachmentFactoryTest {
     }
 
     @Test(expected = FactoryCreationException.class)
-    public void testMakeAttachmantInvalidGunPart() {
+    public void makeAttachmantInvalidGunPart() {
         when(section.getString("GunPart")).thenReturn("INVALID");
 
         AttachmentFactory factory = new AttachmentFactory(plugin, attachmentConfig);

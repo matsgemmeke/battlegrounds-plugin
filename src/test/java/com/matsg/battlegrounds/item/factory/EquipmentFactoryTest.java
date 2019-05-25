@@ -59,7 +59,7 @@ public class EquipmentFactoryTest {
     }
 
     @Test(expected = FactoryCreationException.class)
-    public void testMakeEquipmentInvalidType() {
+    public void makeEquipmentInvalidType() {
         when(section.getString("EquipmentType")).thenReturn("INVALID");
 
         EquipmentFactory factory = new EquipmentFactory(plugin, equipmentConfig);
@@ -67,7 +67,7 @@ public class EquipmentFactoryTest {
     }
 
     @Test(expected = FactoryCreationException.class)
-    public void testMakeLethalWithFailingValidation() {
+    public void makeLethalWithFailingValidation() {
         when(section.getInt("Amount")).thenReturn(-1);
         when(section.getString("EquipmentType")).thenReturn("LETHAL");
 
@@ -76,7 +76,7 @@ public class EquipmentFactoryTest {
     }
 
     @Test(expected = FactoryCreationException.class)
-    public void testMakeTacticalWithFailingValidation() {
+    public void makeTacticalWithFailingValidation() {
         when(section.getInt("Amount")).thenReturn(-1);
         when(section.getString("EquipmentType")).thenReturn("TACTICAL");
 
@@ -85,7 +85,7 @@ public class EquipmentFactoryTest {
     }
 
     @Test
-    public void testMakeLethal() {
+    public void makeLethal() {
         when(section.getInt("Amount")).thenReturn(1);
         when(section.getInt("Cooldown")).thenReturn(1);
         when(section.getString("EquipmentType")).thenReturn("LETHAL");
@@ -108,7 +108,7 @@ public class EquipmentFactoryTest {
     }
 
     @Test
-    public void testMakeTactical() {
+    public void makeTactical() {
         when(section.getInt("Amount")).thenReturn(1);
         when(section.getInt("Cooldown")).thenReturn(1);
         when(section.getInt("Duration")).thenReturn(1);

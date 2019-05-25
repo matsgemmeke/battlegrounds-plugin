@@ -39,7 +39,7 @@ public class PlayerInteractEventHandlerTest {
     }
 
     @Test
-    public void testPlayerInteractWhenNotPlaying() {
+    public void playerInteractWhenNotPlaying() {
 
     }
 }

@@ -64,7 +64,7 @@ public class AsyncPlayerChatEventHandlerTest {
     }
 
     @Test
-    public void testRemoveRecipientsWhenNotPlaying() {
+    public void removeRecipientsWhenNotPlaying() {
         List<GamePlayer> list = new ArrayList<>();
 
         list.add(gamePlayer);
@@ -81,7 +81,7 @@ public class AsyncPlayerChatEventHandlerTest {
     }
 
     @Test
-    public void testLoggerPrint() {
+    public void loggerPrintWhenConfigured() {
         config.broadcastChat = true;
 
         Logger logger = mock(Logger.class);
@@ -100,7 +100,7 @@ public class AsyncPlayerChatEventHandlerTest {
     }
 
     @Test
-    public void testNoLoggerPrint() {
+    public void loggerPrintWhenNotConfigured() {
         config.broadcastChat = false;
 
         Logger logger = mock(Logger.class);

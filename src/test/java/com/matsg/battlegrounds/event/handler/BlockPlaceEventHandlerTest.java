@@ -28,7 +28,7 @@ import java.util.List;
 import static org.mockito.Mockito.*;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({ BattlegroundsConfig.class, BlockPlaceEvent.class })
+@PrepareForTest(BlockPlaceEvent.class)
 public class BlockPlaceEventHandlerTest {
 
     private Arena arena;
@@ -47,7 +47,7 @@ public class BlockPlaceEventHandlerTest {
     public void setUp() {
         this.arena = mock(Arena.class);
         this.plugin = mock(Battlegrounds.class);
-        this.config = PowerMockito.mock(BattlegroundsConfig.class);
+        this.config = mock(BattlegroundsConfig.class);
         this.block = mock(Block.class);
         this.event = PowerMockito.mock(BlockPlaceEvent.class);
         this.game = mock(Game.class);
@@ -75,7 +75,7 @@ public class BlockPlaceEventHandlerTest {
     }
 
     @Test
-    public void testBlockPlaceOutsideArena() {
+    public void blockPlaceOutsideArena() {
         config.arenaProtection = true;
 
         when(block.getLocation()).thenReturn(new Location(world, 1000, 1000, 1000));
@@ -87,7 +87,7 @@ public class BlockPlaceEventHandlerTest {
     }
 
     @Test
-    public void testBlockPlaceWithoutArenaProtectionWhenNotPlaying() {
+    public void blockPlaceWithoutArenaProtectionWhenNotPlaying() {
         config.arenaProtection = false;
 
         when(playerManager.getGamePlayer(player)).thenReturn(null);
@@ -99,7 +99,7 @@ public class BlockPlaceEventHandlerTest {
     }
 
     @Test
-    public void testBlockPlaceWithArenaProtectionWhenNotPlaying() {
+    public void blockPlaceWithArenaProtectionWhenNotPlaying() {
         config.arenaProtection = true;
 
         when(playerManager.getGamePlayer(player)).thenReturn(null);
@@ -111,7 +111,7 @@ public class BlockPlaceEventHandlerTest {
     }
 
     @Test
-    public void testBlockPlaceWithoutArenaProtectionWhenPlaying() {
+    public void blockPlaceWithoutArenaProtectionWhenPlaying() {
         config.arenaProtection = false;
 
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
@@ -123,7 +123,7 @@ public class BlockPlaceEventHandlerTest {
     }
 
     @Test
-    public void testBlockPlaceWithArenaProtectionWhenPlaying() {
+    public void blockPlaceWithArenaProtectionWhenPlaying() {
         config.arenaProtection = true;
 
         when(playerManager.getGamePlayer(player)).thenReturn(null);

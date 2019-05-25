@@ -40,7 +40,7 @@ public class SectionNameValidatorTest {
     }
 
     @Test
-    public void testValidationNoNameSpecified() {
+    public void validationNoNameSpecified() {
         String[] input = new String[] { "command", String.valueOf(gameId) };
         TranslationKey key = TranslationKey.SPECIFY_SECTION_NAME;
 
@@ -54,7 +54,7 @@ public class SectionNameValidatorTest {
     }
 
     @Test
-    public void testValidationSectionWithSpecifiedNameDoesNotExist() {
+    public void validationSectionWithSpecifiedNameDoesNotExist() {
         Zombies zombies = mock(Zombies.class);
 
         String[] input = new String[] { "command", String.valueOf(gameId), sectionName };
@@ -73,7 +73,7 @@ public class SectionNameValidatorTest {
     }
 
     @Test
-    public void testValidationSectionWithSpecifiedNameExists() {
+    public void validationSectionWithSpecifiedNameExists() {
         Zombies zombies = mock(Zombies.class);
 
         String[] input = new String[] { "command", String.valueOf(gameId), sectionName };

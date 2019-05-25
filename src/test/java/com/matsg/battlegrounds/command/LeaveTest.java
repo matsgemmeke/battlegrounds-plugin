@@ -45,7 +45,7 @@ public class LeaveTest {
     }
 
     @Test
-    public void testLeaveCommandWhenNotPlaying() {
+    public void leaveWhenNotPlaying() {
         TranslationKey key = TranslationKey.NOT_PLAYING;
 
         when(playerManager.getGamePlayer(player)).thenReturn(null);
@@ -58,7 +58,7 @@ public class LeaveTest {
     }
 
     @Test
-    public void testLeaveCommandWhenPlaying() {
+    public void leaveWhenPlaying() {
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
 
         Leave command = new Leave(plugin);

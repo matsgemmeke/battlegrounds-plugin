@@ -40,7 +40,7 @@ public class ArenaNameValidatorTest {
     }
 
     @Test
-    public void testValidationNoNameSpecified() {
+    public void validationNoNameSpecified() {
         String[] input = new String[] { "command", String.valueOf(gameId) };
         TranslationKey key = TranslationKey.SPECIFY_ARENA_NAME;
 
@@ -54,7 +54,7 @@ public class ArenaNameValidatorTest {
     }
 
     @Test
-    public void testValidationArenaWithSpecifiedNameDoesNotExist() {
+    public void validationArenaWithSpecifiedNameDoesNotExist() {
         String[] input = new String[] { "command", String.valueOf(gameId), arenaName };
         TranslationKey key = TranslationKey.ARENA_NOT_EXISTS;
 
@@ -69,7 +69,7 @@ public class ArenaNameValidatorTest {
     }
 
     @Test
-    public void testValidationArenaWithSpecifiedNameExists() {
+    public void validationArenaWithSpecifiedNameExists() {
         String[] input = new String[] { "command", String.valueOf(gameId), arenaName };
         TranslationKey key = TranslationKey.ARENA_EXISTS;
 
@@ -84,7 +84,7 @@ public class ArenaNameValidatorTest {
     }
 
     @Test
-    public void testValidationPasses() {
+    public void validationPasses() {
         String[] input = new String[] { "command", String.valueOf(gameId), arenaName };
 
         when(gameManager.getArena(game, arenaName)).thenReturn(arena);

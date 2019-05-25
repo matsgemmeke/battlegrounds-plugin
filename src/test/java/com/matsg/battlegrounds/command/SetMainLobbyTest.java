@@ -13,7 +13,7 @@ import static org.mockito.Mockito.*;
 public class SetMainLobbyTest {
 
     @Test
-    public void testSetMainLobbyCommand() {
+    public void setMainLobbyCommand() {
         String responseMessage = "Response";
         TranslationKey key = TranslationKey.MAINLOBBY_SET;
 

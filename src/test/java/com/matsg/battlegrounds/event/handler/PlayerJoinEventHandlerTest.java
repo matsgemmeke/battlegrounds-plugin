@@ -28,7 +28,7 @@ public class PlayerJoinEventHandlerTest {
     }
 
     @Test
-    public void testNewPlayerRegistration() {
+    public void newPlayerRegistration() {
         when(playerStorage.contains(player.getUniqueId())).thenReturn(false);
 
         PlayerJoinEventHandler eventHandler = new PlayerJoinEventHandler(plugin);
@@ -39,7 +39,7 @@ public class PlayerJoinEventHandlerTest {
     }
 
     @Test
-    public void testExistingPlayerUpdate() {
+    public void existingPlayerUpdate() {
         when(playerStorage.contains(player.getUniqueId())).thenReturn(true);
 
         PlayerJoinEventHandler eventHandler = new PlayerJoinEventHandler(plugin);

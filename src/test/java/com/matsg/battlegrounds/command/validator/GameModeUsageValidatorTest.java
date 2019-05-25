@@ -41,7 +41,7 @@ public class GameModeUsageValidatorTest {
     }
 
     @Test
-    public void testValidationGameModeTypeIsNotUsedByGame() {
+    public void validationGameModeTypeIsNotUsedByGame() {
         String[] input = new String[] { "command", String.valueOf(gameId) };
         TranslationKey key = TranslationKey.GAMEMODE_NOT_USED;
 
@@ -56,7 +56,7 @@ public class GameModeUsageValidatorTest {
     }
 
     @Test
-    public void testValidationGameModeTypeIsUsedByGame() {
+    public void validationGameModeTypeIsUsedByGame() {
         GameMode gameMode = mock(GameMode.class);
         String[] input = new String[] { "command", String.valueOf(gameId) };
 

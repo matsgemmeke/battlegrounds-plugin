@@ -12,7 +12,7 @@ import static org.mockito.Mockito.*;
 public class PlayerSwapItemListenerTest {
 
     @Test
-    public void testEventHandling() {
+    public void eventHandling() {
         // Create dependency mocks
         Battlegrounds plugin = mock(Battlegrounds.class);
         EventDispatcher eventDispatcher = mock(EventDispatcher.class);

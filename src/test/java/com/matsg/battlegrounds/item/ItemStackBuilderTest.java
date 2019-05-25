@@ -30,7 +30,7 @@ public class ItemStackBuilderTest {
     }
 
     @Test
-    public void testItemStackBuild() {
+    public void buildItemStack() {
         ItemStackBuilder builder = new ItemStackBuilder(itemStack);
         ItemStack itemStack = builder.build();
 
@@ -39,7 +39,7 @@ public class ItemStackBuilderTest {
     }
 
     @Test
-    public void testAddEnchantment() {
+    public void addEnchantmentToItem() {
         Enchantment enchantment = Enchantment.ARROW_DAMAGE;
         int level = 1;
 
@@ -50,7 +50,7 @@ public class ItemStackBuilderTest {
     }
 
     @Test
-    public void testAddEnchantments() {
+    public void addEnchantmentsToItem() {
         Enchantment[] enchantments = new Enchantment[] { Enchantment.ARROW_DAMAGE, Enchantment.ARROW_FIRE };
         int level = 1;
 
@@ -61,7 +61,7 @@ public class ItemStackBuilderTest {
     }
 
     @Test
-    public void testAddItemFlags() {
+    public void addItemFlagsToItem() {
         ItemFlag flag = ItemFlag.HIDE_ATTRIBUTES;
 
         ItemStackBuilder builder = new ItemStackBuilder(itemStack).addItemFlags(flag);
@@ -71,7 +71,7 @@ public class ItemStackBuilderTest {
     }
 
     @Test
-    public void testSetAmount() {
+    public void setAmountOfItem() {
         int amount = 1;
 
         ItemStackBuilder builder = new ItemStackBuilder(itemStack).setAmount(amount);
@@ -81,14 +81,14 @@ public class ItemStackBuilderTest {
     }
 
     @Test(expected = ClassCastException.class)
-    public void testSetColorWithNormalItemMeta() {
+    public void setColorWithNormalItemMeta() {
         Color color = Color.RED;
 
         new ItemStackBuilder(itemStack).setColor(color);
     }
 
     @Test
-    public void testSetColorWithLeatherArmorMeta() {
+    public void setColorWithLeatherArmorMeta() {
         LeatherArmorMeta itemMeta = mock(LeatherArmorMeta.class);
 
         when(itemStack.getItemMeta()).thenReturn(itemMeta);
@@ -102,7 +102,7 @@ public class ItemStackBuilderTest {
     }
 
     @Test
-    public void testSetDisplayName() {
+    public void setDisplayNameOfItem() {
         String displayName = "Test";
 
         ItemStackBuilder builder = new ItemStackBuilder(itemStack).setDisplayName(displayName);
@@ -112,7 +112,7 @@ public class ItemStackBuilderTest {
     }
 
     @Test
-    public void testSetDurability() {
+    public void setDurabilityOfItem() {
         short durability = (short) 1;
 
         ItemStackBuilder builder = new ItemStackBuilder(itemStack).setDurability(durability);
@@ -122,7 +122,7 @@ public class ItemStackBuilderTest {
     }
 
     @Test
-    public void testSetLore() {
+    public void setLoreOfItem() {
         String[] lore = new String[] { "Test", "Test" };
         List<String> loreList = Arrays.asList(lore);
 

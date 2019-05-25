@@ -31,7 +31,7 @@ public class GameIdValidatorTest {
     }
 
     @Test
-    public void testValidationNoIdSpecified() {
+    public void validationNoIdSpecified() {
         String[] input = new String[] { "command" };
         TranslationKey key = TranslationKey.SPECIFY_GAME_ID;
 
@@ -45,7 +45,7 @@ public class GameIdValidatorTest {
     }
 
     @Test
-    public void testValidationInvalidId() {
+    public void validationInvalidId() {
         String[] input = new String[] { "command", "id" };
         TranslationKey key = TranslationKey.INVALID_ARGUMENT_TYPE;
 
@@ -59,7 +59,7 @@ public class GameIdValidatorTest {
     }
 
     @Test
-    public void testValidationGameWithSpecifiedIdDoesNotExist() {
+    public void validationGameWithSpecifiedIdDoesNotExist() {
         String[] input = new String[] { "command", String.valueOf(gameId) };
         TranslationKey key = TranslationKey.GAME_NOT_EXISTS;
 
@@ -74,7 +74,7 @@ public class GameIdValidatorTest {
     }
 
     @Test
-    public void testValidationGameWithSpecifiedIdExists() {
+    public void validationGameWithSpecifiedIdExists() {
         String[] input = new String[] { "command", String.valueOf(gameId) };
         TranslationKey key = TranslationKey.GAME_EXISTS;
 
@@ -89,7 +89,7 @@ public class GameIdValidatorTest {
     }
 
     @Test
-    public void testValidationPasses() {
+    public void validationPasses() {
         String[] input = new String[] { "command", String.valueOf(gameId) };
 
         when(gameManager.exists(gameId)).thenReturn(true);

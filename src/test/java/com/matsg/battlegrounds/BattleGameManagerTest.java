@@ -38,7 +38,7 @@ public class BattleGameManagerTest {
     }
 
     @Test
-    public void testGameManagerFindArenaByLocation() {
+    public void findArenaByLocation() {
         Location location1 = new Location(mock(World.class), 1, 1, 1), location2 = location1.clone().add(1, 0, 1);
 
         when(arena.contains(location1)).thenReturn(true);
@@ -53,38 +53,38 @@ public class BattleGameManagerTest {
     }
 
     @Test
-    public void testGameManagerFindArenaByName() {
+    public void findArenaByName() {
         BattleGameManager gameManager = new BattleGameManager();
         gameManager.getGames().add(game);
 
         assertEquals(arena, gameManager.getArena(game, "Arena"));
-        assertEquals(null, gameManager.getArena(game, "Fail"));
+        assertNull(gameManager.getArena(game, "Fail"));
     }
 
     @Test
-    public void testGameManagerFindGamesByArena() {
+    public void findGameByArena() {
         Arena otherArena = mock(Arena.class);
 
         BattleGameManager gameManager = new BattleGameManager();
         gameManager.getGames().add(game);
 
         assertEquals(game, gameManager.getGame(arena));
-        assertEquals(null, gameManager.getGame(otherArena));
+        assertNull(gameManager.getGame(otherArena));
     }
 
     @Test
-    public void testGameManagerFindGamesById() {
+    public void findGameById() {
         BattleGameManager gameManager = new BattleGameManager();
         gameManager.getGames().add(game);
 
         assertTrue(gameManager.exists(1));
         assertFalse(gameManager.exists(2));
         assertEquals(game, gameManager.getGame(1));
-        assertEquals(null, gameManager.getGame(2));
+        assertNull(gameManager.getGame(2));
     }
 
     @Test
-    public void testGameManagerFindGamesByPlayer() {
+    public void findGameByPlayer() {
         GamePlayer gamePlayer = mock(GamePlayer.class);
         Player playerOne = mock(Player.class), playerTwo = mock(Player.class);
 
@@ -95,13 +95,13 @@ public class BattleGameManagerTest {
         gameManager.getGames().add(game);
 
         assertEquals(game, gameManager.getGame(playerOne));
-        assertEquals(null, gameManager.getGame(playerTwo));
+        assertNull(gameManager.getGame(playerTwo));
         assertEquals(gamePlayer, gameManager.getGamePlayer(playerOne));
-        assertEquals(null, gameManager.getGamePlayer(playerTwo));
+        assertNull(gameManager.getGamePlayer(playerTwo));
     }
 
     @Test
-    public void testGameManagerGetAllArenas() {
+    public void findAllArenas() {
         BattleGameManager gameManager = new BattleGameManager();
         gameManager.getGames().add(game);
 
@@ -110,7 +110,7 @@ public class BattleGameManagerTest {
     }
 
     @Test
-    public void testGameManagerGetAllPlayers() {
+    public void findAllPlayers() {
         List<GamePlayer> list = new ArrayList<>();
 
         GamePlayer gamePlayer = mock(GamePlayer.class);
@@ -127,7 +127,7 @@ public class BattleGameManagerTest {
     }
 
     @Test
-    public void testGameManagerShutdown() {
+    public void shutDownAllGames() {
         BattleGameManager gameManager = new BattleGameManager();
         gameManager.getGames().add(game);
 

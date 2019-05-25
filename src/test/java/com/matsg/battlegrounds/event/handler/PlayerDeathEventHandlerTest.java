@@ -60,7 +60,7 @@ public class PlayerDeathEventHandlerTest {
     }
 
     @Test
-    public void testPlayerDeathWhenNotPlaying() {
+    public void playerDeathWhenNotPlaying() {
         when(playerManager.getGamePlayer(player)).thenReturn(null);
 
         PlayerDeathEventHandler eventHandler = new PlayerDeathEventHandler(plugin);
@@ -72,7 +72,7 @@ public class PlayerDeathEventHandlerTest {
     }
 
     @Test
-    public void testUnknownDeathCause() {
+    public void playerDeathWithUnknownCause() {
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
 
         PlayerDeathEventHandler eventHandler = new PlayerDeathEventHandler(plugin);
@@ -88,7 +88,7 @@ public class PlayerDeathEventHandlerTest {
     }
 
     @Test
-    public void testEventCallAndGameModeDeathMethod() {
+    public void playerDeathCallsEventAndGameModeMethod() {
         EntityDamageEvent damageCause = new EntityDamageEvent(player, DamageCause.ENTITY_ATTACK, 0);
 
         when(player.getLastDamageCause()).thenReturn(damageCause);

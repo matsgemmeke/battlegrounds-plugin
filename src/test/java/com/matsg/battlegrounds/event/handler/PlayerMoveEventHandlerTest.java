@@ -81,7 +81,7 @@ public class PlayerMoveEventHandlerTest {
     }
 
     @Test
-    public void testPlayerMoveWhenNotPlaying() {
+    public void playerMoveWhenNotPlaying() {
         when(playerManager.getGamePlayer(player)).thenReturn(null);
 
         PlayerMoveEventHandler eventHandler = new PlayerMoveEventHandler(plugin);
@@ -93,7 +93,7 @@ public class PlayerMoveEventHandlerTest {
     }
 
     @Test
-    public void testPlayerMoveInArenaWhileInGame() {
+    public void playerMoveInArenaWhileInGame() {
         when(game.getState()).thenReturn(new InGameState());
 
         PlayerMoveEventHandler eventHandler = new PlayerMoveEventHandler(plugin);
@@ -106,7 +106,7 @@ public class PlayerMoveEventHandlerTest {
     }
 
     @Test
-    public void testPlayerMoveOutsideArenaWhileInGame() {
+    public void playerMoveOutsideArenaWhileInGame() {
         event.setTo(new Location(world, 1000, 1000, 1000));
 
         Version version = mock(Version.class);
@@ -126,7 +126,7 @@ public class PlayerMoveEventHandlerTest {
     }
 
     @Test
-    public void testPlayerMoveInArenaWhileCountdown() {
+    public void playerMoveInArenaWhileCountdown() {
         Spawn spawn = new ArenaSpawn(1, new Location(world, 50, 50, 50), 1);
         spawn.setGamePlayer(gamePlayer);
 
@@ -144,7 +144,7 @@ public class PlayerMoveEventHandlerTest {
     }
 
     @Test
-    public void testPlayerMoveInArenaWhileCountdownNoSpawn() {
+    public void playerMoveInArenaWhileCountdownNoSpawn() {
         Team team = new BattleTeam(1, "Team", null, null);
 
         when(game.getState()).thenReturn(new StartingState());

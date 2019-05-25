@@ -50,7 +50,7 @@ public class PlayerItemHeldEventHandlerTest {
     }
 
     @Test
-    public void testItemSwitchWhenNotPlaying() {
+    public void itemSwitchWhenNotPlaying() {
         when(playerManager.getGamePlayer(player)).thenReturn(null);
 
         PlayerItemHeldEventHandler eventHandler = new PlayerItemHeldEventHandler(plugin);
@@ -62,7 +62,7 @@ public class PlayerItemHeldEventHandlerTest {
     }
 
     @Test
-    public void testItemSwitchWhenHavingNoLoadoutSelected() {
+    public void itemSwitchWhenHavingNoLoadoutSelected() {
         when(gamePlayer.getLoadout()).thenReturn(null);
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
 
@@ -75,7 +75,7 @@ public class PlayerItemHeldEventHandlerTest {
     }
 
     @Test
-    public void testItemSwitchWhenNotHoldingWeapon() {
+    public void itemSwitchWhenNotHoldingWeapon() {
         when(loadout.getWeapon(any(ItemStack.class))).thenReturn(null);
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
 
@@ -89,7 +89,7 @@ public class PlayerItemHeldEventHandlerTest {
     }
 
     @Test
-    public void testItemSwitchWhenHoldingWeapon() {
+    public void itemSwitchWhenHoldingWeapon() {
         when(loadout.getWeapon(any(ItemStack.class))).thenReturn(weapon);
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
 

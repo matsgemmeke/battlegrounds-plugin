@@ -67,7 +67,7 @@ public class BlockBreakEventHandlerTest {
     }
 
     @Test
-    public void testBlockBreakOutsideArena() {
+    public void blockBreakOutsideArena() {
         config.arenaProtection = true;
 
         when(block.getLocation()).thenReturn(new Location(world, 1000, 1000, 1000));
@@ -79,7 +79,7 @@ public class BlockBreakEventHandlerTest {
     }
 
     @Test
-    public void testBlockBreakWithoutArenaProtectionWhenNotPlaying() {
+    public void blockBreakWithoutArenaProtectionWhenNotPlaying() {
         config.arenaProtection = false;
 
         when(playerManager.getGamePlayer(player)).thenReturn(null);
@@ -91,7 +91,7 @@ public class BlockBreakEventHandlerTest {
     }
 
     @Test
-    public void testBlockBreakWithArenaProtectionWhenNotPlaying() {
+    public void blockBreakWithArenaProtectionWhenNotPlaying() {
         config.arenaProtection = true;
 
         when(playerManager.getGamePlayer(player)).thenReturn(null);
@@ -103,7 +103,7 @@ public class BlockBreakEventHandlerTest {
     }
 
     @Test
-    public void testBlockBreakWithoutArenaProtectionWhenPlaying() {
+    public void blockBreakWithoutArenaProtectionWhenPlaying() {
         config.arenaProtection = false;
 
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
@@ -115,7 +115,7 @@ public class BlockBreakEventHandlerTest {
     }
 
     @Test
-    public void testBlockBreakWithArenaProtectionWhenPlaying() {
+    public void blockBreakWithArenaProtectionWhenPlaying() {
         config.arenaProtection = true;
 
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);

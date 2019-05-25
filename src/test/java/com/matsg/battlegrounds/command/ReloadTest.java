@@ -28,7 +28,7 @@ public class ReloadTest {
     }
 
     @Test
-    public void testReloadCommandWithoutFail() {
+    public void reloadWithoutFail() {
         TranslationKey key = TranslationKey.RELOAD_SUCCESS;
 
         when(plugin.loadConfigs()).thenReturn(true);
@@ -41,7 +41,7 @@ public class ReloadTest {
     }
 
     @Test
-    public void testReloadCommandWithFail() {
+    public void reloadWithFail() {
         TranslationKey key = TranslationKey.RELOAD_FAILED;
 
         when(plugin.loadConfigs()).thenReturn(false);

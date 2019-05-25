@@ -59,7 +59,7 @@ public class PlayerPickUpItemEventHandlerTest {
     }
 
     @Test
-    public void testPlayerPickUpItemWhenNotPlaying() {
+    public void playerPickUpItemWhenNotPlaying() {
         when(playerManager.getGamePlayer(player)).thenReturn(null);
 
         PlayerPickupItemEventHandler eventHandler = new PlayerPickupItemEventHandler(plugin);
@@ -71,7 +71,7 @@ public class PlayerPickUpItemEventHandlerTest {
     }
 
     @Test
-    public void testPlayerPickUpItemNotDroppable() {
+    public void playerPickUpItemNotDroppable() {
         Item item = mock(Attachment.class);
         List<Item> items = new ArrayList<>();
 
@@ -90,7 +90,7 @@ public class PlayerPickUpItemEventHandlerTest {
     }
 
     @Test
-    public void testPlayerPickUpItemIsDroppable() {
+    public void playerPickUpItemIsDroppable() {
         Equipment equipment = mock(Equipment.class);
         List<Item> items = new ArrayList<>();
 
