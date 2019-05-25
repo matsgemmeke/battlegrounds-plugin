@@ -2,6 +2,7 @@ package com.matsg.battlegrounds.game.mode.ffa;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.event.GameEndEvent;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent.DeathCause;
 import com.matsg.battlegrounds.api.game.Game;
@@ -12,7 +13,7 @@ import com.matsg.battlegrounds.api.game.Objective;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.Hitbox;
-import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.game.BattleTeam;
 import com.matsg.battlegrounds.game.mode.ArenaGameMode;
 import com.matsg.battlegrounds.game.mode.GameModeCountdown;
@@ -30,12 +31,12 @@ public class FreeForAll extends ArenaGameMode {
 
     private FFAConfig config;
 
-    public FreeForAll(Battlegrounds plugin, Game game, FFAConfig config) {
-        super(plugin, game);
+    public FreeForAll(Battlegrounds plugin, Game game, Translator translator, FFAConfig config) {
+        super(plugin, game, translator);
         this.config = config;
         
-        setName(messageHelper.create(TranslationKey.FFA_NAME));
-        setShortName(messageHelper.create(TranslationKey.FFA_SHORT));
+        setName(translator.translate(TranslationKey.FFA_NAME));
+        setShortName(translator.translate(TranslationKey.FFA_SHORT));
 
         objectives.add(new EliminationObjective(game, 2));
         objectives.add(new ScoreObjective(game, config.getKillsToWin()));
@@ -73,14 +74,14 @@ public class FreeForAll extends ArenaGameMode {
     }
 
     public void onDeath(GamePlayer gamePlayer, DeathCause deathCause) {
-        game.getPlayerManager().broadcastMessage(messageHelper.createSimple(deathCause.getMessagePath(),
+        game.getPlayerManager().broadcastMessage(translator.translate(deathCause.getMessagePath(),
                 new Placeholder("bg_player", gamePlayer.getName())
         ));
         handleDeath(gamePlayer);
     }
 
     public void onKill(GamePlayer gamePlayer, GamePlayer killer, Weapon weapon, Hitbox hitbox) {
-        game.getPlayerManager().broadcastMessage(messageHelper.create(getKillMessageKey(hitbox),
+        game.getPlayerManager().broadcastMessage(translator.translate(getKillMessageKey(hitbox),
                 new Placeholder("bg_killer", killer.getName()),
                 new Placeholder("bg_player", gamePlayer.getName()),
                 new Placeholder("bg_weapon", weapon.getName())
@@ -127,7 +128,7 @@ public class FreeForAll extends ArenaGameMode {
     }
 
     public void startCountdown() {
-        GameModeCountdown countdown = new GameModeCountdown(game, config.getCountdownLength());
+        GameModeCountdown countdown = new GameModeCountdown(game, translator, config.getCountdownLength());
         countdown.runTaskTimer(0, 20);
 
         game.setCountdown(countdown);
@@ -146,14 +147,14 @@ public class FreeForAll extends ArenaGameMode {
         };
 
         for (String message : config.getEndMessage()) {
-            game.getPlayerManager().broadcastMessage(messageHelper.create(TranslationKey.PREFIX) + messageHelper.createSimple(message, placeholders));
+            game.getPlayerManager().broadcastMessage(translator.translate(TranslationKey.PREFIX) + translator.translate(message, placeholders));
         }
 
         for (Team team : teams) {
             Result result = Result.getResult(team, getSortedTeams());
             if (result != null) {
                 for (GamePlayer gamePlayer : team.getPlayers()) {
-                    objective.getTitle().send(gamePlayer.getPlayer(), new Placeholder("bg_result", messageHelper.create(result.getTranslationKey())));
+                    objective.getTitle().send(gamePlayer.getPlayer(), new Placeholder("bg_result", translator.translate(result.getTranslationKey())));
                 }
             }
         }

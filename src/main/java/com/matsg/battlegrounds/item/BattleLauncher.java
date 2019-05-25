@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.item;
 
 import com.matsg.battlegrounds.TranslationKey;
+import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent.DeathCause;
 import com.matsg.battlegrounds.api.event.GamePlayerKillPlayerEvent;
@@ -22,10 +23,10 @@ public class BattleLauncher extends BattleFirearm implements Launcher {
     private LaunchType launchType;
     private Lethal lethal;
 
-    public BattleLauncher(String id, String name, String description, ItemStack itemStack,
-                     int magazine, int ammo, int maxAmmo, double launchSpeed, int cooldown, int reloadDuration, double accuracy,
-                     Lethal lethal, LaunchType launchType, ReloadType reloadType, Sound[] reloadSound, Sound[] shootSound) {
-        super(id, name, description, itemStack, magazine, ammo, maxAmmo, cooldown, reloadDuration, accuracy, reloadType, FirearmType.LAUNCHER, reloadSound, shootSound);
+    public BattleLauncher(Battlegrounds plugin, String id, String name, String description, ItemStack itemStack,
+                          int magazine, int ammo, int maxAmmo, double launchSpeed, int cooldown, int reloadDuration, double accuracy,
+                          Lethal lethal, LaunchType launchType, ReloadType reloadType, Sound[] reloadSound, Sound[] shootSound) {
+        super(plugin, id, name, description, itemStack, magazine, ammo, maxAmmo, cooldown, reloadDuration, accuracy, reloadType, FirearmType.LAUNCHER, reloadSound, shootSound);
         this.launchSpeed = launchSpeed;
         this.launchType = launchType;
         this.lethal = lethal;
@@ -50,10 +51,10 @@ public class BattleLauncher extends BattleFirearm implements Launcher {
     protected String[] getLore() {
         return new String[] {
                 ChatColor.WHITE + firearmType.getName(),
-                ChatColor.GRAY + format(6, getAccuracy() * 100.0, 100.0) + " " + messageHelper.create(TranslationKey.STAT_ACCURACY),
-                ChatColor.GRAY + format(6, lethal.getShortDamage(), 50.0) + " " + messageHelper.create(TranslationKey.STAT_DAMAGE),
-                ChatColor.GRAY + format(6, Math.max((15 - getCooldown() / 2) * 10.0, 40.0), 200.0) + " " + messageHelper.create(TranslationKey.STAT_FIRERATE),
-                ChatColor.GRAY + format(6, lethal.getLongRange(), 35.0) + " " + messageHelper.create(TranslationKey.STAT_RANGE) };
+                ChatColor.GRAY + format(6, getAccuracy() * 100.0, 100.0) + " " + translator.translate(TranslationKey.STAT_ACCURACY),
+                ChatColor.GRAY + format(6, lethal.getShortDamage(), 50.0) + " " + translator.translate(TranslationKey.STAT_DAMAGE),
+                ChatColor.GRAY + format(6, Math.max((15 - getCooldown() / 2) * 10.0, 40.0), 200.0) + " " + translator.translate(TranslationKey.STAT_FIRERATE),
+                ChatColor.GRAY + format(6, lethal.getLongRange(), 35.0) + " " + translator.translate(TranslationKey.STAT_RANGE) };
     }
 
     public DamageSource getProjectile() {

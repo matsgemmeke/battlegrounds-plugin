@@ -5,7 +5,8 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Selection;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.api.Placeholder;
+import com.matsg.battlegrounds.command.validator.ArenaNameValidator;
 import com.matsg.battlegrounds.command.validator.GameIdValidator;
 import com.matsg.battlegrounds.game.BattleArena;
 import org.bukkit.Location;
@@ -24,7 +25,8 @@ public class CreateArena extends Command {
         setPlayerOnly(true);
         setUsage("bg createarena [id] [arena]");
 
-        registerValidator(new GameIdValidator(plugin));
+        registerValidator(new GameIdValidator(plugin, plugin.getTranslator(), true));
+        registerValidator(new ArenaNameValidator(plugin, plugin.getTranslator(), false));
     }
 
     public void execute(CommandSender sender, String[] args) {
@@ -33,26 +35,17 @@ public class CreateArena extends Command {
         int id = Integer.parseInt(args[1]);
 
         Game game = plugin.getGameManager().getGame(id);
-
-        if (args.length == 2) {
-            player.sendMessage(createMessage(TranslationKey.SPECIFY_ARENA_NAME));
-            return;
-        }
-
-        String arenaName = args[2].replaceAll("_", " ");
-
-        if (plugin.getGameManager().getArena(game, arenaName) != null) {
-            player.sendMessage(createMessage(TranslationKey.ARENA_EXISTS,
-                    new Placeholder("bg_game", id),
-                    new Placeholder("bg_arena", arenaName)
-            ));
-            return;
-        }
-
         Selection selection = plugin.getSelectionManager().getSelection(player);
+
+        if (selection == null) {
+            player.sendMessage(createMessage(TranslationKey.NO_SELECTION));
+            return;
+        }
+
         Location max = selection.getMaximumPoint();
         Location min = selection.getMinimumPoint();
 
+        String arenaName = args[2].replaceAll("_", " ");
         World world = player.getWorld();
         Arena arena = new BattleArena(arenaName, world, max, min);
 

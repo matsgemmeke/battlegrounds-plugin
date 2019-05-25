@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.game.mode.zombies;
 
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.storage.CacheYaml;
@@ -24,15 +25,17 @@ public class ZombiesDataLoader {
     private ItemFinder itemFinder;
     private Logger logger;
     private PerkFactory perkFactory;
+    private Translator translator;
     private Zombies zombies;
 
-    public ZombiesDataLoader(Zombies zombies, Game game, Arena arena, ItemFinder itemFinder) {
+    public ZombiesDataLoader(Zombies zombies, Game game, Arena arena, ItemFinder itemFinder, PerkFactory perkFactory, Translator translator) {
         this.zombies = zombies;
         this.game = game;
         this.arena = arena;
         this.itemFinder = itemFinder;
+        this.perkFactory = perkFactory;
+        this.translator = translator;
         this.logger = Bukkit.getLogger();
-        this.perkFactory = new PerkFactory();
     }
 
     public void load() {
@@ -175,6 +178,7 @@ public class ZombiesDataLoader {
                         game,
                         sign,
                         perkFactory.make(perkEffectType),
+                        translator,
                         price,
                         maxBuys
                 );

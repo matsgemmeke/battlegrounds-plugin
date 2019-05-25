@@ -2,21 +2,21 @@ package com.matsg.battlegrounds.command.component;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.Spawn;
-import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.game.ArenaSpawn;
-import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.entity.Player;
 
 public class AddSpawn extends ComponentCommand {
 
-    private MessageHelper messageHelper;
+    private Translator translator;
 
-    public AddSpawn(Battlegrounds plugin) {
+    public AddSpawn(Battlegrounds plugin, Translator translator) {
         super(plugin);
-        this.messageHelper = new MessageHelper();
+        this.translator = translator;
     }
 
     public void execute(ComponentContext context, int componentId, String[] args) {
@@ -31,7 +31,7 @@ public class AddSpawn extends ComponentCommand {
             try {
                 teamId = Integer.parseInt(args[3]);
             } catch (Exception e) {
-                player.sendMessage(messageHelper.create(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[0])));
+                player.sendMessage(translator.translate(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[0])));
                 return;
             }
         }
@@ -40,7 +40,7 @@ public class AddSpawn extends ComponentCommand {
             teamBase = args[4].equals("-b");
 
             if (teamBase && arena.getTeamBase(teamId) != null) {
-                player.sendMessage(messageHelper.create(TranslationKey.SPAWN_TEAMBASE_EXISTS,
+                player.sendMessage(translator.translate(TranslationKey.SPAWN_TEAMBASE_EXISTS,
                         new Placeholder("bg_arena", arena.getName()),
                         new Placeholder("bg_team", teamId)
                 ));
@@ -59,7 +59,7 @@ public class AddSpawn extends ComponentCommand {
         game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".type", "spawn");
         game.getDataFile().save();
 
-        player.sendMessage(messageHelper.create(TranslationKey.SPAWN_ADD,
+        player.sendMessage(translator.translate(TranslationKey.SPAWN_ADD,
                 new Placeholder("bg_arena", arena.getName()),
                 new Placeholder("bg_component_id", componentId)
         ));

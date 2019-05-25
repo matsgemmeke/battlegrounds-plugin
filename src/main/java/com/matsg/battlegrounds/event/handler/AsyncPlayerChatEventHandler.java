@@ -2,12 +2,12 @@ package com.matsg.battlegrounds.event.handler;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.event.EventHandler;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
-import com.matsg.battlegrounds.api.util.Placeholder;
-import com.matsg.battlegrounds.util.MessageHelper;
+import com.matsg.battlegrounds.api.Placeholder;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -15,11 +15,11 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 public class AsyncPlayerChatEventHandler implements EventHandler<AsyncPlayerChatEvent> {
 
     private Battlegrounds plugin;
-    private MessageHelper messageHelper;
+    private Translator translator;
 
-    public AsyncPlayerChatEventHandler(Battlegrounds plugin) {
+    public AsyncPlayerChatEventHandler(Battlegrounds plugin, Translator translator) {
         this.plugin = plugin;
-        this.messageHelper = new MessageHelper();
+        this.translator = translator;
     }
 
     public void handle(AsyncPlayerChatEvent event) {
@@ -40,7 +40,7 @@ public class AsyncPlayerChatEventHandler implements EventHandler<AsyncPlayerChat
             plugin.getLogger().info("[Game " + game.getId() + "] " + gamePlayer.getName() + ": " + event.getMessage());
         }
 
-        game.getPlayerManager().broadcastMessage(messageHelper.create(TranslationKey.PLAYER_MESSAGE,
+        game.getPlayerManager().broadcastMessage(translator.translate(TranslationKey.PLAYER_MESSAGE,
                 new Placeholder("bg_message", event.getMessage()),
                 new Placeholder("player_name", team.getChatColor() + gamePlayer.getName() + ChatColor.WHITE)
         ));

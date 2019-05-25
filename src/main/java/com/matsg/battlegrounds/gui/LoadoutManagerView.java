@@ -2,10 +2,10 @@ package com.matsg.battlegrounds.gui;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
-import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -22,13 +22,13 @@ public class LoadoutManagerView implements View {
     private Battlegrounds plugin;
     private Inventory inventory;
     private Map<ItemStack, Loadout> loadouts;
-    private MessageHelper messageHelper;
+    private Translator translator;
 
-    public LoadoutManagerView(Battlegrounds plugin, Player player) {
+    public LoadoutManagerView(Battlegrounds plugin, Translator translator, Player player) {
         this.plugin = plugin;
+        this.translator = translator;
         this.loadouts = new HashMap<>();
-        this.messageHelper = new MessageHelper();
-        this.inventory = plugin.getServer().createInventory(this, 27, messageHelper.create(TranslationKey.VIEW_LOADOUT_MANAGER));
+        this.inventory = plugin.getServer().createInventory(this, 27, translator.translate(TranslationKey.VIEW_LOADOUT_MANAGER));
 
         int i = 0;
         for (Loadout loadout : plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).getLoadouts()) {
@@ -36,7 +36,7 @@ public class LoadoutManagerView implements View {
                     .addItemFlags(ItemFlag.values())
                     .setAmount(++ i)
                     .setDisplayName(ChatColor.WHITE + loadout.getName())
-                    .setLore(messageHelper.create(TranslationKey.EDIT_LOADOUT))
+                    .setLore(translator.translate(TranslationKey.EDIT_LOADOUT))
                     .setUnbreakable(true)
                     .build();
 
@@ -63,7 +63,7 @@ public class LoadoutManagerView implements View {
         if (loadout == null) {
             return;
         }
-        player.openInventory(new EditLoadoutView(plugin, loadout).getInventory());
+        player.openInventory(new EditLoadoutView(plugin, translator, loadout).getInventory());
     }
 
     public boolean onClose() {

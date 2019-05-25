@@ -2,23 +2,23 @@ package com.matsg.battlegrounds.command.validator;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.Section;
-import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.game.mode.zombies.Zombies;
-import com.matsg.battlegrounds.util.MessageHelper;
 
 public class SectionNameValidator implements CommandValidator {
 
     private Battlegrounds plugin;
     private int sectionPos; // The position in the input args where the section should be specified
-    private MessageHelper messageHelper;
+    private Translator translator;
 
-    public SectionNameValidator(Battlegrounds plugin, int sectionPos) {
+    public SectionNameValidator(Battlegrounds plugin, Translator translator, int sectionPos) {
         this.plugin = plugin;
+        this.translator = translator;
         this.sectionPos = sectionPos;
-        this.messageHelper = new MessageHelper();
     }
 
     public ValidationResponse validate(String[] args) {
@@ -28,14 +28,14 @@ public class SectionNameValidator implements CommandValidator {
         Arena arena = game.getArena();
 
         if (args.length < sectionPos) {
-            return new ValidationResponse(messageHelper.create(TranslationKey.SPECIFY_SECTION_NAME));
+            return new ValidationResponse(translator.translate(TranslationKey.SPECIFY_SECTION_NAME));
         }
 
         Zombies zombies = game.getGameMode(Zombies.class);
         Section section = zombies.getSection(args[sectionPos - 1]);
 
         if (section == null) {
-            return new ValidationResponse(messageHelper.create(TranslationKey.SECTION_NOT_EXISTS,
+            return new ValidationResponse(translator.translate(TranslationKey.SECTION_NOT_EXISTS,
                     new Placeholder("bg_arena", arena.getName()),
                     new Placeholder("bg_section", args[sectionPos - 1])
             ));

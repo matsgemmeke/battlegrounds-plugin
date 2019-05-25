@@ -1,4 +1,4 @@
-package com.matsg.battlegrounds.api.util;
+package com.matsg.battlegrounds.api;
 
 public class Placeholder {
 

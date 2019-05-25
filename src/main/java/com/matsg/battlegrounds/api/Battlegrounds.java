@@ -89,6 +89,13 @@ public interface Battlegrounds extends Plugin {
     SelectionManager getSelectionManager();
 
     /**
+     * Gets the message translator of the plugin.
+     *
+     * @return the plugin message translator
+     */
+    Translator getTranslator();
+
+    /**
      * Gets the NMS version of the plugin.
      *
      * @return The battlegrounds version for handling NMS related functions

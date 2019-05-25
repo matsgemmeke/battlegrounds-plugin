@@ -4,7 +4,7 @@ import com.matsg.battlegrounds.api.storage.Yaml;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
-import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.gui.scoreboard.AbstractScoreboard;
 import com.matsg.battlegrounds.gui.scoreboard.ScoreboardBuilder;
 import org.bukkit.scoreboard.DisplaySlot;

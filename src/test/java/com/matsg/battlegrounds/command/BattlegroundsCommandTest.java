@@ -1,47 +1,40 @@
 package com.matsg.battlegrounds.command;
 
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.Translator;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Translator;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.command.PluginCommand;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.io.File;
 
 import static org.mockito.Mockito.*;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({
-        PluginCommand.class,
-        Translator.class
-})
 public class BattlegroundsCommandTest {
 
     private Battlegrounds plugin;
     private Command fakeCommand;
     private CommandSender sender;
     private String fakeCommandName;
+    private String responseMessage;
+    private Translator translator;
 
     @Before
     public void setUp() {
         this.plugin = mock(Battlegrounds.class);
         this.sender = mock(CommandSender.class);
         this.fakeCommand = mock(Command.class);
+        this.translator = mock(Translator.class);
 
         this.fakeCommandName = "fake";
+        this.responseMessage = "Response";
 
         File fakeFile = new File("");
 
-        PowerMockito.mockStatic(Translator.class);
-
         when(plugin.getDataFolder()).thenReturn(fakeFile);
+        when(plugin.getTranslator()).thenReturn(translator);
         when(fakeCommand.getName()).thenReturn(fakeCommandName);
     }
 
@@ -57,46 +50,44 @@ public class BattlegroundsCommandTest {
     @Test
     public void testCommandSubcommandDoesNotExist() {
         BattlegroundsCommand command = new BattlegroundsCommand(plugin);
-        String message = "Test", messagePath = TranslationKey.INVALID_ARGUMENTS.getPath();
+        TranslationKey key = TranslationKey.INVALID_ARGUMENTS;
 
-        when(Translator.translate(messagePath)).thenReturn(message);
+        when(translator.translate(key)).thenReturn(responseMessage);
 
         command.onCommand(sender, null, "battlegrounds", new String[] { "invalid" });
 
-        verify(sender, times(1)).sendMessage(message);
+        verify(sender, times(1)).sendMessage(responseMessage);
     }
 
     @Test
     public void testCommandSubcommandIsPlayerOnly() {
         BattlegroundsCommand command = new BattlegroundsCommand(plugin);
         CommandSender sender = mock(ConsoleCommandSender.class);
-        String message = "Test", messagePath = TranslationKey.INVALID_SENDER.getPath();
+        TranslationKey key = TranslationKey.INVALID_SENDER;
 
         when(fakeCommand.isPlayerOnly()).thenReturn(true);
-        when(Translator.translate(messagePath)).thenReturn(message);
+        when(translator.translate(key)).thenReturn(responseMessage);
 
         command.getSubCommands().add(fakeCommand);
-
         command.onCommand(sender, null, "battlegrounds", new String[] { fakeCommandName });
 
-        verify(sender, times(1)).sendMessage(message);
+        verify(sender, times(1)).sendMessage(responseMessage);
     }
 
     @Test
     public void testCommandSubcommandRequiresPermission() {
         BattlegroundsCommand command = new BattlegroundsCommand(plugin);
-        String message = "Test", messagePath = TranslationKey.NO_PERMISSION.getPath();
         String permission = "permission";
+        TranslationKey key = TranslationKey.NO_PERMISSION;
 
         when(fakeCommand.getPermissionNode()).thenReturn(permission);
         when(sender.hasPermission(permission)).thenReturn(false);
-        when(Translator.translate(messagePath)).thenReturn(message);
+        when(translator.translate(key)).thenReturn(responseMessage);
 
         command.getSubCommands().add(fakeCommand);
-
         command.onCommand(sender, null, "battlegrounds", new String[] { fakeCommandName });
 
-        verify(sender, times(1)).sendMessage(message);
+        verify(sender, times(1)).sendMessage(responseMessage);
     }
 
     @Test
@@ -105,7 +96,6 @@ public class BattlegroundsCommandTest {
         String[] args = new String[] { fakeCommandName };
 
         command.getSubCommands().add(fakeCommand);
-
         command.onCommand(sender, null, "battlegrounds", args);
 
         verify(fakeCommand, times(1)).execute(sender, args);
@@ -114,17 +104,16 @@ public class BattlegroundsCommandTest {
     @Test
     public void testCommandExecuteSubcommandWithException() {
         BattlegroundsCommand command = new BattlegroundsCommand(plugin);
-        String message = "Test", messagePath = TranslationKey.COMMAND_ERROR.getPath();
         String[] args = new String[] { fakeCommandName };
+        TranslationKey key = TranslationKey.COMMAND_ERROR;
 
         doThrow(new RuntimeException()).when(fakeCommand).execute(sender, args);
 
-        when(Translator.translate(messagePath)).thenReturn(message);
+        when(translator.translate(key)).thenReturn(responseMessage);
 
         command.getSubCommands().add(fakeCommand);
-
         command.onCommand(sender, null, "battlegrounds", args);
 
-        verify(sender, times(1)).sendMessage(message);
+        verify(sender, times(1)).sendMessage(responseMessage);
     }
 }

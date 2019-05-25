@@ -2,22 +2,22 @@ package com.matsg.battlegrounds.command.validator;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameMode;
-import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.game.mode.GameModeType;
-import com.matsg.battlegrounds.util.MessageHelper;
 
 public class GameModeUsageValidator implements CommandValidator {
 
     private Battlegrounds plugin;
     private GameModeType gameModeType;
-    private MessageHelper messageHelper;
+    private Translator translator;
 
-    public GameModeUsageValidator(Battlegrounds plugin, GameModeType gameModeType) {
+    public GameModeUsageValidator(Battlegrounds plugin, Translator translator, GameModeType gameModeType) {
         this.plugin = plugin;
+        this.translator = translator;
         this.gameModeType = gameModeType;
-        this.messageHelper = new MessageHelper();
     }
 
     public ValidationResponse validate(String[] args) {
@@ -31,7 +31,7 @@ public class GameModeUsageValidator implements CommandValidator {
             }
         }
 
-        return new ValidationResponse(messageHelper.create(TranslationKey.GAMEMODE_NOT_USED,
+        return new ValidationResponse(translator.translate(TranslationKey.GAMEMODE_NOT_USED,
                 new Placeholder("bg_game", game.getId()),
                 new Placeholder("bg_gamemode", gameModeType.toString())
         ));

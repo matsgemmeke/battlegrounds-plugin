@@ -2,7 +2,8 @@ package com.matsg.battlegrounds.util;
 
 import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.api.Placeholder;
+import com.matsg.battlegrounds.api.Translator;
 import org.bukkit.entity.Player;
 
 public enum ActionBar {
@@ -18,14 +19,14 @@ public enum ActionBar {
     UNSUFFICIENT_POINTS("actionbar-unsufficient-points");
 
     private Battlegrounds plugin;
-    private MessageHelper messageHelper;
     private String message, path;
+    private Translator translator;
 
     ActionBar(String path) {
         this.path = path;
         this.plugin = BattlegroundsPlugin.getPlugin();
-        this.messageHelper = new MessageHelper();
-        this.message = messageHelper.create(path);
+        this.translator = plugin.getTranslator();
+        this.message = translator.translate(path);
     }
 
     public String getMessage() {
@@ -33,7 +34,7 @@ public enum ActionBar {
     }
 
     private String replace(Placeholder... placeholders) {
-        return messageHelper.create(path, placeholders);
+        return translator.translate(path, placeholders);
     }
 
     public void send(Player player, Placeholder... placeholders) {

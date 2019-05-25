@@ -2,17 +2,17 @@ package com.matsg.battlegrounds.command.component;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.MysteryBox;
 import com.matsg.battlegrounds.api.game.Section;
-import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.command.validator.GameModeUsageValidator;
 import com.matsg.battlegrounds.command.validator.SectionNameValidator;
 import com.matsg.battlegrounds.game.mode.GameModeType;
 import com.matsg.battlegrounds.game.mode.zombies.Zombies;
 import com.matsg.battlegrounds.game.mode.zombies.ZombiesMysteryBox;
-import com.matsg.battlegrounds.util.MessageHelper;
 import com.matsg.battlegrounds.util.Pair;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -23,14 +23,14 @@ import java.util.Set;
 
 public class AddMysteryBox extends ComponentCommand {
 
-    private MessageHelper messageHelper;
+    private Translator translator;
 
-    public AddMysteryBox(Battlegrounds plugin) {
+    public AddMysteryBox(Battlegrounds plugin, Translator translator) {
         super(plugin);
-        this.messageHelper = new MessageHelper();
+        this.translator = translator;
 
-        registerValidator(new GameModeUsageValidator(plugin, GameModeType.ZOMBIES));
-        registerValidator(new SectionNameValidator(plugin, 4));
+        registerValidator(new GameModeUsageValidator(plugin, translator, GameModeType.ZOMBIES));
+        registerValidator(new SectionNameValidator(plugin, translator, 4));
     }
 
     public void execute(ComponentContext context, int componentId, String[] args) {
@@ -38,7 +38,7 @@ public class AddMysteryBox extends ComponentCommand {
         BlockState blockState = player.getTargetBlock((Set<Material>) null, 5).getState();
 
         if (!(blockState instanceof Chest) || !(((Chest) blockState).getInventory().getHolder() instanceof DoubleChest)) {
-            player.sendMessage(messageHelper.create(TranslationKey.INVALID_BLOCK));
+            player.sendMessage(translator.translate(TranslationKey.INVALID_BLOCK));
             return;
         }
 
@@ -53,7 +53,7 @@ public class AddMysteryBox extends ComponentCommand {
         }
 
         if (attachedBlock == null) {
-            player.sendMessage(messageHelper.create(TranslationKey.INVALID_BLOCK));
+            player.sendMessage(translator.translate(TranslationKey.INVALID_BLOCK));
             return;
         }
 
@@ -64,7 +64,7 @@ public class AddMysteryBox extends ComponentCommand {
         Section section = zombies.getSection(args[4]);
 
         if (args.length == 5) {
-            player.sendMessage(messageHelper.create(TranslationKey.SPECIFY_MYSTERYBOX_PRICE));
+            player.sendMessage(translator.translate(TranslationKey.SPECIFY_MYSTERYBOX_PRICE));
             return;
         }
 
@@ -73,7 +73,7 @@ public class AddMysteryBox extends ComponentCommand {
         try {
             price = Integer.parseInt(args[5]);
         } catch (Exception e) {
-            player.sendMessage(messageHelper.create(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[5])));
+            player.sendMessage(translator.translate(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[5])));
             return;
         }
 
@@ -100,7 +100,7 @@ public class AddMysteryBox extends ComponentCommand {
         game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".type", "mysterybox");
         game.getDataFile().save();
 
-        player.sendMessage(messageHelper.create(TranslationKey.MYSTERYBOX_ADD,
+        player.sendMessage(translator.translate(TranslationKey.MYSTERYBOX_ADD,
                 new Placeholder("bg_arena", arena.getName()),
                 new Placeholder("bg_component_id", componentId)
         ));

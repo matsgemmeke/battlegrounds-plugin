@@ -1,8 +1,8 @@
 package com.matsg.battlegrounds.item;
 
+import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.item.GunPart;
-import com.matsg.battlegrounds.util.MessageHelper;
 
 public enum BattleGunPart implements GunPart {
 
@@ -18,7 +18,7 @@ public enum BattleGunPart implements GunPart {
 
     BattleGunPart(int id, TranslationKey key) {
         this.id = id;
-        this.name = new MessageHelper().create(key);
+        this.name = BattlegroundsPlugin.getPlugin().getTranslator().translate(key);
     }
 
     public int getId() {

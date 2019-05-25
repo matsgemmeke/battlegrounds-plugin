@@ -2,10 +2,10 @@ package com.matsg.battlegrounds.gui;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.item.*;
-import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
-import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -24,14 +24,14 @@ public class SelectWeaponView implements View {
     private Inventory inventory, previous;
     private Loadout loadout;
     private Map<ItemStack, Weapon> weapons;
-    private MessageHelper messageHelper;
     private Player player;
+    private Translator translator;
 
-    public SelectWeaponView(Battlegrounds plugin, Player player, Loadout loadout, ItemType itemType, List<Weapon> weapons) {
+    public SelectWeaponView(Battlegrounds plugin, Translator translator, Player player, Loadout loadout, ItemType itemType, List<Weapon> weapons) {
         this.plugin = plugin;
+        this.translator = translator;
         this.loadout = loadout;
         this.player = player;
-        this.messageHelper = new MessageHelper();
         this.weapons = new HashMap<>();
 
         this.inventory = plugin.getServer().createInventory(this, 27, itemType.getName());
@@ -49,11 +49,11 @@ public class SelectWeaponView implements View {
             addWeapon(weapon, slot ++);
         }
 
-        inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(messageHelper.create(TranslationKey.GO_BACK)).build());
+        inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(translator.translate(TranslationKey.GO_BACK)).build());
     }
 
-    public SelectWeaponView(Battlegrounds plugin, Player player, Loadout loadout, ItemType itemType, List<Weapon> weapons, Inventory previous) {
-        this(plugin, player, loadout, itemType, weapons);
+    public SelectWeaponView(Battlegrounds plugin, Translator translator, Player player, Loadout loadout, ItemType itemType, List<Weapon> weapons, Inventory previous) {
+        this(plugin, translator, player, loadout, itemType, weapons);
         this.previous = previous;
     }
 
@@ -73,7 +73,7 @@ public class SelectWeaponView implements View {
     private ItemStack getLockedItemStack(Weapon weapon) {
         return new ItemStackBuilder(Material.BARRIER)
                 .addItemFlags(ItemFlag.values())
-                .setDisplayName(messageHelper.create(TranslationKey.ITEM_LOCKED, new Placeholder("bg_level", plugin.getLevelConfig().getLevelUnlocked(weapon.getName()))))
+                .setDisplayName(translator.translate(TranslationKey.ITEM_LOCKED, new Placeholder("bg_level", plugin.getLevelConfig().getLevelUnlocked(weapon.getName()))))
                 .setUnbreakable(true)
                 .build();
     }
@@ -112,7 +112,7 @@ public class SelectWeaponView implements View {
         }
         replaceWeapon(loadout, weapon);
         plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).saveLoadout(loadout.getLoadoutNr(), loadout);
-        player.openInventory(new EditLoadoutView(plugin, loadout).getInventory());
+        player.openInventory(new EditLoadoutView(plugin, translator, loadout).getInventory());
     }
 
     private void replaceWeapon(Loadout loadout, Weapon weapon) {

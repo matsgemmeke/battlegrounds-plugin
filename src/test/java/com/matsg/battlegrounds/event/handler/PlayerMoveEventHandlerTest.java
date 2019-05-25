@@ -2,9 +2,9 @@ package com.matsg.battlegrounds.event.handler;
 
 import com.matsg.battlegrounds.BattleGameManager;
 import com.matsg.battlegrounds.BattlegroundsPlugin;
-import com.matsg.battlegrounds.Translator;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.GameManager;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.Version;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
@@ -35,8 +35,7 @@ import static org.mockito.Mockito.*;
         ActionBar.class,
         BattlegroundsPlugin.class,
         ChatColor.class,
-        ReflectionUtils.class,
-        Translator.class
+        ReflectionUtils.class
 })
 public class PlayerMoveEventHandlerTest {
 
@@ -48,6 +47,7 @@ public class PlayerMoveEventHandlerTest {
     private Player player;
     private PlayerManager playerManager;
     private PlayerMoveEvent event;
+    private Translator translator;
     private World world;
 
     @Before
@@ -57,6 +57,7 @@ public class PlayerMoveEventHandlerTest {
         this.gamePlayer = mock(GamePlayer.class);
         this.player = mock(Player.class);
         this.playerManager = mock(PlayerManager.class);
+        this.translator = mock(Translator.class);
         this.world = mock(World.class);
 
         this.arena = new BattleArena("Arena", world, new Location(world, 100, 100, 100), new Location(world, 0, 0, 0));
@@ -68,7 +69,6 @@ public class PlayerMoveEventHandlerTest {
         PowerMockito.mockStatic(BattlegroundsPlugin.class);
         PowerMockito.mockStatic(ChatColor.class);
         PowerMockito.mockStatic(ReflectionUtils.class);
-        PowerMockito.mockStatic(Translator.class);
 
         when(BattlegroundsPlugin.getPlugin()).thenReturn(plugin);
         when(ReflectionUtils.getEnumVersion()).thenReturn(null);
@@ -77,6 +77,7 @@ public class PlayerMoveEventHandlerTest {
         when(game.getPlayerManager()).thenReturn(playerManager);
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
         when(plugin.getGameManager()).thenReturn(gameManager);
+        when(plugin.getTranslator()).thenReturn(translator);
     }
 
     @Test

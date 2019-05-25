@@ -2,12 +2,12 @@ package com.matsg.battlegrounds.gui;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.storage.ItemConfig;
 import com.matsg.battlegrounds.api.item.*;
-import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.storage.MeleeWeaponConfig;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
-import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -31,15 +31,15 @@ public class EditLoadoutView implements View {
     private Loadout loadout;
     private Map<ItemStack, Attachment> attachments;
     private Map<ItemStack, Gun> attachmentGun;
-    private MessageHelper messageHelper;
+    private Translator translator;
 
-    public EditLoadoutView(Battlegrounds plugin, Loadout loadout) {
-        this.loadout = loadout;
+    public EditLoadoutView(Battlegrounds plugin, Translator translator, Loadout loadout) {
         this.plugin = plugin;
+        this.translator = translator;
+        this.loadout = loadout;
         this.attachments = new HashMap<>();
         this.attachmentGun = new HashMap<>();
         this.items = new ArrayList<>();
-        this.messageHelper = new MessageHelper();
 
         try {
             this.meleeWeaponConfig = new MeleeWeaponConfig(plugin);
@@ -48,9 +48,10 @@ public class EditLoadoutView implements View {
         }
 
         this.inventory = buildInventory(plugin.getServer().createInventory(this, 27,
-                messageHelper.create(TranslationKey.VIEW_EDIT_LOADOUT, new Placeholder("bg_loadout", loadout.getName()))));
+                translator.translate(TranslationKey.VIEW_EDIT_LOADOUT, new Placeholder("bg_loadout", loadout.getName()))
+        ));
 
-        inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(messageHelper.create(TranslationKey.GO_BACK)).build());
+        inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(translator.translate(TranslationKey.GO_BACK)).build());
     }
 
     public Inventory getInventory() {
@@ -59,11 +60,11 @@ public class EditLoadoutView implements View {
 
     private void addAttachmentSlot(Inventory inventory, Gun gun, int slot) {
         Attachment attachment = gun.getAttachments().size() > 0 ? gun.getAttachments().get(0) : null;
-        String[] lore = messageHelper.create(TranslationKey.EDIT_ATTACHMENT).split(",");
+        String[] lore = translator.translate(TranslationKey.EDIT_ATTACHMENT).split(",");
 
         ItemStack itemStack = new ItemStackBuilder(attachment != null ? attachment.getItemStack() : new ItemStack(Material.BARRIER))
                 .addItemFlags(ItemFlag.values())
-                .setDisplayName(ChatColor.WHITE + messageHelper.create(TranslationKey.GUN_ATTACHMENT, new Placeholder("bg_weapon", gun.getName())))
+                .setDisplayName(ChatColor.WHITE + translator.translate(TranslationKey.GUN_ATTACHMENT, new Placeholder("bg_weapon", gun.getName())))
                 .setLore(ChatColor.WHITE + getItemName(attachment), lore[0], lore[1])
                 .setUnbreakable(true)
                 .build();
@@ -78,7 +79,7 @@ public class EditLoadoutView implements View {
         for (ItemSlot itemSlot : ItemSlot.WEAPON_SLOTS) {
             Weapon weapon = loadout.getWeapon(itemSlot);
 
-            String[] lore = messageHelper.create(TranslationKey.EDIT_WEAPON).split(",");
+            String[] lore = translator.translate(TranslationKey.EDIT_WEAPON).split(",");
 
             ItemStack itemStack = new ItemStackBuilder(getItemStack(weapon))
                     .addItemFlags(ItemFlag.values())
@@ -99,25 +100,25 @@ public class EditLoadoutView implements View {
     }
 
     private View getAttachmentView(Player player, Loadout loadout, Gun gun, int attachmentNr) {
-        return new SelectAttachmentView(plugin, player, loadout, gun, attachmentNr, inventory);
+        return new SelectAttachmentView(plugin, translator, player, loadout, gun, attachmentNr, inventory);
     }
 
     private String getDisplayName(ItemSlot itemSlot) {
         switch (itemSlot) {
             case FIREARM_PRIMARY:
-                return messageHelper.create(TranslationKey.WEAPON_PRIMARY);
+                return translator.translate(TranslationKey.WEAPON_PRIMARY);
             case FIREARM_SECONDARY:
-                return messageHelper.create(TranslationKey.WEAPON_SECONDARY);
+                return translator.translate(TranslationKey.WEAPON_SECONDARY);
             case EQUIPMENT:
-                return messageHelper.create(TranslationKey.WEAPON_EQUIPMENT);
+                return translator.translate(TranslationKey.WEAPON_EQUIPMENT);
             case MELEE_WEAPON:
-                return messageHelper.create(TranslationKey.WEAPON_MELEE_WEAPON);
+                return translator.translate(TranslationKey.WEAPON_MELEE_WEAPON);
         }
         return null;
     }
 
     private String getItemName(Item item) {
-        return item != null ? item.getName() : messageHelper.create(TranslationKey.NONE_SELECTED);
+        return item != null ? item.getName() : translator.translate(TranslationKey.NONE_SELECTED);
     }
 
     private ItemStack getItemStack(Weapon weapon) {
@@ -129,7 +130,7 @@ public class EditLoadoutView implements View {
             return;
         }
         if (itemStack.getType() == Material.COMPASS) {
-            player.openInventory(new LoadoutManagerView(plugin, player).getInventory());
+            player.openInventory(new LoadoutManagerView(plugin, translator, player).getInventory());
             return;
         }
         if (attachments.containsKey(itemStack)) {
@@ -140,7 +141,7 @@ public class EditLoadoutView implements View {
             if (clickType == ClickType.RIGHT) {
                 attachmentGun.get(itemStack).getAttachments().remove(attachment);
                 plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).saveLoadout(loadout.getLoadoutNr(), loadout);
-                player.openInventory(new EditLoadoutView(plugin, loadout).getInventory());
+                player.openInventory(new EditLoadoutView(plugin, translator, loadout).getInventory());
             }
         }
         for (EditLoadoutViewItem item : items) {
@@ -149,16 +150,16 @@ public class EditLoadoutView implements View {
                 if (clickType == ClickType.LEFT) {
                     if (weapon != null) {
                         if (weapon.getType().hasSubTypes()) {
-                            player.openInventory(new WeaponsView(plugin, loadout, weapon.getType().getDefaultItemSlot(), inventory).getInventory());
+                            player.openInventory(new WeaponsView(plugin, translator, loadout, weapon.getType().getDefaultItemSlot(), inventory).getInventory());
                         } else {
                             List<Weapon> weapons = new ArrayList<>();
                             for (String id : meleeWeaponConfig.getItemList()) {
                                 weapons.add(plugin.getMeleeWeaponFactory().make(id));
                             }
-                            player.openInventory(new SelectWeaponView(plugin, player, loadout, weapon.getType(), weapons, inventory).getInventory());
+                            player.openInventory(new SelectWeaponView(plugin, translator, player, loadout, weapon.getType(), weapons, inventory).getInventory());
                         }
                     } else {
-                        player.openInventory(new WeaponsView(plugin, loadout, item.getItemSlot(), inventory).getInventory());
+                        player.openInventory(new WeaponsView(plugin, translator, loadout, item.getItemSlot(), inventory).getInventory());
                     }
                 }
                 if (clickType == ClickType.RIGHT) {
@@ -166,7 +167,7 @@ public class EditLoadoutView implements View {
                         loadout.removeWeapon(weapon);
                         plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).saveLoadout(loadout.getLoadoutNr(), loadout);
                     }
-                    player.openInventory(new EditLoadoutView(plugin, loadout).getInventory());
+                    player.openInventory(new EditLoadoutView(plugin, translator, loadout).getInventory());
                 }
                 break;
             }

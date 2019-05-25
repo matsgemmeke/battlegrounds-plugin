@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public final class BattlegroundsConfig extends AbstractYaml {
+public class BattlegroundsConfig extends AbstractYaml {
 
     public boolean arenaProtection = getBoolean("game-arena-protection");
     public boolean broadcastChat = getBoolean("game-broadcast-chat");

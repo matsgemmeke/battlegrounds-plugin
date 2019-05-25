@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.item;
 
 import com.matsg.battlegrounds.TranslationKey;
+import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.event.GamePlayerKillPlayerEvent;
 import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.item.ItemSlot;
@@ -9,7 +10,7 @@ import com.matsg.battlegrounds.api.item.MeleeWeapon;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.Hitbox;
 import com.matsg.battlegrounds.api.item.Transaction;
-import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.BattleSound;
@@ -30,8 +31,8 @@ public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
     private List<Item> droppedItems;
     private String type;
 
-    public BattleMeleeWeapon(String id, String name, String description, ItemStack itemStack, double damage, int amount, boolean throwable, int cooldown) {
-        super(id, name, description, itemStack);
+    public BattleMeleeWeapon(Battlegrounds plugin, String id, String name, String description, ItemStack itemStack, double damage, int amount, boolean throwable, int cooldown) {
+        super(plugin, id, name, description, itemStack);
         this.amount = amount;
         this.cooldown = cooldown;
         this.damage = damage;
@@ -39,7 +40,8 @@ public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
         this.maxAmount = amount;
         this.throwable = throwable;
         this.throwing = false;
-        this.type = messageHelper.create(TranslationKey.ITEM_TYPE_MELEE_WEAPON);
+
+        type = translator.translate(TranslationKey.ITEM_TYPE_MELEE_WEAPON);
     }
 
     public MeleeWeapon clone() {
@@ -223,7 +225,7 @@ public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
 
     public boolean update() {
         Placeholder placeholder = new Placeholder("bg_weapon", name);
-        String displayName = messageHelper.createSimple(plugin.getBattlegroundsConfig().getWeaponDisplayName("melee-weapon"), placeholder);
+        String displayName = translator.createSimpleMessage(plugin.getBattlegroundsConfig().getWeaponDisplayName("melee-weapon"), placeholder);
 
         itemStack = new ItemStackBuilder(itemStack)
                 .addItemFlags(ItemFlag.values())

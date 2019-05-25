@@ -2,8 +2,8 @@ package com.matsg.battlegrounds.item.factory;
 
 import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.FactoryCreationException;
-import com.matsg.battlegrounds.Translator;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.storage.BattlegroundsConfig;
 import com.matsg.battlegrounds.api.storage.ItemConfig;
 import com.matsg.battlegrounds.api.item.Firearm;
@@ -28,10 +28,8 @@ import static org.mockito.Mockito.*;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({
-        BattlegroundsConfig.class,
         BattlegroundsPlugin.class,
-        Bukkit.class,
-        Translator.class
+        Bukkit.class
 })
 public class FirearmFactoryTest {
 
@@ -44,7 +42,7 @@ public class FirearmFactoryTest {
     @Before
     public void setUp() {
         this.plugin = mock(Battlegrounds.class);
-        this.config = PowerMockito.mock(BattlegroundsConfig.class);
+        this.config = mock(BattlegroundsConfig.class);
         this.section = mock(ConfigurationSection.class);
         this.firearmConfig = mock(ItemConfig.class);
 
@@ -52,28 +50,28 @@ public class FirearmFactoryTest {
 
         PowerMockito.mockStatic(BattlegroundsPlugin.class);
         PowerMockito.mockStatic(Bukkit.class);
-        PowerMockito.mockStatic(Translator.class);
 
         config.pierceableBlocks = Collections.emptyList();
 
         ItemFactory itemFactory = mock(ItemFactory.class);
         ItemMeta itemMeta = mock(ItemMeta.class, withSettings().extraInterfaces(Damageable.class)); // Add the Damageable interface so the ItemMeta can be casted when setting the durability
+        Translator translator = mock(Translator.class);
 
         when(BattlegroundsPlugin.getPlugin()).thenReturn(plugin);
         when(Bukkit.getItemFactory()).thenReturn(itemFactory);
         when(itemFactory.getItemMeta(any())).thenReturn(itemMeta);
         when(firearmConfig.getItemConfigurationSection(id)).thenReturn(section);
         when(plugin.getBattlegroundsConfig()).thenReturn(config);
+        when(plugin.getTranslator()).thenReturn(translator);
         when(section.getString("Material")).thenReturn("AIR,1");
         when(section.getString("Projectile.Material")).thenReturn("AIR,1");
-        when(Translator.translate(anyString())).thenReturn("test");
     }
 
     @Test(expected = FactoryCreationException.class)
     public void testMakeFirearmInvalidType() {
         when(section.getString("FirearmType")).thenReturn("INVALID");
 
-        FirearmFactory factory = new FirearmFactory(firearmConfig);
+        FirearmFactory factory = new FirearmFactory(plugin, firearmConfig);
         factory.make(id);
     }
 
@@ -82,7 +80,7 @@ public class FirearmFactoryTest {
         when(section.getInt("Ammo.Magazine")).thenReturn(-1);
         when(section.getString("FirearmType")).thenReturn("ASSAULT_RIFLE");
 
-        FirearmFactory factory = new FirearmFactory(firearmConfig);
+        FirearmFactory factory = new FirearmFactory(plugin, firearmConfig);
         factory.make(id);
     }
 
@@ -91,7 +89,7 @@ public class FirearmFactoryTest {
         when(section.getInt("Ammo.Magazine")).thenReturn(-1);
         when(section.getString("FirearmType")).thenReturn("LAUNCHER");
 
-        FirearmFactory factory = new FirearmFactory(firearmConfig);
+        FirearmFactory factory = new FirearmFactory(plugin, firearmConfig);
         factory.make(id);
     }
 
@@ -118,7 +116,7 @@ public class FirearmFactoryTest {
         when(section.getString("Reload.Type")).thenReturn("MAGAZINE");
         when(section.getName()).thenReturn(id);
 
-        FirearmFactory factory = new FirearmFactory(firearmConfig);
+        FirearmFactory factory = new FirearmFactory(plugin, firearmConfig);
         Firearm firearm = factory.make(id);
 
         assertNotNull(firearm);
@@ -146,7 +144,7 @@ public class FirearmFactoryTest {
         when(section.getString("Reload.Type")).thenReturn("MAGAZINE");
         when(section.getName()).thenReturn(id);
 
-        FirearmFactory factory = new FirearmFactory(firearmConfig);
+        FirearmFactory factory = new FirearmFactory(plugin, firearmConfig);
         Firearm firearm = factory.make(id);
 
         assertNotNull(firearm);

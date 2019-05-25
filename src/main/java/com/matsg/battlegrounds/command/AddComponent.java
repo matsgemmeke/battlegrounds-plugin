@@ -2,10 +2,11 @@ package com.matsg.battlegrounds.command;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameMode;
-import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.command.component.*;
 import com.matsg.battlegrounds.command.validator.ArenaNameValidator;
 import com.matsg.battlegrounds.command.validator.GameIdValidator;
@@ -29,17 +30,19 @@ public class AddComponent extends Command {
         setPlayerOnly(true);
         setUsage("bg addcomponent [id] [arena] [section] [component]");
 
-        commands = new HashMap<>();
-        commands.put("door", new AddDoor(plugin));
-        commands.put("itemchest", new AddItemChest(plugin));
-        commands.put("mobspawn", new AddMobSpawn(plugin));
-        commands.put("mysterybox", new AddMysteryBox(plugin));
-        commands.put("perk", new AddPerkMachine(plugin));
-        commands.put("section", new AddSection(plugin));
-        commands.put("spawn", new AddSpawn(plugin));
+        Translator translator = plugin.getTranslator();
 
-        registerValidator(new GameIdValidator(plugin));
-        registerValidator(new ArenaNameValidator(plugin));
+        commands = new HashMap<>();
+        commands.put("door", new AddDoor(plugin, translator));
+        commands.put("itemchest", new AddItemChest(plugin, translator));
+        commands.put("mobspawn", new AddMobSpawn(plugin, translator));
+        commands.put("mysterybox", new AddMysteryBox(plugin, translator));
+        commands.put("perk", new AddPerkMachine(plugin, translator));
+        commands.put("section", new AddSection(plugin, translator));
+        commands.put("spawn", new AddSpawn(plugin, translator));
+
+        registerValidator(new GameIdValidator(plugin, translator, true));
+        registerValidator(new ArenaNameValidator(plugin, translator, true));
     }
 
     public void execute(CommandSender sender, String[] args) {

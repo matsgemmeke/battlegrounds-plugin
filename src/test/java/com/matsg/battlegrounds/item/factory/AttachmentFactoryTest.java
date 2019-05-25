@@ -1,7 +1,9 @@
 package com.matsg.battlegrounds.item.factory;
 
+import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.FactoryCreationException;
-import com.matsg.battlegrounds.Translator;
+import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.storage.ItemConfig;
 import com.matsg.battlegrounds.api.item.Attachment;
 import org.bukkit.Bukkit;
@@ -24,11 +26,12 @@ import static org.mockito.Mockito.*;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({
-        Bukkit.class,
-        Translator.class
+        BattlegroundsPlugin.class,
+        Bukkit.class
 })
 public class AttachmentFactoryTest {
 
+    private Battlegrounds plugin;
     private ConfigurationSection modifiers, section;
     private ItemConfig attachmentConfig;
     private Set<String> modifierSet;
@@ -36,6 +39,7 @@ public class AttachmentFactoryTest {
 
     @Before
     public void setUp() {
+        this.plugin = mock(Battlegrounds.class);
         this.modifiers = mock(ConfigurationSection.class);
         this.section = mock(ConfigurationSection.class);
         this.attachmentConfig = mock(ItemConfig.class);
@@ -43,16 +47,19 @@ public class AttachmentFactoryTest {
         this.id = "Id";
         this.modifierSet = new HashSet<>();
 
+        PowerMockito.mockStatic(BattlegroundsPlugin.class);
         PowerMockito.mockStatic(Bukkit.class);
-        PowerMockito.mockStatic(Translator.class);
 
         ItemFactory itemFactory = mock(ItemFactory.class);
         ItemMeta itemMeta = mock(ItemMeta.class, withSettings().extraInterfaces(Damageable.class)); // Add the Damageable interface so the ItemMeta can be casted when setting the durability
+        Translator translator = mock(Translator.class);
 
+        when(BattlegroundsPlugin.getPlugin()).thenReturn(plugin);
         when(Bukkit.getItemFactory()).thenReturn(itemFactory);
         when(itemFactory.getItemMeta(any())).thenReturn(itemMeta);
         when(attachmentConfig.getItemConfigurationSection(id)).thenReturn(section);
         when(modifiers.getKeys(false)).thenReturn(modifierSet);
+        when(plugin.getTranslator()).thenReturn(translator);
         when(section.getConfigurationSection("Modifiers")).thenReturn(modifiers);
         when(section.getString("Material")).thenReturn("AIR,1");
     }
@@ -62,7 +69,7 @@ public class AttachmentFactoryTest {
         when(section.getName()).thenReturn(id);
         when(section.getString("GunPart")).thenReturn("MAGAZINE");
 
-        AttachmentFactory factory = new AttachmentFactory(attachmentConfig);
+        AttachmentFactory factory = new AttachmentFactory(plugin, attachmentConfig);
         Attachment attachment = factory.make(id);
 
         assertNotNull(attachment);
@@ -80,7 +87,7 @@ public class AttachmentFactoryTest {
         when(section.getName()).thenReturn(id);
         when(section.getString("GunPart")).thenReturn("MAGAZINE");
 
-        AttachmentFactory factory = new AttachmentFactory(attachmentConfig);
+        AttachmentFactory factory = new AttachmentFactory(plugin, attachmentConfig);
         Attachment attachment = factory.make(id);
 
         assertNotNull(attachment);
@@ -91,7 +98,7 @@ public class AttachmentFactoryTest {
     public void testMakeAttachmantInvalidGunPart() {
         when(section.getString("GunPart")).thenReturn("INVALID");
 
-        AttachmentFactory factory = new AttachmentFactory(attachmentConfig);
+        AttachmentFactory factory = new AttachmentFactory(plugin, attachmentConfig);
         factory.make(id);
     }
 }

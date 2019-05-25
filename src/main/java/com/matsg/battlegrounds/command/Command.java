@@ -2,14 +2,13 @@ package com.matsg.battlegrounds.command;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.api.Placeholder;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.command.validator.CommandValidator;
 import com.matsg.battlegrounds.command.validator.ValidationResponse;
-import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,16 +19,16 @@ public abstract class Command implements CommandExecutor {
     protected List<Command> subCommands;
     private boolean playerOnly;
     private List<CommandValidator> validators;
-    private MessageHelper messageHelper;
     private String[] aliases;
     private String description, name, permissionNode, usage;
+    private Translator translator;
 
     public Command(Battlegrounds plugin) {
         this.plugin = plugin;
         this.aliases = new String[0];
-        this.messageHelper = new MessageHelper();
         this.playerOnly = false;
         this.subCommands = new ArrayList<>();
+        this.translator = plugin.getTranslator();
         this.validators = new ArrayList<>();
     }
 
@@ -86,11 +85,11 @@ public abstract class Command implements CommandExecutor {
     }
 
     public String createMessage(TranslationKey key, Placeholder... placeholders) {
-        return messageHelper.create(key, placeholders);
+        return translator.translate(key, placeholders);
     }
 
     public String createSimpleMessage(String message, Placeholder... placeholders) {
-        return messageHelper.createSimple(message, placeholders);
+        return translator.translate(message, placeholders);
     }
 
     public void execute(CommandSender sender, String[] args) { }

@@ -1,9 +1,10 @@
 package com.matsg.battlegrounds.item;
 
+import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.util.BattleRunnable;
-import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 
@@ -12,13 +13,13 @@ import java.util.Random;
 public abstract class BattleWeapon extends BattleItem implements Weapon {
 
     protected GamePlayer gamePlayer;
-    protected MessageHelper messageHelper;
     protected String description;
+    protected Translator translator;
 
-    public BattleWeapon(String id, String name, String description, ItemStack itemStack) {
-        super(id, name, itemStack);
+    public BattleWeapon(Battlegrounds plugin, String id, String name, String description, ItemStack itemStack) {
+        super(plugin, id, name, itemStack);
         this.description = description;
-        this.messageHelper = new MessageHelper();
+        this.translator = plugin.getTranslator();
     }
 
     public String getDescription() {

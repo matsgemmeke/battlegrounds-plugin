@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.event;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.event.EventDispatcher;
 import com.matsg.battlegrounds.api.event.EventChannel;
 import com.matsg.battlegrounds.event.handler.*;
@@ -26,8 +27,10 @@ public class EventListener implements Listener {
 
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
 
+        Translator translator = plugin.getTranslator();
+
         eventDispatcher.registerEventChannel(AsyncPlayerChatEvent.class, new EventChannel<>(
-                new AsyncPlayerChatEventHandler(plugin)
+                new AsyncPlayerChatEventHandler(plugin, translator)
         ));
         eventDispatcher.registerEventChannel(BlockBreakEvent.class, new EventChannel<>(
                 new BlockBreakEventHandler(plugin)
@@ -51,7 +54,7 @@ public class EventListener implements Listener {
                 new InventoryCloseEventHandler(plugin)
         ));
         eventDispatcher.registerEventChannel(PlayerCommandPreprocessEvent.class, new EventChannel<>(
-                new PlayerCommandPreprocessEventHandler(plugin)
+                new PlayerCommandPreprocessEventHandler(plugin, translator)
         ));
         eventDispatcher.registerEventChannel(PlayerDeathEvent.class, new EventChannel<>(
                 new PlayerDeathEventHandler(plugin)
@@ -61,7 +64,7 @@ public class EventListener implements Listener {
         ));
         eventDispatcher.registerEventChannel(PlayerInteractEvent.class, new EventChannel<>(
                 new PlayerInteractEventHandler(plugin),
-                new SelectionInteractionHandler(plugin)
+                new SelectionInteractionHandler(plugin, translator)
         ));
         eventDispatcher.registerEventChannel(PlayerItemHeldEvent.class, new EventChannel<>(
                 new PlayerItemHeldEventHandler(plugin)

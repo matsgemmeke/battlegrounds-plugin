@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.item;
 
 import com.matsg.battlegrounds.TranslationKey;
+import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.event.GamePlayerKillPlayerEvent;
 import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.item.*;
@@ -45,11 +46,11 @@ public class BattleGun extends BattleFirearm implements Gun {
     private Map<String, String[]> compatibleAttachments;
     private Sound[] suppressedSound;
 
-    public BattleGun(String id, String name, String description, ItemStack itemStack,
+    public BattleGun(Battlegrounds plugin, String id, String name, String description, ItemStack itemStack,
                      int magazine, int ammo, int maxAmmo, int fireRate, int burstRounds, int cooldown, int reloadDuration, double accuracy,
                      Bullet bullet, FirearmType firearmType, FireMode fireMode, ReloadType reloadType,
                      Sound[] reloadSound, Sound[] shootSound, Sound[] suppressedSound, Map<String, String[]> compatibleAttachments) {
-        super(id, name, description, itemStack, magazine, ammo, maxAmmo, cooldown, reloadDuration, accuracy, reloadType, firearmType, reloadSound, shootSound);
+        super(plugin, id, name, description, itemStack, magazine, ammo, maxAmmo, cooldown, reloadDuration, accuracy, reloadType, firearmType, reloadSound, shootSound);
         this.appliedModifiers = new HashMap<>();
         this.attachments = new ArrayList<>();
         this.bullet = bullet;
@@ -135,10 +136,10 @@ public class BattleGun extends BattleFirearm implements Gun {
     protected String[] getLore() {
         return new String[] {
                 ChatColor.WHITE + firearmType.getName(),
-                ChatColor.GRAY + format(6, getAccuracy() * 100.0, 100.0) + " " + messageHelper.create(TranslationKey.STAT_ACCURACY),
-                ChatColor.GRAY + format(6, bullet.getShortDamage(), 55.0) + " " + messageHelper.create(TranslationKey.STAT_DAMAGE),
-                ChatColor.GRAY + format(6, Math.max((fireRate.getValue() + 10 - cooldown.getValue() / 2) * 10.0, 40.0), 200.0) + " " + messageHelper.create(TranslationKey.STAT_FIRERATE),
-                ChatColor.GRAY + format(6, bullet.getMidRange(), 70.0) + " " + messageHelper.create(TranslationKey.STAT_RANGE)
+                ChatColor.GRAY + format(6, getAccuracy() * 100.0, 100.0) + " " + translator.translate(TranslationKey.STAT_ACCURACY),
+                ChatColor.GRAY + format(6, bullet.getShortDamage(), 55.0) + " " + translator.translate(TranslationKey.STAT_DAMAGE),
+                ChatColor.GRAY + format(6, Math.max((fireRate.getValue() + 10 - cooldown.getValue() / 2) * 10.0, 40.0), 200.0) + " " + translator.translate(TranslationKey.STAT_FIRERATE),
+                ChatColor.GRAY + format(6, bullet.getMidRange(), 70.0) + " " + translator.translate(TranslationKey.STAT_RANGE)
         };
     }
 

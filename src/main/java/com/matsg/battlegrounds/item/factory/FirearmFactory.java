@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.item.factory;
 
 import com.matsg.battlegrounds.FactoryCreationException;
+import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.storage.ItemConfig;
 import com.matsg.battlegrounds.api.item.Firearm;
 import com.matsg.battlegrounds.api.item.ItemFactory;
@@ -15,9 +16,11 @@ import java.util.Map;
 
 public class FirearmFactory implements ItemFactory<Firearm> {
 
+    private Battlegrounds plugin;
     private ItemConfig firearmConfig;
 
-    public FirearmFactory(ItemConfig firearmConfig) {
+    public FirearmFactory(Battlegrounds plugin, ItemConfig firearmConfig) {
+        this.plugin = plugin;
         this.firearmConfig = firearmConfig;
     }
 
@@ -41,6 +44,7 @@ public class FirearmFactory implements ItemFactory<Firearm> {
                 || firearmType == FirearmType.SUBMACHINE_GUN) {
             try {
                 return new BattleGun(
+                        plugin,
                         section.getName(),
                         section.getString("DisplayName"),
                         section.getString("Description"),
@@ -78,6 +82,7 @@ public class FirearmFactory implements ItemFactory<Firearm> {
 
             try {
                 return new BattleLauncher(
+                        plugin,
                         section.getName(),
                         section.getString("DisplayName"),
                         section.getString("Description"),
@@ -90,6 +95,7 @@ public class FirearmFactory implements ItemFactory<Firearm> {
                         AttributeValidator.shouldBeHigherThan(section.getInt("Reload.Duration"), 0),
                         AttributeValidator.shouldBeBetween(section.getDouble("Accuracy"), 0.0, 1.0),
                         new BattleLethal(
+                                plugin,
                                 null,
                                 null,
                                 null,

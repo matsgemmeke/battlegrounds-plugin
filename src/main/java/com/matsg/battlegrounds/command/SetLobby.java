@@ -3,7 +3,7 @@ package com.matsg.battlegrounds.command;
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.command.validator.GameIdValidator;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -19,7 +19,7 @@ public class SetLobby extends Command {
         setPlayerOnly(true);
         setUsage("bg setlobby [id]");
 
-        registerValidator(new GameIdValidator(plugin));
+        registerValidator(new GameIdValidator(plugin, plugin.getTranslator(), true));
     }
 
     public void execute(CommandSender sender, String[] args) {

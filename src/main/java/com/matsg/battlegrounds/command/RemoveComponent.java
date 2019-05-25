@@ -6,7 +6,7 @@ import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.ArenaComponent;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameMode;
-import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.command.validator.ArenaNameValidator;
 import com.matsg.battlegrounds.command.validator.GameIdValidator;
 import org.bukkit.command.CommandSender;
@@ -21,8 +21,8 @@ public class RemoveComponent extends Command {
         setPermissionNode("battlegrounds.removecomponent");
         setUsage("bg removecomponent [id] [arena] [component]");
 
-        registerValidator(new GameIdValidator(plugin));
-        registerValidator(new ArenaNameValidator(plugin));
+        registerValidator(new GameIdValidator(plugin, plugin.getTranslator(), true));
+        registerValidator(new ArenaNameValidator(plugin, plugin.getTranslator(), true));
     }
 
     public void execute(CommandSender sender, String[] args) {

@@ -1,7 +1,9 @@
 package com.matsg.battlegrounds.item.factory;
 
+import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.FactoryCreationException;
-import com.matsg.battlegrounds.Translator;
+import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.storage.ItemConfig;
 import com.matsg.battlegrounds.api.item.Equipment;
 import com.matsg.battlegrounds.api.item.Lethal;
@@ -23,40 +25,44 @@ import static org.mockito.Mockito.*;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({
-        Bukkit.class,
-        Translator.class
+        BattlegroundsPlugin.class,
+        Bukkit.class
 })
 public class EquipmentFactoryTest {
 
+    private Battlegrounds plugin;
     private ConfigurationSection section;
     private ItemConfig equipmentConfig;
     private String id;
 
     @Before
     public void setUp() {
+        this.plugin = mock(Battlegrounds.class);
         this.section = mock(ConfigurationSection.class);
         this.equipmentConfig = mock(ItemConfig.class);
 
         this.id = "Id";
 
+        PowerMockito.mockStatic(BattlegroundsPlugin.class);
         PowerMockito.mockStatic(Bukkit.class);
-        PowerMockito.mockStatic(Translator.class);
 
         ItemFactory itemFactory = mock(ItemFactory.class);
         ItemMeta itemMeta = mock(ItemMeta.class, withSettings().extraInterfaces(Damageable.class)); // Add the Damageable interface so the ItemMeta can be casted when setting the durability
+        Translator translator = mock(Translator.class);
 
+        when(BattlegroundsPlugin.getPlugin()).thenReturn(plugin);
         when(Bukkit.getItemFactory()).thenReturn(itemFactory);
         when(itemFactory.getItemMeta(any())).thenReturn(itemMeta);
         when(equipmentConfig.getItemConfigurationSection(id)).thenReturn(section);
+        when(plugin.getTranslator()).thenReturn(translator);
         when(section.getString("Material")).thenReturn("AIR,1");
-        when(Translator.translate(anyString())).thenReturn("test");
     }
 
     @Test(expected = FactoryCreationException.class)
     public void testMakeEquipmentInvalidType() {
         when(section.getString("EquipmentType")).thenReturn("INVALID");
 
-        EquipmentFactory factory = new EquipmentFactory(equipmentConfig);
+        EquipmentFactory factory = new EquipmentFactory(plugin, equipmentConfig);
         factory.make(id);
     }
 
@@ -65,7 +71,7 @@ public class EquipmentFactoryTest {
         when(section.getInt("Amount")).thenReturn(-1);
         when(section.getString("EquipmentType")).thenReturn("LETHAL");
 
-        EquipmentFactory factory = new EquipmentFactory(equipmentConfig);
+        EquipmentFactory factory = new EquipmentFactory(plugin, equipmentConfig);
         factory.make(id);
     }
 
@@ -74,7 +80,7 @@ public class EquipmentFactoryTest {
         when(section.getInt("Amount")).thenReturn(-1);
         when(section.getString("EquipmentType")).thenReturn("TACTICAL");
 
-        EquipmentFactory factory = new EquipmentFactory(equipmentConfig);
+        EquipmentFactory factory = new EquipmentFactory(plugin, equipmentConfig);
         factory.make(id);
     }
 
@@ -93,7 +99,7 @@ public class EquipmentFactoryTest {
         when(section.getDouble("Velocity")).thenReturn(1.0);
         when(section.getName()).thenReturn(id);
 
-        EquipmentFactory factory = new EquipmentFactory(equipmentConfig);
+        EquipmentFactory factory = new EquipmentFactory(plugin, equipmentConfig);
         Equipment equipment = factory.make(id);
 
         assertNotNull(equipment);
@@ -115,7 +121,7 @@ public class EquipmentFactoryTest {
         when(section.getDouble("Velocity")).thenReturn(1.0);
         when(section.getName()).thenReturn(id);
 
-        EquipmentFactory factory = new EquipmentFactory(equipmentConfig);
+        EquipmentFactory factory = new EquipmentFactory(plugin, equipmentConfig);
         Equipment equipment = factory.make(id);
 
         assertNotNull(equipment);

@@ -1,17 +1,17 @@
 package com.matsg.battlegrounds.gui;
 
 import com.matsg.battlegrounds.TranslationKey;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.item.Transaction;
 import com.matsg.battlegrounds.api.item.TransactionItem;
 import com.matsg.battlegrounds.api.item.Weapon;
-import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.util.BattleSound;
-import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -26,24 +26,24 @@ public abstract class TransactionView implements View {
     private Inventory inventory;
     private ItemSlot itemSlot;
     private ItemStack itemStack;
-    private MessageHelper messageHelper;
     private TransactionItem item;
+    private Translator translator;
 
-    public TransactionView(Game game, TransactionItem item, ItemSlot itemSlot, ItemStack itemStack, int points) {
+    public TransactionView(Game game, Translator translator, TransactionItem item, ItemSlot itemSlot, ItemStack itemStack, int points) {
         this.game = game;
+        this.translator = translator;
         this.item = item;
         this.itemSlot = itemSlot;
         this.itemStack = itemStack;
         this.points = points;
-        this.messageHelper = new MessageHelper();
 
-        inventory = Bukkit.getServer().createInventory(this, 54, messageHelper.create(TranslationKey.TRANSACTION_VIEW_TITLE, new Placeholder("bg_slot", itemSlot.getSlot())));
+        inventory = Bukkit.getServer().createInventory(this, 54, translator.translate(TranslationKey.TRANSACTION_VIEW_TITLE, new Placeholder("bg_slot", itemSlot.getSlot())));
 
         ItemStack buy = new ItemStackBuilder(new ItemStack(Material.EMERALD_BLOCK))
-                .setDisplayName(messageHelper.create(TranslationKey.TRANSACTION_VIEW_BUY))
+                .setDisplayName(translator.translate(TranslationKey.TRANSACTION_VIEW_BUY))
                 .build();
         ItemStack discard = new ItemStackBuilder(new ItemStack(Material.REDSTONE_BLOCK))
-                .setDisplayName(messageHelper.create(TranslationKey.TRANSACTION_VIEW_DISCARD))
+                .setDisplayName(translator.translate(TranslationKey.TRANSACTION_VIEW_DISCARD))
                 .build();
 
         inventory.setItem(4, itemStack);

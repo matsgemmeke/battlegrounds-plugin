@@ -1,14 +1,14 @@
 package com.matsg.battlegrounds.game.mode.zombies;
 
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.item.Perk;
 import com.matsg.battlegrounds.api.item.PerkEffect;
 import com.matsg.battlegrounds.api.item.Transaction;
-import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.gui.TransactionView;
 import com.matsg.battlegrounds.util.ActionBar;
-import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 
@@ -23,20 +23,20 @@ public class ZombiesPerkMachine implements PerkMachine {
     private Game game;
     private int id, maxBuys, price;
     private Map<GamePlayer, Integer> buys;
-    private MessageHelper messageHelper;
     private Perk perk;
     private Sign sign;
     private String[] signLayout;
+    private Translator translator;
 
-    public ZombiesPerkMachine(int id, Game game, Sign sign, Perk perk, int price, int maxBuys) {
+    public ZombiesPerkMachine(int id, Game game, Sign sign, Perk perk, Translator translator, int price, int maxBuys) {
         this.id = id;
         this.game = game;
         this.sign = sign;
         this.perk = perk;
+        this.translator = translator;
         this.price = price;
         this.maxBuys = maxBuys;
         this.buys = new HashMap<>();
-        this.messageHelper = new MessageHelper();
     }
 
     public int getId() {
@@ -100,7 +100,7 @@ public class ZombiesPerkMachine implements PerkMachine {
             return true;
         }
 
-        gamePlayer.getPlayer().openInventory(new TransactionView(game, perk, null, perk.getItemStack(), price) {
+        gamePlayer.getPlayer().openInventory(new TransactionView(game, translator, perk, null, perk.getItemStack(), price) {
             public void onTransactionComplete(Transaction transaction) {
                 game.getItemRegistry().addItem(perk);
                 perk.setGame(game);
@@ -116,7 +116,7 @@ public class ZombiesPerkMachine implements PerkMachine {
         }
 
         for (int i = 0; i <= 3; i ++) {
-            sign.setLine(i, messageHelper.createSimple(signLayout[i],
+            sign.setLine(i, translator.createSimpleMessage(signLayout[i],
                     new Placeholder("bg_perk", perk.getEffect().getName()),
                     new Placeholder("bg_price", price)
             ));

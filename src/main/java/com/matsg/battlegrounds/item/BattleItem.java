@@ -2,6 +2,7 @@ package com.matsg.battlegrounds.item;
 
 import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.item.Item;
 import com.matsg.battlegrounds.api.util.GenericAttribute;
@@ -15,14 +16,15 @@ import java.util.List;
 
 public abstract class BattleItem implements Item {
 
-    protected static Battlegrounds plugin = BattlegroundsPlugin.getPlugin();
+    protected Battlegrounds plugin;
     protected Game game;
     protected ItemSlot itemSlot;
     protected ItemStack itemStack;
     protected List<GenericAttribute> attributes;
     protected String id, name;
 
-    public BattleItem(String id, String name, ItemStack itemStack) {
+    public BattleItem(Battlegrounds plugin, String id, String name, ItemStack itemStack) {
+        this.plugin = plugin;
         this.id = id;
         this.name = name;
         this.itemStack = itemStack;

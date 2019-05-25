@@ -2,13 +2,9 @@ package com.matsg.battlegrounds.event.handler;
 
 import com.matsg.battlegrounds.BattleSelection;
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.Selection;
-import com.matsg.battlegrounds.api.SelectionManager;
+import com.matsg.battlegrounds.api.*;
 import com.matsg.battlegrounds.api.event.EventHandler;
 import com.matsg.battlegrounds.util.Pair;
-import com.matsg.battlegrounds.api.util.Placeholder;
-import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -18,11 +14,11 @@ import org.bukkit.event.player.PlayerInteractEvent;
 public class SelectionInteractionHandler implements EventHandler<PlayerInteractEvent> {
 
     private Battlegrounds plugin;
-    private MessageHelper messageHelper;
+    private Translator translator;
 
-    public SelectionInteractionHandler(Battlegrounds plugin) {
+    public SelectionInteractionHandler(Battlegrounds plugin, Translator translator) {
         this.plugin = plugin;
-        this.messageHelper = new MessageHelper();
+        this.translator = translator;
     }
 
     public void handle(PlayerInteractEvent event) {
@@ -50,7 +46,7 @@ public class SelectionInteractionHandler implements EventHandler<PlayerInteractE
         if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
             selectionManager.setSelection(player, new BattleSelection(new Pair<>(location, selection.getSecondSelectedPoint()), selection.getWorld()));
 
-            player.sendMessage(messageHelper.create(TranslationKey.SELECTION_SET,
+            player.sendMessage(translator.translate(TranslationKey.SELECTION_SET,
                     new Placeholder("bg_selection_pos", "First"),
                     new Placeholder("bg_selection_x", location.getX()),
                     new Placeholder("bg_selection_y", location.getY()),
@@ -59,7 +55,7 @@ public class SelectionInteractionHandler implements EventHandler<PlayerInteractE
         } else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             selectionManager.setSelection(player, new BattleSelection(new Pair<>(selection.getFirstSelectedPoint(), location), selection.getWorld()));
 
-            player.sendMessage(messageHelper.create(TranslationKey.SELECTION_SET,
+            player.sendMessage(translator.translate(TranslationKey.SELECTION_SET,
                     new Placeholder("bg_selection_pos", "Second"),
                     new Placeholder("bg_selection_x", location.getX()),
                     new Placeholder("bg_selection_y", location.getY()),

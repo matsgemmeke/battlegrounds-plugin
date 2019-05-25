@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.game;
 
 import com.matsg.battlegrounds.TranslationKey;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.entity.PlayerState;
 import com.matsg.battlegrounds.api.storage.LevelConfig;
 import com.matsg.battlegrounds.api.storage.StatisticContext;
@@ -10,13 +11,12 @@ import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.storage.PlayerStorage;
-import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.gui.scoreboard.LobbyScoreboard;
 import com.matsg.battlegrounds.entity.BattleGamePlayer;
 import com.matsg.battlegrounds.entity.BattleSavedInventory;
 import com.matsg.battlegrounds.util.ActionBar;
 import com.matsg.battlegrounds.util.BattleRunnable;
-import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -29,14 +29,14 @@ public class BattlePlayerManager implements PlayerManager {
     private Game game;
     private LevelConfig levelConfig;
     private List<GamePlayer> players;
-    private MessageHelper messageHelper;
     private PlayerStorage playerStorage;
+    private Translator translator;
 
-    public BattlePlayerManager(Game game, LevelConfig levelConfig, PlayerStorage playerStorage) {
+    public BattlePlayerManager(Game game, LevelConfig levelConfig, PlayerStorage playerStorage, Translator translator) {
         this.game = game;
         this.levelConfig = levelConfig;
         this.playerStorage = playerStorage;
-        this.messageHelper = new MessageHelper();
+        this.translator = translator;
         this.players = new ArrayList<>();
     }
 
@@ -62,7 +62,7 @@ public class BattlePlayerManager implements PlayerManager {
 
         players.add(gamePlayer);
 
-        broadcastMessage(messageHelper.create(TranslationKey.PLAYER_JOIN,
+        broadcastMessage(translator.translate(TranslationKey.PLAYER_JOIN,
                 new Placeholder("player_name", player.getName()),
                 new Placeholder("bg_players", players.size()),
                 new Placeholder("bg_maxplayers", game.getConfiguration().getMaxPlayers())));
@@ -80,7 +80,7 @@ public class BattlePlayerManager implements PlayerManager {
             player.teleport(lobby);
         }
         if (game.getArena() != null && players.size() == game.getConfiguration().getMinPlayers()) {
-            Countdown countdown = new LobbyCountdown(game, game.getConfiguration().getLobbyCountdown(), 60, 45, 30, 15, 10, 5);
+            Countdown countdown = new LobbyCountdown(game, translator, game.getConfiguration().getLobbyCountdown(), 60, 45, 30, 15, 10, 5);
             game.setCountdown(countdown);
             countdown.run();
         }
@@ -252,7 +252,7 @@ public class BattlePlayerManager implements PlayerManager {
     public boolean removePlayer(GamePlayer gamePlayer) {
         players.remove(gamePlayer);
 
-        broadcastMessage(messageHelper.create(TranslationKey.PLAYER_LEAVE,
+        broadcastMessage(translator.translate(TranslationKey.PLAYER_LEAVE,
                 new Placeholder("player_name", gamePlayer.getName()),
                 new Placeholder("bg_players", players.size()),
                 new Placeholder("bg_maxplayers", game.getConfiguration().getMaxPlayers())));

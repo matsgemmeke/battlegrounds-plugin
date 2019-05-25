@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.item.factory;
 
 import com.matsg.battlegrounds.FactoryCreationException;
+import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.storage.ItemConfig;
 import com.matsg.battlegrounds.api.item.ItemFactory;
 import com.matsg.battlegrounds.api.item.MeleeWeapon;
@@ -11,9 +12,11 @@ import org.bukkit.configuration.ConfigurationSection;
 
 public class MeleeWeaponFactory implements ItemFactory<MeleeWeapon> {
 
+    private Battlegrounds plugin;
     private ItemConfig meleeWeaponConfig;
 
-    public MeleeWeaponFactory(ItemConfig meleeWeaponConfig) {
+    public MeleeWeaponFactory(Battlegrounds plugin, ItemConfig meleeWeaponConfig) {
+        this.plugin = plugin;
         this.meleeWeaponConfig = meleeWeaponConfig;
     }
 
@@ -23,6 +26,7 @@ public class MeleeWeaponFactory implements ItemFactory<MeleeWeapon> {
 
         try {
             return new BattleMeleeWeapon(
+                    plugin,
                     section.getName(),
                     section.getString("DisplayName"),
                     section.getString("Description"),

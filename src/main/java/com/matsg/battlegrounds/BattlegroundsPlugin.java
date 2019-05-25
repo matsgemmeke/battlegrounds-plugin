@@ -19,6 +19,7 @@ import com.matsg.battlegrounds.item.factory.MeleeWeaponFactory;
 import com.matsg.battlegrounds.nms.ReflectionUtils;
 import com.matsg.battlegrounds.storage.local.LocalPlayerStorage;
 import com.matsg.battlegrounds.storage.sql.SQLPlayerStorage;
+import org.apache.commons.lang.LocaleUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -41,6 +42,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
     private LevelConfig levelConfig;
     private SelectionManager selectionManager;
     private PlayerStorage playerStorage;
+    private Translator translator;
     private Version version;
 
     public void onEnable() {
@@ -106,6 +108,10 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         return selectionManager;
     }
 
+    public Translator getTranslator() {
+        return translator;
+    }
+
     public Version getVersion() {
         return version;
     }
@@ -120,10 +126,10 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
             ItemConfig firearmConfig = new FirearmConfig(this);
             ItemConfig meleeWeaponConfig = new MeleeWeaponConfig(this);
 
-            attachmentFactory = new AttachmentFactory(attachmentConfig);
-            equipmentFactory = new EquipmentFactory(equipmentConfig);
-            firearmFactory = new FirearmFactory(firearmConfig);
-            meleeWeaponFactory = new MeleeWeaponFactory(meleeWeaponConfig);
+            attachmentFactory = new AttachmentFactory(this, attachmentConfig);
+            equipmentFactory = new EquipmentFactory(this, equipmentConfig);
+            firearmFactory = new FirearmFactory(this, firearmConfig);
+            meleeWeaponFactory = new MeleeWeaponFactory(this, meleeWeaponConfig);
         } catch (IOException e) {
             return false;
         }
@@ -138,8 +144,8 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
             throw new StartupFailedException("Failed to load configuration files!", e);
         }
 
-        Translator.setLanguageDirectory(new File(getDataFolder().getPath() + "/lang"));
-        Translator.setLocale(Locale.ENGLISH.getLanguage()); // TODO: Multi language support
+        setUpCommands();
+        setUpTranslator();
 
         try {
             ItemConfig attachmentConfig = new AttachmentConfig(this);
@@ -147,10 +153,10 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
             ItemConfig firearmConfig = new FirearmConfig(this);
             ItemConfig meleeWeaponConfig = new MeleeWeaponConfig(this);
 
-            attachmentFactory = new AttachmentFactory(attachmentConfig);
-            equipmentFactory = new EquipmentFactory(equipmentConfig);
-            firearmFactory = new FirearmFactory(firearmConfig);
-            meleeWeaponFactory = new MeleeWeaponFactory(meleeWeaponConfig);
+            attachmentFactory = new AttachmentFactory(this, attachmentConfig);
+            equipmentFactory = new EquipmentFactory(this, equipmentConfig);
+            firearmFactory = new FirearmFactory(this, firearmConfig);
+            meleeWeaponFactory = new MeleeWeaponFactory(this, meleeWeaponConfig);
         } catch (Exception e) {
             throw new StartupFailedException("Failed to load item configuration files!", e);
         }
@@ -180,8 +186,16 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         gameManager = new BattleGameManager();
         selectionManager = new BattleSelectionManager();
 
-        new DataLoader(this);
+        new DataLoader(this, translator);
 
+        new EventListener(this);
+
+        if (ReflectionUtils.getEnumVersion().getValue() > 8) {
+            new PlayerSwapItemListener(this);
+        }
+    }
+
+    private void setUpCommands() {
         List<Command> commands = new ArrayList<>();
         commands.add(new BattlegroundsCommand(this));
         commands.add(new LoadoutCommand(this));
@@ -193,11 +207,45 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
                 getCommand(alias).setExecutor(command);
             }
         }
+    }
 
-        new EventListener(this);
+    private void setUpTranslator() {
+        translator = new PluginTranslator();
+        translator.setLocale(Locale.ENGLISH);
 
-        if (ReflectionUtils.getEnumVersion().getValue() > 8) {
-            new PlayerSwapItemListener(this);
+        File languageDirectory = new File(getDataFolder().getPath() + "/lang");
+
+        try {
+            // Get all available language files and loop and add them to the translator
+            File[] files = languageDirectory.listFiles();
+
+            if (files != null && files.length > 0) {
+                for (File file : files) {
+                    if (!file.isDirectory() && file.getName().startsWith("lang_")) {
+                        Locale locale;
+
+                        try {
+                            locale = LocaleUtils.toLocale(file.getName().substring(5, file.getName().length() - 4));
+                        } catch (NumberFormatException e) {
+                            plugin.getLogger().severe("Could not read language file " + file.getName() + ": " + e.getMessage());
+                            continue;
+                        }
+
+                        Yaml yaml = new BattleCacheYaml(this, locale.getLanguage());
+                        LanguageConfiguration languageConfiguration = new LanguageConfiguration(locale, yaml);
+
+                        translator.getLanguageConfigurations().add(languageConfiguration);
+                    }
+                }
+            } else {
+                // Generate a new default language file
+                Yaml yaml = new BattleCacheYaml(this, getDataFolder().getPath() + "/lang_en.yml", "lang_en.yml");
+                LanguageConfiguration languageConfiguration = new LanguageConfiguration(Locale.ENGLISH, yaml);
+
+                translator.getLanguageConfigurations().add(languageConfiguration);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

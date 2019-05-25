@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.item.factory;
 
 import com.matsg.battlegrounds.FactoryCreationException;
+import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.storage.ItemConfig;
 import com.matsg.battlegrounds.api.item.Attachment;
 import com.matsg.battlegrounds.api.util.AttributeModifier;
@@ -17,9 +18,11 @@ import java.util.Map;
 
 public class AttachmentFactory implements ItemFactory<Attachment> {
 
+    private Battlegrounds plugin;
     private ItemConfig attachmentConfig;
 
-    public AttachmentFactory(ItemConfig attachmentConfig) {
+    public AttachmentFactory(Battlegrounds plugin, ItemConfig attachmentConfig) {
+        this.plugin = plugin;
         this.attachmentConfig = attachmentConfig;
     }
 
@@ -29,6 +32,7 @@ public class AttachmentFactory implements ItemFactory<Attachment> {
 
         try {
             Attachment attachment = new BattleAttachment(
+                    plugin,
                     id,
                     section.getString("DisplayName"),
                     section.getString("Description"),

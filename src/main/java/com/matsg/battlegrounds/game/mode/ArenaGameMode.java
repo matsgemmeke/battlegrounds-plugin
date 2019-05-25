@@ -2,6 +2,7 @@ package com.matsg.battlegrounds.game.mode;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.Hitbox;
 import com.matsg.battlegrounds.api.entity.PlayerState;
@@ -30,8 +31,8 @@ import java.util.Collections;
  */
 public abstract class ArenaGameMode extends AbstractGameMode {
 
-    public ArenaGameMode(Battlegrounds plugin, Game game) {
-        super(plugin, game);
+    public ArenaGameMode(Battlegrounds plugin, Game game, Translator translator) {
+        super(plugin, game, translator);
     }
 
     public ArenaComponent getComponent(int id) {
@@ -86,19 +87,19 @@ public abstract class ArenaGameMode extends AbstractGameMode {
                 null,
                 new ItemStackBuilder(Material.LEATHER_CHESTPLATE)
                         .addItemFlags(ItemFlag.values())
-                        .setColor(game.getGameMode().getTeam(gamePlayer).getColor())
-                        .setDisplayName(ChatColor.WHITE + messageHelper.create(TranslationKey.ARMOR_VEST))
+                        .setColor(gamePlayer.getTeam().getColor())
+                        .setDisplayName(ChatColor.WHITE + translator.translate(TranslationKey.ARMOR_VEST))
                         .setUnbreakable(true)
                         .build(),
                 new ItemStackBuilder(Material.LEATHER_HELMET)
                         .addItemFlags(ItemFlag.values())
-                        .setColor(game.getGameMode().getTeam(gamePlayer).getColor())
-                        .setDisplayName(ChatColor.WHITE + messageHelper.create(TranslationKey.ARMOR_HELMET))
+                        .setColor(gamePlayer.getTeam().getColor())
+                        .setDisplayName(ChatColor.WHITE + translator.translate(TranslationKey.ARMOR_HELMET))
                         .setUnbreakable(true)
                         .build()
         });
 
-        SelectLoadout selectLoadout = new SelectLoadout(game);
+        SelectLoadout selectLoadout = new SelectLoadout(plugin, game, translator);
         game.getItemRegistry().addItem(selectLoadout);
         gamePlayer.getHeldItems().add(selectLoadout);
         player.getInventory().setItem(ItemSlot.MISCELLANEOUS.getSlot(), selectLoadout.getItemStack());
@@ -108,7 +109,7 @@ public abstract class ArenaGameMode extends AbstractGameMode {
         super.start();
         for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
             if (gamePlayer.getLoadout() == null) {
-                gamePlayer.getPlayer().openInventory(new SelectLoadoutView(plugin, game, gamePlayer).getInventory());
+                gamePlayer.getPlayer().openInventory(new SelectLoadoutView(plugin, translator, game, gamePlayer).getInventory());
             }
         }
     }

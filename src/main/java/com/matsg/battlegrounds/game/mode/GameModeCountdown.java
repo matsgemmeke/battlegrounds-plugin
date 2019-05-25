@@ -1,23 +1,25 @@
 package com.matsg.battlegrounds.game.mode;
 
 import com.matsg.battlegrounds.TranslationKey;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Countdown;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
-import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.BattleSound;
 import com.matsg.battlegrounds.util.EnumTitle;
-import com.matsg.battlegrounds.util.MessageHelper;
 
 public class GameModeCountdown extends BattleRunnable implements Countdown {
 
     private boolean cancelled;
     private Game game;
     private int countdown;
+    private Translator translator;
 
-    public GameModeCountdown(Game game, int countdown) {
+    public GameModeCountdown(Game game, Translator translator, int countdown) {
         this.game = game;
+        this.translator = translator;
         this.countdown = countdown;
         this.cancelled = false;
 
@@ -30,11 +32,12 @@ public class GameModeCountdown extends BattleRunnable implements Countdown {
 
     public void cancelCountdown() {
         cancelled = true;
+
         for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
             gamePlayer.getPlayer().teleport(game.getLobby());
         }
-        MessageHelper messageHelper = new MessageHelper();
-        game.getPlayerManager().broadcastMessage(messageHelper.create(TranslationKey.COUNTDOWN_CANCELLED));
+
+        game.getPlayerManager().broadcastMessage(translator.translate(TranslationKey.COUNTDOWN_CANCELLED));
     }
 
     public void run() {

@@ -4,7 +4,7 @@ import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameSign;
-import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.command.validator.GameIdValidator;
 import com.matsg.battlegrounds.game.BattleGameSign;
 import org.bukkit.Material;
@@ -26,7 +26,7 @@ public class SetGameSign extends Command {
         setPlayerOnly(true);
         setUsage("bg setgamesign [id]");
 
-        registerValidator(new GameIdValidator(plugin));
+        registerValidator(new GameIdValidator(plugin, plugin.getTranslator(), true));
     }
 
     public void execute(CommandSender sender, String[] args) {
@@ -39,7 +39,7 @@ public class SetGameSign extends Command {
             return;
         }
 
-        GameSign sign = new BattleGameSign(plugin, game, (Sign) state);
+        GameSign sign = new BattleGameSign(plugin, game, (Sign) state, plugin.getTranslator());
 
         game.getDataFile().setLocation("sign", state.getLocation(), true);
         game.getDataFile().save();

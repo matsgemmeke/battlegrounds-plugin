@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.storage;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.storage.CacheYaml;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.game.GameMode;
@@ -23,9 +24,11 @@ public class DataLoader {
 
     private final Battlegrounds plugin;
     private final Logger logger;
+    private final Translator translator;
 
-    public DataLoader(Battlegrounds plugin) {
+    public DataLoader(Battlegrounds plugin, Translator translator) {
         this.plugin = plugin;
+        this.translator = translator;
         this.logger = plugin.getLogger();
 
         plugin.getGameManager().getGames().clear();
@@ -56,7 +59,7 @@ public class DataLoader {
             e.printStackTrace();
         }
 
-        GameModeFactory gameModeFactory = new GameModeFactory();
+        GameModeFactory gameModeFactory = new GameModeFactory(plugin, plugin.getTranslator());
 
         // Setting configurations
         try {
@@ -152,7 +155,7 @@ public class DataLoader {
                     continue;
                 }
 
-                GameSign sign = new BattleGameSign(plugin, game, (Sign) state);
+                GameSign sign = new BattleGameSign(plugin, game, (Sign) state, translator);
 
                 game.setGameSign(sign);
                 sign.update();

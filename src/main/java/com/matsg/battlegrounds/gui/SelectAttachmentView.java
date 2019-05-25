@@ -2,12 +2,12 @@ package com.matsg.battlegrounds.gui;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.item.Attachment;
 import com.matsg.battlegrounds.api.item.Gun;
 import com.matsg.battlegrounds.api.item.Loadout;
-import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
-import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -28,24 +28,24 @@ public class SelectAttachmentView implements View {
     private Inventory inventory, previous;
     private Loadout loadout;
     private Map<ItemStack, Attachment> attachments;
-    private MessageHelper messageHelper;
     private Player player;
+    private Translator translator;
 
-    public SelectAttachmentView(Battlegrounds plugin, Player player, Loadout loadout, Gun gun, int attachmentNr) {
+    public SelectAttachmentView(Battlegrounds plugin, Translator translator, Player player, Loadout loadout, Gun gun, int attachmentNr) {
         this.plugin = plugin;
+        this.translator = translator;
         this.attachmentNr = attachmentNr;
         this.attachments = new HashMap<>();
         this.gun = gun;
         this.loadout = loadout;
-        this.messageHelper = new MessageHelper();
         this.player = player;
 
-        inventory = buildInventory(plugin.getServer().createInventory(this, 27, messageHelper.create(TranslationKey.VIEW_SELECT_ATTACHMENT, new Placeholder("bg_weapon", gun.getName()))));
-        inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(messageHelper.create(TranslationKey.GO_BACK)).build());
+        inventory = buildInventory(plugin.getServer().createInventory(this, 27, translator.translate(TranslationKey.VIEW_SELECT_ATTACHMENT, new Placeholder("bg_weapon", gun.getName()))));
+        inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(translator.translate(TranslationKey.GO_BACK)).build());
     }
 
-    public SelectAttachmentView(Battlegrounds plugin, Player player, Loadout loadout, Gun gun, int attachmentNr, Inventory previous) {
-        this(plugin, player, loadout, gun, attachmentNr);
+    public SelectAttachmentView(Battlegrounds plugin, Translator translator, Player player, Loadout loadout, Gun gun, int attachmentNr, Inventory previous) {
+        this(plugin, translator, player, loadout, gun, attachmentNr);
         this.previous = previous;
     }
 
@@ -93,7 +93,7 @@ public class SelectAttachmentView implements View {
     private ItemStack getLockedItemStack(Attachment attachment) {
         return new ItemStackBuilder(Material.BARRIER)
                 .addItemFlags(ItemFlag.values())
-                .setDisplayName(messageHelper.create(TranslationKey.ITEM_LOCKED, new Placeholder("bg_level", plugin.getLevelConfig().getLevelUnlocked(attachment.getName()))))
+                .setDisplayName(translator.translate(TranslationKey.ITEM_LOCKED, new Placeholder("bg_level", plugin.getLevelConfig().getLevelUnlocked(attachment.getName()))))
                 .setUnbreakable(true)
                 .build();
     }
@@ -121,7 +121,7 @@ public class SelectAttachmentView implements View {
         gun.getAttachments().clear();
         gun.getAttachments().add(attachmentNr, attachment);
         plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).saveLoadout(loadout.getLoadoutNr(), loadout);
-        player.openInventory(new EditLoadoutView(plugin, loadout).getInventory());
+        player.openInventory(new EditLoadoutView(plugin, translator, loadout).getInventory());
     }
 
     public boolean onClose() {

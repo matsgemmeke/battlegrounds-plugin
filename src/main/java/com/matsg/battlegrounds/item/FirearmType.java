@@ -1,10 +1,10 @@
 package com.matsg.battlegrounds.item;
 
+import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.api.item.DamageSource;
 import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.item.ItemType;
 import com.matsg.battlegrounds.api.item.Lethal;
-import com.matsg.battlegrounds.util.MessageHelper;
 
 public enum FirearmType implements ItemType {
 
@@ -22,18 +22,16 @@ public enum FirearmType implements ItemType {
     private Class<? extends DamageSource> damageSourceClass;
     private int maxHits, projectileAmount;
     private ItemSlot itemSlot;
-    private MessageHelper messageHelper;
     private String name;
 
     FirearmType(String path, ItemSlot itemSlot, int projectileAmount, Class<? extends DamageSource> damageSourceClass, int maxHits, boolean scope) {
         this.damageSourceClass = damageSourceClass;
         this.itemSlot = itemSlot;
         this.maxHits = maxHits;
-        this.messageHelper = new MessageHelper();
         this.projectileAmount = projectileAmount;
         this.pierceable = maxHits > 1;
         this.scope = scope;
-        this.name = messageHelper.create(path);
+        this.name = BattlegroundsPlugin.getPlugin().getTranslator().translate(path);
     }
 
     public ItemSlot getDefaultItemSlot() {

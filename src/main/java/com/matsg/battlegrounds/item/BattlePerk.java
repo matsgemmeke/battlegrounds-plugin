@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.item;
 
+import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.item.Perk;
 import com.matsg.battlegrounds.api.item.PerkEffect;
@@ -10,8 +11,8 @@ public class BattlePerk extends BattleItem implements Perk {
     private GamePlayer gamePlayer;
     private PerkEffect effect;
 
-    public BattlePerk(PerkEffect effect) {
-        super(effect.toString(), effect.getName(), effect.getItemStack());
+    public BattlePerk(Battlegrounds plugin, PerkEffect effect) {
+        super(plugin, effect.toString(), effect.getName(), effect.getItemStack());
         this.effect = effect;
     }
 

@@ -1,6 +1,8 @@
 package com.matsg.battlegrounds.util;
 
-import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.BattlegroundsPlugin;
+import com.matsg.battlegrounds.api.Placeholder;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.nms.Title;
 import org.bukkit.entity.Player;
 
@@ -14,17 +16,17 @@ public enum EnumTitle {
     TDM_START("title-tdm-start"),
     ZOMBIES_START("title-zombies-start");
 
-    private MessageHelper messageHelper;
     private String path;
     private Title title;
+    private Translator translator;
 
     EnumTitle(String path) {
-        this.messageHelper = new MessageHelper();
+        this.translator = BattlegroundsPlugin.getPlugin().getTranslator();
 
         if (path == null || path.length() <= 0) {
             throw new TitleFormatException("Title argument cannot be null");
         }
-        String string = messageHelper.create(path);
+        String string = translator.translate(path);
         String[] split = string.split(",");
         if (split.length <= 4) {
             throw new TitleFormatException("Invalid title format \"" + string + "\"");

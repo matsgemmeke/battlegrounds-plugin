@@ -2,6 +2,7 @@ package com.matsg.battlegrounds.gui;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.storage.ItemConfig;
 import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.storage.EquipmentConfig;
@@ -10,7 +11,6 @@ import com.matsg.battlegrounds.storage.MeleeWeaponConfig;
 import com.matsg.battlegrounds.item.EquipmentType;
 import com.matsg.battlegrounds.item.FirearmType;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
-import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -31,13 +31,13 @@ public class WeaponsView implements View {
     private ItemSlot itemSlot;
     private Loadout loadout;
     private List<Weapon> weapons;
-    private MessageHelper messageHelper;
+    private Translator translator;
 
-    public WeaponsView(Battlegrounds plugin, Loadout loadout, ItemSlot itemSlot) {
+    public WeaponsView(Battlegrounds plugin, Translator translator, Loadout loadout, ItemSlot itemSlot) {
         this.plugin = plugin;
+        this.translator = translator;
         this.loadout = loadout;
         this.itemSlot = itemSlot;
-        this.messageHelper = new MessageHelper();
 
         try {
             this.equipmentConfig = new EquipmentConfig(plugin);
@@ -51,8 +51,8 @@ public class WeaponsView implements View {
         this.inventory = prepareInventory();
     }
 
-    public WeaponsView(Battlegrounds plugin, Loadout loadout, ItemSlot itemSlot, Inventory previous) {
-        this(plugin, loadout, itemSlot);
+    public WeaponsView(Battlegrounds plugin, Translator translator, Loadout loadout, ItemSlot itemSlot, Inventory previous) {
+        this(plugin, translator, loadout, itemSlot);
         this.previous = previous;
     }
 
@@ -101,7 +101,7 @@ public class WeaponsView implements View {
             itemType = weapon.getType();
         }
 
-        player.openInventory(new SelectWeaponView(plugin, player, loadout, itemType, weaponList, inventory).getInventory());
+        player.openInventory(new SelectWeaponView(plugin, translator, player, loadout, itemType, weaponList, inventory).getInventory());
     }
 
     public boolean onClose() {
@@ -136,7 +136,7 @@ public class WeaponsView implements View {
     }
 
     private Inventory prepareInventory() {
-        Inventory inventory = plugin.getServer().createInventory(this, 27, messageHelper.create(TranslationKey.VIEW_WEAPONS));
+        Inventory inventory = plugin.getServer().createInventory(this, 27, translator.translate(TranslationKey.VIEW_WEAPONS));
 
         // Add all firearm class types
         for (FirearmType firearmType : FirearmType.values()) {
@@ -174,7 +174,7 @@ public class WeaponsView implements View {
             }
         }
 
-        inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(messageHelper.create(TranslationKey.GO_BACK)).build());
+        inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(translator.translate(TranslationKey.GO_BACK)).build());
         return inventory;
     }
 }

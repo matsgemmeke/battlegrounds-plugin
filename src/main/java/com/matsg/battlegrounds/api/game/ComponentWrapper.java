@@ -3,7 +3,7 @@ package com.matsg.battlegrounds.api.game;
 import java.util.Collection;
 
 /**
- * Represents an object that encapsulates instance types of {@link ArenaComponent}.
+ * Represents an object that encapsulates any instance types of {@link ArenaComponent}.
  */
 public interface ComponentWrapper {
 

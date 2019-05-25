@@ -2,7 +2,7 @@ package com.matsg.battlegrounds.game.mode.zombies;
 
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.game.*;
-import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.util.ActionBar;
 import com.matsg.battlegrounds.util.BattleSound;
 import org.bukkit.Location;

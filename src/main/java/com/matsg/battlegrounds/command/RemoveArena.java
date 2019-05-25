@@ -4,7 +4,7 @@ import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.command.validator.ArenaNameValidator;
 import com.matsg.battlegrounds.command.validator.GameIdValidator;
 import com.matsg.battlegrounds.util.BattleRunnable;
@@ -27,8 +27,8 @@ public class RemoveArena extends Command {
         setPermissionNode("battlegrounds.removearena");
         setUsage("bg removearena [id] [arena]");
 
-        registerValidator(new GameIdValidator(plugin));
-        registerValidator(new ArenaNameValidator(plugin));
+        registerValidator(new GameIdValidator(plugin, plugin.getTranslator(), true));
+        registerValidator(new ArenaNameValidator(plugin, plugin.getTranslator(), true));
     }
 
     public void execute(CommandSender sender, String[] args) {

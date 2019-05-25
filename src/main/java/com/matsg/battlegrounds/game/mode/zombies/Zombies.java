@@ -2,6 +2,7 @@ package com.matsg.battlegrounds.game.mode.zombies;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.Hitbox;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent;
@@ -15,10 +16,10 @@ import com.matsg.battlegrounds.game.objective.EliminationObjective;
 import com.matsg.battlegrounds.item.ItemFinder;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.item.factory.LoadoutFactory;
+import com.matsg.battlegrounds.item.factory.PerkFactory;
 import com.matsg.battlegrounds.nms.Title;
 import com.matsg.battlegrounds.util.BattleSound;
 import com.matsg.battlegrounds.util.EnumTitle;
-import com.matsg.battlegrounds.util.MessageHelper;
 import com.matsg.battlegrounds.util.XMaterial;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
@@ -29,20 +30,18 @@ public class Zombies extends AbstractGameMode {
 
     private ComponentContainer<Section> sectionContainer;
     private LoadoutFactory loadoutFactory;
-    private MessageHelper messageHelper;
     private Team team;
     private ZombiesConfig config;
 
-    public Zombies(Battlegrounds plugin, Game game, ZombiesConfig config) {
-        super(plugin, game);
+    public Zombies(Battlegrounds plugin, Game game, Translator translator, ZombiesConfig config) {
+        super(plugin, game, translator);
         this.config = config;
         this.loadoutFactory = new LoadoutFactory();
-        this.messageHelper = new MessageHelper();
         this.sectionContainer = new BattleComponentContainer<>();
         this.team = new BattleTeam(1, "Players", null, ChatColor.WHITE);
 
-        setName(messageHelper.create(TranslationKey.ZOMBIES_NAME));
-        setShortName(messageHelper.create(TranslationKey.ZOMBIES_SHORT));
+        setName(translator.translate(TranslationKey.ZOMBIES_NAME));
+        setShortName(translator.translate(TranslationKey.ZOMBIES_SHORT));
 
         objectives.add(new EliminationObjective(game, 1));
 
@@ -117,7 +116,9 @@ public class Zombies extends AbstractGameMode {
 
     public void loadData(Arena arena) {
         ItemFinder itemFinder = new ItemFinder(plugin);
-        ZombiesDataLoader dataLoader = new ZombiesDataLoader(this, game, arena, itemFinder);
+        PerkFactory perkFactory = new PerkFactory(plugin, translator);
+
+        ZombiesDataLoader dataLoader = new ZombiesDataLoader(this, game, arena, itemFinder, perkFactory, translator);
         dataLoader.load();
     }
 
@@ -143,7 +144,7 @@ public class Zombies extends AbstractGameMode {
         }
 
         ItemStack barricadeTool = new ItemStackBuilder(XMaterial.OAK_FENCE.parseMaterial())
-                .setDisplayName(messageHelper.create(TranslationKey.BARRICADE_TOOL))
+                .setDisplayName(translator.translate(TranslationKey.BARRICADE_TOOL))
                 .build();
 
         Loadout loadout = loadoutFactory.make(

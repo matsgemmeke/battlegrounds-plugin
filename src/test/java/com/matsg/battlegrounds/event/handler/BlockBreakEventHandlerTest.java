@@ -17,20 +17,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({ BattlegroundsConfig.class })
 public class BlockBreakEventHandlerTest {
 
     private Arena arena;
@@ -48,13 +41,12 @@ public class BlockBreakEventHandlerTest {
     @Before
     public void setUp() {
         this.plugin = mock(Battlegrounds.class);
-        this.config = PowerMockito.mock(BattlegroundsConfig.class);
+        this.config = mock(BattlegroundsConfig.class);
         this.block = mock(Block.class);
         this.game = mock(Game.class);
         this.player = mock(Player.class);
         this.playerManager = mock(PlayerManager.class);
         this.world = mock(World.class);
-
 
         this.arena = new BattleArena("Arena", world, new Location(world, 100, 100, 100), new Location(world, 0, 0, 0));
         this.event = new BlockBreakEvent(block, player);

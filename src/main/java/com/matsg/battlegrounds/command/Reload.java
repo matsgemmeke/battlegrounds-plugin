@@ -19,6 +19,7 @@ public class Reload extends Command {
             sender.sendMessage(createMessage(TranslationKey.RELOAD_FAILED));
             return;
         }
+
         sender.sendMessage(createMessage(TranslationKey.RELOAD_SUCCESS));
     }
 }

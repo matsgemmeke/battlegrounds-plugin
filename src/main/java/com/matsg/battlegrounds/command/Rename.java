@@ -3,7 +3,7 @@ package com.matsg.battlegrounds.command;
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.item.Loadout;
-import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.api.Placeholder;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

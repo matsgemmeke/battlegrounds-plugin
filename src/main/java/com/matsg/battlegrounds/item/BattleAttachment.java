@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.item;
 
+import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.item.Attachment;
 import com.matsg.battlegrounds.api.util.AttributeModifier;
 import com.matsg.battlegrounds.api.item.GunPart;
@@ -15,8 +16,9 @@ public class BattleAttachment extends BattleItem implements Attachment {
     private Map<String, AttributeModifier> modifiers;
     private String description;
 
-    public BattleAttachment(String id, String name, String description, ItemStack itemStack, GunPart gunPart, Map<String, AttributeModifier> modifiers, boolean toggleable) {
-        super(id, name, itemStack);
+    public BattleAttachment(Battlegrounds plugin, String id, String name, String description, ItemStack itemStack,
+                            GunPart gunPart, Map<String, AttributeModifier> modifiers, boolean toggleable) {
+        super(plugin, id, name, itemStack);
         this.description = description;
         this.gunPart = gunPart;
         this.modifiers = modifiers;

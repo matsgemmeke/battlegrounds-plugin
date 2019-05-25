@@ -3,7 +3,7 @@ package com.matsg.battlegrounds.command;
 import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.storage.StoredPlayer;
-import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.gui.LoadoutManagerView;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -32,7 +32,7 @@ public class LoadoutCommand extends Command {
         }
 
         if (args.length == 0) {
-            player.openInventory(new LoadoutManagerView(plugin, player).getInventory());
+            player.openInventory(new LoadoutManagerView(plugin, plugin.getTranslator(), player).getInventory());
             return;
         }
 

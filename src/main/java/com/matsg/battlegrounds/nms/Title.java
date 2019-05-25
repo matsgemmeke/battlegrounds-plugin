@@ -1,7 +1,6 @@
 package com.matsg.battlegrounds.nms;
 
-import com.matsg.battlegrounds.api.util.Placeholder;
-import com.matsg.battlegrounds.util.MessageHelper;
+import com.matsg.battlegrounds.api.Placeholder;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Constructor;
@@ -9,7 +8,6 @@ import java.lang.reflect.Constructor;
 public class Title {
 
     private int fadeIn, fadeOut, time;
-    private MessageHelper messageHelper;
     private String subTitle, title;
 
     public Title(String title, String subTitle, int fadeIn, int time, int fadeOut) {
@@ -18,19 +16,10 @@ public class Title {
         this.fadeIn = fadeIn;
         this.time = time;
         this.fadeOut = fadeOut;
-        this.messageHelper = new MessageHelper();
     }
 
     public String getMessage() {
         return title + " " + subTitle;
-    }
-
-    public String getMessage(Placeholder... placeholders) {
-        return replace(title, placeholders) + " " + replace(subTitle, placeholders);
-    }
-
-    private String replace(String string, Placeholder... placeholders) {
-        return messageHelper.createSimple(string, placeholders);
     }
 
     public void send(Player player, Placeholder... placeholders) {
@@ -38,15 +27,13 @@ public class Title {
     }
 
     private void send(Player player, String title, String subTitle, int fadeIn, int time, int fadeOut, Placeholder... placeholders) {
-        String editTitle = replace(title, placeholders), editSubTitle = replace(subTitle, placeholders);
-
-        if (editTitle != null) {
+        if (title != null) {
             try {
                 Object enumTitle = ReflectionUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0]
                         .getField("TIMES").get(null);
                 Object chatTitle = ReflectionUtils.getNMSClass("IChatBaseComponent").getDeclaredClasses()[0]
                         .getMethod("a", String.class)
-                        .invoke(null, "{\"text\":\"" + editTitle + "\"}");
+                        .invoke(null, "{\"text\":\"" + title + "\"}");
 
                 Constructor titleConstructor = ReflectionUtils.getNMSClass("PacketPlayOutTitle")
                         .getConstructor(ReflectionUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0],
@@ -61,7 +48,7 @@ public class Title {
 
                 chatTitle = ReflectionUtils.getNMSClass("IChatBaseComponent").getDeclaredClasses()[0]
                         .getMethod("a", String.class)
-                        .invoke(null, "{\"text\":\"" + editTitle + "\"}");
+                        .invoke(null, "{\"text\":\"" + title + "\"}");
 
                 titleConstructor = ReflectionUtils.getNMSClass("PacketPlayOutTitle")
                         .getConstructor(ReflectionUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0],
@@ -75,13 +62,13 @@ public class Title {
             }
         }
 
-        if (editSubTitle != null) {
+        if (subTitle != null) {
             try {
                 Object enumSubTitle = ReflectionUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0]
                         .getField("TIMES").get(null);
                 Object chatSubTitle = ReflectionUtils.getNMSClass("IChatBaseComponent").getDeclaredClasses()[0]
                         .getMethod("a", String.class)
-                        .invoke(null, "{\"text\":\"" + editSubTitle + "\"}");
+                        .invoke(null, "{\"text\":\"" + subTitle + "\"}");
 
                 Constructor subTitleConstructor = ReflectionUtils.getNMSClass("PacketPlayOutTitle")
                         .getConstructor(ReflectionUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0],
@@ -96,7 +83,7 @@ public class Title {
 
                 chatSubTitle = ReflectionUtils.getNMSClass("IChatBaseComponent").getDeclaredClasses()[0]
                         .getMethod("a", String.class)
-                        .invoke( null, "{\"text\":\"" + editSubTitle + "\"}");
+                        .invoke( null, "{\"text\":\"" + subTitle + "\"}");
 
                 subTitleConstructor = ReflectionUtils.getNMSClass("PacketPlayOutTitle")
                         .getConstructor(ReflectionUtils.getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0],

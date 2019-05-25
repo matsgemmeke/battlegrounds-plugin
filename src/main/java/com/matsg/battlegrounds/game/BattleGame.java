@@ -46,7 +46,7 @@ public class BattleGame implements Game {
         this.id = id;
         this.arenaList = new ArrayList<>();
         this.itemRegistry = new BattleItemRegistry();
-        this.playerManager = new BattlePlayerManager(this, plugin.getLevelConfig(), plugin.getPlayerStorage());
+        this.playerManager = new BattlePlayerManager(this, plugin.getLevelConfig(), plugin.getPlayerStorage(), plugin.getTranslator());
         this.state = new WaitingState();
 
         try {

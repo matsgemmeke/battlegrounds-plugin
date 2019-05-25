@@ -2,19 +2,19 @@ package com.matsg.battlegrounds.command.component;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.ItemChest;
 import com.matsg.battlegrounds.api.game.Section;
 import com.matsg.battlegrounds.api.item.Weapon;
-import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.command.validator.GameModeUsageValidator;
 import com.matsg.battlegrounds.command.validator.SectionNameValidator;
 import com.matsg.battlegrounds.game.mode.GameModeType;
 import com.matsg.battlegrounds.game.mode.zombies.Zombies;
 import com.matsg.battlegrounds.game.mode.zombies.ZombiesItemChest;
 import com.matsg.battlegrounds.item.ItemFinder;
-import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
@@ -25,15 +25,15 @@ import java.util.Set;
 public class AddItemChest extends ComponentCommand {
 
     private ItemFinder itemFinder;
-    private MessageHelper messageHelper;
+    private Translator translator;
 
-    public AddItemChest(Battlegrounds plugin) {
+    public AddItemChest(Battlegrounds plugin, Translator translator) {
         super(plugin);
+        this.translator = translator;
         this.itemFinder = new ItemFinder(plugin);
-        this.messageHelper = new MessageHelper();
 
-        registerValidator(new GameModeUsageValidator(plugin, GameModeType.ZOMBIES));
-        registerValidator(new SectionNameValidator(plugin, 4));
+        registerValidator(new GameModeUsageValidator(plugin, translator, GameModeType.ZOMBIES));
+        registerValidator(new SectionNameValidator(plugin, translator, 4));
     }
 
     public void execute(ComponentContext context, int componentId, String[] args) {
@@ -41,7 +41,7 @@ public class AddItemChest extends ComponentCommand {
         BlockState blockState = player.getTargetBlock((Set<Material>) null, 5).getState();
 
         if (!(blockState instanceof Chest)) {
-            player.sendMessage(messageHelper.create(TranslationKey.INVALID_BLOCK));
+            player.sendMessage(translator.translate(TranslationKey.INVALID_BLOCK));
             return;
         }
 
@@ -52,19 +52,19 @@ public class AddItemChest extends ComponentCommand {
         Section section = zombies.getSection(args[4]);
 
         if (args.length == 5) {
-            player.sendMessage(messageHelper.create(TranslationKey.SPECIFY_WEAPON_ID));
+            player.sendMessage(translator.translate(TranslationKey.SPECIFY_WEAPON_ID));
             return;
         }
 
         Weapon weapon = itemFinder.findWeapon(args[5]);
 
         if (weapon == null) {
-            player.sendMessage(messageHelper.create(TranslationKey.INVALID_WEAPON, new Placeholder("bg_weapon", args[5])));
+            player.sendMessage(translator.translate(TranslationKey.INVALID_WEAPON, new Placeholder("bg_weapon", args[5])));
             return;
         }
 
         if (args.length == 6) {
-            player.sendMessage(messageHelper.create(TranslationKey.SPECIFY_ITEM_PRICE));
+            player.sendMessage(translator.translate(TranslationKey.SPECIFY_ITEM_PRICE));
             return;
         }
 
@@ -73,7 +73,7 @@ public class AddItemChest extends ComponentCommand {
         try {
             price = Integer.parseInt(args[6]);
         } catch (Exception e) {
-            player.sendMessage(messageHelper.create(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[6])));
+            player.sendMessage(translator.translate(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[6])));
             return;
         }
 
@@ -95,7 +95,7 @@ public class AddItemChest extends ComponentCommand {
         game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".type", "itemchest");
         game.getDataFile().save();
 
-        player.sendMessage(messageHelper.create(TranslationKey.ITEMCHEST_ADD,
+        player.sendMessage(translator.translate(TranslationKey.ITEMCHEST_ADD,
                 new Placeholder("bg_arena", arena.getName()),
                 new Placeholder("bg_component_id", componentId)
         ));

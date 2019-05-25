@@ -1,9 +1,10 @@
 package com.matsg.battlegrounds.item;
 
+import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.util.GenericAttribute;
-import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.item.modifier.IntegerAttributeModifier;
 import com.matsg.battlegrounds.util.BattleAttribute;
@@ -36,10 +37,10 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
     protected List<Material> blocks;
     protected Sound[] reloadSound, shotSound;
 
-    public BattleFirearm(String id, String name, String description, ItemStack itemStack,
+    public BattleFirearm(Battlegrounds plugin, String id, String name, String description, ItemStack itemStack,
                          int magazine, int ammo, int maxAmmo, int cooldown, int reloadDuration, double accuracy,
                          ReloadType reloadType, FirearmType firearmType, Sound[] reloadSound, Sound[] shotSound) {
-        super(id, name, description, itemStack);
+        super(plugin, id, name, description, itemStack);
         this.blocks = new ArrayList<>();
         this.droppedItems = new ArrayList<>();
         this.firearmType = firearmType;
@@ -379,7 +380,7 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
                 new Placeholder("bg_magazine", magazine.getValue()),
                 new Placeholder("bg_weapon", name)
         };
-        String displayName = messageHelper.createSimple(plugin.getBattlegroundsConfig().getWeaponDisplayName("firearm"), placeholders);
+        String displayName = translator.createSimpleMessage(plugin.getBattlegroundsConfig().getWeaponDisplayName("firearm"), placeholders);
 
         itemStack = new ItemStackBuilder(itemStack)
                 .addItemFlags(ItemFlag.values())

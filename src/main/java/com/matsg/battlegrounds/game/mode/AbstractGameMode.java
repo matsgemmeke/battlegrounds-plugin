@@ -1,10 +1,10 @@
 package com.matsg.battlegrounds.game.mode;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.game.GameMode;
-import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -24,15 +24,15 @@ public abstract class AbstractGameMode implements GameMode {
     protected List<ArenaComponent> components;
     protected List<Objective> objectives;
     protected List<Team> teams;
-    protected MessageHelper messageHelper;
     protected String name, shortName;
+    protected Translator translator;
 
-    public AbstractGameMode(Battlegrounds plugin, Game game) {
+    public AbstractGameMode(Battlegrounds plugin, Game game, Translator translator) {
         this.plugin = plugin;
         this.game = game;
+        this.translator = translator;
         this.active = false;
         this.components = new ArrayList<>();
-        this.messageHelper = new MessageHelper();
         this.objectives = new ArrayList<>();
         this.teams = new ArrayList<>();
     }

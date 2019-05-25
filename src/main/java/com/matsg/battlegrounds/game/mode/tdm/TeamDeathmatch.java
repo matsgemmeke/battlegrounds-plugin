@@ -2,13 +2,14 @@ package com.matsg.battlegrounds.game.mode.tdm;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.event.GameEndEvent;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent.DeathCause;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.Hitbox;
-import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.game.mode.ArenaGameMode;
 import com.matsg.battlegrounds.game.mode.GameModeCountdown;
 import com.matsg.battlegrounds.game.mode.GameModeType;
@@ -23,13 +24,13 @@ public class TeamDeathmatch extends ArenaGameMode {
 
     private TDMConfig config;
 
-    public TeamDeathmatch(Battlegrounds plugin, Game game, TDMConfig config) {
-        super(plugin, game);
+    public TeamDeathmatch(Battlegrounds plugin, Game game, Translator translator, TDMConfig config) {
+        super(plugin, game, translator);
         this.config = config;
         this.teams.addAll(config.getTeams());
         
-        setName(messageHelper.create(TranslationKey.TDM_NAME));
-        setShortName(messageHelper.create(TranslationKey.TDM_SHORT));
+        setName(translator.translate(TranslationKey.TDM_NAME));
+        setShortName(translator.translate(TranslationKey.TDM_SHORT));
 
         objectives.add(new EliminationObjective(game, 2));
         objectives.add(new ScoreObjective(game, config.getKillsToWin()));
@@ -47,7 +48,7 @@ public class TeamDeathmatch extends ArenaGameMode {
     public void addPlayer(GamePlayer gamePlayer) {
         Team team = getEmptiestTeam();
         team.addPlayer(gamePlayer);
-        gamePlayer.sendMessage(messageHelper.create(TranslationKey.TEAM_ASSIGNMENT, new Placeholder("bg_team", team.getChatColor() + team.getName())));
+        gamePlayer.sendMessage(translator.translate(TranslationKey.TEAM_ASSIGNMENT, new Placeholder("bg_team", team.getChatColor() + team.getName())));
     }
 
     public Spawn getRespawnPoint(GamePlayer gamePlayer) {
@@ -63,13 +64,13 @@ public class TeamDeathmatch extends ArenaGameMode {
     }
 
     public void onDeath(GamePlayer gamePlayer, DeathCause deathCause) {
-        game.getPlayerManager().broadcastMessage(ChatColor.translateAlternateColorCodes('&', messageHelper.create(TranslationKey.PREFIX) +
-                messageHelper.create(deathCause.getMessagePath(), new Placeholder("bg_player", gamePlayer.getTeam().getChatColor() + gamePlayer.getName() + ChatColor.WHITE))));
+        game.getPlayerManager().broadcastMessage(ChatColor.translateAlternateColorCodes('&', translator.translate(TranslationKey.PREFIX) +
+                translator.translate(deathCause.getMessagePath(), new Placeholder("bg_player", gamePlayer.getTeam().getChatColor() + gamePlayer.getName() + ChatColor.WHITE))));
         handleDeath(gamePlayer);
     }
 
     public void onKill(GamePlayer gamePlayer, GamePlayer killer, Weapon weapon, Hitbox hitbox) {
-        game.getPlayerManager().broadcastMessage(messageHelper.create(getKillMessageKey(hitbox),
+        game.getPlayerManager().broadcastMessage(translator.translate(getKillMessageKey(hitbox),
                 new Placeholder("bg_killer", killer.getTeam().getChatColor() + killer.getName() + ChatColor.WHITE),
                 new Placeholder("bg_player", gamePlayer.getTeam().getChatColor() + gamePlayer.getName() + ChatColor.WHITE),
                 new Placeholder("bg_weapon", weapon.getName()))
@@ -116,7 +117,7 @@ public class TeamDeathmatch extends ArenaGameMode {
     }
 
     public void startCountdown() {
-        GameModeCountdown countdown = new GameModeCountdown(game, config.getCountdownLength());
+        GameModeCountdown countdown = new GameModeCountdown(game, translator, config.getCountdownLength());
         countdown.runTaskTimer(0, 20);
 
         game.setCountdown(countdown);
@@ -129,7 +130,7 @@ public class TeamDeathmatch extends ArenaGameMode {
             Result result = Result.getResult(team, getSortedTeams());
             if (result != null) {
                 for (GamePlayer gamePlayer : team.getPlayers()) {
-                    objective.getTitle().send(gamePlayer.getPlayer(), new Placeholder("bg_result", messageHelper.create(result.getTranslationKey())));
+                    objective.getTitle().send(gamePlayer.getPlayer(), new Placeholder("bg_result", translator.translate(result.getTranslationKey())));
                 }
             }
         }

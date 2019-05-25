@@ -1,5 +1,7 @@
 package com.matsg.battlegrounds.game;
 
+import com.matsg.battlegrounds.BattlegroundsPlugin;
+import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.storage.Yaml;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameConfiguration;
@@ -23,7 +25,8 @@ public class BattleGameConfiguration implements GameConfiguration {
     }
 
     public static BattleGameConfiguration getDefaultConfiguration(Game game) {
-        GameModeFactory gameModeFactory = new GameModeFactory();
+        Battlegrounds plugin = BattlegroundsPlugin.getPlugin();
+        GameModeFactory gameModeFactory = new GameModeFactory(plugin, plugin.getTranslator());
 
         return new BattleGameConfiguration(
                 new GameMode[] {

@@ -2,14 +2,14 @@ package com.matsg.battlegrounds.gui;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
-import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.util.ActionBar;
-import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -28,15 +28,15 @@ public class SelectLoadoutView implements View {
     private GamePlayer gamePlayer;
     private Inventory inventory;
     private List<SelectLoadoutViewItem> items;
-    private MessageHelper messageHelper;
+    private Translator translator;
 
-    public SelectLoadoutView(Battlegrounds plugin, Game game, GamePlayer gamePlayer) {
+    public SelectLoadoutView(Battlegrounds plugin, Translator translator, Game game, GamePlayer gamePlayer) {
         this.plugin = plugin;
+        this.translator = translator;
         this.game = game;
         this.gamePlayer = gamePlayer;
         this.items = new ArrayList<>();
-        this.messageHelper = new MessageHelper();
-        this.inventory = plugin.getServer().createInventory(this, 27, messageHelper.create(TranslationKey.VIEW_SELECT_LOADOUT));
+        this.inventory = plugin.getServer().createInventory(this, 27, translator.translate(TranslationKey.VIEW_SELECT_LOADOUT));
 
         for (Loadout loadout : plugin.getPlayerStorage().getStoredPlayer(gamePlayer.getUUID()).getLoadouts()) {
             addLoadout(loadout);
@@ -51,7 +51,7 @@ public class SelectLoadoutView implements View {
         int levelUnlocked = plugin.getLevelConfig().getLevelUnlocked(loadout.getName());
         boolean locked = levelUnlocked > plugin.getLevelConfig().getLevel(plugin.getPlayerStorage().getStoredPlayer(gamePlayer.getUUID()).getExp());
 
-        String displayName = locked ? messageHelper.create(TranslationKey.ITEM_LOCKED, new Placeholder("bg_level", plugin.getLevelConfig().getLevelUnlocked(loadout.getName()))) : ChatColor.WHITE + loadout.getName();
+        String displayName = locked ? translator.translate(TranslationKey.ITEM_LOCKED, new Placeholder("bg_level", plugin.getLevelConfig().getLevelUnlocked(loadout.getName()))) : ChatColor.WHITE + loadout.getName();
 
         ItemStack itemStack = new ItemStackBuilder(locked ? new ItemStack(Material.BARRIER) : getLoadoutItemStack(loadout))
                 .addItemFlags(ItemFlag.values())

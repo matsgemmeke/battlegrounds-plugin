@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.item.factory;
 
 import com.matsg.battlegrounds.FactoryCreationException;
+import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.storage.ItemConfig;
 import com.matsg.battlegrounds.api.item.Equipment;
 import com.matsg.battlegrounds.api.item.ItemFactory;
@@ -11,9 +12,11 @@ import org.bukkit.configuration.ConfigurationSection;
 
 public class EquipmentFactory implements ItemFactory<Equipment> {
 
+    private Battlegrounds plugin;
     private ItemConfig equipmentConfig;
 
-    public EquipmentFactory(ItemConfig equipmentConfig) {
+    public EquipmentFactory(Battlegrounds plugin, ItemConfig equipmentConfig) {
+        this.plugin = plugin;
         this.equipmentConfig = equipmentConfig;
     }
 
@@ -32,6 +35,7 @@ public class EquipmentFactory implements ItemFactory<Equipment> {
         if (equipmentType == EquipmentType.LETHAL) {
             try {
                 return new BattleLethal(
+                        plugin,
                         section.getName(),
                         section.getString("DisplayName"),
                         section.getString("Description"),
@@ -54,6 +58,7 @@ public class EquipmentFactory implements ItemFactory<Equipment> {
         } else {
             try {
                 return new BattleTactical(
+                        plugin,
                         section.getName(),
                         section.getString("DisplayName"),
                         section.getString("Description"),

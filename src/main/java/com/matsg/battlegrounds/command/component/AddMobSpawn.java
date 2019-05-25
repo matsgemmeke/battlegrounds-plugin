@@ -2,29 +2,29 @@ package com.matsg.battlegrounds.command.component;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.MobSpawn;
 import com.matsg.battlegrounds.api.game.Section;
-import com.matsg.battlegrounds.api.util.Placeholder;
+import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.command.validator.GameModeUsageValidator;
 import com.matsg.battlegrounds.command.validator.SectionNameValidator;
 import com.matsg.battlegrounds.game.mode.GameModeType;
 import com.matsg.battlegrounds.game.mode.zombies.Zombies;
 import com.matsg.battlegrounds.game.mode.zombies.ZombiesMobSpawn;
-import com.matsg.battlegrounds.util.MessageHelper;
 import org.bukkit.entity.Player;
 
 public class AddMobSpawn extends ComponentCommand {
 
-    private MessageHelper messageHelper;
+    private Translator translator;
 
-    public AddMobSpawn(Battlegrounds plugin) {
+    public AddMobSpawn(Battlegrounds plugin, Translator translator) {
         super(plugin);
-        this.messageHelper = new MessageHelper();
+        this.translator = translator;
 
-        registerValidator(new GameModeUsageValidator(plugin, GameModeType.ZOMBIES));
-        registerValidator(new SectionNameValidator(plugin, 4));
+        registerValidator(new GameModeUsageValidator(plugin, translator, GameModeType.ZOMBIES));
+        registerValidator(new SectionNameValidator(plugin, translator, 4));
     }
 
     public void execute(ComponentContext context, int componentId, String[] args) {
@@ -44,7 +44,7 @@ public class AddMobSpawn extends ComponentCommand {
         game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".type", "mobspawn");
         game.getDataFile().save();
 
-        player.sendMessage(messageHelper.create(TranslationKey.MOBSPAWN_ADD_NO_BARRICADE,
+        player.sendMessage(translator.translate(TranslationKey.MOBSPAWN_ADD_NO_BARRICADE,
                 new Placeholder("bg_id", componentId),
                 new Placeholder("bg_section", section.getName())
         ));
