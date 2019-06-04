@@ -1,10 +1,13 @@
 package com.matsg.battlegrounds.game.mode;
 
+import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.game.GameMode;
+import com.matsg.battlegrounds.game.mode.shared.SpawningBehavior;
+import com.matsg.battlegrounds.game.mode.shared.SpawningResult;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -26,11 +29,13 @@ public abstract class AbstractGameMode implements GameMode {
     protected List<Team> teams;
     protected String name, shortName;
     protected Translator translator;
+    private SpawningBehavior spawningBehavior;
 
-    public AbstractGameMode(Battlegrounds plugin, Game game, Translator translator) {
+    public AbstractGameMode(Battlegrounds plugin, Game game, Translator translator, SpawningBehavior spawningBehavior) {
         this.plugin = plugin;
         this.game = game;
         this.translator = translator;
+        this.spawningBehavior = spawningBehavior;
         this.active = false;
         this.components = new ArrayList<>();
         this.objectives = new ArrayList<>();
@@ -41,10 +46,6 @@ public abstract class AbstractGameMode implements GameMode {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public List<Objective> getObjectives() {
         return objectives;
     }
@@ -53,12 +54,12 @@ public abstract class AbstractGameMode implements GameMode {
         return shortName;
     }
 
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
-    }
-
     public Iterable<Team> getTeams() {
         return teams;
+    }
+
+    public void addObjective(Objective objective) {
+        objectives.add(objective);
     }
 
     protected Objective getAchievedObjective() {
@@ -121,6 +122,18 @@ public abstract class AbstractGameMode implements GameMode {
 
     public boolean removeComponent(ArenaComponent component) {
         return false;
+    }
+
+    public boolean spawnPlayers(Iterable<GamePlayer> players) {
+        SpawningResult result = spawningBehavior.spawnPlayers(players);
+
+        if (!result.passed()) {
+            plugin.getLogger().severe("Unable to spawn players in game " + game.getId() + ": " + result.getMessage());
+
+            game.getPlayerManager().broadcastMessage(translator.translate(TranslationKey.ERROR_OCCURRED));
+        }
+
+        return result.passed();
     }
 
     public void start() {

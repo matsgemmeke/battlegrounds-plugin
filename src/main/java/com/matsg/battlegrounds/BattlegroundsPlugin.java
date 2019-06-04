@@ -144,8 +144,8 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
             throw new StartupFailedException("Failed to load configuration files!", e);
         }
 
-        setUpCommands();
         setUpTranslator();
+        setUpCommands();
 
         try {
             ItemConfig attachmentConfig = new AttachmentConfig(this);
@@ -181,6 +181,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
 
         VersionFactory versionFactory = new VersionFactory();
         version = versionFactory.make(ReflectionUtils.getEnumVersion());
+        version.registerCustomEntities();
 
         eventDispatcher = new BattleEventDispatcher();
         gameManager = new BattleGameManager();
@@ -227,11 +228,11 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
                         try {
                             locale = LocaleUtils.toLocale(file.getName().substring(5, file.getName().length() - 4));
                         } catch (NumberFormatException e) {
-                            plugin.getLogger().severe("Could not read language file " + file.getName() + ": " + e.getMessage());
+                            getLogger().severe("Could not read language file " + file.getName() + ": " + e.getMessage());
                             continue;
                         }
 
-                        Yaml yaml = new BattleCacheYaml(this, locale.getLanguage());
+                        Yaml yaml = new BattleCacheYaml(this, languageDirectory.getPath(), "lang_" + locale.getLanguage() + ".yml");
                         LanguageConfiguration languageConfiguration = new LanguageConfiguration(locale, yaml);
 
                         translator.getLanguageConfigurations().add(languageConfiguration);
@@ -239,7 +240,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
                 }
             } else {
                 // Generate a new default language file
-                Yaml yaml = new BattleCacheYaml(this, getDataFolder().getPath() + "/lang_en.yml", "lang_en.yml");
+                Yaml yaml = new BattleCacheYaml(this, languageDirectory.getPath(), "lang_en.yml");
                 LanguageConfiguration languageConfiguration = new LanguageConfiguration(Locale.ENGLISH, yaml);
 
                 translator.getLanguageConfigurations().add(languageConfiguration);

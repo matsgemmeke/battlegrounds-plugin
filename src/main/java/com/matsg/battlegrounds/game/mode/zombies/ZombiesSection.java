@@ -70,10 +70,6 @@ public class ZombiesSection implements Section {
         return locked;
     }
 
-    public void setLocked(boolean locked) {
-        this.locked = locked;
-    }
-
     public boolean isUnlockedByDefault() {
         return unlockedByDefault;
     }
@@ -113,6 +109,16 @@ public class ZombiesSection implements Section {
             }
         }
         return false;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+
+        for (ComponentContainer<? extends Lockable> container : getContainers()) {
+            for (Lockable component : container.getAll()) {
+                component.setLocked(locked);
+            }
+        }
     }
 
     private ComponentContainer[] getContainers() {

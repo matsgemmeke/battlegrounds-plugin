@@ -11,7 +11,7 @@ import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftLivingEntity;
-import org.bukkit.entity.Mob;
+import org.bukkit.entity.Creature;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 
 import java.util.Set;
@@ -19,14 +19,16 @@ import java.util.Set;
 public class CustomWolf extends EntityWolf implements Hellhound {
 
     private boolean hostile;
-    private Mob entity;
+    private boolean spawned;
+    private Creature entity;
     private Game game;
 
     public CustomWolf(Game game) {
         super(((CraftWorld) game.getArena().getWorld()).getHandle());
         this.game = game;
-        this.entity = (Mob) bukkitEntity;
+        this.entity = (Creature) bukkitEntity;
         this.hostile = true;
+        this.spawned = false;
 
         setAngry(true);
 
@@ -42,6 +44,10 @@ public class CustomWolf extends EntityWolf implements Hellhound {
         super(world);
     }
 
+    public MobType getMobType() {
+        return MobType.HELLHOUND;
+    }
+
     public boolean isHostile() {
         return hostile;
     }
@@ -50,11 +56,24 @@ public class CustomWolf extends EntityWolf implements Hellhound {
         this.hostile = hostile;
     }
 
+    public boolean isSpawned() {
+        return spawned;
+    }
+
+    public void setSpawned(boolean spawned) {
+        this.spawned = spawned;
+    }
+
     public void clearPathfinderGoals() {
         ((Set) ReflectionUtils.getField(PathfinderGoalSelector.class, "b", goalSelector)).clear();
         ((Set) ReflectionUtils.getField(PathfinderGoalSelector.class, "c", goalSelector)).clear();
         ((Set) ReflectionUtils.getField(PathfinderGoalSelector.class, "b", targetSelector)).clear();
         ((Set) ReflectionUtils.getField(PathfinderGoalSelector.class, "c", targetSelector)).clear();
+    }
+
+    public double damage(double damage) {
+        entity.damage(damage);
+        return entity.getHealth();
     }
 
     public double getAttackDamage() {

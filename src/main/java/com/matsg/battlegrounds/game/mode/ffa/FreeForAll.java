@@ -19,9 +19,7 @@ import com.matsg.battlegrounds.game.mode.ArenaGameMode;
 import com.matsg.battlegrounds.game.mode.GameModeCountdown;
 import com.matsg.battlegrounds.game.mode.GameModeType;
 import com.matsg.battlegrounds.game.mode.Result;
-import com.matsg.battlegrounds.game.objective.EliminationObjective;
-import com.matsg.battlegrounds.game.objective.ScoreObjective;
-import com.matsg.battlegrounds.game.objective.TimeObjective;
+import com.matsg.battlegrounds.game.mode.shared.SpawningBehavior;
 import com.matsg.battlegrounds.util.EnumTitle;
 import org.bukkit.ChatColor;
 
@@ -31,16 +29,11 @@ public class FreeForAll extends ArenaGameMode {
 
     private FFAConfig config;
 
-    public FreeForAll(Battlegrounds plugin, Game game, Translator translator, FFAConfig config) {
-        super(plugin, game, translator);
+    public FreeForAll(Battlegrounds plugin, Game game, Translator translator, SpawningBehavior spawningBehavior, FFAConfig config) {
+        super(plugin, game, translator, spawningBehavior);
         this.config = config;
-        
-        setName(translator.translate(TranslationKey.FFA_NAME));
-        setShortName(translator.translate(TranslationKey.FFA_SHORT));
-
-        objectives.add(new EliminationObjective(game, 2));
-        objectives.add(new ScoreObjective(game, config.getKillsToWin()));
-        objectives.add(new TimeObjective(game, config.getTimeLimit()));
+        this.name = translator.translate(TranslationKey.FFA_NAME);
+        this.shortName = translator.translate(TranslationKey.FFA_SHORT);
     }
 
     public FFAConfig getConfig() {
@@ -107,16 +100,6 @@ public class FreeForAll extends ArenaGameMode {
             return;
         }
         teams.remove(team);
-    }
-
-    public void spawnPlayers(GamePlayer... players) {
-        for (Team team : teams) {
-            for (GamePlayer gamePlayer : team.getPlayers()) {
-                Spawn spawn = game.getArena().getRandomSpawn();
-                spawn.setGamePlayer(gamePlayer);
-                gamePlayer.getPlayer().teleport(spawn.getLocation());
-            }
-        }
     }
 
     public void start() {

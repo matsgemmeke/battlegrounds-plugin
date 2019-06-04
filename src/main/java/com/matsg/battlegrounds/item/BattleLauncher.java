@@ -23,9 +23,25 @@ public class BattleLauncher extends BattleFirearm implements Launcher {
     private LaunchType launchType;
     private Lethal lethal;
 
-    public BattleLauncher(Battlegrounds plugin, String id, String name, String description, ItemStack itemStack,
-                          int magazine, int ammo, int maxAmmo, double launchSpeed, int cooldown, int reloadDuration, double accuracy,
-                          Lethal lethal, LaunchType launchType, ReloadType reloadType, Sound[] reloadSound, Sound[] shootSound) {
+    public BattleLauncher(
+            Battlegrounds plugin,
+            String id,
+            String name,
+            String description,
+            ItemStack itemStack,
+            int magazine,
+            int ammo,
+            int maxAmmo,
+            double launchSpeed,
+            int cooldown,
+            int reloadDuration,
+            double accuracy,
+            Lethal lethal,
+            LaunchType launchType,
+            ReloadType reloadType,
+            Sound[] reloadSound,
+            Sound[] shootSound
+    ) {
         super(plugin, id, name, description, itemStack, magazine, ammo, maxAmmo, cooldown, reloadDuration, accuracy, reloadType, FirearmType.LAUNCHER, reloadSound, shootSound);
         this.launchSpeed = launchSpeed;
         this.launchType = launchType;

@@ -2,10 +2,9 @@ package com.matsg.battlegrounds.item;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.entity.BattlegroundsEntity;
 import com.matsg.battlegrounds.api.event.GamePlayerKillPlayerEvent;
-import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.item.*;
-import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.Hitbox;
 import com.matsg.battlegrounds.api.util.AttributeModifier;
 import com.matsg.battlegrounds.api.util.GenericAttribute;
@@ -46,10 +45,28 @@ public class BattleGun extends BattleFirearm implements Gun {
     private Map<String, String[]> compatibleAttachments;
     private Sound[] suppressedSound;
 
-    public BattleGun(Battlegrounds plugin, String id, String name, String description, ItemStack itemStack,
-                     int magazine, int ammo, int maxAmmo, int fireRate, int burstRounds, int cooldown, int reloadDuration, double accuracy,
-                     Bullet bullet, FirearmType firearmType, FireMode fireMode, ReloadType reloadType,
-                     Sound[] reloadSound, Sound[] shootSound, Sound[] suppressedSound, Map<String, String[]> compatibleAttachments) {
+    public BattleGun(
+            Battlegrounds plugin,
+            String id,
+            String name,
+            String description,
+            ItemStack itemStack,
+            int magazine,
+            int ammo,
+            int maxAmmo,
+            int fireRate,
+            int burstRounds,
+            int cooldown,
+            int reloadDuration,
+            double accuracy,
+            Bullet bullet,
+            FirearmType firearmType,
+            FireMode fireMode,
+            ReloadType reloadType,
+            Sound[] reloadSound,
+            Sound[] shootSound, Sound[] suppressedSound,
+            Map<String, String[]> compatibleAttachments
+    ) {
         super(plugin, id, name, description, itemStack, magazine, ammo, maxAmmo, cooldown, reloadDuration, accuracy, reloadType, firearmType, reloadSound, shootSound);
         this.appliedModifiers = new HashMap<>();
         this.attachments = new ArrayList<>();
@@ -175,24 +192,32 @@ public class BattleGun extends BattleFirearm implements Gun {
     }
 
     private void inflictDamage(Location location, double range) {
-        GamePlayer[] players = game.getPlayerManager().getNearbyPlayers(location, range);
-        Team team = gamePlayer.getTeam();
-        if (players.length > 0) {
-            GamePlayer gamePlayer = players[0];
-            if (gamePlayer == null || gamePlayer == this.gamePlayer) {
+        BattlegroundsEntity[] entities = context.getNearbyEntities(location, gamePlayer.getTeam(), range);
+
+        if (entities.length > 0) {
+            BattlegroundsEntity entity = entities[0];
+
+            if (entity == null || entity == gamePlayer) {
                 return;
             }
-            if (gamePlayer.getPlayer().isDead() || team != null && gamePlayer.getTeam() == team) {
+
+            if (entity.getBukkitEntity().isDead()) {
                 hits ++;
                 return;
             }
-            Hitbox hitbox = Hitbox.getHitbox(gamePlayer.getLocation().getY(), location.getY());
-            double damage = bullet.getDamage(hitbox, gamePlayer.getLocation().distance(this.gamePlayer.getLocation())) / plugin.getBattlegroundsConfig().firearmDamageModifer;
-            game.getPlayerManager().damagePlayer(gamePlayer, damage, plugin.getBattlegroundsConfig().displayBloodEffect);
+
+            Location entityLocation = entity.getLocation();
+            Hitbox hitbox = Hitbox.getHitbox(entityLocation.getY(), location.getY());
+
+            double damage = bullet.getDamage(hitbox, entityLocation.distance(gamePlayer.getLocation())) / plugin.getBattlegroundsConfig().firearmDamageModifer;
+
+            entity.damage(damage);
             hits ++;
-            if (gamePlayer.getPlayer().isDead()) {
-                plugin.getServer().getPluginManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, this.gamePlayer, this, hitbox));
-                game.getGameMode().onKill(gamePlayer, this.gamePlayer, this, hitbox);
+
+            if (entity.getBukkitEntity().isDead()) {
+                // TODO fix this event
+                plugin.getServer().getPluginManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, gamePlayer, this, hitbox));
+                game.getGameMode().onKill(gamePlayer, gamePlayer, this, hitbox);
             }
         }
     }

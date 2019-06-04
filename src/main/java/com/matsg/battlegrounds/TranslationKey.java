@@ -45,6 +45,7 @@ public enum TranslationKey {
     EDIT_ATTACHMENT("view-edit-attachment", false),
     EDIT_LOADOUT("view-edit-loadout", false),
     EDIT_WEAPON("view-edit-weapon", false),
+    ERROR_OCCURRED("game-error-occurred", false),
     GAME_CONFIRM_REMOVE("setup-game-confirm-remove", false),
     FFA_NAME("gamemode-ffa-name", false),
     FFA_SHORT("gamemode-ffa-short", false),

@@ -3,7 +3,7 @@ package com.matsg.battlegrounds.api.entity;
 import com.matsg.battlegrounds.api.game.MobSpawn;
 import org.bukkit.Location;
 
-public interface Mob extends BaseEntity {
+public interface Mob extends BattlegroundsEntity {
 
     void clearPathfinderGoals();
 
@@ -14,6 +14,8 @@ public interface Mob extends BaseEntity {
     double getFollowRange();
 
     void setFollowRange(double followRange);
+
+    MobType getMobType();
 
     double getMovementSpeed();
 
@@ -26,6 +28,10 @@ public interface Mob extends BaseEntity {
     boolean isHostile();
 
     void setHostile(boolean hostile);
+
+    boolean isSpawned();
+
+    void setSpawned(boolean spawned);
 
     void resetDefaultPathfinderGoals();
 

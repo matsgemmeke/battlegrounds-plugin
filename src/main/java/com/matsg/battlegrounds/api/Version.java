@@ -15,6 +15,8 @@ public interface Version {
 
     Zombie createZombie(Game game);
 
+    void registerCustomEntities();
+
     void sendActionBar(Player player, String message);
 
     void sendJSONMessage(Player player, String message, String command, String hoverMessage);

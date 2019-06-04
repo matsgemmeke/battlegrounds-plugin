@@ -165,6 +165,22 @@ public class BattleArena implements Arena {
         return null;
     }
 
+    public int getSpawnCount() {
+        return spawnContainer.getAll().size();
+    }
+
+    public int getSpawnCount(int teamId) {
+        int count = 0;
+
+        for (Spawn spawn : spawnContainer.getAll()) {
+            if (spawn.getTeamId() == teamId) {
+                count ++;
+            }
+        }
+
+        return count;
+    }
+
     public Spawn getTeamBase(int teamId) {
         for (Spawn spawn : getSpawns()) {
             if (spawn.getTeamId() == teamId && spawn.isTeamBase()) {

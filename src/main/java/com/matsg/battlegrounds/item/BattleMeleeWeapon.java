@@ -31,7 +31,17 @@ public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
     private List<Item> droppedItems;
     private String type;
 
-    public BattleMeleeWeapon(Battlegrounds plugin, String id, String name, String description, ItemStack itemStack, double damage, int amount, boolean throwable, int cooldown) {
+    public BattleMeleeWeapon(
+            Battlegrounds plugin,
+            String id,
+            String name,
+            String description,
+            ItemStack itemStack,
+            double damage,
+            int amount,
+            boolean throwable,
+            int cooldown
+    ) {
         super(plugin, id, name, description, itemStack);
         this.amount = amount;
         this.cooldown = cooldown;

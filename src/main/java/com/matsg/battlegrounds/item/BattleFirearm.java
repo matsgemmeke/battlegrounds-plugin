@@ -37,9 +37,23 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
     protected List<Material> blocks;
     protected Sound[] reloadSound, shotSound;
 
-    public BattleFirearm(Battlegrounds plugin, String id, String name, String description, ItemStack itemStack,
-                         int magazine, int ammo, int maxAmmo, int cooldown, int reloadDuration, double accuracy,
-                         ReloadType reloadType, FirearmType firearmType, Sound[] reloadSound, Sound[] shotSound) {
+    public BattleFirearm(
+            Battlegrounds plugin,
+            String id,
+            String name,
+            String description,
+            ItemStack itemStack,
+            int magazine,
+            int ammo,
+            int maxAmmo,
+            int cooldown,
+            int reloadDuration,
+            double accuracy,
+            ReloadType reloadType,
+            FirearmType firearmType,
+            Sound[] reloadSound,
+            Sound[] shotSound
+    ) {
         super(plugin, id, name, description, itemStack);
         this.blocks = new ArrayList<>();
         this.droppedItems = new ArrayList<>();

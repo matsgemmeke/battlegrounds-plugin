@@ -43,7 +43,7 @@ public class PluginTranslator implements Translator {
     }
 
     public String createSimpleMessage(String message, Placeholder... placeholders) {
-        return applyPlaceholders(message, placeholders);
+        return ChatColor.translateAlternateColorCodes('&', applyPlaceholders(message, placeholders));
     }
 
     public String translate(String path, Placeholder... placeholders) {

@@ -12,7 +12,6 @@ import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftLivingEntity;
 import org.bukkit.entity.Creature;
-import org.bukkit.entity.Mob;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 
 import java.util.Set;
@@ -20,13 +19,11 @@ import java.util.Set;
 public class CustomZombie extends EntityZombie implements Zombie {
 
     private boolean hostile;
+    private boolean spawned;
     private Game game;
-    private Mob entity;
-    private MobSpawn mobSpawn;
 
     public CustomZombie(Game game) {
         super(((CraftWorld) game.getArena().getWorld()).getHandle());
-        this.entity = (Mob) bukkitEntity;
         this.game = game;
         this.hostile = false;
 
@@ -45,6 +42,10 @@ public class CustomZombie extends EntityZombie implements Zombie {
         super(world);
     }
 
+    public MobType getMobType() {
+        return MobType.ZOMBIE;
+    }
+
     public boolean isHostile() {
         return hostile;
     }
@@ -53,11 +54,25 @@ public class CustomZombie extends EntityZombie implements Zombie {
         this.hostile = hostile;
     }
 
+    public boolean isSpawned() {
+        return spawned;
+    }
+
+    public void setSpawned(boolean spawned) {
+        this.spawned = spawned;
+    }
+
     public void clearPathfinderGoals() {
         ((Set) ReflectionUtils.getField(PathfinderGoalSelector.class, "b", goalSelector)).clear();
         ((Set) ReflectionUtils.getField(PathfinderGoalSelector.class, "c", goalSelector)).clear();
         ((Set) ReflectionUtils.getField(PathfinderGoalSelector.class, "b", targetSelector)).clear();
         ((Set) ReflectionUtils.getField(PathfinderGoalSelector.class, "c", targetSelector)).clear();
+    }
+
+    public double damage(double damage) {
+        Creature entity = toCreature();
+        entity.damage(damage);
+        return entity.getHealth();
     }
 
     public double getAttackDamage() {
@@ -69,7 +84,7 @@ public class CustomZombie extends EntityZombie implements Zombie {
     }
 
     public Location getLocation() {
-        return entity.getLocation();
+        return bukkitEntity.getLocation();
     }
 
     public double getMovementSpeed() {
@@ -109,10 +124,6 @@ public class CustomZombie extends EntityZombie implements Zombie {
         attribute.a(modifier);
     }
 
-    public void setHealth(float health) {
-        entity.setHealth(health);
-    }
-
     public void setKnockback(boolean knockback) {
         getAttributeInstance(GenericAttributes.c).setValue(!knockback ? 1 : 0);
     }
@@ -126,13 +137,12 @@ public class CustomZombie extends EntityZombie implements Zombie {
     }
 
     public void setTarget(Location location) {
+        Creature entity = toCreature();
         entity.setTarget(null);
         getNavigation().a(navigation.a(location.getX(), location.getY(), location.getZ()), 1.0D);
     }
 
     public void spawn(MobSpawn mobSpawn) {
-        this.mobSpawn = mobSpawn;
-
         Location location = mobSpawn.getSpawnLocation(MobType.ZOMBIE);
 
         setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
@@ -153,11 +163,14 @@ public class CustomZombie extends EntityZombie implements Zombie {
     }
 
     public void updatePath() {
+        Creature entity = toCreature();
         GamePlayer nearestPlayer = game.getPlayerManager().getNearestPlayer(entity.getLocation());
+
         if (!hostile || nearestPlayer == null) {
             entity.setTarget(null);
             return;
         }
+
         entity.setTarget(nearestPlayer.getPlayer());
     }
 }

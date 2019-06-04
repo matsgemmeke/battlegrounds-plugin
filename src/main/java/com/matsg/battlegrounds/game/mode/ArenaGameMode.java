@@ -11,6 +11,7 @@ import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.item.Firearm;
 import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.item.Weapon;
+import com.matsg.battlegrounds.game.mode.shared.SpawningBehavior;
 import com.matsg.battlegrounds.gui.SelectLoadoutView;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.item.SelectLoadout;
@@ -31,8 +32,8 @@ import java.util.Collections;
  */
 public abstract class ArenaGameMode extends AbstractGameMode {
 
-    public ArenaGameMode(Battlegrounds plugin, Game game, Translator translator) {
-        super(plugin, game, translator);
+    public ArenaGameMode(Battlegrounds plugin, Game game, Translator translator, SpawningBehavior spawningBehavior) {
+        super(plugin, game, translator, spawningBehavior);
     }
 
     public ArenaComponent getComponent(int id) {
@@ -58,6 +59,10 @@ public abstract class ArenaGameMode extends AbstractGameMode {
             default:
                 return null;
         }
+    }
+
+    public GamePlayer[] getNearbyEntities(Location location, Team team, double range) {
+        return game.getPlayerManager().getNearbyEnemyPlayers(team, location, range);
     }
 
     public void handleDeath(GamePlayer gamePlayer) {

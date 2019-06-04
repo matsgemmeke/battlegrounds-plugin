@@ -1,6 +1,12 @@
 package com.matsg.battlegrounds.api.item;
 
+import com.matsg.battlegrounds.api.game.WeaponUsageContext;
+
 public interface Weapon extends Item, Property, TransactionItem {
+
+    WeaponUsageContext getContext();
+
+    void setContext(WeaponUsageContext context);
 
     String getDescription();
 

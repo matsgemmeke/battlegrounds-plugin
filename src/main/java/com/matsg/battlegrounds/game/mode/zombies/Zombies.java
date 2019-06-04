@@ -5,6 +5,8 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.Hitbox;
+import com.matsg.battlegrounds.api.entity.Mob;
+import com.matsg.battlegrounds.api.entity.MobType;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.item.*;
@@ -12,7 +14,7 @@ import com.matsg.battlegrounds.game.BattleComponentContainer;
 import com.matsg.battlegrounds.game.BattleTeam;
 import com.matsg.battlegrounds.game.mode.AbstractGameMode;
 import com.matsg.battlegrounds.game.mode.GameModeType;
-import com.matsg.battlegrounds.game.objective.EliminationObjective;
+import com.matsg.battlegrounds.game.mode.shared.SpawningBehavior;
 import com.matsg.battlegrounds.item.ItemFinder;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.item.factory.LoadoutFactory;
@@ -22,6 +24,8 @@ import com.matsg.battlegrounds.util.BattleSound;
 import com.matsg.battlegrounds.util.EnumTitle;
 import com.matsg.battlegrounds.util.XMaterial;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
@@ -30,26 +34,32 @@ public class Zombies extends AbstractGameMode {
 
     private ComponentContainer<Section> sectionContainer;
     private LoadoutFactory loadoutFactory;
+    private MobManager mobManager;
     private Team team;
+    private Wave<? extends Mob> wave;
+    private WaveFactory waveFactory;
     private ZombiesConfig config;
 
-    public Zombies(Battlegrounds plugin, Game game, Translator translator, ZombiesConfig config) {
-        super(plugin, game, translator);
+    public Zombies(Battlegrounds plugin, Game game, Translator translator, SpawningBehavior spawningBehavior, ZombiesConfig config) {
+        super(plugin, game, translator, spawningBehavior);
         this.config = config;
         this.loadoutFactory = new LoadoutFactory();
+        this.mobManager = new MobManager();
+        this.name = translator.translate(TranslationKey.ZOMBIES_NAME);
         this.sectionContainer = new BattleComponentContainer<>();
+        this.shortName = translator.translate(TranslationKey.ZOMBIES_SHORT);
         this.team = new BattleTeam(1, "Players", null, ChatColor.WHITE);
-
-        setName(translator.translate(TranslationKey.ZOMBIES_NAME));
-        setShortName(translator.translate(TranslationKey.ZOMBIES_SHORT));
-
-        objectives.add(new EliminationObjective(game, 1));
+        this.waveFactory = new WaveFactory();
 
         teams.add(team);
     }
 
     public ZombiesConfig getConfig() {
         return config;
+    }
+
+    public MobManager getMobManager() {
+        return mobManager;
     }
 
     public ComponentContainer<Section> getSectionContainer() {
@@ -95,6 +105,19 @@ public class Zombies extends AbstractGameMode {
         }
 
         return Collections.unmodifiableList(list);
+    }
+
+    public Mob[] getNearbyEntities(Location location, Team team, double range) {
+        List<Mob> list = new ArrayList<>();
+
+        for (Entity entity : location.getWorld().getNearbyEntities(location, range, range, range)) {
+            Mob mob = mobManager.findMob(entity);
+            if (mob != null) {
+                list.add(mob);
+            }
+        }
+
+        return list.toArray(new Mob[list.size()]);
     }
 
     public Spawn getRespawnPoint(GamePlayer gamePlayer) {
@@ -179,30 +202,37 @@ public class Zombies extends AbstractGameMode {
         team.removePlayer(gamePlayer);
     }
 
-    public void spawnPlayers(GamePlayer... players) {
-        for (GamePlayer gamePlayer : team.getPlayers()) {
-            Spawn spawn = game.getArena().getRandomSpawn();
-            spawn.setGamePlayer(gamePlayer);
-            gamePlayer.getPlayer().teleport(spawn.getLocation());
-        }
-    }
-
     public void start() {
         super.start();
+
+        Section section = getFirstSection();
+
+        if (section == null) {
+            plugin.getLogger().severe("Unable to start gamemode Zombies in game " + game.getId());
+            return;
+        }
+
+        section.setLocked(false);
+
+        wave = waveFactory.make(game, MobType.ZOMBIE, 1, getMobAmount(1, team.getTeamSize()));
+        wave.getMobSpawns().addAll(section.getMobSpawnContainer().getAll());
+        wave.setRunning(true);
+
+        new WaveSpawningThread(this, wave, config.getMaxMobs(team.getTeamSize())).runTaskTimer(0, 100);
 
         for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
             Title title = EnumTitle.ZOMBIES_START.getTitle();
             title.send(gamePlayer.getPlayer());
         }
 
-        Section section = getFirstSection();
-        section.setLocked(false);
-
         BattleSound.THUNDER.play(game);
     }
 
     public void startCountdown() {
-        start();
+        // Skip the countdown and start the game
+        game.startGame();
+        // Skip one game state and go straight to the ingame state
+        game.setState(game.getState().next());
     }
 
     public void stop() {
@@ -219,6 +249,12 @@ public class Zombies extends AbstractGameMode {
                 return section;
             }
         }
-        return null;
+        return sectionContainer.getAll().iterator().next();
+    }
+
+    private int getMobAmount(int round, int players) {
+        int zombies = (int) ((Math.round(0.000058 * Math.pow(round, 3) + 0.074032 * Math.pow(round, 2) + 0.718119 * round + 4.738699)) * config.getMobMultiplier(players));
+        zombies += Math.round((double) zombies / 100 * (new Random().nextInt(config.getVariation() * 2) - config.getVariation()));
+        return zombies;
     }
 }

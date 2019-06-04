@@ -26,9 +26,23 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
     protected List<Item> droppedItems;
     protected Sound[] ignitionSound;
 
-    public BattleEquipment(Battlegrounds plugin, String id, String name, String description, ItemStack itemStack, EquipmentType type, int amount, int cooldown,
-                           double longRange, double midRange, double shortRange, double velocity,
-                           IgnitionType ignitionType, int ignitionTime, Sound[] ignitionSound) {
+    public BattleEquipment(
+            Battlegrounds plugin,
+            String id,
+            String name,
+            String description,
+            ItemStack itemStack,
+            EquipmentType type,
+            int amount,
+            int cooldown,
+            double longRange,
+            double midRange,
+            double shortRange,
+            double velocity,
+            IgnitionType ignitionType,
+            int ignitionTime,
+            Sound[] ignitionSound
+    ) {
         super(plugin, id, name, description, itemStack);
         this.amount = amount;
         this.beingThrown = false;

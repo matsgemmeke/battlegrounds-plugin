@@ -228,11 +228,16 @@ public class BattleGame implements Game {
     }
 
     public void startCountdown() {
+        // Check whether the player spawning logic was executed correctly. If not, cancel the countdown
+        if (!gameMode.spawnPlayers(playerManager.getPlayers())) {
+            return;
+        }
+
         for (GamePlayer gamePlayer : playerManager.getPlayers()) {
             gameMode.preparePlayer(gamePlayer);
         }
+
         timeControl = new BattleTimeControl(this);
-        gameMode.spawnPlayers(playerManager.getPlayers().toArray(new GamePlayer[playerManager.getPlayers().size()]));
         gameMode.startCountdown();
         updateScoreboard();
     }

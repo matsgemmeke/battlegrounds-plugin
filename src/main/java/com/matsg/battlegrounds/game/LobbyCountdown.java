@@ -46,24 +46,29 @@ public class LobbyCountdown extends BattleRunnable implements Countdown {
     public void run() {
         id = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
             int countdown = time;
+
             public void run() {
                 if (cancelled) {
                     cancel();
                     return;
                 }
+
                 if (game.getArena() == null || game.getPlayerManager().getPlayers().size() < game.getConfiguration().getMinPlayers()) {
                     game.stop();
                     return;
                 }
+
                 if (countdown <= 0) {
                     game.startCountdown();
                     cancel();
                     return;
                 }
+
                 if (display.contains(countdown)) {
                     game.getPlayerManager().broadcastMessage(translator.translate(TranslationKey.COUNTDOWN_NOTE, new Placeholder("bg_countdown", countdown)));
                     BattleSound.COUNTDOWN_NOTE.play(game);
                 }
+
                 scoreboard.setCountdown(countdown);
                 scoreboard.display(game);
                 countdown --;

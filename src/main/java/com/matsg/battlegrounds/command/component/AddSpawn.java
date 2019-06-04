@@ -27,17 +27,17 @@ public class AddSpawn extends ComponentCommand {
         boolean teamBase = false;
         int teamId = 0;
 
-        if (args.length >= 3) {
+        if (args.length >= 5) {
             try {
-                teamId = Integer.parseInt(args[3]);
+                teamId = Integer.parseInt(args[4]);
             } catch (Exception e) {
-                player.sendMessage(translator.translate(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[0])));
+                player.sendMessage(translator.translate(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[4])));
                 return;
             }
         }
 
-        if (args.length >= 4) {
-            teamBase = args[4].equals("-b");
+        if (args.length >= 6) {
+            teamBase = args[5].equals("-b");
 
             if (teamBase && arena.getTeamBase(teamId) != null) {
                 player.sendMessage(translator.translate(TranslationKey.SPAWN_TEAMBASE_EXISTS,

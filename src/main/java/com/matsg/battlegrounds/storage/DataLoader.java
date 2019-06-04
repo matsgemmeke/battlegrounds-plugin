@@ -59,37 +59,6 @@ public class DataLoader {
             e.printStackTrace();
         }
 
-        GameModeFactory gameModeFactory = new GameModeFactory(plugin, plugin.getTranslator());
-
-        // Setting configurations
-        try {
-            for (Game game : plugin.getGameManager().getGames()) {
-                ConfigurationSection config = game.getDataFile().getConfigurationSection("config");
-                List<GameMode> gameModes = new ArrayList<>();
-
-                for (String gameModeType : config.getStringList("gamemodes")) {
-                    try {
-                        gameModes.add(gameModeFactory.make(game, GameModeType.valueOf(gameModeType.toUpperCase())));
-                    } catch (IllegalArgumentException e) {
-                        plugin.getLogger().severe("Invalid gamemode type \"" + gameModeType + "\"");
-                    }
-                }
-
-                GameConfiguration configuration = new BattleGameConfiguration(
-                        gameModes.toArray(new GameMode[gameModes.size()]),
-                        config.getInt("maxplayers"),
-                        config.getInt("minplayers"),
-                        config.getInt("lobbycountdown")
-                );
-                GameMode gameMode = configuration.getGameModes()[new Random().nextInt(configuration.getGameModes().length)];
-
-                game.setConfiguration(configuration);
-                game.setGameMode(gameMode);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         // Add existing arenas to the game
         try {
             for (Game game : plugin.getGameManager().getGames()) {
@@ -131,7 +100,38 @@ public class DataLoader {
 
                 // Assign an arena to this game
                 game.setArena(game.getArenaList().get(new Random().nextInt(game.getArenaList().size())));
-                game.getGameMode().loadData(game.getArena());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        GameModeFactory gameModeFactory = new GameModeFactory(plugin, plugin.getTranslator());
+
+        // Setting configurations
+        try {
+            for (Game game : plugin.getGameManager().getGames()) {
+                ConfigurationSection config = game.getDataFile().getConfigurationSection("config");
+                List<GameMode> gameModes = new ArrayList<>();
+
+                for (String gameModeType : config.getStringList("gamemodes")) {
+                    try {
+                        gameModes.add(gameModeFactory.make(game, GameModeType.valueOf(gameModeType.toUpperCase())));
+                    } catch (IllegalArgumentException e) {
+                        plugin.getLogger().severe("Invalid gamemode type \"" + gameModeType + "\"");
+                    }
+                }
+
+                GameConfiguration configuration = new BattleGameConfiguration(
+                        gameModes.toArray(new GameMode[gameModes.size()]),
+                        config.getInt("maxplayers"),
+                        config.getInt("minplayers"),
+                        config.getInt("lobbycountdown")
+                );
+                GameMode gameMode = configuration.getGameModes()[new Random().nextInt(configuration.getGameModes().length)];
+
+                game.setConfiguration(configuration);
+                game.setGameMode(gameMode);
+                gameMode.loadData(game.getArena());
             }
         } catch (Exception e) {
             e.printStackTrace();

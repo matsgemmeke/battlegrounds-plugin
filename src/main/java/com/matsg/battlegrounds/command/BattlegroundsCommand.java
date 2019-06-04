@@ -2,6 +2,7 @@ package com.matsg.battlegrounds.command;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.command.validator.ValidationResponse;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -50,6 +51,13 @@ public class BattlegroundsCommand extends Command {
 
         if (permissionNode != null && permissionNode.length() > 0 && !sender.hasPermission(permissionNode)) {
             sender.sendMessage(createMessage(TranslationKey.NO_PERMISSION));
+            return;
+        }
+
+        ValidationResponse response = subCommand.validateInput(args);
+
+        if (!response.passed()) {
+            sender.sendMessage(response.getMessage());
             return;
         }
 

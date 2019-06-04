@@ -87,6 +87,21 @@ public interface Arena extends ComponentWrapper, Extent {
     Spawn getSpawn(int index);
 
     /**
+     * Gets the amount of spawns.
+     *
+     * @return the spawn count
+     */
+    int getSpawnCount();
+
+    /**
+     * Gets the amount of spawns assigned to a certain team.
+     *
+     * @param teamId the team id
+     * @return the spawn count
+     */
+    int getSpawnCount(int teamId);
+
+    /**
      * Gets the base spawn of a team.
      *
      * @param teamId The id of the team to get the base spawn of

@@ -17,9 +17,23 @@ public class BattleTactical extends BattleEquipment implements Tactical {
     private int duration;
     private TacticalEffect effect;
 
-    public BattleTactical(Battlegrounds plugin, String id, String name, String description, ItemStack itemStack,
-                          int amount, int cooldown, TacticalEffect effect, int duration, double longRange, double midRange, double shortRange,
-                          double velocity, int ignitionTime, Sound[] explodeSound) {
+    public BattleTactical(
+            Battlegrounds plugin,
+            String id,
+            String name,
+            String description,
+            ItemStack itemStack,
+            int amount,
+            int cooldown,
+            TacticalEffect effect,
+            int duration,
+            double longRange,
+            double midRange,
+            double shortRange,
+            double velocity,
+            int ignitionTime,
+            Sound[] explodeSound
+    ) {
         super(plugin, id, name, description, itemStack, EquipmentType.TACTICAL, amount, cooldown, longRange, midRange, shortRange, velocity,
                 ignitionTime == 0 ? IgnitionType.PASSIVE : IgnitionType.AGGRESSIVE, ignitionTime, explodeSound);
         this.duration = duration;

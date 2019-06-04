@@ -14,9 +14,7 @@ import com.matsg.battlegrounds.game.mode.ArenaGameMode;
 import com.matsg.battlegrounds.game.mode.GameModeCountdown;
 import com.matsg.battlegrounds.game.mode.GameModeType;
 import com.matsg.battlegrounds.game.mode.Result;
-import com.matsg.battlegrounds.game.objective.EliminationObjective;
-import com.matsg.battlegrounds.game.objective.ScoreObjective;
-import com.matsg.battlegrounds.game.objective.TimeObjective;
+import com.matsg.battlegrounds.game.mode.shared.SpawningBehavior;
 import com.matsg.battlegrounds.util.EnumTitle;
 import org.bukkit.ChatColor;
 
@@ -24,17 +22,12 @@ public class TeamDeathmatch extends ArenaGameMode {
 
     private TDMConfig config;
 
-    public TeamDeathmatch(Battlegrounds plugin, Game game, Translator translator, TDMConfig config) {
-        super(plugin, game, translator);
+    public TeamDeathmatch(Battlegrounds plugin, Game game, Translator translator, SpawningBehavior spawningBehavior, TDMConfig config) {
+        super(plugin, game, translator, spawningBehavior);
         this.config = config;
         this.teams.addAll(config.getTeams());
-        
-        setName(translator.translate(TranslationKey.TDM_NAME));
-        setShortName(translator.translate(TranslationKey.TDM_SHORT));
-
-        objectives.add(new EliminationObjective(game, 2));
-        objectives.add(new ScoreObjective(game, config.getKillsToWin()));
-        objectives.add(new TimeObjective(game, config.getTimeLimit()));
+        this.name = translator.translate(TranslationKey.TDM_NAME);
+        this.shortName = translator.translate(TranslationKey.TDM_SHORT);
     }
 
     public TDMConfig getConfig() {
@@ -95,17 +88,6 @@ public class TeamDeathmatch extends ArenaGameMode {
             return;
         }
         team.removePlayer(gamePlayer);
-    }
-
-    public void spawnPlayers(GamePlayer... players) {
-        for (GamePlayer gamePlayer : players) {
-            Team team = gamePlayer.getTeam();
-            Spawn spawn = game.getArena().getTeamBase(team.getId());
-            if (spawn == null) {
-                spawn = game.getArena().getRandomSpawn(team.getId());
-            }
-            gamePlayer.getPlayer().teleport(spawn.getLocation());
-        }
     }
 
     public void start() {

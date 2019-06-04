@@ -216,6 +216,11 @@ public class BattleGamePlayer implements GamePlayer {
         return 0;
     }
 
+    public double damage(double damage) {
+        player.damage(damage);
+        return player.getHealth();
+    }
+
     public void remove() {
         player.remove();
     }

@@ -12,7 +12,7 @@ public interface Wave<T extends Mob> {
      *
      * @return the list of mobs that will spawn
      */
-    List<Mob> getMobs();
+    List<T> getMobs();
 
     /**
      * Gets the list of mob spawns where mob will be spawned during the wave.
@@ -27,4 +27,25 @@ public interface Wave<T extends Mob> {
      * @return the round number
      */
     int getRound();
+
+    /**
+     * Gets whether the wave is currently running.
+     *
+     * @return whether the wave is running
+     */
+    boolean isRunning();
+
+    /**
+     * Sets whether the wave is currently running.
+     *
+     * @param running whether the wave should run
+     */
+    void setRunning(boolean running);
+
+    /**
+     * Gets the next mob to be spawned in the game.
+     *
+     * @return the next mob
+     */
+    T nextMob();
 }

@@ -3,6 +3,7 @@ package com.matsg.battlegrounds.command;
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Translator;
+import com.matsg.battlegrounds.command.validator.ValidationResponse;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.junit.Before;
@@ -91,9 +92,26 @@ public class BattlegroundsCommandTest {
     }
 
     @Test
+    public void executeSubcommandWithFailedValidation() {
+        BattlegroundsCommand command = new BattlegroundsCommand(plugin);
+        String[] args = new String[] { fakeCommandName };
+        ValidationResponse response = new ValidationResponse("Failed");
+
+        when(fakeCommand.validateInput(args)).thenReturn(response);
+
+        command.getSubCommands().add(fakeCommand);
+        command.onCommand(sender, null, "battlegrounds", args);
+
+        verify(fakeCommand, times(0)).execute(sender, args);
+        verify(sender, times(1)).sendMessage(response.getMessage());
+    }
+
+    @Test
     public void executeSubcommand() {
         BattlegroundsCommand command = new BattlegroundsCommand(plugin);
         String[] args = new String[] { fakeCommandName };
+
+        when(fakeCommand.validateInput(args)).thenReturn(ValidationResponse.PASSED);
 
         command.getSubCommands().add(fakeCommand);
         command.onCommand(sender, null, "battlegrounds", args);
@@ -108,6 +126,7 @@ public class BattlegroundsCommandTest {
         TranslationKey key = TranslationKey.COMMAND_ERROR;
 
         doThrow(new RuntimeException()).when(fakeCommand).execute(sender, args);
+        when(fakeCommand.validateInput(args)).thenReturn(ValidationResponse.PASSED);
 
         when(translator.translate(key)).thenReturn(responseMessage);
 

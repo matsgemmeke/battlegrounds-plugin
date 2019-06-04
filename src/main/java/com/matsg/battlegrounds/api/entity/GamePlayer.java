@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import java.util.Collection;
 import java.util.Set;
 
-public interface GamePlayer extends BaseEntity, OfflineGamePlayer, Comparable<GamePlayer> {
+public interface GamePlayer extends BattlegroundsEntity, OfflineGamePlayer, Comparable<GamePlayer> {
 
     Collection<Item> getHeldItems();
 

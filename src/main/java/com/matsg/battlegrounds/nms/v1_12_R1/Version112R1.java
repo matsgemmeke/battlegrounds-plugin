@@ -8,9 +8,11 @@ import com.matsg.battlegrounds.nms.Particle;
 import com.matsg.battlegrounds.nms.ReflectionUtils;
 import com.matsg.battlegrounds.nms.Title;
 import net.minecraft.server.v1_12_R1.ChatMessageType;
+import net.minecraft.server.v1_12_R1.EntityTypes;
 import net.minecraft.server.v1_12_R1.IChatBaseComponent;
 import net.minecraft.server.v1_12_R1.PacketPlayOutChat;
 import org.bukkit.Location;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 public class Version112R1 implements Version {
@@ -21,6 +23,14 @@ public class Version112R1 implements Version {
 
     public Zombie createZombie(Game game) {
         return new CustomZombie(game);
+    }
+
+    public void registerCustomEntities() {
+        int wolfId = (int) EntityType.WOLF.getTypeId(), zombieId = (int) EntityType.ZOMBIE.getTypeId();
+        String wolfKey = "CustomWolf", zombieKey = "CustomZombie";
+
+        EntityTypes.b.a(zombieId, new net.minecraft.server.v1_12_R1.MinecraftKey(zombieKey), CustomZombie.class);
+        EntityTypes.b.a(wolfId, new net.minecraft.server.v1_12_R1.MinecraftKey(wolfKey), CustomWolf.class);
     }
 
     public void sendActionBar(Player player, String message) {

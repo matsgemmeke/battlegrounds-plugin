@@ -59,6 +59,7 @@ game-death-headshot: "&f%bg_killer% killed %bg_player% by headshot with %bg_weap
 game-death-falling: "&f%bg_player% died from falling"
 game-death-suicide: "&f%bg_player% mistakes were made"
 game-death-player-kill: "&f%bg_killer% killed %bg_player% with %bg_weapon%"
+game-error-occurred: "&cAn error occurred while running the game. Check the console for more info."
 game-in-progress: "&cThis game is already in progress."
 game-not-playing: "&cYou are not playing."
 game-player-join: "&f%player_name% &6has joined the game. &f[&6%bg_players%&f/&6%bg_maxplayers%&f]"

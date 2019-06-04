@@ -13,13 +13,13 @@ zombies-default-loadout:
 
 # The mob healthbar (custom name) configurations
 zombies-mob-healthbar:
-  # The end symbol of the monster health bar
+  # The end symbol of the mob health bar
   end-symbol: "&8]"
-  # The health symbol of the current health of the monster on the health bar
+  # The health symbol of the current health of the mob on the health bar
   health-symbol: "|"
-  # Amount of health symbols shown in the monster health bar
+  # Amount of health symbols shown in the mob health bar
   length: 20
-  # The first symbol of the monster health bar
+  # The first symbol of the mob health bar
   start-symbol: "&8["
 
 # The layout of the perk machine signs
@@ -33,7 +33,7 @@ zombies-perk-sign-layout:
 # Should be set to 1 at all times except for testing purposes
 zombies-starting-round: 1
 
-# Need a bigger challenge or an easy go? Change this value for more or less monster health
+# Need a bigger challenge or an easy go? Change this value for more or less mob health
 zombies-wave-health-multiplier: 1.0
 
 # The relative amount of hellhounds spawning compared to a normal zombie wave
@@ -45,44 +45,45 @@ zombies-wave-hellhound-health: 0.75
 # The first round a hellhound wave can take place in
 zombies-wave-hellhound-min-round: 5
 
-# The maximum health monsters can receive in a round
+# The maximum health mobs can receive in a round
 # Make sure to edit the max health attribute in the spigot.yml if you wish to go over the 2048.0 value
 zombies-wave-max-health: 2048.0
 
-# The maximum amount of monsters allowed in a game when x players are playing
-zombies-wave-max-monsters:
+# The maximum amount of mobs allowed in a game when x players are playing
+zombies-wave-max-mobs:
   '1': 24
   '2': 32
   '3': 40
   '4': 48
 
-# The attack damage of the monsters
-zombies-wave-monster-attack-damage: 15.0
+# The attack damage of the mobs
+zombies-wave-mob-attack-damage: 15.0
 
-# The size of the follow range of the monsters
-# Higher values will make monsters able to track players from longer distances but will put more strain on the CPU
-zombies-wave-monster-follow-range: 64.0
+# The size of the follow range of the mobs
+# Higher values will make mobs able to track players from longer distances but will put more strain on the CPU
+zombies-wave-mob-follow-range: 64.0
 
-# The X% amount more monsters will spawn when there are Y amount of players
+# The X% amount more mobs will spawn when there are Y amount of players
 # Feel free to add more lines if you allow more than 4 players to play
-zombies-wave-monster-multiplier-1: 1
-zombies-wave-monster-multiplier-2: 1.5
-zombies-wave-monster-multiplier-3: 1.75
-zombies-wave-monster-multiplier-4: 2
+zombies-wave-mob-multiplier:
+  '1': 1
+  '2': 1.5
+  '3': 1.75
+  '4': 2
 
-# The maximum distance between the location where a monster spawns and the nearest player
-zombies-wave-monster-spawn-distance: 24.0
+# The maximum distance between the location where a mob spawns and the nearest player
+zombies-wave-mob-spawn-distance: 24.0
 
 # Amount of time between the ending of a round and the new one in seconds
 zombies-wave-rest-period: 15
 
-# Monsters transform into these if they are the last one in a round. Prevents players wasting time
-zombies-wave-running-monsters: true
-zombies-wave-running-monsters-round: 4
+# mobs transform into these if they are the last one in a round. Prevents players wasting time
+zombies-wave-running-mobs: true
+zombies-wave-running-mobs-round: 4
 
-# Change this to make monsters spawn faster or slower
+# Change this to make mobs spawn faster or slower
 zombies-wave-spawn-rate: 1.0
 
-# Variation of amount of monsters spawning in percentages
-# A value of 10 were to give a result of up to 10% more or less monsters spawning in a round
+# Variation of amount of mobs spawning in percentages
+# A value of 10 were to give a result of up to 10% more or less mobs spawning in a round
 zombies-wave-variation: 10

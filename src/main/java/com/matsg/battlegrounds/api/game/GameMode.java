@@ -6,7 +6,9 @@ import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.Hitbox;
 import com.matsg.battlegrounds.game.mode.GameModeType;
 
-public interface GameMode extends ComponentWrapper {
+public interface GameMode extends ComponentWrapper, WeaponUsageContext {
+
+    void addObjective(Objective objective);
 
     /**
      * Gets the name of the game mode.
@@ -69,7 +71,7 @@ public interface GameMode extends ComponentWrapper {
 
     void removePlayer(GamePlayer gamePlayer);
 
-    void spawnPlayers(GamePlayer... players);
+    boolean spawnPlayers(Iterable<GamePlayer> players);
 
     void start();
 
