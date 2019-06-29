@@ -8,9 +8,9 @@ import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.Section;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.command.validator.GameModeUsageValidator;
-import com.matsg.battlegrounds.game.mode.GameModeType;
-import com.matsg.battlegrounds.game.mode.zombies.Zombies;
-import com.matsg.battlegrounds.game.mode.zombies.ZombiesSection;
+import com.matsg.battlegrounds.mode.GameModeType;
+import com.matsg.battlegrounds.mode.zombies.Zombies;
+import com.matsg.battlegrounds.mode.zombies.component.ZombiesSection;
 import org.bukkit.entity.Player;
 
 public class AddSection extends ComponentCommand {

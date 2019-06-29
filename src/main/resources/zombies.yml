@@ -11,17 +11,6 @@ zombies-default-loadout:
   # The primary firearm
   primary: M1911
 
-# The mob healthbar (custom name) configurations
-zombies-mob-healthbar:
-  # The end symbol of the mob health bar
-  end-symbol: "&8]"
-  # The health symbol of the current health of the mob on the health bar
-  health-symbol: "|"
-  # Amount of health symbols shown in the mob health bar
-  length: 20
-  # The first symbol of the mob health bar
-  start-symbol: "&8["
-
 # The layout of the perk machine signs
 zombies-perk-sign-layout:
   line0: ""
@@ -29,12 +18,48 @@ zombies-perk-sign-layout:
   line2: "&4&lPrice: &0%bg_price%"
   line3: ""
 
+# The chance that a mob will drop a random power up on death
+zombies-power-up-chance: 0.03
+
+# The duration of powerups in seconds
+zombies-power-up-duration: 10
+
+# The power ups that will spawn in the game
+zombies-power-up-types:
+- CARPENTER
+- DOUBLE_POINTS
+- FIRE_SALE
+- INSTA_KILL
+- MAX_AMMO
+- NUKE
+
+# Scoreboard configurations
+zombies-scoreboard:
+  # Set to false to disable scoreboards
+  enabled: true
+  # The layout of the game scoreboards
+  # Leave "" to remove this line
+  layout:
+    line0: "&6Arena: &f%bg_arena%"
+    line1: "&6Zombies: &f%bg_mobs%"
+    line2: " "
+    line3: "%bg_players%"
+    line4: "&6Players:"
+    line5: "  "
+    line6: "&6Headshots: &f%bg_headshots%"
+    line7: "&6Kills: &f%bg_kills%"
+    line8: "&6Round: &f%bg_round%"
+    line9: "&8%bg_date%"
+    title: "&6&lZombies"
+  # List of worlds where this scoreboard will appear
+  worlds: "*"
+
 # The starting round of game
 # Should be set to 1 at all times except for testing purposes
 zombies-starting-round: 1
 
-# Need a bigger challenge or an easy go? Change this value for more or less mob health
-zombies-wave-health-multiplier: 1.0
+# The delay between wave in seconds
+zombies-wave-delay: 15
 
 # The relative amount of hellhounds spawning compared to a normal zombie wave
 zombies-wave-hellhound-amount: 0.5
@@ -74,10 +99,7 @@ zombies-wave-mob-multiplier:
 # The maximum distance between the location where a mob spawns and the nearest player
 zombies-wave-mob-spawn-distance: 24.0
 
-# Amount of time between the ending of a round and the new one in seconds
-zombies-wave-rest-period: 15
-
-# mobs transform into these if they are the last one in a round. Prevents players wasting time
+# Mobs transform into these if they are the last remaing mob in the wave
 zombies-wave-running-mobs: true
 zombies-wave-running-mobs-round: 4
 

@@ -12,6 +12,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -43,6 +44,9 @@ public class EventListener implements Listener {
         ));
         eventDispatcher.registerEventChannel(EntityDamageByEntityEvent.class, new EventChannel<>(
                 new EntityDamageByEntityEventHandler(plugin)
+        ));
+        eventDispatcher.registerEventChannel(EntityDeathEvent.class, new EventChannel<>(
+                new EntityDeathEventHandler(plugin)
         ));
         eventDispatcher.registerEventChannel(FoodLevelChangeEvent.class, new EventChannel<>(
                 new FoodLevelChangeEventHandler(plugin)
@@ -115,12 +119,17 @@ public class EventListener implements Listener {
     }
 
     @EventHandler
-    public void onItemSwitch(PlayerItemHeldEvent event) {
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
         dispatchEvent(event);
     }
 
     @EventHandler
-    public void onPlayerDamageByPlayer(EntityDamageByEntityEvent event) {
+    public void onEntityDeath(EntityDeathEvent event) {
+        dispatchEvent(event);
+    }
+
+    @EventHandler
+    public void onItemSwitch(PlayerItemHeldEvent event) {
         dispatchEvent(event);
     }
 

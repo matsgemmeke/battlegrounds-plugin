@@ -48,23 +48,6 @@ public interface PlayerManager {
     void clearPlayer(GamePlayer gamePlayer);
 
     /**
-     * Damages a player.
-     *
-     * @param gamePlayer The player to damage
-     * @param damage The damage amount
-     */
-    void damagePlayer(GamePlayer gamePlayer, double damage);
-
-    /**
-     * Damages a player.
-     *
-     * @param gamePlayer The player to damage
-     * @param damage The damage amount
-     * @param effect Display a damage effect or not
-     */
-    void damagePlayer(GamePlayer gamePlayer, double damage, boolean effect);
-
-    /**
      * Gets the GamePlayer instance of a player
      *
      * @param player The player to get the GamePlayer instance of
@@ -143,19 +126,19 @@ public interface PlayerManager {
     GamePlayer getNearestPlayer(Location location, Team team, double range);
 
     /**
+     * Gives all players a certain amount of points.
+     *
+     * @param points The amount of points.
+     */
+    void givePoints(int points);
+
+    /**
      * Gives a specific player a certain amount of points.
      *
      * @param gamePlayer The player to be given points.
      * @param points The amount of points.
      */
     void givePoints(GamePlayer gamePlayer, int points);
-
-    /**
-     * Gives all players a certain amount of points.
-     *
-     * @param points The amount of points.
-     */
-    void givePointsAll(int points);
 
     /**
      * Removes a player from the game.

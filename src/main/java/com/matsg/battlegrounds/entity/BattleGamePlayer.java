@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.entity;
 
+import com.matsg.battlegrounds.api.entity.BattleEntityType;
 import com.matsg.battlegrounds.api.entity.PlayerState;
 import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.item.Item;
@@ -19,6 +20,7 @@ import java.util.*;
 
 public class BattleGamePlayer implements GamePlayer {
 
+    private BattleEntityType entityType;
     private GenericAttribute<Float> fireArmDamage, reloadSpeed, reviveSpeed;
     private int deaths, exp, headshots, kills, lives, points;
     private List<Item> heldItems;
@@ -32,6 +34,7 @@ public class BattleGamePlayer implements GamePlayer {
     public BattleGamePlayer(Player player, SavedInventory savedInventory) {
         this.player = player;
         this.savedInventory = savedInventory;
+        this.entityType = BattleEntityType.PLAYER;
         this.exp = 0;
         this.deaths = 0;
         this.fireArmDamage = new BattleAttribute<>("firearm-damage", new FloatValueObject((float) 1.0));
@@ -55,6 +58,10 @@ public class BattleGamePlayer implements GamePlayer {
 
     public void setDeaths(int deaths) {
         this.deaths = deaths;
+    }
+
+    public BattleEntityType getEntityType() {
+        return entityType;
     }
 
     public int getExp() {
@@ -217,8 +224,21 @@ public class BattleGamePlayer implements GamePlayer {
     }
 
     public double damage(double damage) {
-        player.damage(damage);
+        if (player.isDead() || !playerState.isAlive()) {
+            return 0.0;
+        }
+
+        double finalHealth = player.getHealth() - damage;
+
+        player.damage(0.01); // Create fake damage animation
+        player.setHealth(finalHealth > 0.0 ? finalHealth : 0); // Set the health to 0 if the damage is greater than the health
+        player.setLastDamageCause(null);
+
         return player.getHealth();
+    }
+
+    public boolean isHostileTowards(GamePlayer gamePlayer) {
+        return team != gamePlayer.getTeam();
     }
 
     public void remove() {

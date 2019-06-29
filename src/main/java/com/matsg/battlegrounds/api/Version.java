@@ -11,9 +11,9 @@ import org.bukkit.entity.Player;
  */
 public interface Version {
 
-    Hellhound createHellhound(Game game);
+    Hellhound makeHellhound(Game game);
 
-    Zombie createZombie(Game game);
+    Zombie makeZombie(Game game);
 
     void registerCustomEntities();
 

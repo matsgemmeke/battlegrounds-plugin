@@ -128,7 +128,7 @@ public class PlayerMoveEventHandlerTest {
     @Test
     public void playerMoveInArenaWhileCountdown() {
         Spawn spawn = new ArenaSpawn(1, new Location(world, 50, 50, 50), 1);
-        spawn.setGamePlayer(gamePlayer);
+        spawn.setOccupant(gamePlayer);
 
         arena.getSpawnContainer().add(spawn);
 

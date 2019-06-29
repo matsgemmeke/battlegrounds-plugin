@@ -127,23 +127,6 @@ public class BattlePlayerManager implements PlayerManager {
         }
     }
 
-    public void damagePlayer(GamePlayer gamePlayer, double damage) {
-        if (gamePlayer == null || !gamePlayer.getState().isAlive() || gamePlayer.getPlayer().isDead()) {
-            return;
-        }
-        double finalHealth = gamePlayer.getPlayer().getHealth() - damage;
-        gamePlayer.getPlayer().damage(0.01); // Create a fake damage animation
-        gamePlayer.getPlayer().setHealth(finalHealth > 0.0 ? finalHealth : 0); // Set the health to 0 if the damage is greater than the health
-        gamePlayer.getPlayer().setLastDamageCause(null);
-    }
-
-    public void damagePlayer(GamePlayer gamePlayer, double damage, boolean effect) {
-        if (effect) {
-            gamePlayer.getLocation().getWorld().playEffect(gamePlayer.getLocation(), Effect.STEP_SOUND, Material.REDSTONE_BLOCK);
-        }
-        damagePlayer(gamePlayer, damage);
-    }
-
     public GamePlayer getGamePlayer(Player player) {
         for (GamePlayer gamePlayer : players) {
             if (gamePlayer.getPlayer() == player) {
@@ -238,15 +221,15 @@ public class BattlePlayerManager implements PlayerManager {
         return nearestPlayer;
     }
 
-    public void givePoints(GamePlayer gamePlayer, int points) {
-        ActionBar.POINTS_INCREASE.send(gamePlayer.getPlayer(), new Placeholder("bg_points", points));
-        gamePlayer.setPoints(gamePlayer.getPoints() + points);
-    }
-
-    public void givePointsAll(int points) {
+    public void givePoints(int points) {
         for (GamePlayer gamePlayer : players) {
             givePoints(gamePlayer, points);
         }
+    }
+
+    public void givePoints(GamePlayer gamePlayer, int points) {
+        ActionBar.POINTS_INCREASE.send(gamePlayer.getPlayer(), new Placeholder("bg_points", points));
+        gamePlayer.setPoints(gamePlayer.getPoints() + points);
     }
 
     public boolean removePlayer(GamePlayer gamePlayer) {
@@ -282,11 +265,11 @@ public class BattlePlayerManager implements PlayerManager {
 
     public void respawnPlayer(GamePlayer gamePlayer, Spawn spawn) {
         changeLoadout(gamePlayer, gamePlayer.getSelectedLoadout().clone(), true);
-        spawn.setGamePlayer(gamePlayer);
+        spawn.setOccupant(gamePlayer);
 
         new BattleRunnable() {
             public void run() {
-                spawn.setGamePlayer(null); // Wait 5 seconds before resetting the spawn state
+                spawn.setOccupant(null); // Wait 5 seconds before resetting the spawn state
             }
         }.runTaskLater(100);
     }

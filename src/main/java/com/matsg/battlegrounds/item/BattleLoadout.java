@@ -3,6 +3,9 @@ package com.matsg.battlegrounds.item;
 import com.matsg.battlegrounds.api.item.*;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class BattleLoadout implements Loadout {
 
     private final int loadoutNr;
@@ -86,6 +89,35 @@ public class BattleLoadout implements Loadout {
         }
     }
 
+    public Map<String, String> convertToMap() {
+        Map<String, String> map = new HashMap<>();
+        map.put("loadout_nr", String.valueOf(loadoutNr));
+        map.put("loadout_name", name);
+
+        if (primary != null) {
+            map.put("primary", primary.getId());
+
+            if (primary instanceof Gun) {
+                map.put("primary_attachments", convertAttachmentsToString((Gun) primary));
+            }
+        }
+        if (secondary != null) {
+            map.put("secondary", secondary.getId());
+
+            if (secondary instanceof Gun) {
+                map.put("secondary_attachments", convertAttachmentsToString((Gun) secondary));
+            }
+        }
+        if (equipment != null) {
+            map.put("equipment", equipment.getId());
+        }
+        if (meleeWeapon != null) {
+            map.put("melee_weapon", meleeWeapon.getId());
+        }
+
+        return map;
+    }
+
     public boolean equals(Object obj) {
         if (!(obj instanceof Loadout)) {
             return false;
@@ -156,5 +188,16 @@ public class BattleLoadout implements Loadout {
                 weapon.update();
             }
         }
+    }
+
+    private String convertAttachmentsToString(Gun gun) {
+        StringBuilder builder = new StringBuilder();
+        for (Attachment attachment : gun.getAttachments()) {
+            builder.append(attachment.getId());
+            if (gun.getAttachments().size() > gun.getAttachments().indexOf(attachment) + 1) {
+                builder.append(", ");
+            }
+        }
+        return builder.toString();
     }
 }

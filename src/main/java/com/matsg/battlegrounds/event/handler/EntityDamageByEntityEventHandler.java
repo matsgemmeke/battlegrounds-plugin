@@ -1,14 +1,15 @@
 package com.matsg.battlegrounds.event.handler;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.entity.BattleEntity;
 import com.matsg.battlegrounds.api.event.EventHandler;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.item.MeleeWeapon;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class EntityDamageByEntityEventHandler implements EventHandler<EntityDamageByEntityEvent> {
 
@@ -19,27 +20,36 @@ public class EntityDamageByEntityEventHandler implements EventHandler<EntityDama
     }
 
     public void handle(EntityDamageByEntityEvent event) {
-        if (!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Player)) {
+        if (!(event.getDamager() instanceof Player)) {
             return;
         }
 
-        Player player = (Player) event.getEntity();
+        Player player = (Player) event.getDamager();
         Game game = plugin.getGameManager().getGame(player);
 
         if (game == null) {
             return;
         }
 
-        GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer((Player) event.getEntity()), damager = game.getPlayerManager().getGamePlayer((Player) event.getDamager());
-        Team team = gamePlayer.getTeam();
+        BattleEntity entity = game.getMobManager().findMob(event.getEntity());
+        GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
+        ItemStack itemStack = player.getItemInHand();
 
-        if (damager.getLoadout() == null || team == damager.getTeam() || !(damager.getLoadout().getWeapon(damager.getPlayer().getItemInHand()) instanceof MeleeWeapon)) {
+        // In case the entity is not a mob, find the matching player instead
+        if (entity == null && event.getEntity() instanceof Player) {
+            entity = game.getPlayerManager().getGamePlayer((Player) event.getEntity());
+        }
+
+        if (entity == null
+                || gamePlayer.getLoadout() == null
+                || !entity.isHostileTowards(gamePlayer)
+                || !(gamePlayer.getLoadout().getWeapon(itemStack) instanceof MeleeWeapon)) {
             event.setCancelled(true);
             return;
         }
 
         event.setDamage(0.0);
 
-        ((MeleeWeapon) damager.getLoadout().getWeapon(ItemSlot.MELEE_WEAPON)).damage(gamePlayer);
+        ((MeleeWeapon) gamePlayer.getLoadout().getWeapon(itemStack)).damage(entity);
     }
 }

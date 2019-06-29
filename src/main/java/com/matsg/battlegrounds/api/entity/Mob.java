@@ -3,7 +3,7 @@ package com.matsg.battlegrounds.api.entity;
 import com.matsg.battlegrounds.api.game.MobSpawn;
 import org.bukkit.Location;
 
-public interface Mob extends BattlegroundsEntity {
+public interface Mob extends BattleEntity {
 
     void clearPathfinderGoals();
 
@@ -15,8 +15,6 @@ public interface Mob extends BattlegroundsEntity {
 
     void setFollowRange(double followRange);
 
-    MobType getMobType();
-
     double getMovementSpeed();
 
     void setMovementSpeed(double walkSpeed);
@@ -25,7 +23,7 @@ public interface Mob extends BattlegroundsEntity {
 
     void setKnockback(boolean knockback);
 
-    boolean isHostile();
+    boolean hasLoot();
 
     void setHostile(boolean hostile);
 

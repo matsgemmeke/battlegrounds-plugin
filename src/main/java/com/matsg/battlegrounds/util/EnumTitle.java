@@ -13,11 +13,19 @@ public enum EnumTitle {
     OBJECTIVE_ELIMINATION("title-objective-elimination"),
     OBJECTIVE_SCORE("title-objective-score"),
     OBJECTIVE_TIME("title-objective-time"),
+    POWERUP_ACTIVATE("title-power-up-activate"),
+    POWERUP_DEACTIVATE("title-power-up-deactivate"),
     TDM_START("title-tdm-start"),
+    ZOMBIES_GAME_OVER("title-zombies-game-over"),
+    ZOMBIES_NEW_WAVE("title-zombies-new-wave"),
     ZOMBIES_START("title-zombies-start");
 
+    private int fadeIn;
+    private int fadeOut;
+    private int time;
     private String path;
-    private Title title;
+    private String subText;
+    private String titleText;
     private Translator translator;
 
     EnumTitle(String path) {
@@ -26,34 +34,44 @@ public enum EnumTitle {
         if (path == null || path.length() <= 0) {
             throw new TitleFormatException("Title argument cannot be null");
         }
+
         String string = translator.translate(path);
         String[] split = string.split(",");
+
         if (split.length <= 4) {
             throw new TitleFormatException("Invalid title format \"" + string + "\"");
         }
-        try {
-            String title = split[0];
-            String subTitle = split[1];
-            int fadeIn = Integer.parseInt(split[2]);
-            int time = Integer.parseInt(split[3]);
-            int fadeOut = Integer.parseInt(split[4]);
 
-            this.title = new Title(title, subTitle, fadeIn, time, fadeOut);
+        try {
+            titleText = split[0];
+            subText = split[1];
+            fadeIn = Integer.parseInt(split[2]);
+            time = Integer.parseInt(split[3]);
+            fadeOut = Integer.parseInt(split[4]);
         } catch (Exception e) {
             throw new TitleFormatException("An error occurred while formatting the title");
         }
+
         this.path = path;
     }
 
     public Title getTitle() {
-        return title;
+        return createTitle();
     }
 
     public void send(Player player, Placeholder... placeholders) {
-        title.send(player, placeholders);
+        Title title = createTitle();
+        title.setTitleText(translator.createSimpleMessage(titleText, placeholders));
+        title.setSubText(translator.createSimpleMessage(subText, placeholders));
+
+        title.send(player);
     }
 
     public String toString() {
-        return title.toString() + "@" + path;
+        return createTitle().toString() + "@" + path;
+    }
+
+    private Title createTitle() {
+        return new Title(titleText, subText, fadeIn, time, fadeOut);
     }
 }

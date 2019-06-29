@@ -70,7 +70,7 @@ public class LocalPlayerStorage implements PlayerStorage {
 
             for (int i = 1; i <= 5; i ++) {
                 Loadout loadout = defaultLoadouts.getList().get(i - 1);
-                storedPlayer.saveLoadout(loadout.getLoadoutNr(), loadout);
+                storedPlayer.saveLoadout(loadout.getLoadoutNr(), loadout.convertToMap());
             }
             storedPlayers.add(storedPlayer);
         } catch (IOException e) {

@@ -37,28 +37,24 @@ public class LoadoutFactory {
             GamePlayer gamePlayer
     ) {
         if (primary != null) {
-            primary.setContext(game.getGameMode());
             primary.setGame(game);
             primary.setGamePlayer(gamePlayer);
             primary.setItemSlot(ItemSlot.FIREARM_PRIMARY);
         }
 
         if (secondary != null) {
-            secondary.setContext(game.getGameMode());
             secondary.setGame(game);
             secondary.setGamePlayer(gamePlayer);
             secondary.setItemSlot(ItemSlot.FIREARM_SECONDARY);
         }
 
         if (equipment != null) {
-            equipment.setContext(game.getGameMode());
             equipment.setGame(game);
             equipment.setGamePlayer(gamePlayer);
             equipment.setItemSlot(ItemSlot.EQUIPMENT);
         }
 
         if (meleeWeapon != null) {
-            meleeWeapon.setContext(game.getGameMode());
             meleeWeapon.setGame(game);
             meleeWeapon.setGamePlayer(gamePlayer);
             meleeWeapon.setItemSlot(ItemSlot.MELEE_WEAPON);
@@ -78,6 +74,7 @@ public class LoadoutFactory {
             for (Weapon weapon : weapons) {
                 if (weapon != null) {
                     game.getItemRegistry().addItem(weapon);
+                    weapon.setContext(game.getGameMode());
                 }
             }
         }

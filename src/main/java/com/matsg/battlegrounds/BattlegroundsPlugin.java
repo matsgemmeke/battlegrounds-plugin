@@ -60,6 +60,12 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         getLogger().info("Succesfully started Battlegrounds " + getDescription().getVersion());
     }
 
+    public void onDisable() {
+        if (gameManager != null) {
+            gameManager.shutdown();
+        }
+    }
+
     public static Battlegrounds getPlugin() {
         return plugin;
     }
@@ -187,7 +193,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         gameManager = new BattleGameManager();
         selectionManager = new BattleSelectionManager();
 
-        new DataLoader(this, translator);
+        new DataLoader(this, translator, version);
 
         new EventListener(this);
 

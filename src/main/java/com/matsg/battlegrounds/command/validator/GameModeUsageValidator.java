@@ -6,7 +6,7 @@ import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameMode;
 import com.matsg.battlegrounds.api.Placeholder;
-import com.matsg.battlegrounds.game.mode.GameModeType;
+import com.matsg.battlegrounds.mode.GameModeType;
 
 public class GameModeUsageValidator implements CommandValidator {
 

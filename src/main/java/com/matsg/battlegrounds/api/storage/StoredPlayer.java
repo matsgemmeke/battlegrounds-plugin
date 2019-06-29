@@ -5,6 +5,7 @@ import com.matsg.battlegrounds.api.entity.OfflineGamePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.Collection;
+import java.util.Map;
 
 public interface StoredPlayer extends OfflineGamePlayer, Comparable<StoredPlayer> {
 
@@ -27,9 +28,16 @@ public interface StoredPlayer extends OfflineGamePlayer, Comparable<StoredPlayer
      * Gets a loadout setup based on the given number identifier.
      *
      * @param loadoutNr The loadout number identifier.
-     * @return The corresponding loadout.
+     * @return The corresponding loadout setup as a map.
      */
-    Loadout getLoadout(int loadoutNr);
+    Map<String, String> getLoadoutSetup(int loadoutNr);
+
+    /**
+     * Gets all loadout setups of the player.
+     *
+     * @return All loadout setups.
+     */
+    Collection<Map<String, String>> getLoadoutSetups();
 
     /**
      * Gets a statistic attribute.
@@ -40,19 +48,12 @@ public interface StoredPlayer extends OfflineGamePlayer, Comparable<StoredPlayer
     int getStatisticAttribute(StatisticContext context);
 
     /**
-     * Gets all loadout setups of the player.
-     *
-     * @return All loadout setups.
-     */
-    Collection<Loadout> getLoadouts();
-
-    /**
      * Saves a loadout for the player.
      *
      * @param loadoutNumber The number identifier of the loadout
-     * @param loadout The loadout to be saved.
+     * @param loadoutSetup The loadout setup to be saved.
      */
-    void saveLoadout(int loadoutNumber, Loadout loadout);
+    void saveLoadout(int loadoutNumber, Map<String, String> loadoutSetup);
 
     /**
      * Updates the player's name in case of a name change.

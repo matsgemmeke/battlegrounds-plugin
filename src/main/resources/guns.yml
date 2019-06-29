@@ -18,6 +18,7 @@
 #     Type: AUTOMATIC, BURST, SEMI_AUTOMATIC
 #   HeadshotMultiplier: Damage multiplier when the projectile hits a player in the head.
 #   Material: The item material and durability.
+#   Price: The price of the gun.
 #   Projectile:
 #     Material: Launcher projectile material.
 #     Velocity: Launcher projectile travel speed.
@@ -57,6 +58,7 @@ BERETTA_93R:
     Type: BURST
   HeadshotMultiplier: 1.5
   Material: IRON_HOE,1
+  Price: 500
   Range:
     Long:
       Damage: 20.0
@@ -93,6 +95,7 @@ FIVE-SEVEN:
     Type: SEMI_AUTOMATIC
   HeadshotMultiplier: 1.4
   Material: IRON_HOE,2
+  Price: 750
   Range:
     Long:
       Damage: 22.0
@@ -129,6 +132,7 @@ GLOCK_17:
     Type: SEMI_AUTOMATIC
   HeadshotMultiplier: 1.5
   Material: IRON_HOE,3
+  Price: 400
   Range:
     Long:
       Damage: 20.0
@@ -165,6 +169,7 @@ M1911:
     Type: SEMI_AUTOMATIC
   HeadshotMultiplier: 1.5
   Material: IRON_HOE,4
+  Price: 200
   Range:
     Long:
       Damage: 25.0
@@ -201,6 +206,7 @@ PYTHON:
     Type: SEMI_AUTOMATIC
   HeadshotMultiplier: 1.5
   Material: IRON_HOE,5
+  Price: 600
   Range:
     Long:
       Damage: 30.0
@@ -237,6 +243,7 @@ AKS-74U:
     Type: AUTOMATIC
   HeadshotMultiplier: 1.4
   Material: IRON_HOE,6
+  Price: 1400
   Range:
     Long:
       Damage: 20.0
@@ -273,6 +280,7 @@ MAC-10:
     Type: AUTOMATIC
   HeadshotMultiplier: 1.4
   Material: IRON_HOE,7
+  Price: 1050
   Range:
     Long:
       Damage: 20.0
@@ -309,6 +317,7 @@ MP5:
     Type: AUTOMATIC
   HeadshotMultiplier: 1.4
   Material: IRON_HOE,8
+  Price: 1200
   Range:
     Long:
       Damage: 20.0
@@ -345,6 +354,7 @@ MP7:
     Type: AUTOMATIC
   HeadshotMultiplier: 1.4
   Material: IRON_HOE,9
+  Price: 1500
   Range:
     Long:
       Damage: 20.0
@@ -381,6 +391,7 @@ QCW-05:
     Type: BURST
   HeadshotMultiplier: 1.4
   Material: IRON_HOE,10
+  Price: 1250
   Range:
     Long:
       Damage: 18.0
@@ -417,6 +428,7 @@ UZI:
     Type: AUTOMATIC
   HeadshotMultiplier: 1.4
   Material: IRON_HOE,11
+  Price: 1050
   Range:
     Long:
       Damage: 20.0
@@ -453,6 +465,7 @@ VECTOR:
     Type: AUTOMATIC
   HeadshotMultiplier: 1.4
   Material: IRON_HOE,12
+  Price: 1500
   Range:
     Long:
       Damage: 18.0
@@ -489,6 +502,7 @@ AK-47:
     Type: AUTOMATIC
   HeadshotMultiplier: 1.5
   Material: IRON_HOE,13
+  Price: 2500
   Range:
     Long:
       Damage: 30.0
@@ -525,6 +539,7 @@ AUG:
     Type: AUTOMATIC
   HeadshotMultiplier: 1.5
   Material: IRON_HOE,14
+  Price: 3300
   Range:
     Long:
       Damage: 25.0
@@ -561,6 +576,7 @@ FAL:
     Type: SEMI_AUTOMATIC
   HeadshotMultiplier: 1.5
   Material: IRON_HOE,15
+  Price: 2500
   Range:
     Long:
       Damage: 40.0
@@ -597,6 +613,7 @@ FAMAS:
     Type: AUTOMATIC
   HeadshotMultiplier: 1.5
   Material: IRON_HOE,16
+  Price: 2250
   Range:
     Long:
       Damage: 25.0
@@ -633,6 +650,7 @@ GALIL:
     Type: AUTOMATIC
   HeadshotMultiplier: 1.5
   Material: IRON_HOE,17
+  Price: 2000
   Range:
     Long:
       Damage: 30.0
@@ -669,6 +687,7 @@ M16:
     Type: BURST
   HeadshotMultiplier: 1.5
   Material: IRON_HOE,18
+  Price: 3100
   Range:
     Long:
       Damage: 30.0
@@ -705,6 +724,7 @@ QBZ-95:
     Type: BURST
   HeadshotMultiplier: 1.4
   Material: IRON_HOE,19
+  Price: 2500
   Range:
     Long:
       Damage: 25.0
@@ -741,6 +761,7 @@ SCAR-H:
     Type: AUTOMATIC
   HeadshotMultiplier: 1.4
   Material: IRON_HOE,20
+  Price: 3000
   Range:
     Long:
       Damage: 30.0
@@ -777,6 +798,7 @@ SG_550:
     Type: SEMI_AUTOMATIC
   HeadshotMultiplier: 1.5
   Material: IRON_HOE,21
+  Price: 2750
   Range:
     Long:
       Damage: 40.0
@@ -813,6 +835,7 @@ ITHACA_37:
     Type: SEMI_AUTOMATIC
   HeadshotMultiplier: 1.1
   Material: IRON_HOE,22
+  Price: 1050
   Range:
     Long:
       Damage: 5.0
@@ -848,6 +871,7 @@ OLYMPIA:
     Type: SEMI_AUTOMATIC
   HeadshotMultiplier: 1.1
   Material: IRON_HOE,23
+  Price: 1100
   Range:
     Long:
       Damage: 10.0
@@ -883,6 +907,7 @@ REMINGTON_870:
     Type: SEMI_AUTOMATIC
   HeadshotMultiplier: 1.2
   Material: IRON_HOE,24
+  Price: 1200
   Range:
     Long:
       Damage: 5.0
@@ -919,6 +944,7 @@ SAIGA-12K:
     Type: SEMI_AUTOMATIC
   HeadshotMultiplier: 1.2
   Material: IRON_HOE,25
+  Price: 2000
   Range:
     Long:
       Damage: 5.0
@@ -955,6 +981,7 @@ SPAS-12:
     Type: SEMI_AUTOMATIC
   HeadshotMultiplier: 1.2
   Material: IRON_HOE,26
+  Price: 2000
   Range:
     Long:
       Damage: 5.0
@@ -991,6 +1018,7 @@ HK21:
     Type: AUTOMATIC
   HeadshotMultiplier: 1.4
   Material: IRON_HOE,27
+  Price: 3700
   Range:
     Long:
       Damage: 30.0
@@ -1026,6 +1054,7 @@ M249:
     Type: AUTOMATIC
   HeadshotMultiplier: 1.4
   Material: IRON_HOE,28
+  Price: 5200
   Range:
     Long:
       Damage: 30.0
@@ -1061,6 +1090,7 @@ RPK:
     Type: AUTOMATIC
   HeadshotMultiplier: 1.4
   Material: IRON_HOE,29
+  Price: 3500
   Range:
     Long:
       Damage: 24.0
@@ -1096,6 +1126,7 @@ DRAGUNOV:
     Type: SEMI_AUTOMATIC
   HeadshotMultiplier: 2.0
   Material: IRON_HOE,30
+  Price: 2700
   Range:
     Long:
       Damage: 70.0
@@ -1132,6 +1163,7 @@ M82A1:
     Type: SEMI_AUTOMATIC
   HeadshotMultiplier: 2.0
   Material: IRON_HOE,31
+  Price: 5000
   Range:
     Long:
       Damage: 98.0
@@ -1168,6 +1200,7 @@ SV-98:
     Type: SEMI_AUTOMATIC
   HeadshotMultiplier: 2.0
   Material: IRON_HOE,32
+  Price: 4750
   Range:
     Long:
       Damage: 98.0
@@ -1201,6 +1234,7 @@ CHINA_LAKE:
     LaunchType: GRENADE
   HeadshotMultiplier: 1.0
   Material: IRON_HOE,33
+  Price: 3000
   Projectile:
     Material: IRON_HELMET,1
     Speed: 2.0
@@ -1239,6 +1273,7 @@ CROSSBOW:
     LaunchType: ROCKET
   HeadshotMultiplier: 1.0
   Material: IRON_HOE,34
+  Price: 2500
   Projectile:
     Material: IRON_HELMET,1
     Speed: 18.0
@@ -1275,6 +1310,7 @@ MGL:
     LaunchType: GRENADE
   HeadshotMultiplier: 1.0
   Material: IRON_HOE,35
+  Price: 5000
   Projectile:
     Material: IRON_HELMET,1
     Speed: 2.0
@@ -1310,6 +1346,7 @@ RPG-7:
     LaunchType: ROCKET
   HeadshotMultiplier: 1.0
   Material: IRON_HOE,36
+  Price: 3500
   Projectile:
     Material: IRON_HELMET,1
     Speed: 6.0
@@ -1345,6 +1382,7 @@ SMAW:
     LaunchType: ROCKET
   HeadshotMultiplier: 1.0
   Material: IRON_HOE,37
+  Price: 3500
   Projectile:
     Material: IRON_HELMET,1
     Speed: 6.0

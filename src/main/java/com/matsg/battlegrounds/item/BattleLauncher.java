@@ -2,19 +2,21 @@ package com.matsg.battlegrounds.item;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.entity.BattleEntity;
+import com.matsg.battlegrounds.api.event.GamePlayerDamageEntityEvent;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent.DeathCause;
-import com.matsg.battlegrounds.api.event.GamePlayerKillPlayerEvent;
+import com.matsg.battlegrounds.api.event.GamePlayerKillEntityEvent;
 import com.matsg.battlegrounds.api.item.DamageSource;
 import com.matsg.battlegrounds.api.item.Launcher;
 import com.matsg.battlegrounds.api.item.Lethal;
 import com.matsg.battlegrounds.api.item.ReloadType;
-import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.Hitbox;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.util.BattleSound;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 
 public class BattleLauncher extends BattleFirearm implements Launcher {
@@ -69,8 +71,9 @@ public class BattleLauncher extends BattleFirearm implements Launcher {
                 ChatColor.WHITE + firearmType.getName(),
                 ChatColor.GRAY + format(6, getAccuracy() * 100.0, 100.0) + " " + translator.translate(TranslationKey.STAT_ACCURACY),
                 ChatColor.GRAY + format(6, lethal.getShortDamage(), 50.0) + " " + translator.translate(TranslationKey.STAT_DAMAGE),
-                ChatColor.GRAY + format(6, Math.max((15 - getCooldown() / 2) * 10.0, 40.0), 200.0) + " " + translator.translate(TranslationKey.STAT_FIRERATE),
-                ChatColor.GRAY + format(6, lethal.getLongRange(), 35.0) + " " + translator.translate(TranslationKey.STAT_RANGE) };
+                ChatColor.GRAY + format(6, Math.max((15 - cooldown.getValue() / 2) * 10.0, 40.0), 200.0) + " " + translator.translate(TranslationKey.STAT_FIRERATE),
+                ChatColor.GRAY + format(6, lethal.getLongRange(), 35.0) + " " + translator.translate(TranslationKey.STAT_RANGE)
+        };
     }
 
     public DamageSource getProjectile() {
@@ -78,26 +81,44 @@ public class BattleLauncher extends BattleFirearm implements Launcher {
     }
 
     private void inflictDamage(Location location, double range) {
-        for (GamePlayer gamePlayer : game.getPlayerManager().getNearbyPlayers(location, range)) { //Explosion splash damage range
-            if (gamePlayer == null || gamePlayer == this.gamePlayer || gamePlayer.getPlayer().isDead() || gamePlayer.getTeam() == this.gamePlayer.getTeam()) {
+        for (BattleEntity entity : context.getNearbyEntities(location, gamePlayer.getTeam(), range)) {
+            if (entity == null || entity == gamePlayer || entity.getBukkitEntity().isDead()) {
                 continue;
             }
+
             double damage = lethal.getDamage(Hitbox.TORSO, gamePlayer.getLocation().distance(location));
-            game.getPlayerManager().damagePlayer(gamePlayer, damage);
-            if (gamePlayer.getPlayer().isDead()) {
-                plugin.getServer().getPluginManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, this.gamePlayer, this, Hitbox.TORSO));
-                game.getGameMode().onKill(gamePlayer, this.gamePlayer, this, Hitbox.TORSO);
+            int pointsPerKill = 50;
+
+            Event event;
+            Hitbox hitbox = Hitbox.TORSO;
+
+            if (gamePlayer.getHealth() - damage <= 0) {
+                event = new GamePlayerKillEntityEvent(game, gamePlayer, entity, this, hitbox, pointsPerKill);
+            } else {
+                event = new GamePlayerDamageEntityEvent(game, gamePlayer, entity, this, damage, hitbox);
             }
+
+            // Handle the event on the plugin manager so other plugins can listen to this event as well
+            plugin.getServer().getPluginManager().callEvent(event);
+            // Handle the event on the event dispatcher so we can reuse the event without calling a listener to it
+            plugin.getEventDispatcher().dispatchEvent(event);
         }
     }
 
     private void inflictUserDamage(Location location) {
         double playerDistance = gamePlayer.getPlayer().getLocation().distanceSquared(location);
+
         if (playerDistance <= lethal.getLongRange()) {
-            game.getPlayerManager().damagePlayer(gamePlayer, lethal.getDamage(Hitbox.TORSO, playerDistance) / 5);
+            double damage = lethal.getDamage(Hitbox.TORSO, playerDistance) / 5;
+
+            gamePlayer.damage(damage);
+
             if (gamePlayer.getPlayer().isDead()) {
-                plugin.getServer().getPluginManager().callEvent(new GamePlayerDeathEvent(game, gamePlayer, DeathCause.SUICIDE));
-                game.getGameMode().onDeath(gamePlayer, DeathCause.SUICIDE);
+                Event event = new GamePlayerDeathEvent(game, gamePlayer, DeathCause.SUICIDE);
+                // Handle the event on the event dispatcher so we can reuse the event without calling a listener to it
+                plugin.getEventDispatcher().dispatchEvent(event);
+                // Handle the event on the plugin manager so other plugin can listen to this event as well
+                plugin.getServer().getPluginManager().callEvent(event);
             }
         }
     }

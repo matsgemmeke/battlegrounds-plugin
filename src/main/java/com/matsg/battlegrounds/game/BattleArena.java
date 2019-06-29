@@ -85,6 +85,16 @@ public class BattleArena implements Arena {
         return Collections.unmodifiableList(list);
     }
 
+    public <T extends ArenaComponent> Collection<T> getComponents(Class<T> componentClass) {
+        List<T> list = new ArrayList<>();
+        for (ArenaComponent component : getComponents()) {
+            if (component.getClass().isAssignableFrom(componentClass)) {
+                list.add((T) component);
+            }
+        }
+        return Collections.unmodifiableList(list);
+    }
+
     public int getHeight() {
         if (!hasBorders()) {
             return -1;
@@ -149,7 +159,7 @@ public class BattleArena implements Arena {
 
     public Spawn getSpawn(GamePlayer gamePlayer) {
         for (Spawn spawn : getSpawns()) {
-            if (spawn.getGamePlayer() == gamePlayer) {
+            if (spawn.getOccupant() == gamePlayer || spawn.getOccupant() == gamePlayer.getTeam()) {
                 return spawn;
             }
         }

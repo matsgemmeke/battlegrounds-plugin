@@ -2,8 +2,9 @@ package com.matsg.battlegrounds.item;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.entity.BattlegroundsEntity;
-import com.matsg.battlegrounds.api.event.GamePlayerKillPlayerEvent;
+import com.matsg.battlegrounds.api.entity.BattleEntity;
+import com.matsg.battlegrounds.api.event.GamePlayerDamageEntityEvent;
+import com.matsg.battlegrounds.api.event.GamePlayerKillEntityEvent;
 import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.entity.Hitbox;
 import com.matsg.battlegrounds.api.util.AttributeModifier;
@@ -23,6 +24,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -192,10 +194,10 @@ public class BattleGun extends BattleFirearm implements Gun {
     }
 
     private void inflictDamage(Location location, double range) {
-        BattlegroundsEntity[] entities = context.getNearbyEntities(location, gamePlayer.getTeam(), range);
+        BattleEntity[] entities = context.getNearbyEntities(location, gamePlayer.getTeam(), range);
 
         if (entities.length > 0) {
-            BattlegroundsEntity entity = entities[0];
+            BattleEntity entity = entities[0];
 
             if (entity == null || entity == gamePlayer) {
                 return;
@@ -211,14 +213,24 @@ public class BattleGun extends BattleFirearm implements Gun {
 
             double damage = bullet.getDamage(hitbox, entityLocation.distance(gamePlayer.getLocation())) / plugin.getBattlegroundsConfig().firearmDamageModifer;
 
-            entity.damage(damage);
+            if (plugin.getBattlegroundsConfig().getDisplayBloodEffect(entity.getEntityType().toString())) {
+                gamePlayer.getLocation().getWorld().playEffect(location, Effect.STEP_SOUND, Material.REDSTONE_BLOCK);
+            }
+
             hits ++;
 
-            if (entity.getBukkitEntity().isDead()) {
-                // TODO fix this event
-                plugin.getServer().getPluginManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, gamePlayer, this, hitbox));
-                game.getGameMode().onKill(gamePlayer, gamePlayer, this, hitbox);
+            Event event;
+
+            if (entity.getHealth() - damage <= 0) {
+                event = new GamePlayerKillEntityEvent(game, gamePlayer, entity, this, hitbox, hitbox.getPoints());
+            } else {
+                event = new GamePlayerDamageEntityEvent(game, gamePlayer, entity, this, damage, hitbox);
             }
+
+            // Handle the event on the plugin manager so other plugins can listen to this event as well
+            plugin.getServer().getPluginManager().callEvent(event);
+            // Handle the event on the event dispatcher so we can reuse the event without calling a listener to it
+            plugin.getEventDispatcher().dispatchEvent(event);
         }
     }
 

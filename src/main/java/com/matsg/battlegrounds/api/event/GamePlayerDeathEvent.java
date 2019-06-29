@@ -24,14 +24,29 @@ public class GamePlayerDeathEvent extends Event {
         return handlerList;
     }
 
+    /**
+     * Gets the cause of the player's death.
+     *
+     * @return the death cause
+     */
     public DeathCause getDeathCause() {
         return deathCause;
     }
 
+    /**
+     * Gets the game in which the death took place.
+     *
+     * @return the game
+     */
     public Game getGame() {
         return game;
     }
 
+    /**
+     * Gets the player who died.
+     *
+     * @return the player
+     */
     public GamePlayer getGamePlayer() {
         return gamePlayer;
     }

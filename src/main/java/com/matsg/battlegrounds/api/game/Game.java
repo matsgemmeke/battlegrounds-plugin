@@ -114,6 +114,13 @@ public interface Game {
     Location getLobby();
 
     /**
+     * Gets the mob manager of the game.
+     *
+     * @return the game's mob manager
+     */
+    MobManager getMobManager();
+
+    /**
      * Gets the player manager of this game.
      *
      * @return The game's player manager

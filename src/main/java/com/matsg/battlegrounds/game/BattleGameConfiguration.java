@@ -6,8 +6,8 @@ import com.matsg.battlegrounds.api.storage.Yaml;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameConfiguration;
 import com.matsg.battlegrounds.api.game.GameMode;
-import com.matsg.battlegrounds.game.mode.GameModeFactory;
-import com.matsg.battlegrounds.game.mode.GameModeType;
+import com.matsg.battlegrounds.mode.GameModeFactory;
+import com.matsg.battlegrounds.mode.GameModeType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ public class BattleGameConfiguration implements GameConfiguration {
 
     public static BattleGameConfiguration getDefaultConfiguration(Game game) {
         Battlegrounds plugin = BattlegroundsPlugin.getPlugin();
-        GameModeFactory gameModeFactory = new GameModeFactory(plugin, plugin.getTranslator());
+        GameModeFactory gameModeFactory = new GameModeFactory(plugin, plugin.getTranslator(), plugin.getVersion());
 
         return new BattleGameConfiguration(
                 new GameMode[] {

@@ -2,6 +2,8 @@ package com.matsg.battlegrounds.api.item;
 
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Map;
+
 public interface Loadout extends Cloneable {
 
     Equipment getEquipment();
@@ -27,6 +29,8 @@ public interface Loadout extends Cloneable {
     void setSecondary(Firearm secondary);
 
     Loadout clone();
+
+    Map<String, String> convertToMap();
 
     Weapon getWeapon(ItemSlot itemSlot);
 

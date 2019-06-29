@@ -1,24 +1,20 @@
 package com.matsg.battlegrounds.game;
 
 import com.matsg.battlegrounds.api.game.Spawn;
-import com.matsg.battlegrounds.api.entity.GamePlayer;
+import com.matsg.battlegrounds.api.game.SpawnOccupant;
 import org.bukkit.Location;
 
 public class ArenaSpawn implements Spawn {
 
     private boolean teamBase;
-    private GamePlayer gamePlayer;
     private int id, teamId;
     private Location location;
+    private SpawnOccupant occupant;
 
     public ArenaSpawn(int id, Location location, int teamId) {
         this.id = id;
         this.location = location;
         this.teamId = teamId;
-    }
-
-    public GamePlayer getGamePlayer() {
-        return gamePlayer;
     }
 
     public int getId() {
@@ -29,20 +25,24 @@ public class ArenaSpawn implements Spawn {
         return location;
     }
 
+    public SpawnOccupant getOccupant() {
+        return occupant;
+    }
+
+    public void setOccupant(SpawnOccupant occupant) {
+        this.occupant = occupant;
+    }
+
     public int getTeamId() {
         return teamId;
     }
 
     public boolean isOccupied() {
-        return gamePlayer != null;
+        return occupant != null;
     }
 
     public boolean isTeamBase() {
         return teamBase;
-    }
-
-    public void setGamePlayer(GamePlayer gamePlayer) {
-        this.gamePlayer = gamePlayer;
     }
 
     public void setTeamBase(boolean teamBase) {

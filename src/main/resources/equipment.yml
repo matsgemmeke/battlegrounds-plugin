@@ -10,6 +10,7 @@
 #   EquipmentType: LETHAL, TACTICAL
 #   IgnitionTime: Time in ticks before the explosive explodes. Set to 0 to have it only explode when monsters are nearby.
 #   Material: The item material and durability
+#   Price: The price of the equipment.
 #   Range:
 #     Long:
 #       Damage: Long-range damage
@@ -31,6 +32,7 @@ GRENADE:
   EquipmentType: LETHAL
   IgnitionTime: 60
   Material: IRON_HELMET,1
+  Price: 300
   Range:
     Long:
       Damage: 15.0
@@ -52,6 +54,7 @@ SEMTEX:
   EquipmentType: LETHAL
   IgnitionTime: 40
   Material: IRON_HELMET,2
+  Price: 500
   Range:
     Long:
       Damage: 20.0
@@ -73,6 +76,7 @@ CLAYMORE:
   EquipmentType: LETHAL
   IgnitionTime: 0
   Material: IRON_HELMET,3
+  Price: 1000
   Range:
     Long:
       Damage: 15.0
@@ -96,6 +100,7 @@ DECOY:
   EquipmentType: TACTICAL
   IgnitionTime: 40
   Material: IRON_HELMET,4
+  Price: 50
   Range:
     Long:
       Damage: 0.0
@@ -119,6 +124,7 @@ FLASHBANG:
   EquipmentType: TACTICAL
   IgnitionTime: 40
   Material: IRON_HELMET,5
+  Price: 200
   Range:
     Long:
       Damage: 0.0
@@ -142,6 +148,7 @@ SHOCK_CHARGE:
   EquipmentType: TACTICAL
   IgnitionTime: 0
   Material: IRON_HELMET,6
+  Price: 300
   Range:
     Long:
       Damage: 0.0
@@ -165,6 +172,7 @@ SMOKE_GRENADE:
   EquipmentType: TACTICAL
   IgnitionTime: 40
   Material: IRON_HELMET,7
+  Price: 300
   Range:
     Long:
       Damage: 0.0

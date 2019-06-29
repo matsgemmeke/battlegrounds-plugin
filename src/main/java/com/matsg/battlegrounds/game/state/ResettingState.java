@@ -14,7 +14,7 @@ public class ResettingState implements GameState {
     }
 
     public GameState next() {
-        throw new IllegalStateException();
+        return new WaitingState();
     }
 
     public GameState previous() {

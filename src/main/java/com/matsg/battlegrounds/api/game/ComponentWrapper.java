@@ -31,6 +31,14 @@ public interface ComponentWrapper {
     Collection<ArenaComponent> getComponents();
 
     /**
+     * Gets all components based off a certain class that the wrapper has. This collection is immutable. If a component
+     * needs to be added to the section then it must use its specific container.
+     *
+     * @return All container components.
+     */
+    <T extends ArenaComponent> Collection<T> getComponents(Class<T> componentClass);
+
+    /**
      * Removes a component from the wrapper instance.
      *
      * @param component The component to be removed.

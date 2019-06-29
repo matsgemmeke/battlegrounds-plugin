@@ -5,6 +5,7 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameConfiguration;
 import com.matsg.battlegrounds.api.Placeholder;
+import com.matsg.battlegrounds.api.game.GameMode;
 import com.matsg.battlegrounds.command.validator.GameIdValidator;
 import com.matsg.battlegrounds.game.BattleGame;
 import com.matsg.battlegrounds.game.BattleGameConfiguration;
@@ -33,7 +34,13 @@ public class CreateGame extends Command {
         configuration.saveConfiguration(game.getDataFile());
         game.getDataFile().save();
         game.setConfiguration(configuration);
-        game.setGameMode(configuration.getGameModes()[0]);
+
+        GameMode[] gameModes = configuration.getGameModes();
+
+        if (gameModes.length > 0) {
+            game.setGameMode(gameModes[0]);
+            gameModes[0].onCreate();
+        }
 
         plugin.getGameManager().getGames().add(game);
 

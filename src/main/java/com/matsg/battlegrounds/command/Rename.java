@@ -2,10 +2,11 @@ package com.matsg.battlegrounds.command;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.Placeholder;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.Map;
 
 public class Rename extends Command {
 
@@ -25,18 +26,18 @@ public class Rename extends Command {
             return;
         }
 
-        int loadoutNumber;
+        int loadoutNr;
 
         try {
-            loadoutNumber = Integer.parseInt(args[1]);
+            loadoutNr = Integer.parseInt(args[1]);
         } catch (Exception e) {
             player.sendMessage(createMessage(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[1])));
             return;
         }
 
-        Loadout loadout = plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).getLoadout(loadoutNumber);
+        Map<String, String> loadoutSetup = plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).getLoadoutSetup(loadoutNr);
 
-        if (loadout == null) {
+        if (loadoutSetup == null) {
             player.sendMessage(createMessage(TranslationKey.INVALID_LOADOUT));
             return;
         }
@@ -46,12 +47,13 @@ public class Rename extends Command {
             return;
         }
 
-        String old = loadout.getName();
-        loadout.setName(args[2]);
-        plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).saveLoadout(loadoutNumber, loadout);
+        String old = loadoutSetup.get("loadout_name");
+        loadoutSetup.replace("loadout_name", args[2]);
+        plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).saveLoadout(loadoutNr, loadoutSetup);
 
         player.sendMessage(createMessage(TranslationKey.RENAME_LOADOUT,
                 new Placeholder("bg_loadout_old", old),
-                new Placeholder("bg_loadout_new", loadout.getName())));
+                new Placeholder("bg_loadout_new", loadoutSetup.get("loadout_name"))
+        ));
     }
 }

@@ -22,8 +22,11 @@ game-broadcast-chat: false
 game-default-join-gamemode: SURVIVAL
 game-default-leave-gamemode: SURVIVAL
 
-# Displays a blood effect when a player takes damage
-game-display-blood-effect: false
+# Displays a blood effect when certain entities get damaged
+game-display-blood-effect:
+  hellhound: true
+  player: false
+  zombie: true
 
 # The display names of different weapon types
 game-display-name:
@@ -42,6 +45,17 @@ game-firearm-damage-modifier: 5
 # Game states where players are able to join games
 game-joinable-states:
 - Waiting
+
+# The mob health bar configurations
+game-mob-health-bar:
+  # The end symbol of the mob health bar
+  end-symbol: "&8]"
+  # The health symbol of the current health of the mob on the health bar
+  health-symbol: "|"
+  # Amount of health symbols shown in the mob health bar
+  length: 20
+  # The first symbol of the mob health bar
+  start-symbol: "&8["
 
 # Some projectiles are able to pierce through certain blocks. Add their materials here
 game-pierceable-blocks:

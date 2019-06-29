@@ -1,7 +1,7 @@
 package com.matsg.battlegrounds.nms.v1_12_R1;
 
+import com.matsg.battlegrounds.api.entity.BattleEntityType;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
-import com.matsg.battlegrounds.api.entity.MobType;
 import com.matsg.battlegrounds.api.entity.Zombie;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.MobSpawn;
@@ -18,13 +18,16 @@ import java.util.Set;
 
 public class CustomZombie extends EntityZombie implements Zombie {
 
+    private BattleEntityType entityType;
     private boolean hostile;
     private boolean spawned;
+    private Creature entity;
     private Game game;
 
     public CustomZombie(Game game) {
         super(((CraftWorld) game.getArena().getWorld()).getHandle());
         this.game = game;
+        this.entityType = BattleEntityType.ZOMBIE;
         this.hostile = false;
 
         setBaby(false);
@@ -42,12 +45,8 @@ public class CustomZombie extends EntityZombie implements Zombie {
         super(world);
     }
 
-    public MobType getMobType() {
-        return MobType.ZOMBIE;
-    }
-
-    public boolean isHostile() {
-        return hostile;
+    public BattleEntityType getEntityType() {
+        return entityType;
     }
 
     public void setHostile(boolean hostile) {
@@ -70,9 +69,12 @@ public class CustomZombie extends EntityZombie implements Zombie {
     }
 
     public double damage(double damage) {
-        Creature entity = toCreature();
-        entity.damage(damage);
-        return entity.getHealth();
+        double finalHealth = entity.getHealth() - damage;
+
+        entity.damage(0.01); // Create a damage animation
+        entity.setHealth(finalHealth > 0.0 ? finalHealth : 0);
+
+        return finalHealth;
     }
 
     public double getAttackDamage() {
@@ -93,6 +95,14 @@ public class CustomZombie extends EntityZombie implements Zombie {
 
     public boolean hasKnockback() {
         return Boolean.parseBoolean(String.valueOf(getAttributeInstance(GenericAttributes.c).getValue()));
+    }
+
+    public boolean hasLoot() {
+        return true;
+    }
+
+    public boolean isHostileTowards(GamePlayer gamePlayer) {
+        return hostile;
     }
 
     public void remove() {
@@ -137,13 +147,12 @@ public class CustomZombie extends EntityZombie implements Zombie {
     }
 
     public void setTarget(Location location) {
-        Creature entity = toCreature();
         entity.setTarget(null);
         getNavigation().a(navigation.a(location.getX(), location.getY(), location.getZ()), 1.0D);
     }
 
     public void spawn(MobSpawn mobSpawn) {
-        Location location = mobSpawn.getSpawnLocation(MobType.ZOMBIE);
+        Location location = mobSpawn.getSpawnLocation(entityType);
 
         setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 
@@ -151,19 +160,15 @@ public class CustomZombie extends EntityZombie implements Zombie {
             throw new MobSpawnException("Failed to spawn mob with uuid " + bukkitEntity.getUniqueId());
         }
 
-        toCreature().getEquipment().setHelmet(new org.bukkit.inventory.ItemStack(org.bukkit.Material.STONE_BUTTON));
-        toCreature().getEquipment().setItemInMainHand(null);
+        entity = (Creature) bukkitEntity;
+        entity.getEquipment().setHelmet(new org.bukkit.inventory.ItemStack(org.bukkit.Material.STONE_BUTTON));
+        entity.getEquipment().setItemInMainHand(null);
 
         clearPathfinderGoals();
         goalSelector.a(9, new PathfinderGoalEnterArena(game, this, mobSpawn));
     }
 
-    public Creature toCreature() {
-        return (Creature) bukkitEntity;
-    }
-
     public void updatePath() {
-        Creature entity = toCreature();
         GamePlayer nearestPlayer = game.getPlayerManager().getNearestPlayer(entity.getLocation());
 
         if (!hostile || nearestPlayer == null) {

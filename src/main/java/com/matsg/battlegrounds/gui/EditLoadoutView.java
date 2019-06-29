@@ -140,7 +140,7 @@ public class EditLoadoutView implements View {
             }
             if (clickType == ClickType.RIGHT) {
                 attachmentGun.get(itemStack).getAttachments().remove(attachment);
-                plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).saveLoadout(loadout.getLoadoutNr(), loadout);
+                plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).saveLoadout(loadout.getLoadoutNr(), loadout.convertToMap());
                 player.openInventory(new EditLoadoutView(plugin, translator, loadout).getInventory());
             }
         }
@@ -165,7 +165,7 @@ public class EditLoadoutView implements View {
                 if (clickType == ClickType.RIGHT) {
                     if (weapon != null) {
                         loadout.removeWeapon(weapon);
-                        plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).saveLoadout(loadout.getLoadoutNr(), loadout);
+                        plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).saveLoadout(loadout.getLoadoutNr(), loadout.convertToMap());
                     }
                     player.openInventory(new EditLoadoutView(plugin, translator, loadout).getInventory());
                 }

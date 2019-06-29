@@ -1,8 +1,8 @@
 package com.matsg.battlegrounds.nms.v1_12_R1;
 
+import com.matsg.battlegrounds.api.entity.BattleEntityType;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.Hellhound;
-import com.matsg.battlegrounds.api.entity.MobType;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.MobSpawn;
 import com.matsg.battlegrounds.nms.MobSpawnException;
@@ -18,6 +18,7 @@ import java.util.Set;
 
 public class CustomWolf extends EntityWolf implements Hellhound {
 
+    private BattleEntityType entityType;
     private boolean hostile;
     private boolean spawned;
     private Creature entity;
@@ -26,7 +27,7 @@ public class CustomWolf extends EntityWolf implements Hellhound {
     public CustomWolf(Game game) {
         super(((CraftWorld) game.getArena().getWorld()).getHandle());
         this.game = game;
-        this.entity = (Creature) bukkitEntity;
+        this.entityType = BattleEntityType.HELLHOUND;
         this.hostile = true;
         this.spawned = false;
 
@@ -44,12 +45,8 @@ public class CustomWolf extends EntityWolf implements Hellhound {
         super(world);
     }
 
-    public MobType getMobType() {
-        return MobType.HELLHOUND;
-    }
-
-    public boolean isHostile() {
-        return hostile;
+    public BattleEntityType getEntityType() {
+        return entityType;
     }
 
     public void setHostile(boolean hostile) {
@@ -72,8 +69,12 @@ public class CustomWolf extends EntityWolf implements Hellhound {
     }
 
     public double damage(double damage) {
-        entity.damage(damage);
-        return entity.getHealth();
+        double finalHealth = entity.getHealth() - damage;
+
+        entity.damage(0.01); // Create a damage animation
+        entity.setHealth(finalHealth > 0.0 ? finalHealth : 0);
+
+        return finalHealth;
     }
 
     public double getAttackDamage() {
@@ -94,6 +95,14 @@ public class CustomWolf extends EntityWolf implements Hellhound {
 
     public boolean hasKnockback() {
         return Boolean.parseBoolean(String.valueOf(getAttributeInstance(GenericAttributes.c).getValue()));
+    }
+
+    public boolean hasLoot() {
+        return true;
+    }
+
+    public boolean isHostileTowards(GamePlayer gamePlayer) {
+        return hostile;
     }
 
     public void remove() {
@@ -147,7 +156,7 @@ public class CustomWolf extends EntityWolf implements Hellhound {
     }
 
     public void spawn(MobSpawn mobSpawn) {
-        Location location = mobSpawn.getSpawnLocation(MobType.HELLHOUND);
+        Location location = mobSpawn.getSpawnLocation(entityType);
         location.getWorld().strikeLightningEffect(location);
 
         setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
@@ -155,6 +164,8 @@ public class CustomWolf extends EntityWolf implements Hellhound {
         if (!world.addEntity(this, CreatureSpawnEvent.SpawnReason.CUSTOM)) {
             throw new MobSpawnException("Failed to spawn mob with uuid " + bukkitEntity.getUniqueId());
         }
+
+        entity = (Creature) bukkitEntity;
 
         resetDefaultPathfinderGoals();
     }

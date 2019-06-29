@@ -16,6 +16,7 @@ BALLISTIC_KNIFE:
   Description: Spring-action knife launcher. Can fire the blade as a projectile.
   DisplayName: Ballistic Knife
   Material: IRON_SWORD,1
+  Price: 200
   Throwable: true
 
 COMBAT_KNIFE:
@@ -25,6 +26,7 @@ COMBAT_KNIFE:
   Description: Standard issue military knife. Fast, quiet and deadly.
   DisplayName: Combat Knife
   Material: IRON_SWORD,2
+  Price: 500
   Throwable: false
 
 HATCHET:
@@ -34,4 +36,5 @@ HATCHET:
   Description: Retrievable throwing hatchet that causes instant death on impact.
   DisplayName: Hatchet
   Material: IRON_SWORD,3
+  Price: 1000
   Throwable: true

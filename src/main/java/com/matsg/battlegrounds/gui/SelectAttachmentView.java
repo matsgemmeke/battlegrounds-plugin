@@ -120,7 +120,7 @@ public class SelectAttachmentView implements View {
         }
         gun.getAttachments().clear();
         gun.getAttachments().add(attachmentNr, attachment);
-        plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).saveLoadout(loadout.getLoadoutNr(), loadout);
+        plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).saveLoadout(loadout.getLoadoutNr(), loadout.convertToMap());
         player.openInventory(new EditLoadoutView(plugin, translator, loadout).getInventory());
     }
 

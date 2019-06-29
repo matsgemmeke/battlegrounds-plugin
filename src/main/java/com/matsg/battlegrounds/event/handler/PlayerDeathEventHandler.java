@@ -36,6 +36,6 @@ public class PlayerDeathEventHandler implements EventHandler<PlayerDeathEvent> {
         }
 
         game.callEvent(new GamePlayerDeathEvent(game, game.getPlayerManager().getGamePlayer(player), deathCause));
-        game.getGameMode().onDeath(game.getPlayerManager().getGamePlayer(player), deathCause);
+        // game.getGameMode().onDeath(game.getPlayerManager().getGamePlayer(player), deathCause);
     }
 }

@@ -31,7 +31,7 @@ public class PathfinderGoalTargetPlayer extends PathfinderGoal {
 
                 GamePlayer gamePlayer = game.getPlayerManager().getNearestPlayer(mob.getBukkitEntity().getLocation());
 
-                if (gamePlayer != null && mob.isHostile()) {
+                if (gamePlayer != null && mob.isHostileTowards(gamePlayer)) {
                     mob.setTarget(gamePlayer.getLocation());
                 }
             }

@@ -2,12 +2,13 @@ package com.matsg.battlegrounds.storage;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Translator;
+import com.matsg.battlegrounds.api.Version;
 import com.matsg.battlegrounds.api.storage.CacheYaml;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.game.GameMode;
 import com.matsg.battlegrounds.game.*;
-import com.matsg.battlegrounds.game.mode.GameModeFactory;
-import com.matsg.battlegrounds.game.mode.GameModeType;
+import com.matsg.battlegrounds.mode.GameModeFactory;
+import com.matsg.battlegrounds.mode.GameModeType;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.BlockState;
@@ -25,10 +26,12 @@ public class DataLoader {
     private final Battlegrounds plugin;
     private final Logger logger;
     private final Translator translator;
+    private final Version version;
 
-    public DataLoader(Battlegrounds plugin, Translator translator) {
+    public DataLoader(Battlegrounds plugin, Translator translator, Version version) {
         this.plugin = plugin;
         this.translator = translator;
+        this.version = version;
         this.logger = plugin.getLogger();
 
         plugin.getGameManager().getGames().clear();
@@ -105,7 +108,7 @@ public class DataLoader {
             e.printStackTrace();
         }
 
-        GameModeFactory gameModeFactory = new GameModeFactory(plugin, plugin.getTranslator());
+        GameModeFactory gameModeFactory = new GameModeFactory(plugin, translator, version);
 
         // Setting configurations
         try {
@@ -128,6 +131,7 @@ public class DataLoader {
                         config.getInt("lobbycountdown")
                 );
                 GameMode gameMode = configuration.getGameModes()[new Random().nextInt(configuration.getGameModes().length)];
+                gameMode.onCreate();
 
                 game.setConfiguration(configuration);
                 game.setGameMode(gameMode);

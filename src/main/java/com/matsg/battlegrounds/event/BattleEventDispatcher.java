@@ -24,12 +24,19 @@ public class BattleEventDispatcher implements EventDispatcher {
 
     public void registerEventChannel(Class<? extends Event> eventClass, EventChannel eventChannel) {
         if (eventChannels.containsKey(eventClass)) {
-            throw new EventHandlingException("Event class " + eventClass.getSimpleName() + " already registered");
+            // If an event channel for the event class already exists, add the event handlers to the existing channel
+            EventChannel existingChannel = eventChannels.get(eventClass);
+            existingChannel.addEventChannel(eventChannel);
+        } else {
+            eventChannels.put(eventClass, eventChannel);
         }
-        eventChannels.put(eventClass, eventChannel);
     }
 
     public void unregisterEventChannel(Class<? extends Event> eventClass) {
+        if (!eventChannels.containsKey(eventClass)) {
+            return;
+        }
+
         eventChannels.remove(eventClass);
     }
 }

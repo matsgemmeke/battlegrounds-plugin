@@ -4,7 +4,7 @@ import com.matsg.battlegrounds.api.entity.GamePlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 
-public interface Team {
+public interface Team extends SpawnOccupant {
 
     ChatColor getChatColor();
 

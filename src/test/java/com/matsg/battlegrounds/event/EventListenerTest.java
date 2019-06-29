@@ -55,7 +55,7 @@ public class EventListenerTest {
 
         // Test EntityDamageByEntityEvent dispatching
         EntityDamageByEntityEvent entityDamageByEntityEvent = mock(EntityDamageByEntityEvent.class);
-        listener.onPlayerDamageByPlayer(entityDamageByEntityEvent);
+        listener.onEntityDamageByEntity(entityDamageByEntityEvent);
         verify(eventDispatcher, times(1)).dispatchEvent(entityDamageByEntityEvent);
 
         // Test FoodLevelChangeEvent dispatching

@@ -3,15 +3,16 @@ package com.matsg.battlegrounds.event.handler;
 import com.matsg.battlegrounds.BattleGameManager;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.GameManager;
+import com.matsg.battlegrounds.api.entity.Mob;
 import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.api.game.MobManager;
 import com.matsg.battlegrounds.api.game.PlayerManager;
-import com.matsg.battlegrounds.api.game.Team;
-import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.item.Loadout;
-import com.matsg.battlegrounds.api.item.MeleeWeapon;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
-import com.matsg.battlegrounds.game.BattleTeam;
+import com.matsg.battlegrounds.api.item.MeleeWeapon;
+import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.entity.BattleGamePlayer;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -25,35 +26,36 @@ import static org.mockito.Mockito.*;
 public class EntityDamageByEntityEventHandlerTest {
 
     private Battlegrounds plugin;
-    private EntityDamageByEntityEvent event;
+    private Entity entity;
     private Game game;
     private GameManager gameManager;
-    private GamePlayer damager, gamePlayer;
-    private Player damagerPlayer, player;
+    private GamePlayer damager;
+    private MobManager mobManager;
+    private Player player;
     private PlayerManager playerManager;
 
     @Before
     public void setUp() {
         this.plugin = mock(Battlegrounds.class);
-        this.damagerPlayer = mock(Player.class);
+        this.entity = mock(Entity.class);
         this.game = mock(Game.class);
+        this.mobManager = mock(MobManager.class);
         this.player = mock(Player.class);
         this.playerManager = mock(PlayerManager.class);
 
-        this.damager = new BattleGamePlayer(damagerPlayer, null);
-        this.event = new EntityDamageByEntityEvent(damagerPlayer, player, null, 0);
+        this.damager = new BattleGamePlayer(player, null);
         this.gameManager = new BattleGameManager();
-        this.gamePlayer = new BattleGamePlayer(player, null);
 
         gameManager.getGames().add(game);
 
+        when(game.getMobManager()).thenReturn(mobManager);
         when(game.getPlayerManager()).thenReturn(playerManager);
         when(plugin.getGameManager()).thenReturn(gameManager);
     }
 
     @Test
-    public void playerDamageNotByAnotherPlayer() {
-        event = new EntityDamageByEntityEvent(mock(Entity.class), mock(Entity.class), null, 10.0);
+    public void entityDamageNotByAnotherPlayer() {
+        EntityDamageByEntityEvent event = new EntityDamageByEntityEvent(entity, entity, null, 10.0);
 
         EntityDamageByEntityEventHandler eventHandler = new EntityDamageByEntityEventHandler(plugin);
         eventHandler.handle(event);
@@ -64,7 +66,9 @@ public class EntityDamageByEntityEventHandlerTest {
     }
 
     @Test
-    public void playerDamageWhenNotPlaying() {
+    public void entityDamageWhenNotPlaying() {
+        EntityDamageByEntityEvent event = new EntityDamageByEntityEvent(player, entity, null, 10.0);
+
         when(playerManager.getGamePlayer(player)).thenReturn(null);
 
         EntityDamageByEntityEventHandler eventHandler = new EntityDamageByEntityEventHandler(plugin);
@@ -76,79 +80,98 @@ public class EntityDamageByEntityEventHandlerTest {
     }
 
     @Test
-    public void playerDamageWithoutLoadout() {
-        when(playerManager.getGamePlayer(damagerPlayer)).thenReturn(damager);
-        when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
+    public void entityDamageWithUnknownPlayerOrMob() {
+        Player fakePlayer = mock(Player.class);
+        EntityDamageByEntityEvent event = new EntityDamageByEntityEvent(player, fakePlayer, null, 10.0);
+
+        when(mobManager.findMob(fakePlayer)).thenReturn(null);
+        when(playerManager.getGamePlayer(fakePlayer)).thenReturn(null);
+        when(playerManager.getGamePlayer(player)).thenReturn(damager);
+
+        EntityDamageByEntityEventHandler eventHandler = new EntityDamageByEntityEventHandler(plugin);
+        eventHandler.handle(event);
+
+        assertTrue(event.isCancelled());
+    }
+
+    @Test
+    public void entityDamageWhenDamagerHasNoLoadout() {
+        Mob mob = mock(Mob.class);
+        EntityDamageByEntityEvent event = new EntityDamageByEntityEvent(player, entity, null, 10.0);
+
+        when(mobManager.findMob(entity)).thenReturn(mob);
+        when(playerManager.getGamePlayer(player)).thenReturn(damager);
 
         damager.setLoadout(null);
 
         EntityDamageByEntityEventHandler eventHandler = new EntityDamageByEntityEventHandler(plugin);
         eventHandler.handle(event);
 
-        verify(playerManager, times(3)).getGamePlayer(any(Player.class));
-
         assertTrue(event.isCancelled());
     }
 
     @Test
-    public void playerDamageSameTeam() {
-        when(playerManager.getGamePlayer(damagerPlayer)).thenReturn(damager);
-        when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
-
-        Team team = new BattleTeam(1, "Team", null, null);
-
-        damager.setTeam(team);
-        gamePlayer.setTeam(team);
-
-        EntityDamageByEntityEventHandler eventHandler = new EntityDamageByEntityEventHandler(plugin);
-        eventHandler.handle(event);
-
-        verify(playerManager, times(3)).getGamePlayer(any(Player.class));
-
-        assertTrue(event.isCancelled());
-    }
-
-    @Test
-    public void playerDamageWithoutMeleeWeapon() {
-        when(playerManager.getGamePlayer(damagerPlayer)).thenReturn(damager);
-        when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
-
-        Team team = new BattleTeam(1, "Team", null, null), enemyTeam = new BattleTeam(2, "Team", null, null);
-
-        damager.setLoadout(mock(Loadout.class));
-        damager.setTeam(enemyTeam);
-        gamePlayer.setTeam(team);
-
-        EntityDamageByEntityEventHandler eventHandler = new EntityDamageByEntityEventHandler(plugin);
-        eventHandler.handle(event);
-
-        verify(playerManager, times(3)).getGamePlayer(any(Player.class));
-
-        assertTrue(event.isCancelled());
-    }
-
-    @Test
-    public void playerDamageWithMeleeWeapon() {
-        when(playerManager.getGamePlayer(damagerPlayer)).thenReturn(damager);
-        when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
-
+    public void entityDamageWhenEntityIsNotHostile() {
         Loadout loadout = mock(Loadout.class);
-        MeleeWeapon meleeWeapon = mock(MeleeWeapon.class);
-        Team team = new BattleTeam(1, "Team", null, null), enemyTeam = new BattleTeam(2, "Team", null, null);
+        Mob mob = mock(Mob.class);
+        EntityDamageByEntityEvent event = new EntityDamageByEntityEvent(player, entity, null, 10.0);
 
-        when(loadout.getWeapon(any(ItemSlot.class))).thenReturn(meleeWeapon);
-        when(loadout.getWeapon(any(ItemStack.class))).thenReturn(meleeWeapon);
+        when(mob.isHostileTowards(damager)).thenReturn(false);
+        when(mobManager.findMob(entity)).thenReturn(mob);
+        when(playerManager.getGamePlayer(player)).thenReturn(damager);
 
         damager.setLoadout(loadout);
-        damager.setTeam(enemyTeam);
-        gamePlayer.setTeam(team);
 
         EntityDamageByEntityEventHandler eventHandler = new EntityDamageByEntityEventHandler(plugin);
         eventHandler.handle(event);
 
-        verify(playerManager, times(3)).getGamePlayer(any(Player.class));
+        assertTrue(event.isCancelled());
+    }
 
-        assertEquals(0.0, event.getDamage(), 0);
+    @Test
+    public void entityDamageWhenWeaponIsNotInstanceOfMeleeWeapon() {
+        ItemStack itemStack = new ItemStack(Material.AIR);
+        Loadout loadout = mock(Loadout.class);
+        Mob mob = mock(Mob.class);
+        Weapon weapon = mock(Weapon.class);
+
+        EntityDamageByEntityEvent event = new EntityDamageByEntityEvent(player, entity, null, 10.0);
+
+        when(loadout.getWeapon(itemStack)).thenReturn(weapon);
+        when(mob.isHostileTowards(damager)).thenReturn(true);
+        when(mobManager.findMob(entity)).thenReturn(mob);
+        when(player.getItemInHand()).thenReturn(itemStack);
+        when(playerManager.getGamePlayer(player)).thenReturn(damager);
+
+        damager.setLoadout(loadout);
+
+        EntityDamageByEntityEventHandler eventHandler = new EntityDamageByEntityEventHandler(plugin);
+        eventHandler.handle(event);
+
+        assertTrue(event.isCancelled());
+    }
+
+    @Test
+    public void entityDamageWithMeleeWeapon() {
+        ItemStack itemStack = new ItemStack(Material.AIR);
+        Loadout loadout = mock(Loadout.class);
+        MeleeWeapon meleeWeapon = mock(MeleeWeapon.class);
+        Mob mob = mock(Mob.class);
+
+        EntityDamageByEntityEvent event = new EntityDamageByEntityEvent(player, entity, null, 10.0);
+
+        when(loadout.getWeapon(itemStack)).thenReturn(meleeWeapon);
+        when(mob.isHostileTowards(damager)).thenReturn(true);
+        when(mobManager.findMob(entity)).thenReturn(mob);
+        when(player.getItemInHand()).thenReturn(itemStack);
+        when(playerManager.getGamePlayer(player)).thenReturn(damager);
+
+        damager.setLoadout(loadout);
+
+        EntityDamageByEntityEventHandler eventHandler = new EntityDamageByEntityEventHandler(plugin);
+        eventHandler.handle(event);
+
+        assertEquals(event.getDamage(), 0.0, 0.01);
         assertFalse(event.isCancelled());
     }
 }

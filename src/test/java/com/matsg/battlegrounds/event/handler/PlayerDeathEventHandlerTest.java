@@ -84,7 +84,6 @@ public class PlayerDeathEventHandlerTest {
         assertTrue(event.getKeepLevel());
 
         verify(game, times(0)).callEvent(any(Event.class));
-        verify(gameMode, times(0)).onDeath(any(GamePlayer.class), any(DeathCause.class));
     }
 
     @Test
@@ -105,6 +104,5 @@ public class PlayerDeathEventHandlerTest {
         assertTrue(event.getKeepLevel());
 
         verify(game, times(1)).callEvent(any(Event.class));
-        verify(gameMode, times(1)).onDeath(gamePlayer, DeathCause.PLAYER_KILL);
     }
 }

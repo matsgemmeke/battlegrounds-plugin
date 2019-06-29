@@ -1,14 +1,9 @@
 package com.matsg.battlegrounds.storage.sql;
 
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.entity.OfflineGamePlayer;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.item.Attachment;
-import com.matsg.battlegrounds.api.item.Gun;
-import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.storage.StatisticContext;
 import com.matsg.battlegrounds.api.storage.StoredPlayer;
-import com.matsg.battlegrounds.item.factory.LoadoutFactory;
 import org.bukkit.entity.Player;
 
 import java.sql.*;
@@ -16,18 +11,14 @@ import java.util.*;
 
 public class SQLPlayerRecord implements StoredPlayer {
 
-    private Battlegrounds plugin;
     private Connection connection;
     private int deaths, exp, headshots, kills;
-    private LoadoutFactory loadoutFactory;
     private String name;
     private UUID uuid;
 
-    public SQLPlayerRecord(Battlegrounds plugin, Connection connection, UUID uuid) {
-        this.plugin = plugin;
+    public SQLPlayerRecord(Connection connection, UUID uuid) {
         this.connection = connection;
         this.uuid = uuid;
-        this.loadoutFactory = new LoadoutFactory();
 
         try {
             fetchInfo();
@@ -138,7 +129,7 @@ public class SQLPlayerRecord implements StoredPlayer {
         }
     }
 
-    public Loadout getLoadout(int loadoutNr) {
+    public Map<String, String> getLoadoutSetup(int loadoutNr) {
         try {
             PreparedStatement ps = connection.prepareStatement("SELECT * " +
                     "FROM `battlegrounds_loadout` " +
@@ -155,51 +146,33 @@ public class SQLPlayerRecord implements StoredPlayer {
                 return null;
             }
 
-            List<Attachment> primaryAttachments = new ArrayList<>();
-            List<Attachment> secondaryAttachments = new ArrayList<>();
-            String attachmentString;
-
-            if ((attachmentString = rs.getString("primary_attachments")) != null && !attachmentString.isEmpty()) {
-                for (String attachmentId : attachmentString.split(", ")) {
-                    primaryAttachments.add(plugin.getAttachmentFactory().make(attachmentId));
-                }
-            }
-
-            if ((attachmentString = rs.getString("secondary_attachments")) != null && !attachmentString.isEmpty()) {
-                for (String attachmentId : attachmentString.split(", ")) {
-                    secondaryAttachments.add(plugin.getAttachmentFactory().make(attachmentId));
-                }
-            }
-
-            Loadout loadout = loadoutFactory.make(
-                    loadoutNr,
-                    rs.getString("loadout_name"),
-                    plugin.getFirearmFactory().make(rs.getString("primary_firearm")),
-                    plugin.getFirearmFactory().make(rs.getString("secondary_firearm")),
-                    plugin.getEquipmentFactory().make(rs.getString("equipment")),
-                    plugin.getMeleeWeaponFactory().make(rs.getString("melee_weapon")),
-                    primaryAttachments.toArray(new Attachment[primaryAttachments.size()]),
-                    secondaryAttachments.toArray(new Attachment[secondaryAttachments.size()]),
-                    null,
-                    null
-            );
+            Map<String, String> loadoutSetup = new HashMap<>();
+            loadoutSetup.put("loadout_nr", rs.getString("loadout_nr"));
+            loadoutSetup.put("loadout_name", rs.getString("loadout_name"));
+            loadoutSetup.put("name", rs.getString("loadout_name"));
+            loadoutSetup.put("primary", rs.getString("primary_firearm"));
+            loadoutSetup.put("primary_attachments", rs.getString("primary_attachments"));
+            loadoutSetup.put("secondary", rs.getString("secondary_firearm"));
+            loadoutSetup.put("secondary_attachments", rs.getString("secondary_attachments"));
+            loadoutSetup.put("equipment", rs.getString("equipment"));
+            loadoutSetup.put("melee_weapon", rs.getString("melee_weapon"));
 
             rs.close();
             ps.close();
 
-            return loadout;
+            return loadoutSetup;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public Collection<Loadout> getLoadouts() {
-        List<Loadout> list = new ArrayList<>();
+    public Collection<Map<String, String>> getLoadoutSetups() {
+        List<Map<String, String>> loadoutSetups = new ArrayList<>();
         for (int i = 1; i <= 5; i ++) {
-            list.add(getLoadout(i));
+            loadoutSetups.add(getLoadoutSetup(i));
         }
-        return list;
+        return loadoutSetups;
     }
 
     public int getStatisticAttribute(StatisticContext context) {
@@ -235,7 +208,7 @@ public class SQLPlayerRecord implements StoredPlayer {
         return result;
     }
 
-    public void saveLoadout(int loadoutNr, Loadout loadout) {
+    public void saveLoadout(int loadoutNr, Map<String, String> loadoutSetup) {
         PreparedStatement ps;
 
         try {
@@ -258,26 +231,26 @@ public class SQLPlayerRecord implements StoredPlayer {
                 );
                 ps.setString(1, uuid.toString());
                 ps.setInt(2, loadoutNr);
-                ps.setString(3, loadout.getName());
-                ps.setString(4, loadout.getPrimary() != null ? loadout.getPrimary().getId() : null);
-                ps.setString(5, loadout.getPrimary() instanceof Gun ? convertAttachmentsToString((Gun) loadout.getPrimary()) : null);
-                ps.setString(6, loadout.getSecondary() != null ? loadout.getSecondary().getId() : null);
-                ps.setString(7, loadout.getSecondary() instanceof Gun ? convertAttachmentsToString((Gun) loadout.getSecondary()) : null);
-                ps.setString(8, loadout.getEquipment() != null ? loadout.getEquipment().getId() : null);
-                ps.setString(9, loadout.getMeleeWeapon() != null ? loadout.getMeleeWeapon().getId() : null);
+                ps.setString(3, loadoutSetup.get("loadout_name"));
+                ps.setString(4, loadoutSetup.get("primary"));
+                ps.setString(5, loadoutSetup.get("primary_attachments"));
+                ps.setString(6, loadoutSetup.get("secondary"));
+                ps.setString(7, loadoutSetup.get("secondary_attachments"));
+                ps.setString(8, loadoutSetup.get("equipment"));
+                ps.setString(9, loadoutSetup.get("melee_weapon"));
                 ps.execute();
             } else {
                 ps = connection.prepareStatement("UPDATE `battlegrounds_loadout` " +
                                 "SET loadout_name = ?, primary_firearm = ?, primary_attachments = ?, secondary_firearm = ?, secondary_attachments = ?, equipment = ?, melee_weapon = ? " +
                                 "WHERE player_uuid = ? AND loadout_nr = ?"
                 );
-                ps.setString(1, loadout.getName());
-                ps.setString(2, loadout.getPrimary() != null ? loadout.getPrimary().getId() : null);
-                ps.setString(3, loadout.getPrimary() instanceof Gun ? convertAttachmentsToString((Gun) loadout.getPrimary()) : null);
-                ps.setString(4, loadout.getSecondary() != null ? loadout.getSecondary().getId() : null);
-                ps.setString(5, loadout.getSecondary() instanceof Gun ? convertAttachmentsToString((Gun) loadout.getSecondary()) : null);
-                ps.setString(6, loadout.getEquipment() != null ? loadout.getEquipment().getId() : null);
-                ps.setString(7, loadout.getMeleeWeapon() != null ? loadout.getMeleeWeapon().getId() : null);
+                ps.setString(1, loadoutSetup.get("loadout_name"));
+                ps.setString(2, loadoutSetup.get("primary"));
+                ps.setString(3, loadoutSetup.get("primary_attachments"));
+                ps.setString(4, loadoutSetup.get("secondary"));
+                ps.setString(5, loadoutSetup.get("secondary_attachments"));
+                ps.setString(6, loadoutSetup.get("equipment"));
+                ps.setString(7, loadoutSetup.get("melee_weapon"));
                 ps.setString(8, uuid.toString());
                 ps.setInt(9, loadoutNr);
                 ps.executeUpdate();
@@ -313,17 +286,6 @@ public class SQLPlayerRecord implements StoredPlayer {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    private String convertAttachmentsToString(Gun gun) {
-        StringBuilder builder = new StringBuilder();
-        for (Attachment attachment : gun.getAttachments()) {
-            builder.append(attachment.getId());
-            if (gun.getAttachments().size() > gun.getAttachments().indexOf(attachment) + 1) {
-                builder.append(", ");
-            }
-        }
-        return builder.toString();
     }
 
     private void fetchInfo() throws SQLException {

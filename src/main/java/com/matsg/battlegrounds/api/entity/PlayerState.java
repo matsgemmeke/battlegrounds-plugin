@@ -1,24 +1,25 @@
 package com.matsg.battlegrounds.api.entity;
 
 import com.matsg.battlegrounds.api.game.Game;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 
 public enum PlayerState {
 
-    ACTIVE(0, true, 'f', GameMode.SURVIVAL, true, true),
-    DOWNED(1, true, 'f', GameMode.SURVIVAL, false, false),
-    SPECTATING(2, false, '7', GameMode.CREATIVE, false, true);
+    ACTIVE(0, true, ChatColor.WHITE, GameMode.SURVIVAL, true, true),
+    DOWNED(1, true, ChatColor.WHITE, GameMode.SURVIVAL, false, false),
+    SPECTATING(2, false, ChatColor.GRAY, GameMode.CREATIVE, false, true);
 
     private boolean alive, interact, move;
-    private char hex;
+    private ChatColor chatColor;
     private GameMode gameMode;
     private int id;
 
-    PlayerState(int id, boolean alive, char hex, GameMode gameMode, boolean interact, boolean move) {
+    PlayerState(int id, boolean alive, ChatColor chatColor, GameMode gameMode, boolean interact, boolean move) {
         this.id = id;
         this.alive = alive;
+        this.chatColor = chatColor;
         this.gameMode = gameMode;
-        this.hex = hex;
         this.interact = interact;
         this.move = move;
     }
@@ -40,8 +41,8 @@ public enum PlayerState {
         return move;
     }
 
-    public char getHex() {
-        return hex;
+    public ChatColor getChatColor() {
+        return chatColor;
     }
 
     public boolean isAlive() {

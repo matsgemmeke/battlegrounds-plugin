@@ -72,7 +72,7 @@ public class SQLPlayerStorage implements PlayerStorage {
 
     public StoredPlayer getStoredPlayer(UUID uuid) {
         try {
-            return new SQLPlayerRecord(plugin, openConnection(), uuid);
+            return new SQLPlayerRecord(openConnection(), uuid);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -87,12 +87,12 @@ public class SQLPlayerStorage implements PlayerStorage {
         try {
             connection = openConnection();
 
-            StoredPlayer storedPlayer = new SQLPlayerRecord(plugin, connection, player.getUniqueId());
+            StoredPlayer storedPlayer = new SQLPlayerRecord(connection, player.getUniqueId());
             storedPlayer.createDefaultAttributes(player);
 
             for (int i = 1; i <= 5; i ++) {
                 Loadout loadout = defaultLoadouts.getList().get(i - 1);
-                storedPlayer.saveLoadout(loadout.getLoadoutNr(), loadout);
+                storedPlayer.saveLoadout(loadout.getLoadoutNr(), loadout.convertToMap());
             }
         } catch (SQLException e) {
             e.printStackTrace();

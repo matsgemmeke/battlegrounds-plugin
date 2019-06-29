@@ -10,6 +10,7 @@ import com.matsg.battlegrounds.nms.Title;
 import net.minecraft.server.v1_12_R1.ChatMessageType;
 import net.minecraft.server.v1_12_R1.EntityTypes;
 import net.minecraft.server.v1_12_R1.IChatBaseComponent;
+import net.minecraft.server.v1_12_R1.IChatBaseComponent.ChatSerializer;
 import net.minecraft.server.v1_12_R1.PacketPlayOutChat;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -17,11 +18,11 @@ import org.bukkit.entity.Player;
 
 public class Version112R1 implements Version {
 
-    public Hellhound createHellhound(Game game) {
+    public Hellhound makeHellhound(Game game) {
         return new CustomWolf(game);
     }
 
-    public Zombie createZombie(Game game) {
+    public Zombie makeZombie(Game game) {
         return new CustomZombie(game);
     }
 
@@ -34,7 +35,11 @@ public class Version112R1 implements Version {
     }
 
     public void sendActionBar(Player player, String message) {
+        IChatBaseComponent icbc = ChatSerializer.a("{\"text\": \"" + message + "\"}");
 
+        PacketPlayOutChat packet = new PacketPlayOutChat(icbc, ChatMessageType.GAME_INFO);
+
+        ReflectionUtils.sendPacket(player, packet);
     }
 
     public void sendJSONMessage(Player player, String message, String command, String hoverMessage) {

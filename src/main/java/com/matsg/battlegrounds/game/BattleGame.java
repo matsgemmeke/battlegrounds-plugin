@@ -16,8 +16,6 @@ import com.matsg.battlegrounds.gui.scoreboard.LobbyScoreboard;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
@@ -38,6 +36,7 @@ public class BattleGame implements Game {
     private GameState state;
     private ItemRegistry itemRegistry;
     private List<Arena> arenaList;
+    private MobManager mobManager;
     private PlayerManager playerManager;
     private TimeControl timeControl;
 
@@ -46,6 +45,7 @@ public class BattleGame implements Game {
         this.id = id;
         this.arenaList = new ArrayList<>();
         this.itemRegistry = new BattleItemRegistry();
+        this.mobManager = new BattleMobManager(plugin.getBattlegroundsConfig());
         this.playerManager = new BattlePlayerManager(this, plugin.getLevelConfig(), plugin.getPlayerStorage(), plugin.getTranslator());
         this.state = new WaitingState();
 
@@ -90,9 +90,11 @@ public class BattleGame implements Game {
 
     public void setGameMode(GameMode gameMode) {
         if (this.gameMode != null) {
+            this.gameMode.setActive(false);
             this.gameMode.onDisable();
         }
         this.gameMode = gameMode;
+        this.gameMode.setActive(true);
         this.gameMode.onEnable();
     }
 
@@ -110,6 +112,10 @@ public class BattleGame implements Game {
 
     public ItemRegistry getItemRegistry() {
         return itemRegistry;
+    }
+
+    public MobManager getMobManager() {
+        return mobManager;
     }
 
     public PlayerManager getPlayerManager() {
@@ -198,10 +204,10 @@ public class BattleGame implements Game {
     }
 
     public void rollback() {
-        Arena arena = getArena();
-        if (arena == null) {
-            return;
+        if (gameMode != null) {
+            gameMode.onDisable();
         }
+
         for (GamePlayer gamePlayer : playerManager.getPlayers()) {
             Player player = gamePlayer.getPlayer();
             player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
@@ -210,11 +216,6 @@ public class BattleGame implements Game {
             gamePlayer.getSavedInventory().restore(player);
             gamePlayer.setState(PlayerState.ACTIVE);
             gamePlayer.getState().apply(this, gamePlayer);
-        }
-        for (Entity entity : arena.getWorld().getEntitiesByClass(Item.class)) {
-            if (arena.contains(entity.getLocation())) {
-                entity.remove();
-            }
         }
     }
 
@@ -288,6 +289,7 @@ public class BattleGame implements Game {
             plugin.getPlayerStorage().getStoredPlayer(gamePlayer.getUUID()).addStatisticAttributes(context);
         }
 
+        gameMode.stop();
         timeControl.stop();
 
         clearGameData();

@@ -1,8 +1,6 @@
 package com.matsg.battlegrounds.item;
 
-import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.item.Item;
 import com.matsg.battlegrounds.api.util.GenericAttribute;

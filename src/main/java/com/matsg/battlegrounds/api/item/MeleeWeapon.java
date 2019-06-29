@@ -1,6 +1,6 @@
 package com.matsg.battlegrounds.api.item;
 
-import com.matsg.battlegrounds.api.entity.GamePlayer;
+import com.matsg.battlegrounds.api.entity.BattleEntity;
 
 public interface MeleeWeapon extends Weapon, Droppable {
 
@@ -18,7 +18,7 @@ public interface MeleeWeapon extends Weapon, Droppable {
 
     MeleeWeapon clone();
 
-    double damage(GamePlayer gamePlayer);
+    double damage(BattleEntity entity);
 
     void shoot();
 }

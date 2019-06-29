@@ -14,21 +14,28 @@ public class BattlegroundsConfig extends AbstractYaml {
 
     public boolean arenaProtection = getBoolean("game-arena-protection");
     public boolean broadcastChat = getBoolean("game-broadcast-chat");
-    public boolean displayBloodEffect = getBoolean("game-display-blood-effect");
     public ConfigurationSection lobbyScoreboard = getConfigurationSection("game-scoreboard.lobby");
     public int firearmDamageModifer = getInt("game-firearm-damage-modifier");
     public int loadoutCreationLevel = getInt("loadout-creation-level");
+    public int mobHealthBarLength = getInt("game-mob-health-bar.length");
     public double firearmAccuracy = getDouble("game-firearm-accuracy");
     public List<String> allowedCommands = getStringList("game-allowed-commands");
     public List<String> joinableGamestates = getStringList("game-joinable-states");
     public List<String> pierceableBlocks = getStringList("game-pierceable-blocks");
+    public String mobHealthBarEndSymbol = getString("game-mob-health-bar.end-symbol");
+    public String mobHealthBarStartSymbol = getString("game-mob-health-bar.start-symbol");
+    public String mobHealthBarSymbol = getString("game-mob-health-bar.health-symbol");
 
     public BattlegroundsConfig(Battlegrounds plugin) throws IOException {
         super(plugin, "config.yml", false);
-        if (!getString("version").equals(plugin.getDescription().getVersion())) { //Auto update the config.yml when the plugin has updated
+        if (!getString("version").equals(plugin.getDescription().getVersion())) { // Auto-update the config when the plugin was updated
             removeFile();
             createFile(plugin.getDataFolder().getPath(), "config.yml");
         }
+    }
+
+    public boolean getDisplayBloodEffect(String entity) {
+        return getBoolean("game-display-blood-effect." + entity);
     }
 
     public String[] getGameSignLayout() {

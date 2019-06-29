@@ -1,12 +1,26 @@
 package com.matsg.battlegrounds.api.game;
 
-import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent.DeathCause;
-import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
-import com.matsg.battlegrounds.api.entity.Hitbox;
-import com.matsg.battlegrounds.game.mode.GameModeType;
+import com.matsg.battlegrounds.mode.GameModeType;
+
+import java.util.List;
 
 public interface GameMode extends ComponentWrapper, WeaponUsageContext {
+
+    /**
+     * Hook method that gets called whenever the gamemode gets instantiated by the plugin.
+     */
+    void onCreate();
+
+    /**
+     * Hook method that gets called whenever the game sets the gamemode to inactive.
+     */
+    void onDisable();
+
+    /**
+     * Hook method that gets called whenever the game sets the gamemode to active.
+     */
+    void onEnable();
 
     void addObjective(Objective objective);
 
@@ -32,6 +46,10 @@ public interface GameMode extends ComponentWrapper, WeaponUsageContext {
 
     GameModeType getType();
 
+    boolean isActive();
+
+    void setActive(boolean active);
+
     /**
      * Adds a player to the game mode.
      *
@@ -39,21 +57,17 @@ public interface GameMode extends ComponentWrapper, WeaponUsageContext {
      */
     void addPlayer(GamePlayer gamePlayer);
 
+    Objective getAchievedObjective();
+
     Spawn getRespawnPoint(GamePlayer gamePlayer);
+
+    List<Team> getSortedTeams();
 
     Team getTeam(GamePlayer gamePlayer);
 
     Team getTeam(int id);
 
     Team getTopTeam();
-
-    void onDeath(GamePlayer gamePlayer, DeathCause deathCause);
-
-    void onDisable();
-
-    void onEnable();
-
-    void onKill(GamePlayer gamePlayer, GamePlayer killer, Weapon weapon, Hitbox hitbox);
 
     /**
      * Loads extra gamemode prerequisites of an arena from the game's data file.

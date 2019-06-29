@@ -14,21 +14,54 @@ public class EventChannel<T extends Event> {
         this.eventHandlers = new ArrayDeque<>();
     }
 
-    public EventChannel(EventHandler<T>... eventConsumers) {
-        this.eventHandlers = new ArrayDeque<>(Arrays.asList(eventConsumers));
+    public EventChannel(EventHandler<T>... eventHandlers) {
+        this.eventHandlers = new ArrayDeque<>(Arrays.asList(eventHandlers));
     }
 
-    public boolean addEventHandler(EventHandler<T> eventHandler) {
-        return eventHandlers.add(eventHandler);
+    /**
+     * Adds all event handlers of another event channel, combining the two.
+     *
+     * @param eventChannel the event channel to add
+     */
+    public void addEventChannel(EventChannel<T> eventChannel) {
+        eventHandlers.addAll(eventChannel.eventHandlers);
     }
 
+    /**
+     * Adds an event handler to the channel.
+     *
+     * @param eventHandler the event handler to add
+     */
+    public void addEventHandler(EventHandler<T> eventHandler) {
+        eventHandlers.add(eventHandler);
+    }
+
+    /**
+     * Gets the amount of handlers in the channel.
+     *
+     * @return the event handler count
+     */
+    public int getEventHandlerCount() {
+        return eventHandlers.size();
+    }
+
+    /**
+     * Passes an event to all event handlers.
+     *
+     * @param event the event to handle
+     */
     public void handleEvent(T event) {
         for (EventHandler<T> eventHandler : eventHandlers) {
             eventHandler.handle(event);
         }
     }
 
-    public boolean removeEventHandler(EventHandler<T> eventHandler) {
-        return eventHandlers.remove(eventHandler);
+    /**
+     * Removes an event handler from the channel.
+     *
+     * @param eventHandler the event handler to remove
+     */
+    public void removeEventHandler(EventHandler<T> eventHandler) {
+        eventHandlers.remove(eventHandler);
     }
 }

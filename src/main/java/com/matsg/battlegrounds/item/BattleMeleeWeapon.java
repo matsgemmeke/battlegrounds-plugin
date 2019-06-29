@@ -2,8 +2,9 @@ package com.matsg.battlegrounds.item;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.event.GamePlayerKillPlayerEvent;
-import com.matsg.battlegrounds.api.game.Team;
+import com.matsg.battlegrounds.api.entity.BattleEntity;
+import com.matsg.battlegrounds.api.event.GamePlayerDamageEntityEvent;
+import com.matsg.battlegrounds.api.event.GamePlayerKillEntityEvent;
 import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.item.ItemType;
 import com.matsg.battlegrounds.api.item.MeleeWeapon;
@@ -15,8 +16,11 @@ import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.BattleSound;
 import org.bukkit.ChatColor;
+import org.bukkit.Effect;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Item;
+import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
@@ -118,21 +122,35 @@ public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
         }.runTaskLater(time);
     }
 
-    public double damage(GamePlayer gamePlayer) {
+    public double damage(BattleEntity entity) {
         double damage = this.damage;
         if (throwable) {
             damage /= 2;
         }
-        return damage(gamePlayer, damage);
+        return damage(entity, damage);
     }
 
-    private double damage(GamePlayer gamePlayer, double damage) {
-        game.getPlayerManager().damagePlayer(gamePlayer, damage, plugin.getBattlegroundsConfig().displayBloodEffect);
-        if (gamePlayer.getPlayer().isDead()) {
-            plugin.getServer().getPluginManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, this.gamePlayer, this, Hitbox.TORSO));
-            game.getGameMode().onKill(gamePlayer, this.gamePlayer, this, Hitbox.TORSO);
+    private double damage(BattleEntity entity, double damage) {
+        if (plugin.getBattlegroundsConfig().getDisplayBloodEffect(entity.getEntityType().toString())) {
+            gamePlayer.getLocation().getWorld().playEffect(entity.getLocation(), Effect.STEP_SOUND, Material.REDSTONE_BLOCK);
         }
-        return gamePlayer.getPlayer().getHealth();
+
+        int pointsPerKill = 130;
+
+        Event event;
+
+        if (entity.getHealth() - damage <= 0) {
+            event = new GamePlayerKillEntityEvent(game, gamePlayer, entity, this, Hitbox.TORSO, pointsPerKill);
+        } else {
+            event = new GamePlayerDamageEntityEvent(game, gamePlayer, entity, this, damage, Hitbox.TORSO);
+        }
+
+        // Handle the event on the plugin manager so other plugins can listen to this event as well
+        plugin.getServer().getPluginManager().callEvent(event);
+        // Handle the event on the event dispatcher so we can reuse the event without calling a listener to it
+        plugin.getEventDispatcher().dispatchEvent(event);
+
+        return entity.getHealth();
     }
 
     private String[] getLore() {
@@ -214,13 +232,15 @@ public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
         new BattleRunnable() {
             Location location;
             public void run() {
-                GamePlayer[] players = game.getPlayerManager().getNearbyPlayers(item.getLocation(), 2.0);
-                Team team = gamePlayer.getTeam();
-                if (players.length > 0) {
-                    GamePlayer gamePlayer = players[0];
-                    if (gamePlayer == null || gamePlayer == BattleMeleeWeapon.this.gamePlayer || gamePlayer.getPlayer().isDead() || team != null && gamePlayer.getTeam() == team) {
+                BattleEntity[] entities = context.getNearbyEntities(item.getLocation(), gamePlayer.getTeam(), 2.0);
+
+                if (entities.length > 0) {
+                    BattleEntity entity = entities[0];
+
+                    if (entity == null || entity == gamePlayer || entity.getBukkitEntity().isDead()) {
                         return;
                     }
+
                     item.remove();
                     damage(gamePlayer, damage);
                     cancel();

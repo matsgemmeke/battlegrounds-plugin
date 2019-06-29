@@ -1,15 +1,17 @@
 package com.matsg.battlegrounds.item;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.entity.BattleEntity;
+import com.matsg.battlegrounds.api.event.GamePlayerDamageEntityEvent;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent.DeathCause;
-import com.matsg.battlegrounds.api.event.GamePlayerKillPlayerEvent;
+import com.matsg.battlegrounds.api.event.GamePlayerKillEntityEvent;
 import com.matsg.battlegrounds.api.item.Lethal;
-import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.Hitbox;
 import com.matsg.battlegrounds.api.util.Sound;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
+import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 
 public class BattleLethal extends BattleEquipment implements Lethal {
@@ -95,13 +97,23 @@ public class BattleLethal extends BattleEquipment implements Lethal {
     }
 
     private void inflictDamage(Location location) {
-        for (GamePlayer gamePlayer : game.getPlayerManager().getNearbyPlayers(location, longRange)) {
-            if (gamePlayer != null && gamePlayer != this.gamePlayer && !gamePlayer.getPlayer().isDead() && (gamePlayer.getTeam() != null && this.gamePlayer.getTeam() != gamePlayer.getTeam())) {
-                game.getPlayerManager().damagePlayer(gamePlayer, getDistanceDamage(gamePlayer.getLocation().distanceSquared(location) / 5));
-                if (gamePlayer.getPlayer().isDead()) {
-                    plugin.getServer().getPluginManager().callEvent(new GamePlayerKillPlayerEvent(game, gamePlayer, this.gamePlayer, this, Hitbox.TORSO));
-                    game.getGameMode().onKill(gamePlayer, this.gamePlayer, this, Hitbox.TORSO);
+        for (BattleEntity entity : context.getNearbyEntities(location, gamePlayer.getTeam(), longRange)) {
+            if (entity != null && !entity.getBukkitEntity().isDead()) {
+                double damage = getDistanceDamage(gamePlayer.getLocation().distance(location) / 5);
+                int pointsPerKill = 50;
+
+                Event event;
+
+                if (entity.getHealth() - damage <= 0) {
+                    event = new GamePlayerKillEntityEvent(game, gamePlayer, entity, this, Hitbox.TORSO, pointsPerKill);
+                } else {
+                    event = new GamePlayerDamageEntityEvent(game, gamePlayer, entity, this, damage, Hitbox.TORSO);
                 }
+
+                // Handle the event on the plugin manager so other plugins can listen to this event as well
+                plugin.getServer().getPluginManager().callEvent(event);
+                // Handle the event on the event dispatcher so we can reuse the event without calling a listener to it
+                plugin.getEventDispatcher().dispatchEvent(event);
             }
         }
     }
@@ -109,10 +121,16 @@ public class BattleLethal extends BattleEquipment implements Lethal {
     private void inflictUserDamage(Location location) {
         double playerDistance = gamePlayer.getPlayer().getLocation().distanceSquared(location);
         if (playerDistance <= longRange) {
-            game.getPlayerManager().damagePlayer(gamePlayer, getDistanceDamage(playerDistance));
+            double damage = getDistanceDamage(playerDistance);
+
+            gamePlayer.damage(damage);
+
             if (gamePlayer.getPlayer().isDead()) {
-                plugin.getServer().getPluginManager().callEvent(new GamePlayerDeathEvent(game, gamePlayer, DeathCause.SUICIDE));
-                game.getGameMode().onDeath(gamePlayer, DeathCause.SUICIDE);
+                Event event = new GamePlayerDeathEvent(game, gamePlayer, DeathCause.SUICIDE);
+                // Handle the event on the event dispatcher so we can reuse the event without calling a listener to it
+                plugin.getEventDispatcher().dispatchEvent(event);
+                // Handle the event on the plugin manager so other plugin can listen to this event as well
+                plugin.getServer().getPluginManager().callEvent(event);
             }
         }
     }

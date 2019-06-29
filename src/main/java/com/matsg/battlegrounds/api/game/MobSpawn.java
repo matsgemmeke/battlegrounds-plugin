@@ -1,6 +1,6 @@
 package com.matsg.battlegrounds.api.game;
 
-import com.matsg.battlegrounds.api.entity.MobType;
+import com.matsg.battlegrounds.api.entity.BattleEntityType;
 import org.bukkit.Location;
 
 public interface MobSpawn extends ArenaComponent, Lockable {
@@ -22,8 +22,8 @@ public interface MobSpawn extends ArenaComponent, Lockable {
     /**
      * Gets the spawn location of certain mob types.
      *
-     * @param mobType The mob type to gets its spawn location of.
+     * @param entityType The entity type to gets its spawn location of.
      * @return The spawn location of the specified mob type.
      */
-    Location getSpawnLocation(MobType mobType);
+    Location getSpawnLocation(BattleEntityType entityType);
 }

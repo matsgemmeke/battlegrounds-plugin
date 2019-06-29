@@ -55,7 +55,7 @@ public abstract class AbstractScoreboard implements GameScoreboard {
         }
     }
 
-    public abstract void addTeams(ScoreboardBuilder paramScoreboardBuilder);
+    public abstract void addTeams(ScoreboardBuilder builder);
 
     public abstract Scoreboard buildScoreboard(Map<String, String> layout, Scoreboard scoreboard, GamePlayer gamePlayer);
 
