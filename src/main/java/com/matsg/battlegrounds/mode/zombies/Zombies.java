@@ -20,13 +20,14 @@ import com.matsg.battlegrounds.game.BattleTeam;
 import com.matsg.battlegrounds.mode.AbstractGameMode;
 import com.matsg.battlegrounds.mode.GameModeType;
 import com.matsg.battlegrounds.mode.shared.SpawningBehavior;
-import com.matsg.battlegrounds.mode.zombies.handler.ZombiesDamageEventHandler;
-import com.matsg.battlegrounds.mode.zombies.handler.ZombiesKillEventHandler;
+import com.matsg.battlegrounds.mode.zombies.component.MysteryBox;
+import com.matsg.battlegrounds.mode.zombies.component.Section;
+import com.matsg.battlegrounds.mode.zombies.handler.*;
 import com.matsg.battlegrounds.item.ItemFinder;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.item.factory.LoadoutFactory;
-import com.matsg.battlegrounds.item.factory.PerkFactory;
-import com.matsg.battlegrounds.mode.zombies.item.PowerUpFactory;
+import com.matsg.battlegrounds.mode.zombies.item.factory.PerkFactory;
+import com.matsg.battlegrounds.mode.zombies.item.factory.PowerUpFactory;
 import com.matsg.battlegrounds.nms.Title;
 import com.matsg.battlegrounds.util.BattleSound;
 import com.matsg.battlegrounds.util.EnumTitle;
@@ -36,6 +37,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
@@ -44,6 +46,7 @@ public class Zombies extends AbstractGameMode {
 
     private ComponentContainer<Section> sectionContainer;
     private LoadoutFactory loadoutFactory;
+    private PerkManager perkManager;
     private PowerUpManager powerUpManager;
     private Team team;
     private Wave<? extends Mob> wave;
@@ -55,11 +58,13 @@ public class Zombies extends AbstractGameMode {
             Game game,
             Translator translator,
             SpawningBehavior spawningBehavior,
+            PerkManager perkManager,
             PowerUpManager powerUpManager,
             Version version,
             ZombiesConfig config
     ) {
         super(plugin, game, translator, spawningBehavior);
+        this.perkManager = perkManager;
         this.powerUpManager = powerUpManager;
         this.config = config;
         this.loadoutFactory = new LoadoutFactory();
@@ -82,6 +87,12 @@ public class Zombies extends AbstractGameMode {
         plugin.getEventDispatcher().registerEventChannel(GamePlayerKillEntityEvent.class, new EventChannel<>(
                 new ZombiesKillEventHandler(this, powerUpFactory)
         ));
+        plugin.getEventDispatcher().registerEventChannel(PlayerInteractEvent.class, new EventChannel<>(
+                new ZombiesInteractEventHandler(game, this)
+        ));
+        plugin.getEventDispatcher().registerEventChannel(PlayerMoveEvent.class, new EventChannel<>(
+                new ZombiesMoveEventHandler(game, this)
+        ));
     }
 
     public void onDisable() {
@@ -101,12 +112,16 @@ public class Zombies extends AbstractGameMode {
         return config;
     }
 
-    public ComponentContainer<Section> getSectionContainer() {
-        return sectionContainer;
+    public PerkManager getPerkManager() {
+        return perkManager;
     }
 
     public PowerUpManager getPowerUpManager() {
         return powerUpManager;
+    }
+
+    public ComponentContainer<Section> getSectionContainer() {
+        return sectionContainer;
     }
 
     public GameModeType getType() {
@@ -146,6 +161,17 @@ public class Zombies extends AbstractGameMode {
         return null;
     }
 
+    public ArenaComponent getComponent(Location location) {
+        for (Section section : sectionContainer.getAll()) {
+            ArenaComponent component = section.getComponent(location);
+
+            if (component != null) {
+                return component;
+            }
+        }
+        return null;
+    }
+
     public int getComponentCount() {
         int count = sectionContainer.getAll().size();
         for (Section section : sectionContainer.getAll()) {
@@ -170,7 +196,7 @@ public class Zombies extends AbstractGameMode {
 
         for (Entity entity : location.getWorld().getNearbyEntities(location, range, range, range)) {
             Mob mob = game.getMobManager().findMob(entity);
-            if (mob != null) {
+            if (mob != null && !mob.getBukkitEntity().isDead()) {
                 list.add(mob);
             }
         }
@@ -255,14 +281,14 @@ public class Zombies extends AbstractGameMode {
     public void start() {
         super.start();
 
-        Section section = getFirstSection();
-
-        if (section == null) {
+        if (sectionContainer.getAll().size() <= 0) {
             plugin.getLogger().severe("Unable to start gamemode Zombies in game " + game.getId());
             return;
         }
 
-        section.setLocked(false);
+        for (Section section : sectionContainer.getAll()) {
+            section.setLocked(!section.isUnlockedByDefault());
+        }
 
         startWave(config.getStartingRound());
 
@@ -332,15 +358,6 @@ public class Zombies extends AbstractGameMode {
                 break;
             }
         }
-    }
-
-    private Section getFirstSection() {
-        for (Section section : sectionContainer.getAll()) {
-            if (section.isUnlockedByDefault()) {
-                return section;
-            }
-        }
-        return sectionContainer.getAll().iterator().next();
     }
 
     private int getMobAmount(int round, int players) {

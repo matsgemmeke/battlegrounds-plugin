@@ -69,10 +69,11 @@ public class GameModeFactory {
             case ZOMBIES:
                 try {
                     ZombiesConfig config = new ZombiesConfig(plugin, plugin.getDataFolder().getPath() + "/data/game_" + game.getId() + "/gamemodes");
+                    PerkManager perkManager = new ZombiesPerkManager();
                     PowerUpManager powerUpManager = new ZombiesPowerUpManager(game);
                     SpawningBehavior spawningBehavior = new SpawnRandomlyBehavior(arena);
 
-                    gameMode = new Zombies(plugin, game, translator, spawningBehavior, powerUpManager, version, config);
+                    gameMode = new Zombies(plugin, game, translator, spawningBehavior, perkManager, powerUpManager, version, config);
                     gameMode.addObjective(new EliminationObjective(game, 1));
 
                     break;

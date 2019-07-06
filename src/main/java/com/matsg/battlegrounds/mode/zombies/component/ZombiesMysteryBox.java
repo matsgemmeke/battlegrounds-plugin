@@ -14,7 +14,7 @@ public class ZombiesMysteryBox implements MysteryBox {
     private boolean active, locked;
     private byte direction;
     private Game game;
-    private GamePlayer currentUser;
+    private GamePlayer gamePlayer;
     private Hologram hologram;
     private int hits, id, price;
     private Item item;
@@ -96,7 +96,7 @@ public class ZombiesMysteryBox implements MysteryBox {
     }
 
     private void startWeaponRotation(GamePlayer gamePlayer) {
-        currentUser = gamePlayer;
+        this.gamePlayer = gamePlayer;
         hits ++;
     }
 }

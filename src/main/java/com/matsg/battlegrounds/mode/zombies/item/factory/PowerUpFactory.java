@@ -1,10 +1,13 @@
-package com.matsg.battlegrounds.mode.zombies.item;
+package com.matsg.battlegrounds.mode.zombies.item.factory;
 
 import com.matsg.battlegrounds.FactoryCreationException;
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.mode.zombies.Zombies;
+import com.matsg.battlegrounds.mode.zombies.item.PowerUp;
+import com.matsg.battlegrounds.mode.zombies.item.PowerUpEffect;
+import com.matsg.battlegrounds.mode.zombies.item.ZombiesPowerUp;
 import com.matsg.battlegrounds.mode.zombies.item.powerup.*;
 import org.bukkit.inventory.ItemStack;
 
@@ -40,7 +43,7 @@ public class PowerUpFactory {
                 effect = new MaxAmmo(translator.translate(TranslationKey.POWERUP_MAX_AMMO));
                 break;
             case NUKE:
-                effect = new MaxAmmo(translator.translate(TranslationKey.POWERUP_NUKE));
+                effect = new Nuke(zombies, translator.translate(TranslationKey.POWERUP_NUKE));
                 break;
             default:
                 throw new FactoryCreationException("Invalid power up effect type \"" + effectType + "\"");

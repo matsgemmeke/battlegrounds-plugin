@@ -1,7 +1,7 @@
 package com.matsg.battlegrounds.mode.zombies.item.powerup;
 
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.MobSpawn;
+import com.matsg.battlegrounds.mode.zombies.component.MobSpawn;
 import com.matsg.battlegrounds.mode.zombies.item.PowerUpCallback;
 import com.matsg.battlegrounds.mode.zombies.item.PowerUpEffect;
 import com.matsg.battlegrounds.util.BattleRunnable;

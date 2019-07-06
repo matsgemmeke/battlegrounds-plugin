@@ -13,10 +13,10 @@ public class BooleanAttributeModifier implements AttributeModifier<Boolean> {
     }
 
     public ValueObject<Boolean> modify(ValueObject<Boolean> valueObject, String[] args) {
-        String value = regex.substring(1, regex.length());
+        String value = regex.substring(1);
 
         if (value.startsWith("arg")) {
-            int index = Integer.parseInt(value.substring(3, value.length())) - 1;
+            int index = Integer.parseInt(value.substring(3)) - 1;
             value = args[index];
         }
 

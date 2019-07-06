@@ -2,6 +2,7 @@ package com.matsg.battlegrounds.mode.zombies.component;
 
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.game.BattleComponentContainer;
+import org.bukkit.Location;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -84,6 +85,30 @@ public class ZombiesSection implements Section {
         return null;
     }
 
+    public ArenaComponent getComponent(Location location) {
+        for (Door door : doorContainer.getAll()) {
+            if (door.contains(location)) {
+                return door;
+            }
+        }
+        for (ItemChest itemChest : itemChestContainer.getAll()) {
+            if (itemChest.getChest().getLocation().equals(location)) {
+                return itemChest;
+            }
+        }
+        for (MysteryBox mysteryBox : mysteryBoxContainer.getAll()) {
+            if (mysteryBox.getLeftSide().getLocation().equals(location) || mysteryBox.getRightSide().getLocation().equals(location)) {
+                return mysteryBox;
+            }
+        }
+        for (PerkMachine perkMachine : perkMachineContainer.getAll()) {
+            if (perkMachine.getSign().getLocation().equals(location)) {
+                return perkMachine;
+            }
+        }
+        return null;
+    }
+
     public int getComponentCount() {
         int count = 0;
         for (ComponentContainer container : getContainers()) {
@@ -99,7 +124,7 @@ public class ZombiesSection implements Section {
         list.addAll(mobSpawnContainer.getAll());
         list.addAll(mysteryBoxContainer.getAll());
         list.addAll(perkMachineContainer.getAll());
-        return list;
+        return Collections.unmodifiableList(list);
     }
 
     public <T extends ArenaComponent> Collection<T> getComponents(Class<T> componentClass) {

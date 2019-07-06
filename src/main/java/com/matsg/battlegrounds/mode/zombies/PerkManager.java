@@ -1,0 +1,16 @@
+package com.matsg.battlegrounds.mode.zombies;
+
+import com.matsg.battlegrounds.api.entity.GamePlayer;
+import com.matsg.battlegrounds.mode.zombies.item.Perk;
+import com.matsg.battlegrounds.mode.zombies.item.PerkEffect;
+
+public interface PerkManager {
+
+    void addPerk(GamePlayer gamePlayer, Perk perk);
+
+    int getPerkCount(GamePlayer gamePlayer);
+
+    boolean hasPerkEffect(GamePlayer gamePlayer, PerkEffect effect);
+
+    void removePerk(GamePlayer gamePlayer, Perk perk);
+}

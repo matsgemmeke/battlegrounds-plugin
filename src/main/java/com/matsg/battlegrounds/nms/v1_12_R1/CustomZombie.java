@@ -4,7 +4,7 @@ import com.matsg.battlegrounds.api.entity.BattleEntityType;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.Zombie;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.MobSpawn;
+import com.matsg.battlegrounds.mode.zombies.component.MobSpawn;
 import com.matsg.battlegrounds.nms.MobSpawnException;
 import com.matsg.battlegrounds.nms.ReflectionUtils;
 import net.minecraft.server.v1_12_R1.*;

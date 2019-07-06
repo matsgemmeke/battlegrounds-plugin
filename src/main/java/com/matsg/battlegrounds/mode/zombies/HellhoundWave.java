@@ -1,7 +1,7 @@
 package com.matsg.battlegrounds.mode.zombies;
 
 import com.matsg.battlegrounds.api.entity.Hellhound;
-import com.matsg.battlegrounds.api.game.MobSpawn;
+import com.matsg.battlegrounds.mode.zombies.component.MobSpawn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,15 +9,21 @@ import java.util.List;
 public class HellhoundWave implements Wave<Hellhound> {
 
     private boolean running;
+    private double attackDamage;
+    private double followRange;
+    private float health;
     private int mobCount;
     private int round;
     private List<Hellhound> hellhounds;
     private List<MobSpawn> mobSpawns;
 
-    public HellhoundWave(int round, int mobCount) {
+    public HellhoundWave(int round, int mobCount, double attackDamage, double followRange, float health) {
         this.round = round;
-        this.hellhounds = new ArrayList<>();
         this.mobCount = mobCount;
+        this.attackDamage = attackDamage;
+        this.followRange = followRange;
+        this.health = health;
+        this.hellhounds = new ArrayList<>();
         this.mobSpawns = new ArrayList<>();
         this.running = false;
     }

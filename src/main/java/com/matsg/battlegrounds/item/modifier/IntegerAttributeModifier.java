@@ -25,6 +25,7 @@ public class IntegerAttributeModifier implements AttributeModifier<Integer> {
     }
 
     public ValueObject<Integer> modify(ValueObject<Integer> valueObject, String[] args) {
+        // If the modification value does not have to parsed from text, apply the operator right away
         if (value != null && operator != null) {
             return new IntegerValueObject((int) operator.apply(valueObject.getValue(), value));
         }

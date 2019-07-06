@@ -1,5 +1,7 @@
 package com.matsg.battlegrounds.api.game;
 
+import org.bukkit.Location;
+
 import java.util.Collection;
 
 /**
@@ -14,6 +16,14 @@ public interface ComponentWrapper {
      * @return The component with the corresponding id or null if there are no matching components.
      */
     ArenaComponent getComponent(int id);
+
+    /**
+     * Searches for a component in the wrapper instance of which the extent covers a certain location.
+     *
+     * @param location the location
+     * @return the component which contains the given location or null if there are no matching components
+     */
+    ArenaComponent getComponent(Location location);
 
     /**
      * Gets the amount of components in the wrapper instance.

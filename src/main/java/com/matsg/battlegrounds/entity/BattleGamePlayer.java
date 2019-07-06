@@ -7,7 +7,7 @@ import com.matsg.battlegrounds.api.item.Item;
 import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.SavedInventory;
-import com.matsg.battlegrounds.api.item.Perk;
+import com.matsg.battlegrounds.mode.zombies.item.Perk;
 import com.matsg.battlegrounds.api.util.GenericAttribute;
 import com.matsg.battlegrounds.item.modifier.FloatAttributeModifier;
 import com.matsg.battlegrounds.util.BattleAttribute;
@@ -23,7 +23,7 @@ public class BattleGamePlayer implements GamePlayer {
     private BattleEntityType entityType;
     private GenericAttribute<Float> fireArmDamage, reloadSpeed, reviveSpeed;
     private int deaths, exp, headshots, kills, lives, points;
-    private List<Item> heldItems;
+    private List<Item> items;
     private Loadout loadout, selectedLoadout;
     private Player player;
     private PlayerState playerState;
@@ -39,7 +39,7 @@ public class BattleGamePlayer implements GamePlayer {
         this.deaths = 0;
         this.fireArmDamage = new BattleAttribute<>("firearm-damage", new FloatValueObject((float) 1.0));
         this.headshots = 0;
-        this.heldItems = new ArrayList<>();
+        this.items = new ArrayList<>();
         this.kills = 0;
         this.lives = 0;
         this.playerState = PlayerState.ACTIVE;
@@ -96,8 +96,8 @@ public class BattleGamePlayer implements GamePlayer {
         player.setHealth(health);
     }
 
-    public List<Item> getHeldItems() {
-        return heldItems;
+    public List<Item> getItems() {
+        return items;
     }
 
     public int getKills() {

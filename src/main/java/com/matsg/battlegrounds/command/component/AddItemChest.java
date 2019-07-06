@@ -5,8 +5,9 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.ItemChest;
-import com.matsg.battlegrounds.api.game.Section;
+import com.matsg.battlegrounds.item.ItemStackBuilder;
+import com.matsg.battlegrounds.mode.zombies.component.ItemChest;
+import com.matsg.battlegrounds.mode.zombies.component.Section;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.command.validator.GameModeUsageValidator;
@@ -19,11 +20,13 @@ import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Set;
 
 public class AddItemChest extends ComponentCommand {
 
+    private int sectionPos;
     private ItemFinder itemFinder;
     private Translator translator;
 
@@ -31,9 +34,10 @@ public class AddItemChest extends ComponentCommand {
         super(plugin);
         this.translator = translator;
         this.itemFinder = new ItemFinder(plugin);
+        this.sectionPos = 4;
 
         registerValidator(new GameModeUsageValidator(plugin, translator, GameModeType.ZOMBIES));
-        registerValidator(new SectionNameValidator(plugin, translator, 4));
+        registerValidator(new SectionNameValidator(plugin, translator, sectionPos));
     }
 
     public void execute(ComponentContext context, int componentId, String[] args) {
@@ -49,7 +53,7 @@ public class AddItemChest extends ComponentCommand {
         Arena arena = context.getArena();
 
         Zombies zombies = game.getGameMode(Zombies.class);
-        Section section = zombies.getSection(args[4]);
+        Section section = zombies.getSection(args[sectionPos]);
 
         if (args.length == 5) {
             player.sendMessage(translator.translate(TranslationKey.SPECIFY_WEAPON_ID));
@@ -77,12 +81,18 @@ public class AddItemChest extends ComponentCommand {
             return;
         }
 
+        ItemStack itemStack = new ItemStackBuilder(weapon.getItemStack())
+                .setLore()
+                .build();
         ItemChest itemChest = new ZombiesItemChest(
                 componentId,
+                game,
+                translator,
                 (Chest) blockState,
                 weapon,
                 weapon.getName(),
-                weapon.getItemStack(),
+                itemStack,
+                weapon.getType(),
                 price
         );
 

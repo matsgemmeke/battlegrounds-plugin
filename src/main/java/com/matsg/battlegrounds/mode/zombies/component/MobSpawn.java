@@ -1,6 +1,8 @@
-package com.matsg.battlegrounds.api.game;
+package com.matsg.battlegrounds.mode.zombies.component;
 
 import com.matsg.battlegrounds.api.entity.BattleEntityType;
+import com.matsg.battlegrounds.api.game.ArenaComponent;
+import com.matsg.battlegrounds.api.game.Lockable;
 import org.bukkit.Location;
 
 public interface MobSpawn extends ArenaComponent, Lockable {

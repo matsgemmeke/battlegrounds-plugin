@@ -35,6 +35,6 @@ public class PathfinderGoalTargetPlayer extends PathfinderGoal {
                     mob.setTarget(gamePlayer.getLocation());
                 }
             }
-        }.runTaskTimer(0, 20);
+        }.runTaskTimer(0, 100);
     }
 }

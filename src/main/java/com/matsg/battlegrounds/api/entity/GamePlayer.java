@@ -4,19 +4,17 @@ import com.matsg.battlegrounds.api.game.SpawnOccupant;
 import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.item.Item;
 import com.matsg.battlegrounds.api.item.Loadout;
-import com.matsg.battlegrounds.api.item.Perk;
 import org.bukkit.entity.Player;
 
 import java.util.Collection;
-import java.util.Set;
 
 public interface GamePlayer extends BattleEntity, OfflineGamePlayer, SpawnOccupant, Comparable<GamePlayer> {
-
-    Collection<Item> getHeldItems();
 
     double getFirearmDamage();
 
     void setFirearmDamage(double firearmDamage);
+
+    Collection<Item> getItems();
 
     int getLives();
 
@@ -25,8 +23,6 @@ public interface GamePlayer extends BattleEntity, OfflineGamePlayer, SpawnOccupa
     Loadout getLoadout();
 
     void setLoadout(Loadout loadout);
-
-    Set<Perk> getPerks();
 
     Player getPlayer();
 

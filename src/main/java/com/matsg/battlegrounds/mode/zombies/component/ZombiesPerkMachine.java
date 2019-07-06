@@ -3,8 +3,8 @@ package com.matsg.battlegrounds.mode.zombies.component;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.game.*;
-import com.matsg.battlegrounds.api.item.Perk;
-import com.matsg.battlegrounds.api.item.PerkEffect;
+import com.matsg.battlegrounds.mode.zombies.PerkManager;
+import com.matsg.battlegrounds.mode.zombies.item.Perk;
 import com.matsg.battlegrounds.api.item.Transaction;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.gui.TransactionView;
@@ -24,15 +24,17 @@ public class ZombiesPerkMachine implements PerkMachine {
     private int id, maxBuys, price;
     private Map<GamePlayer, Integer> buys;
     private Perk perk;
+    private PerkManager perkManager;
     private Sign sign;
     private String[] signLayout;
     private Translator translator;
 
-    public ZombiesPerkMachine(int id, Game game, Sign sign, Perk perk, Translator translator, int price, int maxBuys) {
+    public ZombiesPerkMachine(int id, Game game, Sign sign, Perk perk, PerkManager perkManager, Translator translator, int price, int maxBuys) {
         this.id = id;
         this.game = game;
         this.sign = sign;
         this.perk = perk;
+        this.perkManager = perkManager;
         this.translator = translator;
         this.price = price;
         this.maxBuys = maxBuys;
@@ -80,30 +82,29 @@ public class ZombiesPerkMachine implements PerkMachine {
     }
 
     public boolean onInteract(GamePlayer gamePlayer, Block block) {
-        // In case the perk machine is locked or the player has too many perks or the player already has bought the
-        // perk, it does not accept interactions.
-        if (locked
-                || gamePlayer.getPerks().size() <= MAX_NUMBER_PERKS
-                || hasPerkType(gamePlayer, perk.getEffect())) {
+        // In case the perk machine is locked or the player has too many perks or the player already has bought the perk, it does not accept interactions
+        if (locked || perkManager.getPerkCount(gamePlayer) >= MAX_NUMBER_PERKS || perkManager.hasPerkEffect(gamePlayer, perk.getEffect())) {
             return false;
         }
 
-        // If the player does not have enough points they can not buy the perk.
+        // If the player does not have enough points they can not buy the perk
         if (gamePlayer.getPoints() < price) {
             ActionBar.UNSUFFICIENT_POINTS.send(gamePlayer.getPlayer());
             return true;
         }
 
-        // If the player has bought the perk too many times they can not buy the perk.
+        // If the player has bought the perk too many times they can not buy the perk
         if (buys.containsKey(gamePlayer) && buys.get(gamePlayer) > maxBuys) {
             ActionBar.PERKMACHINE_SOLD_OUT.send(gamePlayer.getPlayer());
             return true;
         }
 
-        gamePlayer.getPlayer().openInventory(new TransactionView(game, translator, perk, null, perk.getItemStack(), price) {
+        int slot = perkManager.getPerkCount(gamePlayer) + 4;
+
+        gamePlayer.getPlayer().openInventory(new TransactionView(game, translator, perk, perk.getItemStack(), price, slot) {
             public void onTransactionComplete(Transaction transaction) {
                 game.getItemRegistry().addItem(perk);
-                perk.setGame(game);
+                perkManager.addPerk(gamePlayer, perk);
             }
         }.getInventory());
 
@@ -123,14 +124,5 @@ public class ZombiesPerkMachine implements PerkMachine {
         }
 
         return sign.update();
-    }
-
-    private boolean hasPerkType(GamePlayer gamePlayer, PerkEffect perkEffect) {
-        for (Perk perk : gamePlayer.getPerks()) {
-            if (perk.getEffect() == perkEffect) {
-                return true;
-            }
-        }
-        return false;
     }
 }

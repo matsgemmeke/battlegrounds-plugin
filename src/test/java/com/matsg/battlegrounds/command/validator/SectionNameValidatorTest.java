@@ -6,7 +6,7 @@ import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.Section;
+import com.matsg.battlegrounds.mode.zombies.component.Section;
 import com.matsg.battlegrounds.mode.zombies.Zombies;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,7 +46,7 @@ public class SectionNameValidatorTest {
 
         when(translator.translate(key)).thenReturn(responseMessage);
 
-        SectionNameValidator validator = new SectionNameValidator(plugin, translator, 3);
+        SectionNameValidator validator = new SectionNameValidator(plugin, translator, 2);
         ValidationResponse response = validator.validate(input);
 
         assertFalse(response.passed());
@@ -65,7 +65,7 @@ public class SectionNameValidatorTest {
         when(translator.translate(eq(key), anyVararg())).thenReturn(responseMessage);
         when(zombies.getSection(sectionName)).thenReturn(null);
 
-        SectionNameValidator validator = new SectionNameValidator(plugin, translator, 3);
+        SectionNameValidator validator = new SectionNameValidator(plugin, translator, 2);
         ValidationResponse response = validator.validate(input);
 
         assertFalse(response.passed());
@@ -81,7 +81,7 @@ public class SectionNameValidatorTest {
         when(game.getGameMode(Zombies.class)).thenReturn(zombies);
         when(zombies.getSection(sectionName)).thenReturn(mock(Section.class));
 
-        SectionNameValidator validator = new SectionNameValidator(plugin, translator, 3);
+        SectionNameValidator validator = new SectionNameValidator(plugin, translator, 2);
         ValidationResponse response = validator.validate(input);
 
         assertTrue(response.passed());

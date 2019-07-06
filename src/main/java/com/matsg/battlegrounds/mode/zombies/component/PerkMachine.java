@@ -1,6 +1,10 @@
-package com.matsg.battlegrounds.api.game;
+package com.matsg.battlegrounds.mode.zombies.component;
 
-import com.matsg.battlegrounds.api.item.Perk;
+import com.matsg.battlegrounds.api.game.ArenaComponent;
+import com.matsg.battlegrounds.api.game.Interactable;
+import com.matsg.battlegrounds.api.game.Lockable;
+import com.matsg.battlegrounds.api.game.Priceable;
+import com.matsg.battlegrounds.mode.zombies.item.Perk;
 import org.bukkit.block.Sign;
 
 public interface PerkMachine extends ArenaComponent, Interactable, Lockable, Priceable {

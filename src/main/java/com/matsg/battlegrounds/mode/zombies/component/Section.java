@@ -1,4 +1,6 @@
-package com.matsg.battlegrounds.api.game;
+package com.matsg.battlegrounds.mode.zombies.component;
+
+import com.matsg.battlegrounds.api.game.*;
 
 public interface Section extends ArenaComponent, ComponentWrapper, Lockable, Priceable {
 

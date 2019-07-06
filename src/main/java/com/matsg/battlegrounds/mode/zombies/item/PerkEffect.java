@@ -1,4 +1,4 @@
-package com.matsg.battlegrounds.api.item;
+package com.matsg.battlegrounds.mode.zombies.item;
 
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import org.bukkit.inventory.ItemStack;

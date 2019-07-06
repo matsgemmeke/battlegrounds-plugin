@@ -1,12 +1,12 @@
-package com.matsg.battlegrounds.item.factory;
+package com.matsg.battlegrounds.mode.zombies.item.factory;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Translator;
-import com.matsg.battlegrounds.api.item.Perk;
-import com.matsg.battlegrounds.api.item.PerkEffect;
-import com.matsg.battlegrounds.item.BattlePerk;
-import com.matsg.battlegrounds.item.perk.*;
+import com.matsg.battlegrounds.mode.zombies.item.Perk;
+import com.matsg.battlegrounds.mode.zombies.item.PerkEffect;
+import com.matsg.battlegrounds.mode.zombies.item.ZombiesPerk;
+import com.matsg.battlegrounds.mode.zombies.item.perk.*;
 
 public class PerkFactory {
 
@@ -41,6 +41,6 @@ public class PerkFactory {
                 throw new IllegalArgumentException("Invalid perk effect type");
         }
 
-        return new BattlePerk(plugin, perkEffect);
+        return new ZombiesPerk(plugin, perkEffect);
     }
 }

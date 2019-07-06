@@ -1,6 +1,5 @@
-package com.matsg.battlegrounds.item.perk;
+package com.matsg.battlegrounds.mode.zombies.item.perk;
 
-import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import org.bukkit.Color;
 

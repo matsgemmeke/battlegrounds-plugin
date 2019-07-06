@@ -228,7 +228,9 @@ public class BattlePlayerManager implements PlayerManager {
     }
 
     public void givePoints(GamePlayer gamePlayer, int points) {
-        ActionBar.POINTS_INCREASE.send(gamePlayer.getPlayer(), new Placeholder("bg_points", points));
+        ActionBar actionBar = points >= 0 ? ActionBar.POINTS_INCREASE : ActionBar.POINTS_DEDUCT;
+        actionBar.send(gamePlayer.getPlayer(), new Placeholder("bg_points", points));
+
         gamePlayer.setPoints(gamePlayer.getPoints() + points);
     }
 

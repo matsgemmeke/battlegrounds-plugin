@@ -1,9 +1,14 @@
 package com.matsg.battlegrounds.mode.zombies.component;
 
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.game.*;
+import com.matsg.battlegrounds.api.item.ItemSlot;
+import com.matsg.battlegrounds.api.item.ItemType;
+import com.matsg.battlegrounds.api.item.Transaction;
 import com.matsg.battlegrounds.api.item.TransactionItem;
 import com.matsg.battlegrounds.api.Placeholder;
+import com.matsg.battlegrounds.gui.TransactionView;
 import com.matsg.battlegrounds.util.ActionBar;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -13,17 +18,33 @@ public class ZombiesItemChest implements ItemChest {
 
     private boolean locked;
     private Chest chest;
+    private Game game;
     private int id, price;
     private ItemStack itemStack;
+    private ItemType itemType;
     private String itemName;
     private TransactionItem item;
+    private Translator translator;
 
-    public ZombiesItemChest(int id, Chest chest, TransactionItem item, String itemName, ItemStack itemStack, int price) {
+    public ZombiesItemChest(
+            int id,
+            Game game,
+            Translator translator,
+            Chest chest,
+            TransactionItem item,
+            String itemName,
+            ItemStack itemStack,
+            ItemType itemType,
+            int price
+    ) {
         this.id = id;
+        this.game = game;
+        this.translator = translator;
         this.chest = chest;
         this.item = item;
         this.itemName = itemName;
         this.itemStack = itemStack;
+        this.itemType = itemType;
         this.price = price;
     }
 
@@ -61,13 +82,25 @@ public class ZombiesItemChest implements ItemChest {
             return false;
         }
 
+        int price = getPrice(gamePlayer);
+
         // If the player does not have enough points they can not open the item chest.
-        if (gamePlayer.getPoints() < getPrice(gamePlayer)) {
+        if (gamePlayer.getPoints() < price) {
             ActionBar.UNSUFFICIENT_POINTS.send(gamePlayer.getPlayer());
             return true;
         }
 
-        return false;
+        ItemSlot itemSlot = itemType.getDefaultItemSlot();
+
+        if (itemSlot == ItemSlot.FIREARM_PRIMARY && gamePlayer.getLoadout().getSecondary() == null && gamePlayer.getPlayer().getInventory().getHeldItemSlot() == 1) {
+            itemSlot = ItemSlot.FIREARM_SECONDARY;
+        }
+
+        gamePlayer.getPlayer().openInventory(new TransactionView(game, translator, item, itemStack, price, itemSlot.getSlot()) {
+            public void onTransactionComplete(Transaction transaction) { }
+        }.getInventory());
+
+        return true;
     }
 
     public boolean onLook(GamePlayer gamePlayer, Block block) {
@@ -84,7 +117,7 @@ public class ZombiesItemChest implements ItemChest {
         return true;
     }
 
-    private double getPrice(GamePlayer gamePlayer) {
+    private int getPrice(GamePlayer gamePlayer) {
         int price = this.price;
 
         if (gamePlayer.getLoadout().getWeaponIgnoreMetadata(itemStack) != null) {

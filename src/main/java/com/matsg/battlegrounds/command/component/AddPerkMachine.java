@@ -5,17 +5,17 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.PerkMachine;
-import com.matsg.battlegrounds.api.game.Section;
-import com.matsg.battlegrounds.api.item.Perk;
+import com.matsg.battlegrounds.mode.zombies.component.PerkMachine;
+import com.matsg.battlegrounds.mode.zombies.component.Section;
+import com.matsg.battlegrounds.mode.zombies.item.Perk;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.command.validator.GameModeUsageValidator;
 import com.matsg.battlegrounds.command.validator.SectionNameValidator;
 import com.matsg.battlegrounds.mode.GameModeType;
 import com.matsg.battlegrounds.mode.zombies.Zombies;
 import com.matsg.battlegrounds.mode.zombies.component.ZombiesPerkMachine;
-import com.matsg.battlegrounds.item.factory.PerkFactory;
-import com.matsg.battlegrounds.item.perk.PerkEffectType;
+import com.matsg.battlegrounds.mode.zombies.item.factory.PerkFactory;
+import com.matsg.battlegrounds.mode.zombies.item.perk.PerkEffectType;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
@@ -25,6 +25,7 @@ import java.util.Set;
 
 public class AddPerkMachine extends ComponentCommand {
 
+    private int sectionPos;
     private PerkFactory perkFactory;
     private Translator translator;
 
@@ -32,9 +33,10 @@ public class AddPerkMachine extends ComponentCommand {
         super(plugin);
         this.translator = translator;
         this.perkFactory = new PerkFactory(plugin, translator);
+        this.sectionPos = 4;
 
         registerValidator(new GameModeUsageValidator(plugin, translator, GameModeType.ZOMBIES));
-        registerValidator(new SectionNameValidator(plugin, translator, 4));
+        registerValidator(new SectionNameValidator(plugin, translator, sectionPos));
     }
 
     public void execute(ComponentContext context, int componentId, String[] args) {
@@ -50,7 +52,7 @@ public class AddPerkMachine extends ComponentCommand {
         Arena arena = context.getArena();
 
         Zombies zombies = game.getGameMode(Zombies.class);
-        Section section = zombies.getSection(args[4]);
+        Section section = zombies.getSection(args[sectionPos]);
 
         if (args.length == 5) {
             player.sendMessage(translator.translate(TranslationKey.SPECIFY_PERK_TYPE));
@@ -93,7 +95,7 @@ public class AddPerkMachine extends ComponentCommand {
 
         Perk perk = perkFactory.make(perkEffectType);
 
-        PerkMachine perkMachine = new ZombiesPerkMachine(componentId, game, (Sign) blockState, perk, translator, price, maxBuys);
+        PerkMachine perkMachine = new ZombiesPerkMachine(componentId, game, (Sign) blockState, perk, zombies.getPerkManager(), translator, price, maxBuys);
         perkMachine.setSignLayout(zombies.getConfig().getPerkSignLayout());
         perkMachine.updateSign();
 

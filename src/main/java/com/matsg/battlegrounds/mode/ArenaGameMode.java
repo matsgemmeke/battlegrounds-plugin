@@ -51,6 +51,10 @@ public abstract class ArenaGameMode extends AbstractGameMode {
         return null;
     }
 
+    public ArenaComponent getComponent(Location location) {
+        return null;
+    }
+
     public Collection<ArenaComponent> getComponents() {
         return Collections.EMPTY_SET;
     }
@@ -86,7 +90,7 @@ public abstract class ArenaGameMode extends AbstractGameMode {
 
         SelectLoadout selectLoadout = new SelectLoadout(plugin, game, translator);
         game.getItemRegistry().addItem(selectLoadout);
-        gamePlayer.getHeldItems().add(selectLoadout);
+        gamePlayer.getItems().add(selectLoadout);
         player.getInventory().setItem(ItemSlot.MISCELLANEOUS.getSlot(), selectLoadout.getItemStack());
     }
 

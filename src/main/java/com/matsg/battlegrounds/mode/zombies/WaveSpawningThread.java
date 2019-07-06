@@ -2,7 +2,7 @@ package com.matsg.battlegrounds.mode.zombies;
 
 import com.matsg.battlegrounds.api.entity.Mob;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.MobSpawn;
+import com.matsg.battlegrounds.mode.zombies.component.MobSpawn;
 import com.matsg.battlegrounds.util.BattleRunnable;
 
 import java.util.List;

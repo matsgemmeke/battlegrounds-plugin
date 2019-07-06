@@ -5,7 +5,7 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.Section;
+import com.matsg.battlegrounds.mode.zombies.component.Section;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.mode.zombies.Zombies;
 
@@ -27,17 +27,17 @@ public class SectionNameValidator implements CommandValidator {
         Game game = plugin.getGameManager().getGame(id);
         Arena arena = game.getArena();
 
-        if (args.length < sectionPos) {
+        if (args.length <= sectionPos) {
             return new ValidationResponse(translator.translate(TranslationKey.SPECIFY_SECTION_NAME));
         }
 
         Zombies zombies = game.getGameMode(Zombies.class);
-        Section section = zombies.getSection(args[sectionPos - 1]);
+        Section section = zombies.getSection(args[sectionPos]);
 
         if (section == null) {
             return new ValidationResponse(translator.translate(TranslationKey.SECTION_NOT_EXISTS,
                     new Placeholder("bg_arena", arena.getName()),
-                    new Placeholder("bg_section", args[sectionPos - 1])
+                    new Placeholder("bg_section", args[sectionPos])
             ));
         }
 

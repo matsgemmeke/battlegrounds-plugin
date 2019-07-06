@@ -1,5 +1,6 @@
-package com.matsg.battlegrounds.api.game;
+package com.matsg.battlegrounds.mode.zombies.component;
 
+import com.matsg.battlegrounds.api.game.*;
 import org.bukkit.block.Block;
 
 public interface MysteryBox extends ArenaComponent, Interactable, Lockable, Priceable, Watchable {

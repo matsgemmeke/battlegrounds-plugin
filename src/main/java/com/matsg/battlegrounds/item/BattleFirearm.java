@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.item;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.util.GenericAttribute;
@@ -231,18 +232,27 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
     }
 
     public void handleTransaction(Transaction transaction) {
+        Game game = transaction.getGame();
         GamePlayer gamePlayer = transaction.getGamePlayer();
-        ItemSlot itemSlot = transaction.getItemSlot();
+        ItemSlot itemSlot = ItemSlot.fromSlot(transaction.getSlot());
+
+        game.getItemRegistry().addItem(this);
 
         if (itemSlot == ItemSlot.FIREARM_PRIMARY) {
             gamePlayer.getLoadout().setPrimary(this);
-            this.gamePlayer = gamePlayer;
         }
 
         if (itemSlot == ItemSlot.FIREARM_SECONDARY) {
             gamePlayer.getLoadout().setSecondary(this);
-            this.gamePlayer = gamePlayer;
         }
+
+        this.ammo = maxAmmo.clone();
+        this.context = game.getGameMode();
+        this.game = game;
+        this.gamePlayer = gamePlayer;
+        this.itemSlot = itemSlot;
+
+        update();
     }
 
     public boolean isRelated(ItemStack itemStack) {

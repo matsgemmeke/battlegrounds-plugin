@@ -85,6 +85,15 @@ public class BattleArena implements Arena {
         return Collections.unmodifiableList(list);
     }
 
+    public ArenaComponent getComponent(Location location) {
+        for (Spawn spawn : spawnContainer.getAll()) {
+            if (spawn.getLocation().equals(location)) {
+                return spawn;
+            }
+        }
+        return null;
+    }
+
     public <T extends ArenaComponent> Collection<T> getComponents(Class<T> componentClass) {
         List<T> list = new ArrayList<>();
         for (ArenaComponent component : getComponents()) {

@@ -6,8 +6,8 @@ import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.storage.CacheYaml;
 import com.matsg.battlegrounds.mode.zombies.component.*;
 import com.matsg.battlegrounds.item.ItemFinder;
-import com.matsg.battlegrounds.item.factory.PerkFactory;
-import com.matsg.battlegrounds.item.perk.PerkEffectType;
+import com.matsg.battlegrounds.mode.zombies.item.factory.PerkFactory;
+import com.matsg.battlegrounds.mode.zombies.item.perk.PerkEffectType;
 import com.matsg.battlegrounds.util.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -106,14 +106,19 @@ public class ZombiesDataLoader {
                 Location location = data.getLocation("arena." + arena.getName() + ".component." + componentId + ".location");
                 Chest chest = (Chest) location.getBlock().getState();
                 int price = configurationSection.getInt(componentId + ".price");
+
                 Weapon weapon = itemFinder.findWeapon(configurationSection.getString(componentId + ".item"));
+                weapon.update();
 
                 ItemChest itemChest = new ZombiesItemChest(
                         Integer.parseInt(componentId),
+                        game,
+                        translator,
                         chest,
                         weapon,
                         weapon.getName(),
                         weapon.getItemStack(),
+                        weapon.getType(),
                         price
                 );
 
@@ -179,6 +184,7 @@ public class ZombiesDataLoader {
                         game,
                         sign,
                         perkFactory.make(perkEffectType),
+                        zombies.getPerkManager(),
                         translator,
                         price,
                         maxBuys

@@ -5,8 +5,8 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.MysteryBox;
-import com.matsg.battlegrounds.api.game.Section;
+import com.matsg.battlegrounds.mode.zombies.component.MysteryBox;
+import com.matsg.battlegrounds.mode.zombies.component.Section;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.command.validator.GameModeUsageValidator;
 import com.matsg.battlegrounds.command.validator.SectionNameValidator;
@@ -23,14 +23,16 @@ import java.util.Set;
 
 public class AddMysteryBox extends ComponentCommand {
 
+    private int sectionPos;
     private Translator translator;
 
     public AddMysteryBox(Battlegrounds plugin, Translator translator) {
         super(plugin);
         this.translator = translator;
+        this.sectionPos = 4;
 
         registerValidator(new GameModeUsageValidator(plugin, translator, GameModeType.ZOMBIES));
-        registerValidator(new SectionNameValidator(plugin, translator, 4));
+        registerValidator(new SectionNameValidator(plugin, translator, sectionPos));
     }
 
     public void execute(ComponentContext context, int componentId, String[] args) {
@@ -61,7 +63,7 @@ public class AddMysteryBox extends ComponentCommand {
         Arena arena = context.getArena();
 
         Zombies zombies = game.getGameMode(Zombies.class);
-        Section section = zombies.getSection(args[4]);
+        Section section = zombies.getSection(args[sectionPos]);
 
         if (args.length == 5) {
             player.sendMessage(translator.translate(TranslationKey.SPECIFY_MYSTERYBOX_PRICE));

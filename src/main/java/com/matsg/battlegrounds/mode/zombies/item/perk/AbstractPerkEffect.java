@@ -1,6 +1,6 @@
-package com.matsg.battlegrounds.item.perk;
+package com.matsg.battlegrounds.mode.zombies.item.perk;
 
-import com.matsg.battlegrounds.api.item.PerkEffect;
+import com.matsg.battlegrounds.mode.zombies.item.PerkEffect;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.nms.ReflectionUtils;
 import org.bukkit.ChatColor;

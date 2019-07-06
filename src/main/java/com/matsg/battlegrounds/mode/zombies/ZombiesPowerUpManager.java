@@ -41,12 +41,16 @@ public class ZombiesPowerUpManager implements PowerUpManager {
             removePowerUp(powerUp.getEffect());
         });
 
-        display(game, powerUp.getName());
-
         if (!powerUp.isActive()) {
             removePowerUp(powerUp.getEffect());
             return;
         }
+
+        for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
+            EnumTitle.POWERUP_ACTIVATE.send(gamePlayer.getPlayer(), new Placeholder("bg_powerup", powerUp));
+        }
+
+        BattleSound.POWERUP_ACTIVATE.play(game);
     }
 
     public void clear() {
@@ -55,14 +59,6 @@ public class ZombiesPowerUpManager implements PowerUpManager {
 
     public boolean contains(PowerUpEffect powerUpEffect) {
         return getPowerUp(powerUpEffect) != null;
-    }
-
-    private void display(Game game, String powerUp) {
-        for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
-            EnumTitle.POWERUP_ACTIVATE.send(gamePlayer.getPlayer(), new Placeholder("zombies_powerup", powerUp));
-        }
-
-        BattleSound.POWERUP_ACTIVATE.play(game);
     }
 
     public void dropPowerUp(PowerUp powerUp, Location location) {

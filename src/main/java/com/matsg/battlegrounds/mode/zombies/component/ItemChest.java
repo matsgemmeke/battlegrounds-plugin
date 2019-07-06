@@ -1,5 +1,6 @@
-package com.matsg.battlegrounds.api.game;
+package com.matsg.battlegrounds.mode.zombies.component;
 
+import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.item.TransactionItem;
 import org.bukkit.block.Chest;
 

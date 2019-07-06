@@ -13,6 +13,7 @@ import java.util.Map;
 public class ZombiesConfig extends BattleCacheYaml {
 
     private boolean runningMobs;
+    private double hellhoundHealth;
     private double mobAttackDamage;
     private double mobFollowRange;
     private double mobMaxHealth;
@@ -34,6 +35,7 @@ public class ZombiesConfig extends BattleCacheYaml {
         this.countdownLength = getInt("zombies-countdown-length");
         this.defaultMagazines = getInt("zombies-default-loadout.magazines");
         this.defaultPoints = getInt("zombies-default-loadout.points");
+        this.hellhoundHealth = getDouble("zombies-wave-hellhound-health");
         this.mobAttackDamage = getDouble("zombies-wave-mob-attack-damage");
         this.mobFollowRange = getDouble("zombies-wave-mob-follow-range");
         this.mobMaxHealth = getDouble("zombies-wave-mob-max-health");
@@ -59,6 +61,10 @@ public class ZombiesConfig extends BattleCacheYaml {
 
     public int getDefaultPoints() {
         return defaultPoints;
+    }
+
+    public double getHellhoundHealth() {
+        return hellhoundHealth;
     }
 
     public double getMobAttackDamage() {

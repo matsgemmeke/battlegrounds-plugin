@@ -9,7 +9,7 @@ import com.matsg.battlegrounds.api.event.GamePlayerKillEntityEvent;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.mode.zombies.item.PowerUp;
 import com.matsg.battlegrounds.mode.zombies.Zombies;
-import com.matsg.battlegrounds.mode.zombies.item.PowerUpFactory;
+import com.matsg.battlegrounds.mode.zombies.item.factory.PowerUpFactory;
 import com.matsg.battlegrounds.mode.zombies.item.powerup.PowerUpEffectType;
 import com.matsg.battlegrounds.util.BattleRunnable;
 

@@ -1,8 +1,6 @@
 package com.matsg.battlegrounds.mode.zombies.component;
 
 import com.matsg.battlegrounds.api.entity.BattleEntityType;
-import com.matsg.battlegrounds.api.game.Barricade;
-import com.matsg.battlegrounds.api.game.MobSpawn;
 import org.bukkit.Location;
 
 public class ZombiesMobSpawn implements MobSpawn {
