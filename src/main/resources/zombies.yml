@@ -61,18 +61,19 @@ zombies-starting-round: 1
 # The delay between wave in seconds
 zombies-wave-delay: 15
 
-# The relative amount of hellhounds spawning compared to a normal zombie wave
-zombies-wave-hellhound-amount: 0.5
+# Enables hellhound waves
+zombies-wave-enable-hellhounds: true
+
+# The chance a hellhound will spawn
+# Specify a decimal number for random hellhound wave occurances
+# Specify an integer for a set hellhound wave after x rounds
+zombies-wave-hellhound-chance: 6
 
 # The relative amount of health hellhounds have compared to normal zombies
 zombies-wave-hellhound-health: 0.75
 
 # The first round a hellhound wave can take place in
 zombies-wave-hellhound-min-round: 5
-
-# The maximum health mobs can receive in a round
-# Make sure to edit the max health attribute in the spigot.yml if you wish to go over the 2048.0 value
-zombies-wave-max-health: 2048.0
 
 # The maximum amount of mobs allowed in a game when x players are playing
 zombies-wave-max-mobs:
@@ -81,12 +82,21 @@ zombies-wave-max-mobs:
   '3': 40
   '4': 48
 
+# The relative amount of mobs spawning compared to the default amount
+zombies-wave-mob-amount:
+  hellhound: 0.5
+  zombie: 1.0
+
 # The attack damage of the mobs
 zombies-wave-mob-attack-damage: 15.0
 
 # The size of the follow range of the mobs
 # Higher values will make mobs able to track players from longer distances but will put more strain on the CPU
 zombies-wave-mob-follow-range: 64.0
+
+# The maximum health mobs can receive in a round
+# Make sure to edit the max health attribute in the spigot.yml if you wish to go over the 2048.0 value
+zombies-wave-mob-max-health: 2048.0
 
 # The X% amount more mobs will spawn when there are Y amount of players
 # Feel free to add more lines if you allow more than 4 players to play

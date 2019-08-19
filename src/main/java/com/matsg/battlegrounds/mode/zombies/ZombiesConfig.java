@@ -12,14 +12,15 @@ import java.util.Map;
 
 public class ZombiesConfig extends BattleCacheYaml {
 
+    private boolean hellhoundEnabled;
     private boolean runningMobs;
+    private double hellhoundChance;
     private double hellhoundHealth;
     private double mobAttackDamage;
     private double mobFollowRange;
     private double mobMaxHealth;
     private double powerUpChance;
     private double spawnRate;
-    private int countdownLength;
     private int defaultMagazines;
     private int defaultPoints;
     private int mysteryBoxPrice;
@@ -32,9 +33,10 @@ public class ZombiesConfig extends BattleCacheYaml {
 
     public ZombiesConfig(Battlegrounds plugin, String path) throws IOException {
         super(plugin, path, "zombies.yml");
-        this.countdownLength = getInt("zombies-countdown-length");
         this.defaultMagazines = getInt("zombies-default-loadout.magazines");
         this.defaultPoints = getInt("zombies-default-loadout.points");
+        this.hellhoundChance = getDouble("zombies-wave-hellhound-chance");
+        this.hellhoundEnabled = getBoolean("zombies-wave-enable-hellhounds");
         this.hellhoundHealth = getDouble("zombies-wave-hellhound-health");
         this.mobAttackDamage = getDouble("zombies-wave-mob-attack-damage");
         this.mobFollowRange = getDouble("zombies-wave-mob-follow-range");
@@ -51,16 +53,16 @@ public class ZombiesConfig extends BattleCacheYaml {
         this.variation = getInt("zombies-wave-variation");
     }
 
-    public int getCountdownLength() {
-        return countdownLength;
-    }
-
     public int getDefaultMagazines() {
         return defaultMagazines;
     }
 
     public int getDefaultPoints() {
         return defaultPoints;
+    }
+
+    public double getHellhoundChance() {
+        return hellhoundChance;
     }
 
     public double getHellhoundHealth() {
@@ -115,6 +117,10 @@ public class ZombiesConfig extends BattleCacheYaml {
         return waveDelay;
     }
 
+    public boolean hasHellhoundEnabled() {
+        return hellhoundEnabled;
+    }
+
     public boolean hasRunningMobs() {
         return runningMobs;
     }
@@ -133,6 +139,10 @@ public class ZombiesConfig extends BattleCacheYaml {
 
     public int getMaxMobs(int players) {
         return getInt("zombies-wave-max-mobs." + players);
+    }
+
+    public double getMobAmount(String entityType) {
+        return getDouble("zombies-wave-mob-amount." + entityType);
     }
 
     public double getMobMultiplier(int players) {

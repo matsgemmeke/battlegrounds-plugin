@@ -37,6 +37,11 @@ public class ZombiesMobSpawn implements MobSpawn {
     }
 
     private Location getBarricadeSpawnLocation() {
+        // If there is no barricade, return the location itself
+        if (barricade == null) {
+            return location;
+        }
+
         Integer x1 = barricade.getMaximumPoint().getBlockX(), x2 = barricade.getMinimumPoint().getBlockX();
         Location loc1, loc2;
 

@@ -1,4 +1,4 @@
-package com.matsg.battlegrounds.util.valueobject;
+package com.matsg.battlegrounds.util.data;
 
 import com.matsg.battlegrounds.api.util.ValueObject;
 import com.matsg.battlegrounds.api.item.ReloadType;

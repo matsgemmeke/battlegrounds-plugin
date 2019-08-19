@@ -101,9 +101,13 @@ public class ZombiesPerkMachine implements PerkMachine {
 
         int slot = perkManager.getPerkCount(gamePlayer) + 4;
 
+        // A new perk is given out, so make a clone of the original in the perk machine
+        Perk perk = this.perk.clone();
+
         gamePlayer.getPlayer().openInventory(new TransactionView(game, translator, perk, perk.getItemStack(), price, slot) {
             public void onTransactionComplete(Transaction transaction) {
                 game.getItemRegistry().addItem(perk);
+                perk.getEffect().setGamePlayer(gamePlayer);
                 perkManager.addPerk(gamePlayer, perk);
             }
         }.getInventory());

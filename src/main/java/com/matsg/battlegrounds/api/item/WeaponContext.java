@@ -1,9 +1,10 @@
-package com.matsg.battlegrounds.api.game;
+package com.matsg.battlegrounds.api.item;
 
 import com.matsg.battlegrounds.api.entity.BattleEntity;
+import com.matsg.battlegrounds.api.game.Team;
 import org.bukkit.Location;
 
-public interface WeaponUsageContext {
+public interface WeaponContext {
 
     /**
      * Gets nearby entities that can be hit by a player's weapon.

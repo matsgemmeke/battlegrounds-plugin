@@ -1,22 +1,56 @@
 package com.matsg.battlegrounds.mode.zombies.item.perk;
 
-import com.matsg.battlegrounds.api.entity.GamePlayer;
+import com.matsg.battlegrounds.api.item.DamageSource;
+import com.matsg.battlegrounds.api.item.Firearm;
+import com.matsg.battlegrounds.mode.zombies.item.PerkEffect;
 import org.bukkit.Color;
 
-public class DoubleTap extends AbstractPerkEffect {
+public class DoubleTap extends PerkEffect {
 
-    private static final double BUFFED_FIREARM_DAMAGE = 1.33;
-    private static final double NORMAL_FIREARM_DAMAGE = 1.0;
+    private static final double FIREARM_DAMAGE_BUFF = 1.33;
+    private static final double FIREARM_DAMAGE_NERF = 0.67;
+    private static final int MAX_NUMBER_OF_FIREARMS = 2;
+
+    private Firearm[] firearms;
 
     public DoubleTap(String displayName) {
         super(displayName, Color.fromRGB(250, 125, 0));
+        this.firearms = new Firearm[MAX_NUMBER_OF_FIREARMS];
     }
 
-    public void apply(GamePlayer gamePlayer) {
-        gamePlayer.setFirearmDamage(BUFFED_FIREARM_DAMAGE);
+    public void apply() {
+        firearms = gamePlayer.getLoadout().getFirearms();
+
+        for (int i = 0; i <= firearms.length; i++) {
+            if (firearms[i] != null) {
+                modifyDamageAttributes(firearms[i], FIREARM_DAMAGE_BUFF);
+            }
+        }
     }
 
-    public void remove(GamePlayer gamePlayer) {
-        gamePlayer.setFirearmDamage(NORMAL_FIREARM_DAMAGE);
+    public void refresh() {
+        for (int i = 0; i <= firearms.length; i++) {
+            Firearm firearm = gamePlayer.getLoadout().getFirearms()[i];
+            // Check if the player had changed firearms and if so, apply the damage buff
+            if (firearms[i] != firearm) {
+                firearms[i] = firearm;
+                modifyDamageAttributes(firearm, FIREARM_DAMAGE_BUFF);
+            }
+        }
+    }
+
+    public void remove() {
+        for (int i = 0; i <= firearms.length; i++) {
+            if (firearms[i] != null) {
+                modifyDamageAttributes(firearms[i], FIREARM_DAMAGE_NERF);
+            }
+        }
+    }
+
+    private void modifyDamageAttributes(Firearm firearm, double damage) {
+        DamageSource projectile = firearm.getProjectile();
+        projectile.setLongDamage(projectile.getLongDamage() * damage);
+        projectile.setMidDamage(projectile.getMidDamage() * damage);
+        projectile.setShortDamage(projectile.getShortDamage() * damage);
     }
 }

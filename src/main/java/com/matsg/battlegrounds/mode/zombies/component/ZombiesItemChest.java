@@ -3,13 +3,12 @@ package com.matsg.battlegrounds.mode.zombies.component;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.game.*;
-import com.matsg.battlegrounds.api.item.ItemSlot;
-import com.matsg.battlegrounds.api.item.ItemType;
-import com.matsg.battlegrounds.api.item.Transaction;
-import com.matsg.battlegrounds.api.item.TransactionItem;
+import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.gui.TransactionView;
+import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.util.ActionBar;
+import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.inventory.ItemStack;
@@ -92,12 +91,27 @@ public class ZombiesItemChest implements ItemChest {
 
         ItemSlot itemSlot = itemType.getDefaultItemSlot();
 
-        if (itemSlot == ItemSlot.FIREARM_PRIMARY && gamePlayer.getLoadout().getSecondary() == null && gamePlayer.getPlayer().getInventory().getHeldItemSlot() == 1) {
+        if (itemSlot == ItemSlot.FIREARM_PRIMARY
+                && gamePlayer.getLoadout().getSecondary() == null || gamePlayer.getPlayer().getInventory().getHeldItemSlot() == 1 || game.getItemRegistry().getWeaponIgnoreMetadata(gamePlayer, itemStack) != null) {
             itemSlot = ItemSlot.FIREARM_SECONDARY;
         }
 
+        ItemStack itemStack = new ItemStackBuilder(this.itemStack)
+                .setDisplayName(ChatColor.WHITE + itemName)
+                .setLore()
+                .build();
+
         gamePlayer.getPlayer().openInventory(new TransactionView(game, translator, item, itemStack, price, itemSlot.getSlot()) {
-            public void onTransactionComplete(Transaction transaction) { }
+            public void onTransactionComplete(Transaction transaction) {
+                Weapon weapon = gamePlayer.getLoadout().getWeapon(itemName);
+                // In case the player already has the weapon they want to buy, reset its state.
+                if (weapon != null) {
+                    weapon.resetState();
+                    weapon.update();
+                }
+                // Refresh the player effects
+                gamePlayer.refreshEffects();
+            }
         }.getInventory());
 
         return true;

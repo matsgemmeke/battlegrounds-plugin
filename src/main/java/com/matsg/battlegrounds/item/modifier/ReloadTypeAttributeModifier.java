@@ -3,7 +3,7 @@ package com.matsg.battlegrounds.item.modifier;
 import com.matsg.battlegrounds.api.item.ReloadType;
 import com.matsg.battlegrounds.api.util.AttributeModifier;
 import com.matsg.battlegrounds.api.util.ValueObject;
-import com.matsg.battlegrounds.util.valueobject.ReloadTypeValueObject;
+import com.matsg.battlegrounds.util.data.ReloadTypeValueObject;
 
 public class ReloadTypeAttributeModifier implements AttributeModifier<ReloadType> {
 

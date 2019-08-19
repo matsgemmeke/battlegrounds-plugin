@@ -22,5 +22,5 @@ public interface PowerUpManager {
 
     boolean isActive(PowerUpEffect powerUpEffect);
 
-    void removePowerUp(PowerUpEffect powerUpEffect);
+    void removePowerUp(PowerUp powerUp);
 }

@@ -7,7 +7,7 @@ import com.matsg.battlegrounds.api.storage.CacheYaml;
 import com.matsg.battlegrounds.mode.zombies.component.*;
 import com.matsg.battlegrounds.item.ItemFinder;
 import com.matsg.battlegrounds.mode.zombies.item.factory.PerkFactory;
-import com.matsg.battlegrounds.mode.zombies.item.perk.PerkEffectType;
+import com.matsg.battlegrounds.mode.zombies.item.PerkEffectType;
 import com.matsg.battlegrounds.util.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -135,7 +135,6 @@ public class ZombiesDataLoader {
                 }
 
                 Location location = data.getLocation("arena." + arena.getName() + ".component." + componentId + ".location");
-
                 MobSpawn mobSpawn = new ZombiesMobSpawn(Integer.parseInt(componentId), location);
 
                 section.getMobSpawnContainer().add(mobSpawn);

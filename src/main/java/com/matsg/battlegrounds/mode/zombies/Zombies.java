@@ -4,11 +4,8 @@ import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.api.Version;
-import com.matsg.battlegrounds.api.entity.PlayerState;
+import com.matsg.battlegrounds.api.entity.*;
 import com.matsg.battlegrounds.api.Translator;
-import com.matsg.battlegrounds.api.entity.BattleEntityType;
-import com.matsg.battlegrounds.api.entity.GamePlayer;
-import com.matsg.battlegrounds.api.entity.Mob;
 import com.matsg.battlegrounds.api.event.EventChannel;
 import com.matsg.battlegrounds.api.event.GameEndEvent;
 import com.matsg.battlegrounds.api.event.GamePlayerDamageEntityEvent;
@@ -49,7 +46,7 @@ public class Zombies extends AbstractGameMode {
     private PerkManager perkManager;
     private PowerUpManager powerUpManager;
     private Team team;
-    private Wave<? extends Mob> wave;
+    private Wave wave;
     private WaveFactory waveFactory;
     private ZombiesConfig config;
 
@@ -72,7 +69,7 @@ public class Zombies extends AbstractGameMode {
         this.sectionContainer = new BattleComponentContainer<>();
         this.shortName = translator.translate(TranslationKey.ZOMBIES_SHORT);
         this.team = new BattleTeam(1, "Players", null, ChatColor.WHITE);
-        this.waveFactory = new WaveFactory(version, config);
+        this.waveFactory = new WaveFactory(sectionContainer, version, config);
 
         teams.add(team);
     }
@@ -324,13 +321,13 @@ public class Zombies extends AbstractGameMode {
             }
         }
 
-        wave = waveFactory.make(game, BattleEntityType.ZOMBIE, round, getMobAmount(round, team.getTeamSize()));
+        BattleEntityType entityType = getEntityTypeForRound(round);
+
+        wave = waveFactory.make(game, entityType, round, getMobAmount(entityType, round, team.getTeamSize()));
         wave.setRunning(true);
 
-        for (Section section : sectionContainer.getAll()) {
-            if (!section.isLocked()) {
-                wave.getMobSpawns().addAll(section.getMobSpawnContainer().getAll());
-            }
+        if (wave.getEntityType() == BattleEntityType.HELLHOUND) {
+            BattleSound.HELLHOUND_ROUND_ANNOUNCEMENT.play(game);
         }
 
         int maxMobs = config.getMaxMobs(team.getTeamSize());
@@ -347,6 +344,8 @@ public class Zombies extends AbstractGameMode {
             EnumTitle.ZOMBIES_GAME_OVER.send(player, new Placeholder("bg_round", wave.getRound()));
         }
 
+        perkManager.clear();
+
         team = new BattleTeam(1, "Players", null, ChatColor.WHITE);
     }
 
@@ -360,9 +359,23 @@ public class Zombies extends AbstractGameMode {
         }
     }
 
-    private int getMobAmount(int round, int players) {
-        int zombies = (int) ((Math.round(0.000058 * Math.pow(round, 3) + 0.074032 * Math.pow(round, 2) + 0.718119 * round + 4.738699)) * config.getMobMultiplier(players));
-        zombies += Math.round((double) zombies / 100 * (new Random().nextInt(config.getVariation() * 2) - config.getVariation()));
-        return zombies;
+    private BattleEntityType getEntityTypeForRound(int round) {
+        double hellhoundChance = config.getHellhoundChance();
+        Random random = new Random();
+
+        if ((wave != null && wave.getEntityType() == BattleEntityType.ZOMBIE)
+                && config.hasHellhoundEnabled()
+                && (hellhoundChance > 1.0 && round % hellhoundChance == 0 || hellhoundChance < 1.0 && random.nextDouble() < hellhoundChance)) {
+            return BattleEntityType.HELLHOUND;
+        }
+
+        return BattleEntityType.ZOMBIE;
+    }
+
+    private int getMobAmount(BattleEntityType entityType, int round, int players) {
+        int amount = (int) ((Math.round(0.000058 * Math.pow(round, 3) + 0.074032 * Math.pow(round, 2) + 0.718119 * round + 4.738699)) * config.getMobMultiplier(players));
+        amount += Math.round((double) amount / 100 * (new Random().nextInt(config.getVariation() * 2) - config.getVariation()));
+        amount *= config.getMobAmount(entityType.toString());
+        return amount;
     }
 }

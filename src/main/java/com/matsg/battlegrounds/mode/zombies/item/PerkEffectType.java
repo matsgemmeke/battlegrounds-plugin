@@ -1,4 +1,4 @@
-package com.matsg.battlegrounds.mode.zombies.item.perk;
+package com.matsg.battlegrounds.mode.zombies.item;
 
 public enum PerkEffectType {
 

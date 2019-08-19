@@ -1,22 +1,45 @@
 package com.matsg.battlegrounds.mode.zombies.item.perk;
 
-import com.matsg.battlegrounds.api.entity.GamePlayer;
+import com.matsg.battlegrounds.api.item.Firearm;
+import com.matsg.battlegrounds.mode.zombies.item.PerkEffect;
 import org.bukkit.Color;
 
-public class SpeedCola extends AbstractPerkEffect {
+public class SpeedCola extends PerkEffect {
 
-    private static final double BUFFED_RELOAD_SPEED = 1.5;
-    private static final double NORMAL_RELOAD_SPEED = 1.0;
+    private static final double RELOAD_SPEED_BUFF = 1.5;
+
+    private Firearm[] firearms;
 
     public SpeedCola(String displayName) {
         super(displayName, Color.fromRGB(0, 128, 0));
     }
 
-    public void apply(GamePlayer gamePlayer) {
-        gamePlayer.setReloadSpeed(BUFFED_RELOAD_SPEED);
+    public void apply() {
+        firearms = gamePlayer.getLoadout().getFirearms();
+
+        for (Firearm firearm : gamePlayer.getLoadout().getFirearms()) {
+            if (firearm != null) {
+                firearm.setReloadDuration(Math.round((float) (firearm.getReloadDuration() / RELOAD_SPEED_BUFF)));
+            }
+        }
     }
 
-    public void remove(GamePlayer gamePlayer) {
-        gamePlayer.setReloadSpeed(NORMAL_RELOAD_SPEED);
+    public void refresh() {
+        for (int i = 0; i < firearms.length; i++) {
+            Firearm firearm = gamePlayer.getLoadout().getFirearms()[i];
+            // Check if the player had changed firearms and if so, apply the reload duration buff
+            if (firearms[i] != firearm) {
+                firearms[i] = firearm;
+                firearm.setReloadDuration(Math.round((float) (firearm.getReloadDuration() / RELOAD_SPEED_BUFF)));
+            }
+        }
+    }
+
+    public void remove() {
+        for (Firearm firearm : gamePlayer.getLoadout().getFirearms()) {
+            if (firearm != null) {
+                firearm.setReloadDuration(Math.round((float) (firearm.getReloadDuration() * RELOAD_SPEED_BUFF)));
+            }
+        }
     }
 }

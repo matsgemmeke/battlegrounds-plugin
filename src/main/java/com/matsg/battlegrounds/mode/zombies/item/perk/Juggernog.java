@@ -1,9 +1,9 @@
 package com.matsg.battlegrounds.mode.zombies.item.perk;
 
-import com.matsg.battlegrounds.api.entity.GamePlayer;
+import com.matsg.battlegrounds.mode.zombies.item.PerkEffect;
 import org.bukkit.Color;
 
-public class Juggernog extends AbstractPerkEffect {
+public class Juggernog extends PerkEffect {
 
     private static final double BUFFED_PLAYER_HEALTH = 40.0;
     private static final double NORMAL_PLAYER_HEALTH = 20.0;
@@ -12,12 +12,12 @@ public class Juggernog extends AbstractPerkEffect {
         super(displayName, Color.fromRGB(200, 50, 50));
     }
 
-    public void apply(GamePlayer gamePlayer) {
+    public void apply() {
         gamePlayer.getPlayer().setMaxHealth(BUFFED_PLAYER_HEALTH);
         gamePlayer.getPlayer().setHealth(BUFFED_PLAYER_HEALTH);
     }
 
-    public void remove(GamePlayer gamePlayer) {
+    public void remove() {
         gamePlayer.getPlayer().setHealth(NORMAL_PLAYER_HEALTH);
         gamePlayer.getPlayer().setMaxHealth(NORMAL_PLAYER_HEALTH);
     }

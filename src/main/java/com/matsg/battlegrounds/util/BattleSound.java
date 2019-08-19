@@ -16,7 +16,11 @@ public class BattleSound implements com.matsg.battlegrounds.api.util.Sound {
             DOOR_OPEN = new BattleSound(XSound.DOOR_OPEN.bukkitSound(), 1, (float) 0.75),
             EXPLOSION = new BattleSound(XSound.EXPLODE.bukkitSound(), 10, (float) 0.75),
             EXPLOSIVE_THROW = new BattleSound(XSound.SHOOT_ARROW.bukkitSound(), 1, (float) 0.5),
+            HELLHOUND_ROUND_ANNOUNCEMENT = new BattleSound(XSound.WITHER_SPAWN.bukkitSound(), 20, 1, 40),
             KNIFE_THROW = new BattleSound(XSound.SHOOT_ARROW.bukkitSound(), 1, (float) 1.25),
+            MYSTERY_BOX_MOVE = new BattleSound(XSound.ZOMBIE_REMEDY.bukkitSound(), 1, 1),
+            MYSTERY_BOX_ROLL = new BattleSound(XSound.ORB_PICKUP.bukkitSound(), 1, 0),
+            MYSTERY_BOX_ROLL_END = new BattleSound(XSound.LEVEL_UP.bukkitSound(), 1, 1),
             POWERUP_ACTIVATE = new BattleSound(XSound.NOTE_PLING.bukkitSound(), 1, 2),
             THUNDER = new BattleSound(XSound.AMBIENCE_THUNDER.bukkitSound(), 20, 1);
     public static final BattleSound[]

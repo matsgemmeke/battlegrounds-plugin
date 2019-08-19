@@ -33,7 +33,7 @@ public class CustomWolf extends EntityWolf implements Hellhound {
 
         setAngry(true);
 
-        CraftLivingEntity entity = (CraftLivingEntity) bukkitEntity;
+        CraftLivingEntity entity = (CraftLivingEntity) getBukkitEntity();
         entity.setCanPickupItems(false);
         entity.setRemainingAir(Integer.MAX_VALUE);
         entity.setRemoveWhenFarAway(false);
@@ -132,10 +132,6 @@ public class CustomWolf extends EntityWolf implements Hellhound {
 
         attribute.b(modifier);
         attribute.a(modifier);
-    }
-
-    public void setHealth(float health) {
-        entity.setHealth(health);
     }
 
     public void setKnockback(boolean knockback) {

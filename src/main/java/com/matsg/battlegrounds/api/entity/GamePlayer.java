@@ -10,9 +10,7 @@ import java.util.Collection;
 
 public interface GamePlayer extends BattleEntity, OfflineGamePlayer, SpawnOccupant, Comparable<GamePlayer> {
 
-    double getFirearmDamage();
-
-    void setFirearmDamage(double firearmDamage);
+    Collection<PlayerEffect> getEffects();
 
     Collection<Item> getItems();
 
@@ -30,13 +28,9 @@ public interface GamePlayer extends BattleEntity, OfflineGamePlayer, SpawnOccupa
 
     void setPoints(int points);
 
-    double getReloadSpeed();
+    float getReviveDuration();
 
-    void setReloadSpeed(double reloadSpeed);
-
-    double getReviveSpeed();
-
-    void setReviveSpeed(double reviveSpeed);
+    void setReviveDuration(float reviveDuration);
 
     SavedInventory getSavedInventory();
 
@@ -53,6 +47,8 @@ public interface GamePlayer extends BattleEntity, OfflineGamePlayer, SpawnOccupa
     void setTeam(Team team);
 
     int addExp(int exp);
+
+    void refreshEffects();
 
     void sendMessage(String message);
 }

@@ -126,6 +126,10 @@ public class BattleLoadout implements Loadout {
         return loadoutNr == loadout.getLoadoutNr() && name.equals(loadout.getName());
     }
 
+    public Firearm[] getFirearms() {
+        return new Firearm[] { primary, secondary };
+    }
+
     public Weapon getWeapon(ItemSlot itemSlot) {
         for (Weapon weapon : getWeapons()) {
             if (weapon != null && weapon.getItemSlot() == itemSlot) {

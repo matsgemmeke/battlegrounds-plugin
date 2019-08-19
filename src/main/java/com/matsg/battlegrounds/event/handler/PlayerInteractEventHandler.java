@@ -28,23 +28,18 @@ public class PlayerInteractEventHandler implements EventHandler<PlayerInteractEv
     public void handleItemInteraction(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         Game game = plugin.getGameManager().getGame(player);
-
-        if (game == null) {
-            return;
-        }
-
-        GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
         ItemStack itemStack = event.getItem();
 
-        if (itemStack == null || game.getArena() == null || !game.getState().isAllowed(Action.USE_ITEM)) {
+        if (game == null || itemStack == null || !game.getState().isAllowed(Action.USE_ITEM) || event.isCancelled()) {
             return;
         }
 
         event.setCancelled(true);
 
-        Item item = game.getItemRegistry().getWeapon(gamePlayer, itemStack);
+        GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
+        Item item = game.getItemRegistry().getWeaponIgnoreMetadata(gamePlayer, itemStack);
 
-        if (item == null && (item = game.getItemRegistry().getItem(itemStack)) == null || !game.getState().isAllowed(Action.USE_WEAPON) && item instanceof Weapon) {
+        if (item == null && (item = game.getItemRegistry().getItemIgnoreMetadata(itemStack)) == null || !game.getState().isAllowed(Action.USE_WEAPON) && item instanceof Weapon) {
             return;
         }
 
@@ -58,9 +53,9 @@ public class PlayerInteractEventHandler implements EventHandler<PlayerInteractEv
 
         Sign sign = (Sign) event.getClickedBlock().getState();
 
-        for (Game i : plugin.getGameManager().getGames()) {
-            if (i.getGameSign() != null && i.getGameSign().getSign().equals(sign)) {
-                i.getGameSign().click(event.getPlayer());
+        for (Game game : plugin.getGameManager().getGames()) {
+            if (game.getGameSign() != null && game.getGameSign().getSign().equals(sign)) {
+                game.getGameSign().click(event.getPlayer());
                 break;
             }
         }

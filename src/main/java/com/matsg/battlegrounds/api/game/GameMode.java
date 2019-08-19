@@ -1,11 +1,12 @@
 package com.matsg.battlegrounds.api.game;
 
 import com.matsg.battlegrounds.api.entity.GamePlayer;
+import com.matsg.battlegrounds.api.item.WeaponContext;
 import com.matsg.battlegrounds.mode.GameModeType;
 
 import java.util.List;
 
-public interface GameMode extends ComponentWrapper, WeaponUsageContext {
+public interface GameMode extends ComponentWrapper, WeaponContext {
 
     /**
      * Hook method that gets called whenever the gamemode gets instantiated by the plugin.

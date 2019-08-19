@@ -8,6 +8,8 @@ public interface PerkManager {
 
     void addPerk(GamePlayer gamePlayer, Perk perk);
 
+    void clear();
+
     int getPerkCount(GamePlayer gamePlayer);
 
     boolean hasPerkEffect(GamePlayer gamePlayer, PerkEffect effect);

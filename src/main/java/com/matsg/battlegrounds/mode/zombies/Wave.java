@@ -1,11 +1,19 @@
 package com.matsg.battlegrounds.mode.zombies;
 
+import com.matsg.battlegrounds.api.entity.BattleEntityType;
 import com.matsg.battlegrounds.api.entity.Mob;
 import com.matsg.battlegrounds.mode.zombies.component.MobSpawn;
 
 import java.util.List;
 
 public interface Wave<T extends Mob> {
+
+    /**
+     * Gets the entity type of the mobs that are to be spawned in the wave.
+     *
+     * @return the mob's entity type
+     */
+    BattleEntityType getEntityType();
 
     /**
      * Gets the amount of mobs that are to be spawned in the wave.

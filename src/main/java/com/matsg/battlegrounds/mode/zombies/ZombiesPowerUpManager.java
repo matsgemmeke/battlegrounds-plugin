@@ -38,11 +38,11 @@ public class ZombiesPowerUpManager implements PowerUpManager {
                     EnumTitle.POWERUP_DEACTIVATE.send(gamePlayer.getPlayer(), new Placeholder("bg_powerup", powerUp.getName()));
                 }
             }
-            removePowerUp(powerUp.getEffect());
+            removePowerUp(powerUp);
         });
 
         if (!powerUp.isActive()) {
-            removePowerUp(powerUp.getEffect());
+            removePowerUp(powerUp);
             return;
         }
 
@@ -78,7 +78,7 @@ public class ZombiesPowerUpManager implements PowerUpManager {
                 }
                 if (++ r >= 20) {
                     item.remove();
-                    removePowerUp(powerUp.getEffect());
+                    removePowerUp(powerUp);
                     cancel();
                 }
             }
@@ -116,13 +116,7 @@ public class ZombiesPowerUpManager implements PowerUpManager {
         return (contains(powerUpEffect)) && (getPowerUp(powerUpEffect).isActive());
     }
 
-    public void removePowerUp(PowerUpEffect powerUpEffect) {
-        PowerUp powerUp = getPowerUp(powerUpEffect);
-
-        if (powerUp == null) {
-            return;
-        }
-
+    public void removePowerUp(PowerUp powerUp) {
         powerUp.remove();
         game.getItemRegistry().removeItem(powerUp);
         powerUps.remove(powerUp);

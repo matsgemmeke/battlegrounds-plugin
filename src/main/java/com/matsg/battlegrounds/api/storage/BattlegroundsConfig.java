@@ -34,8 +34,8 @@ public class BattlegroundsConfig extends AbstractYaml {
         }
     }
 
-    public boolean getDisplayBloodEffect(String entity) {
-        return getBoolean("game-display-blood-effect." + entity);
+    public boolean getDisplayBloodEffect(String entityType) {
+        return getBoolean("game-display-blood-effect." + entityType);
     }
 
     public String[] getGameSignLayout() {

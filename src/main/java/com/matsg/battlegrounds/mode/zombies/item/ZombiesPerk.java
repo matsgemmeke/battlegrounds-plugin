@@ -35,15 +35,17 @@ public class ZombiesPerk extends BattleItem implements Perk {
         GamePlayer gamePlayer = transaction.getGamePlayer();
         int slot = transaction.getSlot();
 
+        gamePlayer.getEffects().add(effect);
         gamePlayer.getPlayer().getInventory().setItem(slot, itemStack);
 
-        effect.apply(gamePlayer);
+        effect.setGamePlayer(gamePlayer);
+        effect.apply();
 
         this.gamePlayer = gamePlayer;
     }
 
     public void remove() {
-        effect.remove(gamePlayer);
+        effect.remove();
     }
 
     public boolean update() {

@@ -15,7 +15,7 @@ import com.matsg.battlegrounds.mode.GameModeType;
 import com.matsg.battlegrounds.mode.zombies.Zombies;
 import com.matsg.battlegrounds.mode.zombies.component.ZombiesPerkMachine;
 import com.matsg.battlegrounds.mode.zombies.item.factory.PerkFactory;
-import com.matsg.battlegrounds.mode.zombies.item.perk.PerkEffectType;
+import com.matsg.battlegrounds.mode.zombies.item.PerkEffectType;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;

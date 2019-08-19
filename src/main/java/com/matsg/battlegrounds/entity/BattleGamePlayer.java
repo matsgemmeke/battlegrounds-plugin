@@ -1,17 +1,13 @@
 package com.matsg.battlegrounds.entity;
 
-import com.matsg.battlegrounds.api.entity.BattleEntityType;
-import com.matsg.battlegrounds.api.entity.PlayerState;
+import com.matsg.battlegrounds.api.entity.*;
 import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.item.Item;
 import com.matsg.battlegrounds.api.item.Loadout;
-import com.matsg.battlegrounds.api.entity.GamePlayer;
-import com.matsg.battlegrounds.api.entity.SavedInventory;
-import com.matsg.battlegrounds.mode.zombies.item.Perk;
 import com.matsg.battlegrounds.api.util.GenericAttribute;
 import com.matsg.battlegrounds.item.modifier.FloatAttributeModifier;
 import com.matsg.battlegrounds.util.BattleAttribute;
-import com.matsg.battlegrounds.util.valueobject.FloatValueObject;
+import com.matsg.battlegrounds.util.data.FloatValueObject;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -21,31 +17,29 @@ import java.util.*;
 public class BattleGamePlayer implements GamePlayer {
 
     private BattleEntityType entityType;
-    private GenericAttribute<Float> fireArmDamage, reloadSpeed, reviveSpeed;
+    private GenericAttribute<Float> reviveDuration;
     private int deaths, exp, headshots, kills, lives, points;
     private List<Item> items;
+    private List<PlayerEffect> effects;
     private Loadout loadout, selectedLoadout;
     private Player player;
     private PlayerState playerState;
     private SavedInventory savedInventory;
-    private Set<Perk> perks;
     private Team team;
 
     public BattleGamePlayer(Player player, SavedInventory savedInventory) {
         this.player = player;
         this.savedInventory = savedInventory;
+        this.effects = new ArrayList<>();
         this.entityType = BattleEntityType.PLAYER;
         this.exp = 0;
         this.deaths = 0;
-        this.fireArmDamage = new BattleAttribute<>("firearm-damage", new FloatValueObject((float) 1.0));
         this.headshots = 0;
         this.items = new ArrayList<>();
         this.kills = 0;
         this.lives = 0;
         this.playerState = PlayerState.ACTIVE;
-        this.perks = new HashSet<>();
-        this.reloadSpeed = new BattleAttribute<>("reload-speed", new FloatValueObject((float) 1.0));
-        this.reviveSpeed = new BattleAttribute<>("revive-speed", new FloatValueObject((float) 1.0));
+        this.reviveDuration = new BattleAttribute<>("revive-duration", new FloatValueObject(10.0f));
     }
 
     public Entity getBukkitEntity() {
@@ -60,6 +54,10 @@ public class BattleGamePlayer implements GamePlayer {
         this.deaths = deaths;
     }
 
+    public List<PlayerEffect> getEffects() {
+        return effects;
+    }
+
     public BattleEntityType getEntityType() {
         return entityType;
     }
@@ -70,14 +68,6 @@ public class BattleGamePlayer implements GamePlayer {
 
     public void setExp(int exp) {
         this.exp = exp;
-    }
-
-    public double getFirearmDamage() {
-        return fireArmDamage.getValue();
-    }
-
-    public void setFirearmDamage(double firearmDamage) {
-        this.fireArmDamage.applyModifier(new FloatAttributeModifier((float) firearmDamage));
     }
 
     public int getHeadshots() {
@@ -140,10 +130,6 @@ public class BattleGamePlayer implements GamePlayer {
         return player.getName();
     }
 
-    public Set<Perk> getPerks() {
-        return perks;
-    }
-
     public Player getPlayer() {
         return player;
     }
@@ -156,20 +142,12 @@ public class BattleGamePlayer implements GamePlayer {
         this.points = points;
     }
 
-    public double getReloadSpeed() {
-        return reloadSpeed.getValue();
+    public float getReviveDuration() {
+        return reviveDuration.getValue();
     }
 
-    public void setReloadSpeed(double reloadSpeed) {
-        this.reloadSpeed.applyModifier(new FloatAttributeModifier((float) reloadSpeed));
-    }
-
-    public double getReviveSpeed() {
-        return reviveSpeed.getValue();
-    }
-
-    public void setReviveSpeed(double reviveSpeed) {
-        this.reviveSpeed.applyModifier(new FloatAttributeModifier((float) reviveSpeed));
+    public void setReviveDuration(float reviveDuration) {
+        this.reviveDuration.applyModifier(new FloatAttributeModifier(reviveDuration));
     }
 
     public SavedInventory getSavedInventory() {
@@ -239,6 +217,12 @@ public class BattleGamePlayer implements GamePlayer {
 
     public boolean isHostileTowards(GamePlayer gamePlayer) {
         return team != gamePlayer.getTeam();
+    }
+
+    public void refreshEffects() {
+        for (PlayerEffect effect : effects) {
+            effect.refresh();
+        }
     }
 
     public void remove() {

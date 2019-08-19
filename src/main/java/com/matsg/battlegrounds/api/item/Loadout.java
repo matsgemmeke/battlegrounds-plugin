@@ -32,6 +32,8 @@ public interface Loadout extends Cloneable {
 
     Map<String, String> convertToMap();
 
+    Firearm[] getFirearms();
+
     Weapon getWeapon(ItemSlot itemSlot);
 
     Weapon getWeapon(ItemStack itemStack);

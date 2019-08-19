@@ -5,6 +5,7 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.mode.zombies.item.Perk;
 import com.matsg.battlegrounds.mode.zombies.item.PerkEffect;
+import com.matsg.battlegrounds.mode.zombies.item.PerkEffectType;
 import com.matsg.battlegrounds.mode.zombies.item.ZombiesPerk;
 import com.matsg.battlegrounds.mode.zombies.item.perk.*;
 

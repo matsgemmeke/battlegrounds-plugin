@@ -9,9 +9,9 @@ import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.item.modifier.IntegerAttributeModifier;
 import com.matsg.battlegrounds.util.BattleAttribute;
-import com.matsg.battlegrounds.util.valueobject.FloatValueObject;
-import com.matsg.battlegrounds.util.valueobject.IntegerValueObject;
-import com.matsg.battlegrounds.util.valueobject.ReloadTypeValueObject;
+import com.matsg.battlegrounds.util.data.FloatValueObject;
+import com.matsg.battlegrounds.util.data.IntegerValueObject;
+import com.matsg.battlegrounds.util.data.ReloadTypeValueObject;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.BattleSound;
 import org.bukkit.Location;
@@ -356,7 +356,8 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
 
         playReloadSound();
 
-        gamePlayer.getPlayer().setFoodLevel(6); //Force the player to slow down
+        // Force the player to slow down
+        gamePlayer.getPlayer().setFoodLevel(6);
 
         new BattleRunnable() {
             public void run() {

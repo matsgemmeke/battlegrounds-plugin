@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.mode.zombies;
 
+import com.matsg.battlegrounds.api.entity.BattleEntityType;
 import com.matsg.battlegrounds.api.entity.Zombie;
 import com.matsg.battlegrounds.mode.zombies.component.MobSpawn;
 
@@ -9,6 +10,7 @@ import java.util.Random;
 
 public class ZombiesWave implements Wave<Zombie> {
 
+    private BattleEntityType entityType;
     private boolean running;
     private double attackDamage;
     private double followRange;
@@ -25,10 +27,15 @@ public class ZombiesWave implements Wave<Zombie> {
         this.attackDamage = attackDamage;
         this.followRange = followRange;
         this.health = health;
+        this.entityType = BattleEntityType.ZOMBIE;
         this.mobSpawns = new ArrayList<>();
         this.random = new Random();
         this.zombies = new ArrayList<>();
         this.running = false;
+    }
+
+    public BattleEntityType getEntityType() {
+        return entityType;
     }
 
     public int getMobCount() {
@@ -65,10 +72,10 @@ public class ZombiesWave implements Wave<Zombie> {
         Zombie zombie = zombies.get(0);
         zombie.setAttackDamage(attackDamage);
         zombie.setFollowRange(followRange);
-        zombie.setHealth(health);
         zombie.setKnockback(false);
         zombie.setMaxHealth(health);
         zombie.setMovementSpeed(movementSpeed);
+        zombie.setHealth(health);
 
         return zombies.get(0);
     }

@@ -28,6 +28,10 @@ public class ZombiesPerkManager implements PerkManager {
         }
     }
 
+    public void clear() {
+        playerPerks.clear();
+    }
+
     public int getPerkCount(GamePlayer gamePlayer) {
         if (!playerPerks.containsKey(gamePlayer)) {
             return 0;

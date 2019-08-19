@@ -2,7 +2,7 @@ package com.matsg.battlegrounds.item;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Translator;
-import com.matsg.battlegrounds.api.game.WeaponUsageContext;
+import com.matsg.battlegrounds.api.item.WeaponContext;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.util.BattleRunnable;
@@ -16,7 +16,7 @@ public abstract class BattleWeapon extends BattleItem implements Weapon {
     protected GamePlayer gamePlayer;
     protected String description;
     protected Translator translator;
-    protected WeaponUsageContext context;
+    protected WeaponContext context;
 
     public BattleWeapon(
             Battlegrounds plugin,
@@ -30,11 +30,11 @@ public abstract class BattleWeapon extends BattleItem implements Weapon {
         this.translator = plugin.getTranslator();
     }
 
-    public WeaponUsageContext getContext() {
+    public WeaponContext getContext() {
         return context;
     }
 
-    public void setContext(WeaponUsageContext context) {
+    public void setContext(WeaponContext context) {
         this.context = context;
     }
 

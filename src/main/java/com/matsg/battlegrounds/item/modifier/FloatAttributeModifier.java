@@ -3,7 +3,7 @@ package com.matsg.battlegrounds.item.modifier;
 import com.matsg.battlegrounds.api.util.AttributeModifier;
 import com.matsg.battlegrounds.api.util.ValueObject;
 import com.matsg.battlegrounds.util.Operator;
-import com.matsg.battlegrounds.util.valueobject.FloatValueObject;
+import com.matsg.battlegrounds.util.data.FloatValueObject;
 
 public class FloatAttributeModifier implements AttributeModifier<Float> {
 

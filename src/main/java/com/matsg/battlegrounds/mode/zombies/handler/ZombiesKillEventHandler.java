@@ -69,7 +69,6 @@ public class ZombiesKillEventHandler implements EventHandler<GamePlayerKillEntit
         new BattleRunnable() {
             public void run() {
                 game.getMobManager().getMobs().remove(mob);
-                game.updateScoreboard();
                 mob.remove();
 
                 double maxMovementSpeed = 0.35;
@@ -84,17 +83,18 @@ public class ZombiesKillEventHandler implements EventHandler<GamePlayerKillEntit
                     lastMob.setMovementSpeed(maxMovementSpeed);
                 }
 
-                if (game.getMobManager().getMobs().size() > 0 || !game.getState().isInProgress() || zombies.getWave().isRunning()) {
-                    return;
+                if (game.getMobManager().getMobs().size() <= 0 && game.getState().isInProgress() && !zombies.getWave().isRunning()) {
+                    // Drop a max ammo power up if the last mob is a hellhound
+                    if (mob.getEntityType() == BattleEntityType.HELLHOUND) {
+                        PowerUp powerUp = powerUpFactory.make(PowerUpEffectType.MAX_AMMO, 0);
+
+                        zombies.getPowerUpManager().dropPowerUp(powerUp, mob.getBukkitEntity().getLocation());
+                    }
+
+                    zombies.startWave(zombies.getWave().getRound() + 1);
                 }
 
-                if (mob.getEntityType() == BattleEntityType.HELLHOUND) {
-                    PowerUp powerUp = powerUpFactory.make(PowerUpEffectType.MAX_AMMO, 0);
-
-                    zombies.getPowerUpManager().dropPowerUp(powerUp, mob.getBukkitEntity().getLocation());
-                }
-
-                zombies.startWave(zombies.getWave().getRound() + 1);
+                game.updateScoreboard();
             }
         }.runTaskLater(mobKillDelay);
     }

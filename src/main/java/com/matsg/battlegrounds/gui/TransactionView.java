@@ -63,15 +63,6 @@ public abstract class TransactionView implements View {
                 sound.play(game, player.getLocation());
             }
 
-            Weapon weapon = gamePlayer.getLoadout().getWeapon(itemStack.getItemMeta().getDisplayName());
-
-            // In case the player already has the weapon they want to buy, reset its state.
-            if (weapon != null) {
-                weapon.resetState();
-                weapon.update();
-                return;
-            }
-
             Transaction transaction = new Transaction();
             transaction.setGame(game);
             transaction.setGamePlayer(gamePlayer);
