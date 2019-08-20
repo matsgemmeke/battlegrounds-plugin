@@ -50,7 +50,7 @@ public interface MysteryBox extends ArenaComponent, Interactable, Lockable, Pric
     void setRolls(int rolls);
 
     /**
-     * Gets the state of the mystery box.
+     * Gets the state of the mystery box or null if the mystery box is not active.
      *
      * @return the mystery box state
      */

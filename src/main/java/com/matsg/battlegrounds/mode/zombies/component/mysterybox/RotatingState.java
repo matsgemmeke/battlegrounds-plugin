@@ -4,25 +4,28 @@ import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.util.Sound;
+import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.mode.zombies.component.MysteryBox;
 import com.matsg.battlegrounds.mode.zombies.component.MysteryBoxState;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.BattleSound;
 import com.matsg.battlegrounds.util.Hologram;
+import com.matsg.battlegrounds.util.XMaterial;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Item;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Random;
 
 public class RotatingState implements MysteryBoxState {
 
+    private static final int BOX_MAX_ROTATIONS = 25;
     private static final long BOX_ROTATION_DELAY = 0;
     private static final long BOX_ROTATION_DURATION = 4;
 
     private Game game;
     private GamePlayer gamePlayer;
-    private int maxRotations;
     private int rotation;
     private Item item;
     private MysteryBox mysteryBox;
@@ -31,24 +34,21 @@ public class RotatingState implements MysteryBoxState {
     private Sound rollSound;
     private Weapon weapon;
 
-    public RotatingState(Game game, MysteryBox mysteryBox, GamePlayer gamePlayer, int maxRotations) {
+    public RotatingState(Game game, MysteryBox mysteryBox, GamePlayer gamePlayer) {
         this.game = game;
         this.mysteryBox = mysteryBox;
         this.gamePlayer = gamePlayer;
-        this.maxRotations = maxRotations;
         this.moveSound = BattleSound.MYSTERY_BOX_MOVE;
         this.rollEndSound = BattleSound.MYSTERY_BOX_ROLL_END;
         this.rollSound = BattleSound.MYSTERY_BOX_ROLL;
         this.rotation = 0;
     }
 
-    public void handleInteraction(GamePlayer gamePlayer) {
-        if (++rotation >= maxRotations || this.gamePlayer != gamePlayer) {
-            return;
-        }
+    public boolean handleInteraction(GamePlayer gamePlayer) {
+        return true;
+    }
 
-        this.gamePlayer = gamePlayer;
-
+    public void initState() {
         int pickupDelay = 1000;
 
         item = mysteryBox.getLeftSide().getWorld().dropItem(getItemDropLocation(), mysteryBox.getWeapons()[0].getItemStack());
@@ -63,7 +63,7 @@ public class RotatingState implements MysteryBoxState {
                     return;
                 }
 
-                if (++rotation >= maxRotations) {
+                if (++rotation >= BOX_MAX_ROTATIONS) {
                     rotateChosenWeapon();
                     cancel();
                 } else {
@@ -86,19 +86,30 @@ public class RotatingState implements MysteryBoxState {
     }
 
     private void rotateChosenWeapon() {
-        Hologram hologram = new Hologram(item.getLocation().add(0, -1, 0));
-
-        item.setItemStack(weapon.getItemStack());
+        ItemStack itemStack;
+        MysteryBoxState state;
+        Sound sound;
 
         if (!willMove()) {
-            rollEndSound.play(game, item.getLocation());
+            Hologram hologram = new Hologram(item.getLocation().add(0, -1, 0));
 
-            mysteryBox.setState(new DisplayState(game, mysteryBox, gamePlayer, hologram, item, weapon.getName()));
+            itemStack = weapon.getItemStack();
+            sound = rollEndSound;
+            state = new DisplayState(game, mysteryBox, gamePlayer, hologram, item, weapon);
         } else {
-            moveSound.play(game, item.getLocation());
+            itemStack = new ItemStackBuilder(XMaterial.WITHER_SKELETON_SKULL.parseMaterial()).build();
+            sound = moveSound;
+            state = new MovingState(game, mysteryBox);
 
-            mysteryBox.setState(new MovingState());
+            mysteryBox.getLeftSide().getWorld().strikeLightningEffect(item.getLocation());
         }
+
+        item.setItemStack(itemStack);
+
+        mysteryBox.setCurrentWeapon(weapon);
+        mysteryBox.setState(state);
+
+        sound.play(game, item.getLocation());
     }
 
     private void rotateRandomWeapon() {

@@ -153,12 +153,16 @@ public class ZombiesDataLoader {
                 Block right = data.getLocation("arena." + arena.getName() + ".component." + componentId + ".rightside").getBlock();
                 int price = configurationSection.getInt(componentId + ".price");
 
-                MysteryBox mysteryBox = new ZombiesMysteryBox(
-                        Integer.parseInt(componentId),
-                        game,
-                        price,
-                        new Pair<>(left, right)
-                );
+                ComponentFactory<MysteryBox> mysteryBoxFactory = zombies.getComponentFactory(MysteryBox.class);
+
+                MysteryBox mysteryBox = mysteryBoxFactory.make(Integer.parseInt(componentId));
+
+//                MysteryBox mysteryBox = new ZombiesMysteryBox(
+//                        Integer.parseInt(componentId),
+//                        game,
+//                        price,
+//                        new Pair<>(left, right)
+//                );
 
                 section.getMysteryBoxContainer().add(mysteryBox);
             }

@@ -8,17 +8,20 @@ import com.matsg.battlegrounds.mode.zombies.component.MysteryBoxState;
 public class IdleState implements MysteryBoxState {
 
     private Game game;
-    private int maxRotations;
     private MysteryBox mysteryBox;
 
-    public IdleState(Game game, MysteryBox mysteryBox, int maxRotations) {
+    public IdleState(Game game, MysteryBox mysteryBox) {
         this.game = game;
         this.mysteryBox = mysteryBox;
-        this.maxRotations = maxRotations;
     }
 
-    public void handleInteraction(GamePlayer gamePlayer) {
+    public boolean handleInteraction(GamePlayer gamePlayer) {
         mysteryBox.setRolls(mysteryBox.getRolls() + 1);
-        mysteryBox.setState(new RotatingState(game, mysteryBox, gamePlayer, maxRotations));
+        mysteryBox.setState(new RotatingState(game, mysteryBox, gamePlayer));
+        return true;
+    }
+
+    public void initState() {
+        mysteryBox.setRolls(0);
     }
 }

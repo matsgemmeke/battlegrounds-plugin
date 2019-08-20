@@ -4,7 +4,6 @@ import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.util.*;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Item;
 
@@ -23,13 +22,11 @@ public class ZombiesMysteryBox implements MysteryBox {
     private Pair<Block, Block> blocks;
     private Weapon currentWeapon;
     private Weapon[] weapons;
-    private World world;
 
-    public ZombiesMysteryBox(int id, Game game, Pair<Block, Block> blocks, World world, Weapon[] weapons, int price) {
+    public ZombiesMysteryBox(int id, Game game, Pair<Block, Block> blocks, Weapon[] weapons, int price) {
         this.id = id;
         this.game = game;
         this.blocks = blocks;
-        this.world = world;
         this.weapons = weapons;
         this.price = price;
         this.active = false;
@@ -79,6 +76,7 @@ public class ZombiesMysteryBox implements MysteryBox {
 
     public void setState(MysteryBoxState state) {
         this.state = state;
+        state.initState();
     }
 
     public Weapon[] getWeapons() {
@@ -109,8 +107,7 @@ public class ZombiesMysteryBox implements MysteryBox {
             return true;
         }
 
-        state.handleInteraction(gamePlayer);
-        return true;
+        return state.handleInteraction(gamePlayer);
     }
 
     public boolean onLook(GamePlayer gamePlayer, Block block) {

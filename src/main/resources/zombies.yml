@@ -11,6 +11,32 @@ zombies-default-loadout:
   # The primary firearm
   primary: M1911
 
+zombies-mystery-box-weapons:
+  - BERETTA_93R
+  - FIVE-SEVEN
+  - PYTHON
+  - MAC-10
+  - QCW-05
+  - AK-47
+  - AUG
+  - FAL
+  - FAMAS
+  - GALIL
+  - QBZ-95
+  - REMINGTON_870
+  - SAIGA-12K
+  - SPAS-12
+  - HK21
+  - RPK
+  - DRAGUNOV
+  - SV-98
+  - CHINA_LAKE
+  - CROSSBOW
+  - RPG-7
+  - EMP_GRENADE
+  - MONKEY_BOMB
+  - BALLISTIC_KNIFE
+
 # The layout of the perk machine signs
 zombies-perk-sign-layout:
   line0: ""
@@ -26,12 +52,12 @@ zombies-power-up-duration: 10
 
 # The power ups that will spawn in the game
 zombies-power-up-types:
-- CARPENTER
-- DOUBLE_POINTS
-- FIRE_SALE
-- INSTA_KILL
-- MAX_AMMO
-- NUKE
+  - CARPENTER
+  - DOUBLE_POINTS
+  - FIRE_SALE
+  - INSTA_KILL
+  - MAX_AMMO
+  - NUKE
 
 # Scoreboard configurations
 zombies-scoreboard:

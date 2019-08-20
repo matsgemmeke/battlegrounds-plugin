@@ -91,8 +91,9 @@ public class ZombiesItemChest implements ItemChest {
 
         ItemSlot itemSlot = itemType.getDefaultItemSlot();
 
-        if (itemSlot == ItemSlot.FIREARM_PRIMARY
-                && gamePlayer.getLoadout().getSecondary() == null || gamePlayer.getPlayer().getInventory().getHeldItemSlot() == 1 || game.getItemRegistry().getWeaponIgnoreMetadata(gamePlayer, itemStack) != null) {
+        if (itemSlot == ItemSlot.FIREARM_PRIMARY && gamePlayer.getLoadout().getSecondary() == null
+                || gamePlayer.getPlayer().getInventory().getHeldItemSlot() == 1
+                || game.getItemRegistry().getWeaponIgnoreMetadata(gamePlayer, itemStack) != null) {
             itemSlot = ItemSlot.FIREARM_SECONDARY;
         }
 

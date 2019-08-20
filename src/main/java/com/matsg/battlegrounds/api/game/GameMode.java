@@ -25,6 +25,8 @@ public interface GameMode extends ComponentWrapper, WeaponContext {
 
     void addObjective(Objective objective);
 
+    <T extends ArenaComponent> ComponentFactory<T> getComponentFactory(Class<T> componentClass);
+
     /**
      * Gets the name of the game mode.
      *

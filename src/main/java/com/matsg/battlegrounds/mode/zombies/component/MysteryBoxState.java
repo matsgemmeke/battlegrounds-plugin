@@ -8,6 +8,12 @@ public interface MysteryBoxState {
      * Handles logic of a mystery box interaction.
      *
      * @param gamePlayer the player who is using the mystery box
+     * @return whether the interaction was accepted
      */
-    void handleInteraction(GamePlayer gamePlayer);
+    boolean handleInteraction(GamePlayer gamePlayer);
+
+    /**
+     * Initiates the mystery box state.
+     */
+    void initState();
 }
