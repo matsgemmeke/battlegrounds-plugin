@@ -13,6 +13,7 @@ public enum ActionBar {
     ITEMCHEST("actionbar-itemchest"),
     LEAVE_ARENA("actionbar-leave-arena"),
     PERKMACHINE_SOLD_OUT("actionbar-perkmachine-sold-out"),
+    PLAYER_PASS_BARRICADE("actionbar-player-pass-barricade"),
     POINTS_DEDUCT("actionbar-points-deduct"),
     POINTS_INCREASE("actionbar-points-increase"),
     SAME_LOADOUT("actionbar-same-loadout"),

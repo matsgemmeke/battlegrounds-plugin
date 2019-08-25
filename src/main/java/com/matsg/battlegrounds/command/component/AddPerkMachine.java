@@ -7,13 +7,13 @@ import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.mode.zombies.component.PerkMachine;
 import com.matsg.battlegrounds.mode.zombies.component.Section;
+import com.matsg.battlegrounds.mode.zombies.component.factory.PerkMachineFactory;
 import com.matsg.battlegrounds.mode.zombies.item.Perk;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.command.validator.GameModeUsageValidator;
 import com.matsg.battlegrounds.command.validator.SectionNameValidator;
 import com.matsg.battlegrounds.mode.GameModeType;
 import com.matsg.battlegrounds.mode.zombies.Zombies;
-import com.matsg.battlegrounds.mode.zombies.component.ZombiesPerkMachine;
 import com.matsg.battlegrounds.mode.zombies.item.factory.PerkFactory;
 import com.matsg.battlegrounds.mode.zombies.item.PerkEffectType;
 import org.bukkit.Material;
@@ -21,6 +21,8 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 public class AddPerkMachine extends ComponentCommand {
@@ -94,10 +96,10 @@ public class AddPerkMachine extends ComponentCommand {
         }
 
         Perk perk = perkFactory.make(perkEffectType);
+        Sign sign = (Sign) blockState;
 
-        PerkMachine perkMachine = new ZombiesPerkMachine(componentId, game, (Sign) blockState, perk, zombies.getPerkManager(), translator, price, maxBuys);
-        perkMachine.setSignLayout(zombies.getConfig().getPerkSignLayout());
-        perkMachine.updateSign();
+        PerkMachineFactory perkMachineFactory = zombies.getPerkMachineFactory();
+        PerkMachine perkMachine = perkMachineFactory.make(componentId, sign, perk, maxBuys, price);
 
         section.getPerkMachineContainer().add(perkMachine);
 

@@ -25,6 +25,10 @@ public class ZombiesInteractEventHandler implements EventHandler<PlayerInteractE
     }
 
     public void handle(PlayerInteractEvent event) {
+        if (!zombies.isActive()) {
+            return;
+        }
+
         Player player = event.getPlayer();
         GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
 

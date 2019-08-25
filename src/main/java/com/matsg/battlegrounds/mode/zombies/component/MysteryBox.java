@@ -64,7 +64,7 @@ public interface MysteryBox extends ArenaComponent, Interactable, Lockable, Pric
     void setState(MysteryBoxState state);
 
     /**
-     * Gets the weapons inside the mystery box.
+     * Gets the weapon selection inside the mystery box.
      *
      * @return the mystery box weapons
      */

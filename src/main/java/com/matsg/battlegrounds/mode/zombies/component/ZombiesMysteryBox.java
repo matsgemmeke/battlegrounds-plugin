@@ -1,31 +1,25 @@
 package com.matsg.battlegrounds.mode.zombies.component;
 
 import com.matsg.battlegrounds.api.entity.GamePlayer;
-import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.util.*;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Item;
 
 public class ZombiesMysteryBox implements MysteryBox {
 
     private boolean active;
     private boolean locked;
     private byte direction;
-    private Game game;
-    private Hologram hologram;
     private int id;
     private int price;
     private int rolls;
-    private Item item;
     private MysteryBoxState state;
     private Pair<Block, Block> blocks;
     private Weapon currentWeapon;
     private Weapon[] weapons;
 
-    public ZombiesMysteryBox(int id, Game game, Pair<Block, Block> blocks, Weapon[] weapons, int price) {
+    public ZombiesMysteryBox(int id, Pair<Block, Block> blocks, Weapon[] weapons, int price) {
         this.id = id;
-        this.game = game;
         this.blocks = blocks;
         this.weapons = weapons;
         this.price = price;
@@ -81,6 +75,10 @@ public class ZombiesMysteryBox implements MysteryBox {
 
     public Weapon[] getWeapons() {
         return weapons;
+    }
+
+    public void setWeapons(Weapon[] weapons) {
+        this.weapons = weapons;
     }
 
     public boolean isActive() {

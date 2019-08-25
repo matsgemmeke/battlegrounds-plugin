@@ -4,9 +4,11 @@ import com.matsg.battlegrounds.mode.zombies.component.Barricade;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.mode.zombies.component.MobSpawn;
 import com.matsg.battlegrounds.util.BattleRunnable;
+import com.matsg.battlegrounds.util.XMaterial;
 import net.minecraft.server.v1_12_R1.Navigation;
 import net.minecraft.server.v1_12_R1.PathEntity;
 import net.minecraft.server.v1_12_R1.PathfinderGoal;
+import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -68,7 +70,8 @@ public class PathfinderGoalEnterArena extends PathfinderGoal {
                         block = barricade.getBlocks()[++ i];
                     } while (block.getType() == Material.AIR);
 
-                    barricade.breakBlock(block);
+                    block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, block.getType());
+                    block.setType(XMaterial.AIR.parseMaterial());
 
                     if (!barricade.isOpen()) {
                         return;

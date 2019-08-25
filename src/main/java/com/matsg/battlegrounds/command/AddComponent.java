@@ -34,12 +34,12 @@ public class AddComponent extends Command {
 
         commands = new HashMap<>();
         commands.put("door", new AddDoor(plugin, translator));
-        commands.put("itemchest", new AddItemChest(plugin, translator));
         commands.put("mobspawn", new AddMobSpawn(plugin, translator));
         commands.put("mysterybox", new AddMysteryBox(plugin, translator));
         commands.put("perk", new AddPerkMachine(plugin, translator));
         commands.put("section", new AddSection(plugin, translator));
         commands.put("spawn", new AddSpawn(plugin, translator));
+        commands.put("wallweapon", new AddWallWeapon(plugin, translator));
 
         registerValidator(new GameIdValidator(plugin, translator, true));
         registerValidator(new ArenaNameValidator(plugin, translator, true));
@@ -75,6 +75,8 @@ public class AddComponent extends Command {
             return;
         }
 
+        int componentId = game.findAvailableComponentId();
+
         // Order of input arguments:
         // 0: Addcomponent
         // 1: Game id
@@ -82,28 +84,6 @@ public class AddComponent extends Command {
         // 3: Component type
         // 4: Section name if required
         // >4: Anything else
-        command.execute(context, getFirstAvailableId(game), args);
-    }
-
-    private int getFirstAvailableId(Game game) {
-        int i = 1;
-
-        while (true) {
-            boolean available = false;
-
-            // Check if the gamemodes contain components with the same id.
-            for (GameMode gameMode : game.getConfiguration().getGameModes()) {
-                if (gameMode.getComponent(i) == null) {
-                    available = true;
-                }
-            }
-
-            // Check if the arena itself contains components with the same id.
-            if (available && game.getArena().getComponent(i) == null) {
-                return i;
-            }
-
-            i ++;
-        }
+        command.execute(context, componentId, args);
     }
 }

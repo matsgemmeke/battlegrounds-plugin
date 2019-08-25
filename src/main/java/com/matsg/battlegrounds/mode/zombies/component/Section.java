@@ -5,18 +5,18 @@ import com.matsg.battlegrounds.api.game.*;
 public interface Section extends ArenaComponent, ComponentWrapper, Lockable, Priceable {
 
     /**
+     * Gets the barricade container of the section.
+     *
+     * @return the barricade container
+     */
+    ComponentContainer<Barricade> getBarricadeContainer();
+
+    /**
      * Gets the door container of the section.
      *
      * @return The door container.
      */
     ComponentContainer<Door> getDoorContainer();
-
-    /**
-     * Gets the item chest container of the section.
-     *
-     * @return The item chest container.
-     */
-    ComponentContainer<ItemChest> getItemChestContainer();
 
     /**
      * Gets the mob spawn container of the section.
@@ -45,6 +45,13 @@ public interface Section extends ArenaComponent, ComponentWrapper, Lockable, Pri
      * @return The perk machine container.
      */
     ComponentContainer<PerkMachine> getPerkMachineContainer();
+
+    /**
+     * Gets the wall weapon container of the section.
+     *
+     * @return The wall weapon container.
+     */
+    ComponentContainer<WallWeapon> getWallWeaponContainer();
 
     /**
      * Gets whether the section is the first one unlocked.

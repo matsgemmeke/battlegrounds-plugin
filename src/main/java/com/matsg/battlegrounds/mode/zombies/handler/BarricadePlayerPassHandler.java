@@ -2,22 +2,20 @@ package com.matsg.battlegrounds.mode.zombies.handler;
 
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.event.EventHandler;
-import com.matsg.battlegrounds.api.game.*;
+import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.mode.zombies.Zombies;
+import com.matsg.battlegrounds.mode.zombies.component.Barricade;
 import com.matsg.battlegrounds.mode.zombies.component.Section;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import java.util.Set;
-
-public class ZombiesMoveEventHandler implements EventHandler<PlayerMoveEvent> {
+public class BarricadePlayerPassHandler implements EventHandler<PlayerMoveEvent> {
 
     private Game game;
     private Zombies zombies;
 
-    public ZombiesMoveEventHandler(Game game, Zombies zombies) {
+    public BarricadePlayerPassHandler(Game game, Zombies zombies) {
         this.game = game;
         this.zombies = zombies;
     }
@@ -29,23 +27,18 @@ public class ZombiesMoveEventHandler implements EventHandler<PlayerMoveEvent> {
 
         Player player = event.getPlayer();
         GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
+        Location from = event.getFrom(), to = event.getTo();
 
-        if (gamePlayer == null) {
-            return;
-        }
-
-        Block block = player.getTargetBlock((Set<Material>) null, 2);
-
-        if (!gamePlayer.getState().canInteract()) {
+        if (gamePlayer == null || to == null) {
             return;
         }
 
         for (Section section : zombies.getSectionContainer().getAll()) {
-            ArenaComponent component = section.getComponent(block.getLocation());
-
-            // Perhaps look for a way this cast can be replaced
-            if (component instanceof Watchable) {
-                ((Watchable) component).onLook(gamePlayer, block);
+            for (Barricade barricade : section.getBarricadeContainer().getAll()) {
+                // If the pass interaction was accepted, break the loop to execute less math calculations
+                if (barricade != null && barricade.onPass(gamePlayer, from, to)) {
+                    break;
+                }
             }
         }
     }

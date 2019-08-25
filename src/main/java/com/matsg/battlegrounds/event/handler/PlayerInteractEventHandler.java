@@ -30,11 +30,9 @@ public class PlayerInteractEventHandler implements EventHandler<PlayerInteractEv
         Game game = plugin.getGameManager().getGame(player);
         ItemStack itemStack = event.getItem();
 
-        if (game == null || itemStack == null || !game.getState().isAllowed(Action.USE_ITEM) || event.isCancelled()) {
+        if (game == null || itemStack == null || !game.getState().isAllowed(Action.USE_ITEM)) {
             return;
         }
-
-        event.setCancelled(true);
 
         GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
         Item item = game.getItemRegistry().getWeaponIgnoreMetadata(gamePlayer, itemStack);

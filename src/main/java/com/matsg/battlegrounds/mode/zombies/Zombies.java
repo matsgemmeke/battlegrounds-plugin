@@ -12,13 +12,14 @@ import com.matsg.battlegrounds.api.event.GamePlayerDamageEntityEvent;
 import com.matsg.battlegrounds.api.event.GamePlayerKillEntityEvent;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.item.*;
+import com.matsg.battlegrounds.api.storage.CacheYaml;
 import com.matsg.battlegrounds.game.BattleComponentContainer;
 import com.matsg.battlegrounds.game.BattleTeam;
 import com.matsg.battlegrounds.mode.AbstractGameMode;
 import com.matsg.battlegrounds.mode.GameModeType;
 import com.matsg.battlegrounds.mode.shared.SpawningBehavior;
-import com.matsg.battlegrounds.mode.zombies.component.MysteryBox;
-import com.matsg.battlegrounds.mode.zombies.component.Section;
+import com.matsg.battlegrounds.mode.zombies.component.*;
+import com.matsg.battlegrounds.mode.zombies.component.factory.*;
 import com.matsg.battlegrounds.mode.zombies.handler.*;
 import com.matsg.battlegrounds.item.ItemFinder;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
@@ -33,6 +34,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
@@ -41,11 +43,18 @@ import java.util.*;
 
 public class Zombies extends AbstractGameMode {
 
+    private BarricadeFactory barricadeFactory;
     private ComponentContainer<Section> sectionContainer;
+    private DoorFactory doorFactory;
     private LoadoutFactory loadoutFactory;
+    private MobSpawnFactory mobSpawnFactory;
+    private MysteryBoxFactory mysteryBoxFactory;
+    private PerkMachineFactory perkMachineFactory;
     private PerkManager perkManager;
     private PowerUpManager powerUpManager;
+    private SectionFactory sectionFactory;
     private Team team;
+    private WallWeaponFactory wallWeaponFactory;
     private Wave wave;
     private WaveFactory waveFactory;
     private ZombiesConfig config;
@@ -72,12 +81,17 @@ public class Zombies extends AbstractGameMode {
         this.waveFactory = new WaveFactory(sectionContainer, version, config);
 
         teams.add(team);
+
+        registerComponentFactories();
     }
 
     public void onCreate() {
         PowerUpFactory powerUpFactory = new PowerUpFactory(plugin, this, translator);
 
         // Register gamemode specific event handlers
+        plugin.getEventDispatcher().registerEventChannel(BlockPlaceEvent.class, new EventChannel<>(
+                new BarricadeRepairHandler(game, this)
+        ));
         plugin.getEventDispatcher().registerEventChannel(GamePlayerDamageEntityEvent.class, new EventChannel<>(
                 new ZombiesDamageEventHandler(this)
         ));
@@ -88,6 +102,7 @@ public class Zombies extends AbstractGameMode {
                 new ZombiesInteractEventHandler(game, this)
         ));
         plugin.getEventDispatcher().registerEventChannel(PlayerMoveEvent.class, new EventChannel<>(
+                new BarricadePlayerPassHandler(game, this),
                 new ZombiesMoveEventHandler(game, this)
         ));
     }
@@ -105,12 +120,28 @@ public class Zombies extends AbstractGameMode {
         }
     }
 
+    public BarricadeFactory getBarricadeFactory() {
+        return barricadeFactory;
+    }
+
     public ZombiesConfig getConfig() {
         return config;
     }
 
-    public PerkManager getPerkManager() {
-        return perkManager;
+    public DoorFactory getDoorFactory() {
+        return doorFactory;
+    }
+
+    public MobSpawnFactory getMobSpawnFactory() {
+        return mobSpawnFactory;
+    }
+
+    public MysteryBoxFactory getMysteryBoxFactory() {
+        return mysteryBoxFactory;
+    }
+
+    public PerkMachineFactory getPerkMachineFactory() {
+        return perkMachineFactory;
     }
 
     public PowerUpManager getPowerUpManager() {
@@ -121,8 +152,16 @@ public class Zombies extends AbstractGameMode {
         return sectionContainer;
     }
 
+    public SectionFactory getSectionFactory() {
+        return sectionFactory;
+    }
+
     public GameModeType getType() {
         return GameModeType.ZOMBIES;
+    }
+
+    public WallWeaponFactory getWallWeaponFactory() {
+        return wallWeaponFactory;
     }
 
     public Wave getWave() {
@@ -219,10 +258,25 @@ public class Zombies extends AbstractGameMode {
     }
 
     public void loadData(Arena arena) {
+        CacheYaml data = game.getDataFile();
         ItemFinder itemFinder = new ItemFinder(plugin);
         PerkFactory perkFactory = new PerkFactory(plugin, translator);
 
-        ZombiesDataLoader dataLoader = new ZombiesDataLoader(this, game, arena, itemFinder, perkFactory, translator);
+        ZombiesDataLoader dataLoader = new ZombiesDataLoader(
+                this,
+                data,
+                arena,
+                itemFinder,
+                barricadeFactory,
+                doorFactory,
+                mobSpawnFactory,
+                mysteryBoxFactory,
+                perkFactory,
+                perkMachineFactory,
+                sectionFactory,
+                wallWeaponFactory
+        );
+
         dataLoader.load();
     }
 
@@ -377,5 +431,17 @@ public class Zombies extends AbstractGameMode {
         amount += Math.round((double) amount / 100 * (new Random().nextInt(config.getVariation() * 2) - config.getVariation()));
         amount *= config.getMobAmount(entityType.toString());
         return amount;
+    }
+
+    private void registerComponentFactories() {
+        ItemFinder itemFinder = new ItemFinder(plugin);
+
+        barricadeFactory = new BarricadeFactory();
+        doorFactory = new DoorFactory(game);
+        mobSpawnFactory = new MobSpawnFactory();
+        mysteryBoxFactory = new MysteryBoxFactory(itemFinder, config);
+        perkMachineFactory = new PerkMachineFactory(game, perkManager, translator, config);
+        sectionFactory = new SectionFactory();
+        wallWeaponFactory = new WallWeaponFactory(game, translator);
     }
 }

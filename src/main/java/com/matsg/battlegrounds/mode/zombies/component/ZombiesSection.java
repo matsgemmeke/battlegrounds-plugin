@@ -12,36 +12,39 @@ import java.util.List;
 public class ZombiesSection implements Section {
 
     private boolean locked, unlockedByDefault;
+    private ComponentContainer<Barricade> barricadeContainer;
     private ComponentContainer<Door> doorContainer;
-    private ComponentContainer<ItemChest> itemChestContainer;
     private ComponentContainer<MobSpawn> mobSpawnContainer;
     private ComponentContainer<MysteryBox> mysteryBoxContainer;
     private ComponentContainer<PerkMachine> perkMachineContainer;
+    private ComponentContainer<WallWeapon> wallWeaponContainer;
     private int id, price;
     private String name;
 
-    public ZombiesSection(int id, String name, boolean unlockedByDefault) {
+    public ZombiesSection(int id, String name, int price, boolean unlockedByDefault) {
         this.id = id;
         this.name = name;
+        this.price = price;
         this.unlockedByDefault = unlockedByDefault;
+        this.barricadeContainer = new BattleComponentContainer<>();
         this.doorContainer = new BattleComponentContainer<>();
-        this.itemChestContainer = new BattleComponentContainer<>();
         this.locked = true;
         this.mobSpawnContainer = new BattleComponentContainer<>();
         this.mysteryBoxContainer = new BattleComponentContainer<>();
         this.perkMachineContainer = new BattleComponentContainer<>();
+        this.wallWeaponContainer = new BattleComponentContainer<>();
     }
 
-    public int getId() {
-        return id;
+    public ComponentContainer<Barricade> getBarricadeContainer() {
+        return barricadeContainer;
     }
 
     public ComponentContainer<Door> getDoorContainer() {
         return doorContainer;
     }
 
-    public ComponentContainer<ItemChest> getItemChestContainer() {
-        return itemChestContainer;
+    public int getId() {
+        return id;
     }
 
     public ComponentContainer<MobSpawn> getMobSpawnContainer() {
@@ -68,6 +71,10 @@ public class ZombiesSection implements Section {
         this.price = price;
     }
 
+    public ComponentContainer<WallWeapon> getWallWeaponContainer() {
+        return wallWeaponContainer;
+    }
+
     public boolean isLocked() {
         return locked;
     }
@@ -86,14 +93,14 @@ public class ZombiesSection implements Section {
     }
 
     public ArenaComponent getComponent(Location location) {
+        for (Barricade barricade : barricadeContainer.getAll()) {
+            if (barricade.contains(location)) {
+                return barricade;
+            }
+        }
         for (Door door : doorContainer.getAll()) {
             if (door.contains(location)) {
                 return door;
-            }
-        }
-        for (ItemChest itemChest : itemChestContainer.getAll()) {
-            if (itemChest.getChest().getLocation().equals(location)) {
-                return itemChest;
             }
         }
         for (MysteryBox mysteryBox : mysteryBoxContainer.getAll()) {
@@ -104,6 +111,11 @@ public class ZombiesSection implements Section {
         for (PerkMachine perkMachine : perkMachineContainer.getAll()) {
             if (perkMachine.getSign().getLocation().equals(location)) {
                 return perkMachine;
+            }
+        }
+        for (WallWeapon wallWeapon : wallWeaponContainer.getAll()) {
+            if (wallWeapon.getChest().getLocation().equals(location)) {
+                return wallWeapon;
             }
         }
         return null;
@@ -120,10 +132,10 @@ public class ZombiesSection implements Section {
     public Collection<ArenaComponent> getComponents() {
         List<ArenaComponent> list = new ArrayList<>();
         list.addAll(doorContainer.getAll());
-        list.addAll(itemChestContainer.getAll());
         list.addAll(mobSpawnContainer.getAll());
         list.addAll(mysteryBoxContainer.getAll());
         list.addAll(perkMachineContainer.getAll());
+        list.addAll(wallWeaponContainer.getAll());
         return Collections.unmodifiableList(list);
     }
 
@@ -158,6 +170,13 @@ public class ZombiesSection implements Section {
     }
 
     private ComponentContainer[] getContainers() {
-        return new ComponentContainer[] { doorContainer, itemChestContainer, mobSpawnContainer, mysteryBoxContainer, perkMachineContainer };
+        return new ComponentContainer[] {
+                barricadeContainer,
+                doorContainer,
+                mobSpawnContainer,
+                mysteryBoxContainer,
+                perkMachineContainer,
+                wallWeaponContainer
+        };
     }
 }

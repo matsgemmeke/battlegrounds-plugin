@@ -12,8 +12,11 @@ import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.command.validator.GameModeUsageValidator;
 import com.matsg.battlegrounds.command.validator.SectionNameValidator;
 import com.matsg.battlegrounds.mode.GameModeType;
-import com.matsg.battlegrounds.mode.zombies.component.ZombiesDoor;
 import com.matsg.battlegrounds.mode.zombies.Zombies;
+import com.matsg.battlegrounds.mode.zombies.component.factory.DoorFactory;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -45,21 +48,17 @@ public class AddDoor extends ComponentCommand {
             return;
         }
 
-        Block block = selection.getCenter().getBlock();
+        Location maximumPoint = selection.getMaximumPoint();
+        Location minimumPoint = selection.getMinimumPoint();
+        World world = selection.getWorld();
+        Material material = selection.getCenter().getBlock().getType();
 
-        Door door = new ZombiesDoor(
-                componentId,
-                game,
-                section,
-                selection.getWorld(),
-                selection.getMaximumPoint(),
-                selection.getMinimumPoint(),
-                block.getType()
-        );
+        DoorFactory doorFactory = zombies.getDoorFactory();
+        Door door = doorFactory.make(componentId, section, world, maximumPoint, minimumPoint, material);
 
         section.getDoorContainer().add(door);
 
-        game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".material", block.getType().toString());
+        game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".material", material.toString());
         game.getDataFile().setLocation("arena." + arena.getName() + ".component." + componentId + ".max", selection.getMaximumPoint(), true);
         game.getDataFile().setLocation("arena." + arena.getName() + ".component." + componentId + ".min", selection.getMinimumPoint(), true);
         game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".section", section.getName());

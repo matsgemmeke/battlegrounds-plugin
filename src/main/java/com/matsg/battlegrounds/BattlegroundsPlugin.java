@@ -193,9 +193,9 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         gameManager = new BattleGameManager();
         selectionManager = new BattleSelectionManager();
 
-        new DataLoader(this, translator, version);
-
         new EventListener(this);
+
+        new DataLoader(this, translator, version);
 
         if (ReflectionUtils.getEnumVersion().getValue() > 8) {
             new PlayerSwapItemListener(this);

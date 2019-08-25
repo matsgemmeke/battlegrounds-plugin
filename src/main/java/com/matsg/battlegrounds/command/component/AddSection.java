@@ -10,7 +10,7 @@ import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.command.validator.GameModeUsageValidator;
 import com.matsg.battlegrounds.mode.GameModeType;
 import com.matsg.battlegrounds.mode.zombies.Zombies;
-import com.matsg.battlegrounds.mode.zombies.component.ZombiesSection;
+import com.matsg.battlegrounds.mode.zombies.component.factory.SectionFactory;
 import org.bukkit.entity.Player;
 
 public class AddSection extends ComponentCommand {
@@ -36,7 +36,9 @@ public class AddSection extends ComponentCommand {
             return;
         }
 
-        if (zombies.getSection(args[4]) != null) {
+        String sectionName = args[4];
+
+        if (zombies.getSection(sectionName) != null) {
             player.sendMessage(translator.translate(TranslationKey.SECTION_EXISTS,
                     new Placeholder("bg_arena", arena.getName()),
                     new Placeholder("bg_section", args[3])
@@ -58,8 +60,10 @@ public class AddSection extends ComponentCommand {
             return;
         }
 
-        Section section = new ZombiesSection(componentId, args[4], zombies.getSectionContainer().getAll().size() <= 0);
-        section.setPrice(price);
+        boolean unlockedByDefault = zombies.getSectionContainer().getAll().size() <= 0;
+
+        SectionFactory sectionFactory = zombies.getSectionFactory();
+        Section section = sectionFactory.make(componentId, sectionName, price, unlockedByDefault);
 
         zombies.getSectionContainer().add(section);
 

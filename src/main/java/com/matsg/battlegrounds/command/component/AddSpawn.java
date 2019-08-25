@@ -48,6 +48,7 @@ public class AddSpawn extends ComponentCommand {
             }
         }
 
+        // Perhaps create a factory around the creation of spawns abstractions
         Spawn spawn = new ArenaSpawn(componentId, player.getLocation(), teamId);
         spawn.setTeamBase(teamBase);
 

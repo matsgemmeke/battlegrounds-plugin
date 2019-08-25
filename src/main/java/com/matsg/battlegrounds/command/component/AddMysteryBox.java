@@ -5,8 +5,6 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.item.Weapon;
-import com.matsg.battlegrounds.item.ItemFinder;
 import com.matsg.battlegrounds.mode.zombies.component.MysteryBox;
 import com.matsg.battlegrounds.mode.zombies.component.Section;
 import com.matsg.battlegrounds.api.Placeholder;
@@ -15,14 +13,13 @@ import com.matsg.battlegrounds.command.validator.SectionNameValidator;
 import com.matsg.battlegrounds.mode.GameModeType;
 import com.matsg.battlegrounds.mode.zombies.Zombies;
 import com.matsg.battlegrounds.mode.zombies.component.ZombiesMysteryBox;
+import com.matsg.battlegrounds.mode.zombies.component.factory.MysteryBoxFactory;
 import com.matsg.battlegrounds.util.Pair;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.*;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 public class AddMysteryBox extends ComponentCommand {
@@ -93,17 +90,8 @@ public class AddMysteryBox extends ComponentCommand {
         // The location of the double chest always refers to the block with the lowest coordinates.
         Pair<Block, Block> blocks = new Pair<>(doubleChest.getLocation().getBlock(), max.getBlock());
 
-        ItemFinder itemFinder = new ItemFinder(plugin);
-        List<Weapon> weaponList = new ArrayList<>();
-
-        for (String weaponId : zombies.getConfig().getMysteryBoxWeapons()) {
-            weaponList.add(itemFinder.findWeapon(weaponId));
-        }
-
-        Weapon[] weapons = weaponList.toArray(new Weapon[weaponList.size()]);
-
-        MysteryBox mysteryBox = new ZombiesMysteryBox(componentId, game, blocks, weapons, price);
-        mysteryBox.setActive(false);
+        MysteryBoxFactory mysteryBoxFactory = zombies.getMysteryBoxFactory();
+        MysteryBox mysteryBox = mysteryBoxFactory.make(componentId, blocks, price);
 
         section.getMysteryBoxContainer().add(mysteryBox);
 

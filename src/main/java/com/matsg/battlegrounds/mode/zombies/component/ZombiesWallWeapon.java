@@ -13,37 +13,21 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.inventory.ItemStack;
 
-public class ZombiesItemChest implements ItemChest {
+public class ZombiesWallWeapon implements WallWeapon {
 
     private boolean locked;
     private Chest chest;
     private Game game;
     private int id, price;
-    private ItemStack itemStack;
-    private ItemType itemType;
-    private String itemName;
-    private TransactionItem item;
     private Translator translator;
+    private Weapon weapon;
 
-    public ZombiesItemChest(
-            int id,
-            Game game,
-            Translator translator,
-            Chest chest,
-            TransactionItem item,
-            String itemName,
-            ItemStack itemStack,
-            ItemType itemType,
-            int price
-    ) {
+    public ZombiesWallWeapon(int id, Game game, Chest chest, Weapon weapon, Translator translator, int price) {
         this.id = id;
         this.game = game;
-        this.translator = translator;
         this.chest = chest;
-        this.item = item;
-        this.itemName = itemName;
-        this.itemStack = itemStack;
-        this.itemType = itemType;
+        this.weapon = weapon;
+        this.translator = translator;
         this.price = price;
     }
 
@@ -55,16 +39,16 @@ public class ZombiesItemChest implements ItemChest {
         return id;
     }
 
-    public TransactionItem getItem() {
-        return item;
-    }
-
     public int getPrice() {
         return price;
     }
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public Weapon getWeapon() {
+        return weapon;
     }
 
     public boolean isLocked() {
@@ -89,26 +73,26 @@ public class ZombiesItemChest implements ItemChest {
             return true;
         }
 
-        ItemSlot itemSlot = itemType.getDefaultItemSlot();
+        ItemSlot itemSlot = weapon.getType().getDefaultItemSlot();
 
         if (itemSlot == ItemSlot.FIREARM_PRIMARY && gamePlayer.getLoadout().getSecondary() == null
                 || gamePlayer.getPlayer().getInventory().getHeldItemSlot() == 1
-                || game.getItemRegistry().getWeaponIgnoreMetadata(gamePlayer, itemStack) != null) {
+                || game.getItemRegistry().getWeaponIgnoreMetadata(gamePlayer, weapon.getItemStack()) != null) {
             itemSlot = ItemSlot.FIREARM_SECONDARY;
         }
 
-        ItemStack itemStack = new ItemStackBuilder(this.itemStack)
-                .setDisplayName(ChatColor.WHITE + itemName)
+        ItemStack itemStack = new ItemStackBuilder(weapon.getItemStack())
+                .setDisplayName(ChatColor.WHITE + weapon.getName())
                 .setLore()
                 .build();
 
-        gamePlayer.getPlayer().openInventory(new TransactionView(game, translator, item, itemStack, price, itemSlot.getSlot()) {
+        gamePlayer.getPlayer().openInventory(new TransactionView(game, translator, weapon, itemStack, price, itemSlot.getSlot()) {
             public void onTransactionComplete(Transaction transaction) {
-                Weapon weapon = gamePlayer.getLoadout().getWeapon(itemName);
+                Weapon existingWeapon = gamePlayer.getLoadout().getWeapon(weapon.getName());
                 // In case the player already has the weapon they want to buy, reset its state.
-                if (weapon != null) {
-                    weapon.resetState();
-                    weapon.update();
+                if (existingWeapon != null) {
+                    existingWeapon.resetState();
+                    existingWeapon.update();
                 }
                 // Refresh the player effects
                 gamePlayer.refreshEffects();
@@ -125,7 +109,7 @@ public class ZombiesItemChest implements ItemChest {
         }
 
         ActionBar.ITEMCHEST.send(gamePlayer.getPlayer(),
-                new Placeholder("bg_item", itemName),
+                new Placeholder("bg_item", weapon.getName()),
                 new Placeholder("bg_price", getPrice(gamePlayer))
         );
 
@@ -135,7 +119,7 @@ public class ZombiesItemChest implements ItemChest {
     private int getPrice(GamePlayer gamePlayer) {
         int price = this.price;
 
-        if (gamePlayer.getLoadout().getWeaponIgnoreMetadata(itemStack) != null) {
+        if (gamePlayer.getLoadout().getWeaponIgnoreMetadata(weapon.getItemStack()) != null) {
             price /= 2;
         }
 

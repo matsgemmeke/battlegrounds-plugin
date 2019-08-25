@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.mode.zombies.item.powerup;
 
 import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.mode.zombies.component.Barricade;
 import com.matsg.battlegrounds.mode.zombies.component.MobSpawn;
 import com.matsg.battlegrounds.mode.zombies.item.PowerUpCallback;
 import com.matsg.battlegrounds.mode.zombies.item.PowerUpEffect;
@@ -56,11 +57,13 @@ public class Carpenter implements PowerUpEffect {
                 }
 
                 for (MobSpawn mobSpawn : mobSpawns) {
-                    if (mobSpawn.getBarricade() != null && !mobSpawn.getBarricade().isClosed() && mobSpawn.getBarricade().getMobs().size() <= 0) {
-                        for (Block block : mobSpawn.getBarricade().getBlocks()) {
+                    Barricade barricade = mobSpawn.getBarricade();
+
+                    if (barricade != null && !barricade.isClosed() && barricade.getMobs().size() <= 0) {
+                        for (Block block : barricade.getBlocks()) {
                             if (block != null && block.getType() == Material.AIR) {
                                 // Repair a single block and repeat the loop
-                                mobSpawn.getBarricade().repairBlock(block);
+                                block.setType(barricade.getMaterial());
                                 block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, block.getType().getId());
                                 return;
                             }

@@ -163,6 +163,13 @@ public interface Game {
     void callEvent(Event event);
 
     /**
+     * Gets the first available component id in the game.
+     *
+     * @return the first available id
+     */
+    int findAvailableComponentId();
+
+    /**
      * Gets the instance of a certain gamemode the game is using.
      *
      * @param gameModeClass The gamemode class.

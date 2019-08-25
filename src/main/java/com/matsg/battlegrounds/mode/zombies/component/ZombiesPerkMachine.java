@@ -29,15 +29,15 @@ public class ZombiesPerkMachine implements PerkMachine {
     private String[] signLayout;
     private Translator translator;
 
-    public ZombiesPerkMachine(int id, Game game, Sign sign, Perk perk, PerkManager perkManager, Translator translator, int price, int maxBuys) {
+    public ZombiesPerkMachine(int id, Game game, Sign sign, Perk perk, PerkManager perkManager, Translator translator, int maxBuys, int price) {
         this.id = id;
         this.game = game;
         this.sign = sign;
         this.perk = perk;
         this.perkManager = perkManager;
         this.translator = translator;
-        this.price = price;
         this.maxBuys = maxBuys;
+        this.price = price;
         this.buys = new HashMap<>();
     }
 
@@ -49,8 +49,16 @@ public class ZombiesPerkMachine implements PerkMachine {
         return maxBuys;
     }
 
+    public void setMaxBuys(int maxBuys) {
+        this.maxBuys = maxBuys;
+    }
+
     public Perk getPerk() {
         return perk;
+    }
+
+    public void setPerk(Perk perk) {
+        this.perk = perk;
     }
 
     public int getPrice() {
@@ -63,6 +71,10 @@ public class ZombiesPerkMachine implements PerkMachine {
 
     public Sign getSign() {
         return sign;
+    }
+
+    public void setSign(Sign sign) {
+        this.sign = sign;
     }
 
     public String[] getSignLayout() {

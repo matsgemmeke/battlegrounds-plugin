@@ -50,7 +50,7 @@ public class BattleGame implements Game {
         this.state = new WaitingState();
 
         try {
-            this.dataFile = new BattleCacheYaml(plugin, plugin.getDataFolder().getPath() + "/data/game_" + id, "game_" + id + ".yml");
+            this.dataFile = new BattleCacheYaml(plugin, plugin.getDataFolder().getPath() + "/data/game_" + id, "setup.yml");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -139,45 +139,26 @@ public class BattleGame implements Game {
         plugin.getServer().getPluginManager().callEvent(event);
     }
 
-    private void clearGameData() {
-        new BattleRunnable() {
-            public void run() {
-                Random random = new Random();
+    public int findAvailableComponentId() {
+        int i = 1;
 
-                if (arenaList.size() >= 2) {
-                    Arena arena, activeArena = getActiveArena();
-                    do {
-                        arena = arenaList.get(random.nextInt(arenaList.size()));
-                    } while (activeArena == arena);
-                    setArena(arena);
+        while (true) {
+            boolean available = false;
+
+            // Check if the gamemodes contain components with the same id.
+            for (GameMode gameMode : configuration.getGameModes()) {
+                if (gameMode.getComponent(i) == null) {
+                    available = true;
                 }
-                if (configuration.getGameModes().length >= 2) {
-                    GameMode gameMode, activeGameMode = getGameMode();
-                    do {
-                        gameMode = configuration.getGameModes()[random.nextInt(configuration.getGameModes().length)];
-                    } while (activeGameMode == gameMode);
-                    setGameMode(gameMode);
-                }
-
-                rollback();
-
-                gameMode.loadData(getActiveArena());
-                itemRegistry.clear();
-                playerManager.getPlayers().clear();
-
-                resetState();
-                updateSign();
             }
-        }.runTaskLater(200);
-    }
 
-    private Arena getActiveArena() {
-        for (Arena arena : arenaList) {
-            if (arena.isActive()) {
-                return arena;
+            // Check if the arena itself contains components with the same id.
+            if (available && getActiveArena().getComponent(i) == null) {
+                return i;
             }
+
+            i++;
         }
-        return null;
     }
 
     public <T extends GameMode> T getGameMode(Class<T> gameModeClass) {
@@ -307,5 +288,46 @@ public class BattleGame implements Game {
 
     public boolean updateSign() {
         return gameSign != null && gameSign.update();
+    }
+
+    private void clearGameData() {
+        new BattleRunnable() {
+            public void run() {
+                Random random = new Random();
+
+                if (arenaList.size() >= 2) {
+                    Arena arena, activeArena = getActiveArena();
+                    do {
+                        arena = arenaList.get(random.nextInt(arenaList.size()));
+                    } while (activeArena == arena);
+                    setArena(arena);
+                }
+                if (configuration.getGameModes().length >= 2) {
+                    GameMode gameMode, activeGameMode = getGameMode();
+                    do {
+                        gameMode = configuration.getGameModes()[random.nextInt(configuration.getGameModes().length)];
+                    } while (activeGameMode == gameMode);
+                    setGameMode(gameMode);
+                }
+
+                rollback();
+
+                gameMode.loadData(getActiveArena());
+                itemRegistry.clear();
+                playerManager.getPlayers().clear();
+
+                resetState();
+                updateSign();
+            }
+        }.runTaskLater(200);
+    }
+
+    private Arena getActiveArena() {
+        for (Arena arena : arenaList) {
+            if (arena.isActive()) {
+                return arena;
+            }
+        }
+        return null;
     }
 }
