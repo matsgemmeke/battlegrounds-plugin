@@ -67,6 +67,7 @@ public class EventListener implements Listener {
                 new PlayerDropItemEventHandler(plugin)
         ));
         eventDispatcher.registerEventChannel(PlayerInteractEvent.class, new EventChannel<>(
+                new ComponentInteractHandler(plugin),
                 new PlayerInteractEventHandler(plugin),
                 new SelectionInteractionHandler(plugin, translator)
         ));
@@ -80,6 +81,7 @@ public class EventListener implements Listener {
                 new PlayerKickEventHandler(plugin)
         ));
         eventDispatcher.registerEventChannel(PlayerMoveEvent.class, new EventChannel<>(
+                new ComponentMoveHandler(plugin),
                 new PlayerMoveEventHandler(plugin)
         ));
         eventDispatcher.registerEventChannel(PlayerPickupItemEvent.class, new EventChannel<>(
@@ -145,6 +147,11 @@ public class EventListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
+        dispatchEvent(event);
+    }
+
+    @EventHandler
+    public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         dispatchEvent(event);
     }
 

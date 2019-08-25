@@ -2,16 +2,16 @@ package com.matsg.battlegrounds.mode.zombies.component;
 
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.item.Weapon;
-import org.bukkit.block.Chest;
+import org.bukkit.entity.ItemFrame;
 
 public interface WallWeapon extends ArenaComponent, Interactable, Lockable, Priceable, Watchable {
 
     /**
-     * Gets the chest block of the wall weapon.
+     * Gets the item frame of the wall weapon.
      *
-     * @return the chest block
+     * @return the item frame
      */
-    Chest getChest();
+    ItemFrame getItemFrame();
 
     /**
      * Gets the weapon the wall weapon sells.

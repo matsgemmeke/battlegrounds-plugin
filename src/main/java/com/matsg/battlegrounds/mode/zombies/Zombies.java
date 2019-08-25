@@ -35,7 +35,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -98,12 +98,11 @@ public class Zombies extends AbstractGameMode {
         plugin.getEventDispatcher().registerEventChannel(GamePlayerKillEntityEvent.class, new EventChannel<>(
                 new ZombiesKillEventHandler(this, powerUpFactory)
         ));
-        plugin.getEventDispatcher().registerEventChannel(PlayerInteractEvent.class, new EventChannel<>(
-                new ZombiesInteractEventHandler(game, this)
+        plugin.getEventDispatcher().registerEventChannel(PlayerInteractEntityEvent.class, new EventChannel<>(
+                new WallWeaponInteractHandler(game, this)
         ));
         plugin.getEventDispatcher().registerEventChannel(PlayerMoveEvent.class, new EventChannel<>(
-                new BarricadePlayerPassHandler(game, this),
-                new ZombiesMoveEventHandler(game, this)
+                new BarricadePlayerPassHandler(game, this)
         ));
     }
 

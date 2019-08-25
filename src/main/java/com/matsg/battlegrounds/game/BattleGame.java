@@ -161,6 +161,10 @@ public class BattleGame implements Game {
         }
     }
 
+    public ComponentWrapper[] getComponentWrappers() {
+        return new ComponentWrapper[] { getActiveArena(), gameMode };
+    }
+
     public <T extends GameMode> T getGameMode(Class<T> gameModeClass) {
         for (GameMode gameMode : configuration.getGameModes()) {
             if (gameMode.getClass() == gameModeClass) {

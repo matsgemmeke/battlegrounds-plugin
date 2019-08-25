@@ -114,7 +114,7 @@ public class ZombiesSection implements Section {
             }
         }
         for (WallWeapon wallWeapon : wallWeaponContainer.getAll()) {
-            if (wallWeapon.getChest().getLocation().equals(location)) {
+            if (wallWeapon.getItemFrame().getLocation().getBlock().equals(location.getBlock())) {
                 return wallWeapon;
             }
         }

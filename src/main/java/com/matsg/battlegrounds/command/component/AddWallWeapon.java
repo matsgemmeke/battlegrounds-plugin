@@ -15,12 +15,10 @@ import com.matsg.battlegrounds.mode.zombies.Zombies;
 import com.matsg.battlegrounds.item.ItemFinder;
 import com.matsg.battlegrounds.mode.zombies.component.WallWeapon;
 import com.matsg.battlegrounds.mode.zombies.component.factory.WallWeaponFactory;
-import org.bukkit.Material;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Chest;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
-
-import java.util.Set;
 
 public class AddWallWeapon extends ComponentCommand {
 
@@ -40,9 +38,17 @@ public class AddWallWeapon extends ComponentCommand {
 
     public void execute(ComponentContext context, int componentId, String[] args) {
         Player player = context.getPlayer();
-        BlockState blockState = player.getTargetBlock((Set<Material>) null, 5).getState();
+        ItemFrame itemFrame = null;
 
-        if (!(blockState instanceof Chest)) {
+        double range = 2.0;
+
+        for (Entity entity : player.getNearbyEntities(range, range, range)) {
+            if (entity.getType() == EntityType.ITEM_FRAME) {
+                itemFrame = (ItemFrame) entity;
+            }
+        }
+
+        if (itemFrame == null) {
             player.sendMessage(translator.translate(TranslationKey.INVALID_BLOCK));
             return;
         }
@@ -79,14 +85,14 @@ public class AddWallWeapon extends ComponentCommand {
             return;
         }
 
-        Chest chest = (Chest) blockState;
-
         WallWeaponFactory wallWeaponFactory = zombies.getWallWeaponFactory();
-        WallWeapon wallWeapon = wallWeaponFactory.make(componentId, chest, weapon, price);
+        WallWeapon wallWeapon = wallWeaponFactory.make(componentId, itemFrame, weapon, price);
 
         section.getWallWeaponContainer().add(wallWeapon);
 
-        game.getDataFile().setLocation("arena." + arena.getName() + ".component." + componentId + ".location", blockState.getLocation(), true);
+        itemFrame.setItem(weapon.getItemStack());
+
+        game.getDataFile().setLocation("arena." + arena.getName() + ".component." + componentId + ".location", itemFrame.getLocation(), true);
         game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".price", price);
         game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".section", section.getName());
         game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".type", "wallweapon");

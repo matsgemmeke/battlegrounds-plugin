@@ -10,33 +10,33 @@ import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.util.ActionBar;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
-import org.bukkit.block.Chest;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.inventory.ItemStack;
 
 public class ZombiesWallWeapon implements WallWeapon {
 
     private boolean locked;
-    private Chest chest;
     private Game game;
     private int id, price;
+    private ItemFrame itemFrame;
     private Translator translator;
     private Weapon weapon;
 
-    public ZombiesWallWeapon(int id, Game game, Chest chest, Weapon weapon, Translator translator, int price) {
+    public ZombiesWallWeapon(int id, Game game, ItemFrame itemFrame, Weapon weapon, Translator translator, int price) {
         this.id = id;
         this.game = game;
-        this.chest = chest;
+        this.itemFrame = itemFrame;
         this.weapon = weapon;
         this.translator = translator;
         this.price = price;
     }
 
-    public Chest getChest() {
-        return chest;
-    }
-
     public int getId() {
         return id;
+    }
+
+    public ItemFrame getItemFrame() {
+        return itemFrame;
     }
 
     public int getPrice() {

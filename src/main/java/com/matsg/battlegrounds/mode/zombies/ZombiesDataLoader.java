@@ -18,6 +18,8 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.ItemFrame;
 
 import java.util.logging.Logger;
 
@@ -206,11 +208,19 @@ public class ZombiesDataLoader {
                 }
 
                 Location location = data.getLocation("arena." + arena.getName() + ".component." + componentId + ".location");
-                Chest chest = (Chest) location.getBlock().getState();
                 Weapon weapon = itemFinder.findWeapon(configurationSection.getString(componentId + ".weapon"));
                 int price = configurationSection.getInt(componentId + ".price");
 
-                WallWeapon wallWeapon = wallWeaponFactory.make(componentId, chest, weapon, price);
+                double range = 1.0;
+                ItemFrame itemFrame = null;
+
+                for (Entity entity : location.getWorld().getNearbyEntities(location, range, range, range)) {
+                    if (entity.getLocation().getBlock().equals(location.getBlock())) {
+                        itemFrame = (ItemFrame) entity;
+                    }
+                }
+
+                WallWeapon wallWeapon = wallWeaponFactory.make(componentId, itemFrame, weapon, price);
 
                 section.getWallWeaponContainer().add(wallWeapon);
             }

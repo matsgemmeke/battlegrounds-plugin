@@ -17,7 +17,7 @@ public interface EventDispatcher {
      * @param eventClass The event class that the event channel handles.
      * @param eventChannel The event channel instance.
      */
-    void registerEventChannel(Class<? extends Event> eventClass, EventChannel eventChannel);
+    <T extends Event> void registerEventChannel(Class<T> eventClass, EventChannel<T> eventChannel);
 
     /**
      * Unregisters an event channel.

@@ -170,6 +170,13 @@ public interface Game {
     int findAvailableComponentId();
 
     /**
+     * Gets all component wrapper instances involved in the game.
+     *
+     * @return the game's component wrappers
+     */
+    ComponentWrapper[] getComponentWrappers();
+
+    /**
      * Gets the instance of a certain gamemode the game is using.
      *
      * @param gameModeClass The gamemode class.
