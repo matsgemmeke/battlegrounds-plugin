@@ -46,7 +46,7 @@ public class SelectWeaponView implements View {
 
         for (Weapon weapon : weapons) {
             weapon.update();
-            addWeapon(weapon, slot ++);
+            addWeapon(weapon, slot++);
         }
 
         inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(translator.translate(TranslationKey.GO_BACK)).build());

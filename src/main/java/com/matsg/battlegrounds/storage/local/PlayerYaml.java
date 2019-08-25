@@ -114,7 +114,7 @@ public class PlayerYaml extends AbstractYaml implements StoredPlayer {
 
     public List<Map<String, String>> getLoadoutSetups() {
         List<Map<String, String>> loadoutSetups = new ArrayList<>();
-        for (int i = 1; i <= 5; i ++) {
+        for (int i = 1; i <= 5; i++) {
             loadoutSetups.add(getLoadoutSetup(i));
         }
         return loadoutSetups;

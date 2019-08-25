@@ -193,7 +193,7 @@ public class BattleArena implements Arena {
 
         for (Spawn spawn : spawnContainer.getAll()) {
             if (spawn.getTeamId() == teamId) {
-                count ++;
+                count++;
             }
         }
 

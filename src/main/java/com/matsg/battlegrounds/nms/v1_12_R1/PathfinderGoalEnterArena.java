@@ -67,7 +67,7 @@ public class PathfinderGoalEnterArena extends PathfinderGoal {
                     int i = -1;
 
                     do {
-                        block = barricade.getBlocks()[++ i];
+                        block = barricade.getBlocks()[++i];
                     } while (block.getType() == Material.AIR);
 
                     block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, block.getType());

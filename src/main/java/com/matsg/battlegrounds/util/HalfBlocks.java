@@ -32,7 +32,7 @@ public class HalfBlocks {
                 XMaterial.NETHER_BRICK_SLAB.parseMaterial(), XMaterial.OAK_SLAB.parseMaterial(), XMaterial.QUARTZ_SLAB.parseMaterial(), XMaterial.RED_SANDSTONE_SLAB.parseMaterial(),
                 XMaterial.SANDSTONE_SLAB.parseMaterial(), XMaterial.SPRUCE_SLAB.parseMaterial(), XMaterial.STONE_BRICK_SLAB.parseMaterial() };
         for (Material material : slabTypes) {
-            for (byte i = 0; i <= 17; i ++) {
+            for (byte i = 0; i <= 17; i++) {
                 list.add(new Slab(material, i, i <= 8));
             }
         }
@@ -47,7 +47,7 @@ public class HalfBlocks {
                 XMaterial.SANDSTONE_STAIRS.parseMaterial(), XMaterial.SPRUCE_STAIRS.parseMaterial(), XMaterial.STONE_BRICK_STAIRS.parseMaterial() };
 
         for (Material material : stairsTypes) {
-            for (byte i = 0; i <= 7; i ++) {
+            for (byte i = 0; i <= 7; i++) {
                 list.add(new Stairs(material, i, directions.get((byte) (i % 4)), i >= 4));
             }
         }

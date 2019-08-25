@@ -76,7 +76,7 @@ public class ZombiesPowerUpManager implements PowerUpManager {
                     cancel();
                     return;
                 }
-                if (++ r >= 20) {
+                if (++r >= 20) {
                     item.remove();
                     removePowerUp(powerUp);
                     cancel();

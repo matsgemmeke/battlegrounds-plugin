@@ -48,7 +48,7 @@ public class WaveSpawningThread extends BattleRunnable {
 
         do {
             mobSpawn = spawns.get(random.nextInt(spawns.size()));
-            if (++ tries > 100)
+            if (++tries > 100)
                 return; // Prevention of infinite loops
         } while (mobSpawn.isLocked() || !mobSpawn.getSpawnLocation(mob.getEntityType()).getChunk().isLoaded());
 

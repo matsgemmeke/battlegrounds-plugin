@@ -61,7 +61,7 @@ public class SelectAttachmentView implements View {
                         <= plugin.getLevelConfig().getLevel(plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).getExp())
                         ? getUnlockedItemStack(attachment) : getLockedItemStack(attachment);
 
-                inventory.setItem(++ slot, itemStack);
+                inventory.setItem(++slot, itemStack);
                 attachments.put(inventory.getItem(slot), attachment);
             }
         }

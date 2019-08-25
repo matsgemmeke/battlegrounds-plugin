@@ -132,7 +132,7 @@ public class ZombiesPerkMachine implements PerkMachine {
             return false;
         }
 
-        for (int i = 0; i <= 3; i ++) {
+        for (int i = 0; i <= 3; i++) {
             sign.setLine(i, translator.createSimpleMessage(signLayout[i],
                     new Placeholder("bg_perk", perk.getEffect().getName()),
                     new Placeholder("bg_price", price)

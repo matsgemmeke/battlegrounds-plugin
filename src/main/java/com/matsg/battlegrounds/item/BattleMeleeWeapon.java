@@ -183,7 +183,7 @@ public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
             return true;
         }
         itemEntity.remove();
-        amount ++;
+        amount++;
         droppedItems.remove(itemEntity);
         update();
         for (Sound sound : BattleSound.ITEM_EQUIP) {
@@ -215,7 +215,7 @@ public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
     }
 
     public void shoot() {
-        amount --;
+        amount--;
         throwing = true;
 
         Item item = game.getArena().getWorld().dropItem(gamePlayer.getPlayer().getEyeLocation(), new ItemStackBuilder(itemStack.clone()).setAmount(1).build());

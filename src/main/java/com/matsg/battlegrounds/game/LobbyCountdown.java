@@ -71,7 +71,7 @@ public class LobbyCountdown extends BattleRunnable implements Countdown {
 
                 scoreboard.setCountdown(countdown);
                 scoreboard.display(game);
-                countdown --;
+                countdown--;
             }
         }, 0, 20);
     }

@@ -174,7 +174,7 @@ public class BattleGun extends BattleFirearm implements Gun {
         List<Location> list = new ArrayList<>();
         Random random = new Random();
 
-        for (int i = 1; i <= amount; i ++) {
+        for (int i = 1; i <= amount; i++) {
             Location location = direction.clone();
             location.setPitch(location.getPitch() + random.nextFloat() * spread - spread / 2);
             location.setYaw(location.getYaw() + random.nextFloat() * spread - spread / 2);
@@ -204,7 +204,7 @@ public class BattleGun extends BattleFirearm implements Gun {
             }
 
             if (entity.getBukkitEntity().isDead()) {
-                hits ++;
+                hits++;
                 return;
             }
 
@@ -217,7 +217,7 @@ public class BattleGun extends BattleFirearm implements Gun {
                 gamePlayer.getLocation().getWorld().playEffect(location, Effect.STEP_SOUND, Material.REDSTONE_BLOCK);
             }
 
-            hits ++;
+            hits++;
 
             Event event;
 

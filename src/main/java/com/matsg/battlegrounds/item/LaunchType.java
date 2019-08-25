@@ -61,7 +61,7 @@ public enum LaunchType {
 
                         direction.subtract(vector);
                         distance += 1.0;
-                    } while (distance <= maxDistance && ++ i <= launcher.getLaunchSpeed());
+                    } while (distance <= maxDistance && ++i <= launcher.getLaunchSpeed());
 
                     if (distance > maxDistance) {
                         cancel(); //If the projectile distance exceeds the long range, stop the runnable

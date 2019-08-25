@@ -148,7 +148,7 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
         item.setPickupDelay(1000);
         item.setVelocity(gamePlayer.getPlayer().getEyeLocation().getDirection().multiply(velocity));
 
-        amount --;
+        amount--;
         beingThrown = true;
         droppedItems.add(item);
         ignitionType.handleIgnition(this, item);

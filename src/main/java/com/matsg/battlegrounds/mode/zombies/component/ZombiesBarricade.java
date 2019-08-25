@@ -74,9 +74,9 @@ public class ZombiesBarricade implements Barricade {
 
     public Block[] getBlocks() {
         List<Block> list = new ArrayList<>();
-        for (int x = minimumPoint.getBlockX(); x <= maximumPoint.getBlockX(); x ++) {
-            for (int y = minimumPoint.getBlockY(); y <= maximumPoint.getBlockY(); y ++) {
-                for (int z = minimumPoint.getBlockZ(); z <= maximumPoint.getBlockZ(); z ++) {
+        for (int x = minimumPoint.getBlockX(); x <= maximumPoint.getBlockX(); x++) {
+            for (int y = minimumPoint.getBlockY(); y <= maximumPoint.getBlockY(); y++) {
+                for (int z = minimumPoint.getBlockZ(); z <= maximumPoint.getBlockZ(); z++) {
                     list.add(world.getBlockAt(x, y, z));
                 }
             }

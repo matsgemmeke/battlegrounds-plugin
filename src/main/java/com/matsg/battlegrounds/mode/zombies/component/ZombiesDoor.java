@@ -127,9 +127,9 @@ public class ZombiesDoor implements Door {
 
         Material material = locked ? this.material : Material.AIR;
 
-        for (int x = minimumPoint.getBlockX(); x <= maximumPoint.getBlockX(); x ++) {
-            for (int y = minimumPoint.getBlockY(); y <= maximumPoint.getBlockY(); y ++) {
-                for (int z = minimumPoint.getBlockZ(); z <= maximumPoint.getBlockZ(); z ++) {
+        for (int x = minimumPoint.getBlockX(); x <= maximumPoint.getBlockX(); x++) {
+            for (int y = minimumPoint.getBlockY(); y <= maximumPoint.getBlockY(); y++) {
+                for (int z = minimumPoint.getBlockZ(); z <= maximumPoint.getBlockZ(); z++) {
                     Block block = world.getBlockAt(x, y, z);
                     block.setType(material);
                 }

@@ -59,6 +59,6 @@ public class GameModeCountdown extends BattleRunnable implements Countdown {
             BattleSound.COUNTDOWN_NOTE.play(game);
         }
 
-        countdown --;
+        countdown--;
     }
 }

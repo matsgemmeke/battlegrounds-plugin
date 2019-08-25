@@ -44,7 +44,7 @@ public class BattleGameSign implements GameSign {
         String arena = game.getArena() != null ? game.getArena().getName() : "---";
         String[] layout = plugin.getBattlegroundsConfig().getGameSignLayout();
 
-        for (int i = 0; i <= 3; i ++) {
+        for (int i = 0; i <= 3; i++) {
             sign.setLine(i, translator.createSimpleMessage(layout[i],
                     new Placeholder("bg_arena", arena),
                     new Placeholder("bg_game", game.getId()),

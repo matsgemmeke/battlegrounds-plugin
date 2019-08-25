@@ -90,7 +90,7 @@ public class SQLPlayerStorage implements PlayerStorage {
             StoredPlayer storedPlayer = new SQLPlayerRecord(connection, player.getUniqueId());
             storedPlayer.createDefaultAttributes(player);
 
-            for (int i = 1; i <= 5; i ++) {
+            for (int i = 1; i <= 5; i++) {
                 Loadout loadout = defaultLoadouts.getList().get(i - 1);
                 storedPlayer.saveLoadout(loadout.getLoadoutNr(), loadout.convertToMap());
             }

@@ -101,7 +101,7 @@ public class LoadoutManagerView implements View {
             );
             ItemStack itemStack = new ItemStackBuilder(getLoadoutItemStack(loadout))
                     .addItemFlags(ItemFlag.values())
-                    .setAmount(++ i)
+                    .setAmount(++i)
                     .setDisplayName(ChatColor.WHITE + loadout.getName())
                     .setLore(translator.translate(TranslationKey.EDIT_LOADOUT))
                     .setUnbreakable(true)

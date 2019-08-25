@@ -13,7 +13,7 @@ public enum FireMode {
             new BattleRunnable() {
                 int shots = 0;
                 public void run() {
-                    if (++ shots <= amount && firearm.getMagazine() > 0) {
+                    if (++shots <= amount && firearm.getMagazine() > 0) {
                         firearm.setMagazine(firearm.getMagazine() - 1);
                         firearm.shootProjectile();
                         firearm.update();
@@ -41,7 +41,7 @@ public enum FireMode {
                 int shots = 0;
                 public void run() {
                     firearm.playShotSound();
-                    shots ++;
+                    shots++;
 
                     firearm.setMagazine(firearm.getMagazine() - 1);
                     firearm.shootProjectile();
