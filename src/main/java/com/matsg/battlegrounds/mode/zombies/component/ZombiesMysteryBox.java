@@ -1,8 +1,10 @@
 package com.matsg.battlegrounds.mode.zombies.component;
 
+import com.matsg.battlegrounds.api.Version;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.util.*;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 
 public class ZombiesMysteryBox implements MysteryBox {
@@ -15,14 +17,16 @@ public class ZombiesMysteryBox implements MysteryBox {
     private int rolls;
     private MysteryBoxState state;
     private Pair<Block, Block> blocks;
+    private Version version;
     private Weapon currentWeapon;
     private Weapon[] weapons;
 
-    public ZombiesMysteryBox(int id, Pair<Block, Block> blocks, Weapon[] weapons, int price) {
+    public ZombiesMysteryBox(int id, Pair<Block, Block> blocks, Weapon[] weapons, int price, Version version) {
         this.id = id;
         this.blocks = blocks;
         this.weapons = weapons;
         this.price = price;
+        this.version = version;
         this.active = false;
         this.rolls = 0;
         this.locked = true;
@@ -93,10 +97,26 @@ public class ZombiesMysteryBox implements MysteryBox {
         this.locked = locked;
     }
 
+    public Location getItemDropLocation() {
+        Block[] blocks = getBlocks();
+
+        return new Location(
+                blocks[0].getWorld(),
+                ((blocks[0].getX() + 0.5) + (blocks[1].getX() + 0.5)) / 2.0,
+                blocks[0].getY() + 1.0,
+                ((blocks[0].getZ() + 0.5) + (blocks[1].getZ() + 0.5)) / 2.0
+        );
+    }
+
     public boolean onInteract(GamePlayer gamePlayer, Block block) {
         // If the mystery box is locked or is not active, it does not accept interactions.
         if (locked || !active) {
             return false;
+        }
+
+        // If the mystery box is in use, make the state handle the interaction.
+        if (state.isInUse()) {
+            return state.handleInteraction(gamePlayer);
         }
 
         // If the player does not have enough points they can not open the item chest.
@@ -114,11 +134,11 @@ public class ZombiesMysteryBox implements MysteryBox {
             return false;
         }
 
-        return true;
+        return state.handleLookInteraction(gamePlayer);
     }
 
     public void playChestAnimation(boolean open) {
-
+        version.playChestAnimation(getBlocks()[0].getLocation(), open);
     }
 
     public void setActive(boolean active) {

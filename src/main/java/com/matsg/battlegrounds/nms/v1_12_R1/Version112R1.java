@@ -7,12 +7,10 @@ import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.nms.Particle;
 import com.matsg.battlegrounds.nms.ReflectionUtils;
 import com.matsg.battlegrounds.nms.Title;
-import net.minecraft.server.v1_12_R1.ChatMessageType;
-import net.minecraft.server.v1_12_R1.EntityTypes;
-import net.minecraft.server.v1_12_R1.IChatBaseComponent;
+import net.minecraft.server.v1_12_R1.*;
 import net.minecraft.server.v1_12_R1.IChatBaseComponent.ChatSerializer;
-import net.minecraft.server.v1_12_R1.PacketPlayOutChat;
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
@@ -24,6 +22,14 @@ public class Version112R1 implements Version {
 
     public Zombie makeZombie(Game game) {
         return new CustomZombie(game);
+    }
+
+    public void playChestAnimation(Location location, boolean open) {
+        BlockPosition blockPosition = new BlockPosition(location.getX(), location.getY(), location.getZ());
+        WorldServer world = ((CraftWorld) location.getWorld()).getHandle();
+        TileEntity tileEntity = world.getTileEntity(blockPosition);
+
+        world.playBlockAction(blockPosition, tileEntity.getBlock(), 1, open ? 1 : 0);
     }
 
     public void registerCustomEntities() {

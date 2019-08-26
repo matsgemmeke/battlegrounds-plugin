@@ -12,6 +12,8 @@ public enum ActionBar {
     DOOR("actionbar-door"),
     ITEMCHEST("actionbar-itemchest"),
     LEAVE_ARENA("actionbar-leave-arena"),
+    MYSTERY_BOX("actionbar-mystery-box"),
+    MYSTERY_BOX_SWAP("actionbar-mystery-box-swap"),
     PERKMACHINE_SOLD_OUT("actionbar-perkmachine-sold-out"),
     PLAYER_PASS_BARRICADE("actionbar-player-pass-barricade"),
     POINTS_DEDUCT("actionbar-points-deduct"),

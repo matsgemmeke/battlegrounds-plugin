@@ -47,7 +47,7 @@ public class BarricadeRepairHandler implements EventHandler<BlockPlaceEvent> {
                     // Return the placed block to the player
                     player.getInventory().setItem(itemSlot.getSlot(), player.getItemInHand());
 
-                    // Make sure the event is cancelled otherwise the reparation will not work
+                    // Make sure the event is not cancelled otherwise the reparation will not work
                     event.setCancelled(false);
                     break;
                 }

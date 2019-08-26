@@ -239,10 +239,20 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
         game.getItemRegistry().addItem(this);
 
         if (itemSlot == ItemSlot.FIREARM_PRIMARY) {
-            gamePlayer.getLoadout().setPrimary(this);
-        }
+            Firearm primary = gamePlayer.getLoadout().getPrimary();
 
-        if (itemSlot == ItemSlot.FIREARM_SECONDARY) {
+            if (primary != null) {
+                game.getItemRegistry().removeItem(primary);
+            }
+
+            gamePlayer.getLoadout().setPrimary(this);
+        } else if (itemSlot == ItemSlot.FIREARM_SECONDARY) {
+            Firearm secondary = gamePlayer.getLoadout().getSecondary();
+
+            if (secondary != null) {
+                game.getItemRegistry().removeItem(secondary);
+            }
+
             gamePlayer.getLoadout().setSecondary(this);
         }
 

@@ -15,6 +15,8 @@ public interface Version {
 
     Zombie makeZombie(Game game);
 
+    void playChestAnimation(Location location, boolean open);
+
     void registerCustomEntities();
 
     void sendActionBar(Player player, String message);

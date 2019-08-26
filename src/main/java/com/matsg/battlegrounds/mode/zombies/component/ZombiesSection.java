@@ -104,12 +104,12 @@ public class ZombiesSection implements Section {
             }
         }
         for (MysteryBox mysteryBox : mysteryBoxContainer.getAll()) {
-            if (mysteryBox.getLeftSide().getLocation().equals(location) || mysteryBox.getRightSide().getLocation().equals(location)) {
+            if (mysteryBox.getLeftSide().getLocation().getBlock().equals(location.getBlock()) || mysteryBox.getRightSide().getLocation().getBlock().equals(location.getBlock())) {
                 return mysteryBox;
             }
         }
         for (PerkMachine perkMachine : perkMachineContainer.getAll()) {
-            if (perkMachine.getSign().getLocation().equals(location)) {
+            if (perkMachine.getSign().getLocation().getBlock().equals(location.getBlock())) {
                 return perkMachine;
             }
         }

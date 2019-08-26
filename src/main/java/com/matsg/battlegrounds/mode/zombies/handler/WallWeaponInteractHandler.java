@@ -36,7 +36,8 @@ public class WallWeaponInteractHandler implements EventHandler<PlayerInteractEnt
 
         for (Section section : zombies.getSectionContainer().getAll()) {
             for (WallWeapon wallWeapon : section.getWallWeaponContainer().getAll()) {
-                if (wallWeapon.getItemFrame() == entity) {
+                // The entity instances may differ over time so compare the locations instead
+                if (wallWeapon.getItemFrame().getLocation().equals(entity.getLocation())) {
                     // Initiate an interaction with the wall weapon
                     wallWeapon.onInteract(gamePlayer, entity.getLocation().getBlock());
                     // Cancel the event so the item frame can not be tampered with

@@ -18,12 +18,13 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Random;
 
-public class RotatingState implements MysteryBoxState {
+public class RollingState implements MysteryBoxState {
 
     private static final int BOX_MAX_ROTATIONS = 25;
     private static final long BOX_ROTATION_DELAY = 0;
     private static final long BOX_ROTATION_DURATION = 4;
 
+    private boolean inUse;
     private Game game;
     private GamePlayer gamePlayer;
     private int rotation;
@@ -34,25 +35,35 @@ public class RotatingState implements MysteryBoxState {
     private Sound rollSound;
     private Weapon weapon;
 
-    public RotatingState(Game game, MysteryBox mysteryBox, GamePlayer gamePlayer) {
+    public RollingState(Game game, MysteryBox mysteryBox, GamePlayer gamePlayer) {
         this.game = game;
         this.mysteryBox = mysteryBox;
         this.gamePlayer = gamePlayer;
         this.moveSound = BattleSound.MYSTERY_BOX_MOVE;
         this.rollEndSound = BattleSound.MYSTERY_BOX_ROLL_END;
         this.rollSound = BattleSound.MYSTERY_BOX_ROLL;
+        this.inUse = true;
         this.rotation = 0;
+    }
+
+    public boolean isInUse() {
+        return inUse;
     }
 
     public boolean handleInteraction(GamePlayer gamePlayer) {
         return true;
     }
 
+    public boolean handleLookInteraction(GamePlayer gamePlayer) {
+        return false;
+    }
+
     public void initState() {
         int pickupDelay = 1000;
 
-        item = mysteryBox.getLeftSide().getWorld().dropItem(getItemDropLocation(), mysteryBox.getWeapons()[0].getItemStack());
+        item = mysteryBox.getLeftSide().getWorld().dropItem(mysteryBox.getItemDropLocation(), mysteryBox.getWeapons()[0].getItemStack());
         item.setPickupDelay(pickupDelay);
+        item.setVelocity(item.getVelocity().zero());
 
         mysteryBox.playChestAnimation(true);
 
@@ -73,16 +84,9 @@ public class RotatingState implements MysteryBoxState {
         }.runTaskTimer(BOX_ROTATION_DELAY, BOX_ROTATION_DURATION);
     }
 
-    private Location getItemDropLocation() {
-        Block left = mysteryBox.getLeftSide();
-        Block right = mysteryBox.getRightSide();
-
-        return new Location(
-                left.getWorld(),
-                ((left.getX() + 0.5) + (right.getX() + 0.5)) / 2.0,
-                left.getY() + 1.0,
-                ((left.getZ() + 0.5) + (right.getZ() + 0.5)) / 2.0
-        );
+    public void remove() {
+        item.remove();
+        mysteryBox.playChestAnimation(false);
     }
 
     private void rotateChosenWeapon() {
@@ -97,11 +101,9 @@ public class RotatingState implements MysteryBoxState {
             sound = rollEndSound;
             state = new DisplayState(game, mysteryBox, gamePlayer, hologram, item, weapon);
         } else {
-            itemStack = new ItemStackBuilder(XMaterial.WITHER_SKELETON_SKULL.parseMaterial()).build();
+            itemStack = new ItemStackBuilder(new ItemStack(XMaterial.PLAYER_HEAD.parseMaterial(), 1, (byte) 1)).build();
             sound = moveSound;
             state = new MovingState(game, mysteryBox);
-
-            mysteryBox.getLeftSide().getWorld().strikeLightningEffect(item.getLocation());
         }
 
         item.setItemStack(itemStack);
@@ -118,7 +120,7 @@ public class RotatingState implements MysteryBoxState {
 
         do {
             weapon = weapons[random.nextInt(weapons.length)];
-        } while (mysteryBox.getCurrentWeapon() == null || mysteryBox.getCurrentWeapon().equals(weapon) || gamePlayer.getLoadout().getWeapon(weapon.getName()) != null);
+        } while (mysteryBox.getCurrentWeapon() != null && mysteryBox.getCurrentWeapon().equals(weapon) || gamePlayer.getLoadout().getWeapon(weapon.getName()) != null);
 
         item.setItemStack(weapon.getItemStack());
 

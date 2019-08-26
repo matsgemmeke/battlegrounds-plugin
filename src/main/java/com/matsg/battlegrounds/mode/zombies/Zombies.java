@@ -20,6 +20,7 @@ import com.matsg.battlegrounds.mode.GameModeType;
 import com.matsg.battlegrounds.mode.shared.SpawningBehavior;
 import com.matsg.battlegrounds.mode.zombies.component.*;
 import com.matsg.battlegrounds.mode.zombies.component.factory.*;
+import com.matsg.battlegrounds.mode.zombies.component.mysterybox.MovingState;
 import com.matsg.battlegrounds.mode.zombies.handler.*;
 import com.matsg.battlegrounds.item.ItemFinder;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
@@ -115,6 +116,11 @@ public class Zombies extends AbstractGameMode {
                 mob.remove();
             } else if (arena.contains(entity.getLocation()) && (!(entity instanceof Player))) {
                 entity.remove();
+            }
+        }
+        for (Section section : sectionContainer.getAll()) {
+            for (MysteryBox mysteryBox : section.getMysteryBoxContainer().getAll()) {
+                mysteryBox.getState().remove();
             }
         }
     }
@@ -342,6 +348,9 @@ public class Zombies extends AbstractGameMode {
 
         startWave(config.getStartingRound());
 
+        MysteryBox mysteryBox = getRandomMysteryBox();
+        mysteryBox.setState(new MovingState(game, null));
+
         for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
             Title title = EnumTitle.ZOMBIES_START.getTitle();
             title.send(gamePlayer.getPlayer());
@@ -432,13 +441,25 @@ public class Zombies extends AbstractGameMode {
         return amount;
     }
 
+    private MysteryBox getRandomMysteryBox() {
+        List<MysteryBox> mysteryBoxes = new ArrayList<>();
+        Random random = new Random();
+
+        for (Section section : sectionContainer.getAll()) {
+            mysteryBoxes.addAll(section.getMysteryBoxContainer().getAll());
+        }
+
+        return mysteryBoxes.get(random.nextInt(mysteryBoxes.size()));
+    }
+
     private void registerComponentFactories() {
         ItemFinder itemFinder = new ItemFinder(plugin);
+        Version version = plugin.getVersion();
 
         barricadeFactory = new BarricadeFactory();
         doorFactory = new DoorFactory(game);
         mobSpawnFactory = new MobSpawnFactory();
-        mysteryBoxFactory = new MysteryBoxFactory(itemFinder, config);
+        mysteryBoxFactory = new MysteryBoxFactory(itemFinder, config, version);
         perkMachineFactory = new PerkMachineFactory(game, perkManager, translator, config);
         sectionFactory = new SectionFactory();
         wallWeaponFactory = new WallWeaponFactory(game, translator);

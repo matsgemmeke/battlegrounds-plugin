@@ -1,10 +1,12 @@
 package com.matsg.battlegrounds.mode.zombies.component.factory;
 
+import com.matsg.battlegrounds.api.Version;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.item.ItemFinder;
 import com.matsg.battlegrounds.mode.zombies.ZombiesConfig;
 import com.matsg.battlegrounds.mode.zombies.component.MysteryBox;
 import com.matsg.battlegrounds.mode.zombies.component.ZombiesMysteryBox;
+import com.matsg.battlegrounds.mode.zombies.component.mysterybox.InactiveState;
 import com.matsg.battlegrounds.util.Pair;
 import org.bukkit.block.Block;
 
@@ -14,11 +16,13 @@ import java.util.List;
 public class MysteryBoxFactory {
 
     private ItemFinder itemFinder;
+    private Version version;
     private ZombiesConfig config;
 
-    public MysteryBoxFactory(ItemFinder itemFinder, ZombiesConfig config) {
+    public MysteryBoxFactory(ItemFinder itemFinder, ZombiesConfig config, Version version) {
         this.itemFinder = itemFinder;
         this.config = config;
+        this.version = version;
     }
 
     /**
@@ -38,8 +42,8 @@ public class MysteryBoxFactory {
 
         Weapon[] weapons = weaponList.toArray(new Weapon[weaponList.size()]);
 
-        MysteryBox mysteryBox = new ZombiesMysteryBox(id, blocks, weapons, price);
-        mysteryBox.setActive(false);
+        MysteryBox mysteryBox = new ZombiesMysteryBox(id, blocks, weapons, price, version);
+        mysteryBox.setState(new InactiveState(mysteryBox));
 
         return mysteryBox;
     }

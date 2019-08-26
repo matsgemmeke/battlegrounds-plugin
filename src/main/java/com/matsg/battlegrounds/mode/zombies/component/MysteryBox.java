@@ -2,6 +2,7 @@ package com.matsg.battlegrounds.mode.zombies.component;
 
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.item.Weapon;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 
 public interface MysteryBox extends ArenaComponent, Interactable, Lockable, Priceable, Watchable {
@@ -62,6 +63,13 @@ public interface MysteryBox extends ArenaComponent, Interactable, Lockable, Pric
      * @param state the mystery box state
      */
     void setState(MysteryBoxState state);
+
+    /**
+     * Gets the location where the mystery box drops its items during rolls.
+     *
+     * @return the mystery box item drop location
+     */
+    Location getItemDropLocation();
 
     /**
      * Gets the weapon selection inside the mystery box.

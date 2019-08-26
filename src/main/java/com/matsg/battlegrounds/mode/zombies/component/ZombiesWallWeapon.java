@@ -11,6 +11,7 @@ import com.matsg.battlegrounds.util.ActionBar;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ItemFrame;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 public class ZombiesWallWeapon implements WallWeapon {
@@ -82,8 +83,10 @@ public class ZombiesWallWeapon implements WallWeapon {
         }
 
         ItemStack itemStack = new ItemStackBuilder(weapon.getItemStack())
+                .addItemFlags(ItemFlag.values())
                 .setDisplayName(ChatColor.WHITE + weapon.getName())
                 .setLore()
+                .setUnbreakable(true)
                 .build();
 
         gamePlayer.getPlayer().openInventory(new TransactionView(game, translator, weapon, itemStack, price, itemSlot.getSlot()) {
