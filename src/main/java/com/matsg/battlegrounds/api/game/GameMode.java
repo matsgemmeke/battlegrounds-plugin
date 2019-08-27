@@ -23,6 +23,11 @@ public interface GameMode extends ComponentWrapper, WeaponContext {
      */
     void onEnable();
 
+    /**
+     * Adds an objective to the gamemode.
+     *
+     * @param objective the objective to add
+     */
     void addObjective(Objective objective);
 
     /**
@@ -39,16 +44,46 @@ public interface GameMode extends ComponentWrapper, WeaponContext {
      */
     Iterable<Objective> getObjectives();
 
+    /**
+     * Gets the scoreboard of the gamemode.
+     *
+     * @return the gamemode's scoreboard
+     */
     GameScoreboard getScoreboard();
 
+    /**
+     * Gets the gamemode's abbreviation.
+     *
+     * @return the gamemode's short name
+     */
     String getShortName();
 
+    /**
+     * Gets the teams involved in the gamemode.
+     *
+     * @return the gamemode's teams
+     */
     Iterable<Team> getTeams();
 
+    /**
+     * Gets the gamemode type of the gamemode.
+     *
+     * @return the gamemode's gamemode type
+     */
     GameModeType getType();
 
+    /**
+     * Gets whether the gamemode is currently in use by the game.
+     *
+     * @return whether the gamemode is active
+     */
     boolean isActive();
 
+    /**
+     * Sets whether the gamemode is currently in use by the game.
+     *
+     * @param active whether the gamemode is active
+     */
     void setActive(boolean active);
 
     /**
@@ -58,16 +93,50 @@ public interface GameMode extends ComponentWrapper, WeaponContext {
      */
     void addPlayer(GamePlayer gamePlayer);
 
+    /**
+     * Gets the objective that is achieved by the current game state. Returns null if
+     * none of the objective's conditions are met.
+     *
+     * @return the achieved objective or null if none are achieved yet
+     */
     Objective getAchievedObjective();
 
+    /**
+     * Gets the respawn point of a player.
+     *
+     * @param gamePlayer the player to get a respawn point of.
+     * @return a respawn point as a spawn component
+     */
     Spawn getRespawnPoint(GamePlayer gamePlayer);
 
+    /**
+     * Gets a list of the gamemode's teams, sorted by their performance.
+     *
+     * @return a sorted list of the gamemode's teams
+     */
     List<Team> getSortedTeams();
 
+    /**
+     * Gets the team of a player. Returns null if the player is not assigned to a team.
+     *
+     * @param gamePlayer the player to get the team of
+     * @return the player's team or null if the player is not assigned to a team.
+     */
     Team getTeam(GamePlayer gamePlayer);
 
-    Team getTeam(int id);
+    /**
+     * Gets the team by a certain id.
+     *
+     * @param teamId the team id
+     * @return the corresponding team or null if a team by the id does not exist
+     */
+    Team getTeam(int teamId);
 
+    /**
+     * Gets the best performing team in the gamemode.
+     *
+     * @return the top team
+     */
     Team getTopTeam();
 
     /**
@@ -84,15 +153,38 @@ public interface GameMode extends ComponentWrapper, WeaponContext {
      */
     void preparePlayer(GamePlayer gamePlayer);
 
+    /**
+     * Removes a player from the game.
+     *
+     * @param gamePlayer the player to remove
+     */
     void removePlayer(GamePlayer gamePlayer);
 
+    /**
+     * Spreads players over the spawns in the game's arena.
+     *
+     * @param players the players to be spawned in
+     * @return whether the spawning was succesfull
+     */
     boolean spawnPlayers(Iterable<GamePlayer> players);
 
+    /**
+     * Starts the gamemode.
+     */
     void start();
 
+    /**
+     * Starts the gamemode countdown.
+     */
     void startCountdown();
 
+    /**
+     * Stops the gamemode
+     */
     void stop();
 
+    /**
+     * Handles gamemode logic of a single tick.
+     */
     void tick();
 }

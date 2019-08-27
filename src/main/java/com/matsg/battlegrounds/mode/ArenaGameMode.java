@@ -76,13 +76,13 @@ public abstract class ArenaGameMode extends AbstractGameMode {
                 null,
                 new ItemStackBuilder(Material.LEATHER_CHESTPLATE)
                         .addItemFlags(ItemFlag.values())
-                        .setColor(gamePlayer.getTeam().getColor())
+                        .setColor(gamePlayer.getTeam().getArmorColor())
                         .setDisplayName(ChatColor.WHITE + translator.translate(TranslationKey.ARMOR_VEST))
                         .setUnbreakable(true)
                         .build(),
                 new ItemStackBuilder(Material.LEATHER_HELMET)
                         .addItemFlags(ItemFlag.values())
-                        .setColor(gamePlayer.getTeam().getColor())
+                        .setColor(gamePlayer.getTeam().getArmorColor())
                         .setDisplayName(ChatColor.WHITE + translator.translate(TranslationKey.ARMOR_HELMET))
                         .setUnbreakable(true)
                         .build()

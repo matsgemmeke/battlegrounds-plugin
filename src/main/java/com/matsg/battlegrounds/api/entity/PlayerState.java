@@ -33,22 +33,48 @@ public enum PlayerState {
         return null;
     }
 
+    /**
+     * Gets whether a player can interact with other things in this state.
+     *
+     * @return whether a player in this state can interact with other things
+     */
     public boolean canInteract() {
         return interact;
     }
 
+    /**
+     * Gets whether a player can move in this state.
+     *
+     * @return whether a player in this state can move.
+     */
     public boolean canMove() {
         return move;
     }
 
+    /**
+     * Gets chat color of the state.
+     *
+     * @return the state's chat color
+     */
     public ChatColor getChatColor() {
         return chatColor;
     }
 
+    /**
+     * Gets whether a player in this state is alive.
+     *
+     * @return whether a player in this state is alive
+     */
     public boolean isAlive() {
         return alive;
     }
 
+    /**
+     * Applies the state to a player.
+     *
+     * @param game the game
+     * @param gamePlayer the player
+     */
     public void apply(Game game, GamePlayer gamePlayer) {
         game.getPlayerManager().setVisible(gamePlayer, alive);
         gamePlayer.getPlayer().setGameMode(gameMode);

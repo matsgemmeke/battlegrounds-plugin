@@ -13,26 +13,26 @@ public class BattleTeam implements Team {
 
     private final int id;
     private ChatColor chatColor;
-    private Color color;
+    private Color armorColor;
     private int score;
     private List<GamePlayer> players;
     private String name;
 
-    public BattleTeam(int id, String name, Color color, ChatColor chatColor) {
+    public BattleTeam(int id, String name, Color armorColor, ChatColor chatColor) {
         this.id = id;
         this.name = name;
-        this.color = color;
+        this.armorColor = armorColor;
         this.chatColor = chatColor;
         this.players = new ArrayList<>();
         this.score = 0;
     }
 
-    public ChatColor getChatColor() {
-        return chatColor;
+    public Color getArmorColor() {
+        return armorColor;
     }
 
-    public Color getColor() {
-        return color;
+    public ChatColor getChatColor() {
+        return chatColor;
     }
 
     public int getId() {

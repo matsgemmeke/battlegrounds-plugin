@@ -8,14 +8,14 @@ public interface Priceable {
     /**
      * Gets the price of the component.
      *
-     * @return The component price.
+     * @return the component price
      */
     int getPrice();
 
     /**
      * Sets the price of the component.
      *
-     * @param price The component price.
+     * @param price the component price
      */
     void setPrice(int price);
 }

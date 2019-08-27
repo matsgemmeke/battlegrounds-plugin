@@ -18,10 +18,20 @@ public enum BattleEntityType {
         this.entityType = entityType;
     }
 
-    public EntityType getEntityType() {
+    /**
+     * Gets the bukkit entity type of this entity type.
+     *
+     * @return the bukkit entity type
+     */
+    public EntityType getBukkitEntityType() {
         return entityType;
     }
 
+    /**
+     * Gets the id of the entity type.
+     *
+     * @return the entity type's id
+     */
     public int getId() {
         return id;
     }

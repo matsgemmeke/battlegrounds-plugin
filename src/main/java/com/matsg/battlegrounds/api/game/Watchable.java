@@ -11,9 +11,9 @@ public interface Watchable {
     /**
      * Initiates a look interaction with a component.
      *
-     * @param gamePlayer The player who looks at the component.
-     * @param block The block which was looked at.
-     * @return True if the look interaction was accepted, otherwise false.
+     * @param gamePlayer the player who looks at the component
+     * @param block the block which was looked at
+     * @return true if the look interaction was accepted, otherwise false
      */
     boolean onLook(GamePlayer gamePlayer, Block block);
 }

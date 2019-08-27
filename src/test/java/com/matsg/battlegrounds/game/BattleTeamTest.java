@@ -20,7 +20,7 @@ public class BattleTeamTest {
 
         assertEquals(id, team.getId());
         assertEquals(name, team.getName());
-        assertEquals(color, team.getColor());
+        assertEquals(color, team.getArmorColor());
         assertEquals(chatColor, team.getChatColor());
 
         assertArrayEquals(new GamePlayer[0], team.getPlayers());

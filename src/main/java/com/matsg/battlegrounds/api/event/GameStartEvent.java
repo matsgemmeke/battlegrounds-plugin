@@ -17,6 +17,11 @@ public class GameStartEvent extends Event {
         return handlerList;
     }
 
+    /**
+     * Gets the game that started.
+     *
+     * @return the game that started
+     */
     public Game getGame() {
         return game;
     }

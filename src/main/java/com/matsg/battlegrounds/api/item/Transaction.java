@@ -14,7 +14,7 @@ public class Transaction {
     /**
      * Gets the game in which the transaction took place.
      *
-     * @return The game.
+     * @return the game
      */
     public Game getGame() {
         return game;
@@ -23,7 +23,7 @@ public class Transaction {
     /**
      * Sets the game in which the transaction took place.
      *
-     * @param game The game.
+     * @param game the game
      */
     public void setGame(Game game) {
         this.game = game;
@@ -32,7 +32,7 @@ public class Transaction {
     /**
      * Gets the player who makes the transaction.
      *
-     * @return The player of the transaction.
+     * @return the player of the transaction
      */
     public GamePlayer getGamePlayer() {
         return gamePlayer;
@@ -41,7 +41,7 @@ public class Transaction {
     /**
      * Sets the player who makes the transaction.
      *
-     * @param gamePlayer The player of the transaction.
+     * @param gamePlayer the player of the transaction
      */
     public void setGamePlayer(GamePlayer gamePlayer) {
         this.gamePlayer = gamePlayer;
@@ -50,7 +50,7 @@ public class Transaction {
     /**
      * Gets the item of the transaction.
      *
-     * @return The transaction item.
+     * @return the transaction item
      */
     public TransactionItem getItem() {
         return item;
@@ -59,7 +59,7 @@ public class Transaction {
     /**
      * Sets the item of the transaction.
      *
-     * @param item The transaction item.
+     * @param item the transaction item
      */
     public void setItem(TransactionItem item) {
         this.item = item;
@@ -68,7 +68,7 @@ public class Transaction {
     /**
      * Gets the amount of points involved in the transaction.
      *
-     * @return The amount of points.
+     * @return the amount of points
      */
     public int getPoints() {
         return points;
@@ -77,7 +77,7 @@ public class Transaction {
     /**
      * Sets the amount of points involved in the transaction.
      *
-     * @param points The amount of points.
+     * @param points the amount of points
      */
     public void setPoints(int points) {
         this.points = points;
@@ -86,7 +86,7 @@ public class Transaction {
     /**
      * Gets the inventory slot to which the transaction item will be transferred to.
      *
-     * @return The transaction inventory slot.
+     * @return the transaction inventory slot
      */
     public int getSlot() {
         return slot;
@@ -95,7 +95,7 @@ public class Transaction {
     /**
      * Sets the inventory slot to which the transaction item will be transferred to.
      *
-     * @param slot The transaction inventory slot.
+     * @param slot the transaction inventory slot
      */
     public void setSlot(int slot) {
         this.slot = slot;

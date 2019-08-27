@@ -9,23 +9,23 @@ public interface ItemConfig {
     /**
      * Gets the an item's configuration section. Returns null if it doesn't exist.
      *
-     * @param id The id of the item.
-     * @return The corresponding item's configuration section.
+     * @param id the id of the item
+     * @return the corresponding item's configuration section
      */
     ConfigurationSection getItemConfigurationSection(String id);
 
     /**
      * Gets the list of configured items id's.
      *
-     * @return A list containing all item id's.
+     * @return a list containing all item id's
      */
     List<String> getItemList();
 
     /**
      * Gets the list of configured items id's by a certain item type.
      *
-     * @param itemType The item type.
-     * @return A list containing all item id's by the specified item type.
+     * @param itemType the item type
+     * @return a list containing all item id's by the specified item type
      */
     List<String> getItemList(String itemType);
 }

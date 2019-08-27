@@ -21,6 +21,11 @@ public class GameStateChangeEvent extends Event {
         return handlerList;
     }
 
+    /**
+     * Gets the game whose state has changed.
+     *
+     * @return the game whose state has changed
+     */
     public Game getGame() {
         return game;
     }
@@ -29,10 +34,20 @@ public class GameStateChangeEvent extends Event {
         return handlerList;
     }
 
+    /**
+     * Gets the new state of the game.
+     *
+     * @return the new state
+     */
     public GameState getNewState() {
         return newState;
     }
 
+    /**
+     * Gets the old state of the game.
+     *
+     * @return the old state
+     */
     public GameState getOldState() {
         return oldState;
     }

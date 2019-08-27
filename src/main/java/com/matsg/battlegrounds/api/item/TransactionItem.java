@@ -5,7 +5,7 @@ public interface TransactionItem {
     /**
      * Handles a transaction for the purchase of this item.
      *
-     * @param transaction The transaction instance.
+     * @param transaction the transaction instance
      */
     void handleTransaction(Transaction transaction);
 }

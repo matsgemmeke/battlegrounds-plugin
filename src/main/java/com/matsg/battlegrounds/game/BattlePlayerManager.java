@@ -3,6 +3,7 @@ package com.matsg.battlegrounds.game;
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.entity.PlayerState;
+import com.matsg.battlegrounds.api.entity.SavedInventory;
 import com.matsg.battlegrounds.api.storage.LevelConfig;
 import com.matsg.battlegrounds.api.storage.StatisticContext;
 import com.matsg.battlegrounds.api.storage.StoredPlayer;
@@ -57,7 +58,8 @@ public class BattlePlayerManager implements PlayerManager {
     }
 
     public GamePlayer addPlayer(Player player) {
-        GamePlayer gamePlayer = new BattleGamePlayer(player, new BattleSavedInventory(player));
+        SavedInventory savedInventory = new BattleSavedInventory(player, player.getInventory());
+        GamePlayer gamePlayer = new BattleGamePlayer(player, savedInventory);
         Location lobby = game.getDataFile().getLocation("lobby");
 
         players.add(gamePlayer);
