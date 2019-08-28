@@ -9,15 +9,15 @@ import com.matsg.battlegrounds.api.event.GamePlayerKillEntityEvent;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.Placeholder;
-import com.matsg.battlegrounds.mode.ArenaGameMode;
 import com.matsg.battlegrounds.mode.GameModeCountdown;
 import com.matsg.battlegrounds.mode.GameModeType;
+import com.matsg.battlegrounds.mode.shared.ClassicGameMode;
 import com.matsg.battlegrounds.mode.shared.SpawningBehavior;
 import com.matsg.battlegrounds.mode.shared.handler.GeneralDeathHandler;
 import com.matsg.battlegrounds.mode.shared.handler.GeneralKillHandler;
 import com.matsg.battlegrounds.util.EnumTitle;
 
-public class TeamDeathmatch extends ArenaGameMode {
+public class TeamDeathmatch extends ClassicGameMode {
 
     private TDMConfig config;
 

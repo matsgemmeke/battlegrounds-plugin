@@ -1,4 +1,4 @@
-package com.matsg.battlegrounds.mode;
+package com.matsg.battlegrounds.mode.shared;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
@@ -8,6 +8,8 @@ import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.event.GameEndEvent;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.item.ItemSlot;
+import com.matsg.battlegrounds.mode.AbstractGameMode;
+import com.matsg.battlegrounds.mode.Result;
 import com.matsg.battlegrounds.mode.shared.SpawningBehavior;
 import com.matsg.battlegrounds.gui.SelectLoadoutView;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
@@ -26,12 +28,12 @@ import java.util.Collection;
 import java.util.Collections;
 
 /**
- * Abstract gamemode class for gamemodes which are to be played in a default
+ * Abstract class for classic gamemodes which are to be played in a default
  * arena. Contains functions which apply to these gamemodes by default.
  */
-public abstract class ArenaGameMode extends AbstractGameMode {
+public abstract class ClassicGameMode extends AbstractGameMode {
 
-    public ArenaGameMode(Battlegrounds plugin, Game game, Translator translator, SpawningBehavior spawningBehavior) {
+    public ClassicGameMode(Battlegrounds plugin, Game game, Translator translator, SpawningBehavior spawningBehavior) {
         super(plugin, game, translator, spawningBehavior);
     }
 

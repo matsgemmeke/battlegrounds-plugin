@@ -13,7 +13,7 @@ import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.game.BattleTeam;
-import com.matsg.battlegrounds.mode.ArenaGameMode;
+import com.matsg.battlegrounds.mode.shared.ClassicGameMode;
 import com.matsg.battlegrounds.mode.GameModeCountdown;
 import com.matsg.battlegrounds.mode.GameModeType;
 import com.matsg.battlegrounds.mode.shared.SpawningBehavior;
@@ -24,7 +24,7 @@ import org.bukkit.ChatColor;
 
 import java.util.List;
 
-public class FreeForAll extends ArenaGameMode {
+public class FreeForAll extends ClassicGameMode {
 
     private FFAConfig config;
 
