@@ -61,7 +61,7 @@ public class GameModeUsageValidatorTest {
         String[] input = new String[] { "command", String.valueOf(gameId) };
 
         when(configuration.getGameModes()).thenReturn(new GameMode[] { gameMode });
-        when(gameMode.getType()).thenReturn(GameModeType.FREE_FOR_ALL);
+        when(gameMode.getId()).thenReturn(GameModeType.FREE_FOR_ALL.toString());
 
         GameModeUsageValidator validator = new GameModeUsageValidator(plugin, translator, GameModeType.FREE_FOR_ALL);
         ValidationResponse response = validator.validate(input);

@@ -11,12 +11,14 @@ import org.bukkit.Material;
 public class Nuke implements PowerUpEffect {
 
     private static final int NUKE_POINTS = 400;
+    private Game game;
     private int duration;
     private Material material;
     private String name;
     private Zombies zombies;
 
-    public Nuke(Zombies zombies, String name) {
+    public Nuke(Game game, Zombies zombies, String name) {
+        this.game = game;
         this.zombies = zombies;
         this.name = name;
         this.duration = 0;
@@ -39,7 +41,7 @@ public class Nuke implements PowerUpEffect {
         return name;
     }
 
-    public void activate(Game game, PowerUpCallback callback) {
+    public void activate(PowerUpCallback callback) {
         new BattleRunnable() {
             public void run() {
                 if (!game.getState().isInProgress()) {
@@ -68,6 +70,10 @@ public class Nuke implements PowerUpEffect {
                 game.updateScoreboard();
             }
         }.runTaskTimer(20, 8);
+    }
+
+    public boolean isApplicableForActivation() {
+        return game.getMobManager().getMobs().size() > 0;
     }
 
     public double modifyDamage(double damage) {

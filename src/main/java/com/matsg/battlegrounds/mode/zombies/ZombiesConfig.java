@@ -30,7 +30,7 @@ public class ZombiesConfig extends BattleCacheYaml {
     private int waveDelay;
     private int variation;
     private List<String> mysteryBoxWeapons;
-    private List<String> powerUpTypes;
+    private List<String> powerUpEffects;
 
     public ZombiesConfig(Battlegrounds plugin, String path) throws IOException {
         super(plugin, path, "zombies.yml");
@@ -46,7 +46,7 @@ public class ZombiesConfig extends BattleCacheYaml {
         this.mysteryBoxWeapons = getStringList("zombies-mystery-box-weapons");
         this.powerUpChance = getDouble("zombies-power-up-chance");
         this.powerUpDuration = getInt("zombies-power-up-duration");
-        this.powerUpTypes = getStringList("zombies-power-up-types");
+        this.powerUpEffects = getStringList("zombies-power-up-effects");
         this.runningMobs = getBoolean("zombies-wave-running-mobs");
         this.runningMobsRound = getInt("zombies-wave-running-mobs-round");
         this.spawnRate = getDouble("zombies-wave-spawn-rate");
@@ -99,8 +99,8 @@ public class ZombiesConfig extends BattleCacheYaml {
         return powerUpDuration;
     }
 
-    public List<String> getPowerUpTypes() {
-        return powerUpTypes;
+    public List<String> getPowerUpEffects() {
+        return powerUpEffects;
     }
 
     public int getRunningMobsRound() {

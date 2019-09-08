@@ -51,7 +51,7 @@ zombies-power-up-chance: 0.03
 zombies-power-up-duration: 10
 
 # The power ups that will spawn in the game
-zombies-power-up-types:
+zombies-power-up-effects:
   - CARPENTER
   - DOUBLE_POINTS
   - FIRE_SALE

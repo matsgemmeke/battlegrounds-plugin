@@ -22,7 +22,7 @@ public class TeamDeathmatch extends ClassicGameMode {
     private TDMConfig config;
 
     public TeamDeathmatch(Battlegrounds plugin, Game game, Translator translator, SpawningBehavior spawningBehavior, TDMConfig config) {
-        super(plugin, game, translator, spawningBehavior);
+        super(plugin, GameModeType.TEAM_DEATHMATCH, game, translator, spawningBehavior);
         this.config = config;
         this.teams.addAll(config.getTeams());
         this.name = translator.translate(TranslationKey.TDM_NAME);

@@ -2,6 +2,8 @@ package com.matsg.battlegrounds.game.state;
 
 import com.matsg.battlegrounds.api.game.Action;
 import com.matsg.battlegrounds.api.game.GameState;
+import com.matsg.battlegrounds.util.XMaterial;
+import org.bukkit.inventory.ItemStack;
 
 public class InGameState implements GameState {
 
@@ -19,6 +21,10 @@ public class InGameState implements GameState {
 
     public GameState previous() {
         return new StartingState();
+    }
+
+    public ItemStack toItemStack() {
+        return new ItemStack(XMaterial.TERRACOTTA.parseMaterial(), 1, (short) 14);
     }
 
     public String toString() {

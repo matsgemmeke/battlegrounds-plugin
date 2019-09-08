@@ -25,29 +25,11 @@ public class ZombiesPowerUpManager implements PowerUpManager {
     }
 
     public void activatePowerUp(PowerUp powerUp) {
-        if ((game == null) || (game.getArena() == null) || (powerUp == null)) {
-            return;
-        }
-
         powerUp.setActive(true);
-        powerUp.getEffect().activate(game, () -> {
-            if (powerUp.isActive()) {
-                powerUp.setActive(false);
-
-                for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
-                    EnumTitle.POWERUP_DEACTIVATE.send(gamePlayer.getPlayer(), new Placeholder("bg_powerup", powerUp.getName()));
-                }
-            }
-            removePowerUp(powerUp);
-        });
-
-        if (!powerUp.isActive()) {
-            removePowerUp(powerUp);
-            return;
-        }
+        powerUp.getEffect().activate(() -> removePowerUp(powerUp));
 
         for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
-            EnumTitle.POWERUP_ACTIVATE.send(gamePlayer.getPlayer(), new Placeholder("bg_powerup", powerUp));
+            EnumTitle.POWERUP_ACTIVATE.send(gamePlayer.getPlayer(), new Placeholder("bg_powerup", powerUp.getName()));
         }
 
         BattleSound.POWERUP_ACTIVATE.play(game);
@@ -72,7 +54,7 @@ public class ZombiesPowerUpManager implements PowerUpManager {
         new BattleRunnable() {
             int r = 0;
             public void run() {
-                if (item == null || item.isDead()) {
+                if (item.isDead()) {
                     cancel();
                     return;
                 }

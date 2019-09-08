@@ -2,7 +2,7 @@ package com.matsg.battlegrounds.api.game;
 
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.item.WeaponContext;
-import com.matsg.battlegrounds.mode.GameModeType;
+import org.bukkit.inventory.Inventory;
 
 import java.util.List;
 
@@ -31,16 +31,23 @@ public interface GameMode extends ComponentWrapper, WeaponContext {
     void addObjective(Objective objective);
 
     /**
+     * Gets the id of the game mode.
+     *
+     * @return the game mode id
+     */
+    String getId();
+
+    /**
      * Gets the name of the game mode.
      *
-     * @return The game mode name.
+     * @return the game mode name
      */
     String getName();
 
     /**
      * Gets the list of objectives that can be achieved to win the game mode.
      *
-     * @return The list of objectives.
+     * @return the list of objectives
      */
     Iterable<Objective> getObjectives();
 
@@ -64,13 +71,6 @@ public interface GameMode extends ComponentWrapper, WeaponContext {
      * @return the gamemode's teams
      */
     Iterable<Team> getTeams();
-
-    /**
-     * Gets the gamemode type of the gamemode.
-     *
-     * @return the gamemode's gamemode type
-     */
-    GameModeType getType();
 
     /**
      * Gets whether the gamemode is currently in use by the game.

@@ -1,6 +1,5 @@
 package com.matsg.battlegrounds.mode.zombies.item;
 
-import com.matsg.battlegrounds.api.game.Game;
 import org.bukkit.Material;
 
 public interface PowerUpEffect {
@@ -36,10 +35,16 @@ public interface PowerUpEffect {
     /**
      * Activates the power up effect in a game.
      *
-     * @param game the game activate the effect in
      * @param callback the callback method
      */
-    void activate(Game game, PowerUpCallback callback);
+    void activate(PowerUpCallback callback);
+
+    /**
+     * Gets whether the power up effect applicable for activation with the game's current state.
+     *
+     * @return whether the effect is applicable for activation
+     */
+    boolean isApplicableForActivation();
 
     /**
      * Modifies the amount of damage applied by a player.

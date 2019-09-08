@@ -26,7 +26,7 @@ public class GameModeUsageValidator implements CommandValidator {
         Game game = plugin.getGameManager().getGame(id);
 
         for (GameMode gameMode : game.getConfiguration().getGameModes()) {
-            if (gameMode.getType() == gameModeType) {
+            if (gameMode.getId().equals(gameModeType.toString())) {
                 return ValidationResponse.PASSED;
             }
         }

@@ -7,6 +7,7 @@ import com.matsg.battlegrounds.api.game.ArenaComponent;
 import com.matsg.battlegrounds.api.game.ComponentWrapper;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.Interactable;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -20,11 +21,12 @@ public class ComponentInteractHandler implements EventHandler<PlayerInteractEven
     }
 
     public void handle(PlayerInteractEvent event) {
-        if (event.getClickedBlock() == null) {
+        Block block = event.getClickedBlock();
+
+        if (block == null) {
             return;
         }
 
-        Block block = event.getClickedBlock();
         Player player = event.getPlayer();
         Game game = plugin.getGameManager().getGame(player);
 

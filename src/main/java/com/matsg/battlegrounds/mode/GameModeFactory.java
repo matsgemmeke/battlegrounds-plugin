@@ -6,6 +6,7 @@ import com.matsg.battlegrounds.api.Version;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameMode;
+import com.matsg.battlegrounds.gui.View;
 import com.matsg.battlegrounds.mode.ffa.FFAConfig;
 import com.matsg.battlegrounds.mode.ffa.FreeForAll;
 import com.matsg.battlegrounds.mode.shared.SpawnByTeamBehavior;
@@ -18,6 +19,7 @@ import com.matsg.battlegrounds.FactoryCreationException;
 import com.matsg.battlegrounds.game.objective.EliminationObjective;
 import com.matsg.battlegrounds.game.objective.ScoreObjective;
 import com.matsg.battlegrounds.game.objective.TimeObjective;
+import com.matsg.battlegrounds.mode.zombies.gui.ZombiesOverviewView;
 
 import java.io.IOException;
 

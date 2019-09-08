@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.mode.zombies.item.powerup;
 
 import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.mode.zombies.Zombies;
 import com.matsg.battlegrounds.mode.zombies.component.Barricade;
 import com.matsg.battlegrounds.mode.zombies.component.MobSpawn;
 import com.matsg.battlegrounds.mode.zombies.item.PowerUpCallback;
@@ -16,11 +17,16 @@ import java.util.Collection;
 public class Carpenter implements PowerUpEffect {
 
     private static final int CARPENTER_POINTS = 200;
+
+    private Game game;
     private int duration;
     private Material material;
     private String name;
+    private Zombies zombies;
 
-    public Carpenter(String name) {
+    public Carpenter(Game game, Zombies zombies, String name) {
+        this.game = game;
+        this.zombies = zombies;
         this.name = name;
         this.duration = 0;
         this.material = XMaterial.OAK_FENCE.parseMaterial();
@@ -42,8 +48,8 @@ public class Carpenter implements PowerUpEffect {
         return name;
     }
 
-    public void activate(Game game, PowerUpCallback callback) {
-        Collection<MobSpawn> mobSpawns = game.getArena().getComponents(MobSpawn.class);
+    public void activate(PowerUpCallback callback) {
+        Collection<MobSpawn> mobSpawns = zombies.getComponents(MobSpawn.class);
 
         if (mobSpawns.size() <= 0) {
             return;
@@ -77,6 +83,10 @@ public class Carpenter implements PowerUpEffect {
                 cancel();
             }
         }.runTaskTimer(20, 8);
+    }
+
+    public boolean isApplicableForActivation() {
+        return zombies.getComponents(Barricade.class).size() > 0;
     }
 
     public double modifyDamage(double damage) {

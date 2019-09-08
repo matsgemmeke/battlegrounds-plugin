@@ -70,7 +70,7 @@ public class Zombies extends AbstractGameMode {
             Version version,
             ZombiesConfig config
     ) {
-        super(plugin, game, translator, spawningBehavior);
+        super(plugin, GameModeType.ZOMBIES, game, translator, spawningBehavior);
         this.perkManager = perkManager;
         this.powerUpManager = powerUpManager;
         this.config = config;
@@ -87,7 +87,7 @@ public class Zombies extends AbstractGameMode {
     }
 
     public void onCreate() {
-        PowerUpFactory powerUpFactory = new PowerUpFactory(plugin, this, translator);
+        PowerUpFactory powerUpFactory = new PowerUpFactory(plugin, game, this, translator);
 
         // Register gamemode specific event handlers
         plugin.getEventDispatcher().registerEventChannel(BlockPlaceEvent.class, new EventChannel<>(
@@ -123,6 +123,9 @@ public class Zombies extends AbstractGameMode {
                 mysteryBox.getState().remove();
             }
         }
+
+        perkManager.clear();
+        powerUpManager.clear();
     }
 
     public BarricadeFactory getBarricadeFactory() {
@@ -232,6 +235,18 @@ public class Zombies extends AbstractGameMode {
         return Collections.unmodifiableList(list);
     }
 
+    public <T extends ArenaComponent> Collection<T> getComponents(Class<T> componentClass) {
+        List<T> list = new ArrayList<>();
+
+        for (ArenaComponent component : getComponents()) {
+            if (component.getClass().isAssignableFrom(componentClass)) {
+                list.add((T) component);
+            }
+        }
+
+        return Collections.unmodifiableList(list);
+    }
+
     public Mob[] getNearbyEntities(Location location, Team team, double range) {
         List<Mob> list = new ArrayList<>();
 
@@ -323,10 +338,19 @@ public class Zombies extends AbstractGameMode {
 
     public boolean removeComponent(ArenaComponent component) {
         int id = component.getId();
+
         if (sectionContainer.get(id) != null) {
             sectionContainer.remove(id);
             return true;
         }
+
+        for (Section section : sectionContainer.getAll()) {
+            if (section.getComponent(id) != null) {
+                section.removeComponent(component);
+                return true;
+            }
+        }
+
         return false;
     }
 

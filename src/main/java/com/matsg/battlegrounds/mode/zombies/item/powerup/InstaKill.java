@@ -5,14 +5,17 @@ import com.matsg.battlegrounds.mode.zombies.item.PowerUpCallback;
 import com.matsg.battlegrounds.mode.zombies.item.PowerUpEffect;
 import com.matsg.battlegrounds.util.XMaterial;
 import org.bukkit.Material;
+import org.bukkit.plugin.Plugin;
 
 public class InstaKill implements PowerUpEffect {
 
     private int duration;
+    private Plugin plugin;
     private Material material;
     private String name;
 
-    public InstaKill(String name, int duration) {
+    public InstaKill(Plugin plugin, String name, int duration) {
+        this.plugin = plugin;
         this.name = name;
         this.duration = duration;
         this.material = XMaterial.SKELETON_SKULL.parseMaterial();
@@ -34,8 +37,13 @@ public class InstaKill implements PowerUpEffect {
         return name;
     }
 
-    public void activate(Game game, PowerUpCallback callback) {
-        callback.onPowerUpEnd();
+    public void activate(PowerUpCallback callback) {
+        PowerUpActivationPeriod activationPeriod = new PowerUpActivationPeriod(callback);
+        activationPeriod.runTaskLater(plugin, duration);
+    }
+
+    public boolean isApplicableForActivation() {
+        return true;
     }
 
     public double modifyDamage(double damage) {

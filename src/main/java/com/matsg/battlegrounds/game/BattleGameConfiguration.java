@@ -58,7 +58,7 @@ public class BattleGameConfiguration implements GameConfiguration {
     private List<String> getGameModeNames() {
         List<String> list = new ArrayList<>();
         for (GameMode gameMode : gameModes) {
-            list.add(gameMode.getType().toString());
+            list.add(gameMode.getId());
         }
         return list;
     }

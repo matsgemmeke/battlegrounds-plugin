@@ -13,6 +13,7 @@ import com.matsg.battlegrounds.mode.zombies.item.factory.PowerUpFactory;
 import com.matsg.battlegrounds.mode.zombies.item.powerup.PowerUpEffectType;
 import com.matsg.battlegrounds.util.BattleRunnable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -50,16 +51,25 @@ public class ZombiesKillEventHandler implements EventHandler<GamePlayerKillEntit
         game.getPlayerManager().givePoints(gamePlayer, zombies.getPowerUpManager().getPowerUpPoints(event.getPoints()));
         game.updateScoreboard();
 
-        List<String> powerUpTypes = zombies.getConfig().getPowerUpTypes();
+        List<String> powerUpEffects = zombies.getConfig().getPowerUpEffects();
 
         if (mob.hasLoot()
                 && mob.isHostileTowards(gamePlayer)
-                && powerUpTypes.size() > 0
-                && zombies.getPowerUpManager().getPowerUpCount() < powerUpTypes.size()
+                && powerUpEffects.size() > 0
+                && zombies.getPowerUpManager().getPowerUpCount() < powerUpEffects.size()
                 && random.nextDouble() < zombies.getConfig().getPowerUpChance()) {
 
-            PowerUpEffectType effectType = PowerUpEffectType.values()[random.nextInt(PowerUpEffectType.values().length)];
-            PowerUp powerUp = powerUpFactory.make(effectType, zombies.getConfig().getPowerUpDuration());
+            List<PowerUpEffectType> effectTypes = new ArrayList<>();
+            PowerUp powerUp;
+
+            for (String effectType : powerUpEffects) {
+                effectTypes.add(PowerUpEffectType.valueOf(effectType));
+            }
+
+            do {
+                PowerUpEffectType effectType = effectTypes.get(random.nextInt(effectTypes.size()));
+                powerUp = powerUpFactory.make(effectType, zombies.getConfig().getPowerUpDuration());
+            } while (!powerUp.getEffect().isApplicableForActivation());
 
             zombies.getPowerUpManager().dropPowerUp(powerUp, mob.getBukkitEntity().getLocation());
         }

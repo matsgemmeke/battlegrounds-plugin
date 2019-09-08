@@ -29,7 +29,7 @@ public class FreeForAll extends ClassicGameMode {
     private FFAConfig config;
 
     public FreeForAll(Battlegrounds plugin, Game game, Translator translator, SpawningBehavior spawningBehavior, FFAConfig config) {
-        super(plugin, game, translator, spawningBehavior);
+        super(plugin, GameModeType.FREE_FOR_ALL, game, translator, spawningBehavior);
         this.config = config;
         this.name = translator.translate(TranslationKey.FFA_NAME);
         this.shortName = translator.translate(TranslationKey.FFA_SHORT);

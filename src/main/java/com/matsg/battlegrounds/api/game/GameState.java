@@ -1,6 +1,6 @@
 package com.matsg.battlegrounds.api.game;
 
-public interface GameState {
+public interface GameState extends ItemRepresentable {
 
     /**
      * Gets whether a certain allowed in the game state.

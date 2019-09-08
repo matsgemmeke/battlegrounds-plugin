@@ -24,17 +24,20 @@ public abstract class AbstractGameMode implements GameMode {
     protected List<ArenaComponent> components;
     protected List<Objective> objectives;
     protected List<Team> teams;
-    protected String name, shortName;
+    protected String name;
+    protected String shortName;
     protected Translator translator;
     private SpawningBehavior spawningBehavior;
+    private String id;
 
-    public AbstractGameMode(Battlegrounds plugin, Game game, Translator translator, SpawningBehavior spawningBehavior) {
+    public AbstractGameMode(Battlegrounds plugin, GameModeType gameModeType, Game game, Translator translator, SpawningBehavior spawningBehavior) {
         this.plugin = plugin;
         this.game = game;
         this.translator = translator;
         this.spawningBehavior = spawningBehavior;
         this.active = false;
         this.components = new ArrayList<>();
+        this.id = gameModeType.toString();
         this.objectives = new ArrayList<>();
         this.teams = new ArrayList<>();
     }
@@ -44,6 +47,10 @@ public abstract class AbstractGameMode implements GameMode {
     public void onDisable() { }
 
     public void onEnable() { }
+
+    public String getId() {
+        return id;
+    }
 
     public String getName() {
         return name;

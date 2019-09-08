@@ -29,6 +29,12 @@ public class ZombiesPerkManager implements PerkManager {
     }
 
     public void clear() {
+        for (GamePlayer gamePlayer : playerPerks.keySet()) {
+            for (Perk perk : playerPerks.get(gamePlayer)) {
+                perk.remove();
+            }
+        }
+
         playerPerks.clear();
     }
 

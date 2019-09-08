@@ -9,12 +9,14 @@ import com.matsg.battlegrounds.api.event.GameEndEvent;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.mode.AbstractGameMode;
+import com.matsg.battlegrounds.mode.GameModeType;
 import com.matsg.battlegrounds.mode.Result;
 import com.matsg.battlegrounds.mode.shared.SpawningBehavior;
 import com.matsg.battlegrounds.gui.SelectLoadoutView;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.item.SelectLoadout;
 import com.matsg.battlegrounds.nms.Title;
+import com.matsg.battlegrounds.util.XMaterial;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -33,8 +35,8 @@ import java.util.Collections;
  */
 public abstract class ClassicGameMode extends AbstractGameMode {
 
-    public ClassicGameMode(Battlegrounds plugin, Game game, Translator translator, SpawningBehavior spawningBehavior) {
-        super(plugin, game, translator, spawningBehavior);
+    public ClassicGameMode(Battlegrounds plugin, GameModeType gameModeType, Game game, Translator translator, SpawningBehavior spawningBehavior) {
+        super(plugin, gameModeType, game, translator, spawningBehavior);
     }
 
     public void onDisable() {

@@ -68,7 +68,8 @@ public class EventListener implements Listener {
         ));
         eventDispatcher.registerEventChannel(PlayerInteractEvent.class, new EventChannel<>(
                 new ComponentInteractHandler(plugin),
-                new PlayerInteractEventHandler(plugin),
+                new PlayerItemInteractHandler(plugin),
+                new PlayerSignInteractHandler(plugin),
                 new SelectionInteractionHandler(plugin, translator)
         ));
         eventDispatcher.registerEventChannel(PlayerItemHeldEvent.class, new EventChannel<>(

@@ -1,31 +1,29 @@
 package com.matsg.battlegrounds.event.handler;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.event.EventHandler;
 import com.matsg.battlegrounds.api.game.Action;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.item.Item;
 import com.matsg.battlegrounds.api.item.Weapon;
-import com.matsg.battlegrounds.api.entity.GamePlayer;
-import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class PlayerInteractEventHandler implements EventHandler<PlayerInteractEvent> {
+public class PlayerItemInteractHandler implements EventHandler<PlayerInteractEvent> {
 
     private Battlegrounds plugin;
 
-    public PlayerInteractEventHandler(Battlegrounds plugin) {
+    public PlayerItemInteractHandler(Battlegrounds plugin) {
         this.plugin = plugin;
     }
 
     public void handle(PlayerInteractEvent event) {
-        handleItemInteraction(event);
-        handleSignInteraction(event);
-    }
+        if (event.getClickedBlock() != null && event.isCancelled()) {
+            return;
+        }
 
-    public void handleItemInteraction(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         Game game = plugin.getGameManager().getGame(player);
         ItemStack itemStack = event.getItem();
@@ -42,20 +40,5 @@ public class PlayerInteractEventHandler implements EventHandler<PlayerInteractEv
         }
 
         game.getItemRegistry().interact(gamePlayer, item, event.getAction());
-    }
-
-    public void handleSignInteraction(PlayerInteractEvent event) {
-        if (event.getClickedBlock() == null || !(event.getClickedBlock().getState() instanceof Sign)) {
-            return;
-        }
-
-        Sign sign = (Sign) event.getClickedBlock().getState();
-
-        for (Game game : plugin.getGameManager().getGames()) {
-            if (game.getGameSign() != null && game.getGameSign().getSign().equals(sign)) {
-                game.getGameSign().click(event.getPlayer());
-                break;
-            }
-        }
     }
 }
