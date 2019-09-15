@@ -202,6 +202,6 @@ public class EventListener implements Listener {
     }
 
     private void dispatchEvent(Event event) {
-        eventDispatcher.dispatchEvent(event);
+        eventDispatcher.dispatchInternalEvent(event);
     }
 }

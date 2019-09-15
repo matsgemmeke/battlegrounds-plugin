@@ -5,6 +5,7 @@ import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.api.item.ItemMetadata;
 import com.matsg.battlegrounds.mode.zombies.PowerUpManager;
 import com.matsg.battlegrounds.mode.zombies.Zombies;
 import com.matsg.battlegrounds.mode.zombies.item.PowerUp;
@@ -55,9 +56,11 @@ public class PowerUpFactory {
 
         String id = effect.toString();
         String name = effect.getName();
+
+        ItemMetadata metadata = new ItemMetadata(id, name, null);
         ItemStack itemStack = new ItemStack(effect.getMaterial());
         PowerUpManager powerUpManager = zombies.getPowerUpManager();
 
-        return new ZombiesPowerUp(id, name, itemStack, effect, powerUpManager);
+        return new ZombiesPowerUp(metadata, itemStack, effect, powerUpManager);
     }
 }

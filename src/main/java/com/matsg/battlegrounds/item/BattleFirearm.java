@@ -14,6 +14,7 @@ import com.matsg.battlegrounds.util.data.IntegerValueObject;
 import com.matsg.battlegrounds.util.data.ReloadTypeValueObject;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.BattleSound;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -425,6 +426,7 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
         itemStack = new ItemStackBuilder(itemStack)
                 .addItemFlags(ItemFlag.values())
                 .setAmount(1)
+                .setDisplayName(ChatColor.WHITE + metadata.getName() + "  " + magazine.getValue() + "/" + ammo.getValue())
                 .setUnbreakable(true)
                 .build();
         if (gamePlayer != null) {

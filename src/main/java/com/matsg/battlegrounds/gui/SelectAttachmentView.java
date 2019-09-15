@@ -40,7 +40,7 @@ public class SelectAttachmentView implements View {
         this.loadout = loadout;
         this.player = player;
 
-        inventory = buildInventory(plugin.getServer().createInventory(this, 27, translator.translate(TranslationKey.VIEW_SELECT_ATTACHMENT, new Placeholder("bg_weapon", gun.getName()))));
+        inventory = buildInventory(plugin.getServer().createInventory(this, 27, translator.translate(TranslationKey.VIEW_SELECT_ATTACHMENT, new Placeholder("bg_weapon", gun.getMetadata().getName()))));
         inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(translator.translate(TranslationKey.GO_BACK)).build());
     }
 
@@ -57,7 +57,7 @@ public class SelectAttachmentView implements View {
         int slot = -1;
         for (Attachment attachment : sortAttachments(getAttachmentList(gun))) {
             if (attachment != null) {
-                ItemStack itemStack = plugin.getLevelConfig().getLevelUnlocked(attachment.getName())
+                ItemStack itemStack = plugin.getLevelConfig().getLevelUnlocked(attachment.getMetadata().getName())
                         <= plugin.getLevelConfig().getLevel(plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).getExp())
                         ? getUnlockedItemStack(attachment) : getLockedItemStack(attachment);
 
@@ -93,7 +93,7 @@ public class SelectAttachmentView implements View {
     private ItemStack getLockedItemStack(Attachment attachment) {
         return new ItemStackBuilder(Material.BARRIER)
                 .addItemFlags(ItemFlag.values())
-                .setDisplayName(translator.translate(TranslationKey.ITEM_LOCKED, new Placeholder("bg_level", plugin.getLevelConfig().getLevelUnlocked(attachment.getName()))))
+                .setDisplayName(translator.translate(TranslationKey.ITEM_LOCKED, new Placeholder("bg_level", plugin.getLevelConfig().getLevelUnlocked(attachment.getMetadata().getName()))))
                 .setUnbreakable(true)
                 .build();
     }
@@ -101,8 +101,8 @@ public class SelectAttachmentView implements View {
     private ItemStack getUnlockedItemStack(Attachment attachment) {
         return new ItemStackBuilder(attachment.getItemStack().clone())
                 .addItemFlags(ItemFlag.values())
-                .setDisplayName(ChatColor.WHITE + attachment.getName())
-                .setLore(getAttachmentLore(attachment.getDescription()))
+                .setDisplayName(ChatColor.WHITE + attachment.getMetadata().getName())
+                .setLore(getAttachmentLore(attachment.getMetadata().getDescription()))
                 .setUnbreakable(true)
                 .build();
     }
@@ -132,7 +132,7 @@ public class SelectAttachmentView implements View {
         List<Attachment> list = new ArrayList<>(unsorted);
         Collections.sort(list, new Comparator<Attachment>() {
             public int compare(Attachment o1, Attachment o2) {
-                return Integer.valueOf(plugin.getLevelConfig().getLevelUnlocked(o1.getName())).compareTo(plugin.getLevelConfig().getLevelUnlocked(o2.getName()));
+                return Integer.valueOf(plugin.getLevelConfig().getLevelUnlocked(o1.getMetadata().getName())).compareTo(plugin.getLevelConfig().getLevelUnlocked(o2.getMetadata().getName()));
             }
         });
         return list;

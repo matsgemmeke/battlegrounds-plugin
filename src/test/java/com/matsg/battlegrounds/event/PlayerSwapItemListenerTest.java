@@ -28,6 +28,6 @@ public class PlayerSwapItemListenerTest {
         // Test PlayerSwapHandItemsEvent dispatching
         PlayerSwapHandItemsEvent playerSwapHandItemsEvent = mock(PlayerSwapHandItemsEvent.class);
         listener.onPlayerItemSwap(playerSwapHandItemsEvent);
-        verify(eventDispatcher, times(1)).dispatchEvent(playerSwapHandItemsEvent);
+        verify(eventDispatcher, times(1)).dispatchInternalEvent(playerSwapHandItemsEvent);
     }
 }

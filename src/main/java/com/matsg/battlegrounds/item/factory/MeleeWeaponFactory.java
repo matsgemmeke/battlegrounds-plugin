@@ -22,9 +22,9 @@ public class MeleeWeaponFactory implements ItemFactory<MeleeWeapon> {
     private ItemConfig meleeWeaponConfig;
     private Translator translator;
 
-    public MeleeWeaponFactory(EventDispatcher eventDispatcher, ItemConfig meleeWeaponConfig, Translator translator) {
-        this.eventDispatcher = eventDispatcher;
+    public MeleeWeaponFactory(ItemConfig meleeWeaponConfig, EventDispatcher eventDispatcher, Translator translator) {
         this.meleeWeaponConfig = meleeWeaponConfig;
+        this.eventDispatcher = eventDispatcher;
         this.translator = translator;
     }
 

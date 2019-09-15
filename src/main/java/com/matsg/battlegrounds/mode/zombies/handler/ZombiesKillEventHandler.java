@@ -12,6 +12,7 @@ import com.matsg.battlegrounds.mode.zombies.Zombies;
 import com.matsg.battlegrounds.mode.zombies.item.factory.PowerUpFactory;
 import com.matsg.battlegrounds.mode.zombies.item.powerup.PowerUpEffectType;
 import com.matsg.battlegrounds.util.BattleRunnable;
+import org.bukkit.Material;
 
 import java.util.ArrayList;
 import java.util.List;

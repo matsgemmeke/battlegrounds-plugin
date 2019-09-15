@@ -4,6 +4,7 @@ import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.FactoryCreationException;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Translator;
+import com.matsg.battlegrounds.api.event.EventDispatcher;
 import com.matsg.battlegrounds.api.storage.ItemConfig;
 import com.matsg.battlegrounds.api.item.Equipment;
 import com.matsg.battlegrounds.api.item.Lethal;
@@ -32,6 +33,7 @@ public class EquipmentFactoryTest {
 
     private Battlegrounds plugin;
     private ConfigurationSection section;
+    private EventDispatcher eventDispatcher;
     private ItemConfig equipmentConfig;
     private String id;
 
@@ -39,6 +41,7 @@ public class EquipmentFactoryTest {
     public void setUp() {
         this.plugin = mock(Battlegrounds.class);
         this.section = mock(ConfigurationSection.class);
+        this.eventDispatcher = mock(EventDispatcher.class);
         this.equipmentConfig = mock(ItemConfig.class);
 
         this.id = "Id";
@@ -62,7 +65,7 @@ public class EquipmentFactoryTest {
     public void makeEquipmentInvalidType() {
         when(section.getString("EquipmentType")).thenReturn("INVALID");
 
-        EquipmentFactory factory = new EquipmentFactory(plugin, equipmentConfig);
+        EquipmentFactory factory = new EquipmentFactory(equipmentConfig, eventDispatcher);
         factory.make(id);
     }
 
@@ -71,16 +74,17 @@ public class EquipmentFactoryTest {
         when(section.getInt("Amount")).thenReturn(-1);
         when(section.getString("EquipmentType")).thenReturn("LETHAL");
 
-        EquipmentFactory factory = new EquipmentFactory(plugin, equipmentConfig);
+        EquipmentFactory factory = new EquipmentFactory(equipmentConfig, eventDispatcher);
         factory.make(id);
     }
 
     @Test(expected = FactoryCreationException.class)
     public void makeTacticalWithFailingValidation() {
         when(section.getInt("Amount")).thenReturn(-1);
+        when(section.getString("Effect")).thenReturn("BLINDNESS");
         when(section.getString("EquipmentType")).thenReturn("TACTICAL");
 
-        EquipmentFactory factory = new EquipmentFactory(plugin, equipmentConfig);
+        EquipmentFactory factory = new EquipmentFactory(equipmentConfig, eventDispatcher);
         factory.make(id);
     }
 
@@ -99,11 +103,11 @@ public class EquipmentFactoryTest {
         when(section.getDouble("Velocity")).thenReturn(1.0);
         when(section.getName()).thenReturn(id);
 
-        EquipmentFactory factory = new EquipmentFactory(plugin, equipmentConfig);
+        EquipmentFactory factory = new EquipmentFactory(equipmentConfig, eventDispatcher);
         Equipment equipment = factory.make(id);
 
         assertNotNull(equipment);
-        assertEquals(id, equipment.getId());
+        assertEquals(id, equipment.getMetadata().getId());
         assertTrue(equipment instanceof Lethal);
     }
 
@@ -121,11 +125,11 @@ public class EquipmentFactoryTest {
         when(section.getDouble("Velocity")).thenReturn(1.0);
         when(section.getName()).thenReturn(id);
 
-        EquipmentFactory factory = new EquipmentFactory(plugin, equipmentConfig);
+        EquipmentFactory factory = new EquipmentFactory(equipmentConfig, eventDispatcher);
         Equipment equipment = factory.make(id);
 
         assertNotNull(equipment);
-        assertEquals(id, equipment.getId());
+        assertEquals(id, equipment.getMetadata().getId());
         assertTrue(equipment instanceof Tactical);
     }
 }

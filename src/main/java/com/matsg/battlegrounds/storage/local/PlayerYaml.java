@@ -102,9 +102,9 @@ public class PlayerYaml extends AbstractYaml implements StoredPlayer {
 
         loadoutSetup.put("loadout_nr", String.valueOf(loadoutNr));
         loadoutSetup.put("loadout_name", section.getString("Name"));
-        loadoutSetup.put("primary", section.getString("Primary"));
+        loadoutSetup.put("primary", section.getString("Primary.Id"));
         loadoutSetup.put("primary_attachments", section.getString("Primary.Attachments"));
-        loadoutSetup.put("secondary", section.getString("Secondary"));
+        loadoutSetup.put("secondary", section.getString("Secondary.Id"));
         loadoutSetup.put("secondary_attachments", section.getString("Secondary.Attachments"));
         loadoutSetup.put("equipment", section.getString("Equipment"));
         loadoutSetup.put("melee_weapon", section.getString("MeleeWeapon"));

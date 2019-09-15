@@ -64,7 +64,7 @@ public class EditLoadoutView implements View {
 
         ItemStack itemStack = new ItemStackBuilder(attachment != null ? attachment.getItemStack() : new ItemStack(Material.BARRIER))
                 .addItemFlags(ItemFlag.values())
-                .setDisplayName(ChatColor.WHITE + translator.translate(TranslationKey.GUN_ATTACHMENT, new Placeholder("bg_weapon", gun.getName())))
+                .setDisplayName(ChatColor.WHITE + translator.translate(TranslationKey.GUN_ATTACHMENT, new Placeholder("bg_weapon", gun.getMetadata().getName())))
                 .setLore(ChatColor.WHITE + getItemName(attachment), lore[0], lore[1])
                 .setUnbreakable(true)
                 .build();
@@ -118,7 +118,7 @@ public class EditLoadoutView implements View {
     }
 
     private String getItemName(Item item) {
-        return item != null ? item.getName() : translator.translate(TranslationKey.NONE_SELECTED);
+        return item != null ? item.getMetadata().getName() : translator.translate(TranslationKey.NONE_SELECTED);
     }
 
     private ItemStack getItemStack(Weapon weapon) {

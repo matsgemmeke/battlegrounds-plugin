@@ -83,7 +83,7 @@ public class DisplayState implements MysteryBoxState {
     }
 
     public boolean handleLookInteraction(GamePlayer gamePlayer) {
-        ActionBar.MYSTERY_BOX_SWAP.send(gamePlayer.getPlayer(), new Placeholder("bg_weapon", weapon.getName()));
+        ActionBar.MYSTERY_BOX_SWAP.send(gamePlayer.getPlayer(), new Placeholder("bg_weapon", weapon.getMetadata().getName()));
         return true;
     }
 
@@ -100,7 +100,7 @@ public class DisplayState implements MysteryBoxState {
                     return;
                 }
 
-                hologram.setText((double) time / 10 + "s", weapon.getName());
+                hologram.setText((double) time / 10 + "s", weapon.getMetadata().getName());
                 hologram.update();
             }
         }.runTaskTimer(WEAPON_DISPLAY_DELAY, WEAPON_DISPLAY_FRAME_DURATION);

@@ -1,15 +1,11 @@
 package com.matsg.battlegrounds.mode.shared.handler;
 
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.Hitbox;
-import com.matsg.battlegrounds.api.event.EventHandler;
-import com.matsg.battlegrounds.api.event.GameEndEvent;
-import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent;
+import com.matsg.battlegrounds.api.event.*;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent.DeathCause;
-import com.matsg.battlegrounds.api.event.GamePlayerKillEntityEvent;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameMode;
 import com.matsg.battlegrounds.api.game.Objective;
@@ -19,13 +15,13 @@ import org.bukkit.event.Event;
 
 public class GeneralKillHandler implements EventHandler<GamePlayerKillEntityEvent> {
 
-    private Battlegrounds plugin;
+    private EventDispatcher eventDispatcher;
     private Game game;
     private GameMode gameMode;
     private Translator translator;
 
-    public GeneralKillHandler(Battlegrounds plugin, Game game, GameMode gameMode, Translator translator) {
-        this.plugin = plugin;
+    public GeneralKillHandler(EventDispatcher eventDispatcher, Game game, GameMode gameMode, Translator translator) {
+        this.eventDispatcher = eventDispatcher;
         this.game = game;
         this.gameMode = gameMode;
         this.translator = translator;
@@ -44,7 +40,7 @@ public class GeneralKillHandler implements EventHandler<GamePlayerKillEntityEven
         game.getPlayerManager().broadcastMessage(translator.translate(hitbox.getTranslationKey(),
                 new Placeholder("bg_killer", killer.getTeam().getChatColor() + killer.getName() + ChatColor.WHITE),
                 new Placeholder("bg_player", gamePlayer.getTeam().getChatColor() + gamePlayer.getName() + ChatColor.WHITE),
-                new Placeholder("bg_weapon", weapon.getName()))
+                new Placeholder("bg_weapon", weapon.getMetadata().getName()))
         );
 
         killer.addExp(100);
@@ -62,9 +58,7 @@ public class GeneralKillHandler implements EventHandler<GamePlayerKillEntityEven
         }
 
         Event deathEvent = new GamePlayerDeathEvent(game, gamePlayer, DeathCause.PLAYER_KILL);
-        // Handle the event on the event dispatcher so we can reuse the event without calling a listener to it
-        plugin.getEventDispatcher().dispatchEvent(deathEvent);
-        // Handle the event on the plugin manager so other plugin can listen to this event as well
-        plugin.getServer().getPluginManager().callEvent(deathEvent);
+
+        eventDispatcher.dispatchExternalEvent(deathEvent);
     }
 }

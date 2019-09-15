@@ -12,10 +12,12 @@ import org.bukkit.Material;
 
 public class SelectLoadout extends BattleItem {
 
+    private Battlegrounds plugin;
     private Translator translator;
 
     public SelectLoadout(Battlegrounds plugin, Game game, Translator translator) {
-        super(plugin, null, "SelectLoadout", null);
+        super(null, null);
+        this.plugin = plugin;
         this.game = game;
         this.translator = translator;
         this.itemSlot = ItemSlot.MISCELLANEOUS;
@@ -26,6 +28,7 @@ public class SelectLoadout extends BattleItem {
         if (gamePlayer == null) {
             return;
         }
+
         gamePlayer.getPlayer().openInventory(new SelectLoadoutView(plugin, translator, game, gamePlayer).getInventory());
     }
 

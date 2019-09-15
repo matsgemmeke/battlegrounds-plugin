@@ -38,7 +38,7 @@ public class SelectWeaponView implements View {
 
         Collections.sort(weapons, new Comparator<Weapon>() {
             public int compare(Weapon o1, Weapon o2){
-                return Integer.valueOf(plugin.getLevelConfig().getLevelUnlocked(o1.getName())).compareTo(plugin.getLevelConfig().getLevelUnlocked(o2.getName()));
+                return Integer.valueOf(plugin.getLevelConfig().getLevelUnlocked(o1.getMetadata().getId())).compareTo(plugin.getLevelConfig().getLevelUnlocked(o2.getMetadata().getId()));
             }
         });
 
@@ -62,7 +62,7 @@ public class SelectWeaponView implements View {
     }
 
     private void addWeapon(Weapon weapon, int slot) {
-        ItemStack itemStack = plugin.getLevelConfig().getLevelUnlocked(weapon.getName())
+        ItemStack itemStack = plugin.getLevelConfig().getLevelUnlocked(weapon.getMetadata().getId())
                 <= plugin.getLevelConfig().getLevel(plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).getExp())
                 ? getUnlockedItemStack(weapon) : getLockedItemStack(weapon);
 
@@ -73,7 +73,7 @@ public class SelectWeaponView implements View {
     private ItemStack getLockedItemStack(Weapon weapon) {
         return new ItemStackBuilder(Material.BARRIER)
                 .addItemFlags(ItemFlag.values())
-                .setDisplayName(translator.translate(TranslationKey.ITEM_LOCKED, new Placeholder("bg_level", plugin.getLevelConfig().getLevelUnlocked(weapon.getName()))))
+                .setDisplayName(translator.translate(TranslationKey.ITEM_LOCKED, new Placeholder("bg_level", plugin.getLevelConfig().getLevelUnlocked(weapon.getMetadata().getId()))))
                 .setUnbreakable(true)
                 .build();
     }
@@ -81,7 +81,7 @@ public class SelectWeaponView implements View {
     private ItemStack getUnlockedItemStack(Weapon weapon) {
         return new ItemStackBuilder(weapon.getItemStack().clone())
                 .addItemFlags(ItemFlag.values())
-                .setDisplayName(ChatColor.WHITE + weapon.getName())
+                .setDisplayName(ChatColor.WHITE + weapon.getMetadata().getName())
                 .setLore(getLore(weapon))
                 .setUnbreakable(true)
                 .build();
@@ -92,7 +92,7 @@ public class SelectWeaponView implements View {
         lore.add(" ");
         int maxLength = 30;
         Pattern pattern = Pattern.compile("\\G\\s*(.{1," + maxLength + "})(?=\\s|$)", Pattern.DOTALL);
-        Matcher matcher = pattern.matcher(weapon.getDescription());
+        Matcher matcher = pattern.matcher(weapon.getMetadata().getDescription());
         while (matcher.find()) {
             lore.add(ChatColor.WHITE + matcher.group(1));
         }

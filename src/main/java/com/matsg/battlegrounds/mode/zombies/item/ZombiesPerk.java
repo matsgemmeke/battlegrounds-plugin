@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.mode.zombies.item;
 
 import com.matsg.battlegrounds.api.entity.GamePlayer;
+import com.matsg.battlegrounds.api.item.ItemMetadata;
 import com.matsg.battlegrounds.item.BattleItem;
 import com.matsg.battlegrounds.api.item.Transaction;
 import org.bukkit.inventory.ItemStack;
@@ -10,8 +11,8 @@ public class ZombiesPerk extends BattleItem implements Perk {
     private GamePlayer gamePlayer;
     private PerkEffect effect;
 
-    public ZombiesPerk(String id, String name, ItemStack itemStack, PerkEffect effect) {
-        super(id, name, itemStack);
+    public ZombiesPerk(ItemMetadata metadata, ItemStack itemStack, PerkEffect effect) {
+        super(metadata, itemStack);
         this.effect = effect;
     }
 

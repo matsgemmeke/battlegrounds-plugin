@@ -95,24 +95,24 @@ public class BattleLoadout implements Loadout {
         map.put("loadout_name", name);
 
         if (primary != null) {
-            map.put("primary", primary.getId());
+            map.put("primary", primary.getMetadata().getId());
 
             if (primary instanceof Gun) {
                 map.put("primary_attachments", convertAttachmentsToString((Gun) primary));
             }
         }
         if (secondary != null) {
-            map.put("secondary", secondary.getId());
+            map.put("secondary", secondary.getMetadata().getId());
 
             if (secondary instanceof Gun) {
                 map.put("secondary_attachments", convertAttachmentsToString((Gun) secondary));
             }
         }
         if (equipment != null) {
-            map.put("equipment", equipment.getId());
+            map.put("equipment", equipment.getMetadata().getId());
         }
         if (meleeWeapon != null) {
-            map.put("melee_weapon", meleeWeapon.getId());
+            map.put("melee_weapon", meleeWeapon.getMetadata().getId());
         }
 
         return map;
@@ -150,7 +150,7 @@ public class BattleLoadout implements Loadout {
 
     public Weapon getWeapon(String name) {
         for (Weapon weapon : getWeapons()) {
-            if (weapon != null && weapon.getName().equals(name)) {
+            if (weapon != null && weapon.getMetadata().getName().equals(name)) {
                 return weapon;
             }
         }
@@ -196,12 +196,15 @@ public class BattleLoadout implements Loadout {
 
     private String convertAttachmentsToString(Gun gun) {
         StringBuilder builder = new StringBuilder();
+
         for (Attachment attachment : gun.getAttachments()) {
-            builder.append(attachment.getId());
+            builder.append(attachment.getMetadata().getId());
+
             if (gun.getAttachments().size() > gun.getAttachments().indexOf(attachment) + 1) {
                 builder.append(", ");
             }
         }
+
         return builder.toString();
     }
 }

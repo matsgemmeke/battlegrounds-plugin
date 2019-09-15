@@ -21,8 +21,6 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 public class AddPerkMachine extends ComponentCommand {
@@ -34,7 +32,7 @@ public class AddPerkMachine extends ComponentCommand {
     public AddPerkMachine(Battlegrounds plugin, Translator translator) {
         super(plugin);
         this.translator = translator;
-        this.perkFactory = new PerkFactory(plugin, translator);
+        this.perkFactory = new PerkFactory(translator);
         this.sectionPos = 4;
 
         registerValidator(new GameModeUsageValidator(plugin, translator, GameModeType.ZOMBIES));
@@ -114,7 +112,7 @@ public class AddPerkMachine extends ComponentCommand {
         player.sendMessage(translator.translate(TranslationKey.PERKMACHINE_ADD,
                 new Placeholder("bg_arena", arena.getName()),
                 new Placeholder("bg_component_id", componentId),
-                new Placeholder("bg_perk", perk.getName())
+                new Placeholder("bg_perk", perk.getMetadata().getName())
         ));
     }
 }

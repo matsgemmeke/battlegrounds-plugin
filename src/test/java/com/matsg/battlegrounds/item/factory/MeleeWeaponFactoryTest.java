@@ -2,8 +2,8 @@ package com.matsg.battlegrounds.item.factory;
 
 import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.FactoryCreationException;
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Translator;
+import com.matsg.battlegrounds.api.event.EventDispatcher;
 import com.matsg.battlegrounds.api.storage.ItemConfig;
 import com.matsg.battlegrounds.api.item.MeleeWeapon;
 import org.bukkit.Bukkit;
@@ -28,16 +28,18 @@ import static org.mockito.Mockito.*;
 })
 public class MeleeWeaponFactoryTest {
 
-    private Battlegrounds plugin;
     private ConfigurationSection section;
+    private EventDispatcher eventDispatcher;
     private ItemConfig meleeWeaponConfig;
     private String id;
+    private Translator translator;
 
     @Before
     public void setUp() {
-        this.plugin = mock(Battlegrounds.class);
         this.section = mock(ConfigurationSection.class);
+        this.eventDispatcher = mock(EventDispatcher.class);
         this.meleeWeaponConfig = mock(ItemConfig.class);
+        this.translator = mock(Translator.class);
 
         this.id = "Id";
 
@@ -46,13 +48,10 @@ public class MeleeWeaponFactoryTest {
 
         ItemFactory itemFactory = mock(ItemFactory.class);
         ItemMeta itemMeta = mock(ItemMeta.class, withSettings().extraInterfaces(Damageable.class)); // Add the Damageable interface so the ItemMeta can be casted when setting the durability
-        Translator translator = mock(Translator.class);
 
-        when(BattlegroundsPlugin.getPlugin()).thenReturn(plugin);
         when(Bukkit.getItemFactory()).thenReturn(itemFactory);
         when(itemFactory.getItemMeta(any())).thenReturn(itemMeta);
         when(meleeWeaponConfig.getItemConfigurationSection(id)).thenReturn(section);
-        when(plugin.getTranslator()).thenReturn(translator);
         when(section.getString("Material")).thenReturn("AIR,1");
     }
 
@@ -63,11 +62,11 @@ public class MeleeWeaponFactoryTest {
         when(section.getDouble("Damage")).thenReturn(10.0);
         when(section.getName()).thenReturn(id);
 
-        MeleeWeaponFactory factory = new MeleeWeaponFactory(plugin, meleeWeaponConfig);
+        MeleeWeaponFactory factory = new MeleeWeaponFactory(meleeWeaponConfig, eventDispatcher, translator);
         MeleeWeapon meleeWeapon = factory.make(id);
 
         assertNotNull(meleeWeapon);
-        assertEquals(id, meleeWeapon.getId());
+        assertEquals(id, meleeWeapon.getMetadata().getId());
     }
 
     @Test(expected = FactoryCreationException.class)
@@ -76,7 +75,7 @@ public class MeleeWeaponFactoryTest {
         when(section.getInt("Cooldown")).thenReturn(-1);
         when(section.getDouble("Damage")).thenReturn(-10.0);
 
-        MeleeWeaponFactory factory = new MeleeWeaponFactory(plugin, meleeWeaponConfig);
+        MeleeWeaponFactory factory = new MeleeWeaponFactory(meleeWeaponConfig, eventDispatcher, translator);
         factory.make(id);
     }
 }

@@ -96,7 +96,7 @@ public class AddWallWeapon extends ComponentCommand {
         game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".price", price);
         game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".section", section.getName());
         game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".type", "wallweapon");
-        game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".weapon", weapon.getName());
+        game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".weapon", weapon.getMetadata().getName());
         game.getDataFile().save();
 
         player.sendMessage(translator.translate(TranslationKey.ITEMCHEST_ADD,

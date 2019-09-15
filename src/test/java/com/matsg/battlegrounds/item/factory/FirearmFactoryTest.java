@@ -4,6 +4,8 @@ import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.FactoryCreationException;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Translator;
+import com.matsg.battlegrounds.api.Version;
+import com.matsg.battlegrounds.api.event.EventDispatcher;
 import com.matsg.battlegrounds.api.storage.BattlegroundsConfig;
 import com.matsg.battlegrounds.api.storage.ItemConfig;
 import com.matsg.battlegrounds.api.item.Firearm;
@@ -36,22 +38,28 @@ public class FirearmFactoryTest {
     private Battlegrounds plugin;
     private BattlegroundsConfig config;
     private ConfigurationSection section;
+    private EventDispatcher eventDispatcher;
     private ItemConfig firearmConfig;
     private String id;
+    private Translator translator;
+    private Version version;
 
     @Before
     public void setUp() {
         this.plugin = mock(Battlegrounds.class);
         this.config = mock(BattlegroundsConfig.class);
         this.section = mock(ConfigurationSection.class);
+        this.eventDispatcher = mock(EventDispatcher.class);
         this.firearmConfig = mock(ItemConfig.class);
+        this.translator = mock(Translator.class);
+        this.version = mock(Version.class);
 
         this.id = "Id";
 
         PowerMockito.mockStatic(BattlegroundsPlugin.class);
         PowerMockito.mockStatic(Bukkit.class);
 
-        config.pierceableBlocks = Collections.emptyList();
+        config.pierceableMaterials = Collections.emptyList();
 
         ItemFactory itemFactory = mock(ItemFactory.class);
         ItemMeta itemMeta = mock(ItemMeta.class, withSettings().extraInterfaces(Damageable.class)); // Add the Damageable interface so the ItemMeta can be casted when setting the durability
@@ -71,7 +79,7 @@ public class FirearmFactoryTest {
     public void makeFirearmInvalidType() {
         when(section.getString("FirearmType")).thenReturn("INVALID");
 
-        FirearmFactory factory = new FirearmFactory(plugin, firearmConfig);
+        FirearmFactory factory = new FirearmFactory(firearmConfig, eventDispatcher, translator, version, config);
         factory.make(id);
     }
 
@@ -80,7 +88,7 @@ public class FirearmFactoryTest {
         when(section.getInt("Ammo.Magazine")).thenReturn(-1);
         when(section.getString("FirearmType")).thenReturn("ASSAULT_RIFLE");
 
-        FirearmFactory factory = new FirearmFactory(plugin, firearmConfig);
+        FirearmFactory factory = new FirearmFactory(firearmConfig, eventDispatcher, translator, version, config);
         factory.make(id);
     }
 
@@ -89,7 +97,7 @@ public class FirearmFactoryTest {
         when(section.getInt("Ammo.Magazine")).thenReturn(-1);
         when(section.getString("FirearmType")).thenReturn("LAUNCHER");
 
-        FirearmFactory factory = new FirearmFactory(plugin, firearmConfig);
+        FirearmFactory factory = new FirearmFactory(firearmConfig, eventDispatcher, translator, version, config);
         factory.make(id);
     }
 
@@ -116,11 +124,11 @@ public class FirearmFactoryTest {
         when(section.getString("Reload.Type")).thenReturn("MAGAZINE");
         when(section.getName()).thenReturn(id);
 
-        FirearmFactory factory = new FirearmFactory(plugin, firearmConfig);
+        FirearmFactory factory = new FirearmFactory(firearmConfig, eventDispatcher, translator, version, config);
         Firearm firearm = factory.make(id);
 
         assertNotNull(firearm);
-        assertEquals(id, firearm.getId());
+        assertEquals(id, firearm.getMetadata().getId());
         assertTrue(firearm instanceof Gun);
     }
 
@@ -144,11 +152,11 @@ public class FirearmFactoryTest {
         when(section.getString("Reload.Type")).thenReturn("MAGAZINE");
         when(section.getName()).thenReturn(id);
 
-        FirearmFactory factory = new FirearmFactory(plugin, firearmConfig);
+        FirearmFactory factory = new FirearmFactory(firearmConfig, eventDispatcher, translator, version, config);
         Firearm firearm = factory.make(id);
 
         assertNotNull(firearm);
-        assertEquals(id, firearm.getId());
+        assertEquals(id, firearm.getMetadata().getId());
         assertTrue(firearm instanceof Launcher);
     }
 }

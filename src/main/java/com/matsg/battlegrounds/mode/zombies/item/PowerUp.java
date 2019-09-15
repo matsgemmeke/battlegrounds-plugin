@@ -9,8 +9,6 @@ public interface PowerUp extends Item, Droppable {
 
     void setEffect(PowerUpEffect powerUpEffect);
 
-    String getName();
-
     boolean isActive();
 
     void setActive(boolean active);

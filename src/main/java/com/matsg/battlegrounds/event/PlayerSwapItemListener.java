@@ -23,6 +23,6 @@ public class PlayerSwapItemListener implements Listener {
 
     @EventHandler
     public void onPlayerItemSwap(PlayerSwapHandItemsEvent event) {
-        plugin.getEventDispatcher().dispatchEvent(event);
+        plugin.getEventDispatcher().dispatchInternalEvent(event);
     }
 }

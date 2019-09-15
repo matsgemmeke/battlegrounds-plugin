@@ -17,9 +17,9 @@ public class EquipmentFactory implements ItemFactory<Equipment> {
     private EventDispatcher eventDispatcher;
     private ItemConfig equipmentConfig;
 
-    public EquipmentFactory(EventDispatcher eventDispatcher, ItemConfig equipmentConfig) {
-        this.eventDispatcher = eventDispatcher;
+    public EquipmentFactory(ItemConfig equipmentConfig, EventDispatcher eventDispatcher) {
         this.equipmentConfig = equipmentConfig;
+        this.eventDispatcher = eventDispatcher;
     }
 
     public Equipment make(String id) {

@@ -132,10 +132,10 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
             ItemConfig firearmConfig = new FirearmConfig(this);
             ItemConfig meleeWeaponConfig = new MeleeWeaponConfig(this);
 
-            attachmentFactory = new AttachmentFactory(this, attachmentConfig);
-            equipmentFactory = new EquipmentFactory(this, equipmentConfig);
-            firearmFactory = new FirearmFactory(this, firearmConfig);
-            meleeWeaponFactory = new MeleeWeaponFactory(this, meleeWeaponConfig);
+            attachmentFactory = new AttachmentFactory(attachmentConfig);
+            equipmentFactory = new EquipmentFactory(equipmentConfig, eventDispatcher);
+            firearmFactory = new FirearmFactory(firearmConfig, eventDispatcher, translator, version, config);
+            meleeWeaponFactory = new MeleeWeaponFactory(meleeWeaponConfig, eventDispatcher, translator);
         } catch (IOException e) {
             return false;
         }
@@ -143,29 +143,13 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
     }
 
     private void startPlugin() throws StartupFailedException {
-        try {
-            cache = new BattleCacheYaml(this, "cache.yml");
-            config = new BattlegroundsConfig(this);
-        } catch (Exception e) {
-            throw new StartupFailedException("Failed to load configuration files!", e);
-        }
-
         setUpTranslator();
-        setUpCommands();
 
-        try {
-            ItemConfig attachmentConfig = new AttachmentConfig(this);
-            ItemConfig equipmentConfig = new EquipmentConfig(this);
-            ItemConfig firearmConfig = new FirearmConfig(this);
-            ItemConfig meleeWeaponConfig = new MeleeWeaponConfig(this);
-
-            attachmentFactory = new AttachmentFactory(this, attachmentConfig);
-            equipmentFactory = new EquipmentFactory(this, equipmentConfig);
-            firearmFactory = new FirearmFactory(this, firearmConfig);
-            meleeWeaponFactory = new MeleeWeaponFactory(this, meleeWeaponConfig);
-        } catch (Exception e) {
-            throw new StartupFailedException("Failed to load item configuration files!", e);
+        if (!loadConfigs()) {
+            throw new StartupFailedException("Failed to load item configuration files!");
         }
+
+        setUpCommands();
 
         try {
             levelConfig = new BattleLevelConfig(this);
@@ -189,7 +173,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         version = versionFactory.make(ReflectionUtils.getEnumVersion());
         version.registerCustomEntities();
 
-        eventDispatcher = new BattleEventDispatcher();
+        eventDispatcher = new BattleEventDispatcher(getServer().getPluginManager());
         gameManager = new BattleGameManager();
         selectionManager = new BattleSelectionManager();
 

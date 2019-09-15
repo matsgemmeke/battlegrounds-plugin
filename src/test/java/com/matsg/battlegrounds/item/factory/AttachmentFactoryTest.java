@@ -69,11 +69,11 @@ public class AttachmentFactoryTest {
         when(section.getName()).thenReturn(id);
         when(section.getString("GunPart")).thenReturn("MAGAZINE");
 
-        AttachmentFactory factory = new AttachmentFactory(plugin, attachmentConfig);
+        AttachmentFactory factory = new AttachmentFactory(attachmentConfig);
         Attachment attachment = factory.make(id);
 
         assertNotNull(attachment);
-        assertEquals(id, attachment.getId());
+        assertEquals(id, attachment.getMetadata().getId());
     }
 
     @Test
@@ -87,18 +87,18 @@ public class AttachmentFactoryTest {
         when(section.getName()).thenReturn(id);
         when(section.getString("GunPart")).thenReturn("MAGAZINE");
 
-        AttachmentFactory factory = new AttachmentFactory(plugin, attachmentConfig);
+        AttachmentFactory factory = new AttachmentFactory(attachmentConfig);
         Attachment attachment = factory.make(id);
 
         assertNotNull(attachment);
-        assertEquals(id, attachment.getId());
+        assertEquals(id, attachment.getMetadata().getId());
     }
 
     @Test(expected = FactoryCreationException.class)
     public void makeAttachmantInvalidGunPart() {
         when(section.getString("GunPart")).thenReturn("INVALID");
 
-        AttachmentFactory factory = new AttachmentFactory(plugin, attachmentConfig);
+        AttachmentFactory factory = new AttachmentFactory(attachmentConfig);
         factory.make(id);
     }
 }

@@ -277,10 +277,14 @@ public class Zombies extends AbstractGameMode {
         return null;
     }
 
+    public boolean hasBloodEffectDisplay(BattleEntityType entityType) {
+        return plugin.getBattlegroundsConfig().getDisplayBloodEffect(entityType.toString());
+    }
+
     public void loadData(Arena arena) {
         CacheYaml data = game.getDataFile();
         ItemFinder itemFinder = new ItemFinder(plugin);
-        PerkFactory perkFactory = new PerkFactory(plugin, translator);
+        PerkFactory perkFactory = new PerkFactory(translator);
 
         ZombiesDataLoader dataLoader = new ZombiesDataLoader(
                 this,

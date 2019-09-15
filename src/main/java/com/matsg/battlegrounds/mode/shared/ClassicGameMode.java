@@ -4,6 +4,7 @@ import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.api.Translator;
+import com.matsg.battlegrounds.api.entity.BattleEntityType;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.event.GameEndEvent;
 import com.matsg.battlegrounds.api.game.*;
@@ -69,6 +70,10 @@ public abstract class ClassicGameMode extends AbstractGameMode {
 
     public GamePlayer[] getNearbyEntities(Location location, Team team, double range) {
         return game.getPlayerManager().getNearbyEnemyPlayers(team, location, range);
+    }
+
+    public boolean hasBloodEffectDisplay(BattleEntityType entityType) {
+        return plugin.getBattlegroundsConfig().getDisplayBloodEffect(entityType.toString());
     }
 
     public void preparePlayer(GamePlayer gamePlayer) {

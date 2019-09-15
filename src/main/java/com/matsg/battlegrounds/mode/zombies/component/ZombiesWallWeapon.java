@@ -84,14 +84,14 @@ public class ZombiesWallWeapon implements WallWeapon {
 
         ItemStack itemStack = new ItemStackBuilder(weapon.getItemStack())
                 .addItemFlags(ItemFlag.values())
-                .setDisplayName(ChatColor.WHITE + weapon.getName())
+                .setDisplayName(ChatColor.WHITE + weapon.getMetadata().getName())
                 .setLore()
                 .setUnbreakable(true)
                 .build();
 
         gamePlayer.getPlayer().openInventory(new TransactionView(game, translator, weapon, itemStack, price, itemSlot.getSlot()) {
             public void onTransactionComplete(Transaction transaction) {
-                Weapon existingWeapon = gamePlayer.getLoadout().getWeapon(weapon.getName());
+                Weapon existingWeapon = gamePlayer.getLoadout().getWeapon(weapon.getMetadata().getName());
                 // In case the player already has the weapon they want to buy, reset its state.
                 if (existingWeapon != null) {
                     existingWeapon.resetState();
@@ -112,7 +112,7 @@ public class ZombiesWallWeapon implements WallWeapon {
         }
 
         ActionBar.ITEMCHEST.send(gamePlayer.getPlayer(),
-                new Placeholder("bg_item", weapon.getName()),
+                new Placeholder("bg_item", weapon.getMetadata().getName()),
                 new Placeholder("bg_price", getPrice(gamePlayer))
         );
 

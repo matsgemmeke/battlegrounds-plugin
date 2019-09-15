@@ -1,8 +1,8 @@
 package com.matsg.battlegrounds.mode.zombies.item.factory;
 
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Translator;
+import com.matsg.battlegrounds.api.item.ItemMetadata;
 import com.matsg.battlegrounds.mode.zombies.item.Perk;
 import com.matsg.battlegrounds.mode.zombies.item.PerkEffect;
 import com.matsg.battlegrounds.mode.zombies.item.PerkEffectType;
@@ -12,11 +12,9 @@ import org.bukkit.inventory.ItemStack;
 
 public class PerkFactory {
 
-    private Battlegrounds plugin;
     private Translator translator;
 
-    public PerkFactory(Battlegrounds plugin, Translator translator) {
-        this.plugin = plugin;
+    public PerkFactory(Translator translator) {
         this.translator = translator;
     }
 
@@ -45,8 +43,10 @@ public class PerkFactory {
 
         String id = perkEffectType.toString();
         String name = perkEffect.getName();
+
+        ItemMetadata metadata = new ItemMetadata(id, name, null);
         ItemStack itemStack = perkEffect.getItemStack();
 
-        return new ZombiesPerk(id, name, itemStack, perkEffect);
+        return new ZombiesPerk(metadata, itemStack, perkEffect);
     }
 }

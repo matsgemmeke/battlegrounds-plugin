@@ -31,12 +31,13 @@ public class AttachmentFactory implements ItemFactory<Attachment> {
         String[] material = section.getString("Material").split(",");
 
         ItemMetadata metadata = new ItemMetadata(id, section.getString("DisplayName"), section.getString("Description"));
-        GunPart gunPart = BattleGunPart.valueOf(section.getString("GunPart"));
         ItemStack itemStack = new ItemStackBuilder(Material.valueOf(material[0]))
                 .setDurability(Short.valueOf(material[1]))
                 .build();
 
         try {
+            GunPart gunPart = BattleGunPart.valueOf(section.getString("GunPart"));
+
             Attachment attachment = new BattleAttachment(
                     metadata,
                     itemStack,

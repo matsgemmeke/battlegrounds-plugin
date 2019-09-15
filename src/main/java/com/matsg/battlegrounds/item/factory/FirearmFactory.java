@@ -2,11 +2,11 @@ package com.matsg.battlegrounds.item.factory;
 
 import com.matsg.battlegrounds.FactoryCreationException;
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.Version;
 import com.matsg.battlegrounds.api.event.EventDispatcher;
 import com.matsg.battlegrounds.api.item.*;
+import com.matsg.battlegrounds.api.storage.BattlegroundsConfig;
 import com.matsg.battlegrounds.api.storage.ItemConfig;
 import com.matsg.battlegrounds.item.*;
 import com.matsg.battlegrounds.util.BattleSound;
@@ -25,14 +25,18 @@ public class FirearmFactory implements ItemFactory<Firearm> {
 
     private static final int STAT_SYMBOL_LENGTH = 6;
 
-    private Battlegrounds plugin;
+    private BattlegroundsConfig config;
+    private EventDispatcher eventDispatcher;
     private ItemConfig firearmConfig;
     private Translator translator;
+    private Version version;
 
-    public FirearmFactory(Battlegrounds plugin, ItemConfig firearmConfig, Translator translator) {
-        this.plugin = plugin;
+    public FirearmFactory(ItemConfig firearmConfig, EventDispatcher eventDispatcher, Translator translator, Version version, BattlegroundsConfig config) {
         this.firearmConfig = firearmConfig;
+        this.eventDispatcher = eventDispatcher;
         this.translator = translator;
+        this.version = version;
+        this.config = config;
     }
 
     public Firearm make(String id) {
@@ -47,18 +51,15 @@ public class FirearmFactory implements ItemFactory<Firearm> {
 
         List<Material> piercableMaterials = new ArrayList<>();
 
-        for (String material : plugin.getBattlegroundsConfig().pierceableMaterials) {
+        for (String material : config.pierceableMaterials) {
             piercableMaterials.add(Material.valueOf(material));
         }
 
-        double accuracyAmplifier = plugin.getBattlegroundsConfig().firearmAccuracy;
-        double damageAmplifier = plugin.getBattlegroundsConfig().firearmDamageModifer;
-
-        EventDispatcher eventDispatcher = plugin.getEventDispatcher();
-        Version version = plugin.getVersion();
+        double accuracyAmplifier = config.firearmAccuracy;
+        double damageAmplifier = config.firearmDamageModifer;
 
         // Global firearm attributes
-        ItemMetadata metadata = new ItemMetadata(id, section.getString("Description"), section.getString("DisplayName"));
+        ItemMetadata metadata = new ItemMetadata(id, section.getString("DisplayName"), section.getString("Description"));
         String[] material = section.getString("Material").split(",");
 
         if (firearmType == FirearmType.ASSAULT_RIFLE
@@ -69,7 +70,7 @@ public class FirearmFactory implements ItemFactory<Firearm> {
                 || firearmType == FirearmType.SUBMACHINE_GUN) {
 
             try {
-                double accuracy = AttributeValidator.shouldBeHigherThan(section.getInt("Ammo.Magazine"), 0);
+                double accuracy = AttributeValidator.shouldBeBetween(section.getDouble("Accuracy"), 0.0, 1.0);
                 int cooldown = AttributeValidator.shouldEqualOrBeHigherThan(section.getInt("FireMode.Cooldown"), 0);
                 int fireRate = AttributeValidator.shouldBeBetween(section.getInt("FireMode.FireRate"), 0, 20);
 
@@ -92,7 +93,7 @@ public class FirearmFactory implements ItemFactory<Firearm> {
                 };
 
                 ItemStack itemStack = new ItemStackBuilder(new ItemStack(Material.valueOf(material[0])))
-                        .setDisplayName(metadata.getName())
+                        .setDisplayName(ChatColor.WHITE + metadata.getName())
                         .setDurability(Short.valueOf(material[1]))
                         .setLore(lore)
                         .build();
@@ -109,8 +110,8 @@ public class FirearmFactory implements ItemFactory<Firearm> {
                         getCompatibleAttachments(section.getString("Attachments")),
                         ReloadType.valueOf(section.getString("Reload.Type")),
                         BattleSound.parseSoundArray(section.getString("Reload.Sound.Reload")),
-                        BattleSound.parseSoundArray(section.getString("Shot.SuppressedSound")),
                         BattleSound.parseSoundArray(section.getString("Shot.ShotSound")),
+                        BattleSound.parseSoundArray(section.getString("Shot.SuppressedSound")),
                         AttributeValidator.shouldBeHigherThan(section.getInt("Ammo.Magazine"), 0),
                         AttributeValidator.shouldEqualOrBeHigherThan(section.getInt("Ammo.Supply"), 0),
                         AttributeValidator.shouldEqualOrBeHigherThan(section.getInt("Ammo.Max"), 0),
@@ -134,10 +135,10 @@ public class FirearmFactory implements ItemFactory<Firearm> {
 
                 Lethal lethal = new BattleLethal(
                         null,
-                        null,
-                        null,
                         new ItemStackBuilder(Material.valueOf(projectileMaterial[0])).setDurability(Short.parseShort(projectileMaterial[1])).build(),
                         null,
+                        null,
+                        0,
                         0,
                         0,
                         AttributeValidator.shouldEqualOrBeHigherThan(section.getDouble("Range.Long.Damage"), 0.0),
@@ -146,7 +147,6 @@ public class FirearmFactory implements ItemFactory<Firearm> {
                         AttributeValidator.shouldEqualOrBeHigherThan(section.getDouble("Range.Medium.Distance"), 0.0),
                         AttributeValidator.shouldEqualOrBeHigherThan(section.getDouble("Range.Short.Damage"), 0.0),
                         AttributeValidator.shouldEqualOrBeHigherThan(section.getDouble("Range.Short.Distance"), 0.0),
-                        0,
                         0,
                         null
                 );

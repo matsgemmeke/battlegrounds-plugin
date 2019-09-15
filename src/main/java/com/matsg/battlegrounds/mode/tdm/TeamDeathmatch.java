@@ -4,6 +4,7 @@ import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.event.EventChannel;
+import com.matsg.battlegrounds.api.event.EventDispatcher;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent;
 import com.matsg.battlegrounds.api.event.GamePlayerKillEntityEvent;
 import com.matsg.battlegrounds.api.game.*;
@@ -30,12 +31,14 @@ public class TeamDeathmatch extends ClassicGameMode {
     }
 
     public void onCreate() {
+        EventDispatcher eventDispatcher = plugin.getEventDispatcher();
+
         // Register gamemode specific event handlers
-        plugin.getEventDispatcher().registerEventChannel(GamePlayerDeathEvent.class, new EventChannel<>(
+        eventDispatcher.registerEventChannel(GamePlayerDeathEvent.class, new EventChannel<>(
                 new GeneralDeathHandler(game, this)
         ));
-        plugin.getEventDispatcher().registerEventChannel(GamePlayerKillEntityEvent.class, new EventChannel<>(
-                new GeneralKillHandler(plugin, game, this, translator)
+        eventDispatcher.registerEventChannel(GamePlayerKillEntityEvent.class, new EventChannel<>(
+                new GeneralKillHandler(eventDispatcher, game, this, translator)
         ));
     }
 

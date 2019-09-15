@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.mode.zombies.item;
 
 import com.matsg.battlegrounds.api.entity.GamePlayer;
+import com.matsg.battlegrounds.api.item.ItemMetadata;
 import com.matsg.battlegrounds.item.BattleItem;
 import com.matsg.battlegrounds.mode.zombies.PowerUpManager;
 import org.bukkit.entity.Item;
@@ -17,14 +18,8 @@ public class ZombiesPowerUp extends BattleItem implements PowerUp {
     private PowerUpEffect effect;
     private PowerUpManager powerUpManager;
 
-    public ZombiesPowerUp(
-            String id,
-            String name,
-            ItemStack itemStack,
-            PowerUpEffect effect,
-            PowerUpManager powerUpManager
-    ) {
-        super(id, name, itemStack);
+    public ZombiesPowerUp(ItemMetadata metadata, ItemStack itemStack, PowerUpEffect effect, PowerUpManager powerUpManager) {
+        super(metadata, itemStack);
         this.effect = effect;
         this.powerUpManager = powerUpManager;
         this.active = false;

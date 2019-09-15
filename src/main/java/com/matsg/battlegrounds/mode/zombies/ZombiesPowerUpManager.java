@@ -29,7 +29,7 @@ public class ZombiesPowerUpManager implements PowerUpManager {
         powerUp.getEffect().activate(() -> removePowerUp(powerUp));
 
         for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
-            EnumTitle.POWERUP_ACTIVATE.send(gamePlayer.getPlayer(), new Placeholder("bg_powerup", powerUp.getName()));
+            EnumTitle.POWERUP_ACTIVATE.send(gamePlayer.getPlayer(), new Placeholder("bg_powerup", powerUp.getMetadata().getName()));
         }
 
         BattleSound.POWERUP_ACTIVATE.play(game);
@@ -69,7 +69,7 @@ public class ZombiesPowerUpManager implements PowerUpManager {
 
     private PowerUp getPowerUp(PowerUpEffect powerUpEffect) {
         for (PowerUp powerUp : powerUps) {
-            if (powerUp.getName().equals(powerUpEffect.getName())) { // Compare just the names for now
+            if (powerUp.getMetadata().getName().equals(powerUpEffect.getName())) { // Compare just the names for now
                 return powerUp;
             }
         }

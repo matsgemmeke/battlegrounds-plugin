@@ -11,8 +11,6 @@ import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.BattleSound;
 import com.matsg.battlegrounds.util.Hologram;
 import com.matsg.battlegrounds.util.XMaterial;
-import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 
@@ -120,7 +118,7 @@ public class RollingState implements MysteryBoxState {
 
         do {
             weapon = weapons[random.nextInt(weapons.length)];
-        } while (mysteryBox.getCurrentWeapon() != null && mysteryBox.getCurrentWeapon().equals(weapon) || gamePlayer.getLoadout().getWeapon(weapon.getName()) != null);
+        } while (mysteryBox.getCurrentWeapon() != null && mysteryBox.getCurrentWeapon().equals(weapon) || gamePlayer.getLoadout().getWeapon(weapon.getMetadata().getName()) != null);
 
         item.setItemStack(weapon.getItemStack());
 
