@@ -3,6 +3,7 @@ package com.matsg.battlegrounds.event;
 import com.matsg.battlegrounds.api.event.EventDispatcher;
 import com.matsg.battlegrounds.api.event.EventChannel;
 import org.bukkit.event.Event;
+import org.bukkit.plugin.PluginManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,12 +11,21 @@ import java.util.Map;
 public class BattleEventDispatcher implements EventDispatcher {
 
     private Map<Class<? extends Event>, EventChannel> eventChannels;
+    private PluginManager pluginManager;
 
-    public BattleEventDispatcher() {
+    public BattleEventDispatcher(PluginManager pluginManager) {
+        this.pluginManager = pluginManager;
         this.eventChannels = new HashMap<>();
     }
 
-    public void dispatchEvent(Event event) {
+    public void dispatchExternalEvent(Event event) {
+        // Call the outgoing event to the plugin manager
+        pluginManager.callEvent(event);
+        // Dispatch the event internally so the plugin does not have to listen for its own events
+        dispatchInternalEvent(event);
+    }
+
+    public void dispatchInternalEvent(Event event) {
         if (!eventChannels.containsKey(event.getClass())) {
             return;
         }

@@ -22,13 +22,6 @@ public interface Item extends Cloneable, Comparable<Item> {
     void setGame(Game game);
 
     /**
-     * Gets the id of the item.
-     *
-     * @return the item's id
-     */
-    String getId();
-
-    /**
      * Gets the item stack of the item.
      *
      * @return the item's item stack
@@ -43,11 +36,18 @@ public interface Item extends Cloneable, Comparable<Item> {
     void setItemStack(ItemStack itemStack);
 
     /**
-     * Gets the name of the item.
+     * Gets the metadata of the item.
      *
-     * @return the item's name
+     * @return the item metadata
      */
-    String getName();
+    ItemMetadata getMetadata();
+
+    /**
+     * Sets the metadata of the item.
+     *
+     * @param metadata the item metadata
+     */
+    void setMetadata(ItemMetadata metadata);
 
     /**
      * Gets an item attribute by a certain id.

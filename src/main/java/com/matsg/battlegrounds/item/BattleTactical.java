@@ -1,6 +1,6 @@
 package com.matsg.battlegrounds.item;
 
-import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.item.ItemMetadata;
 import com.matsg.battlegrounds.api.item.Tactical;
 import com.matsg.battlegrounds.api.item.TacticalEffect;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
@@ -18,24 +18,22 @@ public class BattleTactical extends BattleEquipment implements Tactical {
     private TacticalEffect effect;
 
     public BattleTactical(
-            Battlegrounds plugin,
-            String id,
-            String name,
-            String description,
+            ItemMetadata metadata,
             ItemStack itemStack,
+            IgnitionType ignitionType,
+            Sound[] explodeSound,
+            TacticalEffect effect,
             int amount,
             int cooldown,
-            TacticalEffect effect,
             int duration,
+            int ignitionTime,
             double longRange,
             double midRange,
             double shortRange,
-            double velocity,
-            int ignitionTime,
-            Sound[] explodeSound
+            double velocity
     ) {
-        super(plugin, id, name, description, itemStack, EquipmentType.TACTICAL, amount, cooldown, longRange, midRange, shortRange, velocity,
-                ignitionTime == 0 ? IgnitionType.PASSIVE : IgnitionType.AGGRESSIVE, ignitionTime, explodeSound);
+        super(metadata, itemStack, EquipmentType.TACTICAL, ignitionType, explodeSound, amount, cooldown, ignitionTime,
+                longRange, midRange, shortRange, velocity);
         this.duration = duration;
         this.effect = effect;
     }

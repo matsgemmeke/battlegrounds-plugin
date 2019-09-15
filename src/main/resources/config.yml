@@ -28,12 +28,6 @@ game-display-blood-effect:
   player: false
   zombie: true
 
-# The display names of different weapon types
-game-display-name:
-  firearm: "&f%bg_weapon%  %bg_magazine%/%bg_ammo%"
-  equipment: "&f%bg_weapon%"
-  melee-weapon: "&f%bg_weapon%"
-
 # The general accuracy of firearms in the game
 # Change to higher number for lower accuracy, change to lower number for higher accuracy
 game-firearm-accuracy: 10.0
@@ -57,8 +51,8 @@ game-mob-health-bar:
   # The first symbol of the mob health bar
   start-symbol: "&8["
 
-# Some projectiles are able to pierce through certain blocks. Add their materials here
-game-pierceable-blocks:
+# Some projectiles are able to pierce through certain block materials. Add their materials here
+game-pierceable-materials:
 - AIR
 - BARRIER
 - CARPET

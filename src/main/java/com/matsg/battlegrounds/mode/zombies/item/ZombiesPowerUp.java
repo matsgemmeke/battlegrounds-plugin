@@ -1,9 +1,8 @@
 package com.matsg.battlegrounds.mode.zombies.item;
 
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.item.BattleItem;
-import com.matsg.battlegrounds.mode.zombies.Zombies;
+import com.matsg.battlegrounds.mode.zombies.PowerUpManager;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 
@@ -16,12 +15,18 @@ public class ZombiesPowerUp extends BattleItem implements PowerUp {
     private int duration;
     private List<Item> droppedItems;
     private PowerUpEffect effect;
-    private Zombies zombies;
+    private PowerUpManager powerUpManager;
 
-    public ZombiesPowerUp(Battlegrounds plugin, Zombies zombies, ItemStack itemStack, PowerUpEffect effect) {
-        super(plugin, effect.toString(), effect.getName(), itemStack);
-        this.zombies = zombies;
+    public ZombiesPowerUp(
+            String id,
+            String name,
+            ItemStack itemStack,
+            PowerUpEffect effect,
+            PowerUpManager powerUpManager
+    ) {
+        super(id, name, itemStack);
         this.effect = effect;
+        this.powerUpManager = powerUpManager;
         this.active = false;
         this.droppedItems = new ArrayList<>();
         this.duration = 0;
@@ -73,8 +78,8 @@ public class ZombiesPowerUp extends BattleItem implements PowerUp {
     }
 
     public boolean onPickUp(GamePlayer gamePlayer, Item item) {
-        zombies.getPowerUpManager().activatePowerUp(this);
         droppedItems.remove(item);
+        powerUpManager.activatePowerUp(this);
         item.remove();
         return true;
     }

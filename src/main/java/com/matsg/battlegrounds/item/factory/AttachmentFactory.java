@@ -1,7 +1,8 @@
 package com.matsg.battlegrounds.item.factory;
 
 import com.matsg.battlegrounds.FactoryCreationException;
-import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.item.GunPart;
+import com.matsg.battlegrounds.api.item.ItemMetadata;
 import com.matsg.battlegrounds.api.storage.ItemConfig;
 import com.matsg.battlegrounds.api.item.Attachment;
 import com.matsg.battlegrounds.api.util.AttributeModifier;
@@ -12,17 +13,16 @@ import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.item.modifier.*;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class AttachmentFactory implements ItemFactory<Attachment> {
 
-    private Battlegrounds plugin;
     private ItemConfig attachmentConfig;
 
-    public AttachmentFactory(Battlegrounds plugin, ItemConfig attachmentConfig) {
-        this.plugin = plugin;
+    public AttachmentFactory(ItemConfig attachmentConfig) {
         this.attachmentConfig = attachmentConfig;
     }
 
@@ -30,14 +30,17 @@ public class AttachmentFactory implements ItemFactory<Attachment> {
         ConfigurationSection section = attachmentConfig.getItemConfigurationSection(id);
         String[] material = section.getString("Material").split(",");
 
+        ItemMetadata metadata = new ItemMetadata(id, section.getString("DisplayName"), section.getString("Description"));
+        GunPart gunPart = BattleGunPart.valueOf(section.getString("GunPart"));
+        ItemStack itemStack = new ItemStackBuilder(Material.valueOf(material[0]))
+                .setDurability(Short.valueOf(material[1]))
+                .build();
+
         try {
             Attachment attachment = new BattleAttachment(
-                    plugin,
-                    id,
-                    section.getString("DisplayName"),
-                    section.getString("Description"),
-                    new ItemStackBuilder(Material.valueOf(material[0])).setDurability(Short.valueOf(material[1])).build(),
-                    BattleGunPart.valueOf(section.getString("GunPart")),
+                    metadata,
+                    itemStack,
+                    gunPart,
                     getModifiers(section),
                     section.getBoolean("Toggleable")
             );

@@ -5,6 +5,7 @@ import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.mode.zombies.PowerUpManager;
 import com.matsg.battlegrounds.mode.zombies.Zombies;
 import com.matsg.battlegrounds.mode.zombies.item.PowerUp;
 import com.matsg.battlegrounds.mode.zombies.item.PowerUpEffect;
@@ -52,8 +53,11 @@ public class PowerUpFactory {
                 throw new FactoryCreationException("Invalid power up effect type \"" + effectType + "\"");
         }
 
+        String id = effect.toString();
+        String name = effect.getName();
         ItemStack itemStack = new ItemStack(effect.getMaterial());
+        PowerUpManager powerUpManager = zombies.getPowerUpManager();
 
-        return new ZombiesPowerUp(plugin, zombies, itemStack, effect);
+        return new ZombiesPowerUp(id, name, itemStack, effect, powerUpManager);
     }
 }

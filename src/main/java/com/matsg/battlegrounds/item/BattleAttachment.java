@@ -1,7 +1,7 @@
 package com.matsg.battlegrounds.item;
 
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.item.Attachment;
+import com.matsg.battlegrounds.api.item.ItemMetadata;
 import com.matsg.battlegrounds.api.util.AttributeModifier;
 import com.matsg.battlegrounds.api.item.GunPart;
 import org.bukkit.inventory.ItemFlag;
@@ -14,27 +14,18 @@ public class BattleAttachment extends BattleItem implements Attachment {
     private boolean toggleable;
     private GunPart gunPart;
     private Map<String, AttributeModifier> modifiers;
-    private String description;
 
     public BattleAttachment(
-            Battlegrounds plugin,
-            String id,
-            String name,
-            String description,
+            ItemMetadata metadata,
             ItemStack itemStack,
             GunPart gunPart,
             Map<String, AttributeModifier> modifiers,
             boolean toggleable
     ) {
-        super(plugin, id, name, itemStack);
-        this.description = description;
+        super(metadata, itemStack);
         this.gunPart = gunPart;
         this.modifiers = modifiers;
         this.toggleable = toggleable;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     public GunPart getGunPart() {
@@ -60,7 +51,7 @@ public class BattleAttachment extends BattleItem implements Attachment {
         itemStack = new ItemStackBuilder(itemStack)
                 .addItemFlags(ItemFlag.values())
                 .setAmount(1)
-                .setDisplayName(name)
+                .setDisplayName(metadata.getName())
                 .setUnbreakable(true)
                 .build();
         return true;

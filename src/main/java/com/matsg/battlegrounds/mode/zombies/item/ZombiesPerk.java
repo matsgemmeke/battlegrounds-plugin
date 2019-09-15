@@ -1,17 +1,17 @@
 package com.matsg.battlegrounds.mode.zombies.item;
 
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.item.BattleItem;
 import com.matsg.battlegrounds.api.item.Transaction;
+import org.bukkit.inventory.ItemStack;
 
 public class ZombiesPerk extends BattleItem implements Perk {
 
     private GamePlayer gamePlayer;
     private PerkEffect effect;
 
-    public ZombiesPerk(Battlegrounds plugin, PerkEffect effect) {
-        super(plugin, effect.toString(), effect.getName(), effect.getItemStack());
+    public ZombiesPerk(String id, String name, ItemStack itemStack, PerkEffect effect) {
+        super(id, name, itemStack);
         this.effect = effect;
     }
 

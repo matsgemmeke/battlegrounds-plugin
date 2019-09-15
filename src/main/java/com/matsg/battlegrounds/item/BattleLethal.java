@@ -1,11 +1,12 @@
 package com.matsg.battlegrounds.item;
 
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.entity.BattleEntity;
+import com.matsg.battlegrounds.api.event.EventDispatcher;
 import com.matsg.battlegrounds.api.event.GamePlayerDamageEntityEvent;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent.DeathCause;
 import com.matsg.battlegrounds.api.event.GamePlayerKillEntityEvent;
+import com.matsg.battlegrounds.api.item.ItemMetadata;
 import com.matsg.battlegrounds.api.item.Lethal;
 import com.matsg.battlegrounds.api.entity.Hitbox;
 import com.matsg.battlegrounds.api.util.Sound;
@@ -16,16 +17,19 @@ import org.bukkit.inventory.ItemStack;
 
 public class BattleLethal extends BattleEquipment implements Lethal {
 
-    private double longDamage, midDamage, shortDamage;
+    private double longDamage;
+    private double midDamage;
+    private double shortDamage;
+    private EventDispatcher eventDispatcher;
 
     public BattleLethal(
-            Battlegrounds plugin,
-            String id,
-            String name,
-            String description,
+            ItemMetadata metadata,
             ItemStack itemStack,
+            EventDispatcher eventDispatcher,
+            IgnitionType ignitionType,
             int amount,
             int cooldown,
+            int ignitionTime,
             double longDamage,
             double longRange,
             double midDamage,
@@ -33,11 +37,11 @@ public class BattleLethal extends BattleEquipment implements Lethal {
             double shortDamage,
             double shortRange,
             double velocity,
-            int ignitionTime,
             Sound[] ignitionSound
     ) {
-        super(plugin, id, name, description, itemStack, EquipmentType.LETHAL, amount, cooldown, longRange, midRange, shortRange, velocity,
-                ignitionTime == 0 ? IgnitionType.PASSIVE : IgnitionType.AGGRESSIVE, ignitionTime, ignitionSound);
+        super(metadata, itemStack, EquipmentType.LETHAL, ignitionType, ignitionSound, amount, cooldown, ignitionTime,
+                longRange, midRange, shortRange, velocity);
+        this.eventDispatcher = eventDispatcher;
         this.longDamage = longDamage;
         this.midDamage = midDamage;
         this.shortDamage = shortDamage;
@@ -110,10 +114,7 @@ public class BattleLethal extends BattleEquipment implements Lethal {
                     event = new GamePlayerDamageEntityEvent(game, gamePlayer, entity, this, damage, Hitbox.TORSO);
                 }
 
-                // Handle the event on the plugin manager so other plugins can listen to this event as well
-                plugin.getServer().getPluginManager().callEvent(event);
-                // Handle the event on the event dispatcher so we can reuse the event without calling a listener to it
-                plugin.getEventDispatcher().dispatchEvent(event);
+                eventDispatcher.dispatchExternalEvent(event);
             }
         }
     }
@@ -127,10 +128,8 @@ public class BattleLethal extends BattleEquipment implements Lethal {
 
             if (gamePlayer.getPlayer().isDead()) {
                 Event event = new GamePlayerDeathEvent(game, gamePlayer, DeathCause.SUICIDE);
-                // Handle the event on the event dispatcher so we can reuse the event without calling a listener to it
-                plugin.getEventDispatcher().dispatchEvent(event);
-                // Handle the event on the plugin manager so other plugin can listen to this event as well
-                plugin.getServer().getPluginManager().callEvent(event);
+
+                eventDispatcher.dispatchExternalEvent(event);
             }
         }
     }

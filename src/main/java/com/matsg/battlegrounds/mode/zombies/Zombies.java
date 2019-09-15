@@ -22,7 +22,7 @@ import com.matsg.battlegrounds.mode.zombies.component.*;
 import com.matsg.battlegrounds.mode.zombies.component.factory.*;
 import com.matsg.battlegrounds.mode.zombies.component.mysterybox.MovingState;
 import com.matsg.battlegrounds.mode.zombies.handler.*;
-import com.matsg.battlegrounds.item.ItemFinder;
+import com.matsg.battlegrounds.ItemFinder;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.item.factory.LoadoutFactory;
 import com.matsg.battlegrounds.mode.zombies.item.factory.PerkFactory;

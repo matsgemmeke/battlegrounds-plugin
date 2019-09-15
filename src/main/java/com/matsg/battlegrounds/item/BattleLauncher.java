@@ -1,23 +1,22 @@
 package com.matsg.battlegrounds.item;
 
-import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Version;
 import com.matsg.battlegrounds.api.entity.BattleEntity;
+import com.matsg.battlegrounds.api.event.EventDispatcher;
 import com.matsg.battlegrounds.api.event.GamePlayerDamageEntityEvent;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent.DeathCause;
 import com.matsg.battlegrounds.api.event.GamePlayerKillEntityEvent;
-import com.matsg.battlegrounds.api.item.DamageSource;
-import com.matsg.battlegrounds.api.item.Launcher;
-import com.matsg.battlegrounds.api.item.Lethal;
-import com.matsg.battlegrounds.api.item.ReloadType;
+import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.entity.Hitbox;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.util.BattleSound;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
 
 public class BattleLauncher extends BattleFirearm implements Launcher {
 
@@ -26,11 +25,16 @@ public class BattleLauncher extends BattleFirearm implements Launcher {
     private Lethal lethal;
 
     public BattleLauncher(
-            Battlegrounds plugin,
-            String id,
-            String name,
-            String description,
+            ItemMetadata metadata,
             ItemStack itemStack,
+            EventDispatcher eventDispatcher,
+            Version version,
+            LaunchType launchType,
+            Lethal lethal,
+            List<Material> piercableMaterials,
+            ReloadType reloadType,
+            Sound[] reloadSound,
+            Sound[] shootSound,
             int magazine,
             int ammo,
             int maxAmmo,
@@ -38,13 +42,10 @@ public class BattleLauncher extends BattleFirearm implements Launcher {
             int cooldown,
             int reloadDuration,
             double accuracy,
-            Lethal lethal,
-            LaunchType launchType,
-            ReloadType reloadType,
-            Sound[] reloadSound,
-            Sound[] shootSound
+            double accuracyAmplifier
     ) {
-        super(plugin, id, name, description, itemStack, magazine, ammo, maxAmmo, cooldown, reloadDuration, accuracy, reloadType, FirearmType.LAUNCHER, reloadSound, shootSound);
+        super(metadata, itemStack, eventDispatcher, version, FirearmType.LAUNCHER, piercableMaterials, reloadType,
+                reloadSound, shootSound, magazine, ammo, maxAmmo, cooldown, reloadDuration, accuracy, accuracyAmplifier);
         this.launchSpeed = launchSpeed;
         this.launchType = launchType;
         this.lethal = lethal;
@@ -64,16 +65,6 @@ public class BattleLauncher extends BattleFirearm implements Launcher {
         inflictUserDamage(location);
 
         BattleSound.EXPLOSION.play(game, location);
-    }
-
-    protected String[] getLore() {
-        return new String[] {
-                ChatColor.WHITE + firearmType.getName(),
-                ChatColor.GRAY + format(6, getAccuracy() * 100.0, 100.0) + " " + translator.translate(TranslationKey.STAT_ACCURACY),
-                ChatColor.GRAY + format(6, lethal.getShortDamage(), 50.0) + " " + translator.translate(TranslationKey.STAT_DAMAGE),
-                ChatColor.GRAY + format(6, Math.max((15 - cooldown.getValue() / 2) * 10.0, 40.0), 200.0) + " " + translator.translate(TranslationKey.STAT_FIRERATE),
-                ChatColor.GRAY + format(6, lethal.getLongRange(), 35.0) + " " + translator.translate(TranslationKey.STAT_RANGE)
-        };
     }
 
     public DamageSource getProjectile() {
@@ -98,10 +89,7 @@ public class BattleLauncher extends BattleFirearm implements Launcher {
                 event = new GamePlayerDamageEntityEvent(game, gamePlayer, entity, this, damage, hitbox);
             }
 
-            // Handle the event on the plugin manager so other plugins can listen to this event as well
-            plugin.getServer().getPluginManager().callEvent(event);
-            // Handle the event on the event dispatcher so we can reuse the event without calling a listener to it
-            plugin.getEventDispatcher().dispatchEvent(event);
+            eventDispatcher.dispatchExternalEvent(event);
         }
     }
 
@@ -115,10 +103,8 @@ public class BattleLauncher extends BattleFirearm implements Launcher {
 
             if (gamePlayer.getPlayer().isDead()) {
                 Event event = new GamePlayerDeathEvent(game, gamePlayer, DeathCause.SUICIDE);
-                // Handle the event on the event dispatcher so we can reuse the event without calling a listener to it
-                plugin.getEventDispatcher().dispatchEvent(event);
-                // Handle the event on the plugin manager so other plugin can listen to this event as well
-                plugin.getServer().getPluginManager().callEvent(event);
+
+                eventDispatcher.dispatchExternalEvent(event);
             }
         }
     }

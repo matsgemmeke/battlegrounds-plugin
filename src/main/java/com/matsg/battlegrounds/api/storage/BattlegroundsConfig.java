@@ -21,7 +21,7 @@ public class BattlegroundsConfig extends AbstractYaml {
     public double firearmAccuracy = getDouble("game-firearm-accuracy");
     public List<String> allowedCommands = getStringList("game-allowed-commands");
     public List<String> joinableGamestates = getStringList("game-joinable-states");
-    public List<String> pierceableBlocks = getStringList("game-pierceable-blocks");
+    public List<String> pierceableMaterials = getStringList("game-pierceable-materials");
     public String mobHealthBarEndSymbol = getString("game-mob-health-bar.end-symbol");
     public String mobHealthBarStartSymbol = getString("game-mob-health-bar.start-symbol");
     public String mobHealthBarSymbol = getString("game-mob-health-bar.health-symbol");
@@ -56,9 +56,5 @@ public class BattlegroundsConfig extends AbstractYaml {
             map.put(string, getString("game-scoreboard.lobby.layout." + string));
         }
         return map;
-    }
-
-    public String getWeaponDisplayName(String weaponType) {
-        return getString("game-display-name." + weaponType);
     }
 }

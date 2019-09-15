@@ -1,10 +1,9 @@
 package com.matsg.battlegrounds.item;
 
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.item.Equipment;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
+import com.matsg.battlegrounds.api.item.ItemMetadata;
 import com.matsg.battlegrounds.api.item.Transaction;
-import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.BattleSound;
@@ -20,43 +19,40 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
 
     protected boolean beingThrown;
     protected double longRange, midRange, shortRange, velocity;
-    protected EquipmentType type;
+    protected EquipmentType equipmentType;
     protected IgnitionType ignitionType;
     protected int amount, cooldown, ignitionTime, maxAmount;
     protected List<Item> droppedItems;
     protected Sound[] ignitionSound;
 
     public BattleEquipment(
-            Battlegrounds plugin,
-            String id,
-            String name,
-            String description,
+            ItemMetadata metadata,
             ItemStack itemStack,
-            EquipmentType type,
+            EquipmentType equipmentType,
+            IgnitionType ignitionType,
+            Sound[] ignitionSound,
             int amount,
             int cooldown,
+            int ignitionTime,
             double longRange,
             double midRange,
             double shortRange,
-            double velocity,
-            IgnitionType ignitionType,
-            int ignitionTime,
-            Sound[] ignitionSound
+            double velocity
     ) {
-        super(plugin, id, name, description, itemStack);
-        this.amount = amount;
-        this.beingThrown = false;
-        this.cooldown = cooldown;
-        this.droppedItems = new ArrayList<>();
-        this.ignitionSound = ignitionSound;
-        this.ignitionTime = ignitionTime;
+        super(metadata, itemStack);
+        this.equipmentType = equipmentType;
         this.ignitionType = ignitionType;
+        this.ignitionSound = ignitionSound;
+        this.amount = amount;
+        this.cooldown = cooldown;
+        this.ignitionTime = ignitionTime;
         this.longRange = longRange;
-        this.maxAmount = amount;
         this.midRange = midRange;
         this.shortRange = shortRange;
-        this.type = type;
         this.velocity = velocity;
+        this.beingThrown = false;
+        this.droppedItems = new ArrayList<>();
+        this.maxAmount = amount;
     }
 
     public int getAmount() {
@@ -112,7 +108,7 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
     }
 
     public EquipmentType getType() {
-        return type;
+        return equipmentType;
     }
 
     public double getVelocity() {
@@ -161,7 +157,7 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
 
     private String[] getLore() {
         return new String[] {
-                ChatColor.WHITE + type.getName()
+                ChatColor.WHITE + equipmentType.getName()
         };
     }
 
@@ -217,13 +213,9 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
     }
 
     public boolean update() {
-        Placeholder placeholder = new Placeholder("bg_weapon", name);
-        String displayName = translator.createSimpleMessage(plugin.getBattlegroundsConfig().getWeaponDisplayName("equipment"), placeholder);
-
         itemStack = new ItemStackBuilder(itemStack)
                 .addItemFlags(ItemFlag.values())
                 .setAmount(amount)
-                .setDisplayName(displayName)
                 .setLore(getLore())
                 .setUnbreakable(true)
                 .build();

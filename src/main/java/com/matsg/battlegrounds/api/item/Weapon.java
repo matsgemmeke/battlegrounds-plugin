@@ -17,13 +17,6 @@ public interface Weapon extends Item, PlayerProperty, TransactionItem {
     void setContext(WeaponContext context);
 
     /**
-     * Gets the description of the weapon.
-     *
-     * @return the weapon's description
-     */
-    String getDescription();
-
-    /**
      * Gets the item slot of the weapon.
      *
      * @return the weapon's item slot

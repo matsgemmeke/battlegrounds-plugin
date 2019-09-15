@@ -5,24 +5,32 @@ import org.bukkit.event.Event;
 public interface EventDispatcher {
 
     /**
-     * Dispatches an event to its corresponding event channel.
+     * Dispatches an event that gets sent to its corresponding event channel and to
+     * the server as an outgoing event.
      *
-     * @param event The event to be dispatched.
+     * @param event the event to be dispatched
      */
-    void dispatchEvent(Event event);
+    void dispatchExternalEvent(Event event);
+
+    /**
+     * Dispatches an event that gets sent only to its corresponding event channel.
+     *
+     * @param event the event to be dispatched
+     */
+    void dispatchInternalEvent(Event event);
 
     /**
      * Registers an event channel.
      *
-     * @param eventClass The event class that the event channel handles.
-     * @param eventChannel The event channel instance.
+     * @param eventClass the event class that the event channel handles
+     * @param eventChannel the event channel instance
      */
     <T extends Event> void registerEventChannel(Class<T> eventClass, EventChannel<T> eventChannel);
 
     /**
      * Unregisters an event channel.
      *
-     * @param eventClass The event class that the event channel handles.
+     * @param eventClass the event class that the event channel handles
      */
     void unregisterEventChannel(Class<? extends Event> eventClass);
 }

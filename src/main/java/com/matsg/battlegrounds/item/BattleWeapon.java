@@ -1,7 +1,6 @@
 package com.matsg.battlegrounds.item;
 
-import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.Translator;
+import com.matsg.battlegrounds.api.item.ItemMetadata;
 import com.matsg.battlegrounds.api.item.WeaponContext;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
@@ -14,20 +13,10 @@ import java.util.Random;
 public abstract class BattleWeapon extends BattleItem implements Weapon {
 
     protected GamePlayer gamePlayer;
-    protected String description;
-    protected Translator translator;
     protected WeaponContext context;
 
-    public BattleWeapon(
-            Battlegrounds plugin,
-            String id,
-            String name,
-            String description,
-            ItemStack itemStack
-    ) {
-        super(plugin, id, name, itemStack);
-        this.description = description;
-        this.translator = plugin.getTranslator();
+    public BattleWeapon(ItemMetadata metadata, ItemStack itemStack) {
+        super(metadata, itemStack);
     }
 
     public WeaponContext getContext() {
@@ -36,10 +25,6 @@ public abstract class BattleWeapon extends BattleItem implements Weapon {
 
     public void setContext(WeaponContext context) {
         this.context = context;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     public GamePlayer getGamePlayer() {
@@ -76,21 +61,6 @@ public abstract class BattleWeapon extends BattleItem implements Weapon {
                 center.subtract(x, y, z);
             }
         }
-    }
-
-    protected String format(int length, double value, double max) {
-        if (value >= max) {
-            return "☗☗☗☗☗☗";
-        }
-        StringBuilder string = new StringBuilder();
-        int a = (int) (Math.round(value / length) * length / (max / length)), i;
-        for (i = 1; i <= a; i++) {
-            string.append("☗");
-        }
-        for (i = 1; i <= length - a; i++) {
-            string.append("☖");
-        }
-        return string.toString();
     }
 
     public abstract void onLeftClick();

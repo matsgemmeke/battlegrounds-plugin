@@ -12,7 +12,7 @@ import com.matsg.battlegrounds.command.validator.GameModeUsageValidator;
 import com.matsg.battlegrounds.command.validator.SectionNameValidator;
 import com.matsg.battlegrounds.mode.GameModeType;
 import com.matsg.battlegrounds.mode.zombies.Zombies;
-import com.matsg.battlegrounds.item.ItemFinder;
+import com.matsg.battlegrounds.ItemFinder;
 import com.matsg.battlegrounds.mode.zombies.component.WallWeapon;
 import com.matsg.battlegrounds.mode.zombies.component.factory.WallWeaponFactory;
 import org.bukkit.entity.Entity;

@@ -2,7 +2,7 @@ package com.matsg.battlegrounds.mode.zombies.component.factory;
 
 import com.matsg.battlegrounds.api.Version;
 import com.matsg.battlegrounds.api.item.Weapon;
-import com.matsg.battlegrounds.item.ItemFinder;
+import com.matsg.battlegrounds.ItemFinder;
 import com.matsg.battlegrounds.mode.zombies.ZombiesConfig;
 import com.matsg.battlegrounds.mode.zombies.component.MysteryBox;
 import com.matsg.battlegrounds.mode.zombies.component.ZombiesMysteryBox;

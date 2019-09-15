@@ -1,8 +1,8 @@
 package com.matsg.battlegrounds.item;
 
-import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Version;
 import com.matsg.battlegrounds.api.entity.BattleEntity;
+import com.matsg.battlegrounds.api.event.EventDispatcher;
 import com.matsg.battlegrounds.api.event.GamePlayerDamageEntityEvent;
 import com.matsg.battlegrounds.api.event.GamePlayerKillEntityEvent;
 import com.matsg.battlegrounds.api.item.*;
@@ -13,11 +13,7 @@ import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.util.BattleSound;
 import com.matsg.battlegrounds.util.HalfBlocks;
 import com.matsg.battlegrounds.util.BattleAttribute;
-import com.matsg.battlegrounds.util.data.BooleanValueObject;
-import com.matsg.battlegrounds.util.data.FireModeValueObject;
-import com.matsg.battlegrounds.util.data.FloatValueObject;
-import com.matsg.battlegrounds.util.data.IntegerValueObject;
-import org.bukkit.ChatColor;
+import com.matsg.battlegrounds.util.data.*;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -34,25 +30,39 @@ import java.util.*;
 
 public class BattleGun extends BattleFirearm implements Gun {
 
-    private boolean scoped, toggled;
+    private boolean scoped;
+    private boolean toggled;
     private Bullet bullet;
-    private GenericAttribute<Boolean> scopeNightVision, scope, suppressed;
+    private double damageAmplifier;
+    private GenericAttribute<Boolean> scope;
+    private GenericAttribute<Boolean> scopeNightVision;
+    private GenericAttribute<Boolean> suppressed;
     private GenericAttribute<FireMode> fireMode;
     private GenericAttribute<Float> spread;
-    private GenericAttribute<Integer> burstRounds, fireRate, scopeZoom;
+    private GenericAttribute<Integer> burstRounds;
+    private GenericAttribute<Integer> fireRate;
+    private GenericAttribute<Integer> scopeZoom;
     private int hits;
     private List<Attachment> attachments;
-    private Map<Attachment, AttributeModifier> appliedModifiers, toggleModifiers;
+    private Map<Attachment, AttributeModifier> appliedModifiers;
+    private Map<Attachment, AttributeModifier> toggleModifiers;
     private Map<String, GenericAttribute> toggleAttributes;
     private Map<String, String[]> compatibleAttachments;
     private Sound[] suppressedSound;
 
     public BattleGun(
-            Battlegrounds plugin,
-            String id,
-            String name,
-            String description,
+            ItemMetadata metadata,
             ItemStack itemStack,
+            EventDispatcher eventDispatcher,
+            Version version,
+            Bullet bullet,
+            FirearmType firearmType,
+            FireMode fireMode,
+            List<Material> piercableMaterials,
+            Map<String, String[]> compatibleAttachments,
+            ReloadType reloadType,
+            Sound[] reloadSound,
+            Sound[] shootSound, Sound[] suppressedSound,
             int magazine,
             int ammo,
             int maxAmmo,
@@ -61,21 +71,18 @@ public class BattleGun extends BattleFirearm implements Gun {
             int cooldown,
             int reloadDuration,
             double accuracy,
-            Bullet bullet,
-            FirearmType firearmType,
-            FireMode fireMode,
-            ReloadType reloadType,
-            Sound[] reloadSound,
-            Sound[] shootSound, Sound[] suppressedSound,
-            Map<String, String[]> compatibleAttachments
+            double accuracyAmplifier,
+            double damageAmplifier
     ) {
-        super(plugin, id, name, description, itemStack, magazine, ammo, maxAmmo, cooldown, reloadDuration, accuracy, reloadType, firearmType, reloadSound, shootSound);
+        super(metadata, itemStack, eventDispatcher, version, firearmType, piercableMaterials, reloadType, reloadSound,
+                shootSound, magazine, ammo, maxAmmo, cooldown, reloadDuration, accuracy, accuracyAmplifier);
+        this.damageAmplifier = damageAmplifier;
+        this.bullet = bullet;
+        this.suppressedSound = suppressedSound;
+        this.compatibleAttachments = compatibleAttachments;
         this.appliedModifiers = new HashMap<>();
         this.attachments = new ArrayList<>();
-        this.bullet = bullet;
-        this.compatibleAttachments = compatibleAttachments;
         this.scoped = false;
-        this.suppressedSound = suppressedSound;
         this.toggleAttributes = new HashMap<>();
         this.toggled = false;
         this.toggleModifiers = new HashMap<>();
@@ -143,23 +150,13 @@ public class BattleGun extends BattleFirearm implements Gun {
                 if (modifier != null) {
                     if (!attachment.isToggleable()) {
                         appliedModifiers.put(attachment, modifier);
-                        attribute.applyModifier(modifier, compatibleAttachments.get(attachment.getId()));
+                        attribute.applyModifier(modifier, compatibleAttachments.get(attachment.getMetadata().getId()));
                     } else {
                         toggleModifiers.put(attachment, modifier);
                     }
                 }
             }
         }
-    }
-
-    protected String[] getLore() {
-        return new String[] {
-                ChatColor.WHITE + firearmType.getName(),
-                ChatColor.GRAY + format(6, getAccuracy() * 100.0, 100.0) + " " + translator.translate(TranslationKey.STAT_ACCURACY),
-                ChatColor.GRAY + format(6, bullet.getShortDamage(), 55.0) + " " + translator.translate(TranslationKey.STAT_DAMAGE),
-                ChatColor.GRAY + format(6, Math.max((fireRate.getValue() + 10 - cooldown.getValue() / 2) * 10.0, 40.0), 200.0) + " " + translator.translate(TranslationKey.STAT_FIRERATE),
-                ChatColor.GRAY + format(6, bullet.getMidRange(), 70.0) + " " + translator.translate(TranslationKey.STAT_RANGE)
-        };
     }
 
     private Sound[] getShotSound() {
@@ -211,9 +208,9 @@ public class BattleGun extends BattleFirearm implements Gun {
             Location entityLocation = entity.getLocation();
             Hitbox hitbox = Hitbox.getHitbox(entityLocation.getY(), location.getY());
 
-            double damage = bullet.getDamage(hitbox, entityLocation.distance(gamePlayer.getLocation())) / plugin.getBattlegroundsConfig().firearmDamageModifer;
+            double damage = bullet.getDamage(hitbox, entityLocation.distance(gamePlayer.getLocation())) / damageAmplifier;
 
-            if (plugin.getBattlegroundsConfig().getDisplayBloodEffect(entity.getEntityType().toString())) {
+            if (context.hasBloodEffectDisplay(entity.getEntityType())) {
                 gamePlayer.getLocation().getWorld().playEffect(location, Effect.STEP_SOUND, Material.REDSTONE_BLOCK);
             }
 
@@ -227,10 +224,7 @@ public class BattleGun extends BattleFirearm implements Gun {
                 event = new GamePlayerDamageEntityEvent(game, gamePlayer, entity, this, damage, hitbox);
             }
 
-            // Handle the event on the plugin manager so other plugins can listen to this event as well
-            plugin.getServer().getPluginManager().callEvent(event);
-            // Handle the event on the event dispatcher so we can reuse the event without calling a listener to it
-            plugin.getEventDispatcher().dispatchEvent(event);
+            eventDispatcher.dispatchExternalEvent(event);
         }
     }
 
@@ -273,7 +267,7 @@ public class BattleGun extends BattleFirearm implements Gun {
                     AttributeModifier modifier = attachment.getModifier(attribute.getId());
                     if (modifier != null) {
                         toggleAttributes.put(attribute.getId(), attribute.clone());
-                        attribute.applyModifier(modifier, compatibleAttachments.get(attachment.getId()));
+                        attribute.applyModifier(modifier, compatibleAttachments.get(attachment.getMetadata().getId()));
                     }
                 }
             }
@@ -354,7 +348,7 @@ public class BattleGun extends BattleFirearm implements Gun {
 
             Block block = direction.getBlock();
 
-            if (!blocks.contains(block.getType()) && !HalfBlocks.isAir(direction)) {
+            if (!pierableMaterials.contains(block.getType()) && !HalfBlocks.isAir(direction)) {
                 block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, block.getType());
                 return;
             }

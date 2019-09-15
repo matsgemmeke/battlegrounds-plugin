@@ -1,8 +1,8 @@
 package com.matsg.battlegrounds.item;
 
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.item.Item;
+import com.matsg.battlegrounds.api.item.ItemMetadata;
 import com.matsg.battlegrounds.api.util.GenericAttribute;
 import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
@@ -14,17 +14,14 @@ import java.util.List;
 
 public abstract class BattleItem implements Item {
 
-    protected Battlegrounds plugin;
     protected Game game;
+    protected ItemMetadata metadata;
     protected ItemSlot itemSlot;
     protected ItemStack itemStack;
     protected List<GenericAttribute> attributes;
-    protected String id, name;
 
-    public BattleItem(Battlegrounds plugin, String id, String name, ItemStack itemStack) {
-        this.plugin = plugin;
-        this.id = id;
-        this.name = name;
+    public BattleItem(ItemMetadata metadata, ItemStack itemStack) {
+        this.metadata = metadata;
         this.itemStack = itemStack;
         this.attributes = new ArrayList<>();
     }
@@ -57,10 +54,6 @@ public abstract class BattleItem implements Item {
         this.game = game;
     }
 
-    public String getId() {
-        return id;
-    }
-
     public ItemSlot getItemSlot() {
         return itemSlot;
     }
@@ -77,8 +70,12 @@ public abstract class BattleItem implements Item {
         this.itemStack = itemStack;
     }
 
-    public String getName() {
-        return name;
+    public ItemMetadata getMetadata() {
+        return metadata;
+    }
+
+    public void setMetadata(ItemMetadata metadata) {
+        this.metadata = metadata;
     }
 
     public int compareTo(Item item) {

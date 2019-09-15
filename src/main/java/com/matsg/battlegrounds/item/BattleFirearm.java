@@ -1,11 +1,11 @@
 package com.matsg.battlegrounds.item;
 
-import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Version;
+import com.matsg.battlegrounds.api.event.EventDispatcher;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.util.GenericAttribute;
-import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.item.modifier.IntegerAttributeModifier;
 import com.matsg.battlegrounds.util.BattleAttribute;
@@ -29,41 +29,58 @@ import java.util.Random;
 
 public abstract class BattleFirearm extends BattleWeapon implements Firearm {
 
-    protected boolean reloadCancelled, reloading, shooting;
+    private double accuracyAmplifier;
+    private Version version;
+    protected boolean reloadCancelled;
+    protected boolean reloading;
+    protected boolean shooting;
+    protected EventDispatcher eventDispatcher;
     protected FirearmType firearmType;
-    protected GenericAttribute<Float> horizontalAccuracy, verticalAccuracy;
-    protected GenericAttribute<Integer> ammo, cooldown, magazine, magazineSize, magazineSupply, maxAmmo, reloadDuration, reloadDurationOg;
+    protected GenericAttribute<Float> horizontalAccuracy;
+    protected GenericAttribute<Float> verticalAccuracy;
+    protected GenericAttribute<Integer> ammo;
+    protected GenericAttribute<Integer> cooldown;
+    protected GenericAttribute<Integer> magazine;
+    protected GenericAttribute<Integer> magazineSize;
+    protected GenericAttribute<Integer> magazineSupply;
+    protected GenericAttribute<Integer> maxAmmo;
+    protected GenericAttribute<Integer> reloadDuration;
+    protected GenericAttribute<Integer> reloadDurationOg;
     protected GenericAttribute<ReloadType> reloadType;
     protected List<Item> droppedItems;
-    protected List<Material> blocks;
+    protected List<Material> pierableMaterials;
     protected Sound[] reloadSound, shotSound;
 
     public BattleFirearm(
-            Battlegrounds plugin,
-            String id,
-            String name,
-            String description,
+            ItemMetadata metadata,
             ItemStack itemStack,
+            EventDispatcher eventDispatcher,
+            Version version,
+            FirearmType firearmType,
+            List<Material> pierceableMaterials,
+            ReloadType reloadType,
+            Sound[] reloadSound,
+            Sound[] shotSound,
             int magazine,
             int ammo,
             int maxAmmo,
             int cooldown,
             int reloadDuration,
             double accuracy,
-            ReloadType reloadType,
-            FirearmType firearmType,
-            Sound[] reloadSound,
-            Sound[] shotSound
+            double accuracyAmplifier
     ) {
-        super(plugin, id, name, description, itemStack);
-        this.blocks = new ArrayList<>();
-        this.droppedItems = new ArrayList<>();
+        super(metadata, itemStack);
+        this.eventDispatcher = eventDispatcher;
+        this.version = version;
         this.firearmType = firearmType;
+        this.pierableMaterials = pierceableMaterials;
+        this.reloadSound = reloadSound;
+        this.shotSound = shotSound;
+        this.accuracyAmplifier = accuracyAmplifier;
+        this.droppedItems = new ArrayList<>();
         this.reloadCancelled = false;
         this.reloading = false;
-        this.reloadSound = reloadSound;
         this.shooting = false;
-        this.shotSound = shotSound;
 
         this.ammo = new BattleAttribute<>("ammo-reserve", new IntegerValueObject(magazine * ammo));
         this.cooldown = new BattleAttribute<>("shot-cooldown", new IntegerValueObject(cooldown));
@@ -88,10 +105,6 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
         attributes.add(this.reloadDurationOg);
         attributes.add(this.reloadType);
         attributes.add(this.verticalAccuracy);
-
-        for (String block : plugin.getBattlegroundsConfig().pierceableBlocks) {
-            blocks.add(Material.valueOf(block));
-        }
     }
 
     public Firearm clone() {
@@ -196,10 +209,8 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
     }
 
     protected void displayParticle(Location location, float red, float green, float blue) {
-        plugin.getVersion().spawnColoredParticle(location, "REDSTONE", red, green, blue);
+        version.spawnColoredParticle(location, "REDSTONE", red, green, blue);
     }
-
-    protected abstract String[] getLore();
 
     private double getReloadSpeed() {
         return (double) reloadDurationOg.getValue() / (double) reloadDuration.getValue();
@@ -209,7 +220,8 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
         Player player = gamePlayer.getPlayer();
         Random random = new Random();
 
-        double accuracyAmplifier = plugin.getBattlegroundsConfig().firearmAccuracy;
+        double accuracyAmplifier = this.accuracyAmplifier;
+
         if (gamePlayer.getPlayer().isSneaking()) { // Shoot more accurate when the player is crouching
             accuracyAmplifier /= 3.0;
         }
@@ -410,18 +422,9 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
     }
 
     public boolean update() {
-        Placeholder[] placeholders = new Placeholder[] {
-                new Placeholder("bg_ammo", ammo.getValue()),
-                new Placeholder("bg_magazine", magazine.getValue()),
-                new Placeholder("bg_weapon", name)
-        };
-        String displayName = translator.createSimpleMessage(plugin.getBattlegroundsConfig().getWeaponDisplayName("firearm"), placeholders);
-
         itemStack = new ItemStackBuilder(itemStack)
                 .addItemFlags(ItemFlag.values())
                 .setAmount(1)
-                .setDisplayName(displayName)
-                .setLore(getLore())
                 .setUnbreakable(true)
                 .build();
         if (gamePlayer != null) {

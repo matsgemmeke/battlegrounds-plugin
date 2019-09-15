@@ -1,4 +1,4 @@
-package com.matsg.battlegrounds.item;
+package com.matsg.battlegrounds;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.item.Item;

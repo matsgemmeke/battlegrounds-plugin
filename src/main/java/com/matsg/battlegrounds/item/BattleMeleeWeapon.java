@@ -1,17 +1,15 @@
 package com.matsg.battlegrounds.item;
 
-import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.entity.BattleEntity;
+import com.matsg.battlegrounds.api.event.EventDispatcher;
 import com.matsg.battlegrounds.api.event.GamePlayerDamageEntityEvent;
 import com.matsg.battlegrounds.api.event.GamePlayerKillEntityEvent;
-import com.matsg.battlegrounds.api.item.ItemSlot;
+import com.matsg.battlegrounds.api.item.ItemMetadata;
 import com.matsg.battlegrounds.api.item.ItemType;
 import com.matsg.battlegrounds.api.item.MeleeWeapon;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.Hitbox;
 import com.matsg.battlegrounds.api.item.Transaction;
-import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.BattleSound;
@@ -31,31 +29,31 @@ public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
 
     private boolean throwing, throwable;
     private double damage;
+    private EventDispatcher eventDispatcher;
     private int amount, cooldown, maxAmount;
+    private ItemType itemType;
     private List<Item> droppedItems;
-    private String type;
 
     public BattleMeleeWeapon(
-            Battlegrounds plugin,
-            String id,
-            String name,
-            String description,
+            ItemMetadata metadata,
             ItemStack itemStack,
+            EventDispatcher eventDispatcher,
+            ItemType itemType,
             double damage,
             int amount,
             boolean throwable,
             int cooldown
     ) {
-        super(plugin, id, name, description, itemStack);
+        super(metadata, itemStack);
         this.amount = amount;
         this.cooldown = cooldown;
         this.damage = damage;
+        this.eventDispatcher = eventDispatcher;
+        this.itemType = itemType;
         this.droppedItems = new ArrayList<>();
         this.maxAmount = amount;
         this.throwable = throwable;
         this.throwing = false;
-
-        type = translator.translate(TranslationKey.ITEM_TYPE_MELEE_WEAPON);
     }
 
     public MeleeWeapon clone() {
@@ -91,23 +89,7 @@ public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
     }
 
     public ItemType getType() {
-        return new ItemType() {
-            public ItemSlot getDefaultItemSlot() {
-                return ItemSlot.MELEE_WEAPON;
-            }
-
-            public String getName() {
-                return type;
-            }
-
-            public boolean hasSubTypes() {
-                return false;
-            }
-
-            public boolean isRemovable() {
-                return false;
-            }
-        };
+        return itemType;
     }
 
     public boolean isThrowable() {
@@ -131,7 +113,7 @@ public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
     }
 
     private double damage(BattleEntity entity, double damage) {
-        if (plugin.getBattlegroundsConfig().getDisplayBloodEffect(entity.getEntityType().toString())) {
+        if (context.hasBloodEffectDisplay(entity.getEntityType())) {
             gamePlayer.getLocation().getWorld().playEffect(entity.getLocation(), Effect.STEP_SOUND, Material.REDSTONE_BLOCK);
         }
 
@@ -145,17 +127,14 @@ public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
             event = new GamePlayerDamageEntityEvent(game, gamePlayer, entity, this, damage, Hitbox.TORSO);
         }
 
-        // Handle the event on the plugin manager so other plugins can listen to this event as well
-        plugin.getServer().getPluginManager().callEvent(event);
-        // Handle the event on the event dispatcher so we can reuse the event without calling a listener to it
-        plugin.getEventDispatcher().dispatchEvent(event);
+        eventDispatcher.dispatchExternalEvent(event);
 
         return entity.getHealth();
     }
 
     private String[] getLore() {
         return new String[] {
-                ChatColor.WHITE + type
+                ChatColor.WHITE + itemType.getName()
         };
     }
 
@@ -254,13 +233,9 @@ public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
     }
 
     public boolean update() {
-        Placeholder placeholder = new Placeholder("bg_weapon", name);
-        String displayName = translator.createSimpleMessage(plugin.getBattlegroundsConfig().getWeaponDisplayName("melee-weapon"), placeholder);
-
         itemStack = new ItemStackBuilder(itemStack)
                 .addItemFlags(ItemFlag.values())
                 .setAmount(amount)
-                .setDisplayName(displayName)
                 .setLore(getLore())
                 .setUnbreakable(true)
                 .build();

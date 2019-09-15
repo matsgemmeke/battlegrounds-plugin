@@ -8,6 +8,7 @@ import com.matsg.battlegrounds.mode.zombies.item.PerkEffect;
 import com.matsg.battlegrounds.mode.zombies.item.PerkEffectType;
 import com.matsg.battlegrounds.mode.zombies.item.ZombiesPerk;
 import com.matsg.battlegrounds.mode.zombies.item.perk.*;
+import org.bukkit.inventory.ItemStack;
 
 public class PerkFactory {
 
@@ -42,6 +43,10 @@ public class PerkFactory {
                 throw new IllegalArgumentException("Invalid perk effect type");
         }
 
-        return new ZombiesPerk(plugin, perkEffect);
+        String id = perkEffectType.toString();
+        String name = perkEffect.getName();
+        ItemStack itemStack = perkEffect.getItemStack();
+
+        return new ZombiesPerk(id, name, itemStack, perkEffect);
     }
 }
