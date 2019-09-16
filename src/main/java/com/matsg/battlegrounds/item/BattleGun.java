@@ -60,7 +60,7 @@ public class BattleGun extends BattleFirearm implements Gun {
             FireMode fireMode,
             List<Material> piercableMaterials,
             Map<String, String[]> compatibleAttachments,
-            ReloadType reloadType,
+            ReloadSystem reloadSystem,
             Sound[] reloadSound,
             Sound[] shootSound, Sound[] suppressedSound,
             int magazine,
@@ -74,7 +74,7 @@ public class BattleGun extends BattleFirearm implements Gun {
             double accuracyAmplifier,
             double damageAmplifier
     ) {
-        super(metadata, itemStack, eventDispatcher, version, firearmType, piercableMaterials, reloadType, reloadSound,
+        super(metadata, itemStack, eventDispatcher, version, firearmType, piercableMaterials, reloadSystem, reloadSound,
                 shootSound, magazine, ammo, maxAmmo, cooldown, reloadDuration, accuracy, accuracyAmplifier);
         this.damageAmplifier = damageAmplifier;
         this.bullet = bullet;
@@ -383,7 +383,7 @@ public class BattleGun extends BattleFirearm implements Gun {
         maxAmmo = getAttribute("ammo-max");
         reloadDuration = getAttribute("reload-duration");
         reloadDurationOg = getAttribute("reload-duration-og");
-        reloadType = getAttribute("reload-type");
+        reloadSystem = getAttribute("reload-system");
         scope = getAttribute("scope-use");
         scopeNightVision = getAttribute("scope-nightvision");
         scopeZoom = getAttribute("scope-zoom");

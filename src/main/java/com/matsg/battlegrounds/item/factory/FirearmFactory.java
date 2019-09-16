@@ -9,9 +9,6 @@ import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.storage.BattlegroundsConfig;
 import com.matsg.battlegrounds.api.storage.ItemConfig;
 import com.matsg.battlegrounds.item.*;
-import com.matsg.battlegrounds.item.firemode.BurstMode;
-import com.matsg.battlegrounds.item.firemode.FullyAutomatic;
-import com.matsg.battlegrounds.item.firemode.SemiAutomatic;
 import com.matsg.battlegrounds.util.BattleSound;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
@@ -30,13 +27,25 @@ public class FirearmFactory implements ItemFactory<Firearm> {
 
     private BattlegroundsConfig config;
     private EventDispatcher eventDispatcher;
+    private FireModeFactory fireModeFactory;
     private ItemConfig firearmConfig;
+    private ReloadSystemFactory reloadSystemFactory;
     private Translator translator;
     private Version version;
 
-    public FirearmFactory(ItemConfig firearmConfig, EventDispatcher eventDispatcher, Translator translator, Version version, BattlegroundsConfig config) {
+    public FirearmFactory(
+            ItemConfig firearmConfig,
+            EventDispatcher eventDispatcher,
+            FireModeFactory fireModeFactory,
+            ReloadSystemFactory reloadSystemFactory,
+            Translator translator,
+            Version version,
+            BattlegroundsConfig config
+    ) {
         this.firearmConfig = firearmConfig;
         this.eventDispatcher = eventDispatcher;
+        this.fireModeFactory = fireModeFactory;
+        this.reloadSystemFactory = reloadSystemFactory;
         this.translator = translator;
         this.version = version;
         this.config = config;
@@ -64,6 +73,17 @@ public class FirearmFactory implements ItemFactory<Firearm> {
         // Global firearm attributes
         ItemMetadata metadata = new ItemMetadata(id, section.getString("DisplayName"), section.getString("Description"));
         String[] material = section.getString("Material").split(",");
+
+        ReloadSystem reloadSystem;
+        ReloadSystemType reloadSystemType;
+
+        try {
+            reloadSystemType = ReloadSystemType.valueOf(section.getString("Reload.System"));
+        } catch (Exception e) {
+            throw new FactoryCreationException(e.getMessage(), e);
+        }
+
+        reloadSystem = reloadSystemFactory.make(reloadSystemType);
 
         if (firearmType == FirearmType.ASSAULT_RIFLE
                 || firearmType == FirearmType.HANDGUN
@@ -110,19 +130,7 @@ public class FirearmFactory implements ItemFactory<Firearm> {
                     throw new FactoryCreationException(e.getMessage(), e);
                 }
 
-                switch (fireModeType) {
-                    case BURST:
-                        fireMode = new BurstMode();
-                        break;
-                    case FULLY_AUTOMATIC:
-                        fireMode = new FullyAutomatic();
-                        break;
-                    case SEMI_AUTOMATIC:
-                        fireMode = new SemiAutomatic();
-                        break;
-                    default:
-                        throw new FactoryCreationException("Invalid firemode type \"" + fireModeType + "\"");
-                }
+                fireMode = fireModeFactory.make(fireModeType);
 
                 return new BattleGun(
                         metadata,
@@ -134,7 +142,7 @@ public class FirearmFactory implements ItemFactory<Firearm> {
                         fireMode,
                         piercableMaterials,
                         getCompatibleAttachments(section.getString("Attachments")),
-                        ReloadType.valueOf(section.getString("Reload.Type")),
+                        reloadSystem,
                         BattleSound.parseSoundArray(section.getString("Reload.Sound.Reload")),
                         BattleSound.parseSoundArray(section.getString("Shot.ShotSound")),
                         BattleSound.parseSoundArray(section.getString("Shot.SuppressedSound")),
@@ -199,7 +207,7 @@ public class FirearmFactory implements ItemFactory<Firearm> {
                         LaunchType.valueOf(section.getString("FireMode.LaunchType")),
                         lethal,
                         piercableMaterials,
-                        ReloadType.valueOf(section.getString("Reload.Type")),
+                        reloadSystem,
                         BattleSound.parseSoundArray(section.getString("Reload.Sound.Reload")),
                         BattleSound.parseSoundArray(section.getString("Shot.ShotSound")),
                         AttributeValidator.shouldBeHigherThan(section.getInt("Ammo.Magazine"), 0),

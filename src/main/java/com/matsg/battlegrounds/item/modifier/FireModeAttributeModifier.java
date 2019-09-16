@@ -2,18 +2,22 @@ package com.matsg.battlegrounds.item.modifier;
 
 import com.matsg.battlegrounds.api.util.AttributeModifier;
 import com.matsg.battlegrounds.api.util.ValueObject;
+import com.matsg.battlegrounds.item.FireMode;
 import com.matsg.battlegrounds.item.FireModeType;
+import com.matsg.battlegrounds.item.factory.FireModeFactory;
 import com.matsg.battlegrounds.util.data.FireModeValueObject;
 
-public class FireModeAttributeModifier implements AttributeModifier<FireModeType> {
+public class FireModeAttributeModifier implements AttributeModifier<FireMode> {
 
+    private FireModeFactory fireModeFactory;
     private String regex;
 
-    public FireModeAttributeModifier(String regex) {
+    public FireModeAttributeModifier(String regex, FireModeFactory fireModeFactory) {
         this.regex = regex;
+        this.fireModeFactory = fireModeFactory;
     }
 
-    public ValueObject<FireModeType> modify(ValueObject<FireModeType> valueObject, String[] args) {
+    public ValueObject<FireMode> modify(ValueObject<FireMode> valueObject, String[] args) {
         String value = regex.substring(1);
 
         if (value.startsWith("arg")) {
@@ -21,13 +25,16 @@ public class FireModeAttributeModifier implements AttributeModifier<FireModeType
             value = args[index];
         }
 
-        FireModeType fireMode;
+        FireMode fireMode;
+        FireModeType fireModeType;
 
         try {
-            fireMode = FireModeType.valueOf(value);
+            fireModeType = FireModeType.valueOf(value);
         } catch (Exception e) {
             throw new AttributeModificationException("Unable to modify firemode attribute with regex " + regex, e);
         }
+
+        fireMode = fireModeFactory.make(fireModeType);
 
         return new FireModeValueObject(fireMode);
     }

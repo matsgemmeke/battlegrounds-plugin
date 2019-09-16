@@ -4,5 +4,5 @@ public enum FireModeType {
 
     BURST,
     FULLY_AUTOMATIC,
-    SEMI_AUTOMATIC;
+    SEMI_AUTOMATIC
 }

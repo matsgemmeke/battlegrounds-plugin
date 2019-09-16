@@ -20,10 +20,14 @@ import java.util.Map;
 
 public class AttachmentFactory implements ItemFactory<Attachment> {
 
+    private FireModeFactory fireModeFactory;
     private ItemConfig attachmentConfig;
+    private ReloadSystemFactory reloadSystemFactory;
 
-    public AttachmentFactory(ItemConfig attachmentConfig) {
+    public AttachmentFactory(ItemConfig attachmentConfig, FireModeFactory fireModeFactory, ReloadSystemFactory reloadSystemFactory) {
         this.attachmentConfig = attachmentConfig;
+        this.fireModeFactory = fireModeFactory;
+        this.reloadSystemFactory = reloadSystemFactory;
     }
 
     public Attachment make(String id) {
@@ -57,7 +61,7 @@ public class AttachmentFactory implements ItemFactory<Attachment> {
             return new BooleanAttributeModifier(regex);
         }
         if (type.equals("firemode")) {
-            return new FireModeAttributeModifier(regex);
+            return new FireModeAttributeModifier(regex, fireModeFactory);
         }
         if (type.equals("float")) {
             return new FloatAttributeModifier(regex);
@@ -66,7 +70,7 @@ public class AttachmentFactory implements ItemFactory<Attachment> {
             return new IntegerAttributeModifier(regex);
         }
         if (type.equals("reloadtype")) {
-            return new ReloadTypeAttributeModifier(regex);
+            return new ReloadSystemAttributeModifier(regex, reloadSystemFactory);
         }
         return null;
     }

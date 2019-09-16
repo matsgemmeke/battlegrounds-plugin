@@ -32,7 +32,7 @@ public class BattleLauncher extends BattleFirearm implements Launcher {
             LaunchType launchType,
             Lethal lethal,
             List<Material> piercableMaterials,
-            ReloadType reloadType,
+            ReloadSystem reloadSystem,
             Sound[] reloadSound,
             Sound[] shootSound,
             int magazine,
@@ -44,7 +44,7 @@ public class BattleLauncher extends BattleFirearm implements Launcher {
             double accuracy,
             double accuracyAmplifier
     ) {
-        super(metadata, itemStack, eventDispatcher, version, FirearmType.LAUNCHER, piercableMaterials, reloadType,
+        super(metadata, itemStack, eventDispatcher, version, FirearmType.LAUNCHER, piercableMaterials, reloadSystem,
                 reloadSound, shootSound, magazine, ammo, maxAmmo, cooldown, reloadDuration, accuracy, accuracyAmplifier);
         this.launchSpeed = launchSpeed;
         this.launchType = launchType;

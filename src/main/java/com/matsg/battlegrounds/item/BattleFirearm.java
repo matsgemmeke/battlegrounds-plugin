@@ -11,7 +11,7 @@ import com.matsg.battlegrounds.item.modifier.IntegerAttributeModifier;
 import com.matsg.battlegrounds.util.BattleAttribute;
 import com.matsg.battlegrounds.util.data.FloatValueObject;
 import com.matsg.battlegrounds.util.data.IntegerValueObject;
-import com.matsg.battlegrounds.util.data.ReloadTypeValueObject;
+import com.matsg.battlegrounds.util.data.ReloadSystemValueObject;
 import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.BattleSound;
 import org.bukkit.ChatColor;
@@ -47,7 +47,7 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
     protected GenericAttribute<Integer> maxAmmo;
     protected GenericAttribute<Integer> reloadDuration;
     protected GenericAttribute<Integer> reloadDurationOg;
-    protected GenericAttribute<ReloadType> reloadType;
+    protected GenericAttribute<ReloadSystem> reloadSystem;
     protected List<Item> droppedItems;
     protected List<Material> pierableMaterials;
     protected Sound[] reloadSound, shotSound;
@@ -59,7 +59,7 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
             Version version,
             FirearmType firearmType,
             List<Material> pierceableMaterials,
-            ReloadType reloadType,
+            ReloadSystem reloadSystem,
             Sound[] reloadSound,
             Sound[] shotSound,
             int magazine,
@@ -92,7 +92,7 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
         this.maxAmmo = new BattleAttribute<>("ammo-max", new IntegerValueObject(magazine * maxAmmo));
         this.reloadDuration = new BattleAttribute<>("reload-duration", new IntegerValueObject(reloadDuration));
         this.reloadDurationOg = new BattleAttribute<>("reload-duration-og", new IntegerValueObject(reloadDuration));
-        this.reloadType = new BattleAttribute<>("reload-type", new ReloadTypeValueObject(reloadType));
+        this.reloadSystem = new BattleAttribute<>("reload-system", new ReloadSystemValueObject(reloadSystem));
         this.verticalAccuracy = new BattleAttribute<>("accuracy-vertical", new FloatValueObject((float) accuracy));
 
         attributes.add(this.ammo);
@@ -104,7 +104,7 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
         attributes.add(this.maxAmmo);
         attributes.add(this.reloadDuration);
         attributes.add(this.reloadDurationOg);
-        attributes.add(this.reloadType);
+        attributes.add(this.reloadSystem);
         attributes.add(this.verticalAccuracy);
     }
 
@@ -120,7 +120,7 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
         firearm.maxAmmo = firearm.getAttribute("ammo-max");
         firearm.reloadDuration = firearm.getAttribute("reload-duration");
         firearm.reloadDurationOg = firearm.getAttribute("reload-duration-og");
-        firearm.reloadType = firearm.getAttribute("reload-type");
+        firearm.reloadSystem = firearm.getAttribute("reload-system");
         firearm.verticalAccuracy = firearm.getAttribute("accuracy-vertical");
         return firearm;
     }
@@ -391,7 +391,9 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
                     setSoundCancelled(true, reloadSound);
                     return;
                 }
-                reloadType.getValue().reloadSingle(BattleFirearm.this, reloadDuration.getValue());
+
+                reloadSystem.getValue().reloadFirearm(BattleFirearm.this);
+
                 if (ammo.getValue() <= 0 || magazine.getValue() >= magazineSize.getValue()) {
                     cancel();
                     gamePlayer.getPlayer().setFoodLevel(20);
