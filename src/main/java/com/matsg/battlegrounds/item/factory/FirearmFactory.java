@@ -9,6 +9,9 @@ import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.storage.BattlegroundsConfig;
 import com.matsg.battlegrounds.api.storage.ItemConfig;
 import com.matsg.battlegrounds.item.*;
+import com.matsg.battlegrounds.item.firemode.BurstMode;
+import com.matsg.battlegrounds.item.firemode.FullyAutomatic;
+import com.matsg.battlegrounds.item.firemode.SemiAutomatic;
 import com.matsg.battlegrounds.util.BattleSound;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
@@ -98,6 +101,29 @@ public class FirearmFactory implements ItemFactory<Firearm> {
                         .setLore(lore)
                         .build();
 
+                FireMode fireMode;
+                FireModeType fireModeType;
+
+                try {
+                    fireModeType = FireModeType.valueOf(section.getString("FireMode.Type"));
+                } catch (Exception e) {
+                    throw new FactoryCreationException(e.getMessage(), e);
+                }
+
+                switch (fireModeType) {
+                    case BURST:
+                        fireMode = new BurstMode();
+                        break;
+                    case FULLY_AUTOMATIC:
+                        fireMode = new FullyAutomatic();
+                        break;
+                    case SEMI_AUTOMATIC:
+                        fireMode = new SemiAutomatic();
+                        break;
+                    default:
+                        throw new FactoryCreationException("Invalid firemode type \"" + fireModeType + "\"");
+                }
+
                 return new BattleGun(
                         metadata,
                         itemStack,
@@ -105,7 +131,7 @@ public class FirearmFactory implements ItemFactory<Firearm> {
                         version,
                         bullet,
                         firearmType,
-                        FireMode.valueOf(section.getString("FireMode.Type")),
+                        fireMode,
                         piercableMaterials,
                         getCompatibleAttachments(section.getString("Attachments")),
                         ReloadType.valueOf(section.getString("Reload.Type")),
