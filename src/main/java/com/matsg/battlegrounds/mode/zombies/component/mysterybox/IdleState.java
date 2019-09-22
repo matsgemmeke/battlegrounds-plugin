@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.mode.zombies.component.mysterybox;
 
+import com.matsg.battlegrounds.TaskRunner;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.game.Game;
@@ -12,10 +13,12 @@ public class IdleState implements MysteryBoxState {
     private boolean inUse;
     private Game game;
     private MysteryBox mysteryBox;
+    private TaskRunner taskRunner;
 
-    public IdleState(Game game, MysteryBox mysteryBox) {
+    public IdleState(Game game, MysteryBox mysteryBox, TaskRunner taskRunner) {
         this.game = game;
         this.mysteryBox = mysteryBox;
+        this.taskRunner = taskRunner;
         this.inUse = false;
     }
 
@@ -27,7 +30,7 @@ public class IdleState implements MysteryBoxState {
         game.getPlayerManager().givePoints(gamePlayer, -mysteryBox.getPrice());
 
         mysteryBox.setRolls(mysteryBox.getRolls() + 1);
-        mysteryBox.setState(new RollingState(game, mysteryBox, gamePlayer));
+        mysteryBox.setState(new RollingState(game, mysteryBox, gamePlayer, taskRunner));
         return true;
     }
 

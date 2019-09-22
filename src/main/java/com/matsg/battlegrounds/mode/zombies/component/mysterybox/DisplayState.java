@@ -1,8 +1,8 @@
 package com.matsg.battlegrounds.mode.zombies.component.mysterybox;
 
+import com.matsg.battlegrounds.TaskRunner;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
-import com.matsg.battlegrounds.api.game.Action;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.item.Transaction;
@@ -11,10 +11,10 @@ import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.mode.zombies.component.MysteryBox;
 import com.matsg.battlegrounds.mode.zombies.component.MysteryBoxState;
 import com.matsg.battlegrounds.util.ActionBar;
-import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.BattleSound;
 import com.matsg.battlegrounds.util.Hologram;
 import org.bukkit.entity.Item;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 public class DisplayState implements MysteryBoxState {
@@ -30,15 +30,25 @@ public class DisplayState implements MysteryBoxState {
     private Hologram hologram;
     private Item item;
     private MysteryBox mysteryBox;
+    private TaskRunner taskRunner;
     private Weapon weapon;
 
-    public DisplayState(Game game, MysteryBox mysteryBox, GamePlayer gamePlayer, Hologram hologram, Item item, Weapon weapon) {
+    public DisplayState(
+            Game game,
+            MysteryBox mysteryBox,
+            GamePlayer gamePlayer,
+            Hologram hologram,
+            Item item,
+            Weapon weapon,
+            TaskRunner taskRunner
+    ) {
         this.game = game;
         this.mysteryBox = mysteryBox;
         this.gamePlayer = gamePlayer;
         this.hologram = hologram;
         this.item = item;
         this.weapon = weapon;
+        this.taskRunner = taskRunner;
         this.inUse = true;
     }
 
@@ -78,7 +88,7 @@ public class DisplayState implements MysteryBoxState {
         task.cancel();
 
         mysteryBox.setCurrentWeapon(weapon);
-        mysteryBox.setState(new IdleState(game, mysteryBox));
+        mysteryBox.setState(new IdleState(game, mysteryBox, taskRunner));
         return true;
     }
 
@@ -88,14 +98,14 @@ public class DisplayState implements MysteryBoxState {
     }
 
     public void initState() {
-        task = new BattleRunnable() {
+        task = taskRunner.runTaskTimer(new BukkitRunnable() {
             int time = WEAPON_DISPLAY_DURATION;
 
             public void run() {
                 if (--time < 0 || !game.getState().isInProgress()) {
                     remove();
                     mysteryBox.setCurrentWeapon(weapon);
-                    mysteryBox.setState(new IdleState(game, mysteryBox));
+                    mysteryBox.setState(new IdleState(game, mysteryBox, taskRunner));
                     cancel();
                     return;
                 }
@@ -103,7 +113,7 @@ public class DisplayState implements MysteryBoxState {
                 hologram.setText((double) time / 10 + "s", weapon.getMetadata().getName());
                 hologram.update();
             }
-        }.runTaskTimer(WEAPON_DISPLAY_DELAY, WEAPON_DISPLAY_FRAME_DURATION);
+        }, WEAPON_DISPLAY_DELAY, WEAPON_DISPLAY_FRAME_DURATION);
     }
 
     public void remove() {

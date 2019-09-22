@@ -1,9 +1,9 @@
 package com.matsg.battlegrounds.item.modifier;
 
-import com.matsg.battlegrounds.item.ReloadSystem;
+import com.matsg.battlegrounds.item.mechanism.ReloadSystem;
 import com.matsg.battlegrounds.api.util.AttributeModifier;
 import com.matsg.battlegrounds.api.util.ValueObject;
-import com.matsg.battlegrounds.item.ReloadSystemType;
+import com.matsg.battlegrounds.item.mechanism.ReloadSystemType;
 import com.matsg.battlegrounds.item.factory.ReloadSystemFactory;
 import com.matsg.battlegrounds.util.data.ReloadSystemValueObject;
 

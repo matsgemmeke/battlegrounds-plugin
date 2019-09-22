@@ -1,10 +1,11 @@
 package com.matsg.battlegrounds.item;
 
+import com.matsg.battlegrounds.TaskRunner;
+import com.matsg.battlegrounds.api.Version;
 import com.matsg.battlegrounds.api.item.ItemMetadata;
 import com.matsg.battlegrounds.api.item.WeaponContext;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
-import com.matsg.battlegrounds.util.BattleRunnable;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 
@@ -13,10 +14,14 @@ import java.util.Random;
 public abstract class BattleWeapon extends BattleItem implements Weapon {
 
     protected GamePlayer gamePlayer;
+    protected TaskRunner taskRunner;
+    protected Version version;
     protected WeaponContext context;
 
-    public BattleWeapon(ItemMetadata metadata, ItemStack itemStack) {
+    public BattleWeapon(ItemMetadata metadata, ItemStack itemStack, TaskRunner taskRunner, Version version) {
         super(metadata, itemStack);
+        this.taskRunner = taskRunner;
+        this.version = version;
     }
 
     public WeaponContext getContext() {
@@ -52,11 +57,11 @@ public abstract class BattleWeapon extends BattleItem implements Weapon {
 
                 center.add(x, y, z);
 
-                new BattleRunnable() {
-                    public void run() {
-                        plugin.getVersion().spawnParticle(location, effect, amount, 1, 1, 1, 0);
-                    }
-                }.runTaskLater(new Random().nextInt(random));
+                int delay = new Random().nextInt(random);
+                int offset = 1;
+                int speed = 0;
+
+                taskRunner.runTaskLater(() -> version.spawnParticle(location, effect, amount, offset, offset, offset, speed), delay);
 
                 center.subtract(x, y, z);
             }

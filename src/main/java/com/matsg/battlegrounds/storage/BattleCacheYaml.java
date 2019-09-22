@@ -1,41 +1,33 @@
 package com.matsg.battlegrounds.storage;
 
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.storage.AbstractYaml;
 import com.matsg.battlegrounds.api.storage.CacheYaml;
 import org.bukkit.Location;
+import org.bukkit.Server;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 public class BattleCacheYaml extends AbstractYaml implements CacheYaml {
 
-    public BattleCacheYaml(Battlegrounds plugin, String resource) throws IOException {
-        super(plugin, plugin.getDataFolder().getPath(), resource, false);
-    }
+    private Server server;
 
-    public BattleCacheYaml(Battlegrounds plugin, String path, String resource) throws IOException {
-        super(plugin, path, resource, false);
+    public BattleCacheYaml(String fileName, String filePath, InputStream resource, Server server) throws IOException {
+        super(fileName, filePath, resource, false);
+        this.server = server;
     }
 
     public Location getLocation(String path) {
-        if (getString(path) == null) {
-            return null;
-        }
-
         String[] locationString = getString(path).split(",");
 
-        if (locationString.length <= 0) {
-            return null;
-        }
-
-        try {
-            return new Location(plugin.getServer().getWorld(locationString[0]), Double.parseDouble(locationString[1]),
-                    Double.parseDouble(locationString[2]), Double.parseDouble(locationString[3]),
-                    Float.parseFloat(locationString[4]), Float.parseFloat(locationString[5]));
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            return null;
-        }
+        return new Location(
+                server.getWorld(locationString[0]),
+                Double.parseDouble(locationString[1]),
+                Double.parseDouble(locationString[2]),
+                Double.parseDouble(locationString[3]),
+                Float.parseFloat(locationString[4]),
+                Float.parseFloat(locationString[5])
+        );
     }
 
     public void setLocation(String path, Location location, boolean block) {

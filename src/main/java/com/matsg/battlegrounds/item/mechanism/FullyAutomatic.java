@@ -1,16 +1,33 @@
-package com.matsg.battlegrounds.item.firemode;
+package com.matsg.battlegrounds.item.mechanism;
 
+import com.matsg.battlegrounds.TaskRunner;
 import com.matsg.battlegrounds.api.item.Firearm;
-import com.matsg.battlegrounds.item.FireMode;
-import com.matsg.battlegrounds.util.BattleRunnable;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class FullyAutomatic implements FireMode {
 
-    public void shoot(Firearm firearm, int fireRate, int burst) {
-        final int amount = fireRate / 5; // Bullets per interaction
+    private Firearm firearm;
+    private int rateOfFire;
+    private TaskRunner taskRunner;
+
+    public FullyAutomatic(int rateOfFire, TaskRunner taskRunner) {
+        this.rateOfFire = rateOfFire;
+        this.taskRunner = taskRunner;
+    }
+
+    public Firearm getWeapon() {
+        return firearm;
+    }
+
+    public void setWeapon(Firearm firearm) {
+        this.firearm = firearm;
+    }
+
+    public void shoot() {
+        final int amount = rateOfFire / 5; // Bullets per interaction
         final long period = 4 / amount; // Amount of ticks between bullets
 
-        new BattleRunnable() {
+        taskRunner.runTaskTimer(new BukkitRunnable() {
             int shots = 0;
 
             public void run() {
@@ -30,6 +47,6 @@ public class FullyAutomatic implements FireMode {
                     cancel();
                 }
             }
-        }.runTaskTimer(0, period);
+        }, 0, period);
     }
 }

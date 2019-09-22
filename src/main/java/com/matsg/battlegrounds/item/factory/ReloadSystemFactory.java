@@ -1,10 +1,10 @@
 package com.matsg.battlegrounds.item.factory;
 
 import com.matsg.battlegrounds.FactoryCreationException;
-import com.matsg.battlegrounds.item.ReloadSystem;
-import com.matsg.battlegrounds.item.ReloadSystemType;
-import com.matsg.battlegrounds.item.reload.MagazineReload;
-import com.matsg.battlegrounds.item.reload.PerRoundReload;
+import com.matsg.battlegrounds.item.mechanism.ReloadSystem;
+import com.matsg.battlegrounds.item.mechanism.ReloadSystemType;
+import com.matsg.battlegrounds.item.mechanism.MagazineReload;
+import com.matsg.battlegrounds.item.mechanism.PerRoundReload;
 
 public class ReloadSystemFactory {
 

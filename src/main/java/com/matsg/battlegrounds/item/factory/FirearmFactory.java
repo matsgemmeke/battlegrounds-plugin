@@ -9,6 +9,10 @@ import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.storage.BattlegroundsConfig;
 import com.matsg.battlegrounds.api.storage.ItemConfig;
 import com.matsg.battlegrounds.item.*;
+import com.matsg.battlegrounds.item.mechanism.FireMode;
+import com.matsg.battlegrounds.item.mechanism.FireModeType;
+import com.matsg.battlegrounds.item.mechanism.ReloadSystem;
+import com.matsg.battlegrounds.item.mechanism.ReloadSystemType;
 import com.matsg.battlegrounds.util.BattleSound;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
@@ -96,6 +100,7 @@ public class FirearmFactory implements ItemFactory<Firearm> {
                 double accuracy = AttributeValidator.shouldBeBetween(section.getDouble("Accuracy"), 0.0, 1.0);
                 int cooldown = AttributeValidator.shouldEqualOrBeHigherThan(section.getInt("FireMode.Cooldown"), 0);
                 int fireRate = AttributeValidator.shouldBeBetween(section.getInt("FireMode.FireRate"), 0, 20);
+                int burst = AttributeValidator.shouldEqualOrBeHigherThan(section.getInt("FireMode.Burst"), 0);
 
                 Bullet bullet = new Bullet(
                         AttributeValidator.shouldEqualOrBeHigherThan(section.getDouble("Range.Long.Damage"), 0.0),
@@ -130,9 +135,9 @@ public class FirearmFactory implements ItemFactory<Firearm> {
                     throw new FactoryCreationException(e.getMessage(), e);
                 }
 
-                fireMode = fireModeFactory.make(fireModeType);
+                fireMode = fireModeFactory.make(fireModeType, fireRate, burst);
 
-                return new BattleGun(
+                Gun gun = new BattleGun(
                         metadata,
                         itemStack,
                         eventDispatcher,
@@ -150,13 +155,18 @@ public class FirearmFactory implements ItemFactory<Firearm> {
                         AttributeValidator.shouldEqualOrBeHigherThan(section.getInt("Ammo.Supply"), 0),
                         AttributeValidator.shouldEqualOrBeHigherThan(section.getInt("Ammo.Max"), 0),
                         fireRate,
-                        AttributeValidator.shouldEqualOrBeHigherThan(section.getInt("FireMode.Burst"), 0),
+                        burst,
                         cooldown,
                         AttributeValidator.shouldBeHigherThan(section.getInt("Reload.Duration"), 0),
                         accuracy,
                         accuracyAmplifier,
                         damageAmplifier
                 );
+
+                fireMode.setWeapon(gun);
+                reloadSystem.setWeapon(gun);
+
+                return gun;
             } catch (ValidationFailedException e) {
                 throw new FactoryCreationException(e.getMessage(), e);
             }
@@ -199,7 +209,7 @@ public class FirearmFactory implements ItemFactory<Firearm> {
                         .setLore(lore)
                         .build();
 
-                return new BattleLauncher(
+                Launcher launcher = new BattleLauncher(
                         metadata,
                         itemStack,
                         eventDispatcher,
@@ -219,6 +229,10 @@ public class FirearmFactory implements ItemFactory<Firearm> {
                         accuracy,
                         accuracyAmplifier
                 );
+
+                reloadSystem.setWeapon(launcher);
+
+                return launcher;
             } catch (ValidationFailedException e) {
                 throw new FactoryCreationException(e.getMessage(), e);
             }

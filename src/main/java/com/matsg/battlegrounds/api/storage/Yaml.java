@@ -2,6 +2,7 @@ package com.matsg.battlegrounds.api.storage;
 
 import org.bukkit.configuration.ConfigurationSection;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -21,7 +22,7 @@ public interface Yaml {
 
     double getDouble(String path);
 
-    String getFilePath();
+    File getFile();
 
     int getInt(String path);
 
@@ -32,8 +33,6 @@ public interface Yaml {
     Object getObject(String path);
 
     InputStream getResource();
-
-    String getResourceName();
 
     String getString(String path);
 

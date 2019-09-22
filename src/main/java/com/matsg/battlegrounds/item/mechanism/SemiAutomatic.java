@@ -1,11 +1,20 @@
-package com.matsg.battlegrounds.item.firemode;
+package com.matsg.battlegrounds.item.mechanism;
 
 import com.matsg.battlegrounds.api.item.Firearm;
-import com.matsg.battlegrounds.item.FireMode;
 
 public class SemiAutomatic implements FireMode {
 
-    public void shoot(Firearm firearm, int fireRate, int burst) {
+    private Firearm firearm;
+
+    public Firearm getWeapon() {
+        return firearm;
+    }
+
+    public void setWeapon(Firearm firearm) {
+        this.firearm = firearm;
+    }
+
+    public void shoot() {
         firearm.playShotSound();
         firearm.shootProjectile();
         firearm.cooldown(firearm.getCooldown());

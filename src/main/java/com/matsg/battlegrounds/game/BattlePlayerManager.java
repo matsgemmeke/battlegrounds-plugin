@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.game;
 
+import com.matsg.battlegrounds.TaskRunner;
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.entity.PlayerState;
@@ -17,10 +18,10 @@ import com.matsg.battlegrounds.gui.scoreboard.LobbyScoreboard;
 import com.matsg.battlegrounds.entity.BattleGamePlayer;
 import com.matsg.battlegrounds.entity.BattleSavedInventory;
 import com.matsg.battlegrounds.util.ActionBar;
-import com.matsg.battlegrounds.util.BattleRunnable;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,12 +32,14 @@ public class BattlePlayerManager implements PlayerManager {
     private LevelConfig levelConfig;
     private List<GamePlayer> players;
     private PlayerStorage playerStorage;
+    private TaskRunner taskRunner;
     private Translator translator;
 
-    public BattlePlayerManager(Game game, LevelConfig levelConfig, PlayerStorage playerStorage, Translator translator) {
+    public BattlePlayerManager(Game game, LevelConfig levelConfig, PlayerStorage playerStorage, TaskRunner taskRunner, Translator translator) {
         this.game = game;
         this.levelConfig = levelConfig;
         this.playerStorage = playerStorage;
+        this.taskRunner = taskRunner;
         this.translator = translator;
         this.players = new ArrayList<>();
     }
@@ -81,11 +84,18 @@ public class BattlePlayerManager implements PlayerManager {
         if (lobby != null) {
             player.teleport(lobby);
         }
+
         if (game.getArena() != null && players.size() == game.getConfiguration().getMinPlayers()) {
-            Countdown countdown = new LobbyCountdown(game, translator, game.getConfiguration().getLobbyCountdown(), 60, 45, 30, 15, 10, 5);
+            int countdownLength = game.getConfiguration().getLobbyCountdown();
+            int[] displayNumbers = new int[] { 60, 45, 30, 15, 10, 5 };
+
+            Countdown countdown = new LobbyCountdown(game, translator, countdownLength, displayNumbers);
+
+            taskRunner.runTaskTimer(countdown, 0, 20);
+
             game.setCountdown(countdown);
-            countdown.run();
         }
+
         return gamePlayer;
     }
 
@@ -248,7 +258,7 @@ public class BattlePlayerManager implements PlayerManager {
         gamePlayer.setState(PlayerState.ACTIVE);
         gamePlayer.getState().apply(game, gamePlayer);
         gamePlayer.getPlayer().setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
-        gamePlayer.getPlayer().teleport(game.getSpawnPoint());
+        gamePlayer.getPlayer().teleport(gamePlayer.getReturnLocation());
 
         if (game.getState().isInProgress()) {
             StatisticContext context = new StatisticContext();
@@ -271,11 +281,8 @@ public class BattlePlayerManager implements PlayerManager {
         changeLoadout(gamePlayer, gamePlayer.getSelectedLoadout().clone(), true);
         spawn.setOccupant(gamePlayer);
 
-        new BattleRunnable() {
-            public void run() {
-                spawn.setOccupant(null); // Wait 5 seconds before resetting the spawn state
-            }
-        }.runTaskLater(100);
+        // Wait 5 seconds before resetting the spawn state
+        taskRunner.runTaskLater(() -> spawn.setOccupant(null), 100);
     }
 
     public void setVisible(GamePlayer gamePlayer, boolean visible) {

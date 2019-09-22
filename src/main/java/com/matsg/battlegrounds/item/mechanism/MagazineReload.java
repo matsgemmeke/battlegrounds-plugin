@@ -1,11 +1,20 @@
-package com.matsg.battlegrounds.item.reload;
+package com.matsg.battlegrounds.item.mechanism;
 
 import com.matsg.battlegrounds.api.item.Firearm;
-import com.matsg.battlegrounds.item.ReloadSystem;
 
 public class MagazineReload implements ReloadSystem {
 
-    public void reloadFirearm(Firearm firearm) {
+    private Firearm firearm;
+
+    public Firearm getWeapon() {
+        return firearm;
+    }
+
+    public void setWeapon(Firearm firearm) {
+        this.firearm = firearm;
+    }
+
+    public void reload() {
         int magazineSpace = firearm.getMagazineSize() - firearm.getMagazine();
 
         if (magazineSpace > firearm.getAmmo()) { // In case the magazine cannot be filled completely use the remaining ammo

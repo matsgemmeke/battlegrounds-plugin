@@ -4,6 +4,7 @@ import com.matsg.battlegrounds.api.game.SpawnOccupant;
 import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.item.Item;
 import com.matsg.battlegrounds.api.item.Loadout;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.Collection;
@@ -72,6 +73,20 @@ public interface GamePlayer extends BattleEntity, OfflineGamePlayer, SpawnOccupa
      * @param points the player's points
      */
     void setPoints(int points);
+
+    /**
+     * Gets the return location of the player for when their game has ended.
+     *
+     * @return the player's return location
+     */
+    Location getReturnLocation();
+
+    /**
+     * Sets the return location of the player for when their game has ended.
+     *
+     * @param returnLocation the player's return location
+     */
+    void setReturnLocation(Location returnLocation);
 
     /**
      * Gets the amount of time the player needs to revive another player.

@@ -10,6 +10,7 @@ import com.matsg.battlegrounds.api.item.ItemMetadata;
 import com.matsg.battlegrounds.api.item.Lethal;
 import com.matsg.battlegrounds.api.entity.Hitbox;
 import com.matsg.battlegrounds.api.util.Sound;
+import com.matsg.battlegrounds.item.mechanism.IgnitionSystem;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 import org.bukkit.event.Event;
@@ -26,7 +27,7 @@ public class BattleLethal extends BattleEquipment implements Lethal {
             ItemMetadata metadata,
             ItemStack itemStack,
             EventDispatcher eventDispatcher,
-            IgnitionType ignitionType,
+            IgnitionSystem ignitionSystem,
             int amount,
             int cooldown,
             int ignitionTime,
@@ -39,7 +40,7 @@ public class BattleLethal extends BattleEquipment implements Lethal {
             double velocity,
             Sound[] ignitionSound
     ) {
-        super(metadata, itemStack, EquipmentType.LETHAL, ignitionType, ignitionSound, amount, cooldown, ignitionTime,
+        super(metadata, itemStack, EquipmentType.LETHAL, ignitionSystem, ignitionSound, amount, cooldown, ignitionTime,
                 longRange, midRange, shortRange, velocity);
         this.eventDispatcher = eventDispatcher;
         this.longDamage = longDamage;

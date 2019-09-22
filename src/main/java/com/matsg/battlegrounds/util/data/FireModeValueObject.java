@@ -1,7 +1,7 @@
 package com.matsg.battlegrounds.util.data;
 
 import com.matsg.battlegrounds.api.util.ValueObject;
-import com.matsg.battlegrounds.item.FireMode;
+import com.matsg.battlegrounds.item.mechanism.FireMode;
 
 public class FireModeValueObject implements ValueObject<FireMode> {
 

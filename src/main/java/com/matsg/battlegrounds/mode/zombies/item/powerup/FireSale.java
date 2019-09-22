@@ -5,7 +5,6 @@ import com.matsg.battlegrounds.mode.zombies.component.MysteryBox;
 import com.matsg.battlegrounds.mode.zombies.Zombies;
 import com.matsg.battlegrounds.mode.zombies.item.PowerUpCallback;
 import com.matsg.battlegrounds.mode.zombies.item.PowerUpEffect;
-import com.matsg.battlegrounds.util.BattleRunnable;
 import org.bukkit.Material;
 
 import java.util.Collection;

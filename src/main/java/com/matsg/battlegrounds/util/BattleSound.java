@@ -1,9 +1,12 @@
 package com.matsg.battlegrounds.util;
 
+import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +30,7 @@ public class BattleSound implements com.matsg.battlegrounds.api.util.Sound {
             GUN_SCOPE = new BattleSound[] { new BattleSound(XSound.FALL_SMALL.bukkitSound(), 1, 1), new BattleSound(XSound.HORSE_SADDLE.bukkitSound(), 1, 2) },
             ITEM_EQUIP = new BattleSound[] { new BattleSound(XSound.BAT_TAKEOFF.bukkitSound(), 1, 1), new BattleSound(XSound.HORSE_SADDLE.bukkitSound(), 1, 1) };
 
+    private static Plugin plugin = BattlegroundsPlugin.getPlugin();
     private boolean cancelled;
     private float pitch, volume;
     private long delay;
@@ -124,42 +128,42 @@ public class BattleSound implements com.matsg.battlegrounds.api.util.Sound {
     }
 
     public void play(final Game game) {
-        new BattleRunnable() {
+        new BukkitRunnable() {
             public void run() {
                 for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
                     gamePlayer.getPlayer().playSound(gamePlayer.getPlayer().getLocation(), getBukkitSound(), volume, pitch);
                 }
             }
-        }.runTaskLater(delay);
+        }.runTaskLater(plugin, delay);
     }
 
     public void play(final Game game, final Entity entity) {
-        new BattleRunnable() {
+        new BukkitRunnable() {
             public void run() {
                 for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
                     gamePlayer.getPlayer().playSound(entity.getLocation(), getBukkitSound(), volume, pitch);
                 }
             }
-        }.runTaskLater(delay);
+        }.runTaskLater(plugin, delay);
     }
 
     public void play(final Game game, final Location location) {
-        new BattleRunnable() {
+        new BukkitRunnable() {
             public void run() {
                 for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
                     gamePlayer.getPlayer().playSound(location, getBukkitSound(), volume, pitch);
                 }
             }
-        }.runTaskLater(delay);
+        }.runTaskLater(plugin, delay);
     }
 
     public void play(final Game game, final Location location, final float pitch) {
-        new BattleRunnable() {
+        new BukkitRunnable() {
             public void run() {
                 for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
                     gamePlayer.getPlayer().playSound(location, getBukkitSound(), volume, pitch);
                 }
             }
-        }.runTaskLater(delay);
+        }.runTaskLater(plugin, delay);
     }
 }

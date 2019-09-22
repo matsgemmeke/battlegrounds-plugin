@@ -2,6 +2,7 @@ package com.matsg.battlegrounds.command.validator;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
@@ -9,12 +10,12 @@ import com.matsg.battlegrounds.api.Placeholder;
 
 public class ArenaNameValidator implements CommandValidator {
 
-    private Battlegrounds plugin;
     private boolean shouldExist; // Boolean setting for checking whether an arena name exists
+    private GameManager gameManager;
     private Translator translator;
 
-    public ArenaNameValidator(Battlegrounds plugin, Translator translator, boolean shouldExist) {
-        this.plugin = plugin;
+    public ArenaNameValidator(GameManager gameManager, Translator translator, boolean shouldExist) {
+        this.gameManager = gameManager;
         this.translator = translator;
         this.shouldExist = shouldExist;
     }
@@ -26,9 +27,9 @@ public class ArenaNameValidator implements CommandValidator {
 
         int id = Integer.parseInt(args[1]);
 
-        Game game = plugin.getGameManager().getGame(id);
+        Game game = gameManager.getGame(id);
         String name = args[2].replaceAll("_", " ");
-        Arena arena = plugin.getGameManager().getArena(game, name);
+        Arena arena = gameManager.getArena(game, name);
 
         if (arena == null && shouldExist) {
             return new ValidationResponse(translator.translate(TranslationKey.ARENA_NOT_EXISTS,

@@ -1,11 +1,13 @@
 package com.matsg.battlegrounds.item;
 
+import com.matsg.battlegrounds.TaskRunner;
+import com.matsg.battlegrounds.api.Version;
 import com.matsg.battlegrounds.api.item.Equipment;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.item.ItemMetadata;
 import com.matsg.battlegrounds.api.item.Transaction;
 import com.matsg.battlegrounds.api.util.Sound;
-import com.matsg.battlegrounds.util.BattleRunnable;
+import com.matsg.battlegrounds.item.mechanism.IgnitionSystem;
 import com.matsg.battlegrounds.util.BattleSound;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Item;
@@ -20,7 +22,7 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
     protected boolean beingThrown;
     protected double longRange, midRange, shortRange, velocity;
     protected EquipmentType equipmentType;
-    protected IgnitionType ignitionType;
+    protected IgnitionSystem ignitionSystem;
     protected int amount, cooldown, ignitionTime, maxAmount;
     protected List<Item> droppedItems;
     protected Sound[] ignitionSound;
@@ -28,8 +30,10 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
     public BattleEquipment(
             ItemMetadata metadata,
             ItemStack itemStack,
+            TaskRunner taskRunner,
+            Version version,
             EquipmentType equipmentType,
-            IgnitionType ignitionType,
+            IgnitionSystem ignitionSystem,
             Sound[] ignitionSound,
             int amount,
             int cooldown,
@@ -39,9 +43,9 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
             double shortRange,
             double velocity
     ) {
-        super(metadata, itemStack);
+        super(metadata, itemStack, taskRunner, version);
         this.equipmentType = equipmentType;
-        this.ignitionType = ignitionType;
+        this.ignitionSystem = ignitionSystem;
         this.ignitionSound = ignitionSound;
         this.amount = amount;
         this.cooldown = cooldown;
@@ -123,12 +127,8 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
         return beingThrown;
     }
 
-    public void cooldown(int time) {
-        new BattleRunnable() {
-            public void run() {
-                beingThrown = false;
-            }
-        }.runTaskLater(time);
+    public void cooldown(int cooldownDuration) {
+        taskRunner.runTaskLater(() -> beingThrown = false, cooldownDuration);
     }
 
     public Equipment clone() {
@@ -147,7 +147,7 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
         amount--;
         beingThrown = true;
         droppedItems.add(item);
-        ignitionType.handleIgnition(this, item);
+        ignitionSystem.igniteItem(item);
 
         cooldown(cooldown);
         update();

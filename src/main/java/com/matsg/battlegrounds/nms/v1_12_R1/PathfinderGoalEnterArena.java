@@ -1,9 +1,9 @@
 package com.matsg.battlegrounds.nms.v1_12_R1;
 
+import com.matsg.battlegrounds.TaskRunner;
 import com.matsg.battlegrounds.mode.zombies.component.Barricade;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.mode.zombies.component.MobSpawn;
-import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.XMaterial;
 import net.minecraft.server.v1_12_R1.Navigation;
 import net.minecraft.server.v1_12_R1.PathEntity;
@@ -12,6 +12,7 @@ import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class PathfinderGoalEnterArena extends PathfinderGoal {
 
@@ -19,12 +20,14 @@ public class PathfinderGoalEnterArena extends PathfinderGoal {
     private Game game;
     private MobSpawn mobSpawn;
     private Navigation navigation;
+    private TaskRunner taskRunner;
 
-    public PathfinderGoalEnterArena(Game game, CustomZombie zombie, MobSpawn mobSpawn) {
+    public PathfinderGoalEnterArena(Game game, CustomZombie zombie, MobSpawn mobSpawn, TaskRunner taskRunner) {
         this.game = game;
-        this.mobSpawn = mobSpawn;
-        this.navigation = (Navigation) zombie.getNavigation();
         this.zombie = zombie;
+        this.mobSpawn = mobSpawn;
+        this.taskRunner = taskRunner;
+        this.navigation = (Navigation) zombie.getNavigation();
     }
 
     public boolean a() {
@@ -32,7 +35,7 @@ public class PathfinderGoalEnterArena extends PathfinderGoal {
     }
 
     public void c() {
-        new BattleRunnable() {
+        taskRunner.runTaskTimer(new BukkitRunnable() {
             boolean passed = true;
 
             public void run() {
@@ -83,6 +86,6 @@ public class PathfinderGoalEnterArena extends PathfinderGoal {
                 zombie.setHostile(true);
             }
 
-        }.runTaskTimer(0, 40);
+        }, 0, 40);
     }
 }

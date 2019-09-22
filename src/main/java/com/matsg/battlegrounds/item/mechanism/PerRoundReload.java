@@ -1,11 +1,20 @@
-package com.matsg.battlegrounds.item.reload;
+package com.matsg.battlegrounds.item.mechanism;
 
 import com.matsg.battlegrounds.api.item.Firearm;
-import com.matsg.battlegrounds.item.ReloadSystem;
 
 public class PerRoundReload implements ReloadSystem {
 
-    public void reloadFirearm(Firearm firearm) {
+    private Firearm firearm;
+
+    public Firearm getWeapon() {
+        return firearm;
+    }
+
+    public void setWeapon(Firearm firearm) {
+        this.firearm = firearm;
+    }
+
+    public void reload() {
         firearm.setAmmo(firearm.getAmmo() - 1);
         firearm.setMagazine(firearm.getMagazine() + 1);
         firearm.update();

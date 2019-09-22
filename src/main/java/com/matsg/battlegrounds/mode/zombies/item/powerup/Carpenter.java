@@ -6,7 +6,6 @@ import com.matsg.battlegrounds.mode.zombies.component.Barricade;
 import com.matsg.battlegrounds.mode.zombies.component.MobSpawn;
 import com.matsg.battlegrounds.mode.zombies.item.PowerUpCallback;
 import com.matsg.battlegrounds.mode.zombies.item.PowerUpEffect;
-import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.XMaterial;
 import org.bukkit.Effect;
 import org.bukkit.Material;

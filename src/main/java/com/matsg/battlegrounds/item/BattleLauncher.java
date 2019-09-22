@@ -10,6 +10,7 @@ import com.matsg.battlegrounds.api.event.GamePlayerKillEntityEvent;
 import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.entity.Hitbox;
 import com.matsg.battlegrounds.api.util.Sound;
+import com.matsg.battlegrounds.item.mechanism.ReloadSystem;
 import com.matsg.battlegrounds.util.BattleSound;
 import org.bukkit.Location;
 import org.bukkit.Material;

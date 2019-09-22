@@ -8,14 +8,11 @@ import com.matsg.battlegrounds.command.BattlegroundsCommand;
 import com.matsg.battlegrounds.command.Command;
 import com.matsg.battlegrounds.command.LoadoutCommand;
 import com.matsg.battlegrounds.event.BattleEventDispatcher;
+import com.matsg.battlegrounds.item.factory.*;
 import com.matsg.battlegrounds.nms.VersionFactory;
 import com.matsg.battlegrounds.storage.*;
 import com.matsg.battlegrounds.event.EventListener;
 import com.matsg.battlegrounds.event.PlayerSwapItemListener;
-import com.matsg.battlegrounds.item.factory.AttachmentFactory;
-import com.matsg.battlegrounds.item.factory.EquipmentFactory;
-import com.matsg.battlegrounds.item.factory.FirearmFactory;
-import com.matsg.battlegrounds.item.factory.MeleeWeaponFactory;
 import com.matsg.battlegrounds.nms.ReflectionUtils;
 import com.matsg.battlegrounds.storage.local.LocalPlayerStorage;
 import com.matsg.battlegrounds.storage.sql.SQLPlayerStorage;
@@ -124,7 +121,9 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
 
     public boolean loadConfigs() {
         try {
-            cache = new BattleCacheYaml(this, "cache.yml");
+            String cacheFileName = "cache.yml";
+
+            cache = new BattleCacheYaml(cacheFileName, getDataFolder().getPath(), getResource(cacheFileName), getServer());
             config = new BattlegroundsConfig(this);
 
             ItemConfig attachmentConfig = new AttachmentConfig(this);
@@ -132,9 +131,12 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
             ItemConfig firearmConfig = new FirearmConfig(this);
             ItemConfig meleeWeaponConfig = new MeleeWeaponConfig(this);
 
-            attachmentFactory = new AttachmentFactory(attachmentConfig);
+            FireModeFactory fireModeFactory = new FireModeFactory();
+            ReloadSystemFactory reloadSystemFactory = new ReloadSystemFactory();
+
+            attachmentFactory = new AttachmentFactory(attachmentConfig, fireModeFactory, reloadSystemFactory);
             equipmentFactory = new EquipmentFactory(equipmentConfig, eventDispatcher);
-            firearmFactory = new FirearmFactory(firearmConfig, eventDispatcher, translator, version, config);
+            firearmFactory = new FirearmFactory(firearmConfig, eventDispatcher, fireModeFactory, reloadSystemFactory, translator, version, config);
             meleeWeaponFactory = new MeleeWeaponFactory(meleeWeaponConfig, eventDispatcher, translator);
         } catch (IOException e) {
             return false;
@@ -188,7 +190,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
 
     private void setUpCommands() {
         List<Command> commands = new ArrayList<>();
-        commands.add(new BattlegroundsCommand(this));
+        commands.add(new BattlegroundsCommand(this, translator));
         commands.add(new LoadoutCommand(this));
 
         for (Command command : commands) {
@@ -222,7 +224,8 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
                             continue;
                         }
 
-                        Yaml yaml = new BattleCacheYaml(this, languageDirectory.getPath(), "lang_" + locale.getLanguage() + ".yml");
+                        String fileName = "lang_" + locale.getLanguage() + ".yml";
+                        Yaml yaml = new BattleCacheYaml(fileName, languageDirectory.getPath(), getResource(fileName), getServer());
                         LanguageConfiguration languageConfiguration = new LanguageConfiguration(locale, yaml);
 
                         translator.getLanguageConfigurations().add(languageConfiguration);
@@ -230,7 +233,8 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
                 }
             } else {
                 // Generate a new default language file
-                Yaml yaml = new BattleCacheYaml(this, languageDirectory.getPath(), "lang_en.yml");
+                String fileName = "lang_en.yml";
+                Yaml yaml = new BattleCacheYaml(fileName, languageDirectory.getPath(), getResource(fileName), getServer());
                 LanguageConfiguration languageConfiguration = new LanguageConfiguration(Locale.ENGLISH, yaml);
 
                 translator.getLanguageConfigurations().add(languageConfiguration);

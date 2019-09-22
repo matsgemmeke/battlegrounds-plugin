@@ -114,6 +114,13 @@ public interface Game {
     Location getLobby();
 
     /**
+     * Sets the game's lobby location.
+     *
+     * @param lobby the game lobby location
+     */
+    void setLobby(Location lobby);
+
+    /**
      * Gets the mob manager of the game.
      *
      * @return the game's mob manager
@@ -126,13 +133,6 @@ public interface Game {
      * @return the game's player manager
      */
     PlayerManager getPlayerManager();
-
-    /**
-     * Gets the location players should be sent to after the game has ended.
-     *
-     * @return the main lobby or the main world's spawn point if the main lobby is not set up
-     */
-    Location getSpawnPoint();
 
     /**
      * Gets the current state of the game.
@@ -154,13 +154,6 @@ public interface Game {
      * @return the game's time control
      */
     TimeControl getTimeControl();
-
-    /**
-     * Calls an event to the plugin manager.
-     *
-     * @param event the event to call
-     */
-    void callEvent(Event event);
 
     /**
      * Gets the first available component id in the game.

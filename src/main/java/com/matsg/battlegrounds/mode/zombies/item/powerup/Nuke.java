@@ -5,7 +5,6 @@ import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.mode.zombies.Zombies;
 import com.matsg.battlegrounds.mode.zombies.item.PowerUpCallback;
 import com.matsg.battlegrounds.mode.zombies.item.PowerUpEffect;
-import com.matsg.battlegrounds.util.BattleRunnable;
 import org.bukkit.Material;
 
 public class Nuke implements PowerUpEffect {

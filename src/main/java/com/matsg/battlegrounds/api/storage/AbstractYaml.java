@@ -1,6 +1,5 @@
 package com.matsg.battlegrounds.api.storage;
 
-import com.matsg.battlegrounds.api.Battlegrounds;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -11,36 +10,23 @@ import java.util.Set;
 
 public abstract class AbstractYaml implements Yaml {
 
-    protected Battlegrounds plugin;
     protected boolean readOnly;
     protected File file;
     protected FileConfiguration config;
-    protected String resource;
+    protected InputStream resource;
 
-    public AbstractYaml(Battlegrounds plugin, String resource, boolean readOnly) throws IOException {
-        this.file = getNewFile(String.valueOf(plugin.getDataFolder()), resource);
-        this.plugin = plugin;
+    public AbstractYaml(String fileName, String filepath, InputStream resource, boolean readOnly) throws IOException {
         this.resource = resource;
         this.readOnly = readOnly;
+        this.file = getNewFile(filepath, fileName);
 
-        createFile(plugin.getDataFolder().getPath(), resource);
+        createFile(filepath, fileName);
 
         this.config = YamlConfiguration.loadConfiguration(file);
     }
 
-    public AbstractYaml(Battlegrounds plugin, String filepath, String resource, boolean readOnly) throws IOException {
-        this.file = getNewFile(filepath, resource);
-        this.plugin = plugin;
-        this.resource = resource;
-        this.readOnly = readOnly;
-
-        createFile(filepath, resource);
-
-        this.config = YamlConfiguration.loadConfiguration(file);
-    }
-
-    public String getResourceName() {
-        return resource;
+    public File getFile() {
+        return file;
     }
 
     public boolean isReadOnly() {
@@ -88,7 +74,7 @@ public abstract class AbstractYaml implements Yaml {
     }
 
     public InputStream getResource() {
-        return plugin.getResource(resource);
+        return resource;
     }
 
     public String getString(String path) {
@@ -121,17 +107,13 @@ public abstract class AbstractYaml implements Yaml {
 
     // Copies existing data in the resource as well as comments
     private void copyResource(InputStream resource, File file) throws IOException {
-        if (resource == null) {
-            return;
-        }
-
         OutputStream out = new FileOutputStream(file);
 
         int length;
-        byte[] buf = new byte[1024];
+        byte[] buffer = new byte[1024];
 
-        while ((length = resource.read(buf)) > 0) {
-            out.write(buf, 0, length);
+        while ((length = resource.read(buffer)) > 0) {
+            out.write(buffer, 0, length);
         }
 
         out.close();
@@ -139,29 +121,29 @@ public abstract class AbstractYaml implements Yaml {
     }
 
     // Creates a new yaml from the resources in the given directory
-    public void createFile(String filepath, String resource) throws IOException {
-        File file = getNewFile(filepath, resource);
-
-        if (file == null) {
-            return;
-        }
+    public void createFile(String filePath, String fileName) throws IOException {
+        File file = getNewFile(filePath, fileName);
 
         prepareFile(file, resource);
     }
 
     private File getNewFile(String filepath, String filename) {
-        if (filename.length() == 0 || filename == null) {
-            return null;
+        if (filename.length() == 0) {
+            throw new IllegalArgumentException("Yaml file name must but be atleast one character");
         }
+
         if (!filename.endsWith(".yml")) {
-            filename.replace(filename.substring(filename.length() - 4, filename.length()), ".yml");
+            // Add the .yml file extension if it is not present
+            filename += ".yml";
         }
 
         return new File(filepath, filename);
     }
 
-    // Creates the yaml file in the directory if it does not exist yet
-    private void prepareFile(File file, String resource) throws IOException {
+    /**
+     * Creates the yaml file in the directory if it does not exist yet
+     */
+    private void prepareFile(File file, InputStream resource) throws IOException {
         if (file.exists()) {
             return;
         }
@@ -169,9 +151,7 @@ public abstract class AbstractYaml implements Yaml {
         file.getParentFile().mkdirs();
         file.createNewFile();
 
-        if (resource.length() > 0 && resource != null) {
-            copyResource(plugin.getResource(resource), file);
-        }
+        copyResource(resource, file);
     }
 
     public boolean removeFile() {

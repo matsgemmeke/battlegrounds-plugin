@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.item;
 
+import com.matsg.battlegrounds.TaskRunner;
 import com.matsg.battlegrounds.api.Version;
 import com.matsg.battlegrounds.api.event.EventDispatcher;
 import com.matsg.battlegrounds.api.game.Game;
@@ -7,12 +8,12 @@ import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.util.GenericAttribute;
 import com.matsg.battlegrounds.api.util.Sound;
+import com.matsg.battlegrounds.item.mechanism.ReloadSystem;
 import com.matsg.battlegrounds.item.modifier.IntegerAttributeModifier;
 import com.matsg.battlegrounds.util.BattleAttribute;
 import com.matsg.battlegrounds.util.data.FloatValueObject;
 import com.matsg.battlegrounds.util.data.IntegerValueObject;
 import com.matsg.battlegrounds.util.data.ReloadSystemValueObject;
-import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.BattleSound;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -22,6 +23,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -31,7 +33,6 @@ import java.util.Random;
 public abstract class BattleFirearm extends BattleWeapon implements Firearm {
 
     private double accuracyAmplifier;
-    private Version version;
     protected boolean reloadCancelled;
     protected boolean reloading;
     protected boolean shooting;
@@ -55,8 +56,9 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
     public BattleFirearm(
             ItemMetadata metadata,
             ItemStack itemStack,
-            EventDispatcher eventDispatcher,
+            TaskRunner taskRunner,
             Version version,
+            EventDispatcher eventDispatcher,
             FirearmType firearmType,
             List<Material> pierceableMaterials,
             ReloadSystem reloadSystem,
@@ -70,9 +72,8 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
             double accuracy,
             double accuracyAmplifier
     ) {
-        super(metadata, itemStack);
+        super(metadata, itemStack, taskRunner, version);
         this.eventDispatcher = eventDispatcher;
-        this.version = version;
         this.firearmType = firearmType;
         this.pierableMaterials = pierceableMaterials;
         this.reloadSound = reloadSound;
@@ -201,12 +202,8 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
         reloadCancelled = true;
     }
 
-    public void cooldown(int time) {
-        new BattleRunnable() {
-            public void run() {
-                shooting = false;
-            }
-        }.runTaskLater(time);
+    public void cooldown(int cooldownDuration) {
+        taskRunner.runTaskLater(() -> shooting = false, cooldownDuration);
     }
 
     protected void displayParticle(Location location, float red, float green, float blue) {
@@ -382,9 +379,9 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
         // Force the player to slow down
         gamePlayer.getPlayer().setFoodLevel(6);
 
-        new BattleRunnable() {
+        taskRunner.runTaskTimer(new BukkitRunnable() {
             public void run() {
-                if (reloadCancelled || gamePlayer == null || !gamePlayer.getState().isAlive()) {
+                if (reloadCancelled || !gamePlayer.getState().isAlive()) {
                     cancel();
                     reloadCancelled = false;
                     reloading = false;
@@ -401,7 +398,7 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
                     update();
                 }
             }
-        }.runTaskTimer(reloadTime, reloadTime);
+        }, reloadTime, reloadTime);
     }
 
     public void remove() {

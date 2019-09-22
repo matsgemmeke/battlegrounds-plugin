@@ -2,14 +2,15 @@ package com.matsg.battlegrounds.command;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.command.validator.ValidationResponse;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class BattlegroundsCommand extends Command {
 
-    public BattlegroundsCommand(Battlegrounds plugin) {
-        super(plugin);
+    public BattlegroundsCommand(Battlegrounds plugin, Translator translator) {
+        super(plugin, translator);
         setAliases("b", "bg", "battleground");
         setName("battlegrounds");
 

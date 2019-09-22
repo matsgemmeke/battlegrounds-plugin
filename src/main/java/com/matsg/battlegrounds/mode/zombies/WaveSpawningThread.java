@@ -3,12 +3,12 @@ package com.matsg.battlegrounds.mode.zombies;
 import com.matsg.battlegrounds.api.entity.Mob;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.mode.zombies.component.MobSpawn;
-import com.matsg.battlegrounds.util.BattleRunnable;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 import java.util.Random;
 
-public class WaveSpawningThread extends BattleRunnable {
+public class WaveSpawningThread extends BukkitRunnable {
 
     private Game game;
     private int maxMobs;

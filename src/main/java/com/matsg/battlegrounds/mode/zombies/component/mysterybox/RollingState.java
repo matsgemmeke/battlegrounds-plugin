@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.mode.zombies.component.mysterybox;
 
+import com.matsg.battlegrounds.TaskRunner;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.item.Weapon;
@@ -7,12 +8,12 @@ import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.mode.zombies.component.MysteryBox;
 import com.matsg.battlegrounds.mode.zombies.component.MysteryBoxState;
-import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.BattleSound;
 import com.matsg.battlegrounds.util.Hologram;
 import com.matsg.battlegrounds.util.XMaterial;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Random;
 
@@ -31,12 +32,14 @@ public class RollingState implements MysteryBoxState {
     private Sound moveSound;
     private Sound rollEndSound;
     private Sound rollSound;
+    private TaskRunner taskRunner;
     private Weapon weapon;
 
-    public RollingState(Game game, MysteryBox mysteryBox, GamePlayer gamePlayer) {
+    public RollingState(Game game, MysteryBox mysteryBox, GamePlayer gamePlayer, TaskRunner taskRunner) {
         this.game = game;
         this.mysteryBox = mysteryBox;
         this.gamePlayer = gamePlayer;
+        this.taskRunner = taskRunner;
         this.moveSound = BattleSound.MYSTERY_BOX_MOVE;
         this.rollEndSound = BattleSound.MYSTERY_BOX_ROLL_END;
         this.rollSound = BattleSound.MYSTERY_BOX_ROLL;
@@ -65,7 +68,7 @@ public class RollingState implements MysteryBoxState {
 
         mysteryBox.playChestAnimation(true);
 
-        new BattleRunnable() {
+        taskRunner.runTaskTimer(new BukkitRunnable() {
             public void run() {
                 if (!game.getState().isInProgress()) {
                     cancel();
@@ -79,7 +82,7 @@ public class RollingState implements MysteryBoxState {
                     rotateRandomWeapon();
                 }
             }
-        }.runTaskTimer(BOX_ROTATION_DELAY, BOX_ROTATION_DURATION);
+        }, BOX_ROTATION_DELAY, BOX_ROTATION_DURATION);
     }
 
     public void remove() {
@@ -101,7 +104,7 @@ public class RollingState implements MysteryBoxState {
         } else {
             itemStack = new ItemStackBuilder(new ItemStack(XMaterial.PLAYER_HEAD.parseMaterial(), 1, (byte) 1)).build();
             sound = moveSound;
-            state = new MovingState(game, mysteryBox);
+            state = new MovingState(game, mysteryBox, taskRunner);
         }
 
         item.setItemStack(itemStack);

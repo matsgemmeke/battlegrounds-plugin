@@ -1,5 +1,7 @@
 package com.matsg.battlegrounds.item;
 
+import com.matsg.battlegrounds.TaskRunner;
+import com.matsg.battlegrounds.api.Version;
 import com.matsg.battlegrounds.api.entity.BattleEntity;
 import com.matsg.battlegrounds.api.event.EventDispatcher;
 import com.matsg.battlegrounds.api.event.GamePlayerDamageEntityEvent;
@@ -11,7 +13,6 @@ import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.Hitbox;
 import com.matsg.battlegrounds.api.item.Transaction;
 import com.matsg.battlegrounds.api.util.Sound;
-import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.BattleSound;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
@@ -21,6 +22,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +39,8 @@ public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
     public BattleMeleeWeapon(
             ItemMetadata metadata,
             ItemStack itemStack,
+            TaskRunner taskRunner,
+            Version version,
             EventDispatcher eventDispatcher,
             ItemType itemType,
             double damage,
@@ -44,7 +48,7 @@ public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
             boolean throwable,
             int cooldown
     ) {
-        super(metadata, itemStack);
+        super(metadata, itemStack, taskRunner, version);
         this.amount = amount;
         this.cooldown = cooldown;
         this.damage = damage;
@@ -96,12 +100,8 @@ public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
         return throwable;
     }
 
-    public void cooldown(int time) {
-        new BattleRunnable() {
-            public void run() {
-                throwing = false;
-            }
-        }.runTaskLater(time);
+    public void cooldown(int cooldownDuration) {
+        taskRunner.runTaskLater(() -> throwing = false, cooldownDuration);
     }
 
     public double damage(BattleEntity entity) {
@@ -208,7 +208,7 @@ public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
 
         BattleSound.KNIFE_THROW.play(game, gamePlayer.getPlayer().getLocation());
 
-        new BattleRunnable() {
+        taskRunner.runTaskTimer(new BukkitRunnable() {
             Location location;
             public void run() {
                 BattleEntity[] entities = context.getNearbyEntities(item.getLocation(), gamePlayer.getTeam(), 2.0);
@@ -229,7 +229,7 @@ public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
                 }
                 location = item.getLocation();
             }
-        }.runTaskTimer(0, 1);
+        }, 0, 1);
     }
 
     public boolean update() {

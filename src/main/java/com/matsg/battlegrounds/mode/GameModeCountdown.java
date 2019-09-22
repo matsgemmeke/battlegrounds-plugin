@@ -6,11 +6,11 @@ import com.matsg.battlegrounds.api.game.Countdown;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.Placeholder;
-import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.BattleSound;
 import com.matsg.battlegrounds.util.EnumTitle;
+import org.bukkit.scheduler.BukkitRunnable;
 
-public class GameModeCountdown extends BattleRunnable implements Countdown {
+public class GameModeCountdown extends BukkitRunnable implements Countdown {
 
     private boolean cancelled;
     private Game game;

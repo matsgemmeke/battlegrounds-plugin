@@ -1,7 +1,7 @@
 package com.matsg.battlegrounds.util.data;
 
 import com.matsg.battlegrounds.api.util.ValueObject;
-import com.matsg.battlegrounds.item.ReloadSystem;
+import com.matsg.battlegrounds.item.mechanism.ReloadSystem;
 
 public class ReloadSystemValueObject implements ValueObject<ReloadSystem> {
 

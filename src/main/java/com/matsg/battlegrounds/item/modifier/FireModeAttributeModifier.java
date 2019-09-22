@@ -2,8 +2,8 @@ package com.matsg.battlegrounds.item.modifier;
 
 import com.matsg.battlegrounds.api.util.AttributeModifier;
 import com.matsg.battlegrounds.api.util.ValueObject;
-import com.matsg.battlegrounds.item.FireMode;
-import com.matsg.battlegrounds.item.FireModeType;
+import com.matsg.battlegrounds.item.mechanism.FireMode;
+import com.matsg.battlegrounds.item.mechanism.FireModeType;
 import com.matsg.battlegrounds.item.factory.FireModeFactory;
 import com.matsg.battlegrounds.util.data.FireModeValueObject;
 

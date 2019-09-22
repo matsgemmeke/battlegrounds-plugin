@@ -1,4 +1,4 @@
-package com.matsg.battlegrounds.item;
+package com.matsg.battlegrounds.item.mechanism;
 
 public enum ReloadSystemType {
 

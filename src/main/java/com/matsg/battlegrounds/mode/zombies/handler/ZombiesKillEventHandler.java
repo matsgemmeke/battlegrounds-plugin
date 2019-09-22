@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.mode.zombies.handler;
 
+import com.matsg.battlegrounds.TaskRunner;
 import com.matsg.battlegrounds.api.entity.BattleEntityType;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.Hitbox;
@@ -11,8 +12,7 @@ import com.matsg.battlegrounds.mode.zombies.item.PowerUp;
 import com.matsg.battlegrounds.mode.zombies.Zombies;
 import com.matsg.battlegrounds.mode.zombies.item.factory.PowerUpFactory;
 import com.matsg.battlegrounds.mode.zombies.item.powerup.PowerUpEffectType;
-import com.matsg.battlegrounds.util.BattleRunnable;
-import org.bukkit.Material;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +22,13 @@ public class ZombiesKillEventHandler implements EventHandler<GamePlayerKillEntit
 
     private PowerUpFactory powerUpFactory;
     private Random random;
+    private TaskRunner taskRunner;
     private Zombies zombies;
 
-    public ZombiesKillEventHandler(Zombies zombies, PowerUpFactory powerUpFactory) {
+    public ZombiesKillEventHandler(Zombies zombies, PowerUpFactory powerUpFactory, TaskRunner taskRunner) {
         this.zombies = zombies;
         this.powerUpFactory = powerUpFactory;
+        this.taskRunner = taskRunner;
         this.random = new Random();
     }
 
@@ -77,7 +79,7 @@ public class ZombiesKillEventHandler implements EventHandler<GamePlayerKillEntit
 
         long mobKillDelay = 15;
 
-        new BattleRunnable() {
+        taskRunner.runTaskLater(new BukkitRunnable() {
             public void run() {
                 game.getMobManager().getMobs().remove(mob);
                 mob.remove();
@@ -107,6 +109,6 @@ public class ZombiesKillEventHandler implements EventHandler<GamePlayerKillEntit
 
                 game.updateScoreboard();
             }
-        }.runTaskLater(mobKillDelay);
+        }, mobKillDelay);
     }
 }

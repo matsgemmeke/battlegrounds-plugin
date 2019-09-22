@@ -10,6 +10,8 @@ import com.matsg.battlegrounds.api.entity.Hitbox;
 import com.matsg.battlegrounds.api.util.AttributeModifier;
 import com.matsg.battlegrounds.api.util.GenericAttribute;
 import com.matsg.battlegrounds.api.util.Sound;
+import com.matsg.battlegrounds.item.mechanism.FireMode;
+import com.matsg.battlegrounds.item.mechanism.ReloadSystem;
 import com.matsg.battlegrounds.util.BattleSound;
 import com.matsg.battlegrounds.util.HalfBlocks;
 import com.matsg.battlegrounds.util.BattleAttribute;

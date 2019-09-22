@@ -1,24 +1,31 @@
 package com.matsg.battlegrounds.command;
 
+import com.matsg.battlegrounds.TaskRunner;
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.GameManager;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.command.validator.ArenaNameValidator;
 import com.matsg.battlegrounds.command.validator.GameIdValidator;
-import com.matsg.battlegrounds.util.BattleRunnable;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RemoveArena extends Command {
 
+    private GameManager gameManager;
     private List<CommandSender> senders;
+    private TaskRunner taskRunner;
 
-    public RemoveArena(Battlegrounds plugin) {
-        super(plugin);
+    public RemoveArena(Plugin plugin, Translator translator, GameManager gameManager, TaskRunner taskRunner) {
+        super(plugin, translator);
+        this.gameManager = gameManager;
+        this.taskRunner = taskRunner;
         this.senders = new ArrayList<>();
 
         setAliases("ra");
@@ -27,24 +34,20 @@ public class RemoveArena extends Command {
         setPermissionNode("battlegrounds.removearena");
         setUsage("bg removearena [id] [arena]");
 
-        registerValidator(new GameIdValidator(plugin, plugin.getTranslator(), true));
-        registerValidator(new ArenaNameValidator(plugin, plugin.getTranslator(), true));
+        registerValidator(new GameIdValidator(gameManager, translator, true));
+        registerValidator(new ArenaNameValidator(gameManager, translator, true));
     }
 
     public void execute(CommandSender sender, String[] args) {
-        Game game = plugin.getGameManager().getGame(Integer.parseInt(args[1]));
-        Arena arena = plugin.getGameManager().getArena(game, args[2].replaceAll("_", " "));
+        Game game = gameManager.getGame(Integer.parseInt(args[1]));
+        Arena arena = gameManager.getArena(game, args[2].replaceAll("_", " "));
 
         if (!senders.contains(sender)) {
             sender.sendMessage(createMessage(TranslationKey.ARENA_CONFIRM_REMOVE, new Placeholder("bg_arena", arena.getName())));
 
             senders.add(sender);
 
-            new BattleRunnable() {
-                public void run() {
-                    senders.remove(sender);
-                }
-            }.runTaskLater(200);
+            taskRunner.runTaskLater(() -> senders.remove(sender), 200);
             return;
         }
 

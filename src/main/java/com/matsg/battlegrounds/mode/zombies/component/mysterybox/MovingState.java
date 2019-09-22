@@ -1,12 +1,13 @@
 package com.matsg.battlegrounds.mode.zombies.component.mysterybox;
 
+import com.matsg.battlegrounds.TaskRunner;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.mode.zombies.Zombies;
 import com.matsg.battlegrounds.mode.zombies.component.MysteryBox;
 import com.matsg.battlegrounds.mode.zombies.component.MysteryBoxState;
 import com.matsg.battlegrounds.mode.zombies.component.Section;
-import com.matsg.battlegrounds.util.BattleRunnable;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,16 +15,18 @@ import java.util.Random;
 
 public class MovingState implements MysteryBoxState {
 
-    private final static int BOX_MOVE_DISAPPEAR_DELAY = 5;
-    private final static int BOX_MOVE_REAPPEAR_DELAY = 20;
+    private static final int BOX_MOVE_DISAPPEAR_DELAY = 5;
+    private static final int BOX_MOVE_REAPPEAR_DELAY = 20;
 
     private boolean inUse;
     private Game game;
     private MysteryBox currentBox;
+    private TaskRunner taskRunner;
 
-    public MovingState(Game game, MysteryBox currentBox) {
+    public MovingState(Game game, MysteryBox currentBox, TaskRunner taskRunner) {
         this.game = game;
         this.currentBox = currentBox;
+        this.taskRunner = taskRunner;
         this.inUse = true;
     }
 
@@ -42,7 +45,7 @@ public class MovingState implements MysteryBoxState {
     public void initState() {
         long tick = 20;
 
-        new BattleRunnable() {
+        taskRunner.runTaskTimer(new BukkitRunnable() {
             int time = 0;
 
             public void run() {
@@ -79,7 +82,7 @@ public class MovingState implements MysteryBoxState {
 
                 time++;
             }
-        }.runTaskTimer(0, tick);
+        }, 0, tick);
     }
 
     public void remove() { }

@@ -1,11 +1,14 @@
 package com.matsg.battlegrounds.item;
 
+import com.matsg.battlegrounds.TaskRunner;
+import com.matsg.battlegrounds.api.Version;
 import com.matsg.battlegrounds.api.item.ItemMetadata;
 import com.matsg.battlegrounds.api.item.Tactical;
 import com.matsg.battlegrounds.api.item.TacticalEffect;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.Hitbox;
 import com.matsg.battlegrounds.api.util.Sound;
+import com.matsg.battlegrounds.item.mechanism.IgnitionSystem;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
@@ -20,7 +23,9 @@ public class BattleTactical extends BattleEquipment implements Tactical {
     public BattleTactical(
             ItemMetadata metadata,
             ItemStack itemStack,
-            IgnitionType ignitionType,
+            TaskRunner taskRunner,
+            Version version,
+            IgnitionSystem ignitionSystem,
             Sound[] explodeSound,
             TacticalEffect effect,
             int amount,
@@ -32,8 +37,8 @@ public class BattleTactical extends BattleEquipment implements Tactical {
             double shortRange,
             double velocity
     ) {
-        super(metadata, itemStack, EquipmentType.TACTICAL, ignitionType, explodeSound, amount, cooldown, ignitionTime,
-                longRange, midRange, shortRange, velocity);
+        super(metadata, itemStack, taskRunner, version, EquipmentType.TACTICAL, ignitionSystem, explodeSound, amount,
+                cooldown, ignitionTime, longRange, midRange, shortRange, velocity);
         this.duration = duration;
         this.effect = effect;
     }

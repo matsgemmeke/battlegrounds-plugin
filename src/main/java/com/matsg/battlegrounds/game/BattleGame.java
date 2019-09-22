@@ -1,25 +1,22 @@
 package com.matsg.battlegrounds.game;
 
-import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.TaskRunner;
 import com.matsg.battlegrounds.api.entity.PlayerState;
-import com.matsg.battlegrounds.api.storage.CacheYaml;
+import com.matsg.battlegrounds.api.event.EventDispatcher;
+import com.matsg.battlegrounds.api.storage.*;
 import com.matsg.battlegrounds.api.event.GameStartEvent;
 import com.matsg.battlegrounds.api.event.GameStateChangeEvent;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.game.GameMode;
 import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
-import com.matsg.battlegrounds.api.storage.StatisticContext;
 import com.matsg.battlegrounds.game.state.WaitingState;
-import com.matsg.battlegrounds.storage.BattleCacheYaml;
 import com.matsg.battlegrounds.gui.scoreboard.LobbyScoreboard;
-import com.matsg.battlegrounds.util.BattleRunnable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
+import org.bukkit.scheduler.BukkitRunnable;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -27,33 +24,49 @@ import java.util.Random;
 public class BattleGame implements Game {
 
     private final int id;
-    private Battlegrounds plugin;
     private CacheYaml dataFile;
     private Countdown countdown;
+    private EventDispatcher eventDispatcher;
     private GameConfiguration configuration;
     private GameMode gameMode;
     private GameSign gameSign;
     private GameState state;
     private ItemRegistry itemRegistry;
     private List<Arena> arenaList;
+    private Location lobby;
     private MobManager mobManager;
     private PlayerManager playerManager;
+    private PlayerStorage playerStorage;
+    private TaskRunner taskRunner;
     private TimeControl timeControl;
 
-    public BattleGame(Battlegrounds plugin, int id) {
-        this.plugin = plugin;
+    public BattleGame(
+            int id,
+            CacheYaml dataFile,
+            EventDispatcher eventDispatcher,
+            GameState state,
+            ItemRegistry itemRegistry,
+            MobManager mobManager,
+            PlayerManager playerManager,
+            PlayerStorage playerStorage,
+            TaskRunner taskRunner
+    ) {
         this.id = id;
+        this.dataFile = dataFile;
+        this.eventDispatcher = eventDispatcher;
+        this.state = state;
+        this.itemRegistry = itemRegistry;
+        this.mobManager = mobManager;
+        this.playerManager = playerManager;
+        this.playerStorage = playerStorage;
+        this.taskRunner = taskRunner;
         this.arenaList = new ArrayList<>();
-        this.itemRegistry = new BattleItemRegistry();
-        this.mobManager = new BattleMobManager(plugin.getBattlegroundsConfig());
-        this.playerManager = new BattlePlayerManager(this, plugin.getLevelConfig(), plugin.getPlayerStorage(), plugin.getTranslator());
-        this.state = new WaitingState();
 
-        try {
-            this.dataFile = new BattleCacheYaml(plugin, plugin.getDataFolder().getPath() + "/data/game_" + id, "setup.yml");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            this.dataFile = new BattleCacheYaml("setup.yml", plugin.getDataFolder().getPath() + "/data/game_" + id, "setup.yml");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     public Arena getArena() {
@@ -114,6 +127,14 @@ public class BattleGame implements Game {
         return itemRegistry;
     }
 
+    public Location getLobby() {
+        return lobby;
+    }
+
+    public void setLobby(Location lobby) {
+        this.lobby = lobby;
+    }
+
     public MobManager getMobManager() {
         return mobManager;
     }
@@ -127,16 +148,12 @@ public class BattleGame implements Game {
     }
 
     public void setState(GameState state) {
-        this.plugin.getServer().getPluginManager().callEvent(new GameStateChangeEvent(this, this.state, state));
+        eventDispatcher.dispatchExternalEvent(new GameStateChangeEvent(this, this.state, state));
         this.state = state;
     }
 
     public TimeControl getTimeControl() {
         return timeControl;
-    }
-
-    public void callEvent(Event event) {
-        plugin.getServer().getPluginManager().callEvent(event);
     }
 
     public int findAvailableComponentId() {
@@ -174,16 +191,6 @@ public class BattleGame implements Game {
         return null;
     }
 
-    public Location getLobby() {
-        Location lobby = dataFile.getLocation("lobby");
-        return lobby != null ? lobby : plugin.getServer().getWorlds().get(0).getSpawnLocation(); // Return the main lobby, otherwise the world spawn
-    }
-
-    public Location getSpawnPoint() {
-        Location mainLobby = plugin.getBattlegroundsCache().getLocation("mainlobby");
-        return mainLobby != null ? mainLobby : plugin.getServer().getWorlds().get(0).getSpawnLocation(); // Return the main lobby, otherwise the world spawn
-    }
-
     private void resetState() {
         setState(new WaitingState());
     }
@@ -196,7 +203,7 @@ public class BattleGame implements Game {
         for (GamePlayer gamePlayer : playerManager.getPlayers()) {
             Player player = gamePlayer.getPlayer();
             player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
-            player.teleport(getSpawnPoint());
+            player.teleport(gamePlayer.getReturnLocation());
 
             gamePlayer.getSavedInventory().restore(player);
             gamePlayer.setState(PlayerState.ACTIVE);
@@ -223,7 +230,7 @@ public class BattleGame implements Game {
             gameMode.preparePlayer(gamePlayer);
         }
 
-        timeControl = new BattleTimeControl(this);
+        timeControl = new BattleTimeControl(this, taskRunner);
         gameMode.startCountdown();
         updateScoreboard();
     }
@@ -234,7 +241,7 @@ public class BattleGame implements Game {
         updateSign();
         gameMode.start();
         timeControl.start();
-        callEvent(new GameStartEvent(this));
+        eventDispatcher.dispatchExternalEvent(new GameStartEvent(this));
     }
 
     public void stop() {
@@ -271,7 +278,7 @@ public class BattleGame implements Game {
             context.setGame(this);
             context.setPlayer(gamePlayer);
 
-            plugin.getPlayerStorage().getStoredPlayer(gamePlayer.getUUID()).addStatisticAttributes(context);
+            playerStorage.getStoredPlayer(gamePlayer.getUUID()).addStatisticAttributes(context);
         }
 
         gameMode.stop();
@@ -295,7 +302,7 @@ public class BattleGame implements Game {
     }
 
     private void clearGameData() {
-        new BattleRunnable() {
+        taskRunner.runTaskLater(new BukkitRunnable() {
             public void run() {
                 Random random = new Random();
 
@@ -323,7 +330,7 @@ public class BattleGame implements Game {
                 resetState();
                 updateSign();
             }
-        }.runTaskLater(200);
+        }, 200);
     }
 
     private Arena getActiveArena() {

@@ -1,18 +1,27 @@
 package com.matsg.battlegrounds.item.factory;
 
 import com.matsg.battlegrounds.FactoryCreationException;
-import com.matsg.battlegrounds.item.FireMode;
-import com.matsg.battlegrounds.item.FireModeType;
-import com.matsg.battlegrounds.item.firemode.*;
+import com.matsg.battlegrounds.TaskRunner;
+import com.matsg.battlegrounds.item.mechanism.FireMode;
+import com.matsg.battlegrounds.item.mechanism.FireModeType;
+import com.matsg.battlegrounds.item.mechanism.BurstMode;
+import com.matsg.battlegrounds.item.mechanism.FullyAutomatic;
+import com.matsg.battlegrounds.item.mechanism.SemiAutomatic;
 
 public class FireModeFactory {
 
-    public FireMode make(FireModeType fireModeType) {
+    private TaskRunner taskRunner;
+
+    public FireModeFactory(TaskRunner taskRunner) {
+        this.taskRunner = taskRunner;
+    }
+
+    public FireMode make(FireModeType fireModeType, int rateOfFire, int burst) {
         switch (fireModeType) {
-            case BURST:
-                return new BurstMode();
+            case BURST_MODE:
+                return new BurstMode(rateOfFire, burst, taskRunner);
             case FULLY_AUTOMATIC:
-                return new FullyAutomatic();
+                return new FullyAutomatic(rateOfFire, taskRunner);
             case SEMI_AUTOMATIC:
                 return new SemiAutomatic();
             default:

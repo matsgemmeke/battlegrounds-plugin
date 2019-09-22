@@ -1,15 +1,16 @@
 package com.matsg.battlegrounds.mode.zombies;
 
+import com.matsg.battlegrounds.TaskRunner;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.mode.zombies.item.PowerUp;
 import com.matsg.battlegrounds.mode.zombies.item.PowerUpEffect;
-import com.matsg.battlegrounds.util.BattleRunnable;
 import com.matsg.battlegrounds.util.BattleSound;
 import com.matsg.battlegrounds.util.EnumTitle;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,9 +19,11 @@ public class ZombiesPowerUpManager implements PowerUpManager {
 
     private Game game;
     private Set<PowerUp> powerUps;
+    private TaskRunner taskRunner;
 
-    public ZombiesPowerUpManager(Game game) {
+    public ZombiesPowerUpManager(Game game, TaskRunner taskRunner) {
         this.game = game;
+        this.taskRunner = taskRunner;
         this.powerUps = new HashSet<>();
     }
 
@@ -51,7 +54,7 @@ public class ZombiesPowerUpManager implements PowerUpManager {
 
         powerUp.getDroppedItems().add(item);
 
-        new BattleRunnable() {
+        taskRunner.runTaskTimer(new BukkitRunnable() {
             int r = 0;
             public void run() {
                 if (item.isDead()) {
@@ -64,7 +67,7 @@ public class ZombiesPowerUpManager implements PowerUpManager {
                     cancel();
                 }
             }
-        }.runTaskTimer(400, 10);
+        }, 400, 10);
     }
 
     private PowerUp getPowerUp(PowerUpEffect powerUpEffect) {

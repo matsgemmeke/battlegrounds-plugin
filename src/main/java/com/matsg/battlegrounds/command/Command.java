@@ -1,7 +1,6 @@
 package com.matsg.battlegrounds.command;
 
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.command.validator.CommandValidator;
@@ -9,26 +8,27 @@ import com.matsg.battlegrounds.command.validator.ValidationResponse;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Command implements CommandExecutor {
 
-    protected Battlegrounds plugin;
     protected List<Command> subCommands;
+    protected Plugin plugin;
     private boolean playerOnly;
     private List<CommandValidator> validators;
     private String[] aliases;
     private String description, name, permissionNode, usage;
     private Translator translator;
 
-    public Command(Battlegrounds plugin) {
+    public Command(Plugin plugin, Translator translator) {
         this.plugin = plugin;
+        this.translator = translator;
         this.aliases = new String[0];
         this.playerOnly = false;
         this.subCommands = new ArrayList<>();
-        this.translator = plugin.getTranslator();
         this.validators = new ArrayList<>();
     }
 
