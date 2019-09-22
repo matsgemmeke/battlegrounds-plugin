@@ -22,6 +22,7 @@ public class BattleGamePlayer implements GamePlayer {
     private List<Item> items;
     private List<PlayerEffect> effects;
     private Loadout loadout, selectedLoadout;
+    private Location returnLocation;
     private Player player;
     private PlayerState playerState;
     private SavedInventory savedInventory;
@@ -140,6 +141,14 @@ public class BattleGamePlayer implements GamePlayer {
 
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    public Location getReturnLocation() {
+        return returnLocation;
+    }
+
+    public void setReturnLocation(Location returnLocation) {
+        this.returnLocation = returnLocation;
     }
 
     public float getReviveDuration() {

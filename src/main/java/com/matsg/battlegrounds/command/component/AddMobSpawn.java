@@ -1,15 +1,13 @@
 package com.matsg.battlegrounds.command.component;
 
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.Selection;
-import com.matsg.battlegrounds.api.Translator;
+import com.matsg.battlegrounds.api.*;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.command.Command;
 import com.matsg.battlegrounds.mode.zombies.component.Barricade;
 import com.matsg.battlegrounds.mode.zombies.component.MobSpawn;
 import com.matsg.battlegrounds.mode.zombies.component.Section;
-import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.command.validator.GameModeUsageValidator;
 import com.matsg.battlegrounds.command.validator.SectionNameValidator;
 import com.matsg.battlegrounds.mode.GameModeType;
@@ -24,15 +22,15 @@ import org.bukkit.entity.Player;
 public class AddMobSpawn extends ComponentCommand {
 
     private int sectionPos;
-    private Translator translator;
+    private SelectionManager selectionManager;
 
-    public AddMobSpawn(Battlegrounds plugin, Translator translator) {
-        super(plugin);
-        this.translator = translator;
+    public AddMobSpawn(Translator translator, GameManager gameManager, SelectionManager selectionManager) {
+        super(translator);
+        this.selectionManager = selectionManager;
         this.sectionPos = 4;
 
-        registerValidator(new GameModeUsageValidator(plugin, translator, GameModeType.ZOMBIES));
-        registerValidator(new SectionNameValidator(plugin, translator, sectionPos));
+        registerValidator(new GameModeUsageValidator(gameManager, translator, GameModeType.ZOMBIES));
+        registerValidator(new SectionNameValidator(gameManager, translator, sectionPos));
     }
 
     public void execute(ComponentContext context, int componentId, String[] args) {
@@ -50,7 +48,7 @@ public class AddMobSpawn extends ComponentCommand {
 
         section.getMobSpawnContainer().add(mobSpawn);
 
-        Selection selection = plugin.getSelectionManager().getSelection(player);
+        Selection selection = selectionManager.getSelection(player);
         TranslationKey key = TranslationKey.MOBSPAWN_ADD_NO_BARRICADE;
 
         // Save the mob spawn before optionally adding a barricade

@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.item;
 
+import com.matsg.battlegrounds.TaskRunner;
 import com.matsg.battlegrounds.api.Version;
 import com.matsg.battlegrounds.api.entity.BattleEntity;
 import com.matsg.battlegrounds.api.event.EventDispatcher;
@@ -10,6 +11,7 @@ import com.matsg.battlegrounds.api.event.GamePlayerKillEntityEvent;
 import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.entity.Hitbox;
 import com.matsg.battlegrounds.api.util.Sound;
+import com.matsg.battlegrounds.item.mechanism.LaunchSystem;
 import com.matsg.battlegrounds.item.mechanism.ReloadSystem;
 import com.matsg.battlegrounds.util.BattleSound;
 import org.bukkit.Location;
@@ -22,15 +24,16 @@ import java.util.List;
 public class BattleLauncher extends BattleFirearm implements Launcher {
 
     private double launchSpeed;
-    private LaunchType launchType;
+    private LaunchSystem launchSystem;
     private Lethal lethal;
 
     public BattleLauncher(
             ItemMetadata metadata,
             ItemStack itemStack,
             EventDispatcher eventDispatcher,
+            TaskRunner taskRunner,
             Version version,
-            LaunchType launchType,
+            LaunchSystem launchSystem,
             Lethal lethal,
             List<Material> piercableMaterials,
             ReloadSystem reloadSystem,
@@ -45,10 +48,10 @@ public class BattleLauncher extends BattleFirearm implements Launcher {
             double accuracy,
             double accuracyAmplifier
     ) {
-        super(metadata, itemStack, eventDispatcher, version, FirearmType.LAUNCHER, piercableMaterials, reloadSystem,
+        super(metadata, itemStack, taskRunner, version, eventDispatcher, FirearmType.LAUNCHER, piercableMaterials, reloadSystem,
                 reloadSound, shootSound, magazine, ammo, maxAmmo, cooldown, reloadDuration, accuracy, accuracyAmplifier);
         this.launchSpeed = launchSpeed;
-        this.launchType = launchType;
+        this.launchSystem = launchSystem;
         this.lethal = lethal;
     }
 
@@ -146,6 +149,6 @@ public class BattleLauncher extends BattleFirearm implements Launcher {
     }
 
     public void shootProjectile() {
-        launchType.launch(this, getShootingDirection(gamePlayer.getPlayer().getEyeLocation()));
+        launchSystem.launch(getShootingDirection(gamePlayer.getPlayer().getEyeLocation()));
     }
 }

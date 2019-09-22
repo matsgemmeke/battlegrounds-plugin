@@ -389,7 +389,7 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
                     return;
                 }
 
-                reloadSystem.getValue().reloadFirearm(BattleFirearm.this);
+                reloadSystem.getValue().reload();
 
                 if (ammo.getValue() <= 0 || magazine.getValue() >= magazineSize.getValue()) {
                     cancel();

@@ -1,7 +1,8 @@
 package com.matsg.battlegrounds.command;
 
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.GameManager;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.Placeholder;
 import org.bukkit.command.CommandSender;
@@ -9,8 +10,12 @@ import org.bukkit.entity.Player;
 
 public class Join extends Command {
 
-    public Join(Battlegrounds plugin) {
-        super(plugin);
+    private GameManager gameManager;
+
+    public Join(Translator translator, GameManager gameManager) {
+        super(translator);
+        this.gameManager = gameManager;
+
         setAliases("j");
         setDescription(createMessage(TranslationKey.DESCRIPTION_JOIN));
         setName("join");
@@ -21,7 +26,7 @@ public class Join extends Command {
     public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
 
-        if (plugin.getGameManager().getGame(player) != null) {
+        if (gameManager.getGame(player) != null) {
             player.sendMessage(createMessage(TranslationKey.ALREADY_PLAYING));
             return;
         }
@@ -40,12 +45,12 @@ public class Join extends Command {
             return;
         }
 
-        if (!plugin.getGameManager().exists(id)) {
+        if (!gameManager.exists(id)) {
             player.sendMessage(createMessage(TranslationKey.GAME_NOT_EXISTS, new Placeholder("bg_game", id)));
             return;
         }
 
-        Game game = plugin.getGameManager().getGame(id);
+        Game game = gameManager.getGame(id);
 
         if (!plugin.getBattlegroundsConfig().joinableGamestates.contains(game.getState().toString())) {
             player.sendMessage(createMessage(TranslationKey.IN_PROGRESS));

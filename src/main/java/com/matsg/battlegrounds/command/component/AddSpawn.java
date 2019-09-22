@@ -1,7 +1,6 @@
 package com.matsg.battlegrounds.command.component;
 
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
@@ -12,11 +11,8 @@ import org.bukkit.entity.Player;
 
 public class AddSpawn extends ComponentCommand {
 
-    private Translator translator;
-
-    public AddSpawn(Battlegrounds plugin, Translator translator) {
-        super(plugin);
-        this.translator = translator;
+    public AddSpawn(Translator translator) {
+        super(translator);
     }
 
     public void execute(ComponentContext context, int componentId, String[] args) {

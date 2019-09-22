@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.storage;
 
+import com.matsg.battlegrounds.TaskRunner;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.Version;
@@ -25,11 +26,13 @@ public class DataLoader {
 
     private final Battlegrounds plugin;
     private final Logger logger;
+    private final TaskRunner taskRunner;
     private final Translator translator;
     private final Version version;
 
-    public DataLoader(Battlegrounds plugin, Translator translator, Version version) {
+    public DataLoader(Battlegrounds plugin, TaskRunner taskRunner, Translator translator, Version version) {
         this.plugin = plugin;
+        this.taskRunner = taskRunner;
         this.translator = translator;
         this.version = version;
         this.logger = plugin.getLogger();
@@ -49,7 +52,7 @@ public class DataLoader {
             if (files != null && files.length > 0) {
                 for (File file : files) {
                     if (file.isDirectory() && file.getName().startsWith("game_")) {
-                        int id = Integer.parseInt(file.getName().substring(5, file.getName().length()));
+                        int id = Integer.parseInt(file.getName().substring(5));
 
                         plugin.getGameManager().getGames().add(new BattleGame(plugin, id));
                     }
@@ -108,7 +111,7 @@ public class DataLoader {
             e.printStackTrace();
         }
 
-        GameModeFactory gameModeFactory = new GameModeFactory(plugin, translator, version);
+        GameModeFactory gameModeFactory = new GameModeFactory(plugin, taskRunner, translator, version);
 
         // Setting configurations
         try {

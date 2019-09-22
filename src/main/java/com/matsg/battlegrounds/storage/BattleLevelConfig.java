@@ -1,17 +1,17 @@
 package com.matsg.battlegrounds.storage;
 
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.storage.AbstractYaml;
 import com.matsg.battlegrounds.api.storage.LevelConfig;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BattleLevelConfig extends AbstractYaml implements LevelConfig {
 
-    public BattleLevelConfig(Battlegrounds plugin) throws IOException {
-        super(plugin, "levels.yml", true);
+    public BattleLevelConfig(String filePath, InputStream resource) throws IOException {
+        super("levels.yml", filePath, resource, true);
     }
 
     public int getExp(int level) {

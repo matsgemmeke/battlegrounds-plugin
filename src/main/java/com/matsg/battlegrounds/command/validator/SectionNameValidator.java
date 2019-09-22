@@ -2,6 +2,7 @@ package com.matsg.battlegrounds.command.validator;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
@@ -11,12 +12,12 @@ import com.matsg.battlegrounds.mode.zombies.Zombies;
 
 public class SectionNameValidator implements CommandValidator {
 
-    private Battlegrounds plugin;
+    private GameManager gameManager;
     private int sectionPos; // The position in the input args where the section should be specified
     private Translator translator;
 
-    public SectionNameValidator(Battlegrounds plugin, Translator translator, int sectionPos) {
-        this.plugin = plugin;
+    public SectionNameValidator(GameManager gameManager, Translator translator, int sectionPos) {
+        this.gameManager = gameManager;
         this.translator = translator;
         this.sectionPos = sectionPos;
     }
@@ -24,7 +25,7 @@ public class SectionNameValidator implements CommandValidator {
     public ValidationResponse validate(String[] args) {
         int id = Integer.parseInt(args[1]);
 
-        Game game = plugin.getGameManager().getGame(id);
+        Game game = gameManager.getGame(id);
         Arena arena = game.getArena();
 
         if (args.length <= sectionPos) {

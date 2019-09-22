@@ -1,18 +1,18 @@
 package com.matsg.battlegrounds.storage;
 
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.storage.AbstractYaml;
 import com.matsg.battlegrounds.api.storage.ItemConfig;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AttachmentConfig extends AbstractYaml implements ItemConfig {
 
-    public AttachmentConfig(Battlegrounds plugin) throws IOException {
-        super(plugin, plugin.getDataFolder().getPath() + "/items", "attachments.yml", false);
+    public AttachmentConfig(String filePath, InputStream resource) throws IOException {
+        super("attachments.yml", filePath + "/items", resource, false);
     }
 
     public ConfigurationSection getItemConfigurationSection(String id) {

@@ -35,7 +35,6 @@ public class PlayerDeathEventHandler implements EventHandler<PlayerDeathEvent> {
             return; // Only notify the game of death events the game should handle
         }
 
-        game.callEvent(new GamePlayerDeathEvent(game, game.getPlayerManager().getGamePlayer(player), deathCause));
-        // game.getGameMode().onDeath(game.getPlayerManager().getGamePlayer(player), deathCause);
+        plugin.getEventDispatcher().dispatchExternalEvent(new GamePlayerDeathEvent(game, game.getPlayerManager().getGamePlayer(player), deathCause));
     }
 }

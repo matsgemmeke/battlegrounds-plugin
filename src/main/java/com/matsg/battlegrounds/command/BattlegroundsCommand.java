@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 public class BattlegroundsCommand extends Command {
 
     public BattlegroundsCommand(Battlegrounds plugin, Translator translator) {
-        super(plugin, translator);
+        super(translator);
         setAliases("b", "bg", "battleground");
         setName("battlegrounds");
 

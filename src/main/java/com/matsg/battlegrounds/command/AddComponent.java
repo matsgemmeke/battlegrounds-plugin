@@ -1,11 +1,10 @@
 package com.matsg.battlegrounds.command;
 
+import com.matsg.battlegrounds.ItemFinder;
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.Translator;
+import com.matsg.battlegrounds.api.*;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.command.component.*;
 import com.matsg.battlegrounds.command.validator.ArenaNameValidator;
 import com.matsg.battlegrounds.command.validator.GameIdValidator;
@@ -18,10 +17,13 @@ import java.util.Map;
 
 public class AddComponent extends Command {
 
+    private GameManager gameManager;
     private Map<String, ComponentCommand> commands;
 
-    public AddComponent(Battlegrounds plugin) {
-        super(plugin);
+    public AddComponent(Translator translator, GameManager gameManager, ItemFinder itemFinder, SelectionManager selectionManager) {
+        super(translator);
+        this.gameManager = gameManager;
+
         setAliases("ac", "add");
         setDescription(createMessage(TranslationKey.DESCRIPTION_ADDCOMPONENT));
         setName("addcomponent");
@@ -29,25 +31,23 @@ public class AddComponent extends Command {
         setPlayerOnly(true);
         setUsage("bg addcomponent [id] [arena] [section] [component]");
 
-        Translator translator = plugin.getTranslator();
-
         commands = new HashMap<>();
-        commands.put("door", new AddDoor(plugin, translator));
-        commands.put("mobspawn", new AddMobSpawn(plugin, translator));
-        commands.put("mysterybox", new AddMysteryBox(plugin, translator));
-        commands.put("perk", new AddPerkMachine(plugin, translator));
-        commands.put("section", new AddSection(plugin, translator));
-        commands.put("spawn", new AddSpawn(plugin, translator));
-        commands.put("wallweapon", new AddWallWeapon(plugin, translator));
+        commands.put("door", new AddDoor(translator, gameManager, selectionManager));
+        commands.put("mobspawn", new AddMobSpawn(translator, gameManager, selectionManager));
+        commands.put("mysterybox", new AddMysteryBox(translator, gameManager));
+        commands.put("perk", new AddPerkMachine(translator, gameManager));
+        commands.put("section", new AddSection(translator, gameManager));
+        commands.put("spawn", new AddSpawn(translator));
+        commands.put("wallweapon", new AddWallWeapon(translator, gameManager, itemFinder));
 
-        registerValidator(new GameIdValidator(plugin, translator, true));
-        registerValidator(new ArenaNameValidator(plugin, translator, true));
+        registerValidator(new GameIdValidator(gameManager, translator, true));
+        registerValidator(new ArenaNameValidator(gameManager, translator, true));
     }
 
     public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
-        Game game = plugin.getGameManager().getGame(Integer.parseInt(args[1]));
-        Arena arena = plugin.getGameManager().getArena(game, args[2].replaceAll("_", " "));
+        Game game = gameManager.getGame(Integer.parseInt(args[1]));
+        Arena arena = gameManager.getArena(game, args[2].replaceAll("_", " "));
 
         if (args.length == 3) {
             player.sendMessage(createMessage(TranslationKey.SPECIFY_COMPONENT_TYPE));

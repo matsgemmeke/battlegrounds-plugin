@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.game;
 
 import com.matsg.battlegrounds.BattlegroundsPlugin;
+import com.matsg.battlegrounds.TaskRunner;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.storage.Yaml;
 import com.matsg.battlegrounds.api.game.Game;
@@ -8,6 +9,7 @@ import com.matsg.battlegrounds.api.game.GameConfiguration;
 import com.matsg.battlegrounds.api.game.GameMode;
 import com.matsg.battlegrounds.mode.GameModeFactory;
 import com.matsg.battlegrounds.mode.GameModeType;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +28,18 @@ public class BattleGameConfiguration implements GameConfiguration {
 
     public static BattleGameConfiguration getDefaultConfiguration(Game game) {
         Battlegrounds plugin = BattlegroundsPlugin.getPlugin();
-        GameModeFactory gameModeFactory = new GameModeFactory(plugin, plugin.getTranslator(), plugin.getVersion());
+
+        TaskRunner taskRunner = new TaskRunner() {
+            public BukkitTask runTaskLater(Runnable runnable, long delay) {
+                return plugin.getServer().getScheduler().runTaskLater(plugin, runnable, delay);
+            }
+
+            public BukkitTask runTaskTimer(Runnable runnable, long delay, long period) {
+                return plugin.getServer().getScheduler().runTaskTimer(plugin, runnable, delay, period);
+            }
+        };
+
+        GameModeFactory gameModeFactory = new GameModeFactory(plugin, taskRunner, plugin.getTranslator(), plugin.getVersion());
 
         return new BattleGameConfiguration(
                 new GameMode[] {

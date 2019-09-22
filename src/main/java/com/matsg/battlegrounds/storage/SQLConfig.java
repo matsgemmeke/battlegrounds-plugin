@@ -1,14 +1,14 @@
 package com.matsg.battlegrounds.storage;
 
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.storage.AbstractYaml;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 public class SQLConfig extends AbstractYaml {
 
-    public SQLConfig(Battlegrounds plugin) throws IOException {
-        super(plugin, "sql_config.yml", true);
+    public SQLConfig(String filePath, InputStream resource) throws IOException {
+        super("sql_config.yml", filePath, resource, true);
     }
 
     public String getAddress() {

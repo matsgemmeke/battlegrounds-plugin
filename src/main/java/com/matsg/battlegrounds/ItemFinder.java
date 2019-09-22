@@ -21,11 +21,13 @@ public class ItemFinder {
     public ItemFinder(Battlegrounds plugin) {
         this.plugin = plugin;
 
+        String filePath = plugin.getDataFolder().getPath() + "/items";
+
         try {
-            this.attachmentConfig = new AttachmentConfig(plugin);
-            this.equipmentConfig = new EquipmentConfig(plugin);
-            this.firearmConfig = new FirearmConfig(plugin);
-            this.meleeWeaponConfig = new MeleeWeaponConfig(plugin);
+            this.attachmentConfig = new AttachmentConfig(filePath, plugin.getResource("attachments.yml"));
+            this.equipmentConfig = new EquipmentConfig(filePath, plugin.getResource("equipment.yml"));
+            this.firearmConfig = new FirearmConfig(filePath, plugin.getResource("guns.yml"));
+            this.meleeWeaponConfig = new MeleeWeaponConfig(filePath, plugin.getResource("melee_weapons.yml"));
         } catch (IOException e) {
             e.printStackTrace();
         }

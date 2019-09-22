@@ -2,6 +2,7 @@ package com.matsg.battlegrounds.command.component;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
@@ -24,16 +25,14 @@ public class AddWallWeapon extends ComponentCommand {
 
     private int sectionPos;
     private ItemFinder itemFinder;
-    private Translator translator;
 
-    public AddWallWeapon(Battlegrounds plugin, Translator translator) {
-        super(plugin);
-        this.translator = translator;
-        this.itemFinder = new ItemFinder(plugin);
+    public AddWallWeapon(Translator translator, GameManager gameManager, ItemFinder itemFinder) {
+        super(translator);
+        this.itemFinder = itemFinder;
         this.sectionPos = 4;
 
-        registerValidator(new GameModeUsageValidator(plugin, translator, GameModeType.ZOMBIES));
-        registerValidator(new SectionNameValidator(plugin, translator, sectionPos));
+        registerValidator(new GameModeUsageValidator(gameManager, translator, GameModeType.ZOMBIES));
+        registerValidator(new SectionNameValidator(gameManager, translator, sectionPos));
     }
 
     public void execute(ComponentContext context, int componentId, String[] args) {

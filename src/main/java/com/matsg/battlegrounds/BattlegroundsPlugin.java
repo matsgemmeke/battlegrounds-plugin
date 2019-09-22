@@ -39,6 +39,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
     private LevelConfig levelConfig;
     private SelectionManager selectionManager;
     private PlayerStorage playerStorage;
+    private TaskRunner taskRunner;
     private Translator translator;
     private Version version;
 
@@ -124,18 +125,25 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
             String cacheFileName = "cache.yml";
 
             cache = new BattleCacheYaml(cacheFileName, getDataFolder().getPath(), getResource(cacheFileName), getServer());
-            config = new BattlegroundsConfig(this);
+            config = new BattlegroundsConfig(getDataFolder().getPath(), getResource("config.yml"));
+
+            // Auto-update the config if the plugin was updated
+            if (!config.getString("version").equals(getDescription().getVersion())) {
+                config.removeFile();
+                config = new BattlegroundsConfig(getDataFolder().getPath(), getResource("config.yml"));
+            }
 
             ItemConfig attachmentConfig = new AttachmentConfig(this);
             ItemConfig equipmentConfig = new EquipmentConfig(this);
             ItemConfig firearmConfig = new FirearmConfig(this);
             ItemConfig meleeWeaponConfig = new MeleeWeaponConfig(this);
 
-            FireModeFactory fireModeFactory = new FireModeFactory();
+            FireModeFactory fireModeFactory = new FireModeFactory(taskRunner);
+            IgnitionSystemFactory ignitionSystemFactory = new IgnitionSystemFactory(taskRunner);
             ReloadSystemFactory reloadSystemFactory = new ReloadSystemFactory();
 
             attachmentFactory = new AttachmentFactory(attachmentConfig, fireModeFactory, reloadSystemFactory);
-            equipmentFactory = new EquipmentFactory(equipmentConfig, eventDispatcher);
+            equipmentFactory = new EquipmentFactory(equipmentConfig, eventDispatcher, ignitionSystemFactory, taskRunner, version);
             firearmFactory = new FirearmFactory(firearmConfig, eventDispatcher, fireModeFactory, reloadSystemFactory, translator, version, config);
             meleeWeaponFactory = new MeleeWeaponFactory(meleeWeaponConfig, eventDispatcher, translator);
         } catch (IOException e) {

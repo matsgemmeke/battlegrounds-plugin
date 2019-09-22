@@ -2,9 +2,11 @@ package com.matsg.battlegrounds.command.component;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.command.Command;
 import com.matsg.battlegrounds.mode.zombies.component.PerkMachine;
 import com.matsg.battlegrounds.mode.zombies.component.Section;
 import com.matsg.battlegrounds.mode.zombies.component.factory.PerkMachineFactory;
@@ -27,16 +29,14 @@ public class AddPerkMachine extends ComponentCommand {
 
     private int sectionPos;
     private PerkFactory perkFactory;
-    private Translator translator;
 
-    public AddPerkMachine(Battlegrounds plugin, Translator translator) {
-        super(plugin);
-        this.translator = translator;
+    public AddPerkMachine(Translator translator, GameManager gameManager) {
+        super(translator);
         this.perkFactory = new PerkFactory(translator);
         this.sectionPos = 4;
 
-        registerValidator(new GameModeUsageValidator(plugin, translator, GameModeType.ZOMBIES));
-        registerValidator(new SectionNameValidator(plugin, translator, sectionPos));
+        registerValidator(new GameModeUsageValidator(gameManager, translator, GameModeType.ZOMBIES));
+        registerValidator(new SectionNameValidator(gameManager, translator, sectionPos));
     }
 
     public void execute(ComponentContext context, int componentId, String[] args) {

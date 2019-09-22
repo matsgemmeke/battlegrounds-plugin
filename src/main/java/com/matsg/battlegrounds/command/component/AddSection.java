@@ -1,7 +1,7 @@
 package com.matsg.battlegrounds.command.component;
 
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
@@ -15,13 +15,10 @@ import org.bukkit.entity.Player;
 
 public class AddSection extends ComponentCommand {
 
-    private Translator translator;
+    public AddSection(Translator translator, GameManager gameManager) {
+        super(translator);
 
-    public AddSection(Battlegrounds plugin, Translator translator) {
-        super(plugin);
-        this.translator = translator;
-
-        registerValidator(new GameModeUsageValidator(plugin, translator, GameModeType.ZOMBIES));
+        registerValidator(new GameModeUsageValidator(gameManager, translator, GameModeType.ZOMBIES));
     }
 
     public void execute(ComponentContext context, int componentId, String[] args) {

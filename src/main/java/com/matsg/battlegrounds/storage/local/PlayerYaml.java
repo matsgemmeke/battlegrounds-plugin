@@ -1,6 +1,5 @@
 package com.matsg.battlegrounds.storage.local;
 
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.entity.OfflineGamePlayer;
 import com.matsg.battlegrounds.api.storage.AbstractYaml;
 import com.matsg.battlegrounds.api.storage.StatisticContext;
@@ -17,8 +16,8 @@ public class PlayerYaml extends AbstractYaml implements StoredPlayer {
     private String name;
     private UUID uuid;
 
-    public PlayerYaml(Battlegrounds plugin, UUID uuid) throws IOException {
-        super(plugin, plugin.getDataFolder().getPath() + "/players", uuid.toString() + ".yml", false);
+    public PlayerYaml(String filePath, UUID uuid) throws IOException {
+        super(uuid.toString() + ".yml", filePath + "/players", null, false);
         this.uuid = uuid;
         this.deaths = getInt("Stats.Deaths");
         this.exp = getInt("Exp");

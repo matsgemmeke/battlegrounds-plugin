@@ -141,7 +141,7 @@ public abstract class ClassicGameMode extends AbstractGameMode {
 
         for (Objective objective : objectives) {
             if (objective.isAchieved()) {
-                game.callEvent(new GameEndEvent(game, objective, null, getSortedTeams()));
+                plugin.getEventDispatcher().dispatchExternalEvent(new GameEndEvent(game, objective, null, getSortedTeams()));
                 game.stop();
                 break;
             }

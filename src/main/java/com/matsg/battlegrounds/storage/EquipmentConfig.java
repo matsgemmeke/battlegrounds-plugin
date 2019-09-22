@@ -6,13 +6,14 @@ import com.matsg.battlegrounds.api.storage.ItemConfig;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EquipmentConfig extends AbstractYaml implements ItemConfig {
 
-    public EquipmentConfig(Battlegrounds plugin) throws IOException {
-        super(plugin, plugin.getDataFolder().getPath() + "/items", "equipment.yml", false);
+    public EquipmentConfig(String filePath, InputStream resource) throws IOException {
+        super("equipment.yml", filePath + "/items", resource, false);
     }
 
     public ConfigurationSection getItemConfigurationSection(String id) {
