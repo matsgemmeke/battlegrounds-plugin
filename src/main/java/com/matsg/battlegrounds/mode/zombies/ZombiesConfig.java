@@ -2,9 +2,11 @@ package com.matsg.battlegrounds.mode.zombies;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.storage.BattleCacheYaml;
+import org.bukkit.Server;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,8 +34,8 @@ public class ZombiesConfig extends BattleCacheYaml {
     private List<String> mysteryBoxWeapons;
     private List<String> powerUpEffects;
 
-    public ZombiesConfig(Battlegrounds plugin, String path) throws IOException {
-        super(plugin, path, "zombies.yml");
+    public ZombiesConfig(String filePath, InputStream resource, Server server) throws IOException {
+        super("zombies.yml", filePath, resource, server);
         this.defaultMagazines = getInt("zombies-default-loadout.magazines");
         this.defaultPoints = getInt("zombies-default-loadout.points");
         this.hellhoundChance = getDouble("zombies-wave-hellhound-chance");

@@ -76,6 +76,8 @@ public abstract class ClassicGameMode extends AbstractGameMode {
         return plugin.getBattlegroundsConfig().getDisplayBloodEffect(entityType.toString());
     }
 
+    protected abstract Countdown makeCountdown();
+
     public void preparePlayer(GamePlayer gamePlayer) {
         super.preparePlayer(gamePlayer);
 
@@ -103,15 +105,17 @@ public abstract class ClassicGameMode extends AbstractGameMode {
         player.getInventory().setItem(ItemSlot.MISCELLANEOUS.getSlot(), selectLoadout.getItemStack());
     }
 
-    public void startCountdown() {
+    public Countdown startCountdown() {
         game.setState(game.getState().next());
         game.updateSign();
 
         for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
             if (gamePlayer.getLoadout() == null) {
                 gamePlayer.getPlayer().openInventory(new SelectLoadoutView(plugin, translator, game, gamePlayer).getInventory());
-            }
+           }
         }
+
+        return makeCountdown();
     }
 
     public void stop() {
@@ -141,7 +145,7 @@ public abstract class ClassicGameMode extends AbstractGameMode {
 
         for (Objective objective : objectives) {
             if (objective.isAchieved()) {
-                game.callEvent(new GameEndEvent(game, objective, null, getSortedTeams()));
+                plugin.getEventDispatcher().dispatchExternalEvent(new GameEndEvent(game, objective, null, getSortedTeams()));
                 game.stop();
                 break;
             }

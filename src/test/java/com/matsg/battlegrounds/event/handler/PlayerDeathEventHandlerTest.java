@@ -3,6 +3,7 @@ package com.matsg.battlegrounds.event.handler;
 import com.matsg.battlegrounds.BattleGameManager;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.GameManager;
+import com.matsg.battlegrounds.api.event.EventDispatcher;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent.DeathCause;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.PlayerManager;
@@ -29,6 +30,7 @@ import static org.mockito.Mockito.*;
 public class PlayerDeathEventHandlerTest {
 
     private Battlegrounds plugin;
+    private EventDispatcher eventDispatcher;
     private Game game;
     private GameManager gameManager;
     private GameMode gameMode;
@@ -40,6 +42,7 @@ public class PlayerDeathEventHandlerTest {
     @Before
     public void setUp() {
         this.plugin = mock(Battlegrounds.class);
+        this.eventDispatcher = mock(EventDispatcher.class);
         this.game = mock(Game.class);
         this.gameMode = mock(GameMode.class);
         this.gamePlayer = mock(GamePlayer.class);
@@ -56,6 +59,7 @@ public class PlayerDeathEventHandlerTest {
 
         when(game.getGameMode()).thenReturn(gameMode);
         when(game.getPlayerManager()).thenReturn(playerManager);
+        when(plugin.getEventDispatcher()).thenReturn(eventDispatcher);
         when(plugin.getGameManager()).thenReturn(gameManager);
     }
 
@@ -83,7 +87,7 @@ public class PlayerDeathEventHandlerTest {
         assertTrue(event.getKeepInventory());
         assertTrue(event.getKeepLevel());
 
-        verify(game, times(0)).callEvent(any(Event.class));
+        verify(eventDispatcher, times(0)).dispatchExternalEvent(any(Event.class));
     }
 
     @Test
@@ -103,6 +107,6 @@ public class PlayerDeathEventHandlerTest {
         assertTrue(event.getKeepInventory());
         assertTrue(event.getKeepLevel());
 
-        verify(game, times(1)).callEvent(any(Event.class));
+        verify(eventDispatcher, times(1)).dispatchExternalEvent(any(Event.class));
     }
 }

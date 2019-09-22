@@ -4,10 +4,9 @@ import com.matsg.battlegrounds.api.*;
 import com.matsg.battlegrounds.api.event.EventDispatcher;
 import com.matsg.battlegrounds.api.storage.*;
 import com.matsg.battlegrounds.api.item.*;
-import com.matsg.battlegrounds.command.BattlegroundsCommand;
-import com.matsg.battlegrounds.command.Command;
-import com.matsg.battlegrounds.command.LoadoutCommand;
+import com.matsg.battlegrounds.command.*;
 import com.matsg.battlegrounds.event.BattleEventDispatcher;
+import com.matsg.battlegrounds.game.GameFactory;
 import com.matsg.battlegrounds.item.factory.*;
 import com.matsg.battlegrounds.nms.VersionFactory;
 import com.matsg.battlegrounds.storage.*;
@@ -18,6 +17,7 @@ import com.matsg.battlegrounds.storage.local.LocalPlayerStorage;
 import com.matsg.battlegrounds.storage.sql.SQLPlayerStorage;
 import org.apache.commons.lang.LocaleUtils;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,6 +39,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
     private LevelConfig levelConfig;
     private SelectionManager selectionManager;
     private PlayerStorage playerStorage;
+    private TaskRunner taskRunner;
     private Translator translator;
     private Version version;
 
@@ -124,20 +125,30 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
             String cacheFileName = "cache.yml";
 
             cache = new BattleCacheYaml(cacheFileName, getDataFolder().getPath(), getResource(cacheFileName), getServer());
-            config = new BattlegroundsConfig(this);
+            config = new BattlegroundsConfig(getDataFolder().getPath(), getResource("config.yml"));
 
-            ItemConfig attachmentConfig = new AttachmentConfig(this);
-            ItemConfig equipmentConfig = new EquipmentConfig(this);
-            ItemConfig firearmConfig = new FirearmConfig(this);
-            ItemConfig meleeWeaponConfig = new MeleeWeaponConfig(this);
+            // Auto-update the config if the plugin was updated
+            if (!config.getString("version").equals(getDescription().getVersion())) {
+                config.removeFile();
+                config = new BattlegroundsConfig(getDataFolder().getPath(), getResource("config.yml"));
+            }
 
-            FireModeFactory fireModeFactory = new FireModeFactory();
+            String filePath = getDataFolder().getPath() + "/items";
+            ItemConfig attachmentConfig = new AttachmentConfig(filePath, getResource("attachments.yml"));
+            ItemConfig equipmentConfig = new EquipmentConfig(filePath, getResource("equipment.yml"));
+            ItemConfig firearmConfig = new FirearmConfig(filePath, getResource("guns.yml"));
+            ItemConfig meleeWeaponConfig = new MeleeWeaponConfig(filePath, getResource("melee_weapons.yml"));
+
+            FireModeFactory fireModeFactory = new FireModeFactory(taskRunner);
+            IgnitionSystemFactory ignitionSystemFactory = new IgnitionSystemFactory(taskRunner);
+            LaunchSystemFactory launchSystemFactory = new LaunchSystemFactory(taskRunner, version);
             ReloadSystemFactory reloadSystemFactory = new ReloadSystemFactory();
+            TacticalEffectFactory tacticalEffectFactory = new TacticalEffectFactory(taskRunner);
 
             attachmentFactory = new AttachmentFactory(attachmentConfig, fireModeFactory, reloadSystemFactory);
-            equipmentFactory = new EquipmentFactory(equipmentConfig, eventDispatcher);
-            firearmFactory = new FirearmFactory(firearmConfig, eventDispatcher, fireModeFactory, reloadSystemFactory, translator, version, config);
-            meleeWeaponFactory = new MeleeWeaponFactory(meleeWeaponConfig, eventDispatcher, translator);
+            equipmentFactory = new EquipmentFactory(equipmentConfig, eventDispatcher, ignitionSystemFactory, tacticalEffectFactory, taskRunner, version);
+            firearmFactory = new FirearmFactory(firearmConfig, eventDispatcher, fireModeFactory, launchSystemFactory, reloadSystemFactory, taskRunner, translator, version, config);
+            meleeWeaponFactory = new MeleeWeaponFactory(meleeWeaponConfig, eventDispatcher, taskRunner, translator, version);
         } catch (IOException e) {
             return false;
         }
@@ -147,6 +158,16 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
     private void startPlugin() throws StartupFailedException {
         setUpTranslator();
 
+        taskRunner = new TaskRunner() {
+            public BukkitTask runTaskLater(Runnable runnable, long delay) {
+                return getServer().getScheduler().runTaskLater(plugin, runnable, delay);
+            }
+
+            public BukkitTask runTaskTimer(Runnable runnable, long delay, long period) {
+                return getServer().getScheduler().runTaskTimer(plugin, runnable, delay, period);
+            }
+        };
+
         if (!loadConfigs()) {
             throw new StartupFailedException("Failed to load item configuration files!");
         }
@@ -154,18 +175,21 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         setUpCommands();
 
         try {
-            levelConfig = new BattleLevelConfig(this);
+            levelConfig = new BattleLevelConfig(getDataFolder().getPath(), getResource("levels.yml"));
         } catch (Exception e) {
             throw new StartupFailedException("Failed to load the level configuration!", e);
         }
 
         try {
-            SQLConfig sqlConfig = new SQLConfig(this);
+            DefaultLoadouts defaultLoadouts = new DefaultLoadouts("default_loadouts.yml", getResource("default_loadouts.yml"), firearmFactory, equipmentFactory, meleeWeaponFactory);
+            SQLConfig sqlConfig = new SQLConfig(getDataFolder().getPath(), getResource("sql.yml"));
 
             if (sqlConfig.isEnabled()) {
-                playerStorage = new SQLPlayerStorage(this, sqlConfig);
+                playerStorage = new SQLPlayerStorage(sqlConfig, defaultLoadouts);
             } else {
-                playerStorage = new LocalPlayerStorage(this);
+                File playersDirectory = new File(getDataFolder().getPath() + "/players");
+
+                playerStorage = new LocalPlayerStorage(playersDirectory, defaultLoadouts);
             }
         } catch (IOException e) {
             throw new StartupFailedException("Failed to set up player storage!", e);
@@ -181,7 +205,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
 
         new EventListener(this);
 
-        new DataLoader(this, translator, version);
+        new DataLoader(this, taskRunner, translator, version);
 
         if (ReflectionUtils.getEnumVersion().getValue() > 8) {
             new PlayerSwapItemListener(this);
@@ -190,8 +214,29 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
 
     private void setUpCommands() {
         List<Command> commands = new ArrayList<>();
-        commands.add(new BattlegroundsCommand(this, translator));
-        commands.add(new LoadoutCommand(this));
+        GameFactory gameFactory = new GameFactory(this, taskRunner);
+        ItemFinder itemFinder = new ItemFinder(this);
+
+        Command bgCommand = new BattlegroundsCommand(translator);
+        bgCommand.addSubCommand(new AddComponent(translator, gameManager, itemFinder, selectionManager));
+        bgCommand.addSubCommand(new CreateArena(translator, gameManager, selectionManager));
+        bgCommand.addSubCommand(new CreateGame(translator, gameFactory, gameManager));
+        bgCommand.addSubCommand(new Join(translator, gameManager, config));
+        bgCommand.addSubCommand(new Leave(translator, gameManager));
+        bgCommand.addSubCommand(new Overview(this, translator));
+        bgCommand.addSubCommand(new Reload(this, translator));
+        bgCommand.addSubCommand(new RemoveArena(translator, gameManager, taskRunner));
+        bgCommand.addSubCommand(new RemoveComponent(translator, gameManager));
+        bgCommand.addSubCommand(new RemoveGame(translator, gameManager, taskRunner));
+        bgCommand.addSubCommand(new SetGameSign(translator, gameManager, config));
+        bgCommand.addSubCommand(new SetLobby(translator, gameManager));
+        bgCommand.addSubCommand(new SetMainLobby(translator, cache));
+        bgCommand.addSubCommand(new Help(translator, bgCommand.getSubCommands(), version));
+
+        Command loadoutCommand = new LoadoutCommand(this, translator, levelConfig, playerStorage, config.loadoutCreationLevel);
+        loadoutCommand.addSubCommand(new Rename(translator, playerStorage));
+
+        commands.add(bgCommand);
 
         for (Command command : commands) {
             getCommand(command.getName()).setExecutor(command);

@@ -1,12 +1,12 @@
 package com.matsg.battlegrounds.command.component;
 
-import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.command.Command;
 
 public abstract class ComponentCommand extends Command {
 
-    public ComponentCommand(Battlegrounds plugin) {
-        super(plugin);
+    public ComponentCommand(Translator translator) {
+        super(translator);
     }
 
     /**

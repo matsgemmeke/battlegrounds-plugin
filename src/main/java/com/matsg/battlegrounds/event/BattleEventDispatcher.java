@@ -32,6 +32,10 @@ public class BattleEventDispatcher implements EventDispatcher {
         eventChannels.get(event.getClass()).handleEvent(event);
     }
 
+    public int getEventChannelCount() {
+        return eventChannels.size();
+    }
+
     public <T extends Event> void registerEventChannel(Class<T> eventClass, EventChannel<T> eventChannel) {
         if (eventChannels.containsKey(eventClass)) {
             // If an event channel for the event class already exists, add the event handlers to the existing channel

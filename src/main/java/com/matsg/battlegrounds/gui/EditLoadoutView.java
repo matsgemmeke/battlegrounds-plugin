@@ -42,7 +42,7 @@ public class EditLoadoutView implements View {
         this.items = new ArrayList<>();
 
         try {
-            this.meleeWeaponConfig = new MeleeWeaponConfig(plugin);
+            this.meleeWeaponConfig = new MeleeWeaponConfig("melee_weapons.yml", plugin.getResource("melee_weapons.yml"));
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -27,17 +27,21 @@ public class IntegerAttributeModifier implements AttributeModifier<Integer> {
     public ValueObject<Integer> modify(ValueObject<Integer> valueObject, String[] args) {
         // If the modification value does not have to parsed from text, apply the operator right away
         if (value != null && operator != null) {
-            return new IntegerValueObject((int) operator.apply(valueObject.getValue(), value));
+            return new IntegerValueObject(operator.apply(valueObject.getValue(), value).intValue());
         }
 
         Integer value;
         Operator operator = Operator.fromText(regex.substring(0, 1));
 
-        if (regex.contains("arg")) {
-            int index = Integer.parseInt(regex.substring(4, regex.length())) - 1;
-            value = Integer.parseInt(args[index]);
-        } else {
-            value = Integer.parseInt(regex.substring(1, regex.length()));
+        try {
+            if (regex.contains("arg")) {
+                int index = Integer.parseInt(regex.substring(4)) - 1;
+                value = Integer.parseInt(args[index]);
+            } else {
+                value = Integer.parseInt(regex.substring(1));
+            }
+        } catch (NumberFormatException e) {
+            throw new AttributeModificationException("Unable to modify integer attribute with regex " + regex, e);
         }
 
         return new IntegerValueObject((int) operator.apply(valueObject.getValue(), value));

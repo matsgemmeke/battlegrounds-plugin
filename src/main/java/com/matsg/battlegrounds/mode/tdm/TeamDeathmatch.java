@@ -68,6 +68,10 @@ public class TeamDeathmatch extends ClassicGameMode {
         return config.isScoreboardEnabled() ? scoreboard : null;
     }
 
+    public Countdown makeCountdown() {
+        return new GameModeCountdown(game, translator, config.getCountdownLength());
+    }
+
     public void removePlayer(GamePlayer gamePlayer) {
         Team team = getTeam(gamePlayer);
         if (team == null) {
@@ -82,15 +86,6 @@ public class TeamDeathmatch extends ClassicGameMode {
             gamePlayer.setLives(config.getLives());
             EnumTitle.TDM_START.send(gamePlayer.getPlayer());
         }
-    }
-
-    public void startCountdown() {
-        super.startCountdown();
-
-        GameModeCountdown countdown = new GameModeCountdown(game, translator, config.getCountdownLength());
-        countdown.runTaskTimer(0, 20);
-
-        game.setCountdown(countdown);
     }
 
     public void stop() {

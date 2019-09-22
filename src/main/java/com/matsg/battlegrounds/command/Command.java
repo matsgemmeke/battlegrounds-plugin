@@ -8,23 +8,20 @@ import com.matsg.battlegrounds.command.validator.ValidationResponse;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Command implements CommandExecutor {
 
-    protected List<Command> subCommands;
-    protected Plugin plugin;
+    protected Translator translator;
     private boolean playerOnly;
+    private List<Command> subCommands;
     private List<CommandValidator> validators;
     private String[] aliases;
     private String description, name, permissionNode, usage;
-    private Translator translator;
 
-    public Command(Plugin plugin, Translator translator) {
-        this.plugin = plugin;
+    public Command(Translator translator) {
         this.translator = translator;
         this.aliases = new String[0];
         this.playerOnly = false;
@@ -64,10 +61,6 @@ public abstract class Command implements CommandExecutor {
         this.permissionNode = permissionNode;
     }
 
-    public List<Command> getSubCommands() {
-        return subCommands;
-    }
-
     public String getUsage() {
         return usage;
     }
@@ -82,6 +75,10 @@ public abstract class Command implements CommandExecutor {
 
     public void setPlayerOnly(boolean playerOnly) {
         this.playerOnly = playerOnly;
+    }
+
+    public void addSubCommand(Command command) {
+        subCommands.add(command);
     }
 
     public String createMessage(TranslationKey key, Placeholder... placeholders) {
@@ -106,6 +103,10 @@ public abstract class Command implements CommandExecutor {
             }
         }
         return null;
+    }
+
+    public Command[] getSubCommands() {
+        return subCommands.toArray(new Command[subCommands.size()]);
     }
 
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {

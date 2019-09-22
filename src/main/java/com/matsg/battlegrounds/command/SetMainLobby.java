@@ -1,14 +1,19 @@
 package com.matsg.battlegrounds.command;
 
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Translator;
+import com.matsg.battlegrounds.api.storage.CacheYaml;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class SetMainLobby extends Command {
 
-    public SetMainLobby(Battlegrounds plugin) {
-        super(plugin);
+    private CacheYaml cache;
+
+    public SetMainLobby(Translator translator, CacheYaml cache) {
+        super(translator);
+        this.cache = cache;
+
         setAliases("sml");
         setDescription(createMessage(TranslationKey.DESCRIPTION_SETMAINLOBBY));
         setName("setmainlobby");
@@ -20,8 +25,8 @@ public class SetMainLobby extends Command {
     public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
 
-        plugin.getBattlegroundsCache().setLocation("mainlobby", player.getLocation(), false);
-        plugin.getBattlegroundsCache().save();
+        cache.setLocation("mainlobby", player.getLocation(), false);
+        cache.save();
 
         player.sendMessage(createMessage(TranslationKey.MAINLOBBY_SET));
     }

@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.nms.v1_12_R1;
 
+import com.matsg.battlegrounds.TaskRunner;
 import com.matsg.battlegrounds.api.entity.BattleEntityType;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.Zombie;
@@ -13,6 +14,7 @@ import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftLivingEntity;
 import org.bukkit.entity.Creature;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.plugin.Plugin;
 
 import java.util.Set;
 
@@ -23,10 +25,12 @@ public class CustomZombie extends EntityZombie implements Zombie {
     private boolean spawned;
     private Creature entity;
     private Game game;
+    private Plugin plugin;
 
-    public CustomZombie(Game game) {
+    public CustomZombie(Game game, Plugin plugin) {
         super(((CraftWorld) game.getArena().getWorld()).getHandle());
         this.game = game;
+        this.plugin = plugin;
         this.entityType = BattleEntityType.ZOMBIE;
         this.hostile = false;
 
@@ -119,7 +123,7 @@ public class CustomZombie extends EntityZombie implements Zombie {
         goalSelector.a(4, new PathfinderGoalRandomStroll(this, 1.0));
         goalSelector.a(5, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, (float) 30.0));
         targetSelector.a(6, new PathfinderGoalMoveTowardsTarget(this, 10.0, (float) 1.0));
-        targetSelector.a(7, new PathfinderGoalTargetPlayer(this, game));
+        targetSelector.a(7, new PathfinderGoalTargetPlayer(game, this, plugin));
     }
 
     public void setAttackDamage(double damage) {
@@ -165,7 +169,7 @@ public class CustomZombie extends EntityZombie implements Zombie {
         entity.getEquipment().setItemInMainHand(null);
 
         clearPathfinderGoals();
-        goalSelector.a(9, new PathfinderGoalEnterArena(game, this, mobSpawn));
+        goalSelector.a(9, new PathfinderGoalEnterArena(this, mobSpawn, plugin));
     }
 
     public void updatePath() {

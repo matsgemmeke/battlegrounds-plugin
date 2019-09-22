@@ -16,7 +16,6 @@ import static org.mockito.Mockito.*;
 
 public class LeaveTest {
 
-    private Battlegrounds plugin;
     private Game game;
     private GameManager gameManager;
     private GamePlayer gamePlayer;
@@ -27,7 +26,6 @@ public class LeaveTest {
 
     @Before
     public void setUp() {
-        this.plugin = mock(Battlegrounds.class);
         this.game = mock(Game.class);
         this.gamePlayer = mock(GamePlayer.class);
         this.player = mock(Player.class);
@@ -40,8 +38,6 @@ public class LeaveTest {
         gameManager.getGames().add(game);
 
         when(game.getPlayerManager()).thenReturn(playerManager);
-        when(plugin.getGameManager()).thenReturn(gameManager);
-        when(plugin.getTranslator()).thenReturn(translator);
     }
 
     @Test
@@ -51,7 +47,7 @@ public class LeaveTest {
         when(playerManager.getGamePlayer(player)).thenReturn(null);
         when(translator.translate(key)).thenReturn(responseMessage);
 
-        Leave command = new Leave(plugin);
+        Leave command = new Leave(translator, gameManager);
         command.execute(player, new String[0]);
 
         verify(player, times(1)).sendMessage(responseMessage);
@@ -61,7 +57,7 @@ public class LeaveTest {
     public void leaveWhenPlaying() {
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
 
-        Leave command = new Leave(plugin);
+        Leave command = new Leave(translator, gameManager);
         command.execute(player, new String[0]);
 
         verify(playerManager, times(1)).removePlayer(gamePlayer);

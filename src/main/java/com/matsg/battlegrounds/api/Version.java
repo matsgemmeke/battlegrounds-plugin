@@ -5,6 +5,7 @@ import com.matsg.battlegrounds.api.entity.Zombie;
 import com.matsg.battlegrounds.api.game.Game;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 /**
  * Contains miscellaneous functions of whose executions depend on the server version.
@@ -15,17 +16,19 @@ public interface Version {
      * Makes a hellhound implementation of a game.
      *
      * @param game the game
+     * @param plugin the plugin
      * @return a hellhound implementation
      */
-    Hellhound makeHellhound(Game game);
+    Hellhound makeHellhound(Game game, Plugin plugin);
 
     /**
      * Makes a zombie implementation of a game.
      *
      * @param game the game
+     * @param plugin the plugin
      * @return a zombie implementation
      */
-    Zombie makeZombie(Game game);
+    Zombie makeZombie(Game game, Plugin plugin);
 
     /**
      * Plays a chest opening animation.

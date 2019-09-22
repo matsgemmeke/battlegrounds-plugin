@@ -1,7 +1,6 @@
 package com.matsg.battlegrounds.command.validator;
 
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Game;
@@ -16,7 +15,6 @@ import static org.mockito.Mockito.*;
 
 public class GameModeUsageValidatorTest {
 
-    private Battlegrounds plugin;
     private Game game;
     private GameConfiguration configuration;
     private GameManager gameManager;
@@ -26,7 +24,6 @@ public class GameModeUsageValidatorTest {
 
     @Before
     public void setUp() {
-        this.plugin = mock(Battlegrounds.class);
         this.game = mock(Game.class);
         this.configuration = mock(GameConfiguration.class);
         this.gameManager = mock(GameManager.class);
@@ -37,7 +34,6 @@ public class GameModeUsageValidatorTest {
 
         when(game.getConfiguration()).thenReturn(configuration);
         when(gameManager.getGame(gameId)).thenReturn(game);
-        when(plugin.getGameManager()).thenReturn(gameManager);
     }
 
     @Test
@@ -48,7 +44,7 @@ public class GameModeUsageValidatorTest {
         when(configuration.getGameModes()).thenReturn(new GameMode[0]);
         when(translator.translate(eq(key), anyVararg())).thenReturn(responseMessage);
 
-        GameModeUsageValidator validator = new GameModeUsageValidator(plugin, translator, GameModeType.FREE_FOR_ALL);
+        GameModeUsageValidator validator = new GameModeUsageValidator(gameManager, translator, GameModeType.FREE_FOR_ALL);
         ValidationResponse response = validator.validate(input);
 
         assertFalse(response.passed());
@@ -63,7 +59,7 @@ public class GameModeUsageValidatorTest {
         when(configuration.getGameModes()).thenReturn(new GameMode[] { gameMode });
         when(gameMode.getId()).thenReturn(GameModeType.FREE_FOR_ALL.toString());
 
-        GameModeUsageValidator validator = new GameModeUsageValidator(plugin, translator, GameModeType.FREE_FOR_ALL);
+        GameModeUsageValidator validator = new GameModeUsageValidator(gameManager, translator, GameModeType.FREE_FOR_ALL);
         ValidationResponse response = validator.validate(input);
 
         assertTrue(response.passed());

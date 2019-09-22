@@ -1,14 +1,12 @@
 package com.matsg.battlegrounds.command.component;
 
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.Selection;
-import com.matsg.battlegrounds.api.Translator;
+import com.matsg.battlegrounds.api.*;
 import com.matsg.battlegrounds.api.game.Arena;
+import com.matsg.battlegrounds.command.Command;
 import com.matsg.battlegrounds.mode.zombies.component.Door;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.mode.zombies.component.Section;
-import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.command.validator.GameModeUsageValidator;
 import com.matsg.battlegrounds.command.validator.SectionNameValidator;
 import com.matsg.battlegrounds.mode.GameModeType;
@@ -17,21 +15,20 @@ import com.matsg.battlegrounds.mode.zombies.component.factory.DoorFactory;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 public class AddDoor extends ComponentCommand {
 
     private int sectionPos;
-    private Translator translator;
+    private SelectionManager selectionManager;
 
-    public AddDoor(Battlegrounds plugin, Translator translator) {
-        super(plugin);
-        this.translator = translator;
+    public AddDoor(Translator translator, GameManager gameManager, SelectionManager selectionManager) {
+        super(translator);
+        this.selectionManager = selectionManager;
         this.sectionPos = 4;
 
-        registerValidator(new GameModeUsageValidator(plugin, translator, GameModeType.ZOMBIES));
-        registerValidator(new SectionNameValidator(plugin, translator, sectionPos));
+        registerValidator(new GameModeUsageValidator(gameManager, translator, GameModeType.ZOMBIES));
+        registerValidator(new SectionNameValidator(gameManager, translator, sectionPos));
     }
 
     public void execute(ComponentContext context, int componentId, String[] args) {
@@ -41,7 +38,7 @@ public class AddDoor extends ComponentCommand {
 
         Zombies zombies = game.getGameMode(Zombies.class);
         Section section = zombies.getSection(args[sectionPos]);
-        Selection selection = plugin.getSelectionManager().getSelection(player);
+        Selection selection = selectionManager.getSelection(player);
 
         if (selection == null || !selection.isComplete()) {
             player.sendMessage(translator.translate(TranslationKey.NO_SELECTION));

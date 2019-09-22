@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.item;
 
+import com.matsg.battlegrounds.TaskRunner;
 import com.matsg.battlegrounds.api.Version;
 import com.matsg.battlegrounds.api.entity.BattleEntity;
 import com.matsg.battlegrounds.api.event.EventDispatcher;
@@ -55,8 +56,9 @@ public class BattleGun extends BattleFirearm implements Gun {
     public BattleGun(
             ItemMetadata metadata,
             ItemStack itemStack,
-            EventDispatcher eventDispatcher,
+            TaskRunner taskRunner,
             Version version,
+            EventDispatcher eventDispatcher,
             Bullet bullet,
             FirearmType firearmType,
             FireMode fireMode,
@@ -64,7 +66,8 @@ public class BattleGun extends BattleFirearm implements Gun {
             Map<String, String[]> compatibleAttachments,
             ReloadSystem reloadSystem,
             Sound[] reloadSound,
-            Sound[] shootSound, Sound[] suppressedSound,
+            Sound[] shootSound,
+            Sound[] suppressedSound,
             int magazine,
             int ammo,
             int maxAmmo,
@@ -76,7 +79,7 @@ public class BattleGun extends BattleFirearm implements Gun {
             double accuracyAmplifier,
             double damageAmplifier
     ) {
-        super(metadata, itemStack, eventDispatcher, version, firearmType, piercableMaterials, reloadSystem, reloadSound,
+        super(metadata, itemStack, taskRunner, version, eventDispatcher, firearmType, piercableMaterials, reloadSystem, reloadSound,
                 shootSound, magazine, ammo, maxAmmo, cooldown, reloadDuration, accuracy, accuracyAmplifier);
         this.damageAmplifier = damageAmplifier;
         this.bullet = bullet;
@@ -331,7 +334,7 @@ public class BattleGun extends BattleFirearm implements Gun {
 
     public void shoot() {
         shooting = true;
-        fireMode.getValue().shoot(this, getFireRate(), getBurstRounds());
+        fireMode.getValue().shoot();
     }
 
     public void shootProjectile() {

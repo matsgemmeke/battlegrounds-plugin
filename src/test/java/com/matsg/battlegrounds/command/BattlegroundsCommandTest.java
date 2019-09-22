@@ -15,7 +15,6 @@ import static org.mockito.Mockito.*;
 
 public class BattlegroundsCommandTest {
 
-    private Battlegrounds plugin;
     private Command fakeCommand;
     private CommandSender sender;
     private String fakeCommandName;
@@ -24,7 +23,6 @@ public class BattlegroundsCommandTest {
 
     @Before
     public void setUp() {
-        this.plugin = mock(Battlegrounds.class);
         this.sender = mock(CommandSender.class);
         this.fakeCommand = mock(Command.class);
         this.translator = mock(Translator.class);
@@ -32,25 +30,25 @@ public class BattlegroundsCommandTest {
         this.fakeCommandName = "fake";
         this.responseMessage = "Response";
 
-        File fakeFile = new File("");
-
-        when(plugin.getDataFolder()).thenReturn(fakeFile);
-        when(plugin.getTranslator()).thenReturn(translator);
         when(fakeCommand.getName()).thenReturn(fakeCommandName);
     }
 
     @Test
     public void executeCommandWithoutArguments() {
-        BattlegroundsCommand command = new BattlegroundsCommand(plugin);
+        Command help = mock(Command.class);
 
+        when(help.getName()).thenReturn("help");
+
+        BattlegroundsCommand command = new BattlegroundsCommand(translator);
+        command.addSubCommand(help);
         command.onCommand(sender, null, "battlegrounds", new String[0]);
 
-        verify(sender, atLeast(1)).sendMessage(anyString());
+        verify(sender, times(0)).sendMessage(anyString());
     }
 
     @Test
     public void executeSubcommandWhichDoesNotExist() {
-        BattlegroundsCommand command = new BattlegroundsCommand(plugin);
+        BattlegroundsCommand command = new BattlegroundsCommand(translator);
         TranslationKey key = TranslationKey.INVALID_ARGUMENTS;
 
         when(translator.translate(key)).thenReturn(responseMessage);
@@ -62,14 +60,14 @@ public class BattlegroundsCommandTest {
 
     @Test
     public void executePlayerOnlySubcommand() {
-        BattlegroundsCommand command = new BattlegroundsCommand(plugin);
+        BattlegroundsCommand command = new BattlegroundsCommand(translator);
         CommandSender sender = mock(ConsoleCommandSender.class);
         TranslationKey key = TranslationKey.INVALID_SENDER;
 
         when(fakeCommand.isPlayerOnly()).thenReturn(true);
         when(translator.translate(key)).thenReturn(responseMessage);
 
-        command.getSubCommands().add(fakeCommand);
+        command.addSubCommand(fakeCommand);
         command.onCommand(sender, null, "battlegrounds", new String[] { fakeCommandName });
 
         verify(sender, times(1)).sendMessage(responseMessage);
@@ -77,7 +75,7 @@ public class BattlegroundsCommandTest {
 
     @Test
     public void executeSubcommandRequiresPermission() {
-        BattlegroundsCommand command = new BattlegroundsCommand(plugin);
+        BattlegroundsCommand command = new BattlegroundsCommand(translator);
         String permission = "permission";
         TranslationKey key = TranslationKey.NO_PERMISSION;
 
@@ -85,7 +83,7 @@ public class BattlegroundsCommandTest {
         when(sender.hasPermission(permission)).thenReturn(false);
         when(translator.translate(key)).thenReturn(responseMessage);
 
-        command.getSubCommands().add(fakeCommand);
+        command.addSubCommand(fakeCommand);
         command.onCommand(sender, null, "battlegrounds", new String[] { fakeCommandName });
 
         verify(sender, times(1)).sendMessage(responseMessage);
@@ -93,13 +91,13 @@ public class BattlegroundsCommandTest {
 
     @Test
     public void executeSubcommandWithFailedValidation() {
-        BattlegroundsCommand command = new BattlegroundsCommand(plugin);
+        BattlegroundsCommand command = new BattlegroundsCommand(translator);
         String[] args = new String[] { fakeCommandName };
         ValidationResponse response = new ValidationResponse("Failed");
 
         when(fakeCommand.validateInput(args)).thenReturn(response);
 
-        command.getSubCommands().add(fakeCommand);
+        command.addSubCommand(fakeCommand);
         command.onCommand(sender, null, "battlegrounds", args);
 
         verify(fakeCommand, times(0)).execute(sender, args);
@@ -108,12 +106,12 @@ public class BattlegroundsCommandTest {
 
     @Test
     public void executeSubcommand() {
-        BattlegroundsCommand command = new BattlegroundsCommand(plugin);
+        BattlegroundsCommand command = new BattlegroundsCommand(translator);
         String[] args = new String[] { fakeCommandName };
 
         when(fakeCommand.validateInput(args)).thenReturn(ValidationResponse.PASSED);
 
-        command.getSubCommands().add(fakeCommand);
+        command.addSubCommand(fakeCommand);
         command.onCommand(sender, null, "battlegrounds", args);
 
         verify(fakeCommand, times(1)).execute(sender, args);
@@ -121,7 +119,7 @@ public class BattlegroundsCommandTest {
 
     @Test
     public void executeSubcommandWithException() {
-        BattlegroundsCommand command = new BattlegroundsCommand(plugin);
+        BattlegroundsCommand command = new BattlegroundsCommand(translator);
         String[] args = new String[] { fakeCommandName };
         TranslationKey key = TranslationKey.COMMAND_ERROR;
 
@@ -130,7 +128,7 @@ public class BattlegroundsCommandTest {
 
         when(translator.translate(key)).thenReturn(responseMessage);
 
-        command.getSubCommands().add(fakeCommand);
+        command.addSubCommand(fakeCommand);
         command.onCommand(sender, null, "battlegrounds", args);
 
         verify(sender, times(1)).sendMessage(responseMessage);

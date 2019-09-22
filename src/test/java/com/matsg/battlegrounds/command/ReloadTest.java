@@ -34,7 +34,7 @@ public class ReloadTest {
         when(plugin.loadConfigs()).thenReturn(true);
         when(translator.translate(key)).thenReturn(responseMessage);
 
-        Reload command = new Reload(plugin);
+        Reload command = new Reload(plugin, translator);
         command.execute(sender, new String[0]);
 
         verify(sender, times(1)).sendMessage(responseMessage);
@@ -47,7 +47,7 @@ public class ReloadTest {
         when(plugin.loadConfigs()).thenReturn(false);
         when(translator.translate(key)).thenReturn(responseMessage);
 
-        Reload command = new Reload(plugin);
+        Reload command = new Reload(plugin, translator);
         command.execute(sender, new String[0]);
 
         verify(sender, times(1)).sendMessage(responseMessage);

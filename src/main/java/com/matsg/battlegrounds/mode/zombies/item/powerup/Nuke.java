@@ -1,11 +1,13 @@
 package com.matsg.battlegrounds.mode.zombies.item.powerup;
 
+import com.matsg.battlegrounds.TaskRunner;
 import com.matsg.battlegrounds.api.entity.Mob;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.mode.zombies.Zombies;
 import com.matsg.battlegrounds.mode.zombies.item.PowerUpCallback;
 import com.matsg.battlegrounds.mode.zombies.item.PowerUpEffect;
 import org.bukkit.Material;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class Nuke implements PowerUpEffect {
 
@@ -14,12 +16,14 @@ public class Nuke implements PowerUpEffect {
     private int duration;
     private Material material;
     private String name;
+    private TaskRunner taskRunner;
     private Zombies zombies;
 
-    public Nuke(Game game, Zombies zombies, String name) {
+    public Nuke(Game game, Zombies zombies, String name, TaskRunner taskRunner) {
         this.game = game;
         this.zombies = zombies;
         this.name = name;
+        this.taskRunner = taskRunner;
         this.duration = 0;
         this.material = Material.TNT;
     }
@@ -41,7 +45,7 @@ public class Nuke implements PowerUpEffect {
     }
 
     public void activate(PowerUpCallback callback) {
-        new BattleRunnable() {
+        taskRunner.runTaskTimer(new BukkitRunnable() {
             public void run() {
                 if (!game.getState().isInProgress()) {
                     cancel();
@@ -68,7 +72,7 @@ public class Nuke implements PowerUpEffect {
                 game.getMobManager().getMobs().remove(mob);
                 game.updateScoreboard();
             }
-        }.runTaskTimer(20, 8);
+        }, 20, 8);
     }
 
     public boolean isApplicableForActivation() {

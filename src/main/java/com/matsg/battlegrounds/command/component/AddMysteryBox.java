@@ -1,10 +1,11 @@
 package com.matsg.battlegrounds.command.component;
 
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.command.Command;
 import com.matsg.battlegrounds.mode.zombies.component.MysteryBox;
 import com.matsg.battlegrounds.mode.zombies.component.Section;
 import com.matsg.battlegrounds.api.Placeholder;
@@ -12,7 +13,6 @@ import com.matsg.battlegrounds.command.validator.GameModeUsageValidator;
 import com.matsg.battlegrounds.command.validator.SectionNameValidator;
 import com.matsg.battlegrounds.mode.GameModeType;
 import com.matsg.battlegrounds.mode.zombies.Zombies;
-import com.matsg.battlegrounds.mode.zombies.component.ZombiesMysteryBox;
 import com.matsg.battlegrounds.mode.zombies.component.factory.MysteryBoxFactory;
 import com.matsg.battlegrounds.util.Pair;
 import org.bukkit.Location;
@@ -25,15 +25,13 @@ import java.util.Set;
 public class AddMysteryBox extends ComponentCommand {
 
     private int sectionPos;
-    private Translator translator;
 
-    public AddMysteryBox(Battlegrounds plugin, Translator translator) {
-        super(plugin);
-        this.translator = translator;
+    public AddMysteryBox(Translator translator, GameManager gameManager) {
+        super(translator);
         this.sectionPos = 4;
 
-        registerValidator(new GameModeUsageValidator(plugin, translator, GameModeType.ZOMBIES));
-        registerValidator(new SectionNameValidator(plugin, translator, sectionPos));
+        registerValidator(new GameModeUsageValidator(gameManager, translator, GameModeType.ZOMBIES));
+        registerValidator(new SectionNameValidator(gameManager, translator, sectionPos));
     }
 
     public void execute(ComponentContext context, int componentId, String[] args) {

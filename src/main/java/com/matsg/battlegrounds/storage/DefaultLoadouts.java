@@ -1,19 +1,32 @@
 package com.matsg.battlegrounds.storage;
 
-import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.storage.AbstractYaml;
-import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.item.BattleLoadout;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DefaultLoadouts extends AbstractYaml {
 
-    public DefaultLoadouts(Battlegrounds plugin) throws IOException {
-        super(plugin, "default_loadouts.yml", true);
+    private ItemFactory<Equipment> equipmentFactory;
+    private ItemFactory<Firearm> firearmFactory;
+    private ItemFactory<MeleeWeapon> meleeWeaponFactory;
+
+    public DefaultLoadouts(
+            String filePath,
+            InputStream resource,
+            ItemFactory<Firearm> firearmFactory,
+            ItemFactory<Equipment> equipmentFactory,
+            ItemFactory<MeleeWeapon> meleeWeaponFactory
+    ) throws IOException {
+        super("default_loadouts.yml", filePath, resource, true);
+        this.firearmFactory = firearmFactory;
+        this.equipmentFactory = equipmentFactory;
+        this.meleeWeaponFactory = meleeWeaponFactory;
     }
 
     public List<Loadout> getList() {
@@ -28,10 +41,10 @@ public class DefaultLoadouts extends AbstractYaml {
         return new BattleLoadout(
                 loadoutId,
                 section.getString("Name"),
-                plugin.getFirearmFactory().make(section.getString("Primary.Id")),
-                plugin.getFirearmFactory().make(section.getString("Secondary.Id")),
-                plugin.getEquipmentFactory().make(section.getString("Equipment")),
-                plugin.getMeleeWeaponFactory().make(section.getString("MeleeWeapon"))
+                firearmFactory.make(section.getString("Primary.Id")),
+                firearmFactory.make(section.getString("Secondary.Id")),
+                equipmentFactory.make(section.getString("Equipment")),
+                meleeWeaponFactory.make(section.getString("MeleeWeapon"))
         );
     }
 }

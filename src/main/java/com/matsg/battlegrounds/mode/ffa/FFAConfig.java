@@ -3,9 +3,11 @@ package com.matsg.battlegrounds.mode.ffa;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.storage.BattleCacheYaml;
 import org.bukkit.Color;
+import org.bukkit.Server;
 import org.bukkit.World;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 public class FFAConfig extends BattleCacheYaml {
@@ -15,8 +17,8 @@ public class FFAConfig extends BattleCacheYaml {
     private int countdownLength, killsToWin, lives, timeLimit;
     private List<String> endMessage;
 
-    public FFAConfig(Battlegrounds plugin, String path) throws IOException {
-        super(plugin, path, "ffa.yml");
+    public FFAConfig(String filePath, InputStream resource, Server server) throws IOException {
+        super("ffa.yml", filePath, resource, server);
         this.countdownLength = getInt("ffa-countdown-length");
         this.endMessage = getStringList("ffa-end-message");
         this.killsToWin = getInt("ffa-kills-to-win");
@@ -72,10 +74,10 @@ public class FFAConfig extends BattleCacheYaml {
         List<World> worlds = new ArrayList<>();
 
         if (list.contains("*")) {
-            worlds.addAll(plugin.getServer().getWorlds());
+            worlds.addAll(server.getWorlds());
         } else {
             for (String world : list) {
-                worlds.add(plugin.getServer().getWorld(world));
+                worlds.add(server.getWorld(world));
             }
         }
 

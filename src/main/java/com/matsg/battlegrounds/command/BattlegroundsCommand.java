@@ -1,7 +1,6 @@
 package com.matsg.battlegrounds.command;
 
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.command.validator.ValidationResponse;
 import org.bukkit.command.CommandSender;
@@ -9,26 +8,10 @@ import org.bukkit.entity.Player;
 
 public class BattlegroundsCommand extends Command {
 
-    public BattlegroundsCommand(Battlegrounds plugin, Translator translator) {
-        super(plugin, translator);
+    public BattlegroundsCommand(Translator translator) {
+        super(translator);
         setAliases("b", "bg", "battleground");
         setName("battlegrounds");
-
-        subCommands.add(new AddComponent(plugin));
-        subCommands.add(new CreateArena(plugin));
-        subCommands.add(new CreateGame(plugin));
-        subCommands.add(new Join(plugin));
-        subCommands.add(new Leave(plugin));
-        subCommands.add(new Overview(plugin));
-        subCommands.add(new Reload(plugin));
-        subCommands.add(new RemoveArena(plugin));
-        subCommands.add(new RemoveComponent(plugin));
-        subCommands.add(new RemoveGame(plugin));
-        subCommands.add(new SetGameSign(plugin));
-        subCommands.add(new SetLobby(plugin));
-        subCommands.add(new SetMainLobby(plugin));
-
-        subCommands.add(new Help(plugin, subCommands.toArray(new Command[subCommands.size()])));
     }
 
     public void execute(CommandSender sender, String[] args) {

@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.storage;
 
+import com.matsg.battlegrounds.TaskRunner;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.Version;
@@ -25,11 +26,13 @@ public class DataLoader {
 
     private final Battlegrounds plugin;
     private final Logger logger;
+    private final TaskRunner taskRunner;
     private final Translator translator;
     private final Version version;
 
-    public DataLoader(Battlegrounds plugin, Translator translator, Version version) {
+    public DataLoader(Battlegrounds plugin, TaskRunner taskRunner, Translator translator, Version version) {
         this.plugin = plugin;
+        this.taskRunner = taskRunner;
         this.translator = translator;
         this.version = version;
         this.logger = plugin.getLogger();
@@ -42,6 +45,9 @@ public class DataLoader {
     private void load() {
         logger.info("Loading in games and arenas...");
 
+        GameFactory gameFactory = new GameFactory(plugin, taskRunner);
+        GameModeFactory gameModeFactory = new GameModeFactory(plugin, taskRunner, translator, version);
+
         // Look for games files that have been created already
         try {
             File[] files = new File(plugin.getDataFolder().getPath() + "/data").listFiles();
@@ -49,9 +55,10 @@ public class DataLoader {
             if (files != null && files.length > 0) {
                 for (File file : files) {
                     if (file.isDirectory() && file.getName().startsWith("game_")) {
-                        int id = Integer.parseInt(file.getName().substring(5, file.getName().length()));
+                        int id = Integer.parseInt(file.getName().substring(5));
+                        Game game = gameFactory.make(id);
 
-                        plugin.getGameManager().getGames().add(new BattleGame(plugin, id));
+                        plugin.getGameManager().getGames().add(game);
                     }
                 }
             } else {
@@ -108,8 +115,6 @@ public class DataLoader {
             e.printStackTrace();
         }
 
-        GameModeFactory gameModeFactory = new GameModeFactory(plugin, translator, version);
-
         // Setting configurations
         try {
             for (Game game : plugin.getGameManager().getGames()) {
@@ -159,7 +164,7 @@ public class DataLoader {
                     continue;
                 }
 
-                GameSign sign = new BattleGameSign(plugin, game, (Sign) state, translator);
+                GameSign sign = new BattleGameSign(game, (Sign) state, translator, plugin.getBattlegroundsConfig());
 
                 game.setGameSign(sign);
                 sign.update();

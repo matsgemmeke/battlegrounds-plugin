@@ -1,8 +1,10 @@
 package com.matsg.battlegrounds.item.factory;
 
 import com.matsg.battlegrounds.FactoryCreationException;
+import com.matsg.battlegrounds.TaskRunner;
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Translator;
+import com.matsg.battlegrounds.api.Version;
 import com.matsg.battlegrounds.api.event.EventDispatcher;
 import com.matsg.battlegrounds.api.item.ItemMetadata;
 import com.matsg.battlegrounds.api.item.ItemType;
@@ -20,12 +22,16 @@ public class MeleeWeaponFactory implements ItemFactory<MeleeWeapon> {
 
     private EventDispatcher eventDispatcher;
     private ItemConfig meleeWeaponConfig;
+    private TaskRunner taskRunner;
     private Translator translator;
+    private Version version;
 
-    public MeleeWeaponFactory(ItemConfig meleeWeaponConfig, EventDispatcher eventDispatcher, Translator translator) {
+    public MeleeWeaponFactory(ItemConfig meleeWeaponConfig, EventDispatcher eventDispatcher, TaskRunner taskRunner, Translator translator, Version version) {
         this.meleeWeaponConfig = meleeWeaponConfig;
         this.eventDispatcher = eventDispatcher;
+        this.taskRunner = taskRunner;
         this.translator = translator;
+        this.version = version;
     }
 
     public MeleeWeapon make(String id) {
@@ -42,6 +48,8 @@ public class MeleeWeaponFactory implements ItemFactory<MeleeWeapon> {
             return new BattleMeleeWeapon(
                     metadata,
                     itemStack,
+                    taskRunner,
+                    version,
                     eventDispatcher,
                     itemType,
                     AttributeValidator.shouldEqualOrBeHigherThan(section.getDouble("Damage"), 0.0),

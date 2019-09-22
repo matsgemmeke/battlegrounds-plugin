@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.item.factory;
 
 import com.matsg.battlegrounds.FactoryCreationException;
+import com.matsg.battlegrounds.TaskRunner;
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.Version;
@@ -9,10 +10,7 @@ import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.storage.BattlegroundsConfig;
 import com.matsg.battlegrounds.api.storage.ItemConfig;
 import com.matsg.battlegrounds.item.*;
-import com.matsg.battlegrounds.item.mechanism.FireMode;
-import com.matsg.battlegrounds.item.mechanism.FireModeType;
-import com.matsg.battlegrounds.item.mechanism.ReloadSystem;
-import com.matsg.battlegrounds.item.mechanism.ReloadSystemType;
+import com.matsg.battlegrounds.item.mechanism.*;
 import com.matsg.battlegrounds.util.BattleSound;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
@@ -33,7 +31,9 @@ public class FirearmFactory implements ItemFactory<Firearm> {
     private EventDispatcher eventDispatcher;
     private FireModeFactory fireModeFactory;
     private ItemConfig firearmConfig;
+    private LaunchSystemFactory launchSystemFactory;
     private ReloadSystemFactory reloadSystemFactory;
+    private TaskRunner taskRunner;
     private Translator translator;
     private Version version;
 
@@ -41,7 +41,9 @@ public class FirearmFactory implements ItemFactory<Firearm> {
             ItemConfig firearmConfig,
             EventDispatcher eventDispatcher,
             FireModeFactory fireModeFactory,
+            LaunchSystemFactory launchSystemFactory,
             ReloadSystemFactory reloadSystemFactory,
+            TaskRunner taskRunner,
             Translator translator,
             Version version,
             BattlegroundsConfig config
@@ -49,7 +51,9 @@ public class FirearmFactory implements ItemFactory<Firearm> {
         this.firearmConfig = firearmConfig;
         this.eventDispatcher = eventDispatcher;
         this.fireModeFactory = fireModeFactory;
+        this.launchSystemFactory = launchSystemFactory;
         this.reloadSystemFactory = reloadSystemFactory;
+        this.taskRunner = taskRunner;
         this.translator = translator;
         this.version = version;
         this.config = config;
@@ -126,22 +130,15 @@ public class FirearmFactory implements ItemFactory<Firearm> {
                         .setLore(lore)
                         .build();
 
-                FireMode fireMode;
-                FireModeType fireModeType;
-
-                try {
-                    fireModeType = FireModeType.valueOf(section.getString("FireMode.Type"));
-                } catch (Exception e) {
-                    throw new FactoryCreationException(e.getMessage(), e);
-                }
-
-                fireMode = fireModeFactory.make(fireModeType, fireRate, burst);
+                FireModeType fireModeType = FireModeType.valueOf(section.getString("FireMode.Type"));
+                FireMode fireMode = fireModeFactory.make(fireModeType, fireRate, burst);
 
                 Gun gun = new BattleGun(
                         metadata,
                         itemStack,
-                        eventDispatcher,
+                        taskRunner,
                         version,
+                        eventDispatcher,
                         bullet,
                         firearmType,
                         fireMode,
@@ -176,10 +173,13 @@ public class FirearmFactory implements ItemFactory<Firearm> {
             try {
                 double accuracy = AttributeValidator.shouldBeHigherThan(section.getInt("Ammo.Magazine"), 0);
                 int cooldown = AttributeValidator.shouldEqualOrBeHigherThan(section.getInt("FireMode.Cooldown"), 0);
+                double launchSpeed = AttributeValidator.shouldBeHigherThan(section.getDouble("Projectile.Speed"), 0.0);
 
                 Lethal lethal = new BattleLethal(
                         null,
                         new ItemStackBuilder(Material.valueOf(projectileMaterial[0])).setDurability(Short.parseShort(projectileMaterial[1])).build(),
+                        null,
+                        null,
                         null,
                         null,
                         0,
@@ -209,12 +209,16 @@ public class FirearmFactory implements ItemFactory<Firearm> {
                         .setLore(lore)
                         .build();
 
+                LaunchSystemType launchSystemType = LaunchSystemType.valueOf(section.getString("FireMode.LaunchSystem"));
+                LaunchSystem launchSystem = launchSystemFactory.make(launchSystemType, launchSpeed);
+
                 Launcher launcher = new BattleLauncher(
                         metadata,
                         itemStack,
                         eventDispatcher,
+                        taskRunner,
                         version,
-                        LaunchType.valueOf(section.getString("FireMode.LaunchType")),
+                        launchSystem,
                         lethal,
                         piercableMaterials,
                         reloadSystem,

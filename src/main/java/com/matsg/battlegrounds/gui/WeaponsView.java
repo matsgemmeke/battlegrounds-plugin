@@ -40,9 +40,9 @@ public class WeaponsView implements View {
         this.itemSlot = itemSlot;
 
         try {
-            this.equipmentConfig = new EquipmentConfig(plugin);
-            this.firearmConfig = new FirearmConfig(plugin);
-            this.meleeWeaponConfig = new MeleeWeaponConfig(plugin);
+            this.equipmentConfig = new EquipmentConfig("equipment.yml", plugin.getResource("equipment.yml"));
+            this.firearmConfig = new FirearmConfig("guns.yml", plugin.getResource("guns.yml"));
+            this.meleeWeaponConfig = new MeleeWeaponConfig("melee_weapons.yml", plugin.getResource("melee_weapons.yml"));
         } catch (IOException e) {
             return;
         }

@@ -1,7 +1,8 @@
 package com.matsg.battlegrounds.command;
 
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.GameManager;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameConfiguration;
 import com.matsg.battlegrounds.api.Placeholder;
@@ -9,12 +10,18 @@ import com.matsg.battlegrounds.api.game.GameMode;
 import com.matsg.battlegrounds.command.validator.GameIdValidator;
 import com.matsg.battlegrounds.game.BattleGame;
 import com.matsg.battlegrounds.game.BattleGameConfiguration;
+import com.matsg.battlegrounds.game.GameFactory;
 import org.bukkit.command.CommandSender;
 
 public class CreateGame extends Command {
 
-    public CreateGame(Battlegrounds plugin) {
-        super(plugin);
+    private GameFactory gameFactory;
+    private GameManager gameManager;
+
+    public CreateGame(Translator translator, GameFactory gameFactory, GameManager gameManager) {
+        super(translator);
+        this.gameFactory = gameFactory;
+        this.gameManager = gameManager;
 
         setAliases("cg");
         setDescription(createMessage(TranslationKey.DESCRIPTION_CREATEGAME));
@@ -22,13 +29,13 @@ public class CreateGame extends Command {
         setPermissionNode("battlegrounds.creategame");
         setUsage("bg creategame [id]");
 
-        registerValidator(new GameIdValidator(plugin, plugin.getTranslator(), false));
+        registerValidator(new GameIdValidator(gameManager, translator, false));
     }
 
     public void execute(CommandSender sender, String[] args) {
         int id = Integer.parseInt(args[1]);
 
-        Game game = new BattleGame(plugin, id);
+        Game game = gameFactory.make(id);
         GameConfiguration configuration = BattleGameConfiguration.getDefaultConfiguration(game);
 
         configuration.saveConfiguration(game.getDataFile());
@@ -42,7 +49,7 @@ public class CreateGame extends Command {
             gameModes[0].onCreate();
         }
 
-        plugin.getGameManager().getGames().add(game);
+        gameManager.getGames().add(game);
 
         sender.sendMessage(createMessage(TranslationKey.GAME_CREATE, new Placeholder("bg_game", id)));
     }

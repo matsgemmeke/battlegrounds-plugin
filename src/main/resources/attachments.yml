@@ -166,23 +166,17 @@ SELECT_FIRE:
   Material: IRON_CHESTPLATE,12
   Modifiers:
     accuracy-horizontal:
-      regex: "+arg5"
+      regex: "+arg3"
       type: "float"
     accuracy-vertical:
-      regex: "+arg6"
+      regex: "+arg4"
       type: "float"
-    shot-burstrounds:
-      regex: "=arg3"
-      type: "integer"
     shot-cooldown:
-      regex: "=arg4"
+      regex: "=arg2"
       type: "integer"
     shot-firemode:
       regex: "=arg1"
       type: "firemode"
-    shot-firerate:
-      regex: "=arg2"
-      type: "integer"
   Toggleable: true
 
 SUPPRESSOR:

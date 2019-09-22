@@ -7,10 +7,7 @@ import com.matsg.battlegrounds.api.event.EventChannel;
 import com.matsg.battlegrounds.api.event.EventDispatcher;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent;
 import com.matsg.battlegrounds.api.event.GamePlayerKillEntityEvent;
-import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.GameScoreboard;
-import com.matsg.battlegrounds.api.game.Spawn;
-import com.matsg.battlegrounds.api.game.Team;
+import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.game.BattleTeam;
@@ -78,6 +75,10 @@ public class FreeForAll extends ClassicGameMode {
         return config.isScoreboardEnabled() ? scoreboard : null;
     }
 
+    protected Countdown makeCountdown() {
+        return new GameModeCountdown(game, translator, config.getCountdownLength());
+    }
+
     public void removePlayer(GamePlayer gamePlayer) {
         Team team = getTeam(gamePlayer);
         if (team == null) {
@@ -92,15 +93,6 @@ public class FreeForAll extends ClassicGameMode {
             gamePlayer.setLives(config.getLives());
             EnumTitle.FFA_START.send(gamePlayer.getPlayer());
         }
-    }
-
-    public void startCountdown() {
-        super.startCountdown();
-
-        GameModeCountdown countdown = new GameModeCountdown(game, translator, config.getCountdownLength());
-        countdown.runTaskTimer(0, 20);
-
-        game.setCountdown(countdown);
     }
 
     public void stop() {

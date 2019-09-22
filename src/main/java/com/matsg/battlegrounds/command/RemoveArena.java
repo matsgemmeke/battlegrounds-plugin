@@ -10,8 +10,6 @@ import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.command.validator.ArenaNameValidator;
 import com.matsg.battlegrounds.command.validator.GameIdValidator;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +20,8 @@ public class RemoveArena extends Command {
     private List<CommandSender> senders;
     private TaskRunner taskRunner;
 
-    public RemoveArena(Plugin plugin, Translator translator, GameManager gameManager, TaskRunner taskRunner) {
-        super(plugin, translator);
+    public RemoveArena(Translator translator, GameManager gameManager, TaskRunner taskRunner) {
+        super(translator);
         this.gameManager = gameManager;
         this.taskRunner = taskRunner;
         this.senders = new ArrayList<>();

@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,18 +21,14 @@ public class BattlegroundsConfig extends AbstractYaml {
     public int mobHealthBarLength = getInt("game-mob-health-bar.length");
     public double firearmAccuracy = getDouble("game-firearm-accuracy");
     public List<String> allowedCommands = getStringList("game-allowed-commands");
-    public List<String> joinableGamestates = getStringList("game-joinable-states");
+    public List<String> joinableGameStates = getStringList("game-joinable-states");
     public List<String> pierceableMaterials = getStringList("game-pierceable-materials");
     public String mobHealthBarEndSymbol = getString("game-mob-health-bar.end-symbol");
     public String mobHealthBarStartSymbol = getString("game-mob-health-bar.start-symbol");
     public String mobHealthBarSymbol = getString("game-mob-health-bar.health-symbol");
 
-    public BattlegroundsConfig(Battlegrounds plugin) throws IOException {
-        super(plugin, "config.yml", false);
-        if (!getString("version").equals(plugin.getDescription().getVersion())) { // Auto-update the config when the plugin was updated
-            removeFile();
-            createFile(plugin.getDataFolder().getPath(), "config.yml");
-        }
+    public BattlegroundsConfig(String filePath, InputStream resource) throws IOException {
+        super("config.yml", filePath, resource, false);
     }
 
     public boolean getDisplayBloodEffect(String entityType) {

@@ -13,15 +13,16 @@ import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 public class Version112R1 implements Version {
 
-    public Hellhound makeHellhound(Game game) {
-        return new CustomWolf(game);
+    public Hellhound makeHellhound(Game game, Plugin plugin) {
+        return new CustomWolf(game, plugin);
     }
 
-    public Zombie makeZombie(Game game) {
-        return new CustomZombie(game);
+    public Zombie makeZombie(Game game, Plugin plugin) {
+        return new CustomZombie(game, plugin);
     }
 
     public void playChestAnimation(Location location, boolean open) {

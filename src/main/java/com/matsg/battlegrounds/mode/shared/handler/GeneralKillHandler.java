@@ -53,7 +53,7 @@ public class GeneralKillHandler implements EventHandler<GamePlayerKillEntityEven
         Objective objective = gameMode.getAchievedObjective();
 
         if (objective != null) {
-            game.callEvent(new GameEndEvent(game, objective, gameMode.getTopTeam(), gameMode.getSortedTeams()));
+            eventDispatcher.dispatchExternalEvent(new GameEndEvent(game, objective, gameMode.getTopTeam(), gameMode.getSortedTeams()));
             game.stop();
         }
 

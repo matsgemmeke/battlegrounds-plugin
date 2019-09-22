@@ -17,14 +17,12 @@ import java.util.UUID;
 
 public class SQLPlayerStorage implements PlayerStorage {
 
-    private Battlegrounds plugin;
     private Connection connection;
     private DefaultLoadouts defaultLoadouts;
     private String address, database, password, username;
 
-    public SQLPlayerStorage(Battlegrounds plugin, SQLConfig sqlConfig) throws IOException, StartupFailedException {
-        this.plugin = plugin;
-        this.defaultLoadouts = new DefaultLoadouts(plugin);
+    public SQLPlayerStorage(SQLConfig sqlConfig, DefaultLoadouts defaultLoadouts) throws StartupFailedException {
+        this.defaultLoadouts = defaultLoadouts;
         this.address = sqlConfig.getAddress();
         this.database = sqlConfig.getDatabase();
         this.password = sqlConfig.getPassword();
@@ -32,8 +30,6 @@ public class SQLPlayerStorage implements PlayerStorage {
 
         try {
             this.connection = openConnection();
-
-            plugin.getLogger().info("Connection to database established.");
 
             TableCreator tableCreator = new TableCreator(connection);
             tableCreator.createTables();

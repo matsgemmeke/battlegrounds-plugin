@@ -1,15 +1,16 @@
 package com.matsg.battlegrounds.mode.tdm;
 
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.game.BattleTeam;
 import com.matsg.battlegrounds.storage.BattleCacheYaml;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
+import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 public class TDMConfig extends BattleCacheYaml {
@@ -18,8 +19,8 @@ public class TDMConfig extends BattleCacheYaml {
     private double minimumSpawnDistance;
     private int countdownLength, killsToWin, lives, timeLimit;
 
-    public TDMConfig(Battlegrounds plugin, String path) throws IOException {
-        super(plugin, path, "tdm.yml");
+    public TDMConfig(String filePath, InputStream resource, Server server) throws IOException {
+        super("tdm.yml", filePath, resource, server);
         this.countdownLength = getInt("tdm-countdown-length");
         this.killsToWin = getInt("tdm-kills-to-win");
         this.lives = getInt("tdm-lives");
@@ -65,10 +66,10 @@ public class TDMConfig extends BattleCacheYaml {
         List<World> worlds = new ArrayList<>();
 
         if (list.contains("*")) {
-            worlds.addAll(plugin.getServer().getWorlds());
+            worlds.addAll(server.getWorlds());
         } else {
             for (String world : list) {
-                worlds.add(plugin.getServer().getWorld(world));
+                worlds.add(server.getWorld(world));
             }
         }
 
