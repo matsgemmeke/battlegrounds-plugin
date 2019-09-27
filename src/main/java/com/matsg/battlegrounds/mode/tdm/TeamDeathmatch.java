@@ -26,8 +26,8 @@ public class TeamDeathmatch extends ClassicGameMode {
         super(plugin, GameModeType.TEAM_DEATHMATCH, game, translator, spawningBehavior);
         this.config = config;
         this.teams.addAll(config.getTeams());
-        this.name = translator.translate(TranslationKey.TDM_NAME);
-        this.shortName = translator.translate(TranslationKey.TDM_SHORT);
+        this.name = translator.translate(TranslationKey.TDM_NAME.getPath());
+        this.shortName = translator.translate(TranslationKey.TDM_SHORT.getPath());
     }
 
     public void onCreate() {
@@ -53,7 +53,7 @@ public class TeamDeathmatch extends ClassicGameMode {
     public void addPlayer(GamePlayer gamePlayer) {
         Team team = getEmptiestTeam();
         team.addPlayer(gamePlayer);
-        gamePlayer.sendMessage(translator.translate(TranslationKey.TEAM_ASSIGNMENT, new Placeholder("bg_team", team.getChatColor() + team.getName())));
+        gamePlayer.sendMessage(translator.translate(TranslationKey.TEAM_ASSIGNMENT.getPath(), new Placeholder("bg_team", team.getChatColor() + team.getName())));
     }
 
     public Spawn getRespawnPoint(GamePlayer gamePlayer) {
@@ -66,6 +66,10 @@ public class TeamDeathmatch extends ClassicGameMode {
         scoreboard.setLayout(config.getScoreboardLayout());
 
         return config.isScoreboardEnabled() ? scoreboard : null;
+    }
+
+    public Countdown makeCountdown() {
+        return new GameModeCountdown(game, translator, config.getCountdownLength());
     }
 
     public void removePlayer(GamePlayer gamePlayer) {
@@ -82,15 +86,6 @@ public class TeamDeathmatch extends ClassicGameMode {
             gamePlayer.setLives(config.getLives());
             EnumTitle.TDM_START.send(gamePlayer.getPlayer());
         }
-    }
-
-    public void startCountdown() {
-        super.startCountdown();
-
-        GameModeCountdown countdown = new GameModeCountdown(game, translator, config.getCountdownLength());
-        countdown.runTaskTimer(0, 20);
-
-        game.setCountdown(countdown);
     }
 
     public void stop() {

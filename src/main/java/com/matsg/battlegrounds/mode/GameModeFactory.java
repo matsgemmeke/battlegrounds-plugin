@@ -7,7 +7,6 @@ import com.matsg.battlegrounds.api.Version;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameMode;
-import com.matsg.battlegrounds.gui.View;
 import com.matsg.battlegrounds.mode.ffa.FFAConfig;
 import com.matsg.battlegrounds.mode.ffa.FreeForAll;
 import com.matsg.battlegrounds.mode.shared.SpawnByTeamBehavior;
@@ -20,6 +19,7 @@ import com.matsg.battlegrounds.FactoryCreationException;
 import com.matsg.battlegrounds.game.objective.EliminationObjective;
 import com.matsg.battlegrounds.game.objective.ScoreObjective;
 import com.matsg.battlegrounds.game.objective.TimeObjective;
+import org.bukkit.Server;
 
 import java.io.IOException;
 
@@ -39,12 +39,14 @@ public class GameModeFactory {
 
     public GameMode make(Game game, GameModeType gameModeType) {
         Arena arena = game.getArena();
+        Server server = plugin.getServer();
+
         GameMode gameMode;
 
         switch (gameModeType) {
             case FREE_FOR_ALL:
                 try {
-                    FFAConfig config = new FFAConfig(plugin, plugin.getDataFolder().getPath() + "/data/game_" + game.getId() + "/gamemodes");
+                    FFAConfig config = new FFAConfig(plugin.getDataFolder().getPath() + "/data/game_" + game.getId() + "/gamemodes", plugin.getResource("ffa.yml"), server);
                     SpawningBehavior spawningBehavior = new SpawnRandomlyBehavior(arena);
 
                     gameMode = new FreeForAll(plugin, game, translator, spawningBehavior, config);
@@ -58,7 +60,7 @@ public class GameModeFactory {
                 }
             case TEAM_DEATHMATCH:
                 try {
-                    TDMConfig config = new TDMConfig(plugin, plugin.getDataFolder().getPath() + "/data/game_" + game.getId() + "/gamemodes");
+                    TDMConfig config = new TDMConfig(plugin.getDataFolder().getPath() + "/data/game_" + game.getId() + "/gamemodes", plugin.getResource("tdm.yml"), server);
                     SpawningBehavior spawningBehavior = new SpawnByTeamBehavior(arena);
 
                     gameMode = new TeamDeathmatch(plugin, game, translator, spawningBehavior, config);
@@ -72,12 +74,12 @@ public class GameModeFactory {
                 }
             case ZOMBIES:
                 try {
-                    ZombiesConfig config = new ZombiesConfig(plugin, plugin.getDataFolder().getPath() + "/data/game_" + game.getId() + "/gamemodes");
+                    ZombiesConfig config = new ZombiesConfig(plugin.getDataFolder().getPath() + "/data/game_" + game.getId() + "/gamemodes", plugin.getResource("zombies.yml"), server);
                     PerkManager perkManager = new ZombiesPerkManager();
                     PowerUpManager powerUpManager = new ZombiesPowerUpManager(game, taskRunner);
                     SpawningBehavior spawningBehavior = new SpawnRandomlyBehavior(arena);
 
-                    gameMode = new Zombies(plugin, game, translator, spawningBehavior, perkManager, powerUpManager, version, config);
+                    gameMode = new Zombies(plugin, game, translator, spawningBehavior, perkManager, powerUpManager, taskRunner, version, config);
                     gameMode.addObjective(new EliminationObjective(game, 1));
 
                     break;

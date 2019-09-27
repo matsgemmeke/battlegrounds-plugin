@@ -30,7 +30,6 @@ public class BattleTactical extends BattleEquipment implements Tactical {
             TacticalEffect effect,
             int amount,
             int cooldown,
-            int duration,
             int ignitionTime,
             double longRange,
             double midRange,
@@ -39,12 +38,7 @@ public class BattleTactical extends BattleEquipment implements Tactical {
     ) {
         super(metadata, itemStack, taskRunner, version, EquipmentType.TACTICAL, ignitionSystem, explodeSound, amount,
                 cooldown, ignitionTime, longRange, midRange, shortRange, velocity);
-        this.duration = duration;
         this.effect = effect;
-    }
-
-    public int getDuration() {
-        return duration;
     }
 
     public TacticalEffect getEffect() {
@@ -71,22 +65,13 @@ public class BattleTactical extends BattleEquipment implements Tactical {
         return (Tactical) super.clone();
     }
 
-    private void effectPlayers(Location location) {
-        for (GamePlayer gamePlayer : game.getPlayerManager().getNearbyPlayers(location, longRange)) {
-            if (gamePlayer != null && gamePlayer.getState().isAlive()
-                    && !(gamePlayer != this.gamePlayer && game.getGameMode().getTeam(gamePlayer) == game.getGameMode().getTeam(this.gamePlayer))) {
-                effect.applyEffect(gamePlayer, location, duration);
-            }
-        }
-    }
-
     public double getDamage(Hitbox hitbox, double distance) {
         return 0.0;
     }
 
     public void ignite(Item item) {
-        effect.onIgnite(this, item);
-        effectPlayers(item.getLocation());
+        effect.igniteItem(item);
+        effect.applyEffect(item.getLocation());
     }
 
     public void setLongDamage(double longDamage) { }

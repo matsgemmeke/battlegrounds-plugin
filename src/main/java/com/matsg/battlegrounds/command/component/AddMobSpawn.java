@@ -82,7 +82,7 @@ public class AddMobSpawn extends ComponentCommand {
 
         game.getDataFile().save();
 
-        player.sendMessage(translator.translate(key,
+        player.sendMessage(translator.translate(key.getPath(),
                 new Placeholder("bg_id", componentId),
                 new Placeholder("bg_section", section.getName())
         ));

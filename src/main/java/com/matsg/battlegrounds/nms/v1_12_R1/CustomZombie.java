@@ -26,13 +26,11 @@ public class CustomZombie extends EntityZombie implements Zombie {
     private Creature entity;
     private Game game;
     private Plugin plugin;
-    private TaskRunner taskRunner;
 
-    public CustomZombie(Game game, Plugin plugin, TaskRunner taskRunner) {
+    public CustomZombie(Game game, Plugin plugin) {
         super(((CraftWorld) game.getArena().getWorld()).getHandle());
         this.game = game;
         this.plugin = plugin;
-        this.taskRunner = taskRunner;
         this.entityType = BattleEntityType.ZOMBIE;
         this.hostile = false;
 
@@ -171,7 +169,7 @@ public class CustomZombie extends EntityZombie implements Zombie {
         entity.getEquipment().setItemInMainHand(null);
 
         clearPathfinderGoals();
-        goalSelector.a(9, new PathfinderGoalEnterArena(game, this, mobSpawn, taskRunner));
+        goalSelector.a(9, new PathfinderGoalEnterArena(this, mobSpawn, plugin));
     }
 
     public void updatePath() {

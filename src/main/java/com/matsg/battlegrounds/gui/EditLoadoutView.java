@@ -42,16 +42,16 @@ public class EditLoadoutView implements View {
         this.items = new ArrayList<>();
 
         try {
-            this.meleeWeaponConfig = new MeleeWeaponConfig(plugin);
+            this.meleeWeaponConfig = new MeleeWeaponConfig("melee_weapons.yml", plugin.getResource("melee_weapons.yml"));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         this.inventory = buildInventory(plugin.getServer().createInventory(this, 27,
-                translator.translate(TranslationKey.VIEW_EDIT_LOADOUT, new Placeholder("bg_loadout", loadout.getName()))
+                translator.translate(TranslationKey.VIEW_EDIT_LOADOUT.getPath(), new Placeholder("bg_loadout", loadout.getName()))
         ));
 
-        inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(translator.translate(TranslationKey.GO_BACK)).build());
+        inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(translator.translate(TranslationKey.GO_BACK.getPath())).build());
     }
 
     public Inventory getInventory() {
@@ -60,11 +60,11 @@ public class EditLoadoutView implements View {
 
     private void addAttachmentSlot(Inventory inventory, Gun gun, int slot) {
         Attachment attachment = gun.getAttachments().size() > 0 ? gun.getAttachments().get(0) : null;
-        String[] lore = translator.translate(TranslationKey.EDIT_ATTACHMENT).split(",");
+        String[] lore = translator.translate(TranslationKey.EDIT_ATTACHMENT.getPath()).split(",");
 
         ItemStack itemStack = new ItemStackBuilder(attachment != null ? attachment.getItemStack() : new ItemStack(Material.BARRIER))
                 .addItemFlags(ItemFlag.values())
-                .setDisplayName(ChatColor.WHITE + translator.translate(TranslationKey.GUN_ATTACHMENT, new Placeholder("bg_weapon", gun.getMetadata().getName())))
+                .setDisplayName(ChatColor.WHITE + translator.translate(TranslationKey.GUN_ATTACHMENT.getPath(), new Placeholder("bg_weapon", gun.getMetadata().getName())))
                 .setLore(ChatColor.WHITE + getItemName(attachment), lore[0], lore[1])
                 .setUnbreakable(true)
                 .build();
@@ -79,7 +79,7 @@ public class EditLoadoutView implements View {
         for (ItemSlot itemSlot : ItemSlot.WEAPON_SLOTS) {
             Weapon weapon = loadout.getWeapon(itemSlot);
 
-            String[] lore = translator.translate(TranslationKey.EDIT_WEAPON).split(",");
+            String[] lore = translator.translate(TranslationKey.EDIT_WEAPON.getPath()).split(",");
 
             ItemStack itemStack = new ItemStackBuilder(getItemStack(weapon))
                     .addItemFlags(ItemFlag.values())
@@ -106,19 +106,19 @@ public class EditLoadoutView implements View {
     private String getDisplayName(ItemSlot itemSlot) {
         switch (itemSlot) {
             case FIREARM_PRIMARY:
-                return translator.translate(TranslationKey.WEAPON_PRIMARY);
+                return translator.translate(TranslationKey.WEAPON_PRIMARY.getPath());
             case FIREARM_SECONDARY:
-                return translator.translate(TranslationKey.WEAPON_SECONDARY);
+                return translator.translate(TranslationKey.WEAPON_SECONDARY.getPath());
             case EQUIPMENT:
-                return translator.translate(TranslationKey.WEAPON_EQUIPMENT);
+                return translator.translate(TranslationKey.WEAPON_EQUIPMENT.getPath());
             case MELEE_WEAPON:
-                return translator.translate(TranslationKey.WEAPON_MELEE_WEAPON);
+                return translator.translate(TranslationKey.WEAPON_MELEE_WEAPON.getPath());
         }
         return null;
     }
 
     private String getItemName(Item item) {
-        return item != null ? item.getMetadata().getName() : translator.translate(TranslationKey.NONE_SELECTED);
+        return item != null ? item.getMetadata().getName() : translator.translate(TranslationKey.NONE_SELECTED.getPath());
     }
 
     private ItemStack getItemStack(Weapon weapon) {

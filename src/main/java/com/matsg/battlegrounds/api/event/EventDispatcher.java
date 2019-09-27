@@ -20,6 +20,13 @@ public interface EventDispatcher {
     void dispatchInternalEvent(Event event);
 
     /**
+     * Gets the amount of registered event channels.
+     *
+     * @return the event channel count
+     */
+    int getEventChannelCount();
+
+    /**
      * Registers an event channel.
      *
      * @param eventClass the event class that the event channel handles

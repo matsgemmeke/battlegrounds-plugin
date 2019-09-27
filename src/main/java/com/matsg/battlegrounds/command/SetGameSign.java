@@ -2,9 +2,12 @@ package com.matsg.battlegrounds.command;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.GameManager;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameSign;
 import com.matsg.battlegrounds.api.Placeholder;
+import com.matsg.battlegrounds.api.storage.BattlegroundsConfig;
 import com.matsg.battlegrounds.command.validator.GameIdValidator;
 import com.matsg.battlegrounds.game.BattleGameSign;
 import org.bukkit.Material;
@@ -17,8 +20,14 @@ import java.util.Set;
 
 public class SetGameSign extends Command {
 
-    public SetGameSign(Battlegrounds plugin) {
-        super(plugin);
+    private BattlegroundsConfig config;
+    private GameManager gameManager;
+
+    public SetGameSign(Translator translator, GameManager gameManager, BattlegroundsConfig config) {
+        super(translator);
+        this.gameManager = gameManager;
+        this.config = config;
+
         setAliases("sgs");
         setDescription(createMessage(TranslationKey.DESCRIPTION_SETGAMESIGN));
         setName("setgamesign");
@@ -26,24 +35,25 @@ public class SetGameSign extends Command {
         setPlayerOnly(true);
         setUsage("bg setgamesign [id]");
 
-        registerValidator(new GameIdValidator(plugin, plugin.getTranslator(), true));
+        registerValidator(new GameIdValidator(gameManager, translator, true));
     }
 
     public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         BlockState state = player.getTargetBlock((Set<Material>) null, 5).getState();
-        Game game = plugin.getGameManager().getGame(Integer.parseInt(args[1]));
+        Game game = gameManager.getGame(Integer.parseInt(args[1]));
 
         if (!(state instanceof Sign)) {
             player.sendMessage(createMessage(TranslationKey.INVALID_BLOCK));
             return;
         }
 
-        GameSign sign = new BattleGameSign(plugin, game, (Sign) state, plugin.getTranslator());
+        Sign sign = (Sign) state;
+        GameSign gameSign = new BattleGameSign(game, sign, translator, config);
 
-        game.getDataFile().setLocation("sign", state.getLocation(), true);
+        game.getDataFile().setLocation("sign", sign.getLocation(), true);
         game.getDataFile().save();
-        game.setGameSign(sign);
+        game.setGameSign(gameSign);
 
         sign.update();
 

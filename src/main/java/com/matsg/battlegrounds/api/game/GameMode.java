@@ -175,8 +175,10 @@ public interface GameMode extends ComponentWrapper, WeaponContext {
 
     /**
      * Starts the gamemode countdown.
+     *
+     * @return the countdown that should be started
      */
-    void startCountdown();
+    Countdown startCountdown();
 
     /**
      * Stops the gamemode

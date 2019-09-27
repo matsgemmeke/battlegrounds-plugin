@@ -2,6 +2,8 @@ package com.matsg.battlegrounds.command;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.GameManager;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.ArenaComponent;
 import com.matsg.battlegrounds.api.game.Game;
@@ -13,21 +15,25 @@ import org.bukkit.command.CommandSender;
 
 public class RemoveComponent extends Command {
 
-    public RemoveComponent(Battlegrounds plugin) {
-        super(plugin);
+    private GameManager gameManager;
+
+    public RemoveComponent(Translator translator, GameManager gameManager) {
+        super(translator);
+        this.gameManager = gameManager;
+
         setAliases("remove", "rc");
         setDescription(createMessage(TranslationKey.DESCRIPTION_REMOVECOMPONENT));
         setName("removecomponent");
         setPermissionNode("battlegrounds.removecomponent");
         setUsage("bg removecomponent [id] [arena] [component]");
 
-        registerValidator(new GameIdValidator(plugin, plugin.getTranslator(), true));
-        registerValidator(new ArenaNameValidator(plugin, plugin.getTranslator(), true));
+        registerValidator(new GameIdValidator(gameManager, translator, true));
+        registerValidator(new ArenaNameValidator(gameManager, translator, true));
     }
 
     public void execute(CommandSender sender, String[] args) {
-        Game game = plugin.getGameManager().getGame(Integer.parseInt(args[1]));
-        Arena arena = plugin.getGameManager().getArena(game, args[2].replaceAll("_", " "));
+        Game game = gameManager.getGame(Integer.parseInt(args[1]));
+        Arena arena = gameManager.getArena(game, args[2].replaceAll("_", " "));
 
         if (args.length == 3) {
             sender.sendMessage(createMessage(TranslationKey.SPECIFY_COMPONENT_ID));

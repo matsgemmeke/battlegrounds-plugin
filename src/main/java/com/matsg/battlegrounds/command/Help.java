@@ -1,7 +1,8 @@
 package com.matsg.battlegrounds.command;
 
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Translator;
+import com.matsg.battlegrounds.api.Version;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -12,10 +13,12 @@ import java.util.List;
 public class Help extends Command {
 
     private Command[] subCommands;
+    private Version version;
 
-    public Help(Battlegrounds plugin, Command[] subCommands) {
-        super(plugin);
+    public Help(Translator translator, Command[] subCommands, Version version) {
+        super(translator);
         this.subCommands = subCommands;
+        this.version = version;
         setAliases("?");
         setName("help");
     }
@@ -28,14 +31,14 @@ public class Help extends Command {
             Player player = (Player) sender;
 
             for (Command subCommand : getCommands(false)) {
-                plugin.getVersion().sendJSONMessage(player, " ● /" + subCommand.getUsage(), "/" + ChatColor.GRAY + subCommand.getUsage(), subCommand.getDescription());
+                version.sendJSONMessage(player, " ● /" + subCommand.getUsage(), "/" + ChatColor.GRAY + subCommand.getUsage(), subCommand.getDescription());
             }
 
             sender.sendMessage(" ");
 
             for (Command subCommand : getCommands(true)) {
                 if (player.hasPermission(subCommand.getPermissionNode())) {
-                    plugin.getVersion().sendJSONMessage(player, " ● /" + subCommand.getUsage(), "/" + ChatColor.GRAY + subCommand.getUsage(), subCommand.getDescription());
+                    version.sendJSONMessage(player, " ● /" + subCommand.getUsage(), "/" + ChatColor.GRAY + subCommand.getUsage(), subCommand.getDescription());
                 }
             }
         } else {

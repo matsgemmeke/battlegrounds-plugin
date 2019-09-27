@@ -14,7 +14,6 @@ import com.matsg.battlegrounds.api.entity.Hitbox;
 import com.matsg.battlegrounds.api.item.Transaction;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.util.BattleSound;
-import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -132,12 +131,6 @@ public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
         return entity.getHealth();
     }
 
-    private String[] getLore() {
-        return new String[] {
-                ChatColor.WHITE + itemType.getName()
-        };
-    }
-
     public void handleTransaction(Transaction transaction) {
         this.gamePlayer = transaction.getGamePlayer();
     }
@@ -236,7 +229,6 @@ public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
         itemStack = new ItemStackBuilder(itemStack)
                 .addItemFlags(ItemFlag.values())
                 .setAmount(amount)
-                .setLore(getLore())
                 .setUnbreakable(true)
                 .build();
         if (gamePlayer != null) {

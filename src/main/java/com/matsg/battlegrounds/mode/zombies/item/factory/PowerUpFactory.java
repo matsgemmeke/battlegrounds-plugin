@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.mode.zombies.item.factory;
 
 import com.matsg.battlegrounds.FactoryCreationException;
+import com.matsg.battlegrounds.TaskRunner;
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Translator;
@@ -18,13 +19,15 @@ public class PowerUpFactory {
 
     private Battlegrounds plugin;
     private Game game;
+    private TaskRunner taskRunner;
     private Translator translator;
     private Zombies zombies;
 
-    public PowerUpFactory(Battlegrounds plugin, Game game, Zombies zombies, Translator translator) {
+    public PowerUpFactory(Battlegrounds plugin, Game game, Zombies zombies, TaskRunner taskRunner, Translator translator) {
         this.plugin = plugin;
         this.game = game;
         this.zombies = zombies;
+        this.taskRunner = taskRunner;
         this.translator = translator;
     }
 
@@ -33,22 +36,22 @@ public class PowerUpFactory {
 
         switch (effectType) {
             case CARPENTER:
-                effect = new Carpenter(game, zombies, translator.translate(TranslationKey.POWERUP_CARPENTER));
+                effect = new Carpenter(game, zombies, translator.translate(TranslationKey.POWERUP_CARPENTER.getPath()), taskRunner);
                 break;
             case DOUBLE_POINTS:
-                effect = new DoublePoints(plugin, translator.translate(TranslationKey.POWERUP_DOUBLE_POINTS), duration);
+                effect = new DoublePoints(plugin, translator.translate(TranslationKey.POWERUP_DOUBLE_POINTS.getPath()), duration);
                 break;
             case INSTA_KILL:
-                effect = new InstaKill(plugin, translator.translate(TranslationKey.POWERUP_INSTA_KILL), duration);
+                effect = new InstaKill(plugin, translator.translate(TranslationKey.POWERUP_INSTA_KILL.getPath()), duration);
                 break;
             case FIRE_SALE:
-                effect = new FireSale(game, zombies, translator.translate(TranslationKey.POWERUP_FIRE_SALE), duration);
+                effect = new FireSale(game, zombies, translator.translate(TranslationKey.POWERUP_FIRE_SALE.getPath()), duration, taskRunner);
                 break;
             case MAX_AMMO:
-                effect = new MaxAmmo(game, translator.translate(TranslationKey.POWERUP_MAX_AMMO));
+                effect = new MaxAmmo(game, translator.translate(TranslationKey.POWERUP_MAX_AMMO.getPath()));
                 break;
             case NUKE:
-                effect = new Nuke(game, zombies, translator.translate(TranslationKey.POWERUP_NUKE));
+                effect = new Nuke(game, zombies, translator.translate(TranslationKey.POWERUP_NUKE.getPath()), taskRunner);
                 break;
             default:
                 throw new FactoryCreationException("Invalid power up effect type \"" + effectType + "\"");

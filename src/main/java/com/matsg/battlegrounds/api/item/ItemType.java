@@ -4,7 +4,7 @@ public interface ItemType {
 
     ItemSlot getDefaultItemSlot();
 
-    String getName();
+    String getNameKey();
 
     boolean hasSubTypes();
 

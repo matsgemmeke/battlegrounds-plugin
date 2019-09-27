@@ -12,7 +12,6 @@ import static org.mockito.Mockito.*;
 
 public class GameIdValidatorTest {
 
-    private Battlegrounds plugin;
     private GameManager gameManager;
     private int gameId;
     private String responseMessage;
@@ -20,14 +19,11 @@ public class GameIdValidatorTest {
 
     @Before
     public void setUp() {
-        this.plugin = mock(Battlegrounds.class);
         this.gameManager = mock(GameManager.class);
         this.translator = mock(Translator.class);
 
         this.gameId = 1;
         this.responseMessage = "Response";
-
-        when(plugin.getGameManager()).thenReturn(gameManager);
     }
 
     @Test
@@ -35,9 +31,9 @@ public class GameIdValidatorTest {
         String[] input = new String[] { "command" };
         TranslationKey key = TranslationKey.SPECIFY_GAME_ID;
 
-        when(translator.translate(key)).thenReturn(responseMessage);
+        when(translator.translate(key.getPath())).thenReturn(responseMessage);
 
-        GameIdValidator validator = new GameIdValidator(plugin, translator, true);
+        GameIdValidator validator = new GameIdValidator(gameManager, translator, true);
         ValidationResponse response = validator.validate(input);
 
         assertFalse(response.passed());
@@ -49,9 +45,9 @@ public class GameIdValidatorTest {
         String[] input = new String[] { "command", "id" };
         TranslationKey key = TranslationKey.INVALID_ARGUMENT_TYPE;
 
-        when(translator.translate(eq(key), anyVararg())).thenReturn(responseMessage);
+        when(translator.translate(eq(key.getPath()), anyVararg())).thenReturn(responseMessage);
 
-        GameIdValidator validator = new GameIdValidator(plugin, translator, true);
+        GameIdValidator validator = new GameIdValidator(gameManager, translator, true);
         ValidationResponse response = validator.validate(input);
 
         assertFalse(response.passed());
@@ -64,9 +60,9 @@ public class GameIdValidatorTest {
         TranslationKey key = TranslationKey.GAME_NOT_EXISTS;
 
         when(gameManager.exists(gameId)).thenReturn(false);
-        when(translator.translate(eq(key), anyVararg())).thenReturn(responseMessage);
+        when(translator.translate(eq(key.getPath()), anyVararg())).thenReturn(responseMessage);
 
-        GameIdValidator validator = new GameIdValidator(plugin, translator, true);
+        GameIdValidator validator = new GameIdValidator(gameManager, translator, true);
         ValidationResponse response = validator.validate(input);
 
         assertFalse(response.passed());
@@ -79,9 +75,9 @@ public class GameIdValidatorTest {
         TranslationKey key = TranslationKey.GAME_EXISTS;
 
         when(gameManager.exists(gameId)).thenReturn(true);
-        when(translator.translate(eq(key), anyVararg())).thenReturn(responseMessage);
+        when(translator.translate(eq(key.getPath()), anyVararg())).thenReturn(responseMessage);
 
-        GameIdValidator validator = new GameIdValidator(plugin, translator, false);
+        GameIdValidator validator = new GameIdValidator(gameManager, translator, false);
         ValidationResponse response = validator.validate(input);
 
         assertFalse(response.passed());
@@ -94,7 +90,7 @@ public class GameIdValidatorTest {
 
         when(gameManager.exists(gameId)).thenReturn(true);
 
-        GameIdValidator validator = new GameIdValidator(plugin, translator, true);
+        GameIdValidator validator = new GameIdValidator(gameManager, translator, true);
         ValidationResponse response = validator.validate(input);
 
         assertTrue(response.passed());

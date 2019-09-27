@@ -14,7 +14,6 @@ import static org.mockito.Mockito.*;
 
 public class CreateArenaTest {
 
-    private Battlegrounds plugin;
     private CacheYaml dataFile;
     private Game game;
     private GameManager gameManager;
@@ -28,7 +27,6 @@ public class CreateArenaTest {
 
     @Before
     public void setUp() {
-        this.plugin = mock(Battlegrounds.class);
         this.dataFile = mock(CacheYaml.class);
         this.game = mock(Game.class);
         this.gameManager = mock(GameManager.class);
@@ -45,9 +43,6 @@ public class CreateArenaTest {
         when(gameManager.exists(gameId)).thenReturn(true);
         when(gameManager.getGame(gameId)).thenReturn(game);
         when(player.getWorld()).thenReturn(world);
-        when(plugin.getGameManager()).thenReturn(gameManager);
-        when(plugin.getSelectionManager()).thenReturn(selectionManager);
-        when(plugin.getTranslator()).thenReturn(translator);
     }
 
     @Test
@@ -56,9 +51,9 @@ public class CreateArenaTest {
         TranslationKey key = TranslationKey.NO_SELECTION;
 
         when(selectionManager.getSelection(player)).thenReturn(null);
-        when(translator.translate(key)).thenReturn(responseMessage);
+        when(translator.translate(key.getPath())).thenReturn(responseMessage);
 
-        CreateArena command = new CreateArena(plugin);
+        CreateArena command = new CreateArena(translator, gameManager, selectionManager);
         command.execute(player, input);
 
         verify(player, times(1)).sendMessage(responseMessage);
@@ -71,9 +66,9 @@ public class CreateArenaTest {
         TranslationKey key = TranslationKey.ARENA_CREATE;
 
         when(selectionManager.getSelection(player)).thenReturn(selection);
-        when(translator.translate(eq(key), anyVararg())).thenReturn(responseMessage);
+        when(translator.translate(eq(key.getPath()), anyVararg())).thenReturn(responseMessage);
 
-        CreateArena command = new CreateArena(plugin);
+        CreateArena command = new CreateArena(translator, gameManager, selectionManager);
         command.execute(player, input);
 
         verify(dataFile, times(0)).setLocation(anyString(), any(Location.class), anyBoolean());
@@ -90,9 +85,9 @@ public class CreateArenaTest {
         when(selection.getMaximumPoint()).thenReturn(location);
         when(selection.getMinimumPoint()).thenReturn(location);
         when(selectionManager.getSelection(player)).thenReturn(selection);
-        when(translator.translate(eq(key), anyVararg())).thenReturn(responseMessage);
+        when(translator.translate(eq(key.getPath()), anyVararg())).thenReturn(responseMessage);
 
-        CreateArena command = new CreateArena(plugin);
+        CreateArena command = new CreateArena(translator, gameManager, selectionManager);
         command.execute(player, input);
 
         verify(dataFile, times(2)).setLocation(anyString(), any(Location.class), anyBoolean());

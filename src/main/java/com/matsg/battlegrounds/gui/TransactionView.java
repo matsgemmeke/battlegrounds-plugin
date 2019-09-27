@@ -88,13 +88,13 @@ public abstract class TransactionView implements View {
     public abstract void onTransactionComplete(Transaction transaction);
 
     private Inventory createInventory() {
-        inventory = Bukkit.getServer().createInventory(this, 54, translator.translate(TranslationKey.VIEW_TRANSACTION_TITLE, new Placeholder("bg_slot", slot + 1)));
+        inventory = Bukkit.getServer().createInventory(this, 54, translator.translate(TranslationKey.VIEW_TRANSACTION_TITLE.getPath(), new Placeholder("bg_slot", slot + 1)));
 
         ItemStack buy = new ItemStackBuilder(new ItemStack(Material.EMERALD_BLOCK))
-                .setDisplayName(translator.translate(TranslationKey.VIEW_TRANSACTION_BUY))
+                .setDisplayName(translator.translate(TranslationKey.VIEW_TRANSACTION_BUY.getPath()))
                 .build();
         ItemStack discard = new ItemStackBuilder(new ItemStack(Material.REDSTONE_BLOCK))
-                .setDisplayName(translator.translate(TranslationKey.VIEW_TRANSACTION_DISCARD))
+                .setDisplayName(translator.translate(TranslationKey.VIEW_TRANSACTION_DISCARD.getPath()))
                 .build();
 
         inventory.setItem(4, itemStack);

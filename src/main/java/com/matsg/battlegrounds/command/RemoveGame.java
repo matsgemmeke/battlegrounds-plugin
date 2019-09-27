@@ -2,15 +2,12 @@ package com.matsg.battlegrounds.command;
 
 import com.matsg.battlegrounds.TaskRunner;
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.command.validator.GameIdValidator;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +18,8 @@ public class RemoveGame extends Command {
     private List<CommandSender> senders;
     private TaskRunner taskRunner;
 
-    public RemoveGame(Plugin plugin, Translator translator, GameManager gameManager, TaskRunner taskRunner) {
-        super(plugin, translator);
+    public RemoveGame(Translator translator, GameManager gameManager, TaskRunner taskRunner) {
+        super(translator);
         this.gameManager = gameManager;
         this.taskRunner = taskRunner;
         this.senders = new ArrayList<>();

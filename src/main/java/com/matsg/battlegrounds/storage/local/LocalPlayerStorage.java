@@ -15,23 +15,21 @@ import java.util.stream.Collectors;
 
 public class LocalPlayerStorage implements PlayerStorage {
 
-    private Battlegrounds plugin;
     private DefaultLoadouts defaultLoadouts;
-    private File folder;
+    private File directory;
     private List<StoredPlayer> storedPlayers;
 
-    public LocalPlayerStorage(Battlegrounds plugin) throws IOException {
-        this.plugin = plugin;
-        this.defaultLoadouts = new DefaultLoadouts(plugin);
-        this.folder = new File(plugin.getDataFolder().getPath() + "/players");
+    public LocalPlayerStorage(File directory, DefaultLoadouts defaultLoadouts) throws IOException {
+        this.directory = directory;
+        this.defaultLoadouts = defaultLoadouts;
         this.storedPlayers = new ArrayList<>();
 
-        if (!folder.exists()) {
-            folder.mkdirs();
+        if (!directory.exists()) {
+            directory.mkdirs();
         }
 
-        for (File file : folder.listFiles()) {
-            storedPlayers.add(new PlayerYaml(plugin, UUID.fromString(file.getName().substring(0, file.getName().length() - 4))));
+        for (File file : directory.listFiles()) {
+            storedPlayers.add(new PlayerYaml(directory.getPath(), UUID.fromString(file.getName().substring(0, file.getName().length() - 4))));
         }
     }
 
@@ -65,7 +63,7 @@ public class LocalPlayerStorage implements PlayerStorage {
     public StoredPlayer registerPlayer(Player player) {
         UUID uuid = player.getUniqueId();
         try {
-            StoredPlayer storedPlayer = new PlayerYaml(plugin, uuid);
+            StoredPlayer storedPlayer = new PlayerYaml(directory.getPath(), uuid);
             storedPlayer.createDefaultAttributes(player);
 
             for (int i = 1; i <= 5; i++) {

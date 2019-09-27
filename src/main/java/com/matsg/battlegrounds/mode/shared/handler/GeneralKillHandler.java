@@ -37,7 +37,7 @@ public class GeneralKillHandler implements EventHandler<GamePlayerKillEntityEven
         Hitbox hitbox = event.getHitbox();
         Weapon weapon = event.getWeapon();
 
-        game.getPlayerManager().broadcastMessage(translator.translate(hitbox.getTranslationKey(),
+        game.getPlayerManager().broadcastMessage(translator.translate(hitbox.getKillMessageKey(),
                 new Placeholder("bg_killer", killer.getTeam().getChatColor() + killer.getName() + ChatColor.WHITE),
                 new Placeholder("bg_player", gamePlayer.getTeam().getChatColor() + gamePlayer.getName() + ChatColor.WHITE),
                 new Placeholder("bg_weapon", weapon.getMetadata().getName()))
@@ -53,7 +53,7 @@ public class GeneralKillHandler implements EventHandler<GamePlayerKillEntityEven
         Objective objective = gameMode.getAchievedObjective();
 
         if (objective != null) {
-            game.callEvent(new GameEndEvent(game, objective, gameMode.getTopTeam(), gameMode.getSortedTeams()));
+            eventDispatcher.dispatchExternalEvent(new GameEndEvent(game, objective, gameMode.getTopTeam(), gameMode.getSortedTeams()));
             game.stop();
         }
 

@@ -154,7 +154,7 @@ public abstract class AbstractGameMode implements GameMode {
         if (!result.passed()) {
             plugin.getLogger().severe("Unable to spawn players in game " + game.getId() + ": " + result.getMessage());
 
-            game.getPlayerManager().broadcastMessage(translator.translate(TranslationKey.ERROR_OCCURRED));
+            game.getPlayerManager().broadcastMessage(translator.translate(TranslationKey.ERROR_OCCURRED.getPath()));
         }
 
         return result.passed();

@@ -1,19 +1,17 @@
 package com.matsg.battlegrounds.api.entity;
 
-import com.matsg.battlegrounds.TranslationKey;
-
 public enum Hitbox {
 
-    HEAD(TranslationKey.DEATH_HEADSHOT, 2.0, 1.4, 1.0, 100),
-    LEG(TranslationKey.DEATH_PLAYER_KILL, 0.8, 0.0, 0.5, 50),
-    TORSO(TranslationKey.DEATH_PLAYER_KILL, 1.4, 0.8, 1.0, 60);
+    HEAD("game-death-headshot", 2.0, 1.4, 1.0, 100),
+    LEG("game-death-player-kill", 0.8, 0.0, 0.5, 50),
+    TORSO("game-death-player-kill", 1.4, 0.8, 1.0, 60);
 
     private double damageMultiplier, maxHeight, minHeight;
     private int points;
-    private TranslationKey translationKey;
+    private String killMessageKey;
 
-    Hitbox(TranslationKey translationKey, double maxHeight, double minHeight, double damageMultiplier, int points) {
-        this.translationKey = translationKey;
+    Hitbox(String killMessageKey, double maxHeight, double minHeight, double damageMultiplier, int points) {
+        this.killMessageKey = killMessageKey;
         this.damageMultiplier = damageMultiplier;
         this.maxHeight = maxHeight;
         this.minHeight = minHeight;
@@ -34,8 +32,8 @@ public enum Hitbox {
         return damageMultiplier;
     }
 
-    public TranslationKey getTranslationKey() {
-        return translationKey;
+    public String getKillMessageKey() {
+        return killMessageKey;
     }
 
     public double getMaxHeight() {

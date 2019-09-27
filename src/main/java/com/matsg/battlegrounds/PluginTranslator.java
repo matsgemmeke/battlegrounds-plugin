@@ -46,7 +46,7 @@ public class PluginTranslator implements Translator {
         return ChatColor.translateAlternateColorCodes('&', applyPlaceholders(message, placeholders));
     }
 
-    public String translate(String path, Placeholder... placeholders) {
+    public String translate(String key, Placeholder... placeholders) {
         LanguageConfiguration languageConfiguration = getLanguageConfiguration(locale);
 
         if (languageConfiguration == null) {
@@ -56,28 +56,15 @@ public class PluginTranslator implements Translator {
         String translation;
         Yaml yaml = languageConfiguration.getYaml();
 
-        if ((translation = yaml.getString(path)) == null) {
+        if ((translation = yaml.getString(key)) == null) {
             Yaml fallback = getLanguageConfiguration(FALLBACK_LOCALE).getYaml();
 
-            if ((translation = fallback.getString(path)) == null) {
-                throw new TranslationNotFoundException("Translation \"" + path + "\" not found");
+            if ((translation = fallback.getString(key)) == null) {
+                throw new TranslationNotFoundException("Translation for key \"" + key + "\" not found");
             }
         }
 
         return ChatColor.translateAlternateColorCodes('&', applyPlaceholders(translation, placeholders));
-    }
-
-    public String translate(TranslationKey key, Placeholder... placeholders) {
-        String message = translate(key.getPath()), prefix = translate(TranslationKey.PREFIX.getPath());
-        StringBuilder builder = new StringBuilder();
-
-        if (prefix != null && key.hasPrefix()) {
-            builder.append(prefix);
-        }
-
-        builder.append(applyPlaceholders(message, placeholders));
-
-        return ChatColor.translateAlternateColorCodes('&', builder.toString());
     }
 
     private String applyPlaceholders(String message, Placeholder... placeholders) {

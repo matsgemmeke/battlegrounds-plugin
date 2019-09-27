@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.mode.zombies;
 
+import com.matsg.battlegrounds.TaskRunner;
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Placeholder;
@@ -17,6 +18,7 @@ import com.matsg.battlegrounds.game.BattleComponentContainer;
 import com.matsg.battlegrounds.game.BattleTeam;
 import com.matsg.battlegrounds.mode.AbstractGameMode;
 import com.matsg.battlegrounds.mode.GameModeType;
+import com.matsg.battlegrounds.mode.shared.NulledCountdown;
 import com.matsg.battlegrounds.mode.shared.SpawningBehavior;
 import com.matsg.battlegrounds.mode.zombies.component.*;
 import com.matsg.battlegrounds.mode.zombies.component.factory.*;
@@ -54,6 +56,7 @@ public class Zombies extends AbstractGameMode {
     private PerkManager perkManager;
     private PowerUpManager powerUpManager;
     private SectionFactory sectionFactory;
+    private TaskRunner taskRunner;
     private Team team;
     private WallWeaponFactory wallWeaponFactory;
     private Wave wave;
@@ -67,19 +70,21 @@ public class Zombies extends AbstractGameMode {
             SpawningBehavior spawningBehavior,
             PerkManager perkManager,
             PowerUpManager powerUpManager,
+            TaskRunner taskRunner,
             Version version,
             ZombiesConfig config
     ) {
         super(plugin, GameModeType.ZOMBIES, game, translator, spawningBehavior);
         this.perkManager = perkManager;
         this.powerUpManager = powerUpManager;
+        this.taskRunner = taskRunner;
         this.config = config;
         this.loadoutFactory = new LoadoutFactory();
-        this.name = translator.translate(TranslationKey.ZOMBIES_NAME);
+        this.name = translator.translate(TranslationKey.ZOMBIES_NAME.getPath());
         this.sectionContainer = new BattleComponentContainer<>();
-        this.shortName = translator.translate(TranslationKey.ZOMBIES_SHORT);
+        this.shortName = translator.translate(TranslationKey.ZOMBIES_SHORT.getPath());
         this.team = new BattleTeam(1, "Players", null, ChatColor.WHITE);
-        this.waveFactory = new WaveFactory(sectionContainer, version, config);
+        this.waveFactory = new WaveFactory(sectionContainer, plugin, version, config);
 
         teams.add(team);
 
@@ -87,7 +92,7 @@ public class Zombies extends AbstractGameMode {
     }
 
     public void onCreate() {
-        PowerUpFactory powerUpFactory = new PowerUpFactory(plugin, game, this, translator);
+        PowerUpFactory powerUpFactory = new PowerUpFactory(plugin, game, this, taskRunner, translator);
 
         // Register gamemode specific event handlers
         plugin.getEventDispatcher().registerEventChannel(BlockPlaceEvent.class, new EventChannel<>(
@@ -97,7 +102,7 @@ public class Zombies extends AbstractGameMode {
                 new ZombiesDamageEventHandler(this)
         ));
         plugin.getEventDispatcher().registerEventChannel(GamePlayerKillEntityEvent.class, new EventChannel<>(
-                new ZombiesKillEventHandler(this, powerUpFactory)
+                new ZombiesKillEventHandler(this, powerUpFactory, taskRunner)
         ));
         plugin.getEventDispatcher().registerEventChannel(PlayerInteractEntityEvent.class, new EventChannel<>(
                 new WallWeaponInteractHandler(game, this)
@@ -318,7 +323,7 @@ public class Zombies extends AbstractGameMode {
         }
 
         ItemStack barricadeTool = new ItemStackBuilder(XMaterial.OAK_FENCE.parseMaterial())
-                .setDisplayName(ChatColor.WHITE + translator.translate(TranslationKey.BARRICADE_TOOL))
+                .setDisplayName(ChatColor.WHITE + translator.translate(TranslationKey.BARRICADE_TOOL.getPath()))
                 .build();
 
         Loadout loadout = loadoutFactory.make(
@@ -377,7 +382,7 @@ public class Zombies extends AbstractGameMode {
         startWave(config.getStartingRound());
 
         MysteryBox mysteryBox = getRandomMysteryBox();
-        mysteryBox.setState(new MovingState(game, null));
+        mysteryBox.setState(new MovingState(game, null, taskRunner));
 
         for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
             Title title = EnumTitle.ZOMBIES_START.getTitle();
@@ -387,11 +392,13 @@ public class Zombies extends AbstractGameMode {
         BattleSound.THUNDER.play(game);
     }
 
-    public void startCountdown() {
+    public Countdown startCountdown() {
         // Skip the countdown and start the game
         game.startGame();
         // Skip one game state and go straight to the ingame state
         game.setState(game.getState().next());
+        // Return a nulled countdown
+        return new NulledCountdown();
     }
 
     public void startWave(int round) {
@@ -424,7 +431,7 @@ public class Zombies extends AbstractGameMode {
         int waveDelay = config.getWaveDelay() * 20;
         int period = (int) ((100 / round + 10) * config.getSpawnRate());
 
-        new WaveSpawningThread(game, wave, maxMobs).runTaskTimer(waveDelay, period);
+        taskRunner.runTaskTimer(new WaveSpawningThread(game, wave, maxMobs), waveDelay, period);
     }
 
     public void stop() {
@@ -442,7 +449,7 @@ public class Zombies extends AbstractGameMode {
     public void tick() {
         for (Objective objective : objectives) {
             if (objective.isAchieved()) {
-                game.callEvent(new GameEndEvent(game, objective, team, teams));
+                plugin.getEventDispatcher().dispatchExternalEvent(new GameEndEvent(game, objective, team, teams));
                 game.stop();
                 break;
             }

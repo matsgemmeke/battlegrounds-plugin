@@ -60,7 +60,7 @@ public class ZombiesOverviewView implements View {
     }
 
     private Inventory createInventory() {
-        String title = translator.translate(TranslationKey.VIEW_ZOMBIES_OVERVIEW_TITLE);
+        String title = translator.translate(TranslationKey.VIEW_ZOMBIES_OVERVIEW_TITLE.getPath());
         Inventory inventory = plugin.getServer().createInventory(this, INVENTORY_SIZE, title);
 
         Map<ArenaComponent, ItemStack> components = new HashMap<>();
@@ -68,17 +68,17 @@ public class ZombiesOverviewView implements View {
         for (Section section : zombies.getSectionContainer().getAll()) {
             ItemStack sectionItemStack = new ItemStackBuilder(new ItemStack(XMaterial.GLASS.parseMaterial()))
                     .setDisplayName(
-                            translator.translate(TranslationKey.VIEW_ZOMBIES_OVERVIEW_SECTION,
+                            translator.translate(TranslationKey.VIEW_ZOMBIES_OVERVIEW_SECTION.getPath(),
                                     new Placeholder("bg_section", section.getName())
                             )
                     )
                     .setLore(
-                            translator.translate(TranslationKey.VIEW_ZOMBIES_OVERVIEW_SECTION_COMPONENTS,
+                            translator.translate(TranslationKey.VIEW_ZOMBIES_OVERVIEW_SECTION_COMPONENTS.getPath(),
                                     new Placeholder("bg_components", section.getComponentCount())
                             ),
                             EMPTY_STRING,
-                            translator.translate(TranslationKey.VIEW_ZOMBIES_OVERVIEW_SECTION_OVERVIEW),
-                            translator.translate(TranslationKey.VIEW_ZOMBIES_OVERVIEW_SECTION_REMOVE)
+                            translator.translate(TranslationKey.VIEW_ZOMBIES_OVERVIEW_SECTION_OVERVIEW.getPath()),
+                            translator.translate(TranslationKey.VIEW_ZOMBIES_OVERVIEW_SECTION_REMOVE.getPath())
                     )
                     .build();
 

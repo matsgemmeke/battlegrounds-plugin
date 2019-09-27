@@ -40,7 +40,7 @@ public class SelectLoadoutView implements View {
         this.game = game;
         this.gamePlayer = gamePlayer;
         this.items = new ArrayList<>();
-        this.inventory = plugin.getServer().createInventory(this, 27, translator.translate(TranslationKey.VIEW_SELECT_LOADOUT));
+        this.inventory = plugin.getServer().createInventory(this, 27, translator.translate(TranslationKey.VIEW_SELECT_LOADOUT.getPath()));
         this.loadoutFactory = new LoadoutFactory();
 
         addLoadouts(game, gamePlayer);
@@ -133,7 +133,7 @@ public class SelectLoadoutView implements View {
             int levelUnlocked = plugin.getLevelConfig().getLevelUnlocked(loadout.getName());
             boolean locked = levelUnlocked > plugin.getLevelConfig().getLevel(plugin.getPlayerStorage().getStoredPlayer(gamePlayer.getUUID()).getExp());
 
-            String displayName = locked ? translator.translate(TranslationKey.ITEM_LOCKED, new Placeholder("bg_level", plugin.getLevelConfig().getLevelUnlocked(loadout.getName()))) : ChatColor.WHITE + loadout.getName();
+            String displayName = locked ? translator.translate(TranslationKey.ITEM_LOCKED.getPath(), new Placeholder("bg_level", plugin.getLevelConfig().getLevelUnlocked(loadout.getName()))) : ChatColor.WHITE + loadout.getName();
 
             ItemStack itemStack = new ItemStackBuilder(locked ? new ItemStack(Material.BARRIER) : getLoadoutItemStack(loadout))
                     .addItemFlags(ItemFlag.values())

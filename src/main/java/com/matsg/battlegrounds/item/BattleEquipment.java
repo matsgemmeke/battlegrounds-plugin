@@ -9,7 +9,6 @@ import com.matsg.battlegrounds.api.item.Transaction;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.item.mechanism.IgnitionSystem;
 import com.matsg.battlegrounds.util.BattleSound;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -155,12 +154,6 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
         BattleSound.EXPLOSIVE_THROW.play(game, item.getLocation());
     }
 
-    private String[] getLore() {
-        return new String[] {
-                ChatColor.WHITE + equipmentType.getName()
-        };
-    }
-
     public void handleTransaction(Transaction transaction) {
         this.gamePlayer = transaction.getGamePlayer();
     }
@@ -216,7 +209,6 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
         itemStack = new ItemStackBuilder(itemStack)
                 .addItemFlags(ItemFlag.values())
                 .setAmount(amount)
-                .setLore(getLore())
                 .setUnbreakable(true)
                 .build();
         if (gamePlayer != null) {

@@ -20,9 +20,22 @@ public class FireModeAttributeModifier implements AttributeModifier<FireMode> {
     public ValueObject<FireMode> modify(ValueObject<FireMode> valueObject, String[] args) {
         String value = regex.substring(1);
 
+        int rateOfFire = 0;
+        int burst = 0;
+
         if (value.startsWith("arg")) {
             int index = Integer.parseInt(value.substring(3)) - 1;
-            value = args[index];
+
+            String[] valueArgs = args[index].substring(args[index].indexOf('(') + 1, args[index].indexOf(')')).split(",");
+
+            try {
+                rateOfFire = Integer.parseInt(valueArgs[0]);
+                burst = Integer.parseInt(valueArgs[1]);
+            } catch (NumberFormatException e) {
+                throw new AttributeModificationException("Unable to modify firemode attribute with regex " + regex, e);
+            }
+
+            value = args[index].substring(0, args[index].indexOf('('));
         }
 
         FireMode fireMode;
@@ -34,7 +47,7 @@ public class FireModeAttributeModifier implements AttributeModifier<FireMode> {
             throw new AttributeModificationException("Unable to modify firemode attribute with regex " + regex, e);
         }
 
-        fireMode = fireModeFactory.make(fireModeType);
+        fireMode = fireModeFactory.make(fireModeType, rateOfFire, burst);
 
         return new FireModeValueObject(fireMode);
     }

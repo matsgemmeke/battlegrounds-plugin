@@ -27,7 +27,7 @@ public class AddSpawn extends ComponentCommand {
             try {
                 teamId = Integer.parseInt(args[4]);
             } catch (Exception e) {
-                player.sendMessage(translator.translate(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[4])));
+                player.sendMessage(translator.translate(TranslationKey.INVALID_ARGUMENT_TYPE.getPath(), new Placeholder("bg_arg", args[4])));
                 return;
             }
         }
@@ -36,7 +36,7 @@ public class AddSpawn extends ComponentCommand {
             teamBase = args[5].equals("-b");
 
             if (teamBase && arena.getTeamBase(teamId) != null) {
-                player.sendMessage(translator.translate(TranslationKey.SPAWN_TEAMBASE_EXISTS,
+                player.sendMessage(translator.translate(TranslationKey.SPAWN_TEAMBASE_EXISTS.getPath(),
                         new Placeholder("bg_arena", arena.getName()),
                         new Placeholder("bg_team", teamId)
                 ));
@@ -56,7 +56,7 @@ public class AddSpawn extends ComponentCommand {
         game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".type", "spawn");
         game.getDataFile().save();
 
-        player.sendMessage(translator.translate(TranslationKey.SPAWN_ADD,
+        player.sendMessage(translator.translate(TranslationKey.SPAWN_ADD.getPath(),
                 new Placeholder("bg_arena", arena.getName()),
                 new Placeholder("bg_component_id", componentId)
         ));

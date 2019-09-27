@@ -36,7 +36,7 @@ public class LobbyCountdown extends BukkitRunnable implements Countdown {
 
     public void cancelCountdown() {
         cancelled = true;
-        game.getPlayerManager().broadcastMessage(translator.translate(TranslationKey.COUNTDOWN_CANCELLED));
+        game.getPlayerManager().broadcastMessage(translator.translate(TranslationKey.COUNTDOWN_CANCELLED.getPath()));
     }
 
     public void run() {
@@ -57,7 +57,7 @@ public class LobbyCountdown extends BukkitRunnable implements Countdown {
         }
 
         if (display.contains(countdown)) {
-            game.getPlayerManager().broadcastMessage(translator.translate(TranslationKey.COUNTDOWN_NOTE, new Placeholder("bg_countdown", countdown)));
+            game.getPlayerManager().broadcastMessage(translator.translate(TranslationKey.COUNTDOWN_NOTE.getPath(), new Placeholder("bg_countdown", countdown)));
             BattleSound.COUNTDOWN_NOTE.play(game);
         }
 

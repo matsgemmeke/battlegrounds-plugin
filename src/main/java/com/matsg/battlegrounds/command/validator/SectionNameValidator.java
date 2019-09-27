@@ -29,14 +29,14 @@ public class SectionNameValidator implements CommandValidator {
         Arena arena = game.getArena();
 
         if (args.length <= sectionPos) {
-            return new ValidationResponse(translator.translate(TranslationKey.SPECIFY_SECTION_NAME));
+            return new ValidationResponse(translator.translate(TranslationKey.SPECIFY_SECTION_NAME.getPath()));
         }
 
         Zombies zombies = game.getGameMode(Zombies.class);
         Section section = zombies.getSection(args[sectionPos]);
 
         if (section == null) {
-            return new ValidationResponse(translator.translate(TranslationKey.SECTION_NOT_EXISTS,
+            return new ValidationResponse(translator.translate(TranslationKey.SECTION_NOT_EXISTS.getPath(),
                     new Placeholder("bg_arena", arena.getName()),
                     new Placeholder("bg_section", args[sectionPos])
             ));

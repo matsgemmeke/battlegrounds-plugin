@@ -1,5 +1,7 @@
 package com.matsg.battlegrounds.item;
 
+import com.matsg.battlegrounds.TaskRunner;
+import com.matsg.battlegrounds.api.Version;
 import com.matsg.battlegrounds.api.entity.BattleEntity;
 import com.matsg.battlegrounds.api.event.EventDispatcher;
 import com.matsg.battlegrounds.api.event.GamePlayerDamageEntityEvent;
@@ -26,6 +28,8 @@ public class BattleLethal extends BattleEquipment implements Lethal {
     public BattleLethal(
             ItemMetadata metadata,
             ItemStack itemStack,
+            TaskRunner taskRunner,
+            Version version,
             EventDispatcher eventDispatcher,
             IgnitionSystem ignitionSystem,
             int amount,
@@ -40,8 +44,8 @@ public class BattleLethal extends BattleEquipment implements Lethal {
             double velocity,
             Sound[] ignitionSound
     ) {
-        super(metadata, itemStack, EquipmentType.LETHAL, ignitionSystem, ignitionSound, amount, cooldown, ignitionTime,
-                longRange, midRange, shortRange, velocity);
+        super(metadata, itemStack, taskRunner, version, EquipmentType.LETHAL, ignitionSystem, ignitionSound, amount,
+                cooldown, ignitionTime, longRange, midRange, shortRange, velocity);
         this.eventDispatcher = eventDispatcher;
         this.longDamage = longDamage;
         this.midDamage = midDamage;

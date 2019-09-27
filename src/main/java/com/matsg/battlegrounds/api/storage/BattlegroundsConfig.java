@@ -21,7 +21,7 @@ public class BattlegroundsConfig extends AbstractYaml {
     public int mobHealthBarLength = getInt("game-mob-health-bar.length");
     public double firearmAccuracy = getDouble("game-firearm-accuracy");
     public List<String> allowedCommands = getStringList("game-allowed-commands");
-    public List<String> joinableGamestates = getStringList("game-joinable-states");
+    public List<String> joinableGameStates = getStringList("game-joinable-states");
     public List<String> pierceableMaterials = getStringList("game-pierceable-materials");
     public String mobHealthBarEndSymbol = getString("game-mob-health-bar.end-symbol");
     public String mobHealthBarStartSymbol = getString("game-mob-health-bar.start-symbol");

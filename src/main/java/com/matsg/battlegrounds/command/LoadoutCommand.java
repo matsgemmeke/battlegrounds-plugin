@@ -27,8 +27,6 @@ public class LoadoutCommand extends Command {
 
         setName("loadout");
         setPlayerOnly(true);
-
-        subCommands.add(new Rename(translator, playerStorage));
     }
 
     public void execute(CommandSender sender, String[] args) {

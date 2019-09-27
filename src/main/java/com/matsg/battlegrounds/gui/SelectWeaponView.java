@@ -34,7 +34,7 @@ public class SelectWeaponView implements View {
         this.player = player;
         this.weapons = new HashMap<>();
 
-        this.inventory = plugin.getServer().createInventory(this, 27, itemType.getName());
+        this.inventory = plugin.getServer().createInventory(this, 27, translator.translate(itemType.getNameKey()));
 
         Collections.sort(weapons, new Comparator<Weapon>() {
             public int compare(Weapon o1, Weapon o2){
@@ -49,7 +49,7 @@ public class SelectWeaponView implements View {
             addWeapon(weapon, slot++);
         }
 
-        inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(translator.translate(TranslationKey.GO_BACK)).build());
+        inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(translator.translate(TranslationKey.GO_BACK.getPath())).build());
     }
 
     public SelectWeaponView(Battlegrounds plugin, Translator translator, Player player, Loadout loadout, ItemType itemType, List<Weapon> weapons, Inventory previous) {
@@ -73,7 +73,7 @@ public class SelectWeaponView implements View {
     private ItemStack getLockedItemStack(Weapon weapon) {
         return new ItemStackBuilder(Material.BARRIER)
                 .addItemFlags(ItemFlag.values())
-                .setDisplayName(translator.translate(TranslationKey.ITEM_LOCKED, new Placeholder("bg_level", plugin.getLevelConfig().getLevelUnlocked(weapon.getMetadata().getId()))))
+                .setDisplayName(translator.translate(TranslationKey.ITEM_LOCKED.getPath(), new Placeholder("bg_level", plugin.getLevelConfig().getLevelUnlocked(weapon.getMetadata().getId()))))
                 .setUnbreakable(true)
                 .build();
     }

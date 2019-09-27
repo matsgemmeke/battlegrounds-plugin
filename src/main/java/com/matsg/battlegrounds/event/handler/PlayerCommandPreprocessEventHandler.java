@@ -30,7 +30,7 @@ public class PlayerCommandPreprocessEventHandler implements EventHandler<PlayerC
             return;
         }
 
-        player.sendMessage(translator.translate(TranslationKey.COMMAND_NOT_ALLOWED));
+        player.sendMessage(translator.translate(TranslationKey.COMMAND_NOT_ALLOWED.getPath()));
 
         event.setCancelled(true);
     }

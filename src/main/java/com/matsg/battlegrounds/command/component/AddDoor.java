@@ -41,7 +41,7 @@ public class AddDoor extends ComponentCommand {
         Selection selection = selectionManager.getSelection(player);
 
         if (selection == null || !selection.isComplete()) {
-            player.sendMessage(translator.translate(TranslationKey.NO_SELECTION));
+            player.sendMessage(translator.translate(TranslationKey.NO_SELECTION.getPath()));
             return;
         }
 
@@ -62,7 +62,7 @@ public class AddDoor extends ComponentCommand {
         game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".type", "door");
         game.getDataFile().save();
 
-        player.sendMessage(translator.translate(TranslationKey.DOOR_ADD,
+        player.sendMessage(translator.translate(TranslationKey.DOOR_ADD.getPath(),
                 new Placeholder("bg_component_id", componentId),
                 new Placeholder("bg_section", section.getName())
         ));

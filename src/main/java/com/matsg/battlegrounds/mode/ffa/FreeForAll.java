@@ -7,10 +7,7 @@ import com.matsg.battlegrounds.api.event.EventChannel;
 import com.matsg.battlegrounds.api.event.EventDispatcher;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent;
 import com.matsg.battlegrounds.api.event.GamePlayerKillEntityEvent;
-import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.GameScoreboard;
-import com.matsg.battlegrounds.api.game.Spawn;
-import com.matsg.battlegrounds.api.game.Team;
+import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.game.BattleTeam;
@@ -32,8 +29,8 @@ public class FreeForAll extends ClassicGameMode {
     public FreeForAll(Battlegrounds plugin, Game game, Translator translator, SpawningBehavior spawningBehavior, FFAConfig config) {
         super(plugin, GameModeType.FREE_FOR_ALL, game, translator, spawningBehavior);
         this.config = config;
-        this.name = translator.translate(TranslationKey.FFA_NAME);
-        this.shortName = translator.translate(TranslationKey.FFA_SHORT);
+        this.name = translator.translate(TranslationKey.FFA_NAME.getPath());
+        this.shortName = translator.translate(TranslationKey.FFA_SHORT.getPath());
     }
 
     public void onCreate() {
@@ -78,6 +75,10 @@ public class FreeForAll extends ClassicGameMode {
         return config.isScoreboardEnabled() ? scoreboard : null;
     }
 
+    protected Countdown makeCountdown() {
+        return new GameModeCountdown(game, translator, config.getCountdownLength());
+    }
+
     public void removePlayer(GamePlayer gamePlayer) {
         Team team = getTeam(gamePlayer);
         if (team == null) {
@@ -94,15 +95,6 @@ public class FreeForAll extends ClassicGameMode {
         }
     }
 
-    public void startCountdown() {
-        super.startCountdown();
-
-        GameModeCountdown countdown = new GameModeCountdown(game, translator, config.getCountdownLength());
-        countdown.runTaskTimer(0, 20);
-
-        game.setCountdown(countdown);
-    }
-
     public void stop() {
         super.stop();
 
@@ -117,7 +109,7 @@ public class FreeForAll extends ClassicGameMode {
         };
 
         for (String message : config.getEndMessage()) {
-            game.getPlayerManager().broadcastMessage(translator.translate(TranslationKey.PREFIX) + translator.createSimpleMessage(message, placeholders));
+            game.getPlayerManager().broadcastMessage(translator.createSimpleMessage(message, placeholders));
         }
 
         this.teams.clear();

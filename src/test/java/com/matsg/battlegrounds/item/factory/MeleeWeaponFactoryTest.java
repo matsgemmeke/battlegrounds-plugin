@@ -2,7 +2,9 @@ package com.matsg.battlegrounds.item.factory;
 
 import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.FactoryCreationException;
+import com.matsg.battlegrounds.TaskRunner;
 import com.matsg.battlegrounds.api.Translator;
+import com.matsg.battlegrounds.api.Version;
 import com.matsg.battlegrounds.api.event.EventDispatcher;
 import com.matsg.battlegrounds.api.storage.ItemConfig;
 import com.matsg.battlegrounds.api.item.MeleeWeapon;
@@ -32,14 +34,18 @@ public class MeleeWeaponFactoryTest {
     private EventDispatcher eventDispatcher;
     private ItemConfig meleeWeaponConfig;
     private String id;
+    private TaskRunner taskRunner;
     private Translator translator;
+    private Version version;
 
     @Before
     public void setUp() {
         this.section = mock(ConfigurationSection.class);
         this.eventDispatcher = mock(EventDispatcher.class);
         this.meleeWeaponConfig = mock(ItemConfig.class);
+        this.taskRunner = mock(TaskRunner.class);
         this.translator = mock(Translator.class);
+        this.version = mock(Version.class);
 
         this.id = "Id";
 
@@ -62,7 +68,7 @@ public class MeleeWeaponFactoryTest {
         when(section.getDouble("Damage")).thenReturn(10.0);
         when(section.getName()).thenReturn(id);
 
-        MeleeWeaponFactory factory = new MeleeWeaponFactory(meleeWeaponConfig, eventDispatcher, translator);
+        MeleeWeaponFactory factory = new MeleeWeaponFactory(meleeWeaponConfig, eventDispatcher, taskRunner, translator, version);
         MeleeWeapon meleeWeapon = factory.make(id);
 
         assertNotNull(meleeWeapon);
@@ -75,7 +81,7 @@ public class MeleeWeaponFactoryTest {
         when(section.getInt("Cooldown")).thenReturn(-1);
         when(section.getDouble("Damage")).thenReturn(-10.0);
 
-        MeleeWeaponFactory factory = new MeleeWeaponFactory(meleeWeaponConfig, eventDispatcher, translator);
+        MeleeWeaponFactory factory = new MeleeWeaponFactory(meleeWeaponConfig, eventDispatcher, taskRunner, translator, version);
         factory.make(id);
     }
 }

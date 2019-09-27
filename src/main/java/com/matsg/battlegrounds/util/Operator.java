@@ -3,28 +3,28 @@ package com.matsg.battlegrounds.util;
 public enum Operator {
 
     ADDITION("+") {
-        public Object apply(Object x1, Object x2) {
-            return (((Number) x1).doubleValue() + ((Number) x2).doubleValue());
+        public Number apply(Number x1, Number x2) {
+            return x1.doubleValue() + x2.doubleValue();
         }
     },
     DIVISION("/") {
-        public Object apply(Object x1, Object x2) {
-            return (((Number) x1).doubleValue() / ((Number) x2).doubleValue());
+        public Number apply(Number x1, Number x2) {
+            return x1.doubleValue() / x2.doubleValue();
         }
     },
     EQUALIZATION("=") {
-        public Object apply(Object x1, Object x2) {
+        public Number apply(Number x1, Number x2) {
             return x2;
         }
     },
     MULTIPLICATION("*") {
-        public Object apply(Object x1, Object x2) {
-            return (((Number) x1).doubleValue() * ((Number) x2).doubleValue());
+        public Number apply(Number x1, Number x2) {
+            return x1.doubleValue() * x2.doubleValue();
         }
     },
     SUBTRACTION("-") {
-        public Object apply(Object x1, Object x2) {
-            return (((Number) x1).doubleValue() - ((Number) x2).doubleValue());
+        public Number apply(Number x1, Number x2) {
+            return x1.doubleValue() - x2.doubleValue();
         }
     };
 
@@ -43,7 +43,7 @@ public enum Operator {
         throw new IllegalArgumentException();
     }
 
-    public abstract Object apply(Object x1, Object x2);
+    public abstract Number apply(Number x1, Number x2);
 
     public String toString() {
         return text;

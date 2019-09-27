@@ -2,12 +2,17 @@ package com.matsg.battlegrounds.command;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.Translator;
 import org.bukkit.command.CommandSender;
 
 public class Reload extends Command {
 
-    public Reload(Battlegrounds plugin) {
-        super(plugin);
+    private Battlegrounds plugin;
+
+    public Reload(Battlegrounds plugin, Translator translator) {
+        super(translator);
+        this.plugin = plugin;
+
         setDescription(createMessage(TranslationKey.DESCRIPTION_RELOAD));
         setName("reload");
         setPermissionNode("battlegrounds.reload");

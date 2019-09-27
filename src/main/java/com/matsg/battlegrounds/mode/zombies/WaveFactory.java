@@ -6,15 +6,18 @@ import com.matsg.battlegrounds.api.entity.BattleEntityType;
 import com.matsg.battlegrounds.api.game.ComponentContainer;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.mode.zombies.component.Section;
+import org.bukkit.plugin.Plugin;
 
 public class WaveFactory {
 
     private ComponentContainer<Section> sectionContainer;
+    private Plugin plugin;
     private Version version;
     private ZombiesConfig config;
 
-    public WaveFactory(ComponentContainer<Section> sectionContainer, Version version, ZombiesConfig config) {
+    public WaveFactory(ComponentContainer<Section> sectionContainer, Plugin plugin, Version version, ZombiesConfig config) {
         this.sectionContainer = sectionContainer;
+        this.plugin = plugin;
         this.version = version;
         this.config = config;
     }
@@ -41,7 +44,7 @@ public class WaveFactory {
                 wave = new HellhoundWave(round, mobCount, attackDamage, followRange, hellhoundHealth);
 
                 for (int i = 0; i < mobCount; i++) {
-                    wave.getMobs().add(version.makeHellhound(game));
+                    wave.getMobs().add(version.makeHellhound(game, plugin));
                 }
 
                 break;
@@ -51,7 +54,7 @@ public class WaveFactory {
                 wave = new ZombiesWave(round, mobCount, attackDamage, followRange, zombieHealth);
 
                 for (int i = 0; i < mobCount; i++) {
-                    wave.getMobs().add(version.makeZombie(game));
+                    wave.getMobs().add(version.makeZombie(game, plugin));
                 }
 
                 break;

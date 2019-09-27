@@ -47,7 +47,7 @@ public class GameOverviewView implements View {
         }
 
         ItemStack backButton = new ItemStackBuilder(new ItemStack(XMaterial.COMPASS.parseMaterial()))
-                .setDisplayName(translator.translate(TranslationKey.GO_BACK))
+                .setDisplayName(translator.translate(TranslationKey.GO_BACK.getPath()))
                 .build();
 
         inventory.setItem(INVENTORY_SIZE - 1, backButton);
@@ -81,7 +81,7 @@ public class GameOverviewView implements View {
     }
 
     private Inventory createInventory() {
-        String title = translator.translate(TranslationKey.VIEW_GAME_OVERVIEW_TITLE, new Placeholder("bg_game", game.getId()));
+        String title = translator.translate(TranslationKey.VIEW_GAME_OVERVIEW_TITLE.getPath(), new Placeholder("bg_game", game.getId()));
 
         return plugin.getServer().createInventory(this, INVENTORY_SIZE, title);
     }

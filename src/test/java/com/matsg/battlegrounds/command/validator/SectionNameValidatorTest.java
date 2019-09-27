@@ -16,7 +16,6 @@ import static org.mockito.Mockito.*;
 
 public class SectionNameValidatorTest {
 
-    private Battlegrounds plugin;
     private Game game;
     private GameManager gameManager;
     private int gameId;
@@ -26,7 +25,6 @@ public class SectionNameValidatorTest {
 
     @Before
     public void setUp() {
-        this.plugin = mock(Battlegrounds.class);
         this.game = mock(Game.class);
         this.gameManager = mock(GameManager.class);
         this.translator = mock(Translator.class);
@@ -36,7 +34,6 @@ public class SectionNameValidatorTest {
         this.sectionName = "Section";
 
         when(gameManager.getGame(gameId)).thenReturn(game);
-        when(plugin.getGameManager()).thenReturn(gameManager);
     }
 
     @Test
@@ -44,9 +41,9 @@ public class SectionNameValidatorTest {
         String[] input = new String[] { "command", String.valueOf(gameId) };
         TranslationKey key = TranslationKey.SPECIFY_SECTION_NAME;
 
-        when(translator.translate(key)).thenReturn(responseMessage);
+        when(translator.translate(key.getPath())).thenReturn(responseMessage);
 
-        SectionNameValidator validator = new SectionNameValidator(plugin, translator, 2);
+        SectionNameValidator validator = new SectionNameValidator(gameManager, translator, 2);
         ValidationResponse response = validator.validate(input);
 
         assertFalse(response.passed());
@@ -62,10 +59,10 @@ public class SectionNameValidatorTest {
 
         when(game.getArena()).thenReturn(mock(Arena.class));
         when(game.getGameMode(Zombies.class)).thenReturn(zombies);
-        when(translator.translate(eq(key), anyVararg())).thenReturn(responseMessage);
+        when(translator.translate(eq(key.getPath()), anyVararg())).thenReturn(responseMessage);
         when(zombies.getSection(sectionName)).thenReturn(null);
 
-        SectionNameValidator validator = new SectionNameValidator(plugin, translator, 2);
+        SectionNameValidator validator = new SectionNameValidator(gameManager, translator, 2);
         ValidationResponse response = validator.validate(input);
 
         assertFalse(response.passed());
@@ -81,7 +78,7 @@ public class SectionNameValidatorTest {
         when(game.getGameMode(Zombies.class)).thenReturn(zombies);
         when(zombies.getSection(sectionName)).thenReturn(mock(Section.class));
 
-        SectionNameValidator validator = new SectionNameValidator(plugin, translator, 2);
+        SectionNameValidator validator = new SectionNameValidator(gameManager, translator, 2);
         ValidationResponse response = validator.validate(input);
 
         assertTrue(response.passed());

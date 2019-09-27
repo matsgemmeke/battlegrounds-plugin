@@ -46,7 +46,7 @@ public class SelectionInteractionHandler implements EventHandler<PlayerInteractE
         if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
             selectionManager.setSelection(player, new BattleSelection(new Pair<>(location, selection.getSecondSelectedPoint()), selection.getWorld()));
 
-            player.sendMessage(translator.translate(TranslationKey.SELECTION_SET,
+            player.sendMessage(translator.translate(TranslationKey.SELECTION_SET.getPath(),
                     new Placeholder("bg_selection_pos", "First"),
                     new Placeholder("bg_selection_x", location.getX()),
                     new Placeholder("bg_selection_y", location.getY()),
@@ -55,7 +55,7 @@ public class SelectionInteractionHandler implements EventHandler<PlayerInteractE
         } else if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             selectionManager.setSelection(player, new BattleSelection(new Pair<>(selection.getFirstSelectedPoint(), location), selection.getWorld()));
 
-            player.sendMessage(translator.translate(TranslationKey.SELECTION_SET,
+            player.sendMessage(translator.translate(TranslationKey.SELECTION_SET.getPath(),
                     new Placeholder("bg_selection_pos", "Second"),
                     new Placeholder("bg_selection_x", location.getX()),
                     new Placeholder("bg_selection_y", location.getY()),

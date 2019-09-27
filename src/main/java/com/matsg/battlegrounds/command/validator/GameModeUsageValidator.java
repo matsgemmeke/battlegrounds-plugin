@@ -31,7 +31,7 @@ public class GameModeUsageValidator implements CommandValidator {
             }
         }
 
-        return new ValidationResponse(translator.translate(TranslationKey.GAMEMODE_NOT_USED,
+        return new ValidationResponse(translator.translate(TranslationKey.GAMEMODE_NOT_USED.getPath(),
                 new Placeholder("bg_game", game.getId()),
                 new Placeholder("bg_gamemode", gameModeType.toString())
         ));

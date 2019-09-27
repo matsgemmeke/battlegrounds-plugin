@@ -5,16 +5,19 @@ import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.Placeholder;
+import com.matsg.battlegrounds.api.storage.BattlegroundsConfig;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class Join extends Command {
 
+    private BattlegroundsConfig config;
     private GameManager gameManager;
 
-    public Join(Translator translator, GameManager gameManager) {
+    public Join(Translator translator, GameManager gameManager, BattlegroundsConfig config) {
         super(translator);
         this.gameManager = gameManager;
+        this.config = config;
 
         setAliases("j");
         setDescription(createMessage(TranslationKey.DESCRIPTION_JOIN));
@@ -52,7 +55,7 @@ public class Join extends Command {
 
         Game game = gameManager.getGame(id);
 
-        if (!plugin.getBattlegroundsConfig().joinableGamestates.contains(game.getState().toString())) {
+        if (!config.joinableGameStates.contains(game.getState().toString())) {
             player.sendMessage(createMessage(TranslationKey.IN_PROGRESS));
             return;
         }

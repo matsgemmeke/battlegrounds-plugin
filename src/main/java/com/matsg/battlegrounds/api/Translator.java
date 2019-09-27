@@ -1,6 +1,5 @@
 package com.matsg.battlegrounds.api;
 
-import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.storage.LanguageConfiguration;
 
 import java.util.Collection;
@@ -39,20 +38,11 @@ public interface Translator {
     String createSimpleMessage(String message, Placeholder... placeholders);
 
     /**
-     * Gets the translation of a certain message by its raw message path.
-     *
-     * @param path the message path
-     * @param placeholders optional placeholders for the message
-     * @return the translation message from the message path
-     */
-    String translate(String path, Placeholder... placeholders);
-
-    /**
-     * Gets the translation of a certain message by its translation key.
+     * Gets the translation of a certain message by its translation key path.
      *
      * @param key the translation key
      * @param placeholders optional placeholders for the message
-     * @return the translation message from the translation key path
+     * @return the translation message from the message path
      */
-    String translate(TranslationKey key, Placeholder... placeholders);
+    String translate(String key, Placeholder... placeholders);
 }

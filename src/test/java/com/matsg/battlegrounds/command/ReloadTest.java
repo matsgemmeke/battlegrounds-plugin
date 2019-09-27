@@ -32,9 +32,9 @@ public class ReloadTest {
         TranslationKey key = TranslationKey.RELOAD_SUCCESS;
 
         when(plugin.loadConfigs()).thenReturn(true);
-        when(translator.translate(key)).thenReturn(responseMessage);
+        when(translator.translate(key.getPath())).thenReturn(responseMessage);
 
-        Reload command = new Reload(plugin);
+        Reload command = new Reload(plugin, translator);
         command.execute(sender, new String[0]);
 
         verify(sender, times(1)).sendMessage(responseMessage);
@@ -45,9 +45,9 @@ public class ReloadTest {
         TranslationKey key = TranslationKey.RELOAD_FAILED;
 
         when(plugin.loadConfigs()).thenReturn(false);
-        when(translator.translate(key)).thenReturn(responseMessage);
+        when(translator.translate(key.getPath())).thenReturn(responseMessage);
 
-        Reload command = new Reload(plugin);
+        Reload command = new Reload(plugin, translator);
         command.execute(sender, new String[0]);
 
         verify(sender, times(1)).sendMessage(responseMessage);

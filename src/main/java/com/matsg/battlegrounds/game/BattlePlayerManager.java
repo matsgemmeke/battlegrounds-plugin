@@ -67,7 +67,7 @@ public class BattlePlayerManager implements PlayerManager {
 
         players.add(gamePlayer);
 
-        broadcastMessage(translator.translate(TranslationKey.PLAYER_JOIN,
+        broadcastMessage(translator.translate(TranslationKey.PLAYER_JOIN.getPath(),
                 new Placeholder("player_name", player.getName()),
                 new Placeholder("bg_players", players.size()),
                 new Placeholder("bg_maxplayers", game.getConfiguration().getMaxPlayers())));
@@ -249,7 +249,7 @@ public class BattlePlayerManager implements PlayerManager {
     public boolean removePlayer(GamePlayer gamePlayer) {
         players.remove(gamePlayer);
 
-        broadcastMessage(translator.translate(TranslationKey.PLAYER_LEAVE,
+        broadcastMessage(translator.translate(TranslationKey.PLAYER_LEAVE.getPath(),
                 new Placeholder("player_name", gamePlayer.getName()),
                 new Placeholder("bg_players", players.size()),
                 new Placeholder("bg_maxplayers", game.getConfiguration().getMaxPlayers())));

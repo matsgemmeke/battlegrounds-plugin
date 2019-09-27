@@ -76,6 +76,8 @@ public abstract class ClassicGameMode extends AbstractGameMode {
         return plugin.getBattlegroundsConfig().getDisplayBloodEffect(entityType.toString());
     }
 
+    protected abstract Countdown makeCountdown();
+
     public void preparePlayer(GamePlayer gamePlayer) {
         super.preparePlayer(gamePlayer);
 
@@ -86,13 +88,13 @@ public abstract class ClassicGameMode extends AbstractGameMode {
                 new ItemStackBuilder(Material.LEATHER_CHESTPLATE)
                         .addItemFlags(ItemFlag.values())
                         .setColor(gamePlayer.getTeam().getArmorColor())
-                        .setDisplayName(ChatColor.WHITE + translator.translate(TranslationKey.ARMOR_VEST))
+                        .setDisplayName(ChatColor.WHITE + translator.translate(TranslationKey.ARMOR_VEST.getPath()))
                         .setUnbreakable(true)
                         .build(),
                 new ItemStackBuilder(Material.LEATHER_HELMET)
                         .addItemFlags(ItemFlag.values())
                         .setColor(gamePlayer.getTeam().getArmorColor())
-                        .setDisplayName(ChatColor.WHITE + translator.translate(TranslationKey.ARMOR_HELMET))
+                        .setDisplayName(ChatColor.WHITE + translator.translate(TranslationKey.ARMOR_HELMET.getPath()))
                         .setUnbreakable(true)
                         .build()
         });
@@ -103,15 +105,17 @@ public abstract class ClassicGameMode extends AbstractGameMode {
         player.getInventory().setItem(ItemSlot.MISCELLANEOUS.getSlot(), selectLoadout.getItemStack());
     }
 
-    public void startCountdown() {
+    public Countdown startCountdown() {
         game.setState(game.getState().next());
         game.updateSign();
 
         for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
             if (gamePlayer.getLoadout() == null) {
                 gamePlayer.getPlayer().openInventory(new SelectLoadoutView(plugin, translator, game, gamePlayer).getInventory());
-            }
+           }
         }
+
+        return makeCountdown();
     }
 
     public void stop() {
@@ -121,7 +125,7 @@ public abstract class ClassicGameMode extends AbstractGameMode {
             Result result = Result.getResult(team, getSortedTeams());
             if (result != null) {
                 for (GamePlayer gamePlayer : team.getPlayers()) {
-                    String resultText = translator.translate(result.getTranslationKey());
+                    String resultText = translator.translate(result.getTranslationKey().getPath());
 
                     Title title = objective.getTitle().clone();
                     title.setTitleText(translator.createSimpleMessage(title.getTitleText(), new Placeholder("bg_result", resultText)));

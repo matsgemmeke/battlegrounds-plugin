@@ -8,16 +8,18 @@ import com.matsg.battlegrounds.api.game.GameConfiguration;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.api.game.GameMode;
 import com.matsg.battlegrounds.command.validator.GameIdValidator;
-import com.matsg.battlegrounds.game.BattleGame;
 import com.matsg.battlegrounds.game.BattleGameConfiguration;
+import com.matsg.battlegrounds.game.GameFactory;
 import org.bukkit.command.CommandSender;
 
 public class CreateGame extends Command {
 
+    private GameFactory gameFactory;
     private GameManager gameManager;
 
-    public CreateGame(Translator translator, GameManager gameManager) {
+    public CreateGame(Translator translator, GameFactory gameFactory, GameManager gameManager) {
         super(translator);
+        this.gameFactory = gameFactory;
         this.gameManager = gameManager;
 
         setAliases("cg");
@@ -32,7 +34,7 @@ public class CreateGame extends Command {
     public void execute(CommandSender sender, String[] args) {
         int id = Integer.parseInt(args[1]);
 
-        Game game = new BattleGame(plugin, id);
+        Game game = gameFactory.make(id);
         GameConfiguration configuration = BattleGameConfiguration.getDefaultConfiguration(game);
 
         configuration.saveConfiguration(game.getDataFile());

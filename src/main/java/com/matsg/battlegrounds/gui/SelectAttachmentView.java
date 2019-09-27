@@ -40,8 +40,8 @@ public class SelectAttachmentView implements View {
         this.loadout = loadout;
         this.player = player;
 
-        inventory = buildInventory(plugin.getServer().createInventory(this, 27, translator.translate(TranslationKey.VIEW_SELECT_ATTACHMENT, new Placeholder("bg_weapon", gun.getMetadata().getName()))));
-        inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(translator.translate(TranslationKey.GO_BACK)).build());
+        inventory = buildInventory(plugin.getServer().createInventory(this, 27, translator.translate(TranslationKey.VIEW_SELECT_ATTACHMENT.getPath(), new Placeholder("bg_weapon", gun.getMetadata().getName()))));
+        inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(translator.translate(TranslationKey.GO_BACK.getPath())).build());
     }
 
     public SelectAttachmentView(Battlegrounds plugin, Translator translator, Player player, Loadout loadout, Gun gun, int attachmentNr, Inventory previous) {
@@ -93,7 +93,7 @@ public class SelectAttachmentView implements View {
     private ItemStack getLockedItemStack(Attachment attachment) {
         return new ItemStackBuilder(Material.BARRIER)
                 .addItemFlags(ItemFlag.values())
-                .setDisplayName(translator.translate(TranslationKey.ITEM_LOCKED, new Placeholder("bg_level", plugin.getLevelConfig().getLevelUnlocked(attachment.getMetadata().getName()))))
+                .setDisplayName(translator.translate(TranslationKey.ITEM_LOCKED.getPath(), new Placeholder("bg_level", plugin.getLevelConfig().getLevelUnlocked(attachment.getMetadata().getName()))))
                 .setUnbreakable(true)
                 .build();
     }

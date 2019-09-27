@@ -1,6 +1,5 @@
 package com.matsg.battlegrounds.item;
 
-import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.item.GunPart;
 
@@ -14,18 +13,18 @@ public enum BattleGunPart implements GunPart {
     UPPER_RAIL(6, TranslationKey.GUN_PART_UPPER_RAIL);
 
     private int id;
-    private String name;
+    private TranslationKey key;
 
     BattleGunPart(int id, TranslationKey key) {
         this.id = id;
-        this.name = BattlegroundsPlugin.getPlugin().getTranslator().translate(key);
+        this.key = key;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getKey() {
+        return key.getPath();
     }
 }

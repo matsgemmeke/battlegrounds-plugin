@@ -38,7 +38,7 @@ public class BlockPhysicsEventHandlerTest {
         this.world = mock(World.class);
 
         this.arena = new BattleArena("Arena", world, new Location(world, 100, 100, 100), new Location(world, 0, 0, 0));
-        this.event = new BlockPhysicsEvent(block, mock(BlockData.class));
+        this.event = new BlockPhysicsEvent(block, null);
         this.gameManager = new BattleGameManager();
 
         List<Arena> arenaList = new ArrayList<>();

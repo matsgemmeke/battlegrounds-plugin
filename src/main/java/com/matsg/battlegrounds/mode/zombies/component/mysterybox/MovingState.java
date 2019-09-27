@@ -74,7 +74,7 @@ public class MovingState implements MysteryBoxState {
 
                     newBox.getLeftSide().getWorld().strikeLightningEffect(newBox.getLeftSide().getLocation());
                     newBox.setActive(true);
-                    newBox.setState(new IdleState(game, newBox));
+                    newBox.setState(new IdleState(game, newBox, taskRunner));
 
                     cancel();
                     return;

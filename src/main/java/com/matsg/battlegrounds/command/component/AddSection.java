@@ -29,14 +29,14 @@ public class AddSection extends ComponentCommand {
         Zombies zombies = game.getGameMode(Zombies.class);
 
         if (args.length == 4) {
-            player.sendMessage(translator.translate(TranslationKey.SPECIFY_SECTION_NAME));
+            player.sendMessage(translator.translate(TranslationKey.SPECIFY_SECTION_NAME.getPath()));
             return;
         }
 
         String sectionName = args[4];
 
         if (zombies.getSection(sectionName) != null) {
-            player.sendMessage(translator.translate(TranslationKey.SECTION_EXISTS,
+            player.sendMessage(translator.translate(TranslationKey.SECTION_EXISTS.getPath(),
                     new Placeholder("bg_arena", arena.getName()),
                     new Placeholder("bg_section", args[3])
             ));
@@ -44,7 +44,7 @@ public class AddSection extends ComponentCommand {
         }
 
         if (args.length == 5) {
-            player.sendMessage(translator.translate(TranslationKey.SPECIFY_SECTION_PRICE));
+            player.sendMessage(translator.translate(TranslationKey.SPECIFY_SECTION_PRICE.getPath()));
             return;
         }
 
@@ -53,7 +53,7 @@ public class AddSection extends ComponentCommand {
         try {
             price = Integer.parseInt(args[5]);
         } catch (Exception e) {
-            player.sendMessage(translator.translate(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[5])));
+            player.sendMessage(translator.translate(TranslationKey.INVALID_ARGUMENT_TYPE.getPath(), new Placeholder("bg_arg", args[5])));
             return;
         }
 
@@ -71,7 +71,7 @@ public class AddSection extends ComponentCommand {
         game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".unlocked", section.isUnlockedByDefault());
         game.getDataFile().save();
 
-        player.sendMessage(translator.translate(TranslationKey.SECTION_ADD,
+        player.sendMessage(translator.translate(TranslationKey.SECTION_ADD.getPath(),
                 new Placeholder("bg_arena", arena.getName()),
                 new Placeholder("bg_component_id", componentId),
                 new Placeholder("bg_section", section.getName())

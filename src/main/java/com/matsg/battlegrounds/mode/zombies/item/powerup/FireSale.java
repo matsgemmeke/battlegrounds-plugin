@@ -1,11 +1,13 @@
 package com.matsg.battlegrounds.mode.zombies.item.powerup;
 
+import com.matsg.battlegrounds.TaskRunner;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.mode.zombies.component.MysteryBox;
 import com.matsg.battlegrounds.mode.zombies.Zombies;
 import com.matsg.battlegrounds.mode.zombies.item.PowerUpCallback;
 import com.matsg.battlegrounds.mode.zombies.item.PowerUpEffect;
 import org.bukkit.Material;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Collection;
 
@@ -17,13 +19,15 @@ public class FireSale implements PowerUpEffect {
     private int duration;
     private Material material;
     private String name;
+    private TaskRunner taskRunner;
     private Zombies zombies;
 
-    public FireSale(Game game, Zombies zombies, String name, int duration) {
+    public FireSale(Game game, Zombies zombies, String name, int duration, TaskRunner taskRunner) {
         this.game = game;
         this.zombies = zombies;
         this.name = name;
         this.duration = duration;
+        this.taskRunner = taskRunner;
         this.material = Material.NAME_TAG;
     }
 
@@ -52,7 +56,7 @@ public class FireSale implements PowerUpEffect {
             mysteryBox.setPrice(MYSTERY_BOX_POINTS);
         }
 
-        new BattleRunnable() {
+        taskRunner.runTaskLater(new BukkitRunnable() {
             public void run() {
                 if (!game.getState().isInProgress()) {
                     return;
@@ -65,7 +69,7 @@ public class FireSale implements PowerUpEffect {
 
                 callback.onPowerUpEnd();
             }
-        }.runTaskLater(duration);
+        }, duration);
     }
 
     public boolean isApplicableForActivation() {

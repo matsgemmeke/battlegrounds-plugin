@@ -17,16 +17,13 @@ public class SetMainLobbyTest {
         String responseMessage = "Response";
         TranslationKey key = TranslationKey.MAINLOBBY_SET;
 
-        Battlegrounds plugin = mock(Battlegrounds.class);
         CacheYaml cache = mock(CacheYaml.class);
         Player player = mock(Player.class);
         Translator translator = mock(Translator.class);
 
-        when(plugin.getBattlegroundsCache()).thenReturn(cache);
-        when(plugin.getTranslator()).thenReturn(translator);
-        when(translator.translate(key)).thenReturn(responseMessage);
+        when(translator.translate(key.getPath())).thenReturn(responseMessage);
 
-        SetMainLobby command = new SetMainLobby(plugin);
+        SetMainLobby command = new SetMainLobby(translator, cache);
         command.execute(player, new String[0]);
 
         verify(cache, times(1)).setLocation(anyString(), any(Location.class), anyBoolean());

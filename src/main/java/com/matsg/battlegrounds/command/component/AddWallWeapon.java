@@ -1,7 +1,6 @@
 package com.matsg.battlegrounds.command.component;
 
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Arena;
@@ -48,7 +47,7 @@ public class AddWallWeapon extends ComponentCommand {
         }
 
         if (itemFrame == null) {
-            player.sendMessage(translator.translate(TranslationKey.INVALID_BLOCK));
+            player.sendMessage(translator.translate(TranslationKey.INVALID_BLOCK.getPath()));
             return;
         }
 
@@ -59,19 +58,19 @@ public class AddWallWeapon extends ComponentCommand {
         Section section = zombies.getSection(args[sectionPos]);
 
         if (args.length == 5) {
-            player.sendMessage(translator.translate(TranslationKey.SPECIFY_WEAPON_ID));
+            player.sendMessage(translator.translate(TranslationKey.SPECIFY_WEAPON_ID.getPath()));
             return;
         }
 
         Weapon weapon = itemFinder.findWeapon(args[5]);
 
         if (weapon == null) {
-            player.sendMessage(translator.translate(TranslationKey.INVALID_WEAPON, new Placeholder("bg_weapon", args[5])));
+            player.sendMessage(translator.translate(TranslationKey.INVALID_WEAPON.getPath(), new Placeholder("bg_weapon", args[5])));
             return;
         }
 
         if (args.length == 6) {
-            player.sendMessage(translator.translate(TranslationKey.SPECIFY_ITEM_PRICE));
+            player.sendMessage(translator.translate(TranslationKey.SPECIFY_ITEM_PRICE.getPath()));
             return;
         }
 
@@ -80,7 +79,7 @@ public class AddWallWeapon extends ComponentCommand {
         try {
             price = Integer.parseInt(args[6]);
         } catch (Exception e) {
-            player.sendMessage(translator.translate(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[6])));
+            player.sendMessage(translator.translate(TranslationKey.INVALID_ARGUMENT_TYPE.getPath(), new Placeholder("bg_arg", args[6])));
             return;
         }
 
@@ -98,7 +97,7 @@ public class AddWallWeapon extends ComponentCommand {
         game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".weapon", weapon.getMetadata().getName());
         game.getDataFile().save();
 
-        player.sendMessage(translator.translate(TranslationKey.ITEMCHEST_ADD,
+        player.sendMessage(translator.translate(TranslationKey.ITEMCHEST_ADD.getPath(),
                 new Placeholder("bg_arena", arena.getName()),
                 new Placeholder("bg_component_id", componentId)
         ));

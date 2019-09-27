@@ -61,10 +61,6 @@ public abstract class Command implements CommandExecutor {
         this.permissionNode = permissionNode;
     }
 
-    public List<Command> getSubCommands() {
-        return subCommands;
-    }
-
     public String getUsage() {
         return usage;
     }
@@ -81,12 +77,12 @@ public abstract class Command implements CommandExecutor {
         this.playerOnly = playerOnly;
     }
 
-    public String createMessage(TranslationKey key, Placeholder... placeholders) {
-        return translator.translate(key, placeholders);
+    public void addSubCommand(Command command) {
+        subCommands.add(command);
     }
 
-    public String createSimpleMessage(String message, Placeholder... placeholders) {
-        return translator.translate(message, placeholders);
+    public String createMessage(TranslationKey key, Placeholder... placeholders) {
+        return translator.translate(key.getPath(), placeholders);
     }
 
     public void execute(CommandSender sender, String[] args) { }
@@ -103,6 +99,10 @@ public abstract class Command implements CommandExecutor {
             }
         }
         return null;
+    }
+
+    public Command[] getSubCommands() {
+        return subCommands.toArray(new Command[subCommands.size()]);
     }
 
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {

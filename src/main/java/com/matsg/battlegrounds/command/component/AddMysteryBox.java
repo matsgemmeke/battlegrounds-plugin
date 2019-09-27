@@ -5,7 +5,6 @@ import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.command.Command;
 import com.matsg.battlegrounds.mode.zombies.component.MysteryBox;
 import com.matsg.battlegrounds.mode.zombies.component.Section;
 import com.matsg.battlegrounds.api.Placeholder;
@@ -39,7 +38,7 @@ public class AddMysteryBox extends ComponentCommand {
         BlockState blockState = player.getTargetBlock((Set<Material>) null, 5).getState();
 
         if (!(blockState instanceof Chest) || !(((Chest) blockState).getInventory().getHolder() instanceof DoubleChest)) {
-            player.sendMessage(translator.translate(TranslationKey.INVALID_BLOCK));
+            player.sendMessage(translator.translate(TranslationKey.INVALID_BLOCK.getPath()));
             return;
         }
 
@@ -54,7 +53,7 @@ public class AddMysteryBox extends ComponentCommand {
         }
 
         if (attachedBlock == null) {
-            player.sendMessage(translator.translate(TranslationKey.INVALID_BLOCK));
+            player.sendMessage(translator.translate(TranslationKey.INVALID_BLOCK.getPath()));
             return;
         }
 
@@ -65,7 +64,7 @@ public class AddMysteryBox extends ComponentCommand {
         Section section = zombies.getSection(args[sectionPos]);
 
         if (args.length == 5) {
-            player.sendMessage(translator.translate(TranslationKey.SPECIFY_MYSTERYBOX_PRICE));
+            player.sendMessage(translator.translate(TranslationKey.SPECIFY_MYSTERYBOX_PRICE.getPath()));
             return;
         }
 
@@ -74,7 +73,7 @@ public class AddMysteryBox extends ComponentCommand {
         try {
             price = Integer.parseInt(args[5]);
         } catch (Exception e) {
-            player.sendMessage(translator.translate(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[5])));
+            player.sendMessage(translator.translate(TranslationKey.INVALID_ARGUMENT_TYPE.getPath(), new Placeholder("bg_arg", args[5])));
             return;
         }
 
@@ -101,7 +100,7 @@ public class AddMysteryBox extends ComponentCommand {
         game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".type", "mysterybox");
         game.getDataFile().save();
 
-        player.sendMessage(translator.translate(TranslationKey.MYSTERYBOX_ADD,
+        player.sendMessage(translator.translate(TranslationKey.MYSTERYBOX_ADD.getPath(),
                 new Placeholder("bg_arena", arena.getName()),
                 new Placeholder("bg_component_id", componentId)
         ));

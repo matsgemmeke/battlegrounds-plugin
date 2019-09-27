@@ -88,7 +88,7 @@ public class AsyncPlayerChatEventHandlerTest {
         TranslationKey key = TranslationKey.PLAYER_MESSAGE;
 
         when(plugin.getLogger()).thenReturn(logger);
-        when(translator.translate(eq(key), anyVararg())).thenReturn(responseMessage);
+        when(translator.translate(eq(key.getPath()), anyVararg())).thenReturn(responseMessage);
 
         AsyncPlayerChatEventHandler eventHandler = new AsyncPlayerChatEventHandler(plugin, translator);
         eventHandler.handle(event);
@@ -107,7 +107,7 @@ public class AsyncPlayerChatEventHandlerTest {
         TranslationKey key = TranslationKey.PLAYER_MESSAGE;
 
         when(plugin.getLogger()).thenReturn(logger);
-        when(translator.translate(eq(key), anyVararg())).thenReturn(responseMessage);
+        when(translator.translate(eq(key.getPath()), anyVararg())).thenReturn(responseMessage);
 
         AsyncPlayerChatEventHandler eventHandler = new AsyncPlayerChatEventHandler(plugin, translator);
         eventHandler.handle(event);

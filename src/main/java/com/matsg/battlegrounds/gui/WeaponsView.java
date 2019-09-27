@@ -40,9 +40,9 @@ public class WeaponsView implements View {
         this.itemSlot = itemSlot;
 
         try {
-            this.equipmentConfig = new EquipmentConfig(plugin);
-            this.firearmConfig = new FirearmConfig(plugin);
-            this.meleeWeaponConfig = new MeleeWeaponConfig(plugin);
+            this.equipmentConfig = new EquipmentConfig("equipment.yml", plugin.getResource("equipment.yml"));
+            this.firearmConfig = new FirearmConfig("guns.yml", plugin.getResource("guns.yml"));
+            this.meleeWeaponConfig = new MeleeWeaponConfig("melee_weapons.yml", plugin.getResource("melee_weapons.yml"));
         } catch (IOException e) {
             return;
         }
@@ -112,7 +112,7 @@ public class WeaponsView implements View {
         weapon.update();
         inventory.addItem(new ItemStackBuilder(weapon.getItemStack().clone())
                 .addItemFlags(ItemFlag.values())
-                .setDisplayName(ChatColor.WHITE + weapon.getType().getName())
+                .setDisplayName(ChatColor.WHITE + translator.translate(weapon.getType().getNameKey()))
                 .setLore(new String[0])
                 .setUnbreakable(true)
                 .build()
@@ -136,7 +136,7 @@ public class WeaponsView implements View {
     }
 
     private Inventory prepareInventory() {
-        Inventory inventory = plugin.getServer().createInventory(this, 27, translator.translate(TranslationKey.VIEW_WEAPONS));
+        Inventory inventory = plugin.getServer().createInventory(this, 27, translator.translate(TranslationKey.VIEW_WEAPONS.getPath()));
 
         // Add all firearm class types
         for (FirearmType firearmType : FirearmType.values()) {
@@ -174,7 +174,7 @@ public class WeaponsView implements View {
             }
         }
 
-        inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(translator.translate(TranslationKey.GO_BACK)).build());
+        inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(translator.translate(TranslationKey.GO_BACK.getPath())).build());
         return inventory;
     }
 }

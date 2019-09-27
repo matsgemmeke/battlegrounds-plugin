@@ -44,7 +44,7 @@ public class AddPerkMachine extends ComponentCommand {
         BlockState blockState = player.getTargetBlock((Set<Material>) null, 5).getState();
 
         if (!(blockState instanceof Sign)) {
-            player.sendMessage(translator.translate(TranslationKey.INVALID_BLOCK));
+            player.sendMessage(translator.translate(TranslationKey.INVALID_BLOCK.getPath()));
             return;
         }
 
@@ -55,7 +55,7 @@ public class AddPerkMachine extends ComponentCommand {
         Section section = zombies.getSection(args[sectionPos]);
 
         if (args.length == 5) {
-            player.sendMessage(translator.translate(TranslationKey.SPECIFY_PERK_TYPE));
+            player.sendMessage(translator.translate(TranslationKey.SPECIFY_PERK_TYPE.getPath()));
             return;
         }
 
@@ -64,12 +64,12 @@ public class AddPerkMachine extends ComponentCommand {
         try {
             perkEffectType = PerkEffectType.valueOf(args[5]);
         } catch (IllegalArgumentException e) {
-            player.sendMessage(translator.translate(TranslationKey.INVALID_PERK_TYPE, new Placeholder("bg_perk", args[5])));
+            player.sendMessage(translator.translate(TranslationKey.INVALID_PERK_TYPE.getPath(), new Placeholder("bg_perk", args[5])));
             return;
         }
 
         if (args.length == 6) {
-            player.sendMessage(translator.translate(TranslationKey.SPECIFY_PERK_PRICE));
+            player.sendMessage(translator.translate(TranslationKey.SPECIFY_PERK_PRICE.getPath()));
             return;
         }
 
@@ -78,7 +78,7 @@ public class AddPerkMachine extends ComponentCommand {
         try {
             price = Integer.parseInt(args[6]);
         } catch (Exception e) {
-            player.sendMessage(translator.translate(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[6])));
+            player.sendMessage(translator.translate(TranslationKey.INVALID_ARGUMENT_TYPE.getPath(), new Placeholder("bg_arg", args[6])));
             return;
         }
 
@@ -88,7 +88,7 @@ public class AddPerkMachine extends ComponentCommand {
             try {
                 maxBuys = Integer.parseInt(args[7]);
             } catch (IllegalArgumentException e) {
-                player.sendMessage(translator.translate(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[7])));
+                player.sendMessage(translator.translate(TranslationKey.INVALID_ARGUMENT_TYPE.getPath(), new Placeholder("bg_arg", args[7])));
                 return;
             }
         }
@@ -109,7 +109,7 @@ public class AddPerkMachine extends ComponentCommand {
         game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".type", "perkmachine");
         game.getDataFile().save();
 
-        player.sendMessage(translator.translate(TranslationKey.PERKMACHINE_ADD,
+        player.sendMessage(translator.translate(TranslationKey.PERKMACHINE_ADD.getPath(),
                 new Placeholder("bg_arena", arena.getName()),
                 new Placeholder("bg_component_id", componentId),
                 new Placeholder("bg_perk", perk.getMetadata().getName())

@@ -6,10 +6,10 @@ import com.matsg.battlegrounds.api.item.ItemType;
 public class MeleeWeaponItemType implements ItemType {
 
     private ItemSlot defaultItemSlot;
-    private String name;
+    private String nameKey;
 
-    public MeleeWeaponItemType(String name) {
-        this.name = name;
+    public MeleeWeaponItemType(String nameKey) {
+        this.nameKey = nameKey;
         this.defaultItemSlot = ItemSlot.MELEE_WEAPON;
     }
 
@@ -17,8 +17,8 @@ public class MeleeWeaponItemType implements ItemType {
         return defaultItemSlot;
     }
 
-    public String getName() {
-        return name;
+    public String getNameKey() {
+        return nameKey;
     }
 
     public boolean hasSubTypes() {

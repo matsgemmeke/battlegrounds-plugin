@@ -22,7 +22,7 @@ public class ArenaNameValidator implements CommandValidator {
 
     public ValidationResponse validate(String[] args) {
         if (args.length < 3) {
-            return new ValidationResponse(translator.translate(TranslationKey.SPECIFY_ARENA_NAME));
+            return new ValidationResponse(translator.translate(TranslationKey.SPECIFY_ARENA_NAME.getPath()));
         }
 
         int id = Integer.parseInt(args[1]);
@@ -32,14 +32,14 @@ public class ArenaNameValidator implements CommandValidator {
         Arena arena = gameManager.getArena(game, name);
 
         if (arena == null && shouldExist) {
-            return new ValidationResponse(translator.translate(TranslationKey.ARENA_NOT_EXISTS,
+            return new ValidationResponse(translator.translate(TranslationKey.ARENA_NOT_EXISTS.getPath(),
                     new Placeholder("bg_arena", name),
                     new Placeholder("bg_game", id))
             );
         }
 
         if (arena != null && !shouldExist) {
-            return new ValidationResponse(translator.translate(TranslationKey.ARENA_EXISTS,
+            return new ValidationResponse(translator.translate(TranslationKey.ARENA_EXISTS.getPath(),
                     new Placeholder("bg_arena", name),
                     new Placeholder("bg_game", id))
             );

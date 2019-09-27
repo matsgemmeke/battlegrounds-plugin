@@ -40,7 +40,7 @@ public class AsyncPlayerChatEventHandler implements EventHandler<AsyncPlayerChat
             plugin.getLogger().info("[Game " + game.getId() + "] " + gamePlayer.getName() + ": " + event.getMessage());
         }
 
-        game.getPlayerManager().broadcastMessage(translator.translate(TranslationKey.PLAYER_MESSAGE,
+        game.getPlayerManager().broadcastMessage(translator.translate(TranslationKey.PLAYER_MESSAGE.getPath(),
                 new Placeholder("bg_message", event.getMessage()),
                 new Placeholder("player_name", team.getChatColor() + gamePlayer.getName() + ChatColor.WHITE)
         ));

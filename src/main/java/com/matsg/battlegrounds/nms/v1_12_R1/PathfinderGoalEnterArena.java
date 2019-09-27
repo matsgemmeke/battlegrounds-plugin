@@ -12,21 +12,20 @@ import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class PathfinderGoalEnterArena extends PathfinderGoal {
 
     private CustomZombie zombie;
-    private Game game;
     private MobSpawn mobSpawn;
     private Navigation navigation;
-    private TaskRunner taskRunner;
+    private Plugin plugin;
 
-    public PathfinderGoalEnterArena(Game game, CustomZombie zombie, MobSpawn mobSpawn, TaskRunner taskRunner) {
-        this.game = game;
+    public PathfinderGoalEnterArena(CustomZombie zombie, MobSpawn mobSpawn, Plugin plugin) {
         this.zombie = zombie;
         this.mobSpawn = mobSpawn;
-        this.taskRunner = taskRunner;
+        this.plugin = plugin;
         this.navigation = (Navigation) zombie.getNavigation();
     }
 
@@ -35,7 +34,7 @@ public class PathfinderGoalEnterArena extends PathfinderGoal {
     }
 
     public void c() {
-        taskRunner.runTaskTimer(new BukkitRunnable() {
+        new BukkitRunnable() {
             boolean passed = true;
 
             public void run() {
@@ -86,6 +85,6 @@ public class PathfinderGoalEnterArena extends PathfinderGoal {
                 zombie.setHostile(true);
             }
 
-        }, 0, 40);
+        }.runTaskTimer(plugin, 0, 40);
     }
 }

@@ -43,26 +43,26 @@ public class PluginOverviewView implements View {
                 for (Game game : plugin.getGameManager().getGames()) {
                     ItemStack itemStack = new ItemStackBuilder(game.getState().toItemStack())
                             .setDisplayName(
-                                    translator.translate(TranslationKey.VIEW_PLUGIN_OVERVIEW_GAME,
+                                    translator.translate(TranslationKey.VIEW_PLUGIN_OVERVIEW_GAME.getPath(),
                                             new Placeholder("bg_game", game.getId())
                                     )
                             )
                             .setLore(
-                                    translator.translate(TranslationKey.VIEW_PLUGIN_OVERVIEW_GAME_ARENA,
+                                    translator.translate(TranslationKey.VIEW_PLUGIN_OVERVIEW_GAME_ARENA.getPath(),
                                             new Placeholder("bg_arena", game.getArena().getName())
                                     ),
-                                    translator.translate(TranslationKey.VIEW_PLUGIN_OVERVIEW_GAME_GAMEMODE,
+                                    translator.translate(TranslationKey.VIEW_PLUGIN_OVERVIEW_GAME_GAMEMODE.getPath(),
                                             new Placeholder("bg_gamemode", game.getGameMode().getName())
                                     ),
-                                    translator.translate(TranslationKey.VIEW_PLUGIN_OVERVIEW_GAME_PLAYERS,
+                                    translator.translate(TranslationKey.VIEW_PLUGIN_OVERVIEW_GAME_PLAYERS.getPath(),
                                             new Placeholder("bg_maxplayers", game.getConfiguration().getMaxPlayers()),
                                             new Placeholder("bg_players", game.getPlayerManager().getPlayers().size())
                                     ),
-                                    translator.translate(TranslationKey.VIEW_PLUGIN_OVERVIEW_GAME_STATE,
+                                    translator.translate(TranslationKey.VIEW_PLUGIN_OVERVIEW_GAME_STATE.getPath(),
                                             new Placeholder("bg_state", game.getState())
                                     ),
                                     EMPTY_STRING,
-                                    translator.translate(TranslationKey.VIEW_PLUGIN_OVERVIEW_GAME_OVERVIEW)
+                                    translator.translate(TranslationKey.VIEW_PLUGIN_OVERVIEW_GAME_OVERVIEW.getPath())
                             )
                             .build();
 
@@ -99,7 +99,7 @@ public class PluginOverviewView implements View {
     }
 
     private Inventory createInventory() {
-        String title = translator.translate(TranslationKey.VIEW_PLUGIN_OVERVIEW_TITLE);
+        String title = translator.translate(TranslationKey.VIEW_PLUGIN_OVERVIEW_TITLE.getPath());
 
         return plugin.getServer().createInventory(this, INVENTORY_SIZE, title);
     }

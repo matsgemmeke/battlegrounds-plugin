@@ -15,7 +15,6 @@ import static org.mockito.Mockito.*;
 public class ArenaNameValidatorTest {
 
     private Arena arena;
-    private Battlegrounds plugin;
     private Game game;
     private GameManager gameManager;
     private int gameId;
@@ -26,7 +25,6 @@ public class ArenaNameValidatorTest {
     @Before
     public void setUp() {
         this.arena = mock(Arena.class);
-        this.plugin = mock(Battlegrounds.class);
         this.game = mock(Game.class);
         this.gameManager = mock(GameManager.class);
         this.translator = mock(Translator.class);
@@ -36,7 +34,6 @@ public class ArenaNameValidatorTest {
         this.responseMessage = "Response";
 
         when(gameManager.getGame(gameId)).thenReturn(game);
-        when(plugin.getGameManager()).thenReturn(gameManager);
     }
 
     @Test
@@ -44,9 +41,9 @@ public class ArenaNameValidatorTest {
         String[] input = new String[] { "command", String.valueOf(gameId) };
         TranslationKey key = TranslationKey.SPECIFY_ARENA_NAME;
 
-        when(translator.translate(key)).thenReturn(responseMessage);
+        when(translator.translate(key.getPath())).thenReturn(responseMessage);
 
-        ArenaNameValidator validator = new ArenaNameValidator(plugin, translator, true);
+        ArenaNameValidator validator = new ArenaNameValidator(gameManager, translator, true);
         ValidationResponse response = validator.validate(input);
 
         assertFalse(response.passed());
@@ -59,9 +56,9 @@ public class ArenaNameValidatorTest {
         TranslationKey key = TranslationKey.ARENA_NOT_EXISTS;
 
         when(gameManager.getArena(game, arenaName)).thenReturn(null);
-        when(translator.translate(eq(key), anyVararg())).thenReturn(responseMessage);
+        when(translator.translate(eq(key.getPath()), anyVararg())).thenReturn(responseMessage);
 
-        ArenaNameValidator validator = new ArenaNameValidator(plugin, translator, true);
+        ArenaNameValidator validator = new ArenaNameValidator(gameManager, translator, true);
         ValidationResponse response = validator.validate(input);
 
         assertFalse(response.passed());
@@ -74,9 +71,9 @@ public class ArenaNameValidatorTest {
         TranslationKey key = TranslationKey.ARENA_EXISTS;
 
         when(gameManager.getArena(game, arenaName)).thenReturn(arena);
-        when(translator.translate(eq(key), anyVararg())).thenReturn(responseMessage);
+        when(translator.translate(eq(key.getPath()), anyVararg())).thenReturn(responseMessage);
 
-        ArenaNameValidator validator = new ArenaNameValidator(plugin, translator, false);
+        ArenaNameValidator validator = new ArenaNameValidator(gameManager, translator, false);
         ValidationResponse response = validator.validate(input);
 
         assertFalse(response.passed());
@@ -89,7 +86,7 @@ public class ArenaNameValidatorTest {
 
         when(gameManager.getArena(game, arenaName)).thenReturn(arena);
 
-        ArenaNameValidator validator = new ArenaNameValidator(plugin, translator, true);
+        ArenaNameValidator validator = new ArenaNameValidator(gameManager, translator, true);
         ValidationResponse response = validator.validate(input);
 
         assertTrue(response.passed());

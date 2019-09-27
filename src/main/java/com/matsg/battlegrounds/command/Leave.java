@@ -2,14 +2,20 @@ package com.matsg.battlegrounds.command;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.GameManager;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Game;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class Leave extends Command {
 
-    public Leave(Battlegrounds plugin) {
-        super(plugin);
+    private GameManager gameManager;
+
+    public Leave(Translator translator, GameManager gameManager) {
+        super(translator);
+        this.gameManager = gameManager;
+
         setAliases("l");
         setDescription(createMessage(TranslationKey.DESCRIPTION_LEAVE));
         setName("leave");
@@ -19,7 +25,7 @@ public class Leave extends Command {
 
     public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
-        Game game = plugin.getGameManager().getGame(player);
+        Game game = gameManager.getGame(player);
 
         if (game == null) {
             player.sendMessage(createMessage(TranslationKey.NOT_PLAYING));

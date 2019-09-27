@@ -42,7 +42,7 @@ public class MeleeWeaponFactory implements ItemFactory<MeleeWeapon> {
         ItemStack itemStack = new ItemStackBuilder(Material.valueOf(material[0]))
                 .setDurability(Short.valueOf(material[1]))
                 .build();
-        ItemType itemType = new MeleeWeaponItemType(translator.translate(TranslationKey.ITEM_TYPE_MELEE_WEAPON));
+        ItemType itemType = new MeleeWeaponItemType(TranslationKey.ITEM_TYPE_MELEE_WEAPON.getPath());
 
         try {
             return new BattleMeleeWeapon(

@@ -1,6 +1,5 @@
 package com.matsg.battlegrounds.item;
 
-import com.matsg.battlegrounds.BattlegroundsPlugin;
 import com.matsg.battlegrounds.api.item.DamageSource;
 import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.item.ItemType;
@@ -22,16 +21,16 @@ public enum FirearmType implements ItemType {
     private Class<? extends DamageSource> damageSourceClass;
     private int maxHits, projectileAmount;
     private ItemSlot itemSlot;
-    private String name;
+    private String nameKey;
 
-    FirearmType(String path, ItemSlot itemSlot, int projectileAmount, Class<? extends DamageSource> damageSourceClass, int maxHits, boolean scope) {
+    FirearmType(String nameKey, ItemSlot itemSlot, int projectileAmount, Class<? extends DamageSource> damageSourceClass, int maxHits, boolean scope) {
+        this.nameKey = nameKey;
         this.damageSourceClass = damageSourceClass;
         this.itemSlot = itemSlot;
         this.maxHits = maxHits;
         this.projectileAmount = projectileAmount;
         this.pierceable = maxHits > 1;
         this.scope = scope;
-        this.name = BattlegroundsPlugin.getPlugin().getTranslator().translate(path);
     }
 
     public ItemSlot getDefaultItemSlot() {
@@ -42,8 +41,8 @@ public enum FirearmType implements ItemType {
         return maxHits;
     }
 
-    public String getName() {
-        return name;
+    public String getNameKey() {
+        return nameKey;
     }
 
     public int getProjectileAmount() {

@@ -21,7 +21,7 @@ public class SelectLoadout extends BattleItem {
         this.game = game;
         this.translator = translator;
         this.itemSlot = ItemSlot.MISCELLANEOUS;
-        this.itemStack = new ItemStackBuilder(Material.COMPASS).setDisplayName(ChatColor.WHITE + translator.translate(TranslationKey.CHANGE_LOADOUT)).build();
+        this.itemStack = new ItemStackBuilder(Material.COMPASS).setDisplayName(ChatColor.WHITE + translator.translate(TranslationKey.CHANGE_LOADOUT.getPath())).build();
     }
 
     private void onClick(GamePlayer gamePlayer) {

@@ -31,7 +31,7 @@ public class GameModeCountdown extends BukkitRunnable implements Countdown {
             gamePlayer.getPlayer().teleport(game.getLobby());
         }
 
-        game.getPlayerManager().broadcastMessage(translator.translate(TranslationKey.COUNTDOWN_CANCELLED));
+        game.getPlayerManager().broadcastMessage(translator.translate(TranslationKey.COUNTDOWN_CANCELLED.getPath()));
     }
 
     public void run() {

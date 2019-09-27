@@ -117,11 +117,11 @@ public class FirearmFactory implements ItemFactory<Firearm> {
                 );
 
                 String[] lore = new String[] {
-                        ChatColor.WHITE + firearmType.getName(),
-                        ChatColor.GRAY + formatFirearmStat(STAT_SYMBOL_LENGTH, accuracy * 100.0, 100.0) + " " + translator.translate(TranslationKey.STAT_ACCURACY),
-                        ChatColor.GRAY + formatFirearmStat(STAT_SYMBOL_LENGTH, bullet.getShortDamage(), 55.0) + " " + translator.translate(TranslationKey.STAT_DAMAGE),
-                        ChatColor.GRAY + formatFirearmStat(STAT_SYMBOL_LENGTH, Math.max((fireRate + 10 - cooldown / 2) * 10.0, 40.0), 200.0) + " " + translator.translate(TranslationKey.STAT_FIRERATE),
-                        ChatColor.GRAY + formatFirearmStat(STAT_SYMBOL_LENGTH, bullet.getMidRange(), 70.0) + " " + translator.translate(TranslationKey.STAT_RANGE)
+                        ChatColor.WHITE + translator.translate(firearmType.getNameKey()),
+                        ChatColor.GRAY + formatFirearmStat(STAT_SYMBOL_LENGTH, accuracy * 100.0, 100.0) + " " + translator.translate(TranslationKey.STAT_ACCURACY.getPath()),
+                        ChatColor.GRAY + formatFirearmStat(STAT_SYMBOL_LENGTH, bullet.getShortDamage(), 55.0) + " " + translator.translate(TranslationKey.STAT_DAMAGE.getPath()),
+                        ChatColor.GRAY + formatFirearmStat(STAT_SYMBOL_LENGTH, Math.max((fireRate + 10 - cooldown / 2) * 10.0, 40.0), 200.0) + " " + translator.translate(TranslationKey.STAT_FIRERATE.getPath()),
+                        ChatColor.GRAY + formatFirearmStat(STAT_SYMBOL_LENGTH, bullet.getMidRange(), 70.0) + " " + translator.translate(TranslationKey.STAT_RANGE.getPath())
                 };
 
                 ItemStack itemStack = new ItemStackBuilder(new ItemStack(Material.valueOf(material[0])))
@@ -180,6 +180,8 @@ public class FirearmFactory implements ItemFactory<Firearm> {
                         new ItemStackBuilder(Material.valueOf(projectileMaterial[0])).setDurability(Short.parseShort(projectileMaterial[1])).build(),
                         null,
                         null,
+                        null,
+                        null,
                         0,
                         0,
                         0,
@@ -194,11 +196,11 @@ public class FirearmFactory implements ItemFactory<Firearm> {
                 );
 
                 String[] lore = new String[] {
-                        ChatColor.WHITE + firearmType.getName(),
-                        ChatColor.GRAY + formatFirearmStat(STAT_SYMBOL_LENGTH, accuracy * 100.0, 100.0) + " " + translator.translate(TranslationKey.STAT_ACCURACY),
-                        ChatColor.GRAY + formatFirearmStat(STAT_SYMBOL_LENGTH, lethal.getShortDamage(), 50.0) + " " + translator.translate(TranslationKey.STAT_DAMAGE),
-                        ChatColor.GRAY + formatFirearmStat(STAT_SYMBOL_LENGTH, Math.max((15 - cooldown / 2) * 10.0, 40.0), 200.0) + " " + translator.translate(TranslationKey.STAT_FIRERATE),
-                        ChatColor.GRAY + formatFirearmStat(STAT_SYMBOL_LENGTH, lethal.getLongRange(), 35.0) + " " + translator.translate(TranslationKey.STAT_RANGE)
+                        ChatColor.WHITE + translator.translate(firearmType.getNameKey()),
+                        ChatColor.GRAY + formatFirearmStat(STAT_SYMBOL_LENGTH, accuracy * 100.0, 100.0) + " " + translator.translate(TranslationKey.STAT_ACCURACY.getPath()),
+                        ChatColor.GRAY + formatFirearmStat(STAT_SYMBOL_LENGTH, lethal.getShortDamage(), 50.0) + " " + translator.translate(TranslationKey.STAT_DAMAGE.getPath()),
+                        ChatColor.GRAY + formatFirearmStat(STAT_SYMBOL_LENGTH, Math.max((15 - cooldown / 2) * 10.0, 40.0), 200.0) + " " + translator.translate(TranslationKey.STAT_FIRERATE.getPath()),
+                        ChatColor.GRAY + formatFirearmStat(STAT_SYMBOL_LENGTH, lethal.getLongRange(), 35.0) + " " + translator.translate(TranslationKey.STAT_RANGE.getPath())
                 };
 
                 ItemStack itemStack = new ItemStackBuilder(new ItemStack(Material.valueOf(material[0])))
@@ -213,9 +215,9 @@ public class FirearmFactory implements ItemFactory<Firearm> {
                 Launcher launcher = new BattleLauncher(
                         metadata,
                         itemStack,
+                        eventDispatcher,
                         taskRunner,
                         version,
-                        eventDispatcher,
                         launchSystem,
                         lethal,
                         piercableMaterials,

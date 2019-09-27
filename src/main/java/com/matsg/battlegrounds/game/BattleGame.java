@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.game;
 
 import com.matsg.battlegrounds.TaskRunner;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.entity.PlayerState;
 import com.matsg.battlegrounds.api.event.EventDispatcher;
 import com.matsg.battlegrounds.api.storage.*;
@@ -46,10 +47,11 @@ public class BattleGame implements Game {
             EventDispatcher eventDispatcher,
             GameState state,
             ItemRegistry itemRegistry,
+            LevelConfig levelConfig,
             MobManager mobManager,
-            PlayerManager playerManager,
             PlayerStorage playerStorage,
-            TaskRunner taskRunner
+            TaskRunner taskRunner,
+            Translator translator
     ) {
         this.id = id;
         this.dataFile = dataFile;
@@ -57,16 +59,10 @@ public class BattleGame implements Game {
         this.state = state;
         this.itemRegistry = itemRegistry;
         this.mobManager = mobManager;
-        this.playerManager = playerManager;
         this.playerStorage = playerStorage;
         this.taskRunner = taskRunner;
         this.arenaList = new ArrayList<>();
-
-//        try {
-//            this.dataFile = new BattleCacheYaml("setup.yml", plugin.getDataFolder().getPath() + "/data/game_" + id, "setup.yml");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        this.playerManager = new BattlePlayerManager(this, levelConfig, playerStorage, taskRunner, translator);
     }
 
     public Arena getArena() {
@@ -231,7 +227,13 @@ public class BattleGame implements Game {
         }
 
         timeControl = new BattleTimeControl(this, taskRunner);
-        gameMode.startCountdown();
+        countdown = gameMode.startCountdown();
+
+        // Only start the countdown if the gamemode has one
+        if (countdown != null) {
+            taskRunner.runTaskTimer(countdown, 0, 20);
+        }
+
         updateScoreboard();
     }
 

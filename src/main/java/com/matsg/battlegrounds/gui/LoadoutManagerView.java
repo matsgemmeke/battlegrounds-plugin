@@ -31,7 +31,7 @@ public class LoadoutManagerView implements View {
         this.translator = translator;
         this.loadoutFactory = new LoadoutFactory();
         this.loadouts = new HashMap<>();
-        this.inventory = plugin.getServer().createInventory(this, 27, translator.translate(TranslationKey.VIEW_LOADOUT_MANAGER));
+        this.inventory = plugin.getServer().createInventory(this, 27, translator.translate(TranslationKey.VIEW_LOADOUT_MANAGER.getPath()));
 
         addLoadouts(player.getUniqueId());
     }
@@ -103,7 +103,7 @@ public class LoadoutManagerView implements View {
                     .addItemFlags(ItemFlag.values())
                     .setAmount(++i)
                     .setDisplayName(ChatColor.WHITE + loadout.getName())
-                    .setLore(translator.translate(TranslationKey.EDIT_LOADOUT))
+                    .setLore(translator.translate(TranslationKey.EDIT_LOADOUT.getPath()))
                     .setUnbreakable(true)
                     .build();
 

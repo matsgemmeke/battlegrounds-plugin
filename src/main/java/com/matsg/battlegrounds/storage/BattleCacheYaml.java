@@ -10,7 +10,7 @@ import java.io.InputStream;
 
 public class BattleCacheYaml extends AbstractYaml implements CacheYaml {
 
-    private Server server;
+    protected Server server;
 
     public BattleCacheYaml(String fileName, String filePath, InputStream resource, Server server) throws IOException {
         super(fileName, filePath, resource, false);

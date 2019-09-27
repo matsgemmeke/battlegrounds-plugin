@@ -68,10 +68,10 @@ public class LoadoutFactory {
             ((Gun) secondary).getAttachments().addAll(Arrays.asList(secondaryAttachments));
         }
 
-        Weapon[] weapons = new Weapon[] { primary, secondary, equipment, meleeWeapon };
+        Loadout loadout = new BattleLoadout(loadoutNr, name, primary, secondary, equipment, meleeWeapon);
 
         if (game != null) {
-            for (Weapon weapon : weapons) {
+            for (Weapon weapon : loadout.getWeapons()) {
                 if (weapon != null) {
                     game.getItemRegistry().addItem(weapon);
                     weapon.setContext(game.getGameMode());
@@ -79,6 +79,6 @@ public class LoadoutFactory {
             }
         }
 
-        return new BattleLoadout(loadoutNr, name, primary, secondary, equipment, meleeWeapon);
+        return loadout;
     }
 }

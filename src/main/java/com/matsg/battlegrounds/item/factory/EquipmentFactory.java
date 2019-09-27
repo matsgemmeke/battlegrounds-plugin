@@ -9,6 +9,7 @@ import com.matsg.battlegrounds.api.storage.ItemConfig;
 import com.matsg.battlegrounds.item.*;
 import com.matsg.battlegrounds.item.mechanism.IgnitionSystem;
 import com.matsg.battlegrounds.item.mechanism.IgnitionSystemType;
+import com.matsg.battlegrounds.item.mechanism.TacticalEffectType;
 import com.matsg.battlegrounds.util.BattleSound;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -19,6 +20,7 @@ public class EquipmentFactory implements ItemFactory<Equipment> {
     private EventDispatcher eventDispatcher;
     private IgnitionSystemFactory ignitionSystemFactory;
     private ItemConfig equipmentConfig;
+    private TacticalEffectFactory tacticalEffectFactory;
     private TaskRunner taskRunner;
     private Version version;
 
@@ -26,12 +28,14 @@ public class EquipmentFactory implements ItemFactory<Equipment> {
             ItemConfig equipmentConfig,
             EventDispatcher eventDispatcher,
             IgnitionSystemFactory ignitionSystemFactory,
+            TacticalEffectFactory tacticalEffectFactory,
             TaskRunner taskRunner,
             Version version
     ) {
         this.equipmentConfig = equipmentConfig;
         this.eventDispatcher = eventDispatcher;
         this.ignitionSystemFactory = ignitionSystemFactory;
+        this.tacticalEffectFactory = tacticalEffectFactory;
         this.taskRunner = taskRunner;
         this.version = version;
     }
@@ -63,6 +67,8 @@ public class EquipmentFactory implements ItemFactory<Equipment> {
                 Lethal lethal = new BattleLethal(
                         metadata,
                         itemStack,
+                        taskRunner,
+                        version,
                         eventDispatcher,
                         ignitionSystem,
                         AttributeValidator.shouldBeHigherThan(section.getInt("Amount"), 0),
@@ -86,10 +92,14 @@ public class EquipmentFactory implements ItemFactory<Equipment> {
             }
         } else {
             try {
+                int duration = AttributeValidator.shouldBeHigherThan(section.getInt("Duration"), 0);
                 int ignitionTime = AttributeValidator.shouldEqualOrBeHigherThan(section.getInt("IgnitionTime"), 0);
 
                 IgnitionSystemType ignitionSystemType = ignitionTime > 0 ? IgnitionSystemType.FUSE : IgnitionSystemType.TRIGGER;
                 IgnitionSystem ignitionSystem = ignitionSystemFactory.make(ignitionSystemType);
+
+                TacticalEffectType tacticalEffectType = TacticalEffectType.valueOf(section.getString("Effect"));
+                TacticalEffect tacticalEffect = tacticalEffectFactory.make(tacticalEffectType, duration);
 
                 Tactical tactical = new BattleTactical(
                         metadata,
@@ -98,10 +108,9 @@ public class EquipmentFactory implements ItemFactory<Equipment> {
                         version,
                         ignitionSystem,
                         BattleSound.parseSoundArray(section.getString("Sound")),
-                        BattleTacticalEffect.valueOf(section.getString("Effect")),
+                        tacticalEffect,
                         AttributeValidator.shouldBeHigherThan(section.getInt("Amount"), 0),
                         AttributeValidator.shouldBeHigherThan(section.getInt("Cooldown"), 0),
-                        AttributeValidator.shouldBeHigherThan(section.getInt("Duration"), 0),
                         ignitionTime,
                         AttributeValidator.shouldEqualOrBeHigherThan(section.getDouble("Range.Long.Distance"), 0.0),
                         AttributeValidator.shouldEqualOrBeHigherThan(section.getDouble("Range.Medium.Distance"), 0.0),

@@ -45,6 +45,9 @@ public class DataLoader {
     private void load() {
         logger.info("Loading in games and arenas...");
 
+        GameFactory gameFactory = new GameFactory(plugin, taskRunner);
+        GameModeFactory gameModeFactory = new GameModeFactory(plugin, taskRunner, translator, version);
+
         // Look for games files that have been created already
         try {
             File[] files = new File(plugin.getDataFolder().getPath() + "/data").listFiles();
@@ -54,7 +57,9 @@ public class DataLoader {
                     if (file.isDirectory() && file.getName().startsWith("game_")) {
                         int id = Integer.parseInt(file.getName().substring(5));
 
-                        plugin.getGameManager().getGames().add(new BattleGame(plugin, id));
+                        Game game = gameFactory.make(id);
+
+                        plugin.getGameManager().getGames().add(game);
                     }
                 }
             } else {
@@ -111,8 +116,6 @@ public class DataLoader {
             e.printStackTrace();
         }
 
-        GameModeFactory gameModeFactory = new GameModeFactory(plugin, taskRunner, translator, version);
-
         // Setting configurations
         try {
             for (Game game : plugin.getGameManager().getGames()) {
@@ -162,7 +165,7 @@ public class DataLoader {
                     continue;
                 }
 
-                GameSign sign = new BattleGameSign(plugin, game, (Sign) state, translator);
+                GameSign sign = new BattleGameSign(game, (Sign) state, translator, plugin.getBattlegroundsConfig());
 
                 game.setGameSign(sign);
                 sign.update();
