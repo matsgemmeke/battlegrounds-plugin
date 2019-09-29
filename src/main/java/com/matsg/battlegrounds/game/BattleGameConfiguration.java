@@ -9,6 +9,7 @@ import com.matsg.battlegrounds.api.game.GameConfiguration;
 import com.matsg.battlegrounds.api.game.GameMode;
 import com.matsg.battlegrounds.mode.GameModeFactory;
 import com.matsg.battlegrounds.mode.GameModeType;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
@@ -30,8 +31,16 @@ public class BattleGameConfiguration implements GameConfiguration {
         Battlegrounds plugin = BattlegroundsPlugin.getPlugin();
 
         TaskRunner taskRunner = new TaskRunner() {
+            public BukkitTask runTaskLater(BukkitRunnable runnable, long delay) {
+                return runnable.runTaskLater(plugin, delay);
+            }
+
             public BukkitTask runTaskLater(Runnable runnable, long delay) {
                 return plugin.getServer().getScheduler().runTaskLater(plugin, runnable, delay);
+            }
+
+            public BukkitTask runTaskTimer(BukkitRunnable runnable, long delay, long period) {
+                return runnable.runTaskTimer(plugin, delay, period);
             }
 
             public BukkitTask runTaskTimer(Runnable runnable, long delay, long period) {

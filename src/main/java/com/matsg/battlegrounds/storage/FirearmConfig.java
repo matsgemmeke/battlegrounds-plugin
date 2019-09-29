@@ -12,7 +12,7 @@ import java.util.List;
 public class FirearmConfig extends AbstractYaml implements ItemConfig {
 
     public FirearmConfig(String filePath, InputStream resource) throws IOException {
-        super("guns.yml", filePath + "/items", resource, false);
+        super("guns.yml", filePath, resource, false);
     }
 
     public ConfigurationSection getItemConfigurationSection(String id) {

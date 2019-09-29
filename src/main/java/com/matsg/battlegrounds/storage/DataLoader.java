@@ -85,8 +85,14 @@ public class DataLoader {
                 for (String name : arenaSection.getKeys(false)) {
                     logger.info("Adding arena " + name + " to game " + id);
 
-                    Location max = data.getLocation("arena." + name + ".max"), min = data.getLocation("arena." + name + ".min");
+                    Location max = null;
+                    Location min = null;
                     World world = plugin.getServer().getWorld(data.getString("arena." + name + ".world"));
+
+                    if (data.getString("arena." + name + ".max") != null) {
+                        max = data.getLocation("arena." + name + ".max");
+                        min = data.getLocation("arena." + name + ".min");
+                    }
 
                     Arena arena = new BattleArena(name, world, max, min);
 
@@ -151,13 +157,13 @@ public class DataLoader {
         try {
             for (Game game : plugin.getGameManager().getGames()) {
                 int id = game.getId();
-                Location location = game.getDataFile().getLocation("sign");
 
-                if (location == null) {
+                if (game.getDataFile().getString("sign") == null) {
                     logger.warning("No join sign was found for game " + id);
                     continue;
                 }
 
+                Location location = game.getDataFile().getLocation("sign");
                 BlockState state = location.getBlock().getState();
 
                 if (!(state instanceof Sign)) {

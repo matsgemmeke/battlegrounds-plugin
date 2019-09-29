@@ -18,15 +18,20 @@ public class BattleCacheYaml extends AbstractYaml implements CacheYaml {
     }
 
     public Location getLocation(String path) {
-        String[] locationString = getString(path).split(",");
+        String locationString = getString(path);
+        String[] location;
+
+        if (locationString == null || (location = locationString.split(",")).length <= 0) {
+            throw new LocationFormatException("Can not format location on path " + path);
+        }
 
         return new Location(
-                server.getWorld(locationString[0]),
-                Double.parseDouble(locationString[1]),
-                Double.parseDouble(locationString[2]),
-                Double.parseDouble(locationString[3]),
-                Float.parseFloat(locationString[4]),
-                Float.parseFloat(locationString[5])
+                server.getWorld(location[0]),
+                Double.parseDouble(location[1]),
+                Double.parseDouble(location[2]),
+                Double.parseDouble(location[3]),
+                Float.parseFloat(location[4]),
+                Float.parseFloat(location[5])
         );
     }
 

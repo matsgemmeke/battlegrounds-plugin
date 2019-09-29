@@ -151,7 +151,9 @@ public abstract class AbstractYaml implements Yaml {
         file.getParentFile().mkdirs();
         file.createNewFile();
 
-        copyResource(resource, file);
+        if (resource != null) {
+            copyResource(resource, file);
+        }
     }
 
     public boolean removeFile() {

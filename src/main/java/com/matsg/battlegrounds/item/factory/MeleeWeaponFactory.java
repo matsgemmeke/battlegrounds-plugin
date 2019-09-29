@@ -14,6 +14,7 @@ import com.matsg.battlegrounds.api.item.MeleeWeapon;
 import com.matsg.battlegrounds.item.BattleMeleeWeapon;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.item.MeleeWeaponItemType;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -38,11 +39,18 @@ public class MeleeWeaponFactory implements ItemFactory<MeleeWeapon> {
         ConfigurationSection section = meleeWeaponConfig.getItemConfigurationSection(id);
         String[] material = section.getString("Material").split(",");
 
+        ItemType itemType = new MeleeWeaponItemType(TranslationKey.ITEM_TYPE_MELEE_WEAPON.getPath());
+
+        String[] lore = new String[] {
+                ChatColor.WHITE + translator.translate(itemType.getNameKey())
+        };
+
         ItemMetadata metadata = new ItemMetadata(id, section.getString("DisplayName"), section.getString("Description"));
         ItemStack itemStack = new ItemStackBuilder(Material.valueOf(material[0]))
+                .setDisplayName(metadata.getName())
                 .setDurability(Short.valueOf(material[1]))
+                .setLore(lore)
                 .build();
-        ItemType itemType = new MeleeWeaponItemType(TranslationKey.ITEM_TYPE_MELEE_WEAPON.getPath());
 
         try {
             return new BattleMeleeWeapon(

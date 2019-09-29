@@ -12,7 +12,7 @@ import java.util.List;
 public class MeleeWeaponConfig extends AbstractYaml implements ItemConfig {
 
     public MeleeWeaponConfig(String filePath, InputStream resource) throws IOException {
-        super("melee_weapons.yml", filePath + "/items", resource, false);
+        super("melee_weapons.yml", filePath, resource, false);
     }
 
     public ConfigurationSection getItemConfigurationSection(String id) {

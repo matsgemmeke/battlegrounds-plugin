@@ -2,6 +2,7 @@ package com.matsg.battlegrounds.item.factory;
 
 import com.matsg.battlegrounds.FactoryCreationException;
 import com.matsg.battlegrounds.TaskRunner;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.Version;
 import com.matsg.battlegrounds.api.event.EventDispatcher;
 import com.matsg.battlegrounds.api.storage.ItemConfig;
@@ -34,6 +35,7 @@ public class EquipmentFactoryTest {
     private String id;
     private TacticalEffectFactory tacticalEffectFactory;
     private TaskRunner taskRunner;
+    private Translator translator;
     private Version version;
 
     @Before
@@ -42,6 +44,7 @@ public class EquipmentFactoryTest {
         this.eventDispatcher = mock(EventDispatcher.class);
         this.equipmentConfig = mock(ItemConfig.class);
         this.taskRunner = mock(TaskRunner.class);
+        this.translator = mock(Translator.class);
         this.version = mock(Version.class);
 
         this.id = "Id";
@@ -63,7 +66,7 @@ public class EquipmentFactoryTest {
     public void makeEquipmentInvalidType() {
         when(section.getString("EquipmentType")).thenReturn("INVALID");
 
-        EquipmentFactory factory = new EquipmentFactory(equipmentConfig, eventDispatcher, ignitionSystemFactory, tacticalEffectFactory, taskRunner, version);
+        EquipmentFactory factory = new EquipmentFactory(equipmentConfig, eventDispatcher, ignitionSystemFactory, tacticalEffectFactory, taskRunner, translator, version);
         factory.make(id);
     }
 
@@ -72,7 +75,7 @@ public class EquipmentFactoryTest {
         when(section.getInt("Amount")).thenReturn(-1);
         when(section.getString("EquipmentType")).thenReturn("LETHAL");
 
-        EquipmentFactory factory = new EquipmentFactory(equipmentConfig, eventDispatcher, ignitionSystemFactory, tacticalEffectFactory, taskRunner, version);
+        EquipmentFactory factory = new EquipmentFactory(equipmentConfig, eventDispatcher, ignitionSystemFactory, tacticalEffectFactory, taskRunner, translator, version);
         factory.make(id);
     }
 
@@ -82,7 +85,7 @@ public class EquipmentFactoryTest {
         when(section.getString("Effect")).thenReturn("BLINDNESS");
         when(section.getString("EquipmentType")).thenReturn("TACTICAL");
 
-        EquipmentFactory factory = new EquipmentFactory(equipmentConfig, eventDispatcher, ignitionSystemFactory, tacticalEffectFactory, taskRunner, version);
+        EquipmentFactory factory = new EquipmentFactory(equipmentConfig, eventDispatcher, ignitionSystemFactory, tacticalEffectFactory, taskRunner, translator, version);
         factory.make(id);
     }
 
@@ -101,7 +104,7 @@ public class EquipmentFactoryTest {
         when(section.getDouble("Velocity")).thenReturn(1.0);
         when(section.getName()).thenReturn(id);
 
-        EquipmentFactory factory = new EquipmentFactory(equipmentConfig, eventDispatcher, ignitionSystemFactory, tacticalEffectFactory, taskRunner, version);
+        EquipmentFactory factory = new EquipmentFactory(equipmentConfig, eventDispatcher, ignitionSystemFactory, tacticalEffectFactory, taskRunner, translator, version);
         Equipment equipment = factory.make(id);
 
         assertNotNull(equipment);
@@ -123,7 +126,7 @@ public class EquipmentFactoryTest {
         when(section.getDouble("Velocity")).thenReturn(1.0);
         when(section.getName()).thenReturn(id);
 
-        EquipmentFactory factory = new EquipmentFactory(equipmentConfig, eventDispatcher, ignitionSystemFactory, tacticalEffectFactory, taskRunner, version);
+        EquipmentFactory factory = new EquipmentFactory(equipmentConfig, eventDispatcher, ignitionSystemFactory, tacticalEffectFactory, taskRunner, translator, version);
         Equipment equipment = factory.make(id);
 
         assertNotNull(equipment);

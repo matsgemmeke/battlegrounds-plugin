@@ -17,7 +17,7 @@ public class PlayerYaml extends AbstractYaml implements StoredPlayer {
     private UUID uuid;
 
     public PlayerYaml(String filePath, UUID uuid) throws IOException {
-        super(uuid.toString() + ".yml", filePath + "/players", null, false);
+        super(uuid.toString() + ".yml", filePath, null, false);
         this.uuid = uuid;
         this.deaths = getInt("Stats.Deaths");
         this.exp = getInt("Exp");

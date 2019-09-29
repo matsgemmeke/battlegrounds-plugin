@@ -63,7 +63,7 @@ public class BattlePlayerManager implements PlayerManager {
     public GamePlayer addPlayer(Player player) {
         SavedInventory savedInventory = new BattleSavedInventory(player, player.getInventory());
         GamePlayer gamePlayer = new BattleGamePlayer(player, savedInventory);
-        Location lobby = game.getDataFile().getLocation("lobby");
+        Location lobby = game.getLobby();
 
         players.add(gamePlayer);
 
@@ -76,6 +76,7 @@ public class BattlePlayerManager implements PlayerManager {
         game.updateSign();
 
         gamePlayer.getPlayer().setScoreboard(new LobbyScoreboard(game).createScoreboard());
+        gamePlayer.setReturnLocation(player.getLocation());
         gamePlayer.setState(PlayerState.ACTIVE);
         gamePlayer.getState().apply(game, gamePlayer);
 

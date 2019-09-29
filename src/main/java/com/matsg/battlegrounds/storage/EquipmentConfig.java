@@ -1,6 +1,5 @@
 package com.matsg.battlegrounds.storage;
 
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.storage.AbstractYaml;
 import com.matsg.battlegrounds.api.storage.ItemConfig;
 import org.bukkit.configuration.ConfigurationSection;
@@ -13,7 +12,7 @@ import java.util.List;
 public class EquipmentConfig extends AbstractYaml implements ItemConfig {
 
     public EquipmentConfig(String filePath, InputStream resource) throws IOException {
-        super("equipment.yml", filePath + "/items", resource, false);
+        super("equipment.yml", filePath, resource, false);
     }
 
     public ConfigurationSection getItemConfigurationSection(String id) {

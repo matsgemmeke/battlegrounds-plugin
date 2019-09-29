@@ -3,6 +3,7 @@ package com.matsg.battlegrounds.api.game;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.item.WeaponContext;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 
@@ -176,9 +177,9 @@ public interface GameMode extends ComponentWrapper, WeaponContext {
     /**
      * Starts the gamemode countdown.
      *
-     * @return the countdown that should be started
+     * @return a runnable that handles the countdown
      */
-    Countdown startCountdown();
+    BukkitRunnable startCountdown();
 
     /**
      * Stops the gamemode

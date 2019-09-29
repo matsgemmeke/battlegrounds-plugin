@@ -7,12 +7,11 @@ import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.gui.scoreboard.LobbyScoreboard;
 import com.matsg.battlegrounds.util.BattleSound;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class LobbyCountdown extends BukkitRunnable implements Countdown {
+public class LobbyCountdown extends Countdown {
 
     private boolean cancelled;
     private Game game;
@@ -32,11 +31,6 @@ public class LobbyCountdown extends BukkitRunnable implements Countdown {
         for (int i : display) {
             this.display.add(i);
         }
-    }
-
-    public void cancelCountdown() {
-        cancelled = true;
-        game.getPlayerManager().broadcastMessage(translator.translate(TranslationKey.COUNTDOWN_CANCELLED.getPath()));
     }
 
     public void run() {

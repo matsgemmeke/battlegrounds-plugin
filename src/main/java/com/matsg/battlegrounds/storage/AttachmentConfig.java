@@ -12,7 +12,7 @@ import java.util.List;
 public class AttachmentConfig extends AbstractYaml implements ItemConfig {
 
     public AttachmentConfig(String filePath, InputStream resource) throws IOException {
-        super("attachments.yml", filePath + "/items", resource, false);
+        super("attachments.yml", filePath, resource, false);
     }
 
     public ConfigurationSection getItemConfigurationSection(String id) {

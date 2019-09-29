@@ -2,6 +2,7 @@ package com.matsg.battlegrounds.item.factory;
 
 import com.matsg.battlegrounds.FactoryCreationException;
 import com.matsg.battlegrounds.TaskRunner;
+import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.Version;
 import com.matsg.battlegrounds.api.event.EventDispatcher;
 import com.matsg.battlegrounds.api.item.*;
@@ -11,6 +12,7 @@ import com.matsg.battlegrounds.item.mechanism.IgnitionSystem;
 import com.matsg.battlegrounds.item.mechanism.IgnitionSystemType;
 import com.matsg.battlegrounds.item.mechanism.TacticalEffectType;
 import com.matsg.battlegrounds.util.BattleSound;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -22,6 +24,7 @@ public class EquipmentFactory implements ItemFactory<Equipment> {
     private ItemConfig equipmentConfig;
     private TacticalEffectFactory tacticalEffectFactory;
     private TaskRunner taskRunner;
+    private Translator translator;
     private Version version;
 
     public EquipmentFactory(
@@ -30,6 +33,7 @@ public class EquipmentFactory implements ItemFactory<Equipment> {
             IgnitionSystemFactory ignitionSystemFactory,
             TacticalEffectFactory tacticalEffectFactory,
             TaskRunner taskRunner,
+            Translator translator,
             Version version
     ) {
         this.equipmentConfig = equipmentConfig;
@@ -37,6 +41,7 @@ public class EquipmentFactory implements ItemFactory<Equipment> {
         this.ignitionSystemFactory = ignitionSystemFactory;
         this.tacticalEffectFactory = tacticalEffectFactory;
         this.taskRunner = taskRunner;
+        this.translator = translator;
         this.version = version;
     }
 
@@ -51,10 +56,16 @@ public class EquipmentFactory implements ItemFactory<Equipment> {
             throw new FactoryCreationException(e.getMessage(), e);
         }
 
+        String[] lore = new String[] {
+                ChatColor.WHITE + translator.translate(equipmentType.getNameKey())
+        };
+
         // Global equipment attributes
         ItemMetadata metadata = new ItemMetadata(id, section.getString("DisplayName"), section.getString("Description"));
         ItemStack itemStack = new ItemStackBuilder(Material.valueOf(material[0]))
+                .setDisplayName(metadata.getName())
                 .setDurability(Short.valueOf(material[1]))
+                .setLore(lore)
                 .build();
 
         if (equipmentType == EquipmentType.LETHAL) {

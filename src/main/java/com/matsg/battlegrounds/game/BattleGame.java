@@ -227,12 +227,8 @@ public class BattleGame implements Game {
         }
 
         timeControl = new BattleTimeControl(this, taskRunner);
-        countdown = gameMode.startCountdown();
 
-        // Only start the countdown if the gamemode has one
-        if (countdown != null) {
-            taskRunner.runTaskTimer(countdown, 0, 20);
-        }
+        taskRunner.runTaskTimer(gameMode.startCountdown(), 0, 20);
 
         updateScoreboard();
     }
@@ -249,7 +245,7 @@ public class BattleGame implements Game {
     public void stop() {
         if (!state.isInProgress()) {
             if (countdown != null) {
-                countdown.cancelCountdown();
+                countdown.cancel();
             }
             resetState();
             updateSign();

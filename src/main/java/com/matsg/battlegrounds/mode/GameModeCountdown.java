@@ -8,9 +8,8 @@ import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.util.BattleSound;
 import com.matsg.battlegrounds.util.EnumTitle;
-import org.bukkit.scheduler.BukkitRunnable;
 
-public class GameModeCountdown extends BukkitRunnable implements Countdown {
+public class GameModeCountdown extends Countdown {
 
     private boolean cancelled;
     private Game game;
@@ -24,7 +23,7 @@ public class GameModeCountdown extends BukkitRunnable implements Countdown {
         this.cancelled = false;
     }
 
-    public void cancelCountdown() {
+    public void cancel() {
         cancelled = true;
 
         for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
@@ -32,6 +31,8 @@ public class GameModeCountdown extends BukkitRunnable implements Countdown {
         }
 
         game.getPlayerManager().broadcastMessage(translator.translate(TranslationKey.COUNTDOWN_CANCELLED.getPath()));
+
+        super.cancel();
     }
 
     public void run() {

@@ -1,6 +1,6 @@
 package com.matsg.battlegrounds.api.game;
 
-public interface Countdown extends Runnable {
+import org.bukkit.scheduler.BukkitRunnable;
 
-    void cancelCountdown();
+public abstract class Countdown extends BukkitRunnable {
 }

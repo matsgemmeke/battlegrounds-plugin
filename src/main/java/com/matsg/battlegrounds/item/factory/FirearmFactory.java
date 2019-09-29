@@ -171,7 +171,7 @@ public class FirearmFactory implements ItemFactory<Firearm> {
             String[] projectileMaterial = section.getString("Projectile.Material").split(",");
 
             try {
-                double accuracy = AttributeValidator.shouldBeHigherThan(section.getInt("Ammo.Magazine"), 0);
+                double accuracy = AttributeValidator.shouldBeBetween(section.getDouble("Accuracy"), 0.0, 1.0);
                 int cooldown = AttributeValidator.shouldEqualOrBeHigherThan(section.getInt("FireMode.Cooldown"), 0);
                 double launchSpeed = AttributeValidator.shouldBeHigherThan(section.getDouble("Projectile.Speed"), 0.0);
 

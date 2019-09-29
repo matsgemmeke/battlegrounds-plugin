@@ -17,6 +17,7 @@ import com.matsg.battlegrounds.storage.local.LocalPlayerStorage;
 import com.matsg.battlegrounds.storage.sql.SQLPlayerStorage;
 import org.apache.commons.lang.LocaleUtils;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
@@ -146,7 +147,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
             TacticalEffectFactory tacticalEffectFactory = new TacticalEffectFactory(taskRunner);
 
             attachmentFactory = new AttachmentFactory(attachmentConfig, fireModeFactory, reloadSystemFactory);
-            equipmentFactory = new EquipmentFactory(equipmentConfig, eventDispatcher, ignitionSystemFactory, tacticalEffectFactory, taskRunner, version);
+            equipmentFactory = new EquipmentFactory(equipmentConfig, eventDispatcher, ignitionSystemFactory, tacticalEffectFactory, taskRunner, translator, version);
             firearmFactory = new FirearmFactory(firearmConfig, eventDispatcher, fireModeFactory, launchSystemFactory, reloadSystemFactory, taskRunner, translator, version, config);
             meleeWeaponFactory = new MeleeWeaponFactory(meleeWeaponConfig, eventDispatcher, taskRunner, translator, version);
         } catch (IOException e) {
@@ -159,8 +160,16 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         setUpTranslator();
 
         taskRunner = new TaskRunner() {
+            public BukkitTask runTaskLater(BukkitRunnable runnable, long delay) {
+                return runnable.runTaskLater(plugin, delay);
+            }
+
             public BukkitTask runTaskLater(Runnable runnable, long delay) {
                 return getServer().getScheduler().runTaskLater(plugin, runnable, delay);
+            }
+
+            public BukkitTask runTaskTimer(BukkitRunnable runnable, long delay, long period) {
+                return runnable.runTaskTimer(plugin, delay, period);
             }
 
             public BukkitTask runTaskTimer(Runnable runnable, long delay, long period) {
@@ -168,11 +177,17 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
             }
         };
 
+        VersionFactory versionFactory = new VersionFactory();
+        version = versionFactory.make(ReflectionUtils.getEnumVersion());
+        version.registerCustomEntities();
+
+        eventDispatcher = new BattleEventDispatcher(getServer().getPluginManager());
+        gameManager = new BattleGameManager();
+        selectionManager = new BattleSelectionManager();
+
         if (!loadConfigs()) {
             throw new StartupFailedException("Failed to load item configuration files!");
         }
-
-        setUpCommands();
 
         try {
             levelConfig = new BattleLevelConfig(getDataFolder().getPath(), getResource("levels.yml"));
@@ -181,7 +196,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         }
 
         try {
-            DefaultLoadouts defaultLoadouts = new DefaultLoadouts("default_loadouts.yml", getResource("default_loadouts.yml"), firearmFactory, equipmentFactory, meleeWeaponFactory);
+            DefaultLoadouts defaultLoadouts = new DefaultLoadouts(getDataFolder().getPath(), getResource("default_loadouts.yml"), firearmFactory, equipmentFactory, meleeWeaponFactory);
             SQLConfig sqlConfig = new SQLConfig(getDataFolder().getPath(), getResource("sql.yml"));
 
             if (sqlConfig.isEnabled()) {
@@ -195,14 +210,6 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
             throw new StartupFailedException("Failed to set up player storage!", e);
         }
 
-        VersionFactory versionFactory = new VersionFactory();
-        version = versionFactory.make(ReflectionUtils.getEnumVersion());
-        version.registerCustomEntities();
-
-        eventDispatcher = new BattleEventDispatcher(getServer().getPluginManager());
-        gameManager = new BattleGameManager();
-        selectionManager = new BattleSelectionManager();
-
         new EventListener(this);
 
         new DataLoader(this, taskRunner, translator, version);
@@ -210,6 +217,8 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         if (ReflectionUtils.getEnumVersion().getValue() > 8) {
             new PlayerSwapItemListener(this);
         }
+
+        setUpCommands();
     }
 
     private void setUpCommands() {
