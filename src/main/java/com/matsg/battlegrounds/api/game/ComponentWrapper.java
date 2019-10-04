@@ -51,7 +51,7 @@ public interface ComponentWrapper {
     /**
      * Removes a component from the wrapper instance.
      *
-     * @param component The component to be removed.
+     * @param component the component to be removed
      * @return whether the component was removed
      */
     boolean removeComponent(ArenaComponent component);

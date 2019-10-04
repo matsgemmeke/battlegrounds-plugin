@@ -1,7 +1,9 @@
 package com.matsg.battlegrounds.game;
 
+import com.matsg.battlegrounds.IncompleteExtentException;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
+import org.apache.commons.lang.math.IntRange;
 import org.bukkit.Location;
 import org.bukkit.World;
 
@@ -54,25 +56,33 @@ public class BattleArena implements Arena {
 
     public boolean contains(Location location) {
         return hasBorders()
-                && location != null
-                && location.getX() >= minimumPoint.getX() && location.getX() <= maximumPoint.getX()
-                && location.getY() >= minimumPoint.getY() && location.getY() <= maximumPoint.getY()
-                && location.getZ() >= minimumPoint.getZ() && location.getZ() <= maximumPoint.getZ();
+                && new IntRange(minimumPoint.getX(), maximumPoint.getX()).containsDouble(location.getX())
+                && new IntRange(minimumPoint.getY(), maximumPoint.getY()).containsDouble(location.getY())
+                && new IntRange(minimumPoint.getZ(), maximumPoint.getZ()).containsDouble(location.getZ());
     }
 
-    public int getArea() {
+    public double getArea() {
         return getWidth() * getHeight() * getLength();
     }
 
     public Location getCenter() {
         if (!hasBorders()) {
-            return null;
+            throw new IncompleteExtentException("Cannot calculate center of arena without borders");
         }
         return maximumPoint.toVector().add(minimumPoint.toVector()).multiply(0.5).toLocation(world);
     }
 
     public ArenaComponent getComponent(int id) {
         return spawnContainer.get(id);
+    }
+
+    public ArenaComponent getComponent(Location location) {
+        for (Spawn spawn : spawnContainer.getAll()) {
+            if (spawn.getLocation().equals(location)) {
+                return spawn;
+            }
+        }
+        return null;
     }
 
     public int getComponentCount() {
@@ -85,90 +95,81 @@ public class BattleArena implements Arena {
         return Collections.unmodifiableList(list);
     }
 
-    public ArenaComponent getComponent(Location location) {
-        for (Spawn spawn : spawnContainer.getAll()) {
-            if (spawn.getLocation().equals(location)) {
-                return spawn;
-            }
-        }
-        return null;
-    }
-
     public <T extends ArenaComponent> Collection<T> getComponents(Class<T> componentClass) {
         List<T> list = new ArrayList<>();
         for (ArenaComponent component : getComponents()) {
-            if (component.getClass().isAssignableFrom(componentClass)) {
+            if (componentClass.isAssignableFrom(component.getClass())) {
                 list.add((T) component);
             }
         }
         return Collections.unmodifiableList(list);
     }
 
-    public int getHeight() {
+    public double getHeight() {
         if (!hasBorders()) {
-            return -1;
+            throw new IncompleteExtentException("Cannot calculate height of arena without borders");
         }
-        return maximumPoint.getBlockY() - minimumPoint.getBlockY();
+        return maximumPoint.getY() - minimumPoint.getY();
     }
 
-    public int getLength() {
+    public double getLength() {
         if (!hasBorders()) {
-            return -1;
+            throw new IncompleteExtentException("Cannot calculate length of arena without borders");
         }
-        return maximumPoint.getBlockZ() - minimumPoint.getBlockZ();
+        return maximumPoint.getZ() - minimumPoint.getZ();
     }
 
     public Spawn getRandomSpawn() {
-        List<Spawn> spawns = getSpawns();
+        List<Spawn> spawns = new ArrayList<>(spawnContainer.getAll());
         Random random = new Random();
         Spawn spawn;
 
         do {
             spawn = spawns.get(random.nextInt(spawns.size()));
-        } while (spawn == null || spawn.isOccupied());
-
-        return spawn;
-    }
-
-    public Spawn getRandomSpawn(Location location, double distance) {
-        List<Spawn> spawns = getSpawns();
-        Random random = new Random();
-        Spawn spawn;
-
-        do {
-            spawn = spawns.get(random.nextInt(spawns.size()));
-        } while (spawn == null || spawn.isOccupied() || location.distance(spawn.getLocation()) < distance);
+        } while (spawn.isOccupied());
 
         return spawn;
     }
 
     public Spawn getRandomSpawn(int teamId) {
-        List<Spawn> spawns = getSpawns();
+        List<Spawn> spawns = new ArrayList<>(spawnContainer.getAll());
         Random random = new Random();
         Spawn spawn;
 
         do {
             spawn = spawns.get(random.nextInt(spawns.size()));
-        } while (spawn == null || spawn.isOccupied() || spawn.getTeamId() != teamId);
+        } while (spawn.isOccupied() || spawn.getTeamId() != teamId);
+
+        return spawn;
+    }
+
+    public Spawn getRandomSpawn(Location location, double distance) {
+        List<Spawn> spawns = new ArrayList<>(spawnContainer.getAll());
+        Random random = new Random();
+        Spawn spawn;
+
+        do {
+            spawn = spawns.get(random.nextInt(spawns.size()));
+        } while (spawn.isOccupied() || location.distance(spawn.getLocation()) < distance);
 
         return spawn;
     }
 
     public Spawn getRandomSpawn(int teamId, Location location, double distance) {
-        List<Spawn> spawns = getSpawns();
+        List<Spawn> spawns = new ArrayList<>(spawnContainer.getAll());
         Random random = new Random();
         Spawn spawn;
 
         do {
             spawn = spawns.get(random.nextInt(spawns.size()));
-        } while (spawn == null || spawn.isOccupied() || spawn.getTeamId() != teamId || location.distance(spawn.getLocation()) < distance);
+        } while (spawn.isOccupied() || spawn.getTeamId() != teamId || location.distance(spawn.getLocation()) < distance);
 
         return spawn;
     }
 
     public Spawn getSpawn(GamePlayer gamePlayer) {
-        for (Spawn spawn : getSpawns()) {
-            if (spawn.getOccupant() == gamePlayer || spawn.getOccupant() == gamePlayer.getTeam()) {
+        for (Spawn spawn : spawnContainer.getAll()) {
+            if (spawn.getOccupant() == gamePlayer || gamePlayer.getTeam() != null && spawn.getOccupant() == gamePlayer.getTeam()) {
                 return spawn;
             }
         }
@@ -176,7 +177,7 @@ public class BattleArena implements Arena {
     }
 
     public Spawn getSpawn(int index) {
-        for (Spawn spawn : getSpawns()) {
+        for (Spawn spawn : spawnContainer.getAll()) {
             if (spawn.getId() == index) {
                 return spawn;
             }
@@ -201,7 +202,7 @@ public class BattleArena implements Arena {
     }
 
     public Spawn getTeamBase(int teamId) {
-        for (Spawn spawn : getSpawns()) {
+        for (Spawn spawn : spawnContainer.getAll()) {
             if (spawn.getTeamId() == teamId && spawn.isTeamBase()) {
                 return spawn;
             }
@@ -209,11 +210,11 @@ public class BattleArena implements Arena {
         return null;
     }
 
-    public int getWidth() {
+    public double getWidth() {
         if (!hasBorders()) {
-            return -1;
+            throw new IncompleteExtentException("Cannot calculate width of arena without borders");
         }
-        return maximumPoint.getBlockX() - minimumPoint.getBlockX();
+        return maximumPoint.getX() - minimumPoint.getX();
     }
 
     public boolean hasBorders() {
@@ -226,13 +227,5 @@ public class BattleArena implements Arena {
             return true;
         }
         return false;
-    }
-
-    private List<Spawn> getSpawns() {
-        List<Spawn> spawns = new ArrayList<>();
-        for (Spawn spawn : spawnContainer.getAll()) {
-            spawns.add(spawn);
-        }
-        return spawns;
     }
 }

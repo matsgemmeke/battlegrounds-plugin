@@ -18,10 +18,6 @@ public class InventoryCloseEventHandler implements EventHandler<InventoryCloseEv
             return;
         }
 
-        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-            public void run() {
-                event.getPlayer().openInventory(event.getInventory());
-            }
-        }, 1);
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> event.getPlayer().openInventory(event.getInventory()), 1);
     }
 }

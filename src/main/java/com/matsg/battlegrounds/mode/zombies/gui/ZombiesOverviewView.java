@@ -5,6 +5,7 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.ArenaComponent;
+import com.matsg.battlegrounds.gui.ClickableItem;
 import com.matsg.battlegrounds.gui.View;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.mode.zombies.Zombies;
@@ -26,6 +27,7 @@ public class ZombiesOverviewView implements View {
 
     private Battlegrounds plugin;
     private Inventory inventory;
+    private Map<ItemStack, ClickableItem> items;
     private Translator translator;
     private View previousView;
     private Zombies zombies;
@@ -36,6 +38,7 @@ public class ZombiesOverviewView implements View {
         this.translator = translator;
         this.previousView = previousView;
         this.inventory = createInventory();
+        this.items = new HashMap<>();
     }
 
     public Inventory getInventory() {
@@ -52,7 +55,13 @@ public class ZombiesOverviewView implements View {
             return;
         }
 
-        System.out.println(translator);
+        ClickableItem item = items.get(itemStack);
+
+        if (clickType == ClickType.LEFT) {
+            item.onLeftClick(player);
+        } else if (clickType == ClickType.RIGHT) {
+            item.onRightClick(player);
+        }
     }
 
     public boolean onClose() {
@@ -62,8 +71,6 @@ public class ZombiesOverviewView implements View {
     private Inventory createInventory() {
         String title = translator.translate(TranslationKey.VIEW_ZOMBIES_OVERVIEW_TITLE.getPath());
         Inventory inventory = plugin.getServer().createInventory(this, INVENTORY_SIZE, title);
-
-        Map<ArenaComponent, ItemStack> components = new HashMap<>();
 
         for (Section section : zombies.getSectionContainer().getAll()) {
             ItemStack sectionItemStack = new ItemStackBuilder(new ItemStack(XMaterial.GLASS.parseMaterial()))
@@ -81,6 +88,12 @@ public class ZombiesOverviewView implements View {
                             translator.translate(TranslationKey.VIEW_ZOMBIES_OVERVIEW_SECTION_REMOVE.getPath())
                     )
                     .build();
+
+            View sectionView = new SectionOverviewView(section, translator);
+
+            ClickableItem item = new SectionViewItem(zombies, section, sectionItemStack, sectionView);
+
+            items.put(sectionItemStack, item);
 
             inventory.addItem(sectionItemStack);
         }

@@ -14,11 +14,11 @@ public interface Extent {
     boolean contains(Location location);
 
     /**
-     * Gets the number of blocks in the extent.
+     * Gets the area coverage of the extent.
      *
-     * @return the number of blocks
+     * @return the extent's area coverage
      */
-    int getArea();
+    double getArea();
 
     /**
      * Gets the center location of the extent.
@@ -32,14 +32,14 @@ public interface Extent {
      *
      * @return the height of the extent
      */
-    int getHeight();
+    double getHeight();
 
     /**
      * Gets the Z-size.
      *
      * @return the length of the extent
      */
-    int getLength();
+    double getLength();
 
     /**
      * Gets the maximum point in the extent. If the extent is unbounded, then a large (positive) value may be returned.
@@ -60,7 +60,7 @@ public interface Extent {
      *
      * @return the width of the extent
      */
-    int getWidth();
+    double getWidth();
 
     /**
      * Gets the world of the extent.

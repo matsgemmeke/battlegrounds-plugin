@@ -12,7 +12,7 @@ import java.util.Set;
 
 public class PluginTranslator implements Translator {
 
-    private static final Locale FALLBACK_LOCALE = Locale.ENGLISH;
+    public static final Locale FALLBACK_LOCALE = Locale.ENGLISH;
 
     private Locale locale;
     private Set<LanguageConfiguration> languageConfigurations;
@@ -50,7 +50,7 @@ public class PluginTranslator implements Translator {
         LanguageConfiguration languageConfiguration = getLanguageConfiguration(locale);
 
         if (languageConfiguration == null) {
-            return null;
+            handleInvalidTranslation(key);
         }
 
         String translation;
@@ -60,7 +60,7 @@ public class PluginTranslator implements Translator {
             Yaml fallback = getLanguageConfiguration(FALLBACK_LOCALE).getYaml();
 
             if ((translation = fallback.getString(key)) == null) {
-                throw new TranslationNotFoundException("Translation for key \"" + key + "\" not found");
+                handleInvalidTranslation(key);
             }
         }
 
@@ -74,5 +74,9 @@ public class PluginTranslator implements Translator {
             }
         }
         return message;
+    }
+
+    private void handleInvalidTranslation(String key) {
+        throw new TranslationNotFoundException("Translation for key \"" + key + "\" in lang " + locale.getCountry() + " not found");
     }
 }

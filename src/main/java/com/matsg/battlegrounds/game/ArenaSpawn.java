@@ -37,15 +37,15 @@ public class ArenaSpawn implements Spawn {
         return teamId;
     }
 
-    public boolean isOccupied() {
-        return occupant != null;
-    }
-
     public boolean isTeamBase() {
         return teamBase;
     }
 
     public void setTeamBase(boolean teamBase) {
         this.teamBase = teamBase;
+    }
+
+    public boolean isOccupied() {
+        return occupant != null;
     }
 }

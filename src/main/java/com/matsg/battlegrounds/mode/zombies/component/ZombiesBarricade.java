@@ -68,7 +68,7 @@ public class ZombiesBarricade implements Barricade {
                 && location.getBlockZ() >= minimumPoint.getBlockZ() && location.getBlockZ() <= maximumPoint.getBlockZ();
     }
 
-    public int getArea() {
+    public double getArea() {
         return getWidth() * getHeight() * getLength();
     }
 
@@ -88,16 +88,16 @@ public class ZombiesBarricade implements Barricade {
         return maximumPoint.toVector().add(minimumPoint.toVector()).multiply(0.5).toLocation(world);
     }
 
-    public int getHeight() {
-        return maximumPoint.getBlockY() - minimumPoint.getBlockY();
+    public double getHeight() {
+        return maximumPoint.getY() - minimumPoint.getY();
     }
 
-    public int getLength() {
-        return maximumPoint.getBlockZ() - minimumPoint.getBlockZ();
+    public double getLength() {
+        return maximumPoint.getZ() - minimumPoint.getZ();
     }
 
-    public int getWidth() {
-        return maximumPoint.getBlockX() - minimumPoint.getBlockX();
+    public double getWidth() {
+        return maximumPoint.getX() - minimumPoint.getX();
     }
 
     public boolean isClosed() {
