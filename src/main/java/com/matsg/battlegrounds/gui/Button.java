@@ -1,11 +1,8 @@
 package com.matsg.battlegrounds.gui;
 
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
-public interface ClickableItem {
-
-    ItemStack getItemStack();
+public interface Button {
 
     void onLeftClick(Player player);
 

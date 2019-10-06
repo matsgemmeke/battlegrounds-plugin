@@ -198,39 +198,40 @@ public class BattleGun extends BattleFirearm implements Gun {
     private void inflictDamage(Location location, double range) {
         BattleEntity[] entities = context.getNearbyEntities(location, gamePlayer.getTeam(), range);
 
-        if (entities.length > 0) {
-            BattleEntity entity = entities[0];
-
-            if (entity == null || entity == gamePlayer) {
-                return;
-            }
-
-            if (entity.getBukkitEntity().isDead()) {
-                hits++;
-                return;
-            }
-
-            Location entityLocation = entity.getLocation();
-            Hitbox hitbox = Hitbox.getHitbox(entityLocation.getY(), location.getY());
-
-            double damage = bullet.getDamage(hitbox, entityLocation.distance(gamePlayer.getLocation())) / damageAmplifier;
-
-            if (context.hasBloodEffectDisplay(entity.getEntityType())) {
-                gamePlayer.getLocation().getWorld().playEffect(location, Effect.STEP_SOUND, Material.REDSTONE_BLOCK);
-            }
-
-            hits++;
-
-            Event event;
-
-            if (entity.getHealth() - damage <= 0) {
-                event = new GamePlayerKillEntityEvent(game, gamePlayer, entity, this, hitbox, hitbox.getPoints());
-            } else {
-                event = new GamePlayerDamageEntityEvent(game, gamePlayer, entity, this, damage, hitbox);
-            }
-
-            eventDispatcher.dispatchExternalEvent(event);
+        if (entities.length <= 0) {
+            return;
         }
+
+        BattleEntity entity = entities[0];
+
+        if (entity == null || entity == gamePlayer) {
+            return;
+        }
+
+        hits++;
+
+        if (entity.getBukkitEntity().isDead()) {
+            return;
+        }
+
+        Location entityLocation = entity.getLocation();
+        Hitbox hitbox = Hitbox.getHitbox(entityLocation.getY(), location.getY());
+
+        double damage = bullet.getDamage(hitbox, entityLocation.distance(gamePlayer.getLocation())) / damageAmplifier;
+
+        if (context.hasBloodEffectDisplay(entity.getEntityType())) {
+            gamePlayer.getLocation().getWorld().playEffect(location, Effect.STEP_SOUND, Material.REDSTONE_BLOCK);
+        }
+
+        Event event;
+
+        if (entity.getHealth() - damage <= 0) {
+            event = new GamePlayerKillEntityEvent(game, gamePlayer, entity, this, hitbox, hitbox.getPoints());
+        } else {
+            event = new GamePlayerDamageEntityEvent(game, gamePlayer, entity, this, damage, hitbox);
+        }
+
+        eventDispatcher.dispatchExternalEvent(event);
     }
 
     public void onLeftClick() {

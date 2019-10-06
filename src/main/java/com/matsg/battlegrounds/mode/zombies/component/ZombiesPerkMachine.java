@@ -7,7 +7,7 @@ import com.matsg.battlegrounds.mode.zombies.PerkManager;
 import com.matsg.battlegrounds.mode.zombies.item.Perk;
 import com.matsg.battlegrounds.api.item.Transaction;
 import com.matsg.battlegrounds.api.Placeholder;
-import com.matsg.battlegrounds.gui.TransactionView;
+import com.matsg.battlegrounds.gui.view.TransactionView;
 import com.matsg.battlegrounds.util.ActionBar;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;

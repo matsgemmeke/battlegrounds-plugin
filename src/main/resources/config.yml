@@ -34,7 +34,7 @@ game-firearm-accuracy: 10.0
 
 # Overall firearm damage modifier
 # Change to lower number for higher damage, change to higher number for lower damage
-game-firearm-damage-modifier: 5
+game-firearm-damage-modifier: 1
 
 # Game states where players are able to join games
 game-joinable-states:

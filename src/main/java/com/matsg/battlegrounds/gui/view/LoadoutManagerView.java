@@ -1,4 +1,4 @@
-package com.matsg.battlegrounds.gui;
+package com.matsg.battlegrounds.gui.view;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;

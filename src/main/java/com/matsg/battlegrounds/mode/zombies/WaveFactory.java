@@ -34,7 +34,11 @@ public class WaveFactory {
             health = (float) (5.0 + 10.0 * round);
         } else {
             // From round 10 onwards, the health increases exponentially
-            health = Math.round(Math.pow(1.2, round) + (15.0 * round));
+            health = 95.0F;
+
+            for (int i = 0; i < round - 9; i++) {
+                health *= 1.1F;
+            }
         }
 
         switch (entityType) {

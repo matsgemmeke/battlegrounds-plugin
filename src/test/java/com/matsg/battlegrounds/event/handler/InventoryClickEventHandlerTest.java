@@ -1,6 +1,6 @@
 package com.matsg.battlegrounds.event.handler;
 
-import com.matsg.battlegrounds.gui.View;
+import com.matsg.battlegrounds.gui.view.View;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;

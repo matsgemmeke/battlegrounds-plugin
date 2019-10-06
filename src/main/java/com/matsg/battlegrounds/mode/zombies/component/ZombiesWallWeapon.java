@@ -5,7 +5,7 @@ import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.Placeholder;
-import com.matsg.battlegrounds.gui.TransactionView;
+import com.matsg.battlegrounds.gui.view.TransactionView;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.util.ActionBar;
 import org.bukkit.ChatColor;

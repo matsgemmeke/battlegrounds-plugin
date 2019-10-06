@@ -1,36 +1,35 @@
-package com.matsg.battlegrounds.mode.zombies.gui;
+package com.matsg.battlegrounds.gui.view;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.api.Translator;
+import com.matsg.battlegrounds.api.game.Arena;
+import com.matsg.battlegrounds.api.game.Spawn;
 import com.matsg.battlegrounds.gui.Button;
 import com.matsg.battlegrounds.gui.ButtonFunction;
 import com.matsg.battlegrounds.gui.FunctionalButton;
-import com.matsg.battlegrounds.gui.view.AbstractOverviewView;
-import com.matsg.battlegrounds.gui.view.View;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
-import com.matsg.battlegrounds.mode.zombies.Zombies;
-import com.matsg.battlegrounds.mode.zombies.component.Section;
 import com.matsg.battlegrounds.util.XMaterial;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-public class ZombiesOverviewView extends AbstractOverviewView {
+public class ArenaOverviewView extends AbstractOverviewView {
 
     private static final int INVENTORY_SIZE = 45;
     private static final String EMPTY_STRING = "";
 
+    private Arena arena;
     private Battlegrounds plugin;
     private Inventory inventory;
     private Translator translator;
     private View previousView;
-    private Zombies zombies;
 
-    public ZombiesOverviewView(Battlegrounds plugin, Zombies zombies, Translator translator, View previousView) {
+    public ArenaOverviewView(Battlegrounds plugin, Arena arena, Translator translator, View previousView) {
         this.plugin = plugin;
-        this.zombies = zombies;
+        this.arena = arena;
         this.translator = translator;
         this.previousView = previousView;
         this.inventory = createInventory();
@@ -43,34 +42,37 @@ public class ZombiesOverviewView extends AbstractOverviewView {
     public void refreshContent() {
         inventory.clear();
 
-        for (Section section : zombies.getSectionContainer().getAll()) {
-            ItemStack sectionItemStack = new ItemStackBuilder(new ItemStack(XMaterial.GLASS.parseMaterial()))
+        for (Spawn spawn : arena.getSpawnContainer().getAll()) {
+            Location location = spawn.getLocation();
+            String locationString = "x" + location.getBlockX() + ", y" + location.getBlockY() + ", z" + location.getBlockZ();
+
+            ItemStack itemStack = new ItemStackBuilder(new ItemStack(XMaterial.RED_BED.parseMaterial()))
                     .setDisplayName(
                             translator.translate(TranslationKey.VIEW_COMPONENT_BUTTON.getPath(),
-                                    new Placeholder("bg_component_id", section.getId())
+                                    new Placeholder("bg_component_id", spawn.getId())
                             )
                     )
                     .setLore(
                             translator.translate(TranslationKey.VIEW_COMPONENT_BUTTON_TYPE.getPath(),
-                                    new Placeholder("bg_component_type", "Section")
+                                    new Placeholder("bg_component_type", "Spawn")
                             ),
-                            translator.translate(TranslationKey.VIEW_COMPONENT_BUTTON_COMPONENTS.getPath(),
-                                    new Placeholder("bg_component_components", section.getComponentCount())
+                            translator.translate(TranslationKey.VIEW_COMPONENT_BUTTON_LOCATION.getPath(),
+                                    new Placeholder("bg_component_location", locationString)
                             ),
                             EMPTY_STRING,
-                            translator.translate(TranslationKey.VIEW_COMPONENT_BUTTON_FILTER.getPath()),
+                            translator.translate(TranslationKey.VIEW_COMPONENT_BUTTON_TELEPORT.getPath()),
                             translator.translate(TranslationKey.VIEW_COMPONENT_BUTTON_REMOVE.getPath())
+
                     )
                     .build();
 
-            View sectionView = new SectionOverviewView(plugin, section, translator, this);
-            ButtonFunction<Player, ?> leftClick = (Player player) -> player.openInventory(sectionView.getInventory());
-            ButtonFunction<Player, ?> rightClick = (Player player) -> zombies.removeComponent(section);
+            ButtonFunction<Player, ?> leftClick = (Player player) -> player.teleport(spawn.getLocation());
+            ButtonFunction<Player, ?> rightClick = (Player player) -> arena.removeComponent(spawn);
             Button button = new FunctionalButton(leftClick, rightClick);
 
-            addButton(sectionItemStack, button);
+            addButton(itemStack, button);
 
-            inventory.addItem(sectionItemStack);
+            inventory.addItem(itemStack);
         }
 
         ItemStack backButton = new ItemStackBuilder(new ItemStack(XMaterial.COMPASS.parseMaterial()))
@@ -85,7 +87,7 @@ public class ZombiesOverviewView extends AbstractOverviewView {
     }
 
     private Inventory createInventory() {
-        String title = translator.translate(TranslationKey.VIEW_ZOMBIES_OVERVIEW_TITLE.getPath());
+        String title = translator.translate(TranslationKey.VIEW_ARENA_OVERVIEW_TITLE.getPath(), new Placeholder("bg_arena", arena.getName()));
         inventory = plugin.getServer().createInventory(this, INVENTORY_SIZE, title);
         refreshContent();
         return inventory;

@@ -1,4 +1,4 @@
-package com.matsg.battlegrounds.gui;
+package com.matsg.battlegrounds.gui.view;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;

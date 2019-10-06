@@ -1,7 +1,7 @@
 package com.matsg.battlegrounds.event.handler;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.gui.View;
+import com.matsg.battlegrounds.gui.view.View;
 import org.bukkit.Server;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;

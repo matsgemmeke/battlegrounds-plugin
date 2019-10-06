@@ -1,4 +1,4 @@
-package com.matsg.battlegrounds.gui;
+package com.matsg.battlegrounds.gui.view;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
@@ -9,6 +9,7 @@ import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.Placeholder;
+import com.matsg.battlegrounds.gui.view.View;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.item.factory.LoadoutFactory;
 import com.matsg.battlegrounds.util.ActionBar;

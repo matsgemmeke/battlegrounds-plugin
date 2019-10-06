@@ -20,12 +20,14 @@ public enum Hitbox {
 
     public static Hitbox getHitbox(double entityHeight, double projectileHeight) {
         double dif = projectileHeight - entityHeight;
+
         for (Hitbox hitbox : Hitbox.values()) {
             if (dif >= hitbox.getMinHeight() && dif < hitbox.getMaxHeight()) {
                 return hitbox;
             }
         }
-        return null;
+
+        throw new IllegalArgumentException("No hitbox available for entity height " + entityHeight + " and projectile height " + projectileHeight);
     }
 
     public double getDamageMultiplier() {

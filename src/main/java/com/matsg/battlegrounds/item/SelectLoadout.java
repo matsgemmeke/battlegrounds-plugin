@@ -6,7 +6,7 @@ import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
-import com.matsg.battlegrounds.gui.SelectLoadoutView;
+import com.matsg.battlegrounds.gui.view.SelectLoadoutView;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 

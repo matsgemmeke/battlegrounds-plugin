@@ -19,10 +19,10 @@ public class BattleEventDispatcher implements EventDispatcher {
     }
 
     public void dispatchExternalEvent(Event event) {
-        // Call the outgoing event to the plugin manager
-        pluginManager.callEvent(event);
         // Dispatch the event internally so the plugin does not have to listen for its own events
         dispatchInternalEvent(event);
+        // Call the outgoing event to the plugin manager
+        pluginManager.callEvent(event);
     }
 
     public void dispatchInternalEvent(Event event) {

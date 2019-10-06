@@ -1,13 +1,11 @@
-package com.matsg.battlegrounds.gui;
+package com.matsg.battlegrounds.gui.view;
 
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.item.Transaction;
 import com.matsg.battlegrounds.api.item.TransactionItem;
-import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.item.ItemStackBuilder;

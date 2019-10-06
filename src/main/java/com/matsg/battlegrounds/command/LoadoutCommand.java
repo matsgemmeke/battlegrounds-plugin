@@ -7,7 +7,7 @@ import com.matsg.battlegrounds.api.storage.LevelConfig;
 import com.matsg.battlegrounds.api.storage.PlayerStorage;
 import com.matsg.battlegrounds.api.storage.StoredPlayer;
 import com.matsg.battlegrounds.api.Placeholder;
-import com.matsg.battlegrounds.gui.LoadoutManagerView;
+import com.matsg.battlegrounds.gui.view.LoadoutManagerView;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

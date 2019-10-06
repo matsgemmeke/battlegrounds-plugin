@@ -3,8 +3,8 @@ package com.matsg.battlegrounds.command;
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Translator;
-import com.matsg.battlegrounds.gui.PluginOverviewView;
-import com.matsg.battlegrounds.gui.View;
+import com.matsg.battlegrounds.gui.view.PluginOverviewView;
+import com.matsg.battlegrounds.gui.view.View;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

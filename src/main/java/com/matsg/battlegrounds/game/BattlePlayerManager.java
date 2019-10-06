@@ -279,7 +279,10 @@ public class BattlePlayerManager implements PlayerManager {
     }
 
     public void respawnPlayer(GamePlayer gamePlayer, Spawn spawn) {
-        changeLoadout(gamePlayer, gamePlayer.getSelectedLoadout().clone(), true);
+        if (!gamePlayer.getLoadout().equals(gamePlayer.getSelectedLoadout())) {
+            changeLoadout(gamePlayer, gamePlayer.getSelectedLoadout().clone(), true);
+        }
+
         spawn.setOccupant(gamePlayer);
 
         // Wait 5 seconds before resetting the spawn state
