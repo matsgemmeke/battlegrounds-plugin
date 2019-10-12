@@ -4,8 +4,8 @@ import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.api.Translator;
+import com.matsg.battlegrounds.api.game.ArenaComponent;
 import com.matsg.battlegrounds.gui.Button;
-import com.matsg.battlegrounds.gui.ButtonFunction;
 import com.matsg.battlegrounds.gui.FunctionalButton;
 import com.matsg.battlegrounds.gui.view.AbstractOverviewView;
 import com.matsg.battlegrounds.gui.view.View;
@@ -17,20 +17,30 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.function.Consumer;
+
 public class ZombiesOverviewView extends AbstractOverviewView {
 
     private static final int INVENTORY_SIZE = 45;
     private static final String EMPTY_STRING = "";
 
     private Battlegrounds plugin;
+    private Consumer<ArenaComponent> removeFunction;
     private Inventory inventory;
     private Translator translator;
     private View previousView;
     private Zombies zombies;
 
-    public ZombiesOverviewView(Battlegrounds plugin, Zombies zombies, Translator translator, View previousView) {
+    public ZombiesOverviewView(
+            Battlegrounds plugin,
+            Zombies zombies,
+            Consumer<ArenaComponent> removeFunction,
+            Translator translator,
+            View previousView
+    ) {
         this.plugin = plugin;
         this.zombies = zombies;
+        this.removeFunction = removeFunction;
         this.translator = translator;
         this.previousView = previousView;
         this.inventory = createInventory();
@@ -63,9 +73,12 @@ public class ZombiesOverviewView extends AbstractOverviewView {
                     )
                     .build();
 
-            View sectionView = new SectionOverviewView(plugin, section, translator, this);
-            ButtonFunction<Player, ?> leftClick = (Player player) -> player.openInventory(sectionView.getInventory());
-            ButtonFunction<Player, ?> rightClick = (Player player) -> zombies.removeComponent(section);
+            View sectionView = new SectionOverviewView(plugin, section, removeFunction, translator, this);
+            Consumer<Player> leftClick = player -> player.openInventory(sectionView.getInventory());
+            Consumer<Player> rightClick = player -> {
+                zombies.removeComponent(section);
+                removeFunction.accept(section);
+            };
             Button button = new FunctionalButton(leftClick, rightClick);
 
             addButton(sectionItemStack, button);

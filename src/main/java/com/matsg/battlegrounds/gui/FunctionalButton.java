@@ -2,21 +2,23 @@ package com.matsg.battlegrounds.gui;
 
 import org.bukkit.entity.Player;
 
+import java.util.function.Consumer;
+
 public class FunctionalButton implements Button {
 
-    private ButtonFunction<Player, ?> leftClickFunction;
-    private ButtonFunction<Player, ?> rightClickFunction;
+    private Consumer<Player> leftClick;
+    private Consumer<Player> rightClick;
 
-    public FunctionalButton(ButtonFunction<Player, ?> leftClickFunction, ButtonFunction<Player, ?> rightClickFunction) {
-        this.leftClickFunction = leftClickFunction;
-        this.rightClickFunction = rightClickFunction;
+    public FunctionalButton(Consumer<Player> leftClick, Consumer<Player> rightClick) {
+        this.leftClick = leftClick;
+        this.rightClick = rightClick;
     }
 
     public void onLeftClick(Player player) {
-        leftClickFunction.invoke(player);
+        leftClick.accept(player);
     }
 
     public void onRightClick(Player player) {
-        rightClickFunction.invoke(player);
+        rightClick.accept(player);
     }
 }

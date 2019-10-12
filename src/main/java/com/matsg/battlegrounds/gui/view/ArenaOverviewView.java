@@ -7,7 +7,6 @@ import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Spawn;
 import com.matsg.battlegrounds.gui.Button;
-import com.matsg.battlegrounds.gui.ButtonFunction;
 import com.matsg.battlegrounds.gui.FunctionalButton;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.util.XMaterial;
@@ -15,6 +14,8 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.function.Consumer;
 
 public class ArenaOverviewView extends AbstractOverviewView {
 
@@ -66,8 +67,8 @@ public class ArenaOverviewView extends AbstractOverviewView {
                     )
                     .build();
 
-            ButtonFunction<Player, ?> leftClick = (Player player) -> player.teleport(spawn.getLocation());
-            ButtonFunction<Player, ?> rightClick = (Player player) -> arena.removeComponent(spawn);
+            Consumer<Player> leftClick = player -> player.teleport(spawn.getLocation());
+            Consumer<Player> rightClick = player -> arena.removeComponent(spawn);
             Button button = new FunctionalButton(leftClick, rightClick);
 
             addButton(itemStack, button);

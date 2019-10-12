@@ -5,8 +5,10 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Arena;
+import com.matsg.battlegrounds.api.game.ArenaComponent;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameMode;
+import com.matsg.battlegrounds.api.storage.CacheYaml;
 import com.matsg.battlegrounds.gui.*;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.mode.zombies.Zombies;
@@ -16,6 +18,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.function.Consumer;
 
 public class GameOverviewView extends AbstractOverviewView {
 
@@ -48,7 +52,7 @@ public class GameOverviewView extends AbstractOverviewView {
                     .build();
 
             View arenaView = new ArenaOverviewView(plugin, arena, translator, this);
-            ButtonFunction<Player, ?> click = (Player player) -> player.openInventory(arenaView.getInventory());
+            Consumer<Player> click = player -> player.openInventory(arenaView.getInventory());
             Button button = new FunctionalButton(click, click);
 
             addButton(itemStack, button);
@@ -58,6 +62,7 @@ public class GameOverviewView extends AbstractOverviewView {
 
         for (GameMode gameMode : game.getConfiguration().getGameModes()) {
             if (gameMode.getComponentCount() > 0) {
+                CacheYaml dataFile = game.getDataFile();
                 ItemStack itemStack = new ItemStackBuilder(new ItemStack(XMaterial.PLAYER_HEAD.parseMaterial()))
                         .setDisplayName(ChatColor.GOLD + gameMode.getName())
                         .build();
@@ -65,12 +70,12 @@ public class GameOverviewView extends AbstractOverviewView {
                 View gameModeView;
 
                 if (gameMode instanceof Zombies) {
-                    gameModeView = new ZombiesOverviewView(plugin, (Zombies) gameMode, translator, previousView);
+                    gameModeView = new ZombiesOverviewView(plugin, (Zombies) gameMode, null, translator, previousView);
                 } else {
                     throw new ViewCreationException("Can not create view of game mode " + gameMode.getName());
                 }
 
-                ButtonFunction<Player, ?> click = (Player player) -> player.openInventory(gameModeView.getInventory());
+                Consumer<Player> click = player -> player.openInventory(gameModeView.getInventory());
                 Button button = new FunctionalButton(click, click);
 
                 addButton(itemStack, button);

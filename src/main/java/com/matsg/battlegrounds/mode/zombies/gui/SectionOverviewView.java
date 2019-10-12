@@ -5,8 +5,8 @@ import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.entity.BattleEntityType;
 import com.matsg.battlegrounds.api.game.ArenaComponent;
+import com.matsg.battlegrounds.api.storage.CacheYaml;
 import com.matsg.battlegrounds.gui.Button;
-import com.matsg.battlegrounds.gui.ButtonFunction;
 import com.matsg.battlegrounds.gui.FunctionalButton;
 import com.matsg.battlegrounds.gui.view.AbstractOverviewView;
 import com.matsg.battlegrounds.gui.view.View;
@@ -14,30 +14,33 @@ import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.mode.zombies.component.*;
 import com.matsg.battlegrounds.util.XMaterial;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.function.Consumer;
 
 public class SectionOverviewView extends AbstractOverviewView {
 
     private static final int INVENTORY_SIZE = 45;
     private static final String EMPTY_STRING = "";
 
+    private Consumer<ArenaComponent> removeFunction;
     private Inventory inventory;
     private Plugin plugin;
     private Section section;
     private Translator translator;
     private View previousView;
 
-    public SectionOverviewView(Plugin plugin, Section section, Translator translator, View previousView) {
+    public SectionOverviewView(Plugin plugin, Section section, Consumer<ArenaComponent> removeFunction, Translator translator, View previousView) {
         this.plugin = plugin;
         this.section = section;
+        this.removeFunction = removeFunction;
         this.translator = translator;
         this.previousView = previousView;
         this.inventory = createInventory();
@@ -268,8 +271,11 @@ public class SectionOverviewView extends AbstractOverviewView {
     }
 
     private Button createButton(Location location, ArenaComponent component) {
-        ButtonFunction<Player, ?> leftClick = player -> player.teleport(location);
-        ButtonFunction<Player, ?> rightClick = player -> section.removeComponent(component);
+        Consumer<Player> leftClick = player -> player.teleport(location);
+        Consumer<Player> rightClick = player -> {
+            section.removeComponent(component);
+            removeFunction.accept(component);
+        };
         return new FunctionalButton(leftClick, rightClick);
     }
 
