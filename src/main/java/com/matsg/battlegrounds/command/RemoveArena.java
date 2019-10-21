@@ -38,7 +38,7 @@ public class RemoveArena extends Command {
 
     public void execute(CommandSender sender, String[] args) {
         Game game = gameManager.getGame(Integer.parseInt(args[1]));
-        Arena arena = gameManager.getArena(game, args[2].replaceAll("_", " "));
+        Arena arena = game.getArena(args[2].replaceAll("_", " "));
 
         if (!senders.contains(sender)) {
             sender.sendMessage(createMessage(TranslationKey.ARENA_CONFIRM_REMOVE, new Placeholder("bg_arena", arena.getName())));

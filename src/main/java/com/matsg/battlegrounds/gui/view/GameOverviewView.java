@@ -46,6 +46,8 @@ public class GameOverviewView extends AbstractOverviewView {
     public void refreshContent() {
         inventory.clear();
 
+        int i = 0;
+
         for (Arena arena : game.getArenaList()) {
             ItemStack itemStack = new ItemStackBuilder(new ItemStack(XMaterial.MAP.parseMaterial()))
                     .setDisplayName(ChatColor.GOLD + arena.getName())
@@ -57,20 +59,27 @@ public class GameOverviewView extends AbstractOverviewView {
 
             addButton(itemStack, button);
 
-            inventory.addItem(itemStack);
+            inventory.setItem(i++, itemStack);
         }
 
         for (GameMode gameMode : game.getConfiguration().getGameModes()) {
             if (gameMode.getComponentCount() > 0) {
-                CacheYaml dataFile = game.getDataFile();
-                ItemStack itemStack = new ItemStackBuilder(new ItemStack(XMaterial.PLAYER_HEAD.parseMaterial()))
+                ItemStack itemStack = new ItemStackBuilder(new ItemStack(XMaterial.PLAYER_HEAD.parseMaterial(), 1, (byte) 3))
                         .setDisplayName(ChatColor.GOLD + gameMode.getName())
                         .build();
+
+                Consumer<ArenaComponent> removeFunction = component -> {
+                    Arena arena = findArenaOfComponent(component.getId());
+                    CacheYaml dataFile = game.getDataFile();
+
+                    dataFile.set("arena." + arena.getName() + ".component." + component.getId(), null);
+                    dataFile.save();
+                };
 
                 View gameModeView;
 
                 if (gameMode instanceof Zombies) {
-                    gameModeView = new ZombiesOverviewView(plugin, (Zombies) gameMode, null, translator, previousView);
+                    gameModeView = new ZombiesOverviewView(plugin, (Zombies) gameMode, removeFunction, translator, previousView);
                 } else {
                     throw new ViewCreationException("Can not create view of game mode " + gameMode.getName());
                 }
@@ -93,6 +102,20 @@ public class GameOverviewView extends AbstractOverviewView {
 
     public void returnToPreviousView(Player player) {
         player.openInventory(previousView.getInventory());
+    }
+
+    private Arena findArenaOfComponent(int componentId) {
+        CacheYaml dataFile = game.getDataFile();
+
+        for (String arena : dataFile.getConfigurationSection("arena").getKeys(false)) {
+            for (String idString : dataFile.getConfigurationSection("arena." + arena + ".component").getKeys(false)) {
+                if (idString.equals(String.valueOf(componentId))) {
+                    return game.getArena(arena);
+                }
+            }
+        }
+
+        return null;
     }
 
     private Inventory createInventory() {

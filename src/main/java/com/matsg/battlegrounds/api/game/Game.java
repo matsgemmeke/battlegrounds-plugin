@@ -2,7 +2,6 @@ package com.matsg.battlegrounds.api.game;
 
 import com.matsg.battlegrounds.api.storage.CacheYaml;
 import org.bukkit.Location;
-import org.bukkit.event.Event;
 
 import java.util.List;
 
@@ -56,6 +55,14 @@ public interface Game {
      * @param countdown the new game countdown
      */
     void setCountdown(Countdown countdown);
+
+    /**
+     * Gets the arena of the game with a certain name. Returns null if there is no arena with such name.
+     *
+     * @param name the name of the arena
+     * @return the corresponding arena
+     */
+    Arena getArena(String name);
 
     /**
      * Gets the data file of the game where all of its settings are stored.

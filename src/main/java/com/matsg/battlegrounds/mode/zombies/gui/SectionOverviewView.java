@@ -131,7 +131,7 @@ public class SectionOverviewView extends AbstractOverviewView {
                                     new Placeholder("bg_component_type", "Mob spawn")
                             ),
                             translator.translate(TranslationKey.VIEW_COMPONENT_BUTTON_BARRICADE.getPath(),
-                                    new Placeholder("bg_component_barricade", mobSpawn.getBarricade() != null ? "Yes" : "No")
+                                    new Placeholder("bg_component_barricade", mobSpawn.getBarricade() != null ? "Id " + mobSpawn.getBarricade().getId() : "N/A")
                             ),
                             translator.translate(TranslationKey.VIEW_COMPONENT_BUTTON_LOCATION.getPath(),
                                     new Placeholder("bg_component_location", locationString)

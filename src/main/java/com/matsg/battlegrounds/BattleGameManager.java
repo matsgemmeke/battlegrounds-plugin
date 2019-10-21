@@ -29,15 +29,6 @@ public class BattleGameManager implements GameManager {
         return list;
     }
 
-    public Arena getArena(Game game, String name) {
-        for (Arena arena : game.getArenaList()) {
-            if (arena.getName().equals(name)) {
-                return arena;
-            }
-        }
-        return null;
-    }
-
     public Arena getArena(Location location) {
         for (Arena arena : getArenaList()) {
             if (arena.contains(location)) {

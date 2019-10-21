@@ -1,7 +1,6 @@
 package com.matsg.battlegrounds.command.validator;
 
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Arena;
@@ -29,7 +28,7 @@ public class ArenaNameValidator implements CommandValidator {
 
         Game game = gameManager.getGame(id);
         String name = args[2].replaceAll("_", " ");
-        Arena arena = gameManager.getArena(game, name);
+        Arena arena = game.getArena(name);
 
         if (arena == null && shouldExist) {
             return new ValidationResponse(translator.translate(TranslationKey.ARENA_NOT_EXISTS.getPath(),

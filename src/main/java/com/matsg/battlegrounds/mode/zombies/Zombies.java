@@ -80,9 +80,9 @@ public class Zombies extends AbstractGameMode {
         this.taskRunner = taskRunner;
         this.config = config;
         this.loadoutFactory = new LoadoutFactory();
-        this.name = translator.translate(TranslationKey.ZOMBIES_NAME.getPath());
+        this.name = translator.translate(GameModeType.ZOMBIES.getNamePath());
         this.sectionContainer = new BattleComponentContainer<>();
-        this.shortName = translator.translate(TranslationKey.ZOMBIES_SHORT.getPath());
+        this.shortName = translator.translate(GameModeType.ZOMBIES.getShortNamePath());
         this.team = new BattleTeam(1, "Players", null, ChatColor.WHITE);
         this.waveFactory = new WaveFactory(sectionContainer, plugin, version, config);
 

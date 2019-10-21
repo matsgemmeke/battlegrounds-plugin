@@ -162,6 +162,7 @@ public enum TranslationKey {
     VIEW_PLUGIN_OVERVIEW_TITLE("view-plugin-overview-title"),
     VIEW_SECTION_OVERVIEW_TITLE("view-section-overview-title"),
     VIEW_SELECT_ATTACHMENT("view-title-select-attachment"),
+    VIEW_SELECT_GAMEMODE_TITLE("view-select-gamemode-title"),
     VIEW_SELECT_LOADOUT("view-title-select-loadout"),
     VIEW_WEAPONS("view-title-weapons"),
     VIEW_TRANSACTION_BUY("view-transaction-buy"),

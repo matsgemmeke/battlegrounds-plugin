@@ -47,7 +47,7 @@ public class AddComponent extends Command {
     public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         Game game = gameManager.getGame(Integer.parseInt(args[1]));
-        Arena arena = gameManager.getArena(game, args[2].replaceAll("_", " "));
+        Arena arena = game.getArena(args[2].replaceAll("_", " "));
 
         if (args.length == 3) {
             player.sendMessage(createMessage(TranslationKey.SPECIFY_COMPONENT_TYPE));

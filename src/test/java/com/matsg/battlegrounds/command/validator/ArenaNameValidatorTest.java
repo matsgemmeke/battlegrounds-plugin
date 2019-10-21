@@ -1,7 +1,6 @@
 package com.matsg.battlegrounds.command.validator;
 
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Arena;
@@ -55,7 +54,7 @@ public class ArenaNameValidatorTest {
         String[] input = new String[] { "command", String.valueOf(gameId), arenaName };
         TranslationKey key = TranslationKey.ARENA_NOT_EXISTS;
 
-        when(gameManager.getArena(game, arenaName)).thenReturn(null);
+        when(game.getArena(arenaName)).thenReturn(null);
         when(translator.translate(eq(key.getPath()), anyVararg())).thenReturn(responseMessage);
 
         ArenaNameValidator validator = new ArenaNameValidator(gameManager, translator, true);
@@ -70,7 +69,7 @@ public class ArenaNameValidatorTest {
         String[] input = new String[] { "command", String.valueOf(gameId), arenaName };
         TranslationKey key = TranslationKey.ARENA_EXISTS;
 
-        when(gameManager.getArena(game, arenaName)).thenReturn(arena);
+        when(game.getArena(arenaName)).thenReturn(arena);
         when(translator.translate(eq(key.getPath()), anyVararg())).thenReturn(responseMessage);
 
         ArenaNameValidator validator = new ArenaNameValidator(gameManager, translator, false);
@@ -84,7 +83,7 @@ public class ArenaNameValidatorTest {
     public void validationPasses() {
         String[] input = new String[] { "command", String.valueOf(gameId), arenaName };
 
-        when(gameManager.getArena(game, arenaName)).thenReturn(arena);
+        when(game.getArena(arenaName)).thenReturn(arena);
 
         ArenaNameValidator validator = new ArenaNameValidator(gameManager, translator, true);
         ValidationResponse response = validator.validate(input);

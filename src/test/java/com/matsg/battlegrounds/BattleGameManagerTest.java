@@ -53,15 +53,6 @@ public class BattleGameManagerTest {
     }
 
     @Test
-    public void findArenaByName() {
-        BattleGameManager gameManager = new BattleGameManager();
-        gameManager.getGames().add(game);
-
-        assertEquals(arena, gameManager.getArena(game, "Arena"));
-        assertNull(gameManager.getArena(game, "Fail"));
-    }
-
-    @Test
     public void findGameByArena() {
         Arena otherArena = mock(Arena.class);
 

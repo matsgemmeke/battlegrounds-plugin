@@ -33,15 +33,6 @@ public interface GameManager {
     Iterable<GamePlayer> getAllPlayers();
 
     /**
-     * Gets the arena of a game with a certain name. Returns null if there is no arena with such name.
-     *
-     * @param game the game which owns the arena
-     * @param name the name of the arena
-     * @return the arena of the game with the name
-     */
-    Arena getArena(Game game, String name);
-
-    /**
      * Gets the arena which contains a certain location. Returns null if the location is not inside an arena.
      *
      * @param location the location

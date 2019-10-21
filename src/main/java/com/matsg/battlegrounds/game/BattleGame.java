@@ -174,6 +174,15 @@ public class BattleGame implements Game {
         }
     }
 
+    public Arena getArena(String name) {
+        for (Arena arena : arenaList) {
+            if (arena.getName().equals(name)) {
+                return arena;
+            }
+        }
+        return null;
+    }
+
     public ComponentWrapper[] getComponentWrappers() {
         return new ComponentWrapper[] { getActiveArena(), gameMode };
     }

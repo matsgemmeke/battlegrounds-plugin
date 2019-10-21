@@ -1,7 +1,6 @@
 package com.matsg.battlegrounds.command;
 
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Arena;
@@ -33,7 +32,7 @@ public class RemoveComponent extends Command {
 
     public void execute(CommandSender sender, String[] args) {
         Game game = gameManager.getGame(Integer.parseInt(args[1]));
-        Arena arena = gameManager.getArena(game, args[2].replaceAll("_", " "));
+        Arena arena = game.getArena(args[2].replaceAll("_", " "));
 
         if (args.length == 3) {
             sender.sendMessage(createMessage(TranslationKey.SPECIFY_COMPONENT_ID));
