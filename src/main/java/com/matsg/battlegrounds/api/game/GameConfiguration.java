@@ -2,14 +2,16 @@ package com.matsg.battlegrounds.api.game;
 
 import com.matsg.battlegrounds.api.storage.Yaml;
 
+import java.util.List;
+
 public interface GameConfiguration {
 
     /**
-     * Gets the different gamemodes the game runs.
+     * Gets the different gamemode types the game is configured to run.
      *
-     * @return the game's gamemodes
+     * @return the game's gamemode types
      */
-    GameMode[] getGameModes();
+    List<String> getGameModeTypes();
 
     /**
      * Gets the length of the lobby countdown.

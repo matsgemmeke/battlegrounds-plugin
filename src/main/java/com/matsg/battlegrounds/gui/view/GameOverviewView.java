@@ -62,7 +62,7 @@ public class GameOverviewView extends AbstractOverviewView {
             inventory.setItem(i++, itemStack);
         }
 
-        for (GameMode gameMode : game.getConfiguration().getGameModes()) {
+        for (GameMode gameMode : game.getGameModeList()) {
             if (gameMode.getComponentCount() > 0) {
                 ItemStack itemStack = new ItemStackBuilder(new ItemStack(XMaterial.PLAYER_HEAD.parseMaterial(), 1, (byte) 3))
                         .setDisplayName(ChatColor.GOLD + gameMode.getName())

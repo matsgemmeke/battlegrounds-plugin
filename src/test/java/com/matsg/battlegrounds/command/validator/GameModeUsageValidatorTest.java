@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.command.validator;
 
+import com.matsg.battlegrounds.BattleGameManager;
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.Translator;
@@ -10,6 +11,8 @@ import com.matsg.battlegrounds.mode.GameModeType;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -18,6 +21,7 @@ public class GameModeUsageValidatorTest {
     private Game game;
     private GameConfiguration configuration;
     private GameManager gameManager;
+    private GameMode gameMode;
     private int gameId;
     private String responseMessage;
     private Translator translator;
@@ -26,25 +30,31 @@ public class GameModeUsageValidatorTest {
     public void setUp() {
         this.game = mock(Game.class);
         this.configuration = mock(GameConfiguration.class);
-        this.gameManager = mock(GameManager.class);
+        this.gameMode = mock(GameMode.class);
         this.translator = mock(Translator.class);
+
+        this.gameManager = new BattleGameManager();
 
         this.gameId = 1;
         this.responseMessage = "Response";
 
+        gameManager.getGames().add(game);
+
         when(game.getConfiguration()).thenReturn(configuration);
-        when(gameManager.getGame(gameId)).thenReturn(game);
+        when(game.getId()).thenReturn(gameId);
     }
 
     @Test
     public void validationGameModeTypeIsNotUsedByGame() {
+        GameModeType gameModeType = GameModeType.FREE_FOR_ALL;
         String[] input = new String[] { "command", String.valueOf(gameId) };
         TranslationKey key = TranslationKey.GAMEMODE_NOT_USED;
 
-        when(configuration.getGameModes()).thenReturn(new GameMode[0]);
+        when(game.getGameModeList()).thenReturn(Arrays.asList(gameMode));
+        when(gameMode.getId()).thenReturn("fail");
         when(translator.translate(eq(key.getPath()), anyVararg())).thenReturn(responseMessage);
 
-        GameModeUsageValidator validator = new GameModeUsageValidator(gameManager, translator, GameModeType.FREE_FOR_ALL);
+        GameModeUsageValidator validator = new GameModeUsageValidator(gameManager, translator, gameModeType);
         ValidationResponse response = validator.validate(input);
 
         assertFalse(response.passed());
@@ -53,13 +63,13 @@ public class GameModeUsageValidatorTest {
 
     @Test
     public void validationGameModeTypeIsUsedByGame() {
-        GameMode gameMode = mock(GameMode.class);
+        GameModeType gameModeType = GameModeType.FREE_FOR_ALL;
         String[] input = new String[] { "command", String.valueOf(gameId) };
 
-        when(configuration.getGameModes()).thenReturn(new GameMode[] { gameMode });
-        when(gameMode.getId()).thenReturn(GameModeType.FREE_FOR_ALL.toString());
+        when(game.getGameModeList()).thenReturn(Arrays.asList(gameMode));
+        when(gameMode.getId()).thenReturn(gameModeType.toString());
 
-        GameModeUsageValidator validator = new GameModeUsageValidator(gameManager, translator, GameModeType.FREE_FOR_ALL);
+        GameModeUsageValidator validator = new GameModeUsageValidator(gameManager, translator, gameModeType);
         ValidationResponse response = validator.validate(input);
 
         assertTrue(response.passed());

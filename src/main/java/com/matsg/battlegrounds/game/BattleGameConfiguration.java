@@ -1,68 +1,33 @@
 package com.matsg.battlegrounds.game;
 
-import com.matsg.battlegrounds.BattlegroundsPlugin;
-import com.matsg.battlegrounds.TaskRunner;
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.storage.Yaml;
-import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameConfiguration;
-import com.matsg.battlegrounds.api.game.GameMode;
-import com.matsg.battlegrounds.mode.GameModeFactory;
-import com.matsg.battlegrounds.mode.GameModeType;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class BattleGameConfiguration implements GameConfiguration {
 
-    private GameMode[] gameModes;
     private int lobbyCountdown, maxPlayers, minPlayers;
+    private List<String> gameModeTypes;
 
-    public BattleGameConfiguration(GameMode[] gameModes, int maxPlayers, int minPlayers, int lobbyCountdown) {
-        this.gameModes = gameModes;
+    public BattleGameConfiguration(List<String> gameModeTypes, int maxPlayers, int minPlayers, int lobbyCountdown) {
+        this.gameModeTypes = gameModeTypes;
         this.lobbyCountdown = lobbyCountdown;
         this.maxPlayers = maxPlayers;
         this.minPlayers = minPlayers;
     }
 
-    public static BattleGameConfiguration getDefaultConfiguration(Game game) {
-        Battlegrounds plugin = BattlegroundsPlugin.getPlugin();
-
-        TaskRunner taskRunner = new TaskRunner() {
-            public BukkitTask runTaskLater(BukkitRunnable runnable, long delay) {
-                return runnable.runTaskLater(plugin, delay);
-            }
-
-            public BukkitTask runTaskLater(Runnable runnable, long delay) {
-                return plugin.getServer().getScheduler().runTaskLater(plugin, runnable, delay);
-            }
-
-            public BukkitTask runTaskTimer(BukkitRunnable runnable, long delay, long period) {
-                return runnable.runTaskTimer(plugin, delay, period);
-            }
-
-            public BukkitTask runTaskTimer(Runnable runnable, long delay, long period) {
-                return plugin.getServer().getScheduler().runTaskTimer(plugin, runnable, delay, period);
-            }
-        };
-
-        GameModeFactory gameModeFactory = new GameModeFactory(plugin, taskRunner, plugin.getTranslator(), plugin.getVersion());
-
+    public static BattleGameConfiguration getDefaultConfiguration() {
         return new BattleGameConfiguration(
-                new GameMode[] {
-                        gameModeFactory.make(game, GameModeType.FREE_FOR_ALL),
-                        gameModeFactory.make(game, GameModeType.TEAM_DEATHMATCH)
-                },
+                Arrays.asList("FREE_FOR_ALL", "TEAM_DEATHMATCH"),
                 12,
                 2,
                 60
         );
     }
 
-    public GameMode[] getGameModes() {
-        return gameModes;
+    public List<String> getGameModeTypes() {
+        return gameModeTypes;
     }
 
     public int getLobbyCountdown() {
@@ -76,17 +41,9 @@ public class BattleGameConfiguration implements GameConfiguration {
     public int getMinPlayers() {
         return minPlayers;
     }
-
-    private List<String> getGameModeNames() {
-        List<String> list = new ArrayList<>();
-        for (GameMode gameMode : gameModes) {
-            list.add(gameMode.getId());
-        }
-        return list;
-    }
     
     public void saveConfiguration(Yaml yaml) {
-        yaml.set("config.gamemodes", getGameModeNames());
+        yaml.set("config.gamemodes", gameModeTypes);
         yaml.set("config.lobbycountdown", lobbyCountdown);
         yaml.set("config.maxplayers", maxPlayers);
         yaml.set("config.minplayers", minPlayers);

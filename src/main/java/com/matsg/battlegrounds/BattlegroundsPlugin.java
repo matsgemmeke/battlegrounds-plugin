@@ -8,6 +8,7 @@ import com.matsg.battlegrounds.command.*;
 import com.matsg.battlegrounds.event.BattleEventDispatcher;
 import com.matsg.battlegrounds.game.GameFactory;
 import com.matsg.battlegrounds.item.factory.*;
+import com.matsg.battlegrounds.mode.GameModeFactory;
 import com.matsg.battlegrounds.nms.VersionFactory;
 import com.matsg.battlegrounds.storage.*;
 import com.matsg.battlegrounds.event.EventListener;
@@ -224,15 +225,16 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
     private void setUpCommands() {
         List<Command> commands = new ArrayList<>();
         GameFactory gameFactory = new GameFactory(this, taskRunner);
+        GameModeFactory gameModeFactory = new GameModeFactory(this, taskRunner, translator, version);
         ItemFinder itemFinder = new ItemFinder(this);
 
         Command bgCommand = new BattlegroundsCommand(translator);
         bgCommand.addSubCommand(new AddComponent(translator, gameManager, itemFinder, selectionManager));
         bgCommand.addSubCommand(new CreateArena(translator, gameManager, selectionManager));
-        bgCommand.addSubCommand(new CreateGame(translator, gameFactory, gameManager));
+        bgCommand.addSubCommand(new CreateGame(translator, gameFactory, gameManager, gameModeFactory));
         bgCommand.addSubCommand(new Join(translator, gameManager, config));
         bgCommand.addSubCommand(new Leave(translator, gameManager));
-        bgCommand.addSubCommand(new Overview(this, translator));
+        bgCommand.addSubCommand(new Overview(this, taskRunner, translator));
         bgCommand.addSubCommand(new Reload(this, translator));
         bgCommand.addSubCommand(new RemoveArena(translator, gameManager, taskRunner));
         bgCommand.addSubCommand(new RemoveComponent(translator, gameManager));

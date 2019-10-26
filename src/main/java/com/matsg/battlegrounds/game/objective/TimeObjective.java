@@ -7,16 +7,16 @@ import com.matsg.battlegrounds.util.EnumTitle;
 
 public class TimeObjective implements Objective {
 
+    private EnumTitle enumTitle;
     private Game game;
     private int timeLimit;
     private String id;
-    private Title title;
 
     public TimeObjective(Game game, int timeLimit) {
         this.game = game;
         this.timeLimit = timeLimit;
+        this.enumTitle = EnumTitle.OBJECTIVE_TIME;
         this.id = "Time";
-        this.title = EnumTitle.OBJECTIVE_TIME.getTitle();
     }
 
     public String getId() {
@@ -24,7 +24,7 @@ public class TimeObjective implements Objective {
     }
 
     public Title getTitle() {
-        return title;
+        return enumTitle.getTitle();
     }
 
     public boolean isAchieved() {

@@ -79,6 +79,13 @@ public interface Game {
     GameMode getGameMode();
 
     /**
+     * Gets all gamemode the game can run.
+     *
+     * @return the game's gamemode list
+     */
+    List<GameMode> getGameModeList();
+
+    /**
      * Sets the active gamemode of the game.
      *
      * @param gameMode the gamemode to activate

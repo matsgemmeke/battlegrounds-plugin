@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.gui.view;
 
+import com.matsg.battlegrounds.TaskRunner;
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Placeholder;
@@ -29,13 +30,13 @@ public class PluginOverviewView implements View {
     private Map<ItemStack, Game> games;
     private Translator translator;
 
-    public PluginOverviewView(Battlegrounds plugin, Translator translator) {
+    public PluginOverviewView(Battlegrounds plugin, TaskRunner taskRunner, Translator translator) {
         this.plugin = plugin;
         this.translator = translator;
         this.games = new HashMap<>();
         this.inventory = createInventory();
 
-        task = new BukkitRunnable() {
+        taskRunner.runTaskTimer(new BukkitRunnable() {
             public void run() {
                 // Remove all icons from previous game states
                 inventory.clear();
@@ -70,7 +71,7 @@ public class PluginOverviewView implements View {
                     games.put(itemStack, game);
                 }
             }
-        }.runTaskTimer(plugin, REFRESH_TASK_DELAY, REFRESH_TASK_PERIOD);
+        }, REFRESH_TASK_DELAY, REFRESH_TASK_PERIOD);
     }
 
     public Inventory getInventory() {

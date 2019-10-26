@@ -14,8 +14,8 @@ import java.util.List;
 
 public abstract class Command implements CommandExecutor {
 
-    protected List<Command> subCommands;
-    protected Translator translator;
+    protected final List<Command> subCommands;
+    protected final Translator translator;
     private boolean playerOnly;
     private List<CommandValidator> validators;
     private String[] aliases;

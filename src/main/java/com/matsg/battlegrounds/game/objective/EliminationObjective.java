@@ -7,16 +7,16 @@ import com.matsg.battlegrounds.util.EnumTitle;
 
 public class EliminationObjective implements Objective {
 
+    private EnumTitle enumTitle;
     private Game game;
     private int minPlayers;
     private String id;
-    private Title title;
 
     public EliminationObjective(Game game, int minPlayers) {
         this.game = game;
         this.minPlayers = minPlayers;
+        this.enumTitle = EnumTitle.OBJECTIVE_ELIMINATION;
         this.id = "Elimination";
-        this.title = EnumTitle.OBJECTIVE_ELIMINATION.getTitle();
     }
 
     public String getId() {
@@ -24,7 +24,7 @@ public class EliminationObjective implements Objective {
     }
 
     public Title getTitle() {
-        return title;
+        return enumTitle.getTitle();
     }
 
     public boolean isAchieved() {

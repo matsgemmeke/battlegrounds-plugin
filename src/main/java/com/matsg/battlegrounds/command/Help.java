@@ -30,43 +30,42 @@ public class Help extends Command {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
-            for (Command subCommand : getCommands(false)) {
+            for (Command subCommand : getCommands(player, false)) {
                 version.sendJSONMessage(player, " ● /" + subCommand.getUsage(), "/" + ChatColor.GRAY + subCommand.getUsage(), subCommand.getDescription());
             }
 
             sender.sendMessage(" ");
 
-            for (Command subCommand : getCommands(true)) {
+            for (Command subCommand : getCommands(player, true)) {
                 if (player.hasPermission(subCommand.getPermissionNode())) {
                     version.sendJSONMessage(player, " ● /" + subCommand.getUsage(), "/" + ChatColor.GRAY + subCommand.getUsage(), subCommand.getDescription());
                 }
             }
         } else {
-            for (Command subCommand : getCommands(false)) {
+            for (Command subCommand : getCommands(sender, false)) {
                 sender.sendMessage(" ● /" + subCommand.getUsage() + " " + ChatColor.GRAY + subCommand.getDescription());
             }
 
             sender.sendMessage(" ");
 
-            for (Command subCommand : getCommands(true)) {
+            for (Command subCommand : getCommands(sender, true)) {
                 sender.sendMessage(" ● /" + subCommand.getUsage() + " " + ChatColor.GRAY + subCommand.getDescription());
             }
         }
     }
 
-    private Command[] getCommands(boolean permission) {
+    private Command[] getCommands(CommandSender sender, boolean permission) {
         List<Command> list = new ArrayList<>();
+
         for (Command subCommand : subCommands) {
-            if (permission) {
-                if (subCommand.getPermissionNode() != null && subCommand.getPermissionNode().length() > 0) {
-                    list.add(subCommand);
-                }
-            } else {
-                if (subCommand.getPermissionNode() == null || subCommand.getPermissionNode().length() <= 0) {
-                    list.add(subCommand);
-                }
+            if ((permission
+                    && subCommand.getPermissionNode() != null
+                    && sender.hasPermission(subCommand.getPermissionNode()))
+                    || (!permission && subCommand.getPermissionNode() == null)) {
+                list.add(subCommand);
             }
         }
+
         return list.toArray(new Command[list.size()]);
     }
 }

@@ -60,7 +60,7 @@ public class RemoveComponent extends Command {
 
         arena.removeComponent(component);
 
-        for (GameMode gameMode : game.getConfiguration().getGameModes()) {
+        for (GameMode gameMode : game.getGameModeList()) {
             gameMode.removeComponent(component);
         }
 

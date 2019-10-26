@@ -6,6 +6,7 @@ import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.api.storage.BattlegroundsConfig;
+import com.matsg.battlegrounds.command.validator.GameIdValidator;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -24,6 +25,8 @@ public class Join extends Command {
         setName("join");
         setPlayerOnly(true);
         setUsage("bg join [id]");
+
+        registerValidator(new GameIdValidator(gameManager, translator, true));
     }
 
     public void execute(CommandSender sender, String[] args) {
@@ -34,26 +37,7 @@ public class Join extends Command {
             return;
         }
 
-        if (args.length == 1) {
-            player.sendMessage(createMessage(TranslationKey.SPECIFY_GAME_ID));
-            return;
-        }
-
-        int id;
-
-        try {
-            id = Integer.parseInt(args[1]);
-        } catch (Exception e) {
-            player.sendMessage(createMessage(TranslationKey.INVALID_ARGUMENT_TYPE, new Placeholder("bg_arg", args[1])));
-            return;
-        }
-
-        if (!gameManager.exists(id)) {
-            player.sendMessage(createMessage(TranslationKey.GAME_NOT_EXISTS, new Placeholder("bg_game", id)));
-            return;
-        }
-
-        Game game = gameManager.getGame(id);
+        Game game = gameManager.getGame(Integer.parseInt(args[1]));
 
         if (!config.joinableGameStates.contains(game.getState().toString())) {
             player.sendMessage(createMessage(TranslationKey.IN_PROGRESS));

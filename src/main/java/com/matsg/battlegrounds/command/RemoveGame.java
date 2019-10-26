@@ -33,7 +33,7 @@ public class RemoveGame extends Command {
         registerValidator(new GameIdValidator(gameManager, translator, true));
     }
 
-    public void execute(final CommandSender sender, String[] args) {
+    public void execute(CommandSender sender, String[] args) {
         Game game = gameManager.getGame(Integer.parseInt(args[1]));
 
         if (!senders.contains(sender)) {

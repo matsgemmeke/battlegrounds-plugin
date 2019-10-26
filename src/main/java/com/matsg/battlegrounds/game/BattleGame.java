@@ -25,6 +25,7 @@ import java.util.Random;
 public class BattleGame implements Game {
 
     private final int id;
+    private Arena arena;
     private CacheYaml dataFile;
     private Countdown countdown;
     private EventDispatcher eventDispatcher;
@@ -34,6 +35,7 @@ public class BattleGame implements Game {
     private GameState state;
     private ItemRegistry itemRegistry;
     private List<Arena> arenaList;
+    private List<GameMode> gameModeList;
     private Location lobby;
     private MobManager mobManager;
     private PlayerManager playerManager;
@@ -62,11 +64,12 @@ public class BattleGame implements Game {
         this.playerStorage = playerStorage;
         this.taskRunner = taskRunner;
         this.arenaList = new ArrayList<>();
+        this.gameModeList = new ArrayList<>();
         this.playerManager = new BattlePlayerManager(this, levelConfig, playerStorage, taskRunner, translator);
     }
 
     public Arena getArena() {
-        return getActiveArena();
+        return arena;
     }
 
     public List<Arena> getArenaList() {
@@ -105,6 +108,10 @@ public class BattleGame implements Game {
         this.gameMode = gameMode;
         this.gameMode.setActive(true);
         this.gameMode.onEnable();
+    }
+
+    public List<GameMode> getGameModeList() {
+        return gameModeList;
     }
 
     public GameSign getGameSign() {
@@ -159,15 +166,17 @@ public class BattleGame implements Game {
             boolean available = false;
 
             // Check if the gamemodes contain components with the same id.
-            for (GameMode gameMode : configuration.getGameModes()) {
+            for (GameMode gameMode : gameModeList) {
                 if (gameMode.getComponent(i) == null) {
                     available = true;
                 }
             }
 
-            // Check if the arena itself contains components with the same id.
-            if (available && getActiveArena().getComponent(i) == null) {
-                return i;
+            // Check if the arenas contain components with the same id.
+            for (Arena arena : arenaList) {
+                if (available && arena.getComponent(i) == null) {
+                    return i;
+                }
             }
 
             i++;
@@ -184,11 +193,11 @@ public class BattleGame implements Game {
     }
 
     public ComponentWrapper[] getComponentWrappers() {
-        return new ComponentWrapper[] { getActiveArena(), gameMode };
+        return new ComponentWrapper[] { arena, gameMode };
     }
 
     public <T extends GameMode> T getGameMode(Class<T> gameModeClass) {
-        for (GameMode gameMode : configuration.getGameModes()) {
+        for (GameMode gameMode : gameModeList) {
             if (gameMode.getClass() == gameModeClass) {
                 return (T) gameMode;
             }
@@ -314,23 +323,27 @@ public class BattleGame implements Game {
                 Random random = new Random();
 
                 if (arenaList.size() >= 2) {
-                    Arena arena, activeArena = getActiveArena();
+                    Arena arena;
+
                     do {
                         arena = arenaList.get(random.nextInt(arenaList.size()));
-                    } while (activeArena == arena);
+                    } while (BattleGame.this.arena == arena);
+
                     setArena(arena);
                 }
-                if (configuration.getGameModes().length >= 2) {
-                    GameMode gameMode, activeGameMode = getGameMode();
+                if (gameModeList.size() >= 2) {
+                    GameMode gameMode;
+
                     do {
-                        gameMode = configuration.getGameModes()[random.nextInt(configuration.getGameModes().length)];
-                    } while (activeGameMode == gameMode);
+                        gameMode = gameModeList.get(random.nextInt(gameModeList.size()));
+                    } while (BattleGame.this.gameMode == gameMode);
+
                     setGameMode(gameMode);
                 }
 
                 rollback();
 
-                gameMode.loadData(getActiveArena());
+                gameMode.loadData(arena);
                 itemRegistry.clear();
                 playerManager.getPlayers().clear();
 
@@ -338,14 +351,5 @@ public class BattleGame implements Game {
                 updateSign();
             }
         }, 200);
-    }
-
-    private Arena getActiveArena() {
-        for (Arena arena : arenaList) {
-            if (arena.isActive()) {
-                return arena;
-            }
-        }
-        return null;
     }
 }

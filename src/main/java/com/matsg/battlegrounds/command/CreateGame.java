@@ -10,17 +10,21 @@ import com.matsg.battlegrounds.api.game.GameMode;
 import com.matsg.battlegrounds.command.validator.GameIdValidator;
 import com.matsg.battlegrounds.game.BattleGameConfiguration;
 import com.matsg.battlegrounds.game.GameFactory;
+import com.matsg.battlegrounds.mode.GameModeFactory;
+import com.matsg.battlegrounds.mode.GameModeType;
 import org.bukkit.command.CommandSender;
 
 public class CreateGame extends Command {
 
     private GameFactory gameFactory;
     private GameManager gameManager;
+    private GameModeFactory gameModeFactory;
 
-    public CreateGame(Translator translator, GameFactory gameFactory, GameManager gameManager) {
+    public CreateGame(Translator translator, GameFactory gameFactory, GameManager gameManager, GameModeFactory gameModeFactory) {
         super(translator);
         this.gameFactory = gameFactory;
         this.gameManager = gameManager;
+        this.gameModeFactory = gameModeFactory;
 
         setAliases("cg");
         setDescription(createMessage(TranslationKey.DESCRIPTION_CREATEGAME));
@@ -35,18 +39,17 @@ public class CreateGame extends Command {
         int id = Integer.parseInt(args[1]);
 
         Game game = gameFactory.make(id);
-        GameConfiguration configuration = BattleGameConfiguration.getDefaultConfiguration(game);
+        GameConfiguration configuration = BattleGameConfiguration.getDefaultConfiguration();
 
         configuration.saveConfiguration(game.getDataFile());
         game.getDataFile().save();
         game.setConfiguration(configuration);
 
-        GameMode[] gameModes = configuration.getGameModes();
+        GameModeType gameModeType = GameModeType.valueOf(configuration.getGameModeTypes().get(0));
+        GameMode gameMode = gameModeFactory.make(game, gameModeType);
 
-        if (gameModes.length > 0) {
-            game.setGameMode(gameModes[0]);
-            gameModes[0].onCreate();
-        }
+        game.setGameMode(gameMode);
+        gameMode.onCreate();
 
         gameManager.getGames().add(game);
 

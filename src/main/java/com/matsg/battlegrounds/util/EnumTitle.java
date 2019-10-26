@@ -1,8 +1,8 @@
 package com.matsg.battlegrounds.util;
 
 import com.matsg.battlegrounds.BattlegroundsPlugin;
+import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Placeholder;
-import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.nms.Title;
 import org.bukkit.entity.Player;
 
@@ -20,27 +20,47 @@ public enum EnumTitle {
     ZOMBIES_NEW_WAVE("title-zombies-new-wave"),
     ZOMBIES_START("title-zombies-start");
 
-    private int fadeIn;
-    private int fadeOut;
-    private int time;
+    private Battlegrounds plugin;
     private String path;
-    private String subText;
-    private String titleText;
-    private Translator translator;
 
     EnumTitle(String path) {
-        this.translator = BattlegroundsPlugin.getPlugin().getTranslator();
+        this.plugin = BattlegroundsPlugin.getPlugin();
+        this.path = path;
+    }
 
+    public Title getTitle() {
+        return createTitle();
+    }
+
+    public void send(Player player, Placeholder... placeholders) {
+        Title title = createTitle();
+        title.setTitleText(plugin.getTranslator().createSimpleMessage(title.getTitleText(), placeholders));
+        title.setSubText(plugin.getTranslator().createSimpleMessage(title.getSubText(), placeholders));
+
+        title.send(player);
+    }
+
+    public String toString() {
+        return createTitle().toString() + "@" + path;
+    }
+
+    private Title createTitle() {
         if (path == null || path.length() <= 0) {
             throw new TitleFormatException("Title argument cannot be null");
         }
 
-        String string = translator.translate(path);
+        String string = plugin.getTranslator().translate(path);
         String[] split = string.split(",");
 
         if (split.length <= 4) {
             throw new TitleFormatException("Invalid title format \"" + string + "\"");
         }
+
+        int fadeIn;
+        int fadeOut;
+        int time;
+        String subText;
+        String titleText;
 
         try {
             titleText = split[0];
@@ -52,26 +72,6 @@ public enum EnumTitle {
             throw new TitleFormatException("An error occurred while formatting the title");
         }
 
-        this.path = path;
-    }
-
-    public Title getTitle() {
-        return createTitle();
-    }
-
-    public void send(Player player, Placeholder... placeholders) {
-        Title title = createTitle();
-        title.setTitleText(translator.createSimpleMessage(titleText, placeholders));
-        title.setSubText(translator.createSimpleMessage(subText, placeholders));
-
-        title.send(player);
-    }
-
-    public String toString() {
-        return createTitle().toString() + "@" + path;
-    }
-
-    private Title createTitle() {
         return new Title(titleText, subText, fadeIn, time, fadeOut);
     }
 }

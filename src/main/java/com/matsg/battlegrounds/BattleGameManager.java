@@ -11,6 +11,7 @@ import java.util.List;
 
 public class BattleGameManager implements GameManager {
 
+    // TODO: Transform this into a hashmap
     private List<Game> games;
 
     public BattleGameManager() {

@@ -91,11 +91,14 @@ public class SelectWeaponView implements View {
         List<String> lore = new ArrayList<>(weapon.getItemStack().getItemMeta().getLore());
         lore.add(" ");
         int maxLength = 30;
+
         Pattern pattern = Pattern.compile("\\G\\s*(.{1," + maxLength + "})(?=\\s|$)", Pattern.DOTALL);
         Matcher matcher = pattern.matcher(weapon.getMetadata().getDescription());
+
         while (matcher.find()) {
             lore.add(ChatColor.WHITE + matcher.group(1));
         }
+
         return lore.toArray(new String[lore.size()]);
     }
 

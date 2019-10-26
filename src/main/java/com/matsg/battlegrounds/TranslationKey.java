@@ -48,6 +48,7 @@ public enum TranslationKey {
     EDIT_WEAPON("view-edit-weapon"),
     ERROR_OCCURRED("game-error-occurred"),
     GAME_CONFIRM_REMOVE("setup-game-confirm-remove"),
+    FFA_DESCRIPTION("gamemode-ffa-description"),
     FFA_NAME("gamemode-ffa-name"),
     FFA_SHORT("gamemode-ffa-short"),
     GAME_CREATE("setup-game-create"),
@@ -135,6 +136,7 @@ public enum TranslationKey {
     STAT_DAMAGE("item-stat-damage"),
     STAT_FIRERATE("item-stat-firerate"),
     STAT_RANGE("item-stat-range"),
+    TDM_DESCRIPTION("gamemode-tdm-description"),
     TDM_NAME("gamemode-tdm-name"),
     TDM_SHORT("gamemode-tdm-short"),
     TEAM_ASSIGNMENT("game-team-assignment"),
@@ -173,6 +175,7 @@ public enum TranslationKey {
     WEAPON_MELEE_WEAPON("view-weapon-melee-weapon"),
     WEAPON_PRIMARY("view-weapon-primary"),
     WEAPON_SECONDARY("view-weapon-secondary"),
+    ZOMBIES_DESCRIPTION("gamemode-zombies-description"),
     ZOMBIES_NAME("gamemode-zombies-name"),
     ZOMBIES_SHORT("gamemode-zombies-short");
 

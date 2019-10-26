@@ -17,8 +17,6 @@ import org.bukkit.block.Sign;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
 
@@ -126,23 +124,24 @@ public class DataLoader {
         try {
             for (Game game : plugin.getGameManager().getGames()) {
                 ConfigurationSection config = game.getDataFile().getConfigurationSection("config");
-                List<GameMode> gameModes = new ArrayList<>();
+                GameConfiguration configuration = new BattleGameConfiguration(
+                        config.getStringList("gamemodes"),
+                        config.getInt("maxplayers"),
+                        config.getInt("minplayers"),
+                        config.getInt("lobbycountdown")
+                );
 
                 for (String gameModeType : config.getStringList("gamemodes")) {
                     try {
-                        gameModes.add(gameModeFactory.make(game, GameModeType.valueOf(gameModeType.toUpperCase())));
+                        GameMode gameMode = gameModeFactory.make(game, GameModeType.valueOf(gameModeType.toUpperCase()));
+
+                        game.getGameModeList().add(gameMode);
                     } catch (IllegalArgumentException e) {
                         plugin.getLogger().severe("Invalid gamemode type \"" + gameModeType + "\"");
                     }
                 }
 
-                GameConfiguration configuration = new BattleGameConfiguration(
-                        gameModes.toArray(new GameMode[gameModes.size()]),
-                        config.getInt("maxplayers"),
-                        config.getInt("minplayers"),
-                        config.getInt("lobbycountdown")
-                );
-                GameMode gameMode = configuration.getGameModes()[new Random().nextInt(configuration.getGameModes().length)];
+                GameMode gameMode = game.getGameModeList().get(new Random().nextInt(game.getGameModeList().size()));
                 gameMode.onCreate();
 
                 game.setConfiguration(configuration);

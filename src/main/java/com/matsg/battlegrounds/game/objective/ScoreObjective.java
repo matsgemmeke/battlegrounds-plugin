@@ -7,16 +7,16 @@ import com.matsg.battlegrounds.util.EnumTitle;
 
 public class ScoreObjective implements Objective {
 
+    private EnumTitle enumTitle;
     private Game game;
     private int goal;
     private String id;
-    private Title title;
 
     public ScoreObjective(Game game, int goal) {
         this.game = game;
         this.goal = goal;
+        this.enumTitle = EnumTitle.OBJECTIVE_SCORE;
         this.id = "Score";
-        this.title = EnumTitle.OBJECTIVE_SCORE.getTitle();
     }
 
     public String getId() {
@@ -24,7 +24,7 @@ public class ScoreObjective implements Objective {
     }
 
     public Title getTitle() {
-        return title;
+        return enumTitle.getTitle();
     }
 
     public boolean isAchieved() {
