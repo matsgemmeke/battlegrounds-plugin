@@ -57,9 +57,7 @@ public class LoadoutManagerView implements View {
         player.openInventory(new EditLoadoutView(plugin, translator, loadout).getInventory());
     }
 
-    public boolean onClose() {
-        return true;
-    }
+    public void onClose(Player player) { }
 
     private void addLoadouts(UUID uuid) {
         int i = 0;

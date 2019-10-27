@@ -234,7 +234,6 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         bgCommand.addSubCommand(new CreateGame(translator, gameFactory, gameManager, gameModeFactory));
         bgCommand.addSubCommand(new Join(translator, gameManager, config));
         bgCommand.addSubCommand(new Leave(translator, gameManager));
-        bgCommand.addSubCommand(new Overview(this, taskRunner, translator));
         bgCommand.addSubCommand(new Reload(this, translator));
         bgCommand.addSubCommand(new RemoveArena(translator, gameManager, taskRunner));
         bgCommand.addSubCommand(new RemoveComponent(translator, gameManager));
@@ -242,6 +241,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         bgCommand.addSubCommand(new SetGameSign(translator, gameManager, config));
         bgCommand.addSubCommand(new SetLobby(translator, gameManager));
         bgCommand.addSubCommand(new SetMainLobby(translator, cache));
+        bgCommand.addSubCommand(new Settings(this, taskRunner, translator));
         bgCommand.addSubCommand(new Help(translator, bgCommand.getSubCommands(), version));
 
         Command loadoutCommand = new LoadoutCommand(this, translator, levelConfig, playerStorage, config.loadoutCreationLevel);

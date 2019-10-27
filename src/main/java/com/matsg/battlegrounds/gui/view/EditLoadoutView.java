@@ -174,9 +174,7 @@ public class EditLoadoutView implements View {
         }
     }
 
-    public boolean onClose() {
-        return true;
-    }
+    public void onClose(Player player) { }
 
     public class EditLoadoutViewItem {
 

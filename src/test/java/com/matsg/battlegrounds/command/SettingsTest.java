@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import static org.mockito.Mockito.*;
 
-public class OverviewTest {
+public class SettingsTest {
 
     private Battlegrounds plugin;
     private TaskRunner taskRunner;
@@ -25,13 +25,13 @@ public class OverviewTest {
     }
 
     @Test
-    public void openOverviewGui() {
+    public void openSettingsGui() {
         Player player = mock(Player.class);
         Server server = mock(Server.class);
 
         when(plugin.getServer()).thenReturn(server);
 
-        Overview command = new Overview(plugin, taskRunner, translator);
+        Settings command = new Settings(plugin, taskRunner, translator);
         command.execute(player, new String[0]);
 
         verify(player, times(1)).openInventory(any(Inventory.class));

@@ -6,19 +6,24 @@ import java.util.function.Consumer;
 
 public class FunctionalButton implements Button {
 
-    private Consumer<Player> leftClick;
-    private Consumer<Player> rightClick;
+    private Consumer<Player> leftClickFunction;
+    private Consumer<Player> rightClickFunction;
 
-    public FunctionalButton(Consumer<Player> leftClick, Consumer<Player> rightClick) {
-        this.leftClick = leftClick;
-        this.rightClick = rightClick;
+    public FunctionalButton(Consumer<Player> clickFunction) {
+        this.leftClickFunction = clickFunction;
+        this.rightClickFunction = clickFunction;
+    }
+
+    public FunctionalButton(Consumer<Player> leftClickFunction, Consumer<Player> rightClickFunction) {
+        this.leftClickFunction = leftClickFunction;
+        this.rightClickFunction = rightClickFunction;
     }
 
     public void onLeftClick(Player player) {
-        leftClick.accept(player);
+        leftClickFunction.accept(player);
     }
 
     public void onRightClick(Player player) {
-        rightClick.accept(player);
+        rightClickFunction.accept(player);
     }
 }

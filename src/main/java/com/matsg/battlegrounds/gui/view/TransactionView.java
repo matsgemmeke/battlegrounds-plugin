@@ -79,9 +79,7 @@ public abstract class TransactionView implements View {
         }
     }
 
-    public boolean onClose() {
-        return true;
-    }
+    public void onClose(Player player) {  }
 
     public abstract void onTransactionComplete(Transaction transaction);
 

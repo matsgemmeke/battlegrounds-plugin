@@ -4,15 +4,12 @@ import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.api.Translator;
-import com.matsg.battlegrounds.api.game.Arena;
-import com.matsg.battlegrounds.api.game.ArenaComponent;
-import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.GameMode;
+import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.storage.CacheYaml;
 import com.matsg.battlegrounds.gui.*;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.mode.zombies.Zombies;
-import com.matsg.battlegrounds.mode.zombies.gui.ZombiesOverviewView;
+import com.matsg.battlegrounds.mode.zombies.gui.ZombiesSettingsView;
 import com.matsg.battlegrounds.util.XMaterial;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -21,7 +18,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.function.Consumer;
 
-public class GameOverviewView extends AbstractOverviewView {
+public class GameSettingsView extends AbstractSettingsView {
 
     private static final int INVENTORY_SIZE = 45;
 
@@ -31,7 +28,7 @@ public class GameOverviewView extends AbstractOverviewView {
     private Translator translator;
     private View previousView;
 
-    public GameOverviewView(Battlegrounds plugin, Game game, Translator translator, View previousView) {
+    public GameSettingsView(Battlegrounds plugin, Game game, Translator translator, View previousView) {
         this.plugin = plugin;
         this.game = game;
         this.translator = translator;
@@ -53,7 +50,7 @@ public class GameOverviewView extends AbstractOverviewView {
                     .setDisplayName(ChatColor.GOLD + arena.getName())
                     .build();
 
-            View arenaView = new ArenaOverviewView(plugin, arena, translator, this);
+            View arenaView = new ArenaSettingsView(plugin, arena, translator, this);
             Consumer<Player> click = player -> player.openInventory(arenaView.getInventory());
             Button button = new FunctionalButton(click, click);
 
@@ -79,7 +76,7 @@ public class GameOverviewView extends AbstractOverviewView {
                 View gameModeView;
 
                 if (gameMode instanceof Zombies) {
-                    gameModeView = new ZombiesOverviewView(plugin, (Zombies) gameMode, removeFunction, translator, previousView);
+                    gameModeView = new ZombiesSettingsView(plugin, (Zombies) gameMode, removeFunction, translator, previousView);
                 } else {
                     throw new ViewCreationException("Can not create view of game mode " + gameMode.getName());
                 }
@@ -93,15 +90,24 @@ public class GameOverviewView extends AbstractOverviewView {
             }
         }
 
+        GameConfiguration configuration = game.getConfiguration();
+        View editConfigurationView = new EditGameConfigurationView(plugin, game, configuration, translator, this);
+        Consumer<Player> configClick = player -> player.openInventory(editConfigurationView.getInventory());
+
+        ItemStack configButton = new ItemStackBuilder(new ItemStack(XMaterial.REDSTONE.parseMaterial()))
+                .setDisplayName(translator.translate(TranslationKey.VIEW_GAME_SETTINGS_CONFIG.getPath()))
+                .build();
+        Button button = new FunctionalButton(configClick, configClick);
+
         ItemStack backButton = new ItemStackBuilder(new ItemStack(XMaterial.COMPASS.parseMaterial()))
                 .setDisplayName(translator.translate(TranslationKey.GO_BACK.getPath()))
                 .build();
 
-        inventory.setItem(INVENTORY_SIZE - 1, backButton);
-    }
+        addButton(configButton, button);
+        createBackButton(backButton, previousView);
 
-    public void returnToPreviousView(Player player) {
-        player.openInventory(previousView.getInventory());
+        inventory.setItem(INVENTORY_SIZE - 2, configButton);
+        inventory.setItem(INVENTORY_SIZE - 1, backButton);
     }
 
     private Arena findArenaOfComponent(int componentId) {
@@ -119,7 +125,7 @@ public class GameOverviewView extends AbstractOverviewView {
     }
 
     private Inventory createInventory() {
-        String title = translator.translate(TranslationKey.VIEW_GAME_OVERVIEW_TITLE.getPath(), new Placeholder("bg_game", game.getId()));
+        String title = translator.translate(TranslationKey.VIEW_GAME_SETTINGS_TITLE.getPath(), new Placeholder("bg_game", game.getId()));
         inventory = plugin.getServer().createInventory(this, INVENTORY_SIZE, title);
         refreshContent();
         return inventory;

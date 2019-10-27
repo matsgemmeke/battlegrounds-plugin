@@ -71,9 +71,7 @@ public class SelectGameModeView implements View {
         refreshInventory(inventory);
     }
 
-    public boolean onClose() {
-        return true;
-    }
+    public void onClose(Player player) { }
 
     private Inventory createInventory() {
         String title = translator.translate(TranslationKey.VIEW_SELECT_GAMEMODE_TITLE.getPath(), new Placeholder("bg_game", game.getId()));

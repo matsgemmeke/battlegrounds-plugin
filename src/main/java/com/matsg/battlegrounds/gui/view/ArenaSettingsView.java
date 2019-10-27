@@ -17,7 +17,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.function.Consumer;
 
-public class ArenaOverviewView extends AbstractOverviewView {
+public class ArenaSettingsView extends AbstractSettingsView {
 
     private static final int INVENTORY_SIZE = 45;
     private static final String EMPTY_STRING = "";
@@ -28,7 +28,7 @@ public class ArenaOverviewView extends AbstractOverviewView {
     private Translator translator;
     private View previousView;
 
-    public ArenaOverviewView(Battlegrounds plugin, Arena arena, Translator translator, View previousView) {
+    public ArenaSettingsView(Battlegrounds plugin, Arena arena, Translator translator, View previousView) {
         this.plugin = plugin;
         this.arena = arena;
         this.translator = translator;
@@ -80,15 +80,13 @@ public class ArenaOverviewView extends AbstractOverviewView {
                 .setDisplayName(translator.translate(TranslationKey.GO_BACK.getPath()))
                 .build();
 
+        createBackButton(backButton, previousView);
+
         inventory.setItem(INVENTORY_SIZE - 1, backButton);
     }
 
-    public void returnToPreviousView(Player player) {
-        player.openInventory(previousView.getInventory());
-    }
-
     private Inventory createInventory() {
-        String title = translator.translate(TranslationKey.VIEW_ARENA_OVERVIEW_TITLE.getPath(), new Placeholder("bg_arena", arena.getName()));
+        String title = translator.translate(TranslationKey.VIEW_ARENA_SETTINGS_TITLE.getPath(), new Placeholder("bg_arena", arena.getName()));
         inventory = plugin.getServer().createInventory(this, INVENTORY_SIZE, title);
         refreshContent();
         return inventory;

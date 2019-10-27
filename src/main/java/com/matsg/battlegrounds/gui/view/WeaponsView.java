@@ -104,9 +104,7 @@ public class WeaponsView implements View {
         player.openInventory(new SelectWeaponView(plugin, translator, player, loadout, itemType, weaponList, inventory).getInventory());
     }
 
-    public boolean onClose() {
-        return true;
-    }
+    public void onClose(Player player) { }
 
     private void addToInventory(Inventory inventory, Weapon weapon) {
         weapon.update();

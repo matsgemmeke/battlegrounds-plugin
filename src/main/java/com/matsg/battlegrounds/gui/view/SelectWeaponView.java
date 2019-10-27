@@ -36,11 +36,7 @@ public class SelectWeaponView implements View {
 
         this.inventory = plugin.getServer().createInventory(this, 27, translator.translate(itemType.getNameKey()));
 
-        Collections.sort(weapons, new Comparator<Weapon>() {
-            public int compare(Weapon o1, Weapon o2){
-                return Integer.valueOf(plugin.getLevelConfig().getLevelUnlocked(o1.getMetadata().getId())).compareTo(plugin.getLevelConfig().getLevelUnlocked(o2.getMetadata().getId()));
-            }
-        });
+        Collections.sort(weapons, (o1, o2) -> Integer.valueOf(plugin.getLevelConfig().getLevelUnlocked(o1.getMetadata().getId())).compareTo(plugin.getLevelConfig().getLevelUnlocked(o2.getMetadata().getId())));
 
         int slot = 0;
 
@@ -118,6 +114,8 @@ public class SelectWeaponView implements View {
         player.openInventory(new EditLoadoutView(plugin, translator, loadout).getInventory());
     }
 
+    public void onClose(Player player) { }
+
     private void replaceWeapon(Loadout loadout, Weapon weapon) {
         ItemSlot itemSlot = weapon.getType().getDefaultItemSlot();
         weapon.setItemSlot(itemSlot);
@@ -141,9 +139,5 @@ public class SelectWeaponView implements View {
                 loadout.setMeleeWeapon((MeleeWeapon) weapon);
                 break;
         }
-    }
-
-    public boolean onClose() {
-        return true;
     }
 }

@@ -55,7 +55,7 @@ public class EventListener implements Listener {
                 new InventoryClickEventHandler()
         ));
         eventDispatcher.registerEventChannel(InventoryCloseEvent.class, new EventChannel<>(
-                new InventoryCloseEventHandler(plugin)
+                new InventoryCloseEventHandler()
         ));
         eventDispatcher.registerEventChannel(PlayerCommandPreprocessEvent.class, new EventChannel<>(
                 new PlayerCommandPreprocessEventHandler(plugin, translator)

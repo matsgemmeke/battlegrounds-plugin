@@ -5,16 +5,14 @@ import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.entity.BattleEntityType;
 import com.matsg.battlegrounds.api.game.ArenaComponent;
-import com.matsg.battlegrounds.api.storage.CacheYaml;
 import com.matsg.battlegrounds.gui.Button;
 import com.matsg.battlegrounds.gui.FunctionalButton;
-import com.matsg.battlegrounds.gui.view.AbstractOverviewView;
+import com.matsg.battlegrounds.gui.view.AbstractSettingsView;
 import com.matsg.battlegrounds.gui.view.View;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.mode.zombies.component.*;
 import com.matsg.battlegrounds.util.XMaterial;
 import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
@@ -25,7 +23,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Consumer;
 
-public class SectionOverviewView extends AbstractOverviewView {
+public class SectionSettingsView extends AbstractSettingsView {
 
     private static final int INVENTORY_SIZE = 45;
     private static final String EMPTY_STRING = "";
@@ -37,7 +35,7 @@ public class SectionOverviewView extends AbstractOverviewView {
     private Translator translator;
     private View previousView;
 
-    public SectionOverviewView(Plugin plugin, Section section, Consumer<ArenaComponent> removeFunction, Translator translator, View previousView) {
+    public SectionSettingsView(Plugin plugin, Section section, Consumer<ArenaComponent> removeFunction, Translator translator, View previousView) {
         this.plugin = plugin;
         this.section = section;
         this.removeFunction = removeFunction;
@@ -78,7 +76,7 @@ public class SectionOverviewView extends AbstractOverviewView {
                     )
                     .build();
 
-            Button button = createButton(location, barricade);
+            Button button = createComponentButton(location, barricade);
 
             addButton(barricadeItemStack, button);
 
@@ -108,7 +106,7 @@ public class SectionOverviewView extends AbstractOverviewView {
                     )
                     .build();
 
-            Button button = createButton(location, door);
+            Button button = createComponentButton(location, door);
 
             addButton(doorItemStack, button);
 
@@ -142,7 +140,7 @@ public class SectionOverviewView extends AbstractOverviewView {
                     )
                     .build();
 
-            Button button = createButton(location, mobSpawn);
+            Button button = createComponentButton(location, mobSpawn);
 
             addButton(mobSpawnItemStack, button);
 
@@ -175,7 +173,7 @@ public class SectionOverviewView extends AbstractOverviewView {
                     )
                     .build();
 
-            Button button = createButton(location, mysteryBox);
+            Button button = createComponentButton(location, mysteryBox);
 
             addButton(mysteryBoxItemStack, button);
 
@@ -212,7 +210,7 @@ public class SectionOverviewView extends AbstractOverviewView {
                     )
                     .build();
 
-            Button button = createButton(location, perkMachine);
+            Button button = createComponentButton(location, perkMachine);
 
             addButton(perkMachineItemStack, button);
 
@@ -248,7 +246,7 @@ public class SectionOverviewView extends AbstractOverviewView {
                     )
                     .build();
 
-            Button button = createButton(location, wallWeapon);
+            Button button = createComponentButton(location, wallWeapon);
 
             addButton(wallWeaponItemStack, button);
 
@@ -263,14 +261,12 @@ public class SectionOverviewView extends AbstractOverviewView {
                 .setDisplayName(translator.translate(TranslationKey.GO_BACK.getPath()))
                 .build();
 
+        createBackButton(backButton, previousView);
+
         inventory.setItem(INVENTORY_SIZE - 1, backButton);
     }
 
-    public void returnToPreviousView(Player player) {
-        player.openInventory(previousView.getInventory());
-    }
-
-    private Button createButton(Location location, ArenaComponent component) {
+    private Button createComponentButton(Location location, ArenaComponent component) {
         Consumer<Player> leftClick = player -> player.teleport(location);
         Consumer<Player> rightClick = player -> {
             section.removeComponent(component);
@@ -280,7 +276,7 @@ public class SectionOverviewView extends AbstractOverviewView {
     }
 
     private Inventory createInventory() {
-        String title = translator.translate(TranslationKey.VIEW_SECTION_OVERVIEW_TITLE.getPath(), new Placeholder("bg_section", section.getName()));
+        String title = translator.translate(TranslationKey.VIEW_SECTION_SETTINGS_TITLE.getPath(), new Placeholder("bg_section", section.getName()));
         inventory = plugin.getServer().createInventory(this, INVENTORY_SIZE, title);
         refreshContent();
         return inventory;

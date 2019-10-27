@@ -1,25 +1,24 @@
 package com.matsg.battlegrounds.gui.view;
 
 import com.matsg.battlegrounds.gui.Button;
-import org.bukkit.Material;
+import com.matsg.battlegrounds.gui.FunctionalButton;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
-public abstract class AbstractOverviewView implements View {
+public abstract class AbstractSettingsView implements View {
 
     private Map<ItemStack, Button> buttons;
 
-    public AbstractOverviewView() {
+    public AbstractSettingsView() {
         this.buttons = new HashMap<>();
     }
 
     public abstract void refreshContent();
-
-    public abstract void returnToPreviousView(Player player);
 
     protected void addButton(ItemStack itemStack, Button button) {
         if (buttons.containsKey(itemStack)) {
@@ -28,13 +27,17 @@ public abstract class AbstractOverviewView implements View {
         buttons.put(itemStack, button);
     }
 
+    protected Button createBackButton(ItemStack itemStack, View view) {
+        Consumer<Player> click = player -> player.openInventory(view.getInventory());
+        Button backButton = new FunctionalButton(click, click);
+
+        addButton(itemStack, backButton);
+
+        return backButton;
+    }
+
     public void onClick(Player player, ItemStack itemStack, ClickType clickType) {
         if (itemStack == null) {
-            return;
-        }
-
-        if (itemStack.getType() == Material.COMPASS) {
-            returnToPreviousView(player);
             return;
         }
 
@@ -53,7 +56,5 @@ public abstract class AbstractOverviewView implements View {
         refreshContent();
     }
 
-    public boolean onClose() {
-        return true;
-    }
+    public void onClose(Player player) { }
 }

@@ -72,6 +72,10 @@ public class BattleGame implements Game {
         return arena;
     }
 
+    public void setArena(Arena arena) {
+        this.arena = arena;
+    }
+
     public List<Arena> getArenaList() {
         return arenaList;
     }
@@ -223,15 +227,6 @@ public class BattleGame implements Game {
             gamePlayer.setState(PlayerState.ACTIVE);
             gamePlayer.getState().apply(this, gamePlayer);
         }
-    }
-
-    public void setArena(Arena arena) {
-        for (Arena other : arenaList) {
-            if (other.isActive()) {
-                other.setActive(false);
-            }
-        }
-        arena.setActive(true);
     }
 
     public void startCountdown() {

@@ -36,32 +36,9 @@ public class InventoryCloseEventHandlerTest {
 
     @Test
     public void inventoryCloseNoView() {
-        InventoryCloseEventHandler eventHandler = new InventoryCloseEventHandler(plugin);
+        InventoryCloseEventHandler eventHandler = new InventoryCloseEventHandler();
         eventHandler.handle(event);
 
         verify(scheduler, times(0)).scheduleSyncDelayedTask(any(Battlegrounds.class), any(Runnable.class), anyLong());
-    }
-
-    @Test
-    public void inventoryCloseWithViewAllowClose() {
-        when(inventory.getHolder()).thenReturn(view);
-        when(view.onClose()).thenReturn(true);
-
-        InventoryCloseEventHandler eventHandler = new InventoryCloseEventHandler(plugin);
-        eventHandler.handle(event);
-
-        verify(scheduler, times(0)).scheduleSyncDelayedTask(any(Battlegrounds.class), any(Runnable.class), anyLong());
-    }
-
-    @Test
-    public void inventoryCloseWithViewDisallowClose() {
-        when(inventory.getHolder()).thenReturn(view);
-        when(view.onClose()).thenReturn(false);
-
-        InventoryCloseEventHandler eventHandler = new InventoryCloseEventHandler(plugin);
-        eventHandler.handle(event);
-
-        // verify(player, times(1)).openInventory(inventory);
-        verify(scheduler, times(1)).scheduleSyncDelayedTask(any(Battlegrounds.class), any(Runnable.class), anyLong());
     }
 }

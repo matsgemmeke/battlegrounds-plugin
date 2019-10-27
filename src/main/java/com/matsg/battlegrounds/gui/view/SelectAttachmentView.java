@@ -124,9 +124,7 @@ public class SelectAttachmentView implements View {
         player.openInventory(new EditLoadoutView(plugin, translator, loadout).getInventory());
     }
 
-    public boolean onClose() {
-        return true;
-    }
+    public void onClose(Player player) { }
 
     private List<Attachment> sortAttachments(Collection<Attachment> unsorted) {
         List<Attachment> list = new ArrayList<>(unsorted);

@@ -9,5 +9,5 @@ public interface View extends InventoryHolder {
 
     void onClick(Player player, ItemStack itemStack, ClickType clickType);
 
-    boolean onClose();
+    void onClose(Player player);
 }

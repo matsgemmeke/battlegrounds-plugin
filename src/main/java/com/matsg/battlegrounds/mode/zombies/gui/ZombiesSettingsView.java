@@ -7,7 +7,7 @@ import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.ArenaComponent;
 import com.matsg.battlegrounds.gui.Button;
 import com.matsg.battlegrounds.gui.FunctionalButton;
-import com.matsg.battlegrounds.gui.view.AbstractOverviewView;
+import com.matsg.battlegrounds.gui.view.AbstractSettingsView;
 import com.matsg.battlegrounds.gui.view.View;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.mode.zombies.Zombies;
@@ -19,7 +19,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.function.Consumer;
 
-public class ZombiesOverviewView extends AbstractOverviewView {
+public class ZombiesSettingsView extends AbstractSettingsView {
 
     private static final int INVENTORY_SIZE = 45;
     private static final String EMPTY_STRING = "";
@@ -31,7 +31,7 @@ public class ZombiesOverviewView extends AbstractOverviewView {
     private View previousView;
     private Zombies zombies;
 
-    public ZombiesOverviewView(
+    public ZombiesSettingsView(
             Battlegrounds plugin,
             Zombies zombies,
             Consumer<ArenaComponent> removeFunction,
@@ -54,7 +54,7 @@ public class ZombiesOverviewView extends AbstractOverviewView {
         inventory.clear();
 
         for (Section section : zombies.getSectionContainer().getAll()) {
-            ItemStack sectionItemStack = new ItemStackBuilder(new ItemStack(XMaterial.GLASS.parseMaterial()))
+            ItemStack sectionItemStack = new ItemStackBuilder(new ItemStack(XMaterial.CHEST.parseMaterial()))
                     .setDisplayName(
                             translator.translate(TranslationKey.VIEW_COMPONENT_BUTTON.getPath(),
                                     new Placeholder("bg_component_id", section.getId())
@@ -73,7 +73,7 @@ public class ZombiesOverviewView extends AbstractOverviewView {
                     )
                     .build();
 
-            View sectionView = new SectionOverviewView(plugin, section, removeFunction, translator, this);
+            View sectionView = new SectionSettingsView(plugin, section, removeFunction, translator, this);
             Consumer<Player> leftClick = player -> player.openInventory(sectionView.getInventory());
             Consumer<Player> rightClick = player -> {
                 zombies.removeComponent(section);
@@ -90,15 +90,13 @@ public class ZombiesOverviewView extends AbstractOverviewView {
                 .setDisplayName(translator.translate(TranslationKey.GO_BACK.getPath()))
                 .build();
 
+        createBackButton(backButton, previousView);
+
         inventory.setItem(INVENTORY_SIZE - 1, backButton);
     }
 
-    public void returnToPreviousView(Player player) {
-        player.openInventory(previousView.getInventory());
-    }
-
     private Inventory createInventory() {
-        String title = translator.translate(TranslationKey.VIEW_ZOMBIES_OVERVIEW_TITLE.getPath());
+        String title = translator.translate(TranslationKey.VIEW_ZOMBIES_SETTINGS_TITLE.getPath());
         inventory = plugin.getServer().createInventory(this, INVENTORY_SIZE, title);
         refreshContent();
         return inventory;

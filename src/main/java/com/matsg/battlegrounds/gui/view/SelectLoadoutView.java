@@ -90,8 +90,12 @@ public class SelectLoadoutView implements View {
         player.closeInventory(); // Call this after the loadout has been selected
     }
 
-    public boolean onClose() {
-        return gamePlayer.getSelectedLoadout() != null;
+    public void onClose(Player player) {
+        if (gamePlayer.getSelectedLoadout() != null) {
+            return;
+        }
+
+        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> player.openInventory(inventory), 1);
     }
 
     private void addLoadouts(Game game, GamePlayer gamePlayer) {
