@@ -20,13 +20,13 @@ endif
 
 spigot.test: ## Test the plugin with a specified spigot revision
 ifeq ($(and $(version)),)
-        echo "You need to define a version parameter in order to run this command, usage: make spigot.build version=<version>"
-        exit 1
+	echo "You need to define a version parameter in order to run this command, usage: make spigot.build version=<version>"
+	exit 1
 endif
 	mkdir -p spigot-test
 	cd spigot-test
 	echo "This command is still work in progress"
 
 docker.run: ## Run an interactive shell to test the application in docker
-	#docker run -itv ${CURDIR}:/app --workdir=/app -u 1000 openjdk-8 bash
-	echo "This command is still work in progress"
+	docker run --rm -itv ${CURDIR}:/app --workdir=/app -u 1000 openjdk:8 bash
+
