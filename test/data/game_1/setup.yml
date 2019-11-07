@@ -1,7 +1,0 @@
-config:
-  gamemodes:
-  - FREE_FOR_ALL
-  - TEAM_DEATHMATCH
-  lobbycountdown: 60
-  maxplayers: 12
-  minplayers: 2
