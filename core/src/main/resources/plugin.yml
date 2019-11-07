@@ -1,0 +1,14 @@
+main: com.matsg.battlegrounds.BattlegroundsPlugin
+name: ${project.name}
+version: ${project.version}
+author: Mats9799
+commands:
+  battlegrounds:
+    aliases: [b, bg, battleground]
+    description: Main command
+    usage: /battlegrounds
+  loadout:
+    aliases: loadoutcreator
+    description: Opens the loadout creation manager
+    usage: /loadout
+softdepend: [Multiverse-Core, MultiWorld]
