@@ -1,5 +1,8 @@
 language: java
 
+before_script:
+        - make spigot.build 
+
 script:
         - mvn install
         - mvn build
