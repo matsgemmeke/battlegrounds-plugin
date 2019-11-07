@@ -1,9 +1,6 @@
 language: java
-addons:
-  sonarcloud:
-    organization: "matsgemmeke-github"
-    token:
-      secure: 626cb5d70e573de8e42e92c8ee1df352df7af0f5
+
 script:
-  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+        - mvn install
+        - mvn build
+        - mvn test
