@@ -1,6 +1,6 @@
-name: Battlegrounds
 main: com.matsg.battlegrounds.BattlegroundsPlugin
-version: 2.0.0 BETA
+name: ${project.name}
+version: ${project.version}
 author: Mats9799
 commands:
   battlegrounds:

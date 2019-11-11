@@ -176,7 +176,8 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         try {
             String packageName = BattlegroundsPlugin.class.getPackage().getName();
             String internalsName = getServer().getClass().getPackage().getName().split("\\.")[3];
-            internals = (InternalsProvider) Class.forName(packageName + "." + internalsName).newInstance();
+            internals = (InternalsProvider) Class.forName(packageName + ".nms." + internalsName + "." + internalsName.toUpperCase()).newInstance();
+            internals.registerCustomEntities();
         } catch (Exception e) {
             throw new StartupFailedException("Failed to find a valid implementation for this server version");
         }
@@ -247,6 +248,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         loadoutCommand.addSubCommand(new Rename(translator, playerStorage));
 
         commands.add(bgCommand);
+        commands.add(loadoutCommand);
 
         for (Command command : commands) {
             getCommand(command.getName()).setExecutor(command);

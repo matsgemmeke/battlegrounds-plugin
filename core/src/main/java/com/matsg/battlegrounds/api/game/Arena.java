@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.api.game;
 
+import com.matsg.battlegrounds.api.Extent;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import org.bukkit.Location;
 

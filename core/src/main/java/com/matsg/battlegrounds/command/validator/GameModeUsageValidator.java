@@ -31,9 +31,11 @@ public class GameModeUsageValidator implements CommandValidator {
             }
         }
 
+        String gameModeName = translator.translate(gameModeType.getNamePath());
+
         return new ValidationResponse(translator.translate(TranslationKey.GAMEMODE_NOT_USED.getPath(),
                 new Placeholder("bg_game", game.getId()),
-                new Placeholder("bg_gamemode", gameModeType.toString())
+                new Placeholder("bg_gamemode", gameModeName)
         ));
     }
 }

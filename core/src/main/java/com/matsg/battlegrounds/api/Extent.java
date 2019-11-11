@@ -1,4 +1,4 @@
-package com.matsg.battlegrounds.api.game;
+package com.matsg.battlegrounds.api;
 
 import org.bukkit.Location;
 import org.bukkit.World;

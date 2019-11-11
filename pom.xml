@@ -12,5 +12,6 @@
     <modules>
         <module>core</module>
         <module>craftbukkit/v1_12_R1</module>
+        <module>dist</module>
     </modules>
 </project>

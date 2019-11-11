@@ -1,7 +1,6 @@
 package com.matsg.battlegrounds.command;
 
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Game;
@@ -10,13 +9,10 @@ import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.api.storage.BattlegroundsConfig;
 import com.matsg.battlegrounds.command.validator.GameIdValidator;
 import com.matsg.battlegrounds.game.BattleGameSign;
-import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.util.Set;
 
 public class SetGameSign extends Command {
 
@@ -40,7 +36,7 @@ public class SetGameSign extends Command {
 
     public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
-        BlockState state = player.getTargetBlock((Set<Material>) null, 5).getState();
+        BlockState state = player.getTargetBlock(null, 5).getState();
         Game game = gameManager.getGame(Integer.parseInt(args[1]));
 
         if (!(state instanceof Sign)) {
@@ -55,7 +51,7 @@ public class SetGameSign extends Command {
         game.getDataFile().save();
         game.setGameSign(gameSign);
 
-        sign.update();
+        gameSign.update();
 
         player.sendMessage(createMessage(TranslationKey.GAMESIGN_SET, new Placeholder("bg_game", game.getId())));
     }
