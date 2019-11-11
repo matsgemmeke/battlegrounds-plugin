@@ -45,6 +45,12 @@ public class CreateGame extends Command {
         game.getDataFile().save();
         game.setConfiguration(configuration);
 
+        // Instantiate all gamemode types and generate their config files
+        for (String gameModeType : configuration.getGameModeTypes()) {
+            gameModeFactory.make(game, GameModeType.valueOf(gameModeType));
+        }
+
+        // Configure the first gamemode type as the default
         GameModeType gameModeType = GameModeType.valueOf(configuration.getGameModeTypes().get(0));
         GameMode gameMode = gameModeFactory.make(game, gameModeType);
 

@@ -29,7 +29,7 @@ public class AddComponent extends Command {
         setName("addcomponent");
         setPermissionNode("bg.addcomponent");
         setPlayerOnly(true);
-        setUsage("bg addcomponent [id] [arena] [section] [component]");
+        setUsage("bg addcomponent [id] [arena] [component] [args]");
 
         commands = new HashMap<>();
         commands.put("door", new AddDoor(translator, gameManager, selectionManager));

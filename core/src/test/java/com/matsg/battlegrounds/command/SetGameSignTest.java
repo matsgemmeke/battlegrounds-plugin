@@ -5,8 +5,12 @@ import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.api.game.GameConfiguration;
+import com.matsg.battlegrounds.api.game.GameState;
+import com.matsg.battlegrounds.api.game.PlayerManager;
 import com.matsg.battlegrounds.api.storage.BattlegroundsConfig;
 import com.matsg.battlegrounds.api.storage.CacheYaml;
+import com.matsg.battlegrounds.game.state.InGameState;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -14,6 +18,8 @@ import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Collections;
 
 import static org.mockito.Mockito.*;
 
@@ -67,11 +73,20 @@ public class SetGameSignTest {
         TranslationKey key = TranslationKey.GAMESIGN_SET;
 
         CacheYaml dataFile = mock(CacheYaml.class);
+        GameConfiguration configuration = mock(GameConfiguration.class);
+        GameState state = new InGameState();
+        PlayerManager playerManager = mock(PlayerManager.class);
         Sign sign = mock(Sign.class);
         String[] args = new String[] { "command", String.valueOf(gameId) };
+        String[] layout = new String[] { "1", "2", "3", "4" };
 
         when(block.getState()).thenReturn(sign);
+        when(config.getGameSignLayout()).thenReturn(layout);
+        when(game.getConfiguration()).thenReturn(configuration);
         when(game.getDataFile()).thenReturn(dataFile);
+        when(game.getPlayerManager()).thenReturn(playerManager);
+        when(game.getState()).thenReturn(state);
+        when(playerManager.getPlayers()).thenReturn(Collections.emptyList());
         when(translator.translate(eq(key.getPath()), anyVararg())).thenReturn(responseMessage);
 
         SetGameSign command = new SetGameSign(translator, gameManager, config);
@@ -80,6 +95,7 @@ public class SetGameSignTest {
         verify(dataFile, times(1)).setLocation(anyString(), any(Location.class), anyBoolean());
         verify(dataFile, times(1)).save();
         verify(player, times(1)).sendMessage(responseMessage);
+        verify(sign, times(4)).setLine(anyInt(), anyString());
         verify(sign, times(1)).update();
     }
 }
