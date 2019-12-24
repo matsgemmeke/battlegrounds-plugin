@@ -1,9 +1,8 @@
 package com.matsg.battlegrounds.command;
 
-import com.matsg.battlegrounds.TaskRunner;
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Translator;
+import com.matsg.battlegrounds.gui.ViewFactory;
 import com.matsg.battlegrounds.gui.view.PluginSettingsView;
 import com.matsg.battlegrounds.gui.view.View;
 import org.bukkit.command.CommandSender;
@@ -11,13 +10,11 @@ import org.bukkit.entity.Player;
 
 public class Settings extends Command {
 
-    private Battlegrounds plugin;
-    private TaskRunner taskRunner;
+    private ViewFactory viewFactory;
 
-    public Settings(Battlegrounds plugin, TaskRunner taskRunner, Translator translator) {
+    public Settings(Translator translator, ViewFactory viewFactory) {
         super(translator);
-        this.plugin = plugin;
-        this.taskRunner = taskRunner;
+        this.viewFactory = viewFactory;
 
         setDescription(createMessage(TranslationKey.DESCRIPTION_SETTINGS));
         setName("settings");
@@ -28,8 +25,8 @@ public class Settings extends Command {
 
     public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
-        View view = new PluginSettingsView(plugin, taskRunner, translator);
 
-        player.openInventory(view.getInventory());
+        View view = viewFactory.make(PluginSettingsView.class, instance -> {});
+        view.openInventory(player);
     }
 }

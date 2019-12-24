@@ -10,6 +10,7 @@ import com.matsg.battlegrounds.api.event.GamePlayerKillEntityEvent;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.Placeholder;
+import com.matsg.battlegrounds.gui.ViewFactory;
 import com.matsg.battlegrounds.mode.GameModeCountdown;
 import com.matsg.battlegrounds.mode.GameModeType;
 import com.matsg.battlegrounds.mode.shared.ClassicGameMode;
@@ -22,8 +23,8 @@ public class TeamDeathmatch extends ClassicGameMode {
 
     private TDMConfig config;
 
-    public TeamDeathmatch(Battlegrounds plugin, Game game, Translator translator, SpawningBehavior spawningBehavior, TDMConfig config) {
-        super(plugin, GameModeType.TEAM_DEATHMATCH, game, translator, spawningBehavior);
+    public TeamDeathmatch(Battlegrounds plugin, Game game, SpawningBehavior spawningBehavior, Translator translator, ViewFactory viewFactory, TDMConfig config) {
+        super(plugin, GameModeType.TEAM_DEATHMATCH, game, spawningBehavior, translator, viewFactory);
         this.config = config;
         this.teams.addAll(config.getTeams());
         this.name = translator.translate(TranslationKey.TDM_NAME.getPath());

@@ -16,6 +16,7 @@ import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.storage.CacheYaml;
 import com.matsg.battlegrounds.game.BattleComponentContainer;
 import com.matsg.battlegrounds.game.BattleTeam;
+import com.matsg.battlegrounds.gui.ViewFactory;
 import com.matsg.battlegrounds.mode.AbstractGameMode;
 import com.matsg.battlegrounds.mode.GameModeType;
 import com.matsg.battlegrounds.mode.shared.NulledCountdown;
@@ -59,6 +60,7 @@ public class Zombies extends AbstractGameMode {
     private SectionFactory sectionFactory;
     private TaskRunner taskRunner;
     private Team team;
+    private ViewFactory viewFactory;
     private WallWeaponFactory wallWeaponFactory;
     private Wave wave;
     private WaveFactory waveFactory;
@@ -73,6 +75,7 @@ public class Zombies extends AbstractGameMode {
             PerkManager perkManager,
             PowerUpManager powerUpManager,
             TaskRunner taskRunner,
+            ViewFactory viewFactory,
             ZombiesConfig config
     ) {
         super(plugin, GameModeType.ZOMBIES, game, translator, spawningBehavior);
@@ -80,6 +83,7 @@ public class Zombies extends AbstractGameMode {
         this.perkManager = perkManager;
         this.powerUpManager = powerUpManager;
         this.taskRunner = taskRunner;
+        this.viewFactory = viewFactory;
         this.config = config;
         this.loadoutFactory = new LoadoutFactory();
         this.name = translator.translate(GameModeType.ZOMBIES.getNamePath());
@@ -121,8 +125,6 @@ public class Zombies extends AbstractGameMode {
             Mob mob = game.getMobManager().findMob(entity);
             if (mob != null) {
                 mob.remove();
-            } else if (arena.contains(entity.getLocation()) && (!(entity instanceof Player))) {
-                entity.remove();
             }
         }
         for (Section section : sectionContainer.getAll()) {
@@ -496,8 +498,8 @@ public class Zombies extends AbstractGameMode {
         doorFactory = new DoorFactory(game, internals, translator);
         mobSpawnFactory = new MobSpawnFactory();
         mysteryBoxFactory = new MysteryBoxFactory(internals, itemFinder, translator, config);
-        perkMachineFactory = new PerkMachineFactory(game, internals, perkManager, translator, config);
+        perkMachineFactory = new PerkMachineFactory(game, internals, perkManager, translator, viewFactory, config);
         sectionFactory = new SectionFactory();
-        wallWeaponFactory = new WallWeaponFactory(game, internals, translator);
+        wallWeaponFactory = new WallWeaponFactory(game, internals, translator, viewFactory);
     }
 }

@@ -1,94 +1,96 @@
 package com.matsg.battlegrounds.gui.view;
 
+import com.github.stefvanschie.inventoryframework.Gui;
+import com.github.stefvanschie.inventoryframework.GuiItem;
+import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Arena;
+import com.matsg.battlegrounds.api.game.ArenaComponent;
 import com.matsg.battlegrounds.api.game.Spawn;
-import com.matsg.battlegrounds.gui.Button;
-import com.matsg.battlegrounds.gui.FunctionalButton;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.util.XMaterial;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.function.Consumer;
 
-public class ArenaSettingsView extends AbstractSettingsView {
+public class ArenaSettingsView implements View {
 
-    private static final int INVENTORY_SIZE = 45;
     private static final String EMPTY_STRING = "";
 
+    public Gui gui;
     private Arena arena;
-    private Battlegrounds plugin;
-    private Inventory inventory;
+    private Consumer<ArenaComponent> onComponentRemove;
     private Translator translator;
     private View previousView;
 
-    public ArenaSettingsView(Battlegrounds plugin, Arena arena, Translator translator, View previousView) {
-        this.plugin = plugin;
+    public ArenaSettingsView setArena(Arena arena) {
         this.arena = arena;
-        this.translator = translator;
+        return this;
+    }
+
+    public ArenaSettingsView setOnComponentRemove(Consumer<ArenaComponent> onComponentRemove) {
+        this.onComponentRemove = onComponentRemove;
+        return this;
+    }
+
+    public ArenaSettingsView setPreviousView(View previousView) {
         this.previousView = previousView;
-        this.inventory = createInventory();
+        return this;
     }
 
-    public Inventory getInventory() {
-        return inventory;
+    public ArenaSettingsView setTranslator(Translator translator) {
+        this.translator = translator;
+        return this;
     }
 
-    public void refreshContent() {
-        inventory.clear();
+    public void backButtonClick(InventoryClickEvent event) {
+        previousView.openInventory(event.getWhoClicked());
+    }
 
+    public void openInventory(HumanEntity entity) {
+        gui.show(entity);
+    }
+
+    public void populateComponents(OutlinePane pane) {
         for (Spawn spawn : arena.getSpawnContainer().getAll()) {
             Location location = spawn.getLocation();
             String locationString = "x" + location.getBlockX() + ", y" + location.getBlockY() + ", z" + location.getBlockZ();
 
             ItemStack itemStack = new ItemStackBuilder(new ItemStack(XMaterial.RED_BED.parseMaterial()))
                     .setDisplayName(
-                            translator.translate(TranslationKey.VIEW_COMPONENT_BUTTON.getPath(),
+                            translator.translate(TranslationKey.VIEW_COMPONENT_ITEM.getPath(),
                                     new Placeholder("bg_component_id", spawn.getId())
                             )
                     )
                     .setLore(
-                            translator.translate(TranslationKey.VIEW_COMPONENT_BUTTON_TYPE.getPath(),
+                            translator.translate(TranslationKey.VIEW_COMPONENT_ITEM_TYPE.getPath(),
                                     new Placeholder("bg_component_type", "Spawn")
                             ),
-                            translator.translate(TranslationKey.VIEW_COMPONENT_BUTTON_LOCATION.getPath(),
+                            translator.translate(TranslationKey.VIEW_COMPONENT_ITEM_LOCATION.getPath(),
                                     new Placeholder("bg_component_location", locationString)
                             ),
                             EMPTY_STRING,
-                            translator.translate(TranslationKey.VIEW_COMPONENT_BUTTON_TELEPORT.getPath()),
-                            translator.translate(TranslationKey.VIEW_COMPONENT_BUTTON_REMOVE.getPath())
-
+                            translator.translate(TranslationKey.VIEW_COMPONENT_ITEM_TELEPORT.getPath()),
+                            translator.translate(TranslationKey.VIEW_COMPONENT_ITEM_REMOVE.getPath())
                     )
                     .build();
 
-            Consumer<Player> leftClick = player -> player.teleport(spawn.getLocation());
-            Consumer<Player> rightClick = player -> arena.removeComponent(spawn);
-            Button button = new FunctionalButton(leftClick, rightClick);
-
-            addButton(itemStack, button);
-
-            inventory.addItem(itemStack);
+            pane.addItem(new GuiItem(itemStack, event -> {
+                if (event.getClick() == ClickType.LEFT) {
+                    event.getWhoClicked().teleport(spawn.getLocation());
+                } else if (event.getClick() == ClickType.RIGHT) {
+                    onComponentRemove.accept(spawn);
+                    pane.clear();
+                    populateComponents(pane);
+                    gui.update();
+                }
+            }));
         }
-
-        ItemStack backButton = new ItemStackBuilder(new ItemStack(XMaterial.COMPASS.parseMaterial()))
-                .setDisplayName(translator.translate(TranslationKey.GO_BACK.getPath()))
-                .build();
-
-        createBackButton(backButton, previousView);
-
-        inventory.setItem(INVENTORY_SIZE - 1, backButton);
-    }
-
-    private Inventory createInventory() {
-        String title = translator.translate(TranslationKey.VIEW_ARENA_SETTINGS_TITLE.getPath(), new Placeholder("bg_arena", arena.getName()));
-        inventory = plugin.getServer().createInventory(this, INVENTORY_SIZE, title);
-        refreshContent();
-        return inventory;
     }
 }

@@ -1,16 +1,19 @@
 package com.matsg.battlegrounds.gui.view;
 
+import com.github.stefvanschie.inventoryframework.Gui;
+import com.github.stefvanschie.inventoryframework.GuiItem;
+import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.Placeholder;
+import com.matsg.battlegrounds.api.storage.LevelConfig;
+import com.matsg.battlegrounds.api.storage.PlayerStorage;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.ClickType;
-import org.bukkit.inventory.Inventory;
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
@@ -20,56 +23,88 @@ import java.util.regex.Pattern;
 
 public class SelectWeaponView implements View {
 
-    private Battlegrounds plugin;
-    private Inventory inventory, previous;
+    public Gui gui;
+    private LevelConfig levelConfig;
+    private List<Weapon> weapons;
     private Loadout loadout;
-    private Map<ItemStack, Weapon> weapons;
-    private Player player;
+    private PlayerStorage playerStorage;
     private Translator translator;
+    private UUID playerUUID;
+    private View loadoutView;
+    private View previousView;
 
-    public SelectWeaponView(Battlegrounds plugin, Translator translator, Player player, Loadout loadout, ItemType itemType, List<Weapon> weapons) {
-        this.plugin = plugin;
-        this.translator = translator;
+    public SelectWeaponView setLevelConfig(LevelConfig levelConfig) {
+        this.levelConfig = levelConfig;
+        return this;
+    }
+
+    public SelectWeaponView setLoadout(Loadout loadout) {
         this.loadout = loadout;
-        this.player = player;
-        this.weapons = new HashMap<>();
+        return this;
+    }
 
-        this.inventory = plugin.getServer().createInventory(this, 27, translator.translate(itemType.getNameKey()));
+    public SelectWeaponView setLoadoutView(View loadoutView) {
+        this.loadoutView = loadoutView;
+        return this;
+    }
 
-        Collections.sort(weapons, (o1, o2) -> Integer.valueOf(plugin.getLevelConfig().getLevelUnlocked(o1.getMetadata().getId())).compareTo(plugin.getLevelConfig().getLevelUnlocked(o2.getMetadata().getId())));
+    public SelectWeaponView setPlayerStorage(PlayerStorage playerStorage) {
+        this.playerStorage = playerStorage;
+        return this;
+    }
 
-        int slot = 0;
+    public SelectWeaponView setPlayerUUID(UUID playerUUID) {
+        this.playerUUID = playerUUID;
+        return this;
+    }
+
+    public SelectWeaponView setPreviousView(View previousView) {
+        this.previousView = previousView;
+        return this;
+    }
+
+    public SelectWeaponView setTranslator(Translator translator) {
+        this.translator = translator;
+        return this;
+    }
+
+    public SelectWeaponView setWeapons(List<Weapon> weapons) {
+        this.weapons = weapons;
+        return this;
+    }
+
+    public void backButtonClick(InventoryClickEvent event) {
+        previousView.openInventory(event.getWhoClicked());
+    }
+
+    public void openInventory(HumanEntity entity) {
+        gui.show(entity);
+    }
+
+    public void populateWeapons(OutlinePane pane) {
+        Collections.sort(weapons, (o1, o2) -> Integer.valueOf(levelConfig.getLevelUnlocked(o1.getMetadata().getId())).compareTo(levelConfig.getLevelUnlocked(o2.getMetadata().getId())));
 
         for (Weapon weapon : weapons) {
             weapon.update();
-            addWeapon(weapon, slot++);
+
+            if (levelConfig.getLevelUnlocked(weapon.getMetadata().getId()) <= levelConfig.getLevel(playerStorage.getStoredPlayer(playerUUID).getExp())) {
+                pane.addItem(new GuiItem(getUnlockedItemStack(weapon), event -> {
+                    replaceWeapon(loadout, weapon);
+                    playerStorage.getStoredPlayer(playerUUID).saveLoadout(loadout.getLoadoutNr(), loadout.convertToMap());
+                    loadoutView.openInventory(event.getWhoClicked());
+                }));
+            } else {
+                pane.addItem(new GuiItem(getLockedItemStack(weapon), event -> {
+                    event.setCancelled(true);
+                }));
+            }
         }
-
-        inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(translator.translate(TranslationKey.GO_BACK.getPath())).build());
-    }
-
-    public SelectWeaponView(Battlegrounds plugin, Translator translator, Player player, Loadout loadout, ItemType itemType, List<Weapon> weapons, Inventory previous) {
-        this(plugin, translator, player, loadout, itemType, weapons);
-        this.previous = previous;
-    }
-
-    public Inventory getInventory() {
-        return inventory;
-    }
-
-    private void addWeapon(Weapon weapon, int slot) {
-        ItemStack itemStack = plugin.getLevelConfig().getLevelUnlocked(weapon.getMetadata().getId())
-                <= plugin.getLevelConfig().getLevel(plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).getExp())
-                ? getUnlockedItemStack(weapon) : getLockedItemStack(weapon);
-
-        inventory.setItem(slot, itemStack);
-        weapons.put(inventory.getItem(slot), weapon);
     }
 
     private ItemStack getLockedItemStack(Weapon weapon) {
         return new ItemStackBuilder(Material.BARRIER)
                 .addItemFlags(ItemFlag.values())
-                .setDisplayName(translator.translate(TranslationKey.ITEM_LOCKED.getPath(), new Placeholder("bg_level", plugin.getLevelConfig().getLevelUnlocked(weapon.getMetadata().getId()))))
+                .setDisplayName(translator.translate(TranslationKey.ITEM_LOCKED.getPath(), new Placeholder("bg_level", levelConfig.getLevelUnlocked(weapon.getMetadata().getId()))))
                 .setUnbreakable(true)
                 .build();
     }
@@ -97,24 +132,6 @@ public class SelectWeaponView implements View {
 
         return lore.toArray(new String[lore.size()]);
     }
-
-    public void onClick(Player player, ItemStack itemStack, ClickType clickType) {
-        if (itemStack == null || itemStack.getType() == Material.AIR || itemStack.getType() == Material.BARRIER) {
-            return;
-        }
-        if (itemStack.getType() == Material.COMPASS && previous != null) {
-            player.openInventory(previous);
-        }
-        Weapon weapon = weapons.get(itemStack);
-        if (weapon == null || loadout == null) {
-            return;
-        }
-        replaceWeapon(loadout, weapon);
-        plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).saveLoadout(loadout.getLoadoutNr(), loadout.convertToMap());
-        player.openInventory(new EditLoadoutView(plugin, translator, loadout).getInventory());
-    }
-
-    public void onClose(Player player) { }
 
     private void replaceWeapon(Loadout loadout, Weapon weapon) {
         ItemSlot itemSlot = weapon.getType().getDefaultItemSlot();

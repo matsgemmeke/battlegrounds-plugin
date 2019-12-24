@@ -4,7 +4,6 @@ import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.*;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.command.Command;
 import com.matsg.battlegrounds.mode.zombies.component.Barricade;
 import com.matsg.battlegrounds.mode.zombies.component.MobSpawn;
 import com.matsg.battlegrounds.mode.zombies.component.Section;
@@ -57,7 +56,7 @@ public class AddMobSpawn extends ComponentCommand {
         game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".type", "mobspawn");
 
         // Check whether the player has made selection and wants to add a barricade
-        if (args.length >= 5 && args[5].equalsIgnoreCase("-b") && selection != null && selection.isComplete()) {
+        if (args.length > 5 && args[5].equalsIgnoreCase("-b") && selection != null && selection.isComplete()) {
             int barricadeId = game.findAvailableComponentId();
             Location maximumPoint = selection.getMaximumPoint();
             Location minimumPoint = selection.getMinimumPoint();
@@ -68,6 +67,8 @@ public class AddMobSpawn extends ComponentCommand {
             Barricade barricade = barricadeFactory.make(barricadeId, mobSpawn, maximumPoint, minimumPoint, world, material);
 
             section.getBarricadeContainer().add(barricade);
+
+            mobSpawn.setBarricade(barricade);
 
             // Save other barricade attributes as an individual component
             game.getDataFile().set("arena." + arena.getName() + ".component." + barricadeId + ".material", material.toString());

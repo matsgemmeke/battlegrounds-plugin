@@ -9,14 +9,16 @@ import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.Mob;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.mode.zombies.Zombies;
-import com.matsg.battlegrounds.mode.zombies.item.PowerUpCallback;
 import com.matsg.battlegrounds.mode.zombies.item.PowerUpEffect;
 import org.bukkit.Material;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.function.Consumer;
+
 public class Nuke implements PowerUpEffect {
 
     private static final int NUKE_POINTS = 400;
+
     private Game game;
     private int duration;
     private InternalsProvider internals;
@@ -53,7 +55,7 @@ public class Nuke implements PowerUpEffect {
         return name;
     }
 
-    public void activate(PowerUpCallback callback) {
+    public void activate(Consumer<PowerUpEffect> callback) {
         taskRunner.runTaskTimer(new BukkitRunnable() {
             public void run() {
                 if (!game.getState().isInProgress()) {
@@ -75,7 +77,7 @@ public class Nuke implements PowerUpEffect {
                         zombies.startWave(zombies.getWave().getRound() + 1);
                     }
 
-                    callback.onPowerUpEnd();
+                    callback.accept(Nuke.this);
                     cancel();
                     return;
                 }
@@ -91,7 +93,7 @@ public class Nuke implements PowerUpEffect {
     }
 
     public boolean isApplicableForActivation() {
-        return game.getMobManager().getMobs().size() > 0;
+        return game.getMobManager().getMobs().size() > 1;
     }
 
     public double modifyDamage(double damage) {

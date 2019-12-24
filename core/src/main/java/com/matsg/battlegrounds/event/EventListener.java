@@ -16,8 +16,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.*;
 
 public class EventListener implements Listener {
@@ -49,12 +47,6 @@ public class EventListener implements Listener {
         ));
         eventDispatcher.registerEventChannel(FoodLevelChangeEvent.class, new EventChannel<>(
                 new FoodLevelChangeEventHandler(plugin)
-        ));
-        eventDispatcher.registerEventChannel(InventoryClickEvent.class, new EventChannel<>(
-                new InventoryClickEventHandler()
-        ));
-        eventDispatcher.registerEventChannel(InventoryCloseEvent.class, new EventChannel<>(
-                new InventoryCloseEventHandler()
         ));
         eventDispatcher.registerEventChannel(PlayerCommandPreprocessEvent.class, new EventChannel<>(
                 new PlayerCommandPreprocessEventHandler(plugin, translator)
@@ -187,16 +179,6 @@ public class EventListener implements Listener {
 
     @EventHandler
     public void onRespawn(PlayerRespawnEvent event) {
-        dispatchEvent(event);
-    }
-
-    @EventHandler
-    public void onViewItemClick(InventoryClickEvent event) {
-        dispatchEvent(event);
-    }
-
-    @EventHandler
-    public void onViewItemClose(InventoryCloseEvent event) {
         dispatchEvent(event);
     }
 

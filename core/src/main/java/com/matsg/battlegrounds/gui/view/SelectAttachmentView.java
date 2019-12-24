@@ -1,18 +1,22 @@
 package com.matsg.battlegrounds.gui.view;
 
+import com.github.stefvanschie.inventoryframework.Gui;
+import com.github.stefvanschie.inventoryframework.GuiItem;
+import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.item.Attachment;
 import com.matsg.battlegrounds.api.item.Gun;
+import com.matsg.battlegrounds.api.item.ItemFactory;
 import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.Placeholder;
+import com.matsg.battlegrounds.api.storage.LevelConfig;
+import com.matsg.battlegrounds.api.storage.PlayerStorage;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.ClickType;
-import org.bukkit.inventory.Inventory;
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
@@ -22,56 +26,91 @@ import java.util.regex.Pattern;
 
 public class SelectAttachmentView implements View {
 
-    private Battlegrounds plugin;
+    public Gui gui;
     private Gun gun;
     private int attachmentNr;
-    private Inventory inventory, previous;
+    private ItemFactory<Attachment> attachmentFactory;
+    private LevelConfig levelConfig;
     private Loadout loadout;
-    private Map<ItemStack, Attachment> attachments;
-    private Player player;
+    private PlayerStorage playerStorage;
     private Translator translator;
+    private UUID playerUUID;
+    private View previousView;
 
-    public SelectAttachmentView(Battlegrounds plugin, Translator translator, Player player, Loadout loadout, Gun gun, int attachmentNr) {
-        this.plugin = plugin;
-        this.translator = translator;
+    public SelectAttachmentView setAttachmentFactory(ItemFactory<Attachment> attachmentFactory) {
+        this.attachmentFactory = attachmentFactory;
+        return this;
+    }
+
+    public SelectAttachmentView setAttachmentNr(int attachmentNr) {
         this.attachmentNr = attachmentNr;
-        this.attachments = new HashMap<>();
+        return this;
+    }
+
+    public SelectAttachmentView setGun(Gun gun) {
         this.gun = gun;
+        return this;
+    }
+
+    public SelectAttachmentView setLevelConfig(LevelConfig levelConfig) {
+        this.levelConfig = levelConfig;
+        return this;
+    }
+
+    public SelectAttachmentView setLoadout(Loadout loadout) {
         this.loadout = loadout;
-        this.player = player;
-
-        inventory = buildInventory(plugin.getServer().createInventory(this, 27, translator.translate(TranslationKey.VIEW_SELECT_ATTACHMENT.getPath(), new Placeholder("bg_weapon", gun.getMetadata().getName()))));
-        inventory.setItem(26, new ItemStackBuilder(new ItemStack(Material.COMPASS)).setDisplayName(translator.translate(TranslationKey.GO_BACK.getPath())).build());
+        return this;
     }
 
-    public SelectAttachmentView(Battlegrounds plugin, Translator translator, Player player, Loadout loadout, Gun gun, int attachmentNr, Inventory previous) {
-        this(plugin, translator, player, loadout, gun, attachmentNr);
-        this.previous = previous;
+    public SelectAttachmentView setPlayerStorage(PlayerStorage playerStorage) {
+        this.playerStorage = playerStorage;
+        return this;
     }
 
-    public Inventory getInventory() {
-        return inventory;
+    public SelectAttachmentView setPlayerUUID(UUID playerUUID) {
+        this.playerUUID = playerUUID;
+        return this;
     }
 
-    private Inventory buildInventory(Inventory inventory) {
-        int slot = -1;
+    public SelectAttachmentView setPreviousView(View previousView) {
+        this.previousView = previousView;
+        return this;
+    }
+
+    public SelectAttachmentView setTranslator(Translator translator) {
+        this.translator = translator;
+        return this;
+    }
+
+    public void backButtonClick(InventoryClickEvent event) {
+        previousView.openInventory(event.getWhoClicked());
+    }
+
+    public void openInventory(HumanEntity entity) {
+        gui.show(entity);
+    }
+
+    public void populateAttachments(OutlinePane pane) {
         for (Attachment attachment : sortAttachments(getAttachmentList(gun))) {
-            if (attachment != null) {
-                ItemStack itemStack = plugin.getLevelConfig().getLevelUnlocked(attachment.getMetadata().getName())
-                        <= plugin.getLevelConfig().getLevel(plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).getExp())
-                        ? getUnlockedItemStack(attachment) : getLockedItemStack(attachment);
-
-                inventory.setItem(++slot, itemStack);
-                attachments.put(inventory.getItem(slot), attachment);
+            if (levelConfig.getLevelUnlocked(attachment.getMetadata().getId()) <= levelConfig.getLevel(playerStorage.getStoredPlayer(playerUUID).getExp())) {
+                pane.addItem(new GuiItem(getUnlockedItemStack(attachment), event -> {
+                    gun.getAttachments().clear();
+                    gun.getAttachments().add(attachmentNr, attachment);
+                    playerStorage.getStoredPlayer(playerUUID).saveLoadout(loadout.getLoadoutNr(), loadout.convertToMap());
+                    previousView.openInventory(event.getWhoClicked());
+                }));
+            } else {
+                pane.addItem(new GuiItem(getLockedItemStack(attachment), event -> {
+                    event.setCancelled(true);
+                }));
             }
         }
-        return inventory;
     }
 
     private List<Attachment> getAttachmentList(Gun gun) {
         List<Attachment> list = new ArrayList<>();
         for (String attachmentId : gun.getCompatibleAttachments()) {
-            Attachment attachment = plugin.getAttachmentFactory().make(attachmentId);
+            Attachment attachment = attachmentFactory.make(attachmentId);
             if (attachment != null) {
                 list.add(attachment);
             }
@@ -93,7 +132,7 @@ public class SelectAttachmentView implements View {
     private ItemStack getLockedItemStack(Attachment attachment) {
         return new ItemStackBuilder(Material.BARRIER)
                 .addItemFlags(ItemFlag.values())
-                .setDisplayName(translator.translate(TranslationKey.ITEM_LOCKED.getPath(), new Placeholder("bg_level", plugin.getLevelConfig().getLevelUnlocked(attachment.getMetadata().getName()))))
+                .setDisplayName(translator.translate(TranslationKey.ITEM_LOCKED.getPath(), new Placeholder("bg_level", levelConfig.getLevelUnlocked(attachment.getMetadata().getId()))))
                 .setUnbreakable(true)
                 .build();
     }
@@ -107,32 +146,9 @@ public class SelectAttachmentView implements View {
                 .build();
     }
 
-    public void onClick(Player player, ItemStack itemStack, ClickType clickType) {
-        if (itemStack == null || itemStack.getType() == Material.AIR || itemStack.getType() == Material.BARRIER) {
-            return;
-        }
-        if (itemStack.getType() == Material.COMPASS && previous != null) {
-            player.openInventory(previous);
-        }
-        Attachment attachment = attachments.get(itemStack);
-        if (attachment == null) {
-            return;
-        }
-        gun.getAttachments().clear();
-        gun.getAttachments().add(attachmentNr, attachment);
-        plugin.getPlayerStorage().getStoredPlayer(player.getUniqueId()).saveLoadout(loadout.getLoadoutNr(), loadout.convertToMap());
-        player.openInventory(new EditLoadoutView(plugin, translator, loadout).getInventory());
-    }
-
-    public void onClose(Player player) { }
-
     private List<Attachment> sortAttachments(Collection<Attachment> unsorted) {
         List<Attachment> list = new ArrayList<>(unsorted);
-        Collections.sort(list, new Comparator<Attachment>() {
-            public int compare(Attachment o1, Attachment o2) {
-                return Integer.valueOf(plugin.getLevelConfig().getLevelUnlocked(o1.getMetadata().getName())).compareTo(plugin.getLevelConfig().getLevelUnlocked(o2.getMetadata().getName()));
-            }
-        });
+        Collections.sort(list, (o1, o2) -> Integer.compare(levelConfig.getLevelUnlocked(o1.getMetadata().getId()), levelConfig.getLevelUnlocked(o2.getMetadata().getId())));
         return list;
     }
 }

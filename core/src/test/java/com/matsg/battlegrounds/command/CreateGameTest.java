@@ -4,11 +4,13 @@ import com.matsg.battlegrounds.BattleGameManager;
 import com.matsg.battlegrounds.TaskRunner;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.GameManager;
-import com.matsg.battlegrounds.InternalsProvider;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.event.EventDispatcher;
+import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.api.game.GameMode;
 import com.matsg.battlegrounds.game.GameFactory;
 import com.matsg.battlegrounds.mode.GameModeFactory;
+import com.matsg.battlegrounds.mode.GameModeType;
 import org.bukkit.command.CommandSender;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +29,6 @@ public class CreateGameTest {
     private GameManager gameManager;
     private GameModeFactory gameModeFactory;
     private int gameId;
-    private InternalsProvider internals;
     private TaskRunner taskRunner;
     private Translator translator;
 
@@ -36,14 +37,13 @@ public class CreateGameTest {
         this.plugin = mock(Battlegrounds.class);
         this.sender = mock(CommandSender.class);
         this.eventDispatcher = mock(EventDispatcher.class);
-        this.internals = mock(InternalsProvider.class);
+        this.gameModeFactory = mock(GameModeFactory.class);
         this.taskRunner = mock(TaskRunner.class);
         this.translator = mock(Translator.class);
 
-        this.gameFactory = new GameFactory(plugin, taskRunner);
         this.gameId = 1;
+        this.gameFactory = new GameFactory(plugin, taskRunner);
         this.gameManager = new BattleGameManager();
-        this.gameModeFactory = new GameModeFactory(plugin, internals, taskRunner, translator);
 
         when(plugin.getDataFolder()).thenReturn(new File("test"));
         when(plugin.getEventDispatcher()).thenReturn(eventDispatcher);
@@ -51,7 +51,10 @@ public class CreateGameTest {
 
     @Test
     public void createGame() {
+        GameMode gameMode = mock(GameMode.class);
         String[] args = new String[] { "command", String.valueOf(gameId) };
+
+        when(gameModeFactory.make(any(Game.class), any(GameModeType.class))).thenReturn(gameMode);
 
         CreateGame command = new CreateGame(translator, gameFactory, gameManager, gameModeFactory);
         command.execute(sender, args);

@@ -1,0 +1,12 @@
+<gui rows="5" title="Game settings" field="gui">
+    <outlinepane x="0" y="0" length="9" height="2" populate="populateArenas"/>
+    <outlinepane x="0" y="2" length="9" height="2" populate="populateGameModes"/>
+    <staticpane x="0" y="4" length="9" height="1">
+        <item x="7" y="0" id="compass" onClick="configurationButtonClick">
+            <displayname>&amp;fEdit game configurations</displayname>
+        </item>
+        <item x="8" y="0" id="barrier" onClick="backButtonClick">
+            <displayname>&amp;fGo back</displayname>
+        </item>
+    </staticpane>
+</gui>

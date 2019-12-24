@@ -1,9 +1,10 @@
 package com.matsg.battlegrounds.mode.zombies.item.powerup;
 
-import com.matsg.battlegrounds.mode.zombies.item.PowerUpCallback;
 import com.matsg.battlegrounds.mode.zombies.item.PowerUpEffect;
 import org.bukkit.Material;
 import org.bukkit.plugin.Plugin;
+
+import java.util.function.Consumer;
 
 public class DoublePoints implements PowerUpEffect {
 
@@ -35,8 +36,8 @@ public class DoublePoints implements PowerUpEffect {
         return name;
     }
 
-    public void activate(PowerUpCallback callback) {
-        PowerUpActivationPeriod activationPeriod = new PowerUpActivationPeriod(callback);
+    public void activate(Consumer<PowerUpEffect> callback) {
+        PowerUpActivationPeriod activationPeriod = new PowerUpActivationPeriod(this, callback);
         activationPeriod.runTaskLater(plugin, duration);
     }
 

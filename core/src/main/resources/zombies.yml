@@ -44,11 +44,11 @@ zombies-perk-sign-layout:
   line2: "&4&lPrice: &0%bg_price%"
   line3: ""
 
-# The chance that a mob will drop a random power up on death
+# The chance that a mob will drop a random power upon death
 zombies-power-up-chance: 0.03
 
 # The duration of powerups in seconds
-zombies-power-up-duration: 10
+zombies-power-up-duration: 30
 
 # The power ups that will spawn in the game
 zombies-power-up-effects:

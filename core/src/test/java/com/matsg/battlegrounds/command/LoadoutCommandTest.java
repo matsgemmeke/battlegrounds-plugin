@@ -1,13 +1,12 @@
 package com.matsg.battlegrounds.command;
 
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.storage.LevelConfig;
 import com.matsg.battlegrounds.api.storage.PlayerStorage;
 import com.matsg.battlegrounds.api.storage.StoredPlayer;
+import com.matsg.battlegrounds.gui.ViewFactory;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,20 +16,20 @@ import static org.mockito.Mockito.*;
 
 public class LoadoutCommandTest {
 
-    private Battlegrounds plugin;
     private int minLevel;
     private LevelConfig levelConfig;
     private Player player;
     private PlayerStorage playerStorage;
     private Translator translator;
+    private ViewFactory viewFactory;
 
     @Before
     public void setUp() {
-        this.plugin = mock(Battlegrounds.class);
         this.levelConfig = mock(LevelConfig.class);
         this.player = mock(Player.class);
         this.playerStorage = mock(PlayerStorage.class);
         this.translator = mock(Translator.class);
+        this.viewFactory = mock(ViewFactory.class);
 
         this.minLevel = 4;
     }
@@ -42,7 +41,7 @@ public class LoadoutCommandTest {
 
         when(translator.translate(eq(key.getPath()), anyVararg())).thenReturn(responseMessage);
 
-        LoadoutCommand command = new LoadoutCommand(plugin, translator, levelConfig, playerStorage, minLevel);
+        LoadoutCommand command = new LoadoutCommand(translator, levelConfig, playerStorage, viewFactory, minLevel);
         command.execute(player, new String[0]);
 
         verify(player, times(1)).sendMessage(responseMessage);
@@ -61,7 +60,7 @@ public class LoadoutCommandTest {
         when(playerStorage.getStoredPlayer(uuid)).thenReturn(storedPlayer);
         when(translator.translate(eq(key.getPath()), anyVararg())).thenReturn(responseMessage);
 
-        LoadoutCommand command = new LoadoutCommand(plugin, translator, levelConfig, playerStorage, minLevel);
+        LoadoutCommand command = new LoadoutCommand(translator, levelConfig, playerStorage, viewFactory, minLevel);
         command.execute(player, new String[0]);
 
         verify(player, times(1)).sendMessage(responseMessage);

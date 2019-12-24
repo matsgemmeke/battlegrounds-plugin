@@ -1,0 +1,3 @@
+<gui rows="5" title="Plugin settings" field="gui">
+    <outlinepane x="0" y="0" length="9" height="5" populate="populateGames"/>
+</gui>

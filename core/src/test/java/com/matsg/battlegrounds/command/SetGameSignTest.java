@@ -5,8 +5,12 @@ import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.api.game.GameConfiguration;
+import com.matsg.battlegrounds.api.game.PlayerManager;
 import com.matsg.battlegrounds.api.storage.BattlegroundsConfig;
 import com.matsg.battlegrounds.api.storage.CacheYaml;
+import com.matsg.battlegrounds.game.BattleGameConfiguration;
+import com.matsg.battlegrounds.game.state.InGameState;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -14,6 +18,8 @@ import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Collections;
 
 import static org.mockito.Mockito.*;
 
@@ -67,11 +73,18 @@ public class SetGameSignTest {
         TranslationKey key = TranslationKey.GAMESIGN_SET;
 
         CacheYaml dataFile = mock(CacheYaml.class);
+        GameConfiguration configuration = BattleGameConfiguration.getDefaultConfiguration();
+        PlayerManager playerManager = mock(PlayerManager.class);
         Sign sign = mock(Sign.class);
         String[] args = new String[] { "command", String.valueOf(gameId) };
 
         when(block.getState()).thenReturn(sign);
+        when(config.getGameSignLayout()).thenReturn(new String[4]);
+        when(game.getConfiguration()).thenReturn(configuration);
         when(game.getDataFile()).thenReturn(dataFile);
+        when(game.getPlayerManager()).thenReturn(playerManager);
+        when(game.getState()).thenReturn(new InGameState());
+        when(playerManager.getPlayers()).thenReturn(Collections.emptyList());
         when(translator.translate(eq(key.getPath()), anyVararg())).thenReturn(responseMessage);
 
         SetGameSign command = new SetGameSign(translator, gameManager, config);

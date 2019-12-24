@@ -35,7 +35,7 @@ public class AddComponent extends Command {
         commands.put("door", new AddDoor(translator, gameManager, selectionManager));
         commands.put("mobspawn", new AddMobSpawn(translator, gameManager, selectionManager));
         commands.put("mysterybox", new AddMysteryBox(translator, gameManager));
-        commands.put("perk", new AddPerkMachine(translator, gameManager));
+        commands.put("perkmachine", new AddPerkMachine(translator, gameManager));
         commands.put("section", new AddSection(translator, gameManager));
         commands.put("spawn", new AddSpawn(translator));
         commands.put("wallweapon", new AddWallWeapon(translator, gameManager, itemFinder));

@@ -1,27 +1,24 @@
 package com.matsg.battlegrounds.item;
 
-import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
+import com.matsg.battlegrounds.gui.ViewFactory;
 import com.matsg.battlegrounds.gui.view.SelectLoadoutView;
-import org.bukkit.ChatColor;
+import com.matsg.battlegrounds.gui.view.View;
+import com.matsg.battlegrounds.item.factory.LoadoutFactory;
 import org.bukkit.Material;
 
 public class SelectLoadout extends BattleItem {
 
-    private Battlegrounds plugin;
-    private Translator translator;
+    private ViewFactory viewFactory;
 
-    public SelectLoadout(Battlegrounds plugin, Game game, Translator translator) {
+    public SelectLoadout(String name, Game game, ViewFactory viewFactory) {
         super(null, null);
-        this.plugin = plugin;
         this.game = game;
-        this.translator = translator;
+        this.viewFactory = viewFactory;
         this.itemSlot = ItemSlot.MISCELLANEOUS;
-        this.itemStack = new ItemStackBuilder(Material.COMPASS).setDisplayName(ChatColor.WHITE + translator.translate(TranslationKey.CHANGE_LOADOUT.getPath())).build();
+        this.itemStack = new ItemStackBuilder(Material.COMPASS).setDisplayName(name).build();
     }
 
     private void onClick(GamePlayer gamePlayer) {
@@ -29,7 +26,14 @@ public class SelectLoadout extends BattleItem {
             return;
         }
 
-        gamePlayer.getPlayer().openInventory(new SelectLoadoutView(plugin, translator, game, gamePlayer).getInventory());
+        LoadoutFactory loadoutFactory = new LoadoutFactory();
+
+        View view = viewFactory.make(SelectLoadoutView.class, instance -> {
+            instance.setGame(game);
+            instance.setGamePlayer(gamePlayer);
+            instance.setLoadoutFactory(loadoutFactory);
+        });
+        view.openInventory(gamePlayer.getPlayer());
     }
 
     public void onLeftClick(GamePlayer gamePlayer) {

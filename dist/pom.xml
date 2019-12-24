@@ -53,7 +53,7 @@
     <dependencies>
         <dependency>
             <groupId>com.matsg</groupId>
-            <artifactId>battlegrounds</artifactId>
+            <artifactId>battlegrounds-core</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>

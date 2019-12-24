@@ -1,16 +1,13 @@
 package com.matsg.battlegrounds.storage.sql;
 
 import com.matsg.battlegrounds.StartupFailedException;
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.storage.PlayerStorage;
 import com.matsg.battlegrounds.api.entity.OfflineGamePlayer;
 import com.matsg.battlegrounds.api.storage.StoredPlayer;
 import com.matsg.battlegrounds.storage.DefaultLoadouts;
-import com.matsg.battlegrounds.storage.SQLConfig;
 import org.bukkit.entity.Player;
 
-import java.io.IOException;
 import java.sql.*;
 import java.util.List;
 import java.util.UUID;

@@ -3,6 +3,7 @@ package com.matsg.battlegrounds.mode.zombies.component.factory;
 import com.matsg.battlegrounds.InternalsProvider;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.gui.ViewFactory;
 import com.matsg.battlegrounds.mode.zombies.PerkManager;
 import com.matsg.battlegrounds.mode.zombies.ZombiesConfig;
 import com.matsg.battlegrounds.mode.zombies.component.PerkMachine;
@@ -16,13 +17,15 @@ public class PerkMachineFactory {
     private InternalsProvider internals;
     private PerkManager perkManager;
     private Translator translator;
+    private ViewFactory viewFactory;
     private ZombiesConfig config;
 
-    public PerkMachineFactory(Game game, InternalsProvider internals, PerkManager perkManager, Translator translator, ZombiesConfig config) {
+    public PerkMachineFactory(Game game, InternalsProvider internals, PerkManager perkManager, Translator translator, ViewFactory viewFactory, ZombiesConfig config) {
         this.game = game;
         this.internals = internals;
         this.perkManager = perkManager;
         this.translator = translator;
+        this.viewFactory = viewFactory;
         this.config = config;
     }
 
@@ -37,7 +40,7 @@ public class PerkMachineFactory {
      * @return a perk machine implementation
      */
     public PerkMachine make(int id, Sign sign, Perk perk, int maxBuys, int price) {
-        PerkMachine perkMachine = new ZombiesPerkMachine(id, game, sign, perk, perkManager, maxBuys, price, internals, translator);
+        PerkMachine perkMachine = new ZombiesPerkMachine(id, game, sign, perk, perkManager, maxBuys, price, internals, translator, viewFactory);
         perkMachine.setSignLayout(config.getPerkSignLayout());
         perkMachine.updateSign();
 

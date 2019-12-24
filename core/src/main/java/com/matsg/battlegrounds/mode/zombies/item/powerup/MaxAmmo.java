@@ -4,10 +4,11 @@ import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.item.Firearm;
 import com.matsg.battlegrounds.api.item.Loadout;
-import com.matsg.battlegrounds.mode.zombies.item.PowerUpCallback;
 import com.matsg.battlegrounds.mode.zombies.item.PowerUpEffect;
 import com.matsg.battlegrounds.util.XMaterial;
 import org.bukkit.Material;
+
+import java.util.function.Consumer;
 
 public class MaxAmmo implements PowerUpEffect {
 
@@ -39,19 +40,21 @@ public class MaxAmmo implements PowerUpEffect {
         return name;
     }
 
-    public void activate(PowerUpCallback callback) {
+    public void activate(Consumer<PowerUpEffect> callback) {
         for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
             Loadout loadout = gamePlayer.getLoadout();
 
             for (Firearm firearm : loadout.getFirearms()) {
-                firearm.setAmmo(firearm.getMaxAmmo());
-                firearm.update();
+               if (firearm != null) {
+                   firearm.setAmmo(firearm.getMaxAmmo());
+                   firearm.update();
+               }
             }
 
             loadout.getEquipment().setAmount(loadout.getEquipment().getMaxAmount());
             loadout.getMeleeWeapon().setAmount(loadout.getMeleeWeapon().getMaxAmount());
         }
-        callback.onPowerUpEnd();
+        callback.accept(this);
     }
 
     public boolean isApplicableForActivation() {

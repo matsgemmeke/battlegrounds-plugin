@@ -76,6 +76,11 @@ public class ItemStackBuilder {
 		return this;
 	}
 
+	public ItemStackBuilder setLore(List<String> lore) {
+		meta.setLore(lore);
+		return this;
+	}
+
 	public ItemStackBuilder setUnbreakable(boolean unbreakable) {
 		try {
 			meta.setUnbreakable(unbreakable);

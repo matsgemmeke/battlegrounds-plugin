@@ -2,6 +2,8 @@ package com.matsg.battlegrounds.mode.zombies.item;
 
 import org.bukkit.Material;
 
+import java.util.function.Consumer;
+
 public interface PowerUpEffect {
 
     /**
@@ -37,7 +39,7 @@ public interface PowerUpEffect {
      *
      * @param callback the callback method
      */
-    void activate(PowerUpCallback callback);
+    void activate(Consumer<PowerUpEffect> callback);
 
     /**
      * Gets whether the power up effect applicable for activation with the game's current state.

@@ -1,0 +1,10 @@
+<gui rows="5" title="Edit game configuration" field="gui">
+    <staticpane x="0" y="0" length="9" height="5">
+        <item x="0" y="0" id="chest" onClick="selectGameModesClick">
+            <displayname>&amp;fSelect gamemodes</displayname>
+        </item>
+        <item x="8" y="4" id="barrier" onClick="backButtonClick">
+            <displayname>&amp;fGo back</displayname>
+        </item>
+    </staticpane>
+</gui>

@@ -91,7 +91,9 @@ public class ZombiesKillEventHandler implements EventHandler<GamePlayerKillEntit
 
             do {
                 PowerUpEffectType effectType = effectTypes.get(random.nextInt(effectTypes.size()));
-                powerUp = powerUpFactory.make(effectType, zombies.getConfig().getPowerUpDuration());
+                int duration = zombies.getConfig().getPowerUpDuration() * 20; // Convert seconds to ticks
+
+                powerUp = powerUpFactory.make(effectType, duration);
             } while (!powerUp.getEffect().isApplicableForActivation());
 
             zombies.getPowerUpManager().dropPowerUp(powerUp, mob.getBukkitEntity().getLocation());

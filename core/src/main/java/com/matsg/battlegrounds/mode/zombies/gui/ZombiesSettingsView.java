@@ -1,104 +1,109 @@
 package com.matsg.battlegrounds.mode.zombies.gui;
 
+import com.github.stefvanschie.inventoryframework.Gui;
+import com.github.stefvanschie.inventoryframework.GuiItem;
+import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.ArenaComponent;
-import com.matsg.battlegrounds.gui.Button;
-import com.matsg.battlegrounds.gui.FunctionalButton;
-import com.matsg.battlegrounds.gui.view.AbstractSettingsView;
+import com.matsg.battlegrounds.gui.ViewFactory;
 import com.matsg.battlegrounds.gui.view.View;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.mode.zombies.Zombies;
 import com.matsg.battlegrounds.mode.zombies.component.Section;
 import com.matsg.battlegrounds.util.XMaterial;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.function.Consumer;
 
-public class ZombiesSettingsView extends AbstractSettingsView {
+public class ZombiesSettingsView implements View {
 
-    private static final int INVENTORY_SIZE = 45;
     private static final String EMPTY_STRING = "";
 
-    private Battlegrounds plugin;
-    private Consumer<ArenaComponent> removeFunction;
-    private Inventory inventory;
+    public Gui gui;
+    private Consumer<ArenaComponent> onComponentRemove;
     private Translator translator;
+    private ViewFactory viewFactory;
     private View previousView;
-    private Zombies zombies;
+    private Zombies gameMode;
 
-    public ZombiesSettingsView(
-            Battlegrounds plugin,
-            Zombies zombies,
-            Consumer<ArenaComponent> removeFunction,
-            Translator translator,
-            View previousView
-    ) {
-        this.plugin = plugin;
-        this.zombies = zombies;
-        this.removeFunction = removeFunction;
-        this.translator = translator;
+    public ZombiesSettingsView setGameMode(Zombies gameMode) {
+        this.gameMode = gameMode;
+        return this;
+    }
+
+    public ZombiesSettingsView setOnComponentRemove(Consumer<ArenaComponent> onComponentRemove) {
+        this.onComponentRemove = onComponentRemove;
+        return this;
+    }
+
+    public ZombiesSettingsView setPreviousView(View previousView) {
         this.previousView = previousView;
-        this.inventory = createInventory();
+        return this;
     }
 
-    public Inventory getInventory() {
-        return inventory;
+    public ZombiesSettingsView setTranslator(Translator translator) {
+        this.translator = translator;
+        return this;
     }
 
-    public void refreshContent() {
-        inventory.clear();
+    public ZombiesSettingsView setViewFactory(ViewFactory viewFactory) {
+        this.viewFactory = viewFactory;
+        return this;
+    }
 
-        for (Section section : zombies.getSectionContainer().getAll()) {
-            ItemStack sectionItemStack = new ItemStackBuilder(new ItemStack(XMaterial.CHEST.parseMaterial()))
+    public void backButtonClick(InventoryClickEvent event) {
+        previousView.openInventory(event.getWhoClicked());
+    }
+
+    public void openInventory(HumanEntity entity) {
+        gui.show(entity);
+    }
+
+    public void populateComponents(OutlinePane pane) {
+        for (Section section : gameMode.getSectionContainer().getAll()) {
+            ItemStack itemStack = new ItemStackBuilder(new ItemStack(XMaterial.ENDER_CHEST.parseMaterial()))
                     .setDisplayName(
-                            translator.translate(TranslationKey.VIEW_COMPONENT_BUTTON.getPath(),
+                            translator.translate(TranslationKey.VIEW_COMPONENT_ITEM.getPath(),
                                     new Placeholder("bg_component_id", section.getId())
                             )
                     )
                     .setLore(
-                            translator.translate(TranslationKey.VIEW_COMPONENT_BUTTON_TYPE.getPath(),
+                            translator.translate(TranslationKey.VIEW_COMPONENT_ITEM_TYPE.getPath(),
                                     new Placeholder("bg_component_type", "Section")
                             ),
-                            translator.translate(TranslationKey.VIEW_COMPONENT_BUTTON_COMPONENTS.getPath(),
+                            translator.translate(TranslationKey.VIEW_COMPONENT_ITEM_NAME.getPath(),
+                                    new Placeholder("bg_component_name", section.getName())
+                            ),
+                            translator.translate(TranslationKey.VIEW_COMPONENT_ITEM_COMPONENTS.getPath(),
                                     new Placeholder("bg_component_components", section.getComponentCount())
                             ),
                             EMPTY_STRING,
-                            translator.translate(TranslationKey.VIEW_COMPONENT_BUTTON_FILTER.getPath()),
-                            translator.translate(TranslationKey.VIEW_COMPONENT_BUTTON_REMOVE.getPath())
+                            translator.translate(TranslationKey.VIEW_COMPONENT_ITEM_FILTER.getPath()),
+                            translator.translate(TranslationKey.VIEW_COMPONENT_ITEM_REMOVE.getPath())
                     )
                     .build();
 
-            View sectionView = new SectionSettingsView(plugin, section, removeFunction, translator, this);
-            Consumer<Player> leftClick = player -> player.openInventory(sectionView.getInventory());
-            Consumer<Player> rightClick = player -> {
-                zombies.removeComponent(section);
-                removeFunction.accept(section);
-            };
-            Button button = new FunctionalButton(leftClick, rightClick);
-
-            addButton(sectionItemStack, button);
-
-            inventory.addItem(sectionItemStack);
+            pane.addItem(new GuiItem(itemStack, event -> {
+                if (event.getClick() == ClickType.LEFT) {
+                     View view = viewFactory.make(SectionSettingsView.class, instance -> {
+                         instance.setOnComponentRemove(onComponentRemove);
+                         instance.setPreviousView(this);
+                         instance.setSection(section);
+                     });
+                     view.openInventory(event.getWhoClicked());
+                } else if (event.getClick() == ClickType.RIGHT) {
+                    onComponentRemove.accept(section);
+                    gameMode.removeComponent(section);
+                    pane.clear();
+                    populateComponents(pane);
+                    gui.update();
+                }
+            }));
         }
-
-        ItemStack backButton = new ItemStackBuilder(new ItemStack(XMaterial.COMPASS.parseMaterial()))
-                .setDisplayName(translator.translate(TranslationKey.GO_BACK.getPath()))
-                .build();
-
-        createBackButton(backButton, previousView);
-
-        inventory.setItem(INVENTORY_SIZE - 1, backButton);
-    }
-
-    private Inventory createInventory() {
-        String title = translator.translate(TranslationKey.VIEW_ZOMBIES_SETTINGS_TITLE.getPath());
-        inventory = plugin.getServer().createInventory(this, INVENTORY_SIZE, title);
-        refreshContent();
-        return inventory;
     }
 }

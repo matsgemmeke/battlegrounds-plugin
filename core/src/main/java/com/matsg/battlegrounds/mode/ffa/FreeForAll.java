@@ -11,6 +11,7 @@ import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.game.BattleTeam;
+import com.matsg.battlegrounds.gui.ViewFactory;
 import com.matsg.battlegrounds.mode.shared.ClassicGameMode;
 import com.matsg.battlegrounds.mode.GameModeCountdown;
 import com.matsg.battlegrounds.mode.GameModeType;
@@ -26,8 +27,8 @@ public class FreeForAll extends ClassicGameMode {
 
     private FFAConfig config;
 
-    public FreeForAll(Battlegrounds plugin, Game game, Translator translator, SpawningBehavior spawningBehavior, FFAConfig config) {
-        super(plugin, GameModeType.FREE_FOR_ALL, game, translator, spawningBehavior);
+    public FreeForAll(Battlegrounds plugin, Game game, SpawningBehavior spawningBehavior, Translator translator, ViewFactory viewFactory, FFAConfig config) {
+        super(plugin, GameModeType.FREE_FOR_ALL, game, spawningBehavior, translator, viewFactory);
         this.config = config;
         this.name = translator.translate(TranslationKey.FFA_NAME.getPath());
         this.shortName = translator.translate(TranslationKey.FFA_SHORT.getPath());

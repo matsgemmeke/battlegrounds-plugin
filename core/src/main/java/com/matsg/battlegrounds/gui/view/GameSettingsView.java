@@ -1,9 +1,8 @@
 package com.matsg.battlegrounds.gui.view;
 
-import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.Placeholder;
-import com.matsg.battlegrounds.api.Translator;
+import com.github.stefvanschie.inventoryframework.Gui;
+import com.github.stefvanschie.inventoryframework.GuiItem;
+import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.storage.CacheYaml;
 import com.matsg.battlegrounds.gui.*;
@@ -12,63 +11,87 @@ import com.matsg.battlegrounds.mode.zombies.Zombies;
 import com.matsg.battlegrounds.mode.zombies.gui.ZombiesSettingsView;
 import com.matsg.battlegrounds.util.XMaterial;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.function.Consumer;
 
-public class GameSettingsView extends AbstractSettingsView {
+public class GameSettingsView implements View {
 
-    private static final int INVENTORY_SIZE = 45;
-
-    private Battlegrounds plugin;
+    public Gui gui;
     private Game game;
-    private Inventory inventory;
-    private Translator translator;
+    private ViewFactory viewFactory;
     private View previousView;
 
-    public GameSettingsView(Battlegrounds plugin, Game game, Translator translator, View previousView) {
-        this.plugin = plugin;
+    public GameSettingsView setGame(Game game) {
         this.game = game;
-        this.translator = translator;
+        return this;
+    }
+
+    public GameSettingsView setPreviousView(View previousView) {
         this.previousView = previousView;
-        this.inventory = createInventory();
+        return this;
     }
 
-    public Inventory getInventory() {
-        return inventory;
+    public GameSettingsView setViewFactory(ViewFactory viewFactory) {
+        this.viewFactory = viewFactory;
+        return this;
     }
 
-    public void refreshContent() {
-        inventory.clear();
+    public void backButtonClick(InventoryClickEvent event) {
+        previousView.openInventory(event.getWhoClicked());
+    }
 
-        int i = 0;
+    public void configurationButtonClick(InventoryClickEvent event) {
+        View view = viewFactory.make(EditGameConfigurationView.class, instance -> {
+            instance.setGame(game);
+            instance.setPreviousView(this);
+        });
+        view.openInventory(event.getWhoClicked());
+    }
 
+    public void openInventory(HumanEntity entity) {
+        gui.show(entity);
+    }
+
+    public void populateArenas(OutlinePane pane) {
         for (Arena arena : game.getArenaList()) {
             ItemStack itemStack = new ItemStackBuilder(new ItemStack(XMaterial.MAP.parseMaterial()))
                     .setDisplayName(ChatColor.GOLD + arena.getName())
                     .build();
 
-            View arenaView = new ArenaSettingsView(plugin, arena, translator, this);
-            Consumer<Player> click = player -> player.openInventory(arenaView.getInventory());
-            Button button = new FunctionalButton(click, click);
+            Consumer<ArenaComponent> onComponentRemove = component -> {
+                arena.removeComponent(component);
 
-            addButton(itemStack, button);
+                CacheYaml dataFile = game.getDataFile();
+                dataFile.set("arena." + arena.getName() + ".component." + component.getId(), null);
+                dataFile.save();
+            };
 
-            inventory.setItem(i++, itemStack);
+            pane.addItem(new GuiItem(itemStack, event -> {
+                View view = viewFactory.make(ArenaSettingsView.class, instance -> {
+                    instance.setArena(arena);
+                    instance.setOnComponentRemove(onComponentRemove);
+                    instance.setPreviousView(this);
+                });
+                view.openInventory(event.getWhoClicked());
+            }));
         }
+    }
 
+    public void populateGameModes(OutlinePane pane) {
         for (GameMode gameMode : game.getGameModeList()) {
             if (gameMode.getComponentCount() > 0) {
-                ItemStack itemStack = new ItemStackBuilder(new ItemStack(XMaterial.PLAYER_HEAD.parseMaterial(), 1, (byte) 3))
+                ItemStack itemStack = new ItemStackBuilder(new ItemStack(XMaterial.CHEST.parseMaterial(), 1, (byte) 3))
                         .setDisplayName(ChatColor.GOLD + gameMode.getName())
                         .build();
 
-                Consumer<ArenaComponent> removeFunction = component -> {
+                Consumer<ArenaComponent> onComponentRemove = component -> {
                     Arena arena = findArenaOfComponent(component.getId());
-                    CacheYaml dataFile = game.getDataFile();
+                    arena.removeComponent(component);
 
+                    CacheYaml dataFile = game.getDataFile();
                     dataFile.set("arena." + arena.getName() + ".component." + component.getId(), null);
                     dataFile.save();
                 };
@@ -76,38 +99,18 @@ public class GameSettingsView extends AbstractSettingsView {
                 View gameModeView;
 
                 if (gameMode instanceof Zombies) {
-                    gameModeView = new ZombiesSettingsView(plugin, (Zombies) gameMode, removeFunction, translator, previousView);
+                    gameModeView = viewFactory.make(ZombiesSettingsView.class, instance -> {
+                        instance.setGameMode((Zombies) gameMode);
+                        instance.setOnComponentRemove(onComponentRemove);
+                        instance.setPreviousView(this);
+                    });
                 } else {
                     throw new ViewCreationException("Can not create view of game mode " + gameMode.getName());
                 }
 
-                Consumer<Player> click = player -> player.openInventory(gameModeView.getInventory());
-                Button button = new FunctionalButton(click, click);
-
-                addButton(itemStack, button);
-
-                inventory.addItem(itemStack);
+                pane.addItem(new GuiItem(itemStack, event -> gameModeView.openInventory(event.getWhoClicked())));
             }
         }
-
-        GameConfiguration configuration = game.getConfiguration();
-        View editConfigurationView = new EditGameConfigurationView(plugin, game, configuration, translator, this);
-        Consumer<Player> configClick = player -> player.openInventory(editConfigurationView.getInventory());
-
-        ItemStack configButton = new ItemStackBuilder(new ItemStack(XMaterial.REDSTONE.parseMaterial()))
-                .setDisplayName(translator.translate(TranslationKey.VIEW_GAME_SETTINGS_CONFIG.getPath()))
-                .build();
-        Button button = new FunctionalButton(configClick, configClick);
-
-        ItemStack backButton = new ItemStackBuilder(new ItemStack(XMaterial.COMPASS.parseMaterial()))
-                .setDisplayName(translator.translate(TranslationKey.GO_BACK.getPath()))
-                .build();
-
-        addButton(configButton, button);
-        createBackButton(backButton, previousView);
-
-        inventory.setItem(INVENTORY_SIZE - 2, configButton);
-        inventory.setItem(INVENTORY_SIZE - 1, backButton);
     }
 
     private Arena findArenaOfComponent(int componentId) {
@@ -122,12 +125,5 @@ public class GameSettingsView extends AbstractSettingsView {
         }
 
         return null;
-    }
-
-    private Inventory createInventory() {
-        String title = translator.translate(TranslationKey.VIEW_GAME_SETTINGS_TITLE.getPath(), new Placeholder("bg_game", game.getId()));
-        inventory = plugin.getServer().createInventory(this, INVENTORY_SIZE, title);
-        refreshContent();
-        return inventory;
     }
 }

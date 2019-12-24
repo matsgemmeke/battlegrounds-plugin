@@ -29,11 +29,12 @@ public class ZombiesPowerUpManager implements PowerUpManager {
 
     public void activatePowerUp(PowerUp powerUp) {
         powerUp.setActive(true);
-        powerUp.getEffect().activate(() -> removePowerUp(powerUp));
+        powerUp.getEffect().activate(powerUpEffect -> {
+            removePowerUp(powerUp);
+            displayPowerUpTitle(powerUp, EnumTitle.POWERUP_DEACTIVATE);
+        });
 
-        for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
-            EnumTitle.POWERUP_ACTIVATE.send(gamePlayer.getPlayer(), new Placeholder("bg_powerup", powerUp.getMetadata().getName()));
-        }
+        displayPowerUpTitle(powerUp, EnumTitle.POWERUP_ACTIVATE);
 
         BattleSound.POWERUP_ACTIVATE.play(game);
     }
@@ -70,29 +71,26 @@ public class ZombiesPowerUpManager implements PowerUpManager {
         }, 400, 10);
     }
 
-    private PowerUp getPowerUp(PowerUpEffect powerUpEffect) {
-        for (PowerUp powerUp : powerUps) {
-            if (powerUp.getMetadata().getName().equals(powerUpEffect.getName())) { // Compare just the names for now
-                return powerUp;
-            }
-        }
-        return null;
-    }
-
     public int getPowerUpCount() {
         return powerUps.size();
     }
 
     public double getPowerUpDamage(double damage) {
         for (PowerUp powerUp : powerUps) {
-            damage = powerUp.getEffect().modifyDamage(damage);
+            System.out.println(powerUp.getEffect());
+            System.out.println(powerUp.isActive());
+            if (powerUp.isActive()) {
+                damage = powerUp.getEffect().modifyDamage(damage);
+            }
         }
         return damage;
     }
 
     public int getPowerUpPoints(int points) {
         for (PowerUp powerUp : powerUps) {
-            points = powerUp.getEffect().modifyPoints(points);
+            if (powerUp.isActive()) {
+                points = powerUp.getEffect().modifyPoints(points);
+            }
         }
         return points;
     }
@@ -105,5 +103,20 @@ public class ZombiesPowerUpManager implements PowerUpManager {
         powerUp.remove();
         game.getItemRegistry().removeItem(powerUp);
         powerUps.remove(powerUp);
+    }
+
+    private void displayPowerUpTitle(PowerUp powerUp, EnumTitle title) {
+        for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
+            title.send(gamePlayer.getPlayer(), new Placeholder("bg_powerup", powerUp.getMetadata().getName()));
+        }
+    }
+
+    private PowerUp getPowerUp(PowerUpEffect powerUpEffect) {
+        for (PowerUp powerUp : powerUps) {
+            if (powerUp.getMetadata().getName().equals(powerUpEffect.getName())) { // Compare just the names for now
+                return powerUp;
+            }
+        }
+        return null;
     }
 }

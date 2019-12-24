@@ -321,8 +321,8 @@ public class BattleGun extends BattleFirearm implements Gun {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 1000, 1));
             }
             cooldown(1);
-            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 1000, -scopeZoom.getValue())); // Zoom effect
-            player.getInventory().setHelmet(new ItemStack(Material.PUMPKIN, 1));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, -scopeZoom.getValue())); // Zoom effect
+            player.getInventory().setHelmet(new ItemStack(Material.PUMPKIN));
         } else {
             BattleSound.GUN_SCOPE[0].play(game, player.getLocation(), (float) 0.75);
             BattleSound.GUN_SCOPE[1].play(game, player.getLocation(), (float) 1.5);

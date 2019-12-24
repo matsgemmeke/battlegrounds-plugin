@@ -4,6 +4,7 @@ import com.matsg.battlegrounds.InternalsProvider;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.item.Weapon;
+import com.matsg.battlegrounds.gui.ViewFactory;
 import com.matsg.battlegrounds.mode.zombies.component.WallWeapon;
 import com.matsg.battlegrounds.mode.zombies.component.ZombiesWallWeapon;
 import org.bukkit.Rotation;
@@ -14,11 +15,13 @@ public class WallWeaponFactory {
     private Game game;
     private InternalsProvider internals;
     private Translator translator;
+    private ViewFactory viewFactory;
 
-    public WallWeaponFactory(Game game, InternalsProvider internals, Translator translator) {
+    public WallWeaponFactory(Game game, InternalsProvider internals, Translator translator, ViewFactory viewFactory) {
         this.game = game;
         this.internals = internals;
         this.translator = translator;
+        this.viewFactory = viewFactory;
     }
 
     /**
@@ -39,6 +42,6 @@ public class WallWeaponFactory {
         itemFrame.setItem(weapon.getItemStack());
         itemFrame.setRotation(Rotation.COUNTER_CLOCKWISE_45);
 
-        return new ZombiesWallWeapon(id, game, itemFrame, weapon, price, internals, translator);
+        return new ZombiesWallWeapon(id, game, itemFrame, weapon, price, internals, translator, viewFactory);
     }
 }

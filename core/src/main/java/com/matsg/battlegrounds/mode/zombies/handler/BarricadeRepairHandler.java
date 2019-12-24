@@ -17,6 +17,8 @@ import org.bukkit.event.block.BlockPlaceEvent;
 
 public class BarricadeRepairHandler implements EventHandler<BlockPlaceEvent> {
 
+    private static final int DEFAULT_REPAIR_POINTS = 10;
+
     private Game game;
     private InternalsProvider internals;
     private Translator translator;
@@ -46,7 +48,7 @@ public class BarricadeRepairHandler implements EventHandler<BlockPlaceEvent> {
         for (Section section : zombies.getSectionContainer().getAll()) {
             for (Barricade barricade : section.getBarricadeContainer().getAll()) {
                 if (barricade != null && barricade.onConstruct(gamePlayer, block)) {
-                    int repairPoints = 10;
+                    int repairPoints = zombies.getPowerUpManager().getPowerUpPoints(DEFAULT_REPAIR_POINTS);
 
                     String actionBar = translator.translate(TranslationKey.ACTIONBAR_POINTS_INCREASE.getPath(), new Placeholder("bg_points", repairPoints));
                     internals.sendActionBar(gamePlayer.getPlayer(), actionBar);

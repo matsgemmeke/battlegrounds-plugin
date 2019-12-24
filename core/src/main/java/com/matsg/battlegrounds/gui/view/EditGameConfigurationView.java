@@ -1,56 +1,46 @@
 package com.matsg.battlegrounds.gui.view;
 
-import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
-import com.matsg.battlegrounds.api.Placeholder;
-import com.matsg.battlegrounds.api.Translator;
+import com.github.stefvanschie.inventoryframework.Gui;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.GameConfiguration;
-import com.matsg.battlegrounds.item.ItemStackBuilder;
-import com.matsg.battlegrounds.util.XMaterial;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
+import com.matsg.battlegrounds.gui.ViewFactory;
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.event.inventory.InventoryClickEvent;
 
-public class EditGameConfigurationView extends AbstractSettingsView {
+public class EditGameConfigurationView implements View {
 
-    private static final int INVENTORY_SIZE = 45;
-
-    private Battlegrounds plugin;
+    public Gui gui;
     private Game game;
-    private GameConfiguration configuration;
-    private Inventory inventory;
-    private Translator translator;
+    private ViewFactory viewFactory;
     private View previousView;
 
-    public EditGameConfigurationView(Battlegrounds plugin, Game game, GameConfiguration configuration, Translator translator, View previousView) {
-        this.plugin = plugin;
+    public EditGameConfigurationView setGame(Game game) {
         this.game = game;
-        this.configuration = configuration;
-        this.translator = translator;
+        return this;
+    }
+
+    public EditGameConfigurationView setPreviousView(View previousView) {
         this.previousView = previousView;
-        this.inventory = createInventory();
+        return this;
     }
 
-    public Inventory getInventory() {
-        return inventory;
+    public EditGameConfigurationView setViewFactory(ViewFactory viewFactory) {
+        this.viewFactory = viewFactory;
+        return this;
     }
 
-    public void refreshContent() {
-        inventory.clear();
-
-        ItemStack backButtonItem = new ItemStackBuilder(new ItemStack(XMaterial.COMPASS.parseMaterial()))
-                .setDisplayName(translator.translate(TranslationKey.GO_BACK.getPath()))
-                .build();
-
-        createBackButton(backButtonItem, previousView);
-
-        inventory.setItem(INVENTORY_SIZE - 1, backButtonItem);
+    public void backButtonClick(InventoryClickEvent event) {
+        previousView.openInventory(event.getWhoClicked());
     }
 
-    private Inventory createInventory() {
-        String title = translator.translate(TranslationKey.VIEW_EDIT_GAME_CONFIGURATION_TITLE.getPath(), new Placeholder("bg_game", game.getId()));
-        Inventory inventory = plugin.getServer().createInventory(this, INVENTORY_SIZE, title);
-        refreshContent();
-        return inventory;
+    public void openInventory(HumanEntity entity) {
+        gui.show(entity);
+    }
+
+    public void selectGameModesClick(InventoryClickEvent event) {
+        View view = viewFactory.make(SelectGameModesView.class, instance -> {
+            instance.setGame(game);
+            instance.setPreviousView(this);
+        });
+        view.openInventory(event.getWhoClicked());
     }
 }

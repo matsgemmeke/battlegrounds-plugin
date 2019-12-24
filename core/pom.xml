@@ -8,8 +8,8 @@
         <version>2.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>battlegrounds</artifactId>
-    <name>${parent.name}</name>
+    <artifactId>battlegrounds-core</artifactId>
+    <name>Battlegrounds</name>
     <packaging>jar</packaging>
 
     <build>
@@ -65,8 +65,13 @@
         <dependency>
             <groupId>com.github.stefvanschie.inventoryframework</groupId>
             <artifactId>IF</artifactId>
-            <version>0.5.12</version>
+            <version>0.5.14</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>13.0</version>
         </dependency>
         <dependency>
             <groupId>org.powermock</groupId>

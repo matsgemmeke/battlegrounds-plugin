@@ -5,16 +5,20 @@ import com.matsg.battlegrounds.InternalsProvider;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.game.*;
+import com.matsg.battlegrounds.gui.ViewFactory;
+import com.matsg.battlegrounds.gui.view.ItemTransactionView;
+import com.matsg.battlegrounds.gui.view.View;
 import com.matsg.battlegrounds.mode.zombies.PerkManager;
 import com.matsg.battlegrounds.mode.zombies.item.Perk;
 import com.matsg.battlegrounds.api.item.Transaction;
 import com.matsg.battlegrounds.api.Placeholder;
-import com.matsg.battlegrounds.gui.view.TransactionView;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class ZombiesPerkMachine implements PerkMachine {
 
@@ -30,6 +34,7 @@ public class ZombiesPerkMachine implements PerkMachine {
     private Sign sign;
     private String[] signLayout;
     private Translator translator;
+    private ViewFactory viewFactory;
 
     public ZombiesPerkMachine(
             int id,
@@ -40,7 +45,9 @@ public class ZombiesPerkMachine implements PerkMachine {
             int maxBuys,
             int price,
             InternalsProvider internals,
-            Translator translator) {
+            Translator translator,
+            ViewFactory viewFactory
+    ) {
         this.id = id;
         this.game = game;
         this.sign = sign;
@@ -50,7 +57,9 @@ public class ZombiesPerkMachine implements PerkMachine {
         this.price = price;
         this.internals = internals;
         this.translator = translator;
+        this.viewFactory = viewFactory;
         this.buys = new HashMap<>();
+        this.locked = true;
     }
 
     public int getId() {
@@ -111,34 +120,51 @@ public class ZombiesPerkMachine implements PerkMachine {
             return false;
         }
 
+        Player player = gamePlayer.getPlayer();
+
         // If the player does not have enough points they can not buy the perk
         if (gamePlayer.getPoints() < price) {
             String actionBar = translator.translate(TranslationKey.ACTIONBAR_UNSUFFICIENT_POINTS.getPath());
-            internals.sendActionBar(gamePlayer.getPlayer(), actionBar);
+            internals.sendActionBar(player, actionBar);
             return true;
         }
 
         // If the player has bought the perk too many times they can not buy the perk
         if (buys.containsKey(gamePlayer) && buys.get(gamePlayer) > maxBuys) {
             String actionBar = translator.translate(TranslationKey.ACTIONBAR_PERKMACHINE_SOLD_OUT.getPath());
-            internals.sendActionBar(gamePlayer.getPlayer(), actionBar);
+            internals.sendActionBar(player, actionBar);
             return true;
         }
 
         int slot = perkManager.getPerkCount(gamePlayer) + 4;
 
+        Consumer<Transaction> onTransactionComplete = transaction -> {
+            // Subtract perk price from player points
+            gamePlayer.setPoints(gamePlayer.getPoints() - transaction.getPoints());
+            // Add the perk item to the registry
+            game.getItemRegistry().addItem(perk);
+            // Update player score
+            game.updateScoreboard();
+            // Assign the player to the perk effect instance
+            perk.getEffect().setGamePlayer(gamePlayer);
+            // Register perk purchase to the perk manager
+            perkManager.addPerk(gamePlayer, perk);
+        };
+
         // A new perk is given out, so make a clone of the original in the perk machine
         Perk perk = this.perk.clone();
 
-        gamePlayer.getPlayer().openInventory(new TransactionView(game, translator, perk, perk.getItemStack(), price, slot) {
-            public void onTransactionComplete(Transaction transaction) {
-                game.getItemRegistry().addItem(perk);
-                perk.getEffect().setGamePlayer(gamePlayer);
-                perkManager.addPerk(gamePlayer, perk);
-            }
-        }.getInventory());
+        View view = viewFactory.make(ItemTransactionView.class, instance -> {
+            instance.setGame(game);
+            instance.setItem(perk);
+            instance.setItemStack(perk.getItemStack());
+            instance.setOnTransactionComplete(onTransactionComplete);
+            instance.setPoints(price);
+            instance.setSlot(slot);
+        });
+        view.openInventory(player);
 
-        return false;
+        return true;
     }
 
     public boolean updateSign() {

@@ -1,0 +1,8 @@
+<gui rows="5" title="Zombies settings" field="gui">
+    <outlinepane x="0" y="0" length="9" height="4" populate="populateComponents"/>
+    <staticpane x="0" y="4" length="9" height="1">
+        <item x="8" y="0" id="barrier" onClick="backButtonClick">
+            <displayname>&amp;fGo back</displayname>
+        </item>
+    </staticpane>
+</gui>

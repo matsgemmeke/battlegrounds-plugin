@@ -7,6 +7,7 @@ import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.game.Arena;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameMode;
+import com.matsg.battlegrounds.gui.ViewFactory;
 import com.matsg.battlegrounds.mode.ffa.FFAConfig;
 import com.matsg.battlegrounds.mode.ffa.FreeForAll;
 import com.matsg.battlegrounds.mode.shared.SpawnByTeamBehavior;
@@ -29,12 +30,14 @@ public class GameModeFactory {
     private InternalsProvider internals;
     private TaskRunner taskRunner;
     private Translator translator;
+    private ViewFactory viewFactory;
 
-    public GameModeFactory(Battlegrounds plugin, InternalsProvider internals, TaskRunner taskRunner, Translator translator) {
+    public GameModeFactory(Battlegrounds plugin, InternalsProvider internals, TaskRunner taskRunner, Translator translator, ViewFactory viewFactory) {
         this.plugin = plugin;
         this.internals = internals;
         this.taskRunner = taskRunner;
         this.translator = translator;
+        this.viewFactory = viewFactory;
     }
 
     public GameMode make(Game game, GameModeType gameModeType) {
@@ -49,7 +52,7 @@ public class GameModeFactory {
                     FFAConfig config = new FFAConfig(plugin.getDataFolder().getPath() + "/data/game_" + game.getId() + "/gamemodes", plugin.getResource("ffa.yml"), server);
                     SpawningBehavior spawningBehavior = new SpawnRandomlyBehavior(arena);
 
-                    gameMode = new FreeForAll(plugin, game, translator, spawningBehavior, config);
+                    gameMode = new FreeForAll(plugin, game, spawningBehavior, translator, viewFactory, config);
                     gameMode.addObjective(new EliminationObjective(game, 2));
                     gameMode.addObjective(new ScoreObjective(game, config.getKillsToWin()));
                     gameMode.addObjective(new TimeObjective(game, config.getTimeLimit()));
@@ -63,7 +66,7 @@ public class GameModeFactory {
                     TDMConfig config = new TDMConfig(plugin.getDataFolder().getPath() + "/data/game_" + game.getId() + "/gamemodes", plugin.getResource("tdm.yml"), server);
                     SpawningBehavior spawningBehavior = new SpawnByTeamBehavior(arena);
 
-                    gameMode = new TeamDeathmatch(plugin, game, translator, spawningBehavior, config);
+                    gameMode = new TeamDeathmatch(plugin, game, spawningBehavior, translator, viewFactory, config);
                     gameMode.addObjective(new EliminationObjective(game, 2));
                     gameMode.addObjective(new ScoreObjective(game, config.getKillsToWin()));
                     gameMode.addObjective(new TimeObjective(game, config.getTimeLimit()));
@@ -79,7 +82,7 @@ public class GameModeFactory {
                     PowerUpManager powerUpManager = new ZombiesPowerUpManager(game, taskRunner);
                     SpawningBehavior spawningBehavior = new SpawnRandomlyBehavior(arena);
 
-                    gameMode = new Zombies(plugin, game, translator, internals, spawningBehavior, perkManager, powerUpManager, taskRunner, config);
+                    gameMode = new Zombies(plugin, game, translator, internals, spawningBehavior, perkManager, powerUpManager, taskRunner, viewFactory, config);
                     gameMode.addObjective(new EliminationObjective(game, 1));
 
                     break;

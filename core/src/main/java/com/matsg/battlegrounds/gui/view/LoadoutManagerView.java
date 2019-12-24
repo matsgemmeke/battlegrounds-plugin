@@ -1,18 +1,19 @@
 package com.matsg.battlegrounds.gui.view;
 
+import com.github.stefvanschie.inventoryframework.Gui;
+import com.github.stefvanschie.inventoryframework.GuiItem;
+import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Translator;
-import com.matsg.battlegrounds.api.item.Attachment;
-import com.matsg.battlegrounds.api.item.Loadout;
-import com.matsg.battlegrounds.api.item.Weapon;
+import com.matsg.battlegrounds.api.item.*;
+import com.matsg.battlegrounds.api.storage.PlayerStorage;
+import com.matsg.battlegrounds.gui.ViewFactory;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.item.factory.LoadoutFactory;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.ClickType;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
@@ -20,56 +21,77 @@ import java.util.*;
 
 public class LoadoutManagerView implements View {
 
-    private Battlegrounds plugin;
-    private Inventory inventory;
+    public Gui gui;
+    private ItemFactory<Attachment> attachmentFactory;
+    private ItemFactory<Equipment> equipmentFactory;
+    private ItemFactory<Firearm> firearmFactory;
+    private ItemFactory<MeleeWeapon> meleeWeaponFactory;
     private LoadoutFactory loadoutFactory;
-    private Map<ItemStack, Loadout> loadouts;
+    private Player player;
+    private PlayerStorage playerStorage;
     private Translator translator;
+    private ViewFactory viewFactory;
 
-    public LoadoutManagerView(Battlegrounds plugin, Translator translator, Player player) {
-        this.plugin = plugin;
+    public LoadoutManagerView setAttachmentFactory(ItemFactory<Attachment> attachmentFactory) {
+        this.attachmentFactory = attachmentFactory;
+        return this;
+    }
+
+    public LoadoutManagerView setEquipmentFactory(ItemFactory<Equipment> equipmentFactory) {
+        this.equipmentFactory = equipmentFactory;
+        return this;
+    }
+
+    public LoadoutManagerView setFirearmFactory(ItemFactory<Firearm> firearmFactory) {
+        this.firearmFactory = firearmFactory;
+        return this;
+    }
+
+    public LoadoutManagerView setLoadoutFactory(LoadoutFactory loadoutFactory) {
+        this.loadoutFactory = loadoutFactory;
+        return this;
+    }
+
+    public LoadoutManagerView setMeleeWeaponFactory(ItemFactory<MeleeWeapon> meleeWeaponFactory) {
+        this.meleeWeaponFactory = meleeWeaponFactory;
+        return this;
+    }
+
+    public LoadoutManagerView setPlayer(Player player) {
+        this.player = player;
+        return this;
+    }
+
+    public LoadoutManagerView setPlayerStorage(PlayerStorage playerStorage) {
+        this.playerStorage = playerStorage;
+        return this;
+    }
+
+    public LoadoutManagerView setTranslator(Translator translator) {
         this.translator = translator;
-        this.loadoutFactory = new LoadoutFactory();
-        this.loadouts = new HashMap<>();
-        this.inventory = plugin.getServer().createInventory(this, 27, translator.translate(TranslationKey.VIEW_LOADOUT_MANAGER.getPath()));
-
-        addLoadouts(player.getUniqueId());
+        return this;
     }
 
-    public Inventory getInventory() {
-        return inventory;
+    public LoadoutManagerView setViewFactory(ViewFactory viewFactory) {
+        this.viewFactory = viewFactory;
+        return this;
     }
 
-    private ItemStack getLoadoutItemStack(Loadout loadout) {
-        for (Weapon weapon : loadout.getWeapons()) {
-            if (weapon != null && weapon.getItemStack() != null) {
-                return weapon.getItemStack();
-            }
-        }
-        return new ItemStack(Material.BARRIER);
+    public void openInventory(HumanEntity entity) {
+        gui.show(entity);
     }
 
-    public void onClick(Player player, ItemStack itemStack, ClickType clickType) {
-        Loadout loadout = loadouts.get(itemStack);
-        if (loadout == null) {
-            return;
-        }
-        player.openInventory(new EditLoadoutView(plugin, translator, loadout).getInventory());
-    }
-
-    public void onClose(Player player) { }
-
-    private void addLoadouts(UUID uuid) {
+    public void populateLoadouts(StaticPane pane) {
         int i = 0;
 
-        for (Map<String, String> loadoutSetup : plugin.getPlayerStorage().getStoredPlayer(uuid).getLoadoutSetups()) {
+        for (Map<String, String> loadoutSetup : playerStorage.getStoredPlayer(player.getUniqueId()).getLoadoutSetups()) {
             List<Attachment> primaryAttachments = new ArrayList<>();
             List<Attachment> secondaryAttachments = new ArrayList<>();
             String attachmentString;
 
             if ((attachmentString = loadoutSetup.get("primary_attachments")) != null && !attachmentString.isEmpty()) {
                 for (String attachmentId : attachmentString.split(", ")) {
-                    Attachment attachment = plugin.getAttachmentFactory().make(attachmentId);
+                    Attachment attachment = attachmentFactory.make(attachmentId);
                     if (attachment != null) {
                         primaryAttachments.add(attachment);
                     }
@@ -78,7 +100,7 @@ public class LoadoutManagerView implements View {
 
             if ((attachmentString = loadoutSetup.get("secondary_attachments")) != null && !attachmentString.isEmpty()) {
                 for (String attachmentId : attachmentString.split(", ")) {
-                    Attachment attachment = plugin.getAttachmentFactory().make(attachmentId);
+                    Attachment attachment = attachmentFactory.make(attachmentId);
                     if (attachment != null) {
                         secondaryAttachments.add(attachment);
                     }
@@ -88,10 +110,10 @@ public class LoadoutManagerView implements View {
             Loadout loadout = loadoutFactory.make(
                     Integer.parseInt(loadoutSetup.get("loadout_nr")),
                     loadoutSetup.get("loadout_name"),
-                    plugin.getFirearmFactory().make(loadoutSetup.get("primary")),
-                    plugin.getFirearmFactory().make(loadoutSetup.get("secondary")),
-                    plugin.getEquipmentFactory().make(loadoutSetup.get("equipment")),
-                    plugin.getMeleeWeaponFactory().make(loadoutSetup.get("melee_weapon")),
+                    firearmFactory.make(loadoutSetup.get("primary")),
+                    firearmFactory.make(loadoutSetup.get("secondary")),
+                    equipmentFactory.make(loadoutSetup.get("equipment")),
+                    meleeWeaponFactory.make(loadoutSetup.get("melee_weapon")),
                     primaryAttachments.toArray(new Attachment[primaryAttachments.size()]),
                     secondaryAttachments.toArray(new Attachment[secondaryAttachments.size()]),
                     null,
@@ -105,8 +127,23 @@ public class LoadoutManagerView implements View {
                     .setUnbreakable(true)
                     .build();
 
-            inventory.setItem(i + 10, itemStack);
-            loadouts.put(inventory.getItem(i + 10), loadout);
+            pane.addItem(new GuiItem(itemStack, event -> {
+                View view = viewFactory.make(EditLoadoutView.class, instance -> {
+                    instance.setLoadout(loadout);
+                    instance.setPlayerUUID(player.getUniqueId());
+                    instance.setPreviousView(this);
+                });
+                view.openInventory(event.getWhoClicked());
+            }), i - 1, 0);
         }
+    }
+
+    private ItemStack getLoadoutItemStack(Loadout loadout) {
+        for (Weapon weapon : loadout.getWeapons()) {
+            if (weapon != null && weapon.getItemStack() != null) {
+                return weapon.getItemStack();
+            }
+        }
+        return new ItemStack(Material.BARRIER);
     }
 }

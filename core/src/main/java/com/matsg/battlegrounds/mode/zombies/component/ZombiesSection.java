@@ -131,6 +131,7 @@ public class ZombiesSection implements Section {
 
     public Collection<ArenaComponent> getComponents() {
         List<ArenaComponent> list = new ArrayList<>();
+        list.addAll(barricadeContainer.getAll());
         list.addAll(doorContainer.getAll());
         list.addAll(mobSpawnContainer.getAll());
         list.addAll(mysteryBoxContainer.getAll());

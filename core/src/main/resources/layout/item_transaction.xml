@@ -1,0 +1,5 @@
+<gui rows="5" title="Item transaction" field="gui">
+    <staticpane x="4" y="0" length="1" height="1" populate="populateTransactionItem"/>
+    <outlinepane x="0" y="2" length="3" height="3" populate="populateBuyButtons"/>
+    <outlinepane x="6" y="2" length="3" height="3" populate="populateDiscardButtons"/>
+</gui>

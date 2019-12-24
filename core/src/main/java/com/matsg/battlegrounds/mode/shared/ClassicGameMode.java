@@ -9,6 +9,9 @@ import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.event.GameEndEvent;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.item.ItemSlot;
+import com.matsg.battlegrounds.gui.ViewFactory;
+import com.matsg.battlegrounds.gui.view.View;
+import com.matsg.battlegrounds.item.factory.LoadoutFactory;
 import com.matsg.battlegrounds.mode.AbstractGameMode;
 import com.matsg.battlegrounds.mode.GameModeType;
 import com.matsg.battlegrounds.mode.Result;
@@ -34,8 +37,11 @@ import java.util.Collections;
  */
 public abstract class ClassicGameMode extends AbstractGameMode {
 
-    public ClassicGameMode(Battlegrounds plugin, GameModeType gameModeType, Game game, Translator translator, SpawningBehavior spawningBehavior) {
+    private ViewFactory viewFactory;
+
+    public ClassicGameMode(Battlegrounds plugin, GameModeType gameModeType, Game game, SpawningBehavior spawningBehavior, Translator translator, ViewFactory viewFactory) {
         super(plugin, gameModeType, game, translator, spawningBehavior);
+        this.viewFactory = viewFactory;
     }
 
     public void onDisable() {
@@ -97,7 +103,9 @@ public abstract class ClassicGameMode extends AbstractGameMode {
                         .build()
         });
 
-        SelectLoadout selectLoadout = new SelectLoadout(plugin, game, translator);
+        String selectLoadoutDisplayName = ChatColor.WHITE + translator.translate(TranslationKey.CHANGE_LOADOUT.getPath());
+        SelectLoadout selectLoadout = new SelectLoadout(selectLoadoutDisplayName, game, viewFactory);
+
         game.getItemRegistry().addItem(selectLoadout);
         gamePlayer.getItems().add(selectLoadout);
         player.getInventory().setItem(ItemSlot.MISCELLANEOUS.getSlot(), selectLoadout.getItemStack());
@@ -109,7 +117,14 @@ public abstract class ClassicGameMode extends AbstractGameMode {
 
         for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
             if (gamePlayer.getLoadout() == null) {
-                gamePlayer.getPlayer().openInventory(new SelectLoadoutView(plugin, translator, game, gamePlayer).getInventory());
+                LoadoutFactory loadoutFactory = new LoadoutFactory();
+
+                View view = viewFactory.make(SelectLoadoutView.class, instance -> {
+                    instance.setGame(game);
+                    instance.setGamePlayer(gamePlayer);
+                    instance.setLoadoutFactory(loadoutFactory);
+                });
+                view.openInventory(gamePlayer.getPlayer());
            }
         }
 

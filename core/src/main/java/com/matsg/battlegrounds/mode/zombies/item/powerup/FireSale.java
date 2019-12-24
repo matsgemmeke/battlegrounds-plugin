@@ -4,12 +4,12 @@ import com.matsg.battlegrounds.TaskRunner;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.mode.zombies.component.MysteryBox;
 import com.matsg.battlegrounds.mode.zombies.Zombies;
-import com.matsg.battlegrounds.mode.zombies.item.PowerUpCallback;
 import com.matsg.battlegrounds.mode.zombies.item.PowerUpEffect;
 import org.bukkit.Material;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Collection;
+import java.util.function.Consumer;
 
 public class FireSale implements PowerUpEffect {
 
@@ -47,7 +47,7 @@ public class FireSale implements PowerUpEffect {
         return name;
     }
 
-    public void activate(PowerUpCallback callback) {
+    public void activate(Consumer<PowerUpEffect> callback) {
         Collection<MysteryBox> mysteryBoxes = zombies.getComponents(MysteryBox.class);
         MysteryBox activeBox = zombies.getActiveMysteryBox();
 
@@ -67,7 +67,7 @@ public class FireSale implements PowerUpEffect {
                     mysteryBox.setPrice(zombies.getConfig().getMysteryBoxPrice());
                 }
 
-                callback.onPowerUpEnd();
+                callback.accept(FireSale.this);
             }
         }, duration);
     }

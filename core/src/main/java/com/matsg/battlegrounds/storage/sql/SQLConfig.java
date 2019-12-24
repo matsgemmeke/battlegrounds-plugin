@@ -1,4 +1,4 @@
-package com.matsg.battlegrounds.storage;
+package com.matsg.battlegrounds.storage.sql;
 
 import com.matsg.battlegrounds.api.storage.AbstractYaml;
 

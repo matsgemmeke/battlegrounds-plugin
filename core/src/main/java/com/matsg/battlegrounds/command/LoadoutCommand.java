@@ -1,28 +1,30 @@
 package com.matsg.battlegrounds.command;
 
 import com.matsg.battlegrounds.TranslationKey;
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.storage.LevelConfig;
 import com.matsg.battlegrounds.api.storage.PlayerStorage;
 import com.matsg.battlegrounds.api.storage.StoredPlayer;
 import com.matsg.battlegrounds.api.Placeholder;
+import com.matsg.battlegrounds.gui.ViewFactory;
 import com.matsg.battlegrounds.gui.view.LoadoutManagerView;
+import com.matsg.battlegrounds.gui.view.View;
+import com.matsg.battlegrounds.item.factory.LoadoutFactory;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class LoadoutCommand extends Command {
 
-    private Battlegrounds plugin;
     private int minLevel;
     private LevelConfig levelConfig;
     private PlayerStorage playerStorage;
+    private ViewFactory viewFactory;
 
-    public LoadoutCommand(Battlegrounds plugin, Translator translator, LevelConfig levelConfig, PlayerStorage playerStorage, int minLevel) {
+    public LoadoutCommand(Translator translator, LevelConfig levelConfig, PlayerStorage playerStorage, ViewFactory viewFactory, int minLevel) {
         super(translator);
-        this.plugin = plugin;
         this.levelConfig = levelConfig;
         this.playerStorage = playerStorage;
+        this.viewFactory = viewFactory;
         this.minLevel = minLevel;
 
         setName("loadout");
@@ -39,7 +41,13 @@ public class LoadoutCommand extends Command {
         }
 
         if (args.length == 0) {
-            player.openInventory(new LoadoutManagerView(plugin, translator, player).getInventory());
+            LoadoutFactory loadoutFactory = new LoadoutFactory();
+
+            View view = viewFactory.make(LoadoutManagerView.class, instance -> {
+                instance.setLoadoutFactory(loadoutFactory);
+                instance.setPlayer(player);
+            });
+            view.openInventory(player);
             return;
         }
 

@@ -10,7 +10,6 @@ import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.mode.zombies.Zombies;
 import com.matsg.battlegrounds.mode.zombies.component.Barricade;
 import com.matsg.battlegrounds.mode.zombies.component.MobSpawn;
-import com.matsg.battlegrounds.mode.zombies.item.PowerUpCallback;
 import com.matsg.battlegrounds.mode.zombies.item.PowerUpEffect;
 import com.matsg.battlegrounds.util.XMaterial;
 import org.bukkit.Effect;
@@ -19,6 +18,7 @@ import org.bukkit.block.Block;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Collection;
+import java.util.function.Consumer;
 
 public class Carpenter implements PowerUpEffect {
 
@@ -60,7 +60,7 @@ public class Carpenter implements PowerUpEffect {
         return name;
     }
 
-    public void activate(PowerUpCallback callback) {
+    public void activate(Consumer<PowerUpEffect> callback) {
         Collection<MobSpawn> mobSpawns = zombies.getComponents(MobSpawn.class);
 
         if (mobSpawns.size() <= 0) {
@@ -97,7 +97,7 @@ public class Carpenter implements PowerUpEffect {
                 }
 
                 game.updateScoreboard();
-                callback.onPowerUpEnd();
+                callback.accept(Carpenter.this);
                 cancel();
             }
         }, 20, 8);

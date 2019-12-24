@@ -8,6 +8,7 @@ import com.matsg.battlegrounds.api.storage.CacheYaml;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.game.GameMode;
 import com.matsg.battlegrounds.game.*;
+import com.matsg.battlegrounds.gui.ViewFactory;
 import com.matsg.battlegrounds.mode.GameModeFactory;
 import com.matsg.battlegrounds.mode.GameModeType;
 import org.bukkit.Location;
@@ -27,12 +28,14 @@ public class DataLoader {
     private final Logger logger;
     private final TaskRunner taskRunner;
     private final Translator translator;
+    private final ViewFactory viewFactory;
 
-    public DataLoader(Battlegrounds plugin, InternalsProvider internals, TaskRunner taskRunner, Translator translator) {
+    public DataLoader(Battlegrounds plugin, InternalsProvider internals, TaskRunner taskRunner, Translator translator, ViewFactory viewFactory) {
         this.plugin = plugin;
         this.internals = internals;
         this.taskRunner = taskRunner;
         this.translator = translator;
+        this.viewFactory = viewFactory;
         this.logger = plugin.getLogger();
 
         plugin.getGameManager().getGames().clear();
@@ -44,7 +47,7 @@ public class DataLoader {
         logger.info("Loading in games and arenas...");
 
         GameFactory gameFactory = new GameFactory(plugin, taskRunner);
-        GameModeFactory gameModeFactory = new GameModeFactory(plugin, internals, taskRunner, translator);
+        GameModeFactory gameModeFactory = new GameModeFactory(plugin, internals, taskRunner, translator, viewFactory);
 
         // Look for games files that have been created already
         try {

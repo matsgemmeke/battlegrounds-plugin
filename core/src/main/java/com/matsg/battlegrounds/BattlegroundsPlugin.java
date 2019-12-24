@@ -7,11 +7,14 @@ import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.command.*;
 import com.matsg.battlegrounds.event.BattleEventDispatcher;
 import com.matsg.battlegrounds.game.GameFactory;
+import com.matsg.battlegrounds.gui.BattleViewFactory;
+import com.matsg.battlegrounds.gui.ViewFactory;
 import com.matsg.battlegrounds.item.factory.*;
 import com.matsg.battlegrounds.mode.GameModeFactory;
 import com.matsg.battlegrounds.storage.*;
 import com.matsg.battlegrounds.event.EventListener;
 import com.matsg.battlegrounds.event.PlayerSwapItemListener;
+import com.matsg.battlegrounds.storage.sql.SQLConfig;
 import com.matsg.battlegrounds.util.ReflectionUtils;
 import com.matsg.battlegrounds.storage.local.LocalPlayerStorage;
 import com.matsg.battlegrounds.storage.sql.SQLPlayerStorage;
@@ -22,6 +25,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -38,11 +42,13 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
     private ItemFactory<Equipment> equipmentFactory;
     private ItemFactory<Firearm> firearmFactory;
     private ItemFactory<MeleeWeapon> meleeWeaponFactory;
+    private ItemFinder itemFinder;
     private LevelConfig levelConfig;
     private SelectionManager selectionManager;
     private PlayerStorage playerStorage;
     private TaskRunner taskRunner;
     private Translator translator;
+    private ViewFactory viewFactory;
 
     public void onEnable() {
         plugin = this;
@@ -184,7 +190,9 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
 
         eventDispatcher = new BattleEventDispatcher(getServer().getPluginManager());
         gameManager = new BattleGameManager();
+        itemFinder = new ItemFinder(this);
         selectionManager = new BattleSelectionManager();
+        viewFactory = new BattleViewFactory(this, internals, itemFinder, taskRunner);
 
         if (!loadConfigs()) {
             throw new StartupFailedException("Failed to load item configuration files!");
@@ -196,9 +204,37 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
             throw new StartupFailedException("Failed to load the level configuration!", e);
         }
 
+        // Generate gui layout files
+        String layoutFolderPath = getDataFolder().getPath() + "/layout";
+        File layoutFolder = new File(layoutFolderPath);
+
+        if (!layoutFolder.exists()) {
+            layoutFolder.mkdirs();
+
+            try {
+                Files.copy(getResource("layout/arena_settings.xml"), new File(layoutFolderPath + "/arena_settings.xml").toPath());
+                Files.copy(getResource("layout/edit_game_configuration.xml"), new File(layoutFolderPath + "/edit_game_configuration.xml").toPath());
+                Files.copy(getResource("layout/edit_loadout.xml"), new File(layoutFolderPath + "/edit_loadout.xml").toPath());
+                Files.copy(getResource("layout/game_settings.xml"), new File(layoutFolderPath + "/game_settings.xml").toPath());
+                Files.copy(getResource("layout/item_transaction.xml"), new File(layoutFolderPath + "/item_transaction.xml").toPath());
+                Files.copy(getResource("layout/loadout_manager.xml"), new File(layoutFolderPath + "/loadout_manager.xml").toPath());
+                Files.copy(getResource("layout/plugin_settings.xml"), new File(layoutFolderPath + "/plugin_settings.xml").toPath());
+                Files.copy(getResource("layout/section_settings.xml"), new File(layoutFolderPath + "/section_settings.xml").toPath());
+                Files.copy(getResource("layout/select_attachment.xml"), new File(layoutFolderPath + "/select_attachment.xml").toPath());
+                Files.copy(getResource("layout/select_gamemodes.xml"), new File(layoutFolderPath + "/select_gamemodes.xml").toPath());
+                Files.copy(getResource("layout/select_loadout.xml"), new File(layoutFolderPath + "/select_loadout.xml").toPath());
+                Files.copy(getResource("layout/select_weapon.xml"), new File(layoutFolderPath + "/select_weapon.xml").toPath());
+                Files.copy(getResource("layout/select_weapon_type.xml"), new File(layoutFolderPath + "/select_weapon_type.xml").toPath());
+                Files.copy(getResource("layout/zombies_settings.xml"), new File(layoutFolderPath + "/zombies_settings.xml").toPath());
+            } catch (IOException e) {
+                throw new StartupFailedException("Failed to generate gui layout files!", e);
+            }
+        }
+
+        // Setup a player storage based on configuration settings
         try {
             DefaultLoadouts defaultLoadouts = new DefaultLoadouts(getDataFolder().getPath(), getResource("default_loadouts.yml"), firearmFactory, equipmentFactory, meleeWeaponFactory);
-            SQLConfig sqlConfig = new SQLConfig(getDataFolder().getPath(), getResource("sql.yml"));
+            SQLConfig sqlConfig = new SQLConfig(getDataFolder().getPath(), getResource("sql_config.yml"));
 
             if (sqlConfig.isEnabled()) {
                 playerStorage = new SQLPlayerStorage(sqlConfig, defaultLoadouts);
@@ -213,7 +249,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
 
         new EventListener(this, eventDispatcher, internals, translator);
 
-        new DataLoader(this, internals, taskRunner, translator);
+        new DataLoader(this, internals, taskRunner, translator, viewFactory);
 
         if (ReflectionUtils.getEnumVersion().getValue() > 8) {
             new PlayerSwapItemListener(this);
@@ -225,8 +261,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
     private void setUpCommands() {
         List<Command> commands = new ArrayList<>();
         GameFactory gameFactory = new GameFactory(this, taskRunner);
-        GameModeFactory gameModeFactory = new GameModeFactory(this, internals, taskRunner, translator);
-        ItemFinder itemFinder = new ItemFinder(this);
+        GameModeFactory gameModeFactory = new GameModeFactory(this, internals, taskRunner, translator, viewFactory);
 
         Command bgCommand = new BattlegroundsCommand(translator);
         bgCommand.addSubCommand(new AddComponent(translator, gameManager, itemFinder, selectionManager));
@@ -241,10 +276,10 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         bgCommand.addSubCommand(new SetGameSign(translator, gameManager, config));
         bgCommand.addSubCommand(new SetLobby(translator, gameManager));
         bgCommand.addSubCommand(new SetMainLobby(translator, cache));
-        bgCommand.addSubCommand(new Settings(this, taskRunner, translator));
+        bgCommand.addSubCommand(new Settings(translator, viewFactory));
         bgCommand.addSubCommand(new Help(translator, bgCommand.getSubCommands(), internals));
 
-        Command loadoutCommand = new LoadoutCommand(this, translator, levelConfig, playerStorage, config.loadoutCreationLevel);
+        Command loadoutCommand = new LoadoutCommand(translator, levelConfig, playerStorage, viewFactory, config.loadoutCreationLevel);
         loadoutCommand.addSubCommand(new Rename(translator, playerStorage));
 
         commands.add(bgCommand);
