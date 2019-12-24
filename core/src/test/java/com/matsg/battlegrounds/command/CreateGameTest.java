@@ -45,6 +45,7 @@ public class CreateGameTest {
         this.gameFactory = new GameFactory(plugin, taskRunner);
         this.gameManager = new BattleGameManager();
 
+        when(gameModeFactory.make(any(Game.class), any(GameModeType.class))).thenReturn(mock(GameMode.class));
         when(plugin.getDataFolder()).thenReturn(new File("test"));
         when(plugin.getEventDispatcher()).thenReturn(eventDispatcher);
     }
@@ -59,6 +60,7 @@ public class CreateGameTest {
         CreateGame command = new CreateGame(translator, gameFactory, gameManager, gameModeFactory);
         command.execute(sender, args);
 
+        verify(gameModeFactory, atLeast(1)).make(any(Game.class), any(GameModeType.class));
         verify(sender, times(1)).sendMessage(anyString());
 
         assertEquals(1, gameManager.getGames().size());

@@ -13,10 +13,10 @@ spigot.build: ## Retrieve the BuildTools.jar from Spigot and build required vers
 	cd build \
 		&& curl https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar -o BuildTools.jar \
 		&& java -jar BuildTools.jar --rev 1.8.8 \
-		&& java -jar BuildTools.jar --rev 1.9.2 \
-		&& java -jar BuildTools.jar --rev 1.9.4 \
-		&& java -jar BuildTools.jar --rev 1.10.2 \
-		&& java -jar BuildTools.jar --rev 1.11.2 \
-		&& java -jar BuildTools.jar --rev 1.12.2 \
-		&& java -jar BuildTools.jar --rev 1.13 \
-		&& java -jar BuildTools.jar --rev 1.13.1
+        && java -jar BuildTools.jar --rev 1.9.2 \
+        && java -jar BuildTools.jar --rev 1.9.4 \
+        && java -jar BuildTools.jar --rev 1.10.2 \
+        && java -jar BuildTools.jar --rev 1.11.2 \
+        && java -jar BuildTools.jar --rev 1.12.2 \
+        && java -jar BuildTools.jar --rev 1.13 \
+        && java -jar BuildTools.jar --rev 1.13.1

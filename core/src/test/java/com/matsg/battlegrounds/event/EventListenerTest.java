@@ -11,8 +11,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.plugin.PluginManager;
 import org.junit.Test;
@@ -65,16 +63,6 @@ public class EventListenerTest {
         FoodLevelChangeEvent foodLevelChangeEvent = mock(FoodLevelChangeEvent.class);
         listener.onPlayerFoodLevelChange(foodLevelChangeEvent);
         verify(eventDispatcher, times(1)).dispatchInternalEvent(foodLevelChangeEvent);
-
-        // Test InventoryClickEvent dispatching
-        InventoryClickEvent inventoryClickEvent = mock(InventoryClickEvent.class);
-        listener.onViewItemClick(inventoryClickEvent);
-        verify(eventDispatcher, times(1)).dispatchInternalEvent(inventoryClickEvent);
-
-        // Test InventoryCloseEvent dispatching
-        InventoryCloseEvent inventoryCloseEvent = mock(InventoryCloseEvent.class);
-        listener.onViewItemClose(inventoryCloseEvent);
-        verify(eventDispatcher, times(1)).dispatchInternalEvent(inventoryCloseEvent);
 
         // Test PlayerCommandPreprocessEvent dispatching
         PlayerCommandPreprocessEvent playerCommandPreprocessEvent = mock(PlayerCommandPreprocessEvent.class);
