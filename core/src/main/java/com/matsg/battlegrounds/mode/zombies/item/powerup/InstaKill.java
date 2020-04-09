@@ -18,7 +18,7 @@ public class InstaKill implements PowerUpEffect {
         this.plugin = plugin;
         this.name = name;
         this.duration = duration;
-        this.material = XMaterial.SKELETON_SKULL.parseMaterial();
+        this.material = XMaterial.PLAYER_HEAD.parseMaterial();
     }
 
     public int getDuration() {

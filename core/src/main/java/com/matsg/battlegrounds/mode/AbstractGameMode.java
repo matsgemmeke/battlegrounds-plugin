@@ -112,15 +112,6 @@ public abstract class AbstractGameMode implements GameMode {
         return list;
     }
 
-    public Team getTeam(GamePlayer gamePlayer) {
-        for (Team team : teams) {
-            if (team.hasPlayer(gamePlayer)) {
-                return team;
-            }
-        }
-        return null;
-    }
-
     public Team getTeam(int id) {
         for (Team team : teams) {
             if (team.getId() == id) {
@@ -147,6 +138,8 @@ public abstract class AbstractGameMode implements GameMode {
     public boolean removeComponent(ArenaComponent component) {
         return false;
     }
+
+    public void respawnPlayer(GamePlayer gamePlayer) { }
 
     public boolean spawnPlayers(Iterable<GamePlayer> players) {
         SpawningResult result = spawningBehavior.spawnPlayers(players);

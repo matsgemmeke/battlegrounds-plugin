@@ -89,7 +89,7 @@ game-scoreboard:
 # The layout of the game joining signs
 game-sign-layout:
   line-0: "%bg_state%"
-  line-1: "&lGame %bg_game%"
+  line-1: "&l%bg_gamemode%"
   line-2: "%bg_arena%"
   line-3: "&8&l%bg_players%/%bg_maxplayers%"
 

@@ -14,9 +14,9 @@ public class WaveSpawningThread extends BukkitRunnable {
     private int maxMobs;
     private int spawnedCount;
     private Random random;
-    private Wave wave;
+    private Wave<?> wave;
 
-    public WaveSpawningThread(Game game, Wave wave, int maxMobs) {
+    public WaveSpawningThread(Game game, Wave<?> wave, int maxMobs) {
         this.game = game;
         this.wave = wave;
         this.maxMobs = maxMobs;
@@ -55,6 +55,10 @@ public class WaveSpawningThread extends BukkitRunnable {
         wave.getMobs().remove(mob);
         game.getMobManager().getMobs().add(mob);
         game.updateScoreboard();
+
+        if (mobSpawn.getBarricade() != null) {
+            mobSpawn.getBarricade().getMobs().add(mob);
+        }
 
         mob.spawn(mobSpawn.getSpawnLocation(mob.getEntityType()), mobSpawn.getBarricade());
         mob.getBukkitEntity().setCustomName(game.getMobManager().getHealthBar(mob));

@@ -10,6 +10,10 @@ public interface Droppable {
 
     Collection<Item> getDroppedItems();
 
+    boolean isDroppable();
+
+    void setDroppable(boolean droppable);
+
     boolean isRelated(ItemStack itemStack);
 
     boolean onDrop(GamePlayer gamePlayer, Item item);

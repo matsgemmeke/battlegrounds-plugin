@@ -1,6 +1,6 @@
 package com.matsg.battlegrounds.api.item;
 
-public interface Weapon extends Item, PlayerProperty, TransactionItem {
+public interface Weapon extends Item, Droppable, PlayerProperty, TransactionItem {
 
     /**
      * Gets the usage context of the weapon.
@@ -45,7 +45,19 @@ public interface Weapon extends Item, PlayerProperty, TransactionItem {
     Weapon clone();
 
     /**
+     * Gets whether the weapon is being used by its player.
+     *
+     * @return whether the weapon is in use
+     */
+    boolean isInUse();
+
+    /**
      * Resets the weapon to its original state.
      */
     void resetState();
+
+    /**
+     * Supplies the weapon to its maximum amount.
+     */
+    void resupply();
 }

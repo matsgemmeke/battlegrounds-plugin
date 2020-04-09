@@ -1,6 +1,6 @@
 package com.matsg.battlegrounds.api.game;
 
-public enum Action {
+public enum GameAction {
 
     MOVEMENT,
     USE_ITEM,

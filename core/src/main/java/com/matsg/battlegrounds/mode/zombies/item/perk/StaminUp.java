@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.mode.zombies.item.perk;
 
 import com.matsg.battlegrounds.mode.zombies.item.PerkEffect;
+import com.matsg.battlegrounds.mode.zombies.item.PerkEffectType;
 import org.bukkit.Color;
 
 public class StaminUp extends PerkEffect {
@@ -9,7 +10,7 @@ public class StaminUp extends PerkEffect {
     private static final float NORMAL_WALK_SPEED = 0.2F;
 
     public StaminUp(String displayName) {
-        super(displayName, Color.fromRGB(250, 200, 100));
+        super(PerkEffectType.STAMIN_UP, displayName, Color.fromRGB(250, 200, 100));
     }
 
     public void apply() {

@@ -219,6 +219,11 @@ public class ZombiesDataLoader {
                     }
                 }
 
+                if (itemFrame == null) {
+                    logger.warning("Item frame for wall weapon with id " + component + " missing!");
+                    continue;
+                }
+
                 WallWeapon wallWeapon = wallWeaponFactory.make(componentId, itemFrame, weapon, price);
 
                 section.getWallWeaponContainer().add(wallWeapon);

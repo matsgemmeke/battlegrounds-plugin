@@ -3,7 +3,6 @@ package com.matsg.battlegrounds.api.game;
 import com.matsg.battlegrounds.api.item.Item;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
-import org.bukkit.event.block.Action;
 import org.bukkit.inventory.ItemStack;
 
 public interface ItemRegistry {
@@ -60,15 +59,6 @@ public interface ItemRegistry {
      * @return the corresponding weapon or null if none were found
      */
     Weapon getWeaponIgnoreMetadata(GamePlayer gamePlayer, ItemStack itemStack);
-
-    /**
-     * Initiates an interaction with an item.
-     *
-     * @param gamePlayer the player interacted with the item
-     * @param item the item that was interacted with
-     * @param action the action of the interaction
-     */
-    void interact(GamePlayer gamePlayer, Item item, Action action);
 
     /**
      * Removes an item from the registry.

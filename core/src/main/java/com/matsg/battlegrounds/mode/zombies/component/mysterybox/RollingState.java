@@ -110,10 +110,11 @@ public class RollingState implements MysteryBoxState {
 
         if (!willMove()) {
             Hologram hologram = new Hologram(item.getLocation().add(0, -1, 0));
+            Weapon clone = weapon.clone();
 
             itemStack = weapon.getItemStack();
             sound = rollEndSound;
-            state = new DisplayState(game, mysteryBox, gamePlayer, hologram, internals, item, weapon, taskRunner, translator);
+            state = new DisplayState(game, mysteryBox, gamePlayer, hologram, internals, item, clone, taskRunner, translator);
         } else {
             itemStack = new ItemStackBuilder(new ItemStack(XMaterial.PLAYER_HEAD.parseMaterial(), 1, (byte) 1)).build();
             sound = moveSound;

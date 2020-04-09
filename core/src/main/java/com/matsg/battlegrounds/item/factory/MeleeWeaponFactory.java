@@ -53,7 +53,7 @@ public class MeleeWeaponFactory implements ItemFactory<MeleeWeapon> {
 
         ItemMetadata metadata = new ItemMetadata(id, section.getString("DisplayName"), section.getString("Description"));
         ItemStack itemStack = new ItemStackBuilder(Material.valueOf(material[0]))
-                .setDisplayName(metadata.getName())
+                .setDisplayName(ChatColor.WHITE + metadata.getName())
                 .setDurability(Short.valueOf(material[1]))
                 .setLore(lore)
                 .build();

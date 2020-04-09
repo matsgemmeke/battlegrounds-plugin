@@ -21,6 +21,9 @@ import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
+import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -32,6 +35,7 @@ import java.util.Random;
 
 public abstract class BattleFirearm extends BattleWeapon implements Firearm {
 
+    private boolean droppable;
     private double accuracyAmplifier;
     protected boolean reloadCancelled;
     protected boolean reloading;
@@ -79,6 +83,7 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
         this.reloadSound = reloadSound;
         this.shotSound = shotSound;
         this.accuracyAmplifier = accuracyAmplifier;
+        this.droppable = true;
         this.droppedItems = new ArrayList<>();
         this.reloadCancelled = false;
         this.reloading = false;
@@ -111,18 +116,19 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
 
     public Firearm clone() {
         BattleFirearm firearm = (BattleFirearm) super.clone();
-        firearm.ammo = firearm.getAttribute("ammo-reserve");
-        firearm.cooldown = firearm.getAttribute("shot-cooldown");
+        firearm.ammo = getAttribute("ammo-reserve").clone();
+        firearm.cooldown = getAttribute("shot-cooldown").clone();
         firearm.droppedItems = new ArrayList<>();
-        firearm.horizontalAccuracy = firearm.getAttribute("accuracy-horizontal");
-        firearm.magazine = firearm.getAttribute("ammo-magazine");
-        firearm.magazineSize = firearm.getAttribute("ammo-magazine-size");
-        firearm.magazineSupply = firearm.getAttribute("ammo-magazine-supply");
-        firearm.maxAmmo = firearm.getAttribute("ammo-max");
-        firearm.reloadDuration = firearm.getAttribute("reload-duration");
-        firearm.reloadDurationOg = firearm.getAttribute("reload-duration-og");
-        firearm.reloadSystem = firearm.getAttribute("reload-system");
-        firearm.verticalAccuracy = firearm.getAttribute("accuracy-vertical");
+        firearm.horizontalAccuracy = getAttribute("accuracy-horizontal").clone();
+        firearm.magazine = getAttribute("ammo-magazine").clone();
+        firearm.magazineSize = getAttribute("ammo-magazine-size").clone();
+        firearm.magazineSupply = getAttribute("ammo-magazine-supply").clone();
+        firearm.maxAmmo = getAttribute("ammo-max").clone();
+        firearm.reloadDuration = getAttribute("reload-duration").clone();
+        firearm.reloadDurationOg = getAttribute("reload-duration-og").clone();
+        firearm.reloadSystem = getAttribute("reload-system").clone();
+        firearm.reloadSystem.getValue().setWeapon(firearm);
+        firearm.verticalAccuracy = getAttribute("accuracy-vertical").clone();
         return firearm;
     }
 
@@ -176,6 +182,14 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
 
     public FirearmType getType() {
         return firearmType;
+    }
+
+    public boolean isDroppable() {
+        return droppable;
+    }
+
+    public void setDroppable(boolean droppable) {
+        this.droppable = droppable;
     }
 
     public boolean isReloading() {
@@ -285,7 +299,7 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
     }
 
     public boolean onDrop(GamePlayer gamePlayer, Item item) {
-        if (this.gamePlayer != gamePlayer || reloading || shooting) {
+        if (this.gamePlayer != gamePlayer || !droppable || reloading || shooting) {
             return true;
         }
         droppedItems.add(item);
@@ -298,7 +312,7 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
         ItemSlot itemSlot = ItemSlot.fromSlot(gamePlayer.getPlayer().getInventory().getHeldItemSlot());
         Weapon weapon = gamePlayer.getLoadout().getWeaponIgnoreMetadata(item.getItemStack());
 
-        if (weapon != null && weapon instanceof Firearm) {
+        if (weapon instanceof Firearm) {
             BattleSound.play(BattleSound.ITEM_EQUIP, game, gamePlayer.getLocation());
             Firearm firearm = (Firearm) weapon;
 
@@ -310,7 +324,7 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
             return firearm.update();
         }
 
-        if (itemSlot == null || itemSlot != ItemSlot.FIREARM_PRIMARY && itemSlot != ItemSlot.FIREARM_SECONDARY || gamePlayer.getLoadout().getWeapon(itemSlot) != null) {
+        if (itemSlot != ItemSlot.FIREARM_PRIMARY && itemSlot != ItemSlot.FIREARM_SECONDARY || gamePlayer.getLoadout().getWeapon(itemSlot) != null) {
             return true;
         }
 
@@ -328,7 +342,9 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
         return update();
     }
 
-    public void onSwitch() {
+    public void onSwap(PlayerSwapHandItemsEvent event) { }
+
+    public void onSwitch(PlayerItemHeldEvent event) {
         cancelReload();
     }
 
@@ -413,6 +429,10 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
     public void resetState() {
         ammo.applyModifier(new IntegerAttributeModifier(magazineSupply.getValue() * magazineSize.getValue()));
         magazine.applyModifier(new IntegerAttributeModifier(magazineSize.getValue()));
+    }
+
+    public void resupply() {
+        ammo = maxAmmo.clone();
     }
 
     private void setSoundCancelled(boolean cancelled, Sound... sounds) {

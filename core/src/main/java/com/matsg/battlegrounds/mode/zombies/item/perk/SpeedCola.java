@@ -2,6 +2,7 @@ package com.matsg.battlegrounds.mode.zombies.item.perk;
 
 import com.matsg.battlegrounds.api.item.Firearm;
 import com.matsg.battlegrounds.mode.zombies.item.PerkEffect;
+import com.matsg.battlegrounds.mode.zombies.item.PerkEffectType;
 import org.bukkit.Color;
 
 public class SpeedCola extends PerkEffect {
@@ -11,7 +12,7 @@ public class SpeedCola extends PerkEffect {
     private Firearm[] firearms;
 
     public SpeedCola(String displayName) {
-        super(displayName, Color.fromRGB(0, 128, 0));
+        super(PerkEffectType.SPEED_COLA, displayName, Color.fromRGB(0, 128, 0));
     }
 
     public void apply() {

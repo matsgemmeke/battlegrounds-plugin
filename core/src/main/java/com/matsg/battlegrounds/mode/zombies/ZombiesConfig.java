@@ -23,12 +23,14 @@ public class ZombiesConfig extends BattleCacheYaml {
     private double mobMaxHealth;
     private double powerUpChance;
     private double spawnRate;
-    private int defaultMagazines;
+    private int defaultEquipmentAmount;
     private int defaultPoints;
+    private int defaultPrimaryMagazines;
     private int mysteryBoxPrice;
     private int powerUpDuration;
     private int runningMobsRound;
     private int startingRound;
+    private int targetUpdateInterval;
     private int waveDelay;
     private int variation;
     private List<String> mysteryBoxWeapons;
@@ -36,8 +38,9 @@ public class ZombiesConfig extends BattleCacheYaml {
 
     public ZombiesConfig(String filePath, InputStream resource, Server server) throws IOException {
         super("zombies.yml", filePath, resource, server);
-        this.defaultMagazines = getInt("zombies-default-loadout.magazines");
+        this.defaultEquipmentAmount = getInt("zombies-default-loadout.equipment-amount");
         this.defaultPoints = getInt("zombies-default-loadout.points");
+        this.defaultPrimaryMagazines = getInt("zombies-default-loadout.primary-magazines");
         this.hellhoundChance = getDouble("zombies-wave-hellhound-chance");
         this.hellhoundEnabled = getBoolean("zombies-wave-enable-hellhounds");
         this.hellhoundHealth = getDouble("zombies-wave-hellhound-health");
@@ -53,16 +56,21 @@ public class ZombiesConfig extends BattleCacheYaml {
         this.runningMobsRound = getInt("zombies-wave-running-mobs-round");
         this.spawnRate = getDouble("zombies-wave-spawn-rate");
         this.startingRound = getInt("zombies-starting-round");
+        this.targetUpdateInterval = getInt("zombies-target-update-interval");
         this.waveDelay = getInt("zombies-wave-delay");
         this.variation = getInt("zombies-wave-variation");
     }
 
-    public int getDefaultMagazines() {
-        return defaultMagazines;
+    public int getDefaultEquipmentAmount() {
+        return defaultEquipmentAmount;
     }
 
     public int getDefaultPoints() {
         return defaultPoints;
+    }
+
+    public int getDefaultPrimaryMagazines() {
+        return defaultPrimaryMagazines;
     }
 
     public double getHellhoundChance() {
@@ -115,6 +123,10 @@ public class ZombiesConfig extends BattleCacheYaml {
 
     public int getStartingRound() {
         return startingRound;
+    }
+
+    public int getTargetUpdateInterval() {
+        return targetUpdateInterval;
     }
 
     public int getVariation() {

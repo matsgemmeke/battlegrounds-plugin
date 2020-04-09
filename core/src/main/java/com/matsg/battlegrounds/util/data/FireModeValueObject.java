@@ -16,6 +16,7 @@ public class FireModeValueObject implements ValueObject<FireMode> {
     }
 
     public ValueObject<FireMode> copy() {
-        return new FireModeValueObject(value);
+        FireMode fireMode = value.clone();
+        return new FireModeValueObject(fireMode);
     }
 }

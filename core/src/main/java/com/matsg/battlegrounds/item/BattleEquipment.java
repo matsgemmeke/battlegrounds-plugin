@@ -5,11 +5,15 @@ import com.matsg.battlegrounds.InternalsProvider;
 import com.matsg.battlegrounds.api.item.Equipment;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.item.ItemMetadata;
+import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.item.Transaction;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.item.mechanism.IgnitionSystem;
 import com.matsg.battlegrounds.util.BattleSound;
 import org.bukkit.entity.Item;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
+import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
@@ -18,11 +22,19 @@ import java.util.List;
 
 public abstract class BattleEquipment extends BattleWeapon implements Equipment {
 
-    protected boolean beingThrown;
-    protected double longRange, midRange, shortRange, velocity;
-    protected EquipmentType equipmentType;
-    protected IgnitionSystem ignitionSystem;
-    protected int amount, cooldown, ignitionTime, maxAmount;
+    private boolean droppable;
+    private boolean beingThrown;
+    private double velocity;
+    private EquipmentType equipmentType;
+    private IgnitionSystem ignitionSystem;
+    private int amount;
+    private int cooldown;
+    private int ignitionTime;
+    private int maxAmount;
+    private int supplyAmount;
+    protected double longRange;
+    protected double midRange;
+    protected double shortRange;
     protected List<Item> droppedItems;
     protected Sound[] ignitionSound;
 
@@ -35,6 +47,7 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
             IgnitionSystem ignitionSystem,
             Sound[] ignitionSound,
             int amount,
+            int maxAmount,
             int cooldown,
             int ignitionTime,
             double longRange,
@@ -47,6 +60,8 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
         this.ignitionSystem = ignitionSystem;
         this.ignitionSound = ignitionSound;
         this.amount = amount;
+        this.maxAmount = maxAmount;
+        this.supplyAmount = amount;
         this.cooldown = cooldown;
         this.ignitionTime = ignitionTime;
         this.longRange = longRange;
@@ -54,8 +69,8 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
         this.shortRange = shortRange;
         this.velocity = velocity;
         this.beingThrown = false;
+        this.droppable = true;
         this.droppedItems = new ArrayList<>();
-        this.maxAmount = amount;
     }
 
     public int getAmount() {
@@ -126,12 +141,22 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
         return beingThrown;
     }
 
+    public boolean isDroppable() {
+        return droppable;
+    }
+
+    public void setDroppable(boolean droppable) {
+        this.droppable = droppable;
+    }
+
     public void cooldown(int cooldownDuration) {
         taskRunner.runTaskLater(() -> beingThrown = false, cooldownDuration);
     }
 
-    public Equipment clone() {
-        return (Equipment) super.clone();
+    public BattleEquipment clone() {
+        BattleEquipment equipment = (BattleEquipment) super.clone();
+        equipment.ignitionSystem.setWeapon(equipment);
+        return equipment;
     }
 
     public void deployEquipment() {
@@ -155,7 +180,20 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
     }
 
     public void handleTransaction(Transaction transaction) {
+        this.context = transaction.getGame().getGameMode();
+        this.game = transaction.getGame();
         this.gamePlayer = transaction.getGamePlayer();
+        this.itemSlot = ItemSlot.fromSlot(transaction.getSlot());
+
+        amount = maxAmount;
+        game.getItemRegistry().addItem(this);
+        gamePlayer.getLoadout().setEquipment(this);
+
+        update();
+    }
+
+    public boolean isInUse() {
+        return beingThrown;
     }
 
     public boolean isRelated(ItemStack itemStack) {
@@ -171,27 +209,30 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
         return true;
     }
 
-    public void onLeftClick() {
+    public void onLeftClick(PlayerInteractEvent event) {
         if (amount <= 0 || beingThrown || game == null || gamePlayer == null) {
             return;
         }
         deployEquipment(velocity);
+        event.setCancelled(true);
     }
 
     public boolean onPickUp(GamePlayer gamePlayer, Item item) {
         return true;
     }
 
-    public void onRightClick() {
+    public void onRightClick(PlayerInteractEvent event) {
         if (amount <= 0 || beingThrown || game == null || gamePlayer == null) {
             return;
         }
         deployEquipment(0.0);
+        event.setCancelled(true);
+        event.getPlayer().updateInventory();
     }
 
-    public void onSwap() { }
+    public void onSwap(PlayerSwapHandItemsEvent event) { }
 
-    public void onSwitch() { }
+    public void onSwitch(PlayerItemHeldEvent event) { }
 
     public void remove() {
         super.remove();
@@ -202,6 +243,10 @@ public abstract class BattleEquipment extends BattleWeapon implements Equipment 
     }
 
     public void resetState() {
+        amount = supplyAmount;
+    }
+
+    public void resupply() {
         amount = maxAmount;
     }
 

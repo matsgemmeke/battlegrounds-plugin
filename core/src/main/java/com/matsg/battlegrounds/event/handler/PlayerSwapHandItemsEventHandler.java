@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.event.handler;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.event.EventHandler;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.item.Item;
@@ -25,12 +26,13 @@ public class PlayerSwapHandItemsEventHandler implements EventHandler<PlayerSwapH
 
         event.setCancelled(true);
 
+        GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
         Item item = game.getItemRegistry().getItem(event.getOffHandItem());
 
         if (item == null) {
             return;
         }
 
-        item.onSwap(game.getPlayerManager().getGamePlayer(player));
+        item.onSwap(gamePlayer, event);
     }
 }

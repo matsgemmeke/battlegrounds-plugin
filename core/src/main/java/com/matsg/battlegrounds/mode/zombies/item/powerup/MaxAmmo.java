@@ -2,8 +2,10 @@ package com.matsg.battlegrounds.mode.zombies.item.powerup;
 
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.api.item.Equipment;
 import com.matsg.battlegrounds.api.item.Firearm;
 import com.matsg.battlegrounds.api.item.Loadout;
+import com.matsg.battlegrounds.api.item.MeleeWeapon;
 import com.matsg.battlegrounds.mode.zombies.item.PowerUpEffect;
 import com.matsg.battlegrounds.util.XMaterial;
 import org.bukkit.Material;
@@ -51,8 +53,13 @@ public class MaxAmmo implements PowerUpEffect {
                }
             }
 
-            loadout.getEquipment().setAmount(loadout.getEquipment().getMaxAmount());
-            loadout.getMeleeWeapon().setAmount(loadout.getMeleeWeapon().getMaxAmount());
+            Equipment equipment = loadout.getEquipment();
+            equipment.setAmount(equipment.getMaxAmount());
+            equipment.update();
+
+            MeleeWeapon meleeWeapon = loadout.getMeleeWeapon();
+            meleeWeapon.setAmount(meleeWeapon.getMaxAmount());
+            meleeWeapon.update();
         }
         callback.accept(this);
     }

@@ -18,8 +18,10 @@ public abstract class PerkEffect implements PlayerEffect {
     protected GamePlayer gamePlayer;
     protected ItemStack itemStack;
     protected String name;
+    private PerkEffectType type;
 
-    public PerkEffect(String name, Color color) {
+    public PerkEffect(PerkEffectType type, String name, Color color) {
+        this.type = type;
         this.name = name;
         this.itemStack = new ItemStackBuilder(Material.POTION)
                 .addItemFlags(ItemFlag.values())
@@ -51,6 +53,10 @@ public abstract class PerkEffect implements PlayerEffect {
 
     public String getName() {
         return name;
+    }
+
+    public PerkEffectType getType() {
+        return type;
     }
 
     public void refresh() { }

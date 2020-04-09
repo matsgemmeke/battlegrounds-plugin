@@ -6,12 +6,22 @@ public class MagazineReload implements ReloadSystem {
 
     private Firearm firearm;
 
+    public MagazineReload() { }
+
+    private MagazineReload(Firearm firearm) {
+        this.firearm = firearm;
+    }
+
     public Firearm getWeapon() {
         return firearm;
     }
 
     public void setWeapon(Firearm firearm) {
         this.firearm = firearm;
+    }
+
+    public ReloadSystem clone() {
+        return new MagazineReload(firearm);
     }
 
     public void reload() {

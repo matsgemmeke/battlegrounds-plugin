@@ -4,8 +4,8 @@ import com.matsg.battlegrounds.api.entity.OfflineGamePlayer;
 import com.matsg.battlegrounds.api.storage.AbstractYaml;
 import com.matsg.battlegrounds.api.storage.StatisticContext;
 import com.matsg.battlegrounds.api.storage.StoredPlayer;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
 
 import java.io.IOException;
 import java.util.*;
@@ -86,7 +86,7 @@ public class PlayerYaml extends AbstractYaml implements StoredPlayer {
         return name.compareTo(o.getName());
     }
 
-    public void createDefaultAttributes(Player player) {
+    public void createDefaultAttributes(OfflinePlayer player) {
         set("Exp", 0);
         set("Name", player.getName());
         set("Stats.Deaths", 0);

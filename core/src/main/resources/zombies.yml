@@ -2,14 +2,16 @@
 zombies-default-loadout:
   # The equipment item
   equipment: GRENADE
-  # The amount of reserve magazines
-  magazines: 4
+  # The starting amount of equipment
+  equipment-amount: 2
   # The melee weapon
   melee-weapon: COMBAT_KNIFE
   # The amount of points the player gets
   points: 500
   # The primary firearm
   primary: M1911
+  # The amount of primary firearm reserve magazines
+  primary-magazines: 4
 
 zombies-mystery-box-weapons:
   - BERETTA_93R
@@ -33,7 +35,8 @@ zombies-mystery-box-weapons:
   - CHINA_LAKE
   - CROSSBOW
   - RPG-7
-  - EMP_GRENADE
+  - RAY_GUN
+  - FLASHBANG
   - MONKEY_BOMB
   - BALLISTIC_KNIFE
 
@@ -84,6 +87,9 @@ zombies-scoreboard:
 # Should be set to 1 at all times except for testing purposes
 zombies-starting-round: 1
 
+# The amount of ticks between mob navigation updates
+zombies-target-update-interval: 200
+
 # The delay between wave in seconds
 zombies-wave-delay: 15
 
@@ -96,7 +102,7 @@ zombies-wave-enable-hellhounds: true
 zombies-wave-hellhound-chance: 6
 
 # The relative amount of health hellhounds have compared to normal zombies
-zombies-wave-hellhound-health: 0.75
+zombies-wave-hellhound-health: 0.5
 
 # The first round a hellhound wave can take place in
 zombies-wave-hellhound-min-round: 5

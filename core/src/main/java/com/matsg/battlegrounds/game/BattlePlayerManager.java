@@ -91,14 +91,7 @@ public class BattlePlayerManager implements PlayerManager {
         }
 
         if (game.getArena() != null && players.size() == game.getConfiguration().getMinPlayers()) {
-            int countdownLength = game.getConfiguration().getLobbyCountdown();
-            int[] displayNumbers = new int[] { 60, 45, 30, 15, 10, 5 };
-
-            Countdown countdown = new LobbyCountdown(game, translator, countdownLength, displayNumbers);
-
-            taskRunner.runTaskTimer(countdown, 0, 20);
-
-            game.setCountdown(countdown);
+            game.startLobbyCountdown();
         }
 
         return gamePlayer;
@@ -164,7 +157,7 @@ public class BattlePlayerManager implements PlayerManager {
     public GamePlayer[] getLivingPlayers(Team team) {
         List<GamePlayer> list = new ArrayList<>();
         for (GamePlayer gamePlayer : players) {
-            if (gamePlayer.getState().canInteract() && game.getGameMode().getTeam(gamePlayer) == team) {
+            if (gamePlayer.getState().canInteract() && gamePlayer.getTeam() == team) {
                 list.add(gamePlayer);
             }
         }
@@ -176,7 +169,7 @@ public class BattlePlayerManager implements PlayerManager {
         for (Entity entity : game.getArena().getWorld().getNearbyEntities(location, range, range, range)) {
             if (entity instanceof Player) {
                 GamePlayer other = getGamePlayer((Player) entity);
-                if (other != null && game.getGameMode().getTeam(other) != team) {
+                if (other != null && other.getTeam() != team) {
                     list.add(other);
                 }
             }
@@ -226,7 +219,7 @@ public class BattlePlayerManager implements PlayerManager {
         for (GamePlayer gamePlayer : team.getPlayers()) {
             if (gamePlayer != null
                     && gamePlayer.getState().isAlive()
-                    && game.getGameMode().getTeam(gamePlayer) == team
+                    && gamePlayer.getTeam() == team
                     && location.getWorld() == gamePlayer.getPlayer().getWorld()
                     && location.distanceSquared(gamePlayer.getPlayer().getLocation()) < distance) {
                 distance = location.distanceSquared(gamePlayer.getPlayer().getLocation());
@@ -265,17 +258,6 @@ public class BattlePlayerManager implements PlayerManager {
         game.getGameMode().removePlayer(gamePlayer);
         game.updateSign();
         return !players.contains(gamePlayer);
-    }
-
-    public void respawnPlayer(GamePlayer gamePlayer, Spawn spawn) {
-        if (!gamePlayer.getLoadout().equals(gamePlayer.getSelectedLoadout())) {
-            changeLoadout(gamePlayer, gamePlayer.getSelectedLoadout().clone());
-        }
-
-        spawn.setOccupant(gamePlayer);
-
-        // Wait 5 seconds before resetting the spawn state
-        taskRunner.runTaskLater(() -> spawn.setOccupant(null), 100);
     }
 
     public void setVisible(GamePlayer gamePlayer, boolean visible) {

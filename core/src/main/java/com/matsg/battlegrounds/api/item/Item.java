@@ -1,8 +1,11 @@
 package com.matsg.battlegrounds.api.item;
 
-import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
+import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.util.GenericAttribute;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
+import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.ItemStack;
 
 public interface Item extends Cloneable, Comparable<Item> {
@@ -67,30 +70,34 @@ public interface Item extends Cloneable, Comparable<Item> {
     /**
      * Handles a performed left click on the item.
      *
-     * @param gamePlayer the player who clicked left
+     * @param gamePlayer the player who left-clicked the item
+     * @param event the event that led to the click interaction
      */
-    void onLeftClick(GamePlayer gamePlayer);
+    void onLeftClick(GamePlayer gamePlayer, PlayerInteractEvent event);
 
     /**
      * Handles a performed right click on the item.
      *
-     * @param gamePlayer the player who clicked right
+     * @param gamePlayer the player who right-clicked the item
+     * @param event the event that led to the click interaction
      */
-    void onRightClick(GamePlayer gamePlayer);
+    void onRightClick(GamePlayer gamePlayer, PlayerInteractEvent event);
 
     /**
      * Handles a performed swap action on the item.
      *
      * @param gamePlayer the player who swapped the item
+     * @param event the event that led to the swap interaction
      */
-    void onSwap(GamePlayer gamePlayer);
+    void onSwap(GamePlayer gamePlayer, PlayerSwapHandItemsEvent event);
 
     /**
      * Handles a performed switch action on the item.
      *
      * @param gamePlayer the player who switched the item
+     * @param event the event that led to the switch interaction
      */
-    void onSwitch(GamePlayer gamePlayer);
+    void onSwitch(GamePlayer gamePlayer, PlayerItemHeldEvent event);
 
     /**
      * Removes the item's requisites.

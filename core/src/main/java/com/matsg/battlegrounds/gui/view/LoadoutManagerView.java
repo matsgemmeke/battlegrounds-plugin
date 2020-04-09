@@ -117,7 +117,8 @@ public class LoadoutManagerView implements View {
                     primaryAttachments.toArray(new Attachment[primaryAttachments.size()]),
                     secondaryAttachments.toArray(new Attachment[secondaryAttachments.size()]),
                     null,
-                    null
+                    null,
+                    true
             );
             ItemStack itemStack = new ItemStackBuilder(getLoadoutItemStack(loadout))
                     .addItemFlags(ItemFlag.values())

@@ -6,6 +6,7 @@ import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.entity.OfflineGamePlayer;
 import com.matsg.battlegrounds.api.storage.PlayerStorage;
 import com.matsg.battlegrounds.storage.DefaultLoadouts;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.io.File;
@@ -60,7 +61,7 @@ public class LocalPlayerStorage implements PlayerStorage {
         return list.stream().limit(limit).collect(Collectors.toList());
     }
 
-    public StoredPlayer registerPlayer(Player player) {
+    public StoredPlayer registerPlayer(OfflinePlayer player) {
         UUID uuid = player.getUniqueId();
         try {
             StoredPlayer storedPlayer = new PlayerYaml(directory.getPath(), uuid);
@@ -77,7 +78,7 @@ public class LocalPlayerStorage implements PlayerStorage {
         return getStoredPlayer(uuid);
     }
 
-    public StoredPlayer updatePlayer(Player player) {
+    public StoredPlayer updatePlayer(OfflinePlayer player) {
         UUID uuid = player.getUniqueId();
         StoredPlayer storedPlayer = getStoredPlayer(uuid);
         storedPlayer.updateName(player.getName());

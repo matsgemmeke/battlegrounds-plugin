@@ -54,8 +54,7 @@ public class CreateGame extends Command {
         GameModeType gameModeType = GameModeType.valueOf(configuration.getGameModeTypes().get(0));
         GameMode gameMode = gameModeFactory.make(game, gameModeType);
 
-        game.setGameMode(gameMode);
-        gameMode.onCreate();
+        game.activateGameMode(gameMode);
 
         gameManager.getGames().add(game);
 

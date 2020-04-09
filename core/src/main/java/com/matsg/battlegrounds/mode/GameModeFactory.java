@@ -52,7 +52,7 @@ public class GameModeFactory {
                     FFAConfig config = new FFAConfig(plugin.getDataFolder().getPath() + "/data/game_" + game.getId() + "/gamemodes", plugin.getResource("ffa.yml"), server);
                     SpawningBehavior spawningBehavior = new SpawnRandomlyBehavior(arena);
 
-                    gameMode = new FreeForAll(plugin, game, spawningBehavior, translator, viewFactory, config);
+                    gameMode = new FreeForAll(plugin, game, spawningBehavior, taskRunner, translator, viewFactory, config);
                     gameMode.addObjective(new EliminationObjective(game, 2));
                     gameMode.addObjective(new ScoreObjective(game, config.getKillsToWin()));
                     gameMode.addObjective(new TimeObjective(game, config.getTimeLimit()));
@@ -66,7 +66,7 @@ public class GameModeFactory {
                     TDMConfig config = new TDMConfig(plugin.getDataFolder().getPath() + "/data/game_" + game.getId() + "/gamemodes", plugin.getResource("tdm.yml"), server);
                     SpawningBehavior spawningBehavior = new SpawnByTeamBehavior(arena);
 
-                    gameMode = new TeamDeathmatch(plugin, game, spawningBehavior, translator, viewFactory, config);
+                    gameMode = new TeamDeathmatch(plugin, game, spawningBehavior, taskRunner, translator, viewFactory, config);
                     gameMode.addObjective(new EliminationObjective(game, 2));
                     gameMode.addObjective(new ScoreObjective(game, config.getKillsToWin()));
                     gameMode.addObjective(new TimeObjective(game, config.getTimeLimit()));
@@ -92,6 +92,9 @@ public class GameModeFactory {
             default:
                 throw new FactoryCreationException("Invalid game mode type \"" + gameModeType + "\"");
         }
+
+        gameMode.onCreate();
+        gameMode.loadData(arena);
 
         return gameMode;
     }

@@ -7,6 +7,9 @@ import com.matsg.battlegrounds.api.item.WeaponContext;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import org.bukkit.Location;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
+import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Random;
@@ -68,41 +71,47 @@ public abstract class BattleWeapon extends BattleItem implements Weapon {
         }
     }
 
-    public abstract void onLeftClick();
-
-    public void onLeftClick(GamePlayer gamePlayer) {
-        if (gamePlayer == null || gamePlayer != this.gamePlayer) {
+    public void onLeftClick(GamePlayer gamePlayer, PlayerInteractEvent event) {
+        // The left click should not be executed if the player who clicked is not assigned to the weapon
+        if (this.gamePlayer != gamePlayer) {
             return;
         }
-        onLeftClick();
+        // Execute logic from subclasses
+        onLeftClick(event);
     }
 
-    public abstract void onRightClick();
+    public abstract void onLeftClick(PlayerInteractEvent event);
 
-    public void onRightClick(GamePlayer gamePlayer) {
-        if (gamePlayer == null || gamePlayer != this.gamePlayer) {
+    public void onRightClick(GamePlayer gamePlayer, PlayerInteractEvent event) {
+        // The right click should not be executed if the player who clicked is not assigned to the weapon
+        if (this.gamePlayer != gamePlayer) {
             return;
         }
-        onRightClick();
+        // Execute logic from subclasses
+        onRightClick(event);
     }
 
-    public abstract void onSwap();
+    public abstract void onRightClick(PlayerInteractEvent event);
 
-    public void onSwap(GamePlayer gamePlayer) {
-        if (gamePlayer == null || gamePlayer != this.gamePlayer) {
+    public void onSwap(GamePlayer gamePlayer, PlayerSwapHandItemsEvent event) {
+        // The swap should not be executed if the player who clicked is not assigned to the weapon
+        if (this.gamePlayer != gamePlayer) {
             return;
         }
-        onSwap();
+        onSwap(event);
     }
 
-    public abstract void onSwitch();
+    public abstract void onSwap(PlayerSwapHandItemsEvent event);
 
-    public void onSwitch(GamePlayer gamePlayer) {
-        if (gamePlayer == null || gamePlayer != this.gamePlayer) {
+    public void onSwitch(GamePlayer gamePlayer, PlayerItemHeldEvent event) {
+        // The switch should not be executed if the player who clicked is not assigned to the weapon
+        if (this.gamePlayer != gamePlayer) {
             return;
         }
-        onSwitch();
+        onSwitch(event);
     }
+
+    public abstract void onSwitch(PlayerItemHeldEvent event);
 
     public void remove() {
         if (game != null) {

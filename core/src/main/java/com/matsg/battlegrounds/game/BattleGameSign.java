@@ -48,6 +48,7 @@ public class BattleGameSign implements GameSign {
             sign.setLine(i, translator.createSimpleMessage(layout[i],
                     new Placeholder("bg_arena", arena),
                     new Placeholder("bg_game", game.getId()),
+                    new Placeholder("bg_gamemode", game.getGameMode().getShortName()),
                     new Placeholder("bg_maxplayers", game.getConfiguration().getMaxPlayers()),
                     new Placeholder("bg_players", game.getPlayerManager().getPlayers().size()),
                     new Placeholder("bg_state", config.getGameSignState(game.getState().toString().toLowerCase())))

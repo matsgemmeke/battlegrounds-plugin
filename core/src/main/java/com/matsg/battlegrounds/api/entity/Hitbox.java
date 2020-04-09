@@ -2,9 +2,11 @@ package com.matsg.battlegrounds.api.entity;
 
 public enum Hitbox {
 
-    HEAD("game-death-headshot", 2.0, 1.4, 1.0, 100),
+    HEAD("game-death-headshot", 1.8, 1.4, 1.0, 100),
     LEG("game-death-player-kill", 0.8, 0.0, 0.5, 50),
     TORSO("game-death-player-kill", 1.4, 0.8, 1.0, 60);
+
+    public static final double MAX_ENTITY_HEIGHT = 1.8;
 
     private double damageMultiplier, maxHeight, minHeight;
     private int points;

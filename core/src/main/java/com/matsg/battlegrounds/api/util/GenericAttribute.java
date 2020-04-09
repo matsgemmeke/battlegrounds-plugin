@@ -8,5 +8,5 @@ public interface GenericAttribute<T> extends Cloneable {
 
     GenericAttribute applyModifier(AttributeModifier<T> modifier, String... args);
 
-    GenericAttribute clone();
+    GenericAttribute<T> clone();
 }

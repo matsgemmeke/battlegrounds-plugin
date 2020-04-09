@@ -84,9 +84,9 @@ public class Nuke implements PowerUpEffect {
 
                 Mob mob = game.getMobManager().getMobs().get(0);
                 mob.getBukkitEntity().getWorld().createExplosion(mob.getBukkitEntity().getLocation().add(0, 0.5, 0), 0);
-                mob.remove();
 
-                game.getMobManager().getMobs().remove(mob);
+                zombies.removeMob(mob);
+
                 game.updateScoreboard();
             }
         }, 20, 8);

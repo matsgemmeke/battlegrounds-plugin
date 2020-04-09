@@ -2,11 +2,7 @@ package com.matsg.battlegrounds.item.factory;
 
 import com.matsg.battlegrounds.FactoryCreationException;
 import com.matsg.battlegrounds.TaskRunner;
-import com.matsg.battlegrounds.api.item.TacticalEffect;
-import com.matsg.battlegrounds.item.mechanism.BlindnessEffect;
-import com.matsg.battlegrounds.item.mechanism.NoiseEffect;
-import com.matsg.battlegrounds.item.mechanism.SmokeEffect;
-import com.matsg.battlegrounds.item.mechanism.TacticalEffectType;
+import com.matsg.battlegrounds.item.mechanism.*;
 
 public class TacticalEffectFactory {
 
@@ -18,8 +14,10 @@ public class TacticalEffectFactory {
 
     public TacticalEffect make(TacticalEffectType tacticalEffectType, int duration) {
         switch (tacticalEffectType) {
+            case BAIT:
+                return new BaitEffect(taskRunner, duration);
             case BLINDNESS:
-                return new BlindnessEffect(duration);
+                return new BlindnessEffect(taskRunner, duration);
             case NOISE:
                 return new NoiseEffect(taskRunner);
             case SMOKE:

@@ -97,6 +97,7 @@ public class ZombiesWallWeapon implements WallWeapon {
         }
 
         ItemSlot itemSlot;
+        Weapon clone = weapon.clone();
 
         if (weapon.getType().getDefaultItemSlot() == ItemSlot.FIREARM_PRIMARY && gamePlayer.getLoadout().getSecondary() == null
                 || player.getInventory().getHeldItemSlot() == 1
@@ -118,10 +119,12 @@ public class ZombiesWallWeapon implements WallWeapon {
             gamePlayer.setPoints(gamePlayer.getPoints() - transaction.getPoints());
             // Find a weapon by the same name
             Weapon existingWeapon = gamePlayer.getLoadout().getWeapon(weapon.getMetadata().getName());
-            // In case the player already has the weapon they want to buy, reset its state.
+            // In case the player already has the weapon they want to buy, reset its state
             if (existingWeapon != null) {
-                existingWeapon.resetState();
+                existingWeapon.resupply();
                 existingWeapon.update();
+            } else {
+                game.getItemRegistry().addItem(clone);
             }
             // Refresh the player effects
             gamePlayer.refreshEffects();
@@ -131,7 +134,8 @@ public class ZombiesWallWeapon implements WallWeapon {
 
         View view = viewFactory.make(ItemTransactionView.class, instance -> {
             instance.setGame(game);
-            instance.setItem(weapon);
+            instance.setGamePlayer(gamePlayer);
+            instance.setItem(clone);
             instance.setItemStack(itemStack);
             instance.setOnTransactionComplete(onTransactionComplete);
             instance.setPoints(price);

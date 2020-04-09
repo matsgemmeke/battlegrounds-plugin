@@ -98,7 +98,8 @@ public class FirearmFactory implements ItemFactory<Firearm> {
                 || firearmType == FirearmType.LIGHT_MACHINE_GUN
                 || firearmType == FirearmType.SHOTGUN
                 || firearmType == FirearmType.SNIPER_RIFLE
-                || firearmType == FirearmType.SUBMACHINE_GUN) {
+                || firearmType == FirearmType.SUBMACHINE_GUN
+                || firearmType == FirearmType.WONDER_WEAPON) {
 
             try {
                 double accuracy = AttributeValidator.shouldBeBetween(section.getDouble("Accuracy"), 0.0, 1.0);
@@ -130,44 +131,70 @@ public class FirearmFactory implements ItemFactory<Firearm> {
                         .setLore(lore)
                         .build();
 
+                Firearm firearm;
                 FireModeType fireModeType = FireModeType.valueOf(section.getString("FireMode.Type"));
                 FireMode fireMode = fireModeFactory.make(fireModeType, fireRate, burst);
 
-                Gun gun = new BattleGun(
-                        metadata,
-                        itemStack,
-                        internals,
-                        taskRunner,
-                        eventDispatcher,
-                        bullet,
-                        firearmType,
-                        fireMode,
-                        piercableMaterials,
-                        getCompatibleAttachments(section.getString("Attachments")),
-                        reloadSystem,
-                        BattleSound.parseSoundArray(section.getString("Reload.Sound.Reload")),
-                        BattleSound.parseSoundArray(section.getString("Shot.ShotSound")),
-                        BattleSound.parseSoundArray(section.getString("Shot.SuppressedSound")),
-                        AttributeValidator.shouldBeHigherThan(section.getInt("Ammo.Magazine"), 0),
-                        AttributeValidator.shouldEqualOrBeHigherThan(section.getInt("Ammo.Supply"), 0),
-                        AttributeValidator.shouldEqualOrBeHigherThan(section.getInt("Ammo.Max"), 0),
-                        fireRate,
-                        burst,
-                        cooldown,
-                        AttributeValidator.shouldBeHigherThan(section.getInt("Reload.Duration"), 0),
-                        accuracy,
-                        accuracyAmplifier,
-                        damageAmplifier
-                );
+                if (firearmType != FirearmType.WONDER_WEAPON) {
+                    firearm = new BattleGun(
+                            metadata,
+                            itemStack,
+                            internals,
+                            taskRunner,
+                            eventDispatcher,
+                            bullet,
+                            firearmType,
+                            fireMode,
+                            piercableMaterials,
+                            getCompatibleAttachments(section.getString("Attachments")),
+                            reloadSystem,
+                            BattleSound.parseSoundArray(section.getString("Reload.Sound.Reload")),
+                            BattleSound.parseSoundArray(section.getString("Shot.ShotSound")),
+                            BattleSound.parseSoundArray(section.getString("Shot.SuppressedSound")),
+                            AttributeValidator.shouldBeHigherThan(section.getInt("Ammo.Magazine"), 0),
+                            AttributeValidator.shouldEqualOrBeHigherThan(section.getInt("Ammo.Supply"), 0),
+                            AttributeValidator.shouldEqualOrBeHigherThan(section.getInt("Ammo.Max"), 0),
+                            fireRate,
+                            burst,
+                            cooldown,
+                            AttributeValidator.shouldBeHigherThan(section.getInt("Reload.Duration"), 0),
+                            accuracy,
+                            accuracyAmplifier,
+                            damageAmplifier
+                    );
+                } else {
+                    firearm = new BattleWonderWeapon(
+                            metadata,
+                            itemStack,
+                            internals,
+                            taskRunner,
+                            eventDispatcher,
+                            bullet,
+                            firearmType,
+                            fireMode,
+                            piercableMaterials,
+                            reloadSystem,
+                            BattleSound.parseSoundArray(section.getString("Reload.Sound.Reload")),
+                            BattleSound.parseSoundArray(section.getString("Shot.ShotSound")),
+                            AttributeValidator.shouldBeHigherThan(section.getInt("Ammo.Magazine"), 0),
+                            AttributeValidator.shouldEqualOrBeHigherThan(section.getInt("Ammo.Supply"), 0),
+                            AttributeValidator.shouldEqualOrBeHigherThan(section.getInt("Ammo.Max"), 0),
+                            cooldown,
+                            AttributeValidator.shouldBeHigherThan(section.getInt("Reload.Duration"), 0),
+                            accuracy,
+                            accuracyAmplifier,
+                            damageAmplifier
+                    );
+                }
 
-                fireMode.setWeapon(gun);
-                reloadSystem.setWeapon(gun);
+                fireMode.setWeapon(firearm);
+                reloadSystem.setWeapon(firearm);
 
-                return gun;
+                return firearm;
             } catch (ValidationFailedException e) {
                 throw new FactoryCreationException(e.getMessage(), e);
             }
-        } else {
+        } else if (firearmType == FirearmType.LAUNCHER) {
             String[] projectileMaterial = section.getString("Projectile.Material").split(",");
 
             try {
@@ -182,6 +209,8 @@ public class FirearmFactory implements ItemFactory<Firearm> {
                         null,
                         null,
                         null,
+                        null,
+                        0,
                         0,
                         0,
                         0,
@@ -191,8 +220,7 @@ public class FirearmFactory implements ItemFactory<Firearm> {
                         AttributeValidator.shouldEqualOrBeHigherThan(section.getDouble("Range.Medium.Distance"), 0.0),
                         AttributeValidator.shouldEqualOrBeHigherThan(section.getDouble("Range.Short.Damage"), 0.0),
                         AttributeValidator.shouldEqualOrBeHigherThan(section.getDouble("Range.Short.Distance"), 0.0),
-                        0,
-                        null
+                        0
                 );
 
                 String[] lore = new String[] {
@@ -231,9 +259,11 @@ public class FirearmFactory implements ItemFactory<Firearm> {
                         AttributeValidator.shouldEqualOrBeHigherThan(section.getInt("FireMode.Cooldown"), 0),
                         AttributeValidator.shouldBeHigherThan(section.getInt("Reload.Duration"), 0),
                         accuracy,
-                        accuracyAmplifier
+                        accuracyAmplifier,
+                        damageAmplifier
                 );
 
+                launchSystem.setWeapon(launcher);
                 reloadSystem.setWeapon(launcher);
 
                 return launcher;
@@ -241,6 +271,7 @@ public class FirearmFactory implements ItemFactory<Firearm> {
                 throw new FactoryCreationException(e.getMessage(), e);
             }
         }
+        throw new FactoryCreationException("Cannot create a firearm instance of the type \"" + firearmType.toString() + "\"");
     }
 
     private String formatFirearmStat(int length, double value, double max) {

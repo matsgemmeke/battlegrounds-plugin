@@ -12,7 +12,7 @@
 BALLISTIC_KNIFE:
   Amount: 4
   Cooldown: 10
-  Damage: 15.0
+  Damage: 75.0
   Description: Spring-action knife launcher. Can fire the blade as a projectile.
   DisplayName: Ballistic Knife
   Material: IRON_SWORD,1
@@ -22,7 +22,7 @@ BALLISTIC_KNIFE:
 COMBAT_KNIFE:
   Amount: 1
   Cooldown: 0
-  Damage: 15.0
+  Damage: 75.0
   Description: Standard issue military knife. Fast, quiet and deadly.
   DisplayName: Combat Knife
   Material: IRON_SWORD,2
@@ -32,7 +32,7 @@ COMBAT_KNIFE:
 HATCHET:
   Amount: 1
   Cooldown: 0
-  Damage: 20.0
+  Damage: 100.0
   Description: Retrievable throwing hatchet that causes instant death on impact.
   DisplayName: Hatchet
   Material: IRON_SWORD,3

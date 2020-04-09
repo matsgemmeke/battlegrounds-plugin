@@ -16,6 +16,7 @@ public class ReloadSystemValueObject implements ValueObject<ReloadSystem> {
     }
 
     public ValueObject<ReloadSystem> copy() {
-        return new ReloadSystemValueObject(value);
+        ReloadSystem reloadSystem = value.clone();
+        return new ReloadSystemValueObject(reloadSystem);
     }
 }

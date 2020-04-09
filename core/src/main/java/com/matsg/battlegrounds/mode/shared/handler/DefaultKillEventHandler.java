@@ -13,14 +13,14 @@ import com.matsg.battlegrounds.api.item.Weapon;
 import org.bukkit.ChatColor;
 import org.bukkit.event.Event;
 
-public class GeneralKillHandler implements EventHandler<GamePlayerKillEntityEvent> {
+public class DefaultKillEventHandler implements EventHandler<GamePlayerKillEntityEvent> {
 
     private EventDispatcher eventDispatcher;
     private Game game;
     private GameMode gameMode;
     private Translator translator;
 
-    public GeneralKillHandler(EventDispatcher eventDispatcher, Game game, GameMode gameMode, Translator translator) {
+    public DefaultKillEventHandler(EventDispatcher eventDispatcher, Game game, GameMode gameMode, Translator translator) {
         this.eventDispatcher = eventDispatcher;
         this.game = game;
         this.gameMode = gameMode;
@@ -42,6 +42,8 @@ public class GeneralKillHandler implements EventHandler<GamePlayerKillEntityEven
                 new Placeholder("bg_player", gamePlayer.getTeam().getChatColor() + gamePlayer.getName() + ChatColor.WHITE),
                 new Placeholder("bg_weapon", weapon.getMetadata().getName()))
         );
+
+        gamePlayer.setHealth(0);
 
         killer.addExp(100);
         killer.setKills(killer.getKills() + 1);

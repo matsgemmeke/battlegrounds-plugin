@@ -4,8 +4,6 @@ import com.matsg.battlegrounds.TaskRunner;
 import com.matsg.battlegrounds.api.item.Gun;
 import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.item.Tactical;
-import com.matsg.battlegrounds.api.item.TacticalEffect;
-import org.bukkit.Location;
 import org.bukkit.entity.Item;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -26,9 +24,7 @@ public class NoiseEffect implements TacticalEffect {
         this.tactical = tactical;
     }
 
-    public void applyEffect(Location location) { }
-
-    public void igniteItem(Item item) {
+    public void applyEffect(Item item) {
         Loadout loadout = tactical.getGamePlayer().getLoadout();
         Gun gun = getDefaultGun(loadout);
 

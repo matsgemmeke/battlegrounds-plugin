@@ -1,12 +1,10 @@
 package com.matsg.battlegrounds.mode.ffa;
 
+import com.matsg.battlegrounds.TaskRunner;
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Translator;
-import com.matsg.battlegrounds.api.event.EventChannel;
-import com.matsg.battlegrounds.api.event.EventDispatcher;
-import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent;
-import com.matsg.battlegrounds.api.event.GamePlayerKillEntityEvent;
+import com.matsg.battlegrounds.api.event.*;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.Placeholder;
@@ -16,8 +14,9 @@ import com.matsg.battlegrounds.mode.shared.ClassicGameMode;
 import com.matsg.battlegrounds.mode.GameModeCountdown;
 import com.matsg.battlegrounds.mode.GameModeType;
 import com.matsg.battlegrounds.mode.shared.SpawningBehavior;
-import com.matsg.battlegrounds.mode.shared.handler.GeneralDeathHandler;
-import com.matsg.battlegrounds.mode.shared.handler.GeneralKillHandler;
+import com.matsg.battlegrounds.mode.shared.handler.DefaultDamageEventHandler;
+import com.matsg.battlegrounds.mode.shared.handler.DefaultDeathEventHandler;
+import com.matsg.battlegrounds.mode.shared.handler.DefaultKillEventHandler;
 import com.matsg.battlegrounds.util.EnumTitle;
 import org.bukkit.ChatColor;
 
@@ -27,8 +26,16 @@ public class FreeForAll extends ClassicGameMode {
 
     private FFAConfig config;
 
-    public FreeForAll(Battlegrounds plugin, Game game, SpawningBehavior spawningBehavior, Translator translator, ViewFactory viewFactory, FFAConfig config) {
-        super(plugin, GameModeType.FREE_FOR_ALL, game, spawningBehavior, translator, viewFactory);
+    public FreeForAll(
+            Battlegrounds plugin,
+            Game game,
+            SpawningBehavior spawningBehavior,
+            TaskRunner taskRunner,
+            Translator translator,
+            ViewFactory viewFactory,
+            FFAConfig config
+    ) {
+        super(plugin, GameModeType.FREE_FOR_ALL, game, spawningBehavior, taskRunner, translator, viewFactory);
         this.config = config;
         this.name = translator.translate(TranslationKey.FFA_NAME.getPath());
         this.shortName = translator.translate(TranslationKey.FFA_SHORT.getPath());
@@ -38,11 +45,14 @@ public class FreeForAll extends ClassicGameMode {
         EventDispatcher eventDispatcher = plugin.getEventDispatcher();
 
         // Register gamemode specific event handlers
+        eventDispatcher.registerEventChannel(GamePlayerDamageEntityEvent.class, new EventChannel<>(
+                new DefaultDamageEventHandler(game, this)
+        ));
         eventDispatcher.registerEventChannel(GamePlayerDeathEvent.class, new EventChannel<>(
-                new GeneralDeathHandler(game, this)
+                new DefaultDeathEventHandler(game, this)
         ));
         eventDispatcher.registerEventChannel(GamePlayerKillEntityEvent.class, new EventChannel<>(
-                new GeneralKillHandler(eventDispatcher, game, this, translator)
+                new DefaultKillEventHandler(eventDispatcher, game, this, translator)
         ));
     }
 
@@ -55,7 +65,7 @@ public class FreeForAll extends ClassicGameMode {
     }
 
     public void addPlayer(GamePlayer gamePlayer) {
-        if (getTeam(gamePlayer) != null) {
+        if (gamePlayer.getTeam() != null) {
             return;
         }
         Team team = new BattleTeam(0, gamePlayer.getName(), config.getArmorColor(), ChatColor.WHITE);
@@ -76,12 +86,12 @@ public class FreeForAll extends ClassicGameMode {
         return config.isScoreboardEnabled() ? scoreboard : null;
     }
 
-    protected Countdown makeCountdown() {
+    public Countdown makeCountdown() {
         return new GameModeCountdown(game, translator, config.getCountdownLength());
     }
 
     public void removePlayer(GamePlayer gamePlayer) {
-        Team team = getTeam(gamePlayer);
+        Team team = gamePlayer.getTeam();
         if (team == null) {
             return;
         }

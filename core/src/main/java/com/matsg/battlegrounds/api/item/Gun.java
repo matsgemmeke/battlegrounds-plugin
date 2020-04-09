@@ -13,9 +13,9 @@ public interface Gun extends Firearm {
 
     int getFireRate();
 
-    void addAttachments();
+    boolean isScoped();
 
-    Gun clone();
+    void addAttachments();
 
     void setScoped(boolean scoped);
 }

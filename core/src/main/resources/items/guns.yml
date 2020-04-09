@@ -1403,3 +1403,38 @@ SMAW:
     System: PER_ROUND
   Shot:
     ShotSound: BLOCK_FIRE_EXTINGUISH-2-1-0, ENTITY_ZOMBIE_ATTACK_DOOR_WOOD-2-0-0
+
+RAY_GUN:
+  Accuracy: 1.0
+  Ammo:
+    Magazine: 20
+    Max: 8
+    Supply: 3
+  Description: Semi-automatic wonder weapon which fires ray bursts with infinite range.
+  DisplayName: Ray Gun
+  FirearmType: WONDER_WEAPON
+  FireMode:
+    Burst: 0
+    Cooldown: 4
+    FireRate: 1
+    Type: SEMI_AUTOMATIC
+  HeadshotMultiplier: 1.0
+  Material: IRON_HOE,38
+  Price: 0
+  Range:
+    Long:
+      Damage: 150.0
+      Distance: 100.0
+    Medium:
+      Damage: 150.0
+      Distance: 90.0
+    Short:
+      Damage: 150.0
+      Distance: 80.0
+  Reload:
+    Duration: 45
+    Sound:
+      Reload: BLOCK_WOODEN_DOOR_OPEN-1-2-0, BLOCK_WOODEN_DOOR_CLOSE-1-2-18, BLOCK_PISTON_EXTEND-1-2-22, BLOCK_WOODEN_DOOR_CLOSE-1-2-32, BLOCK_WOODEN_DOOR_CLOSE-1-2-36
+    System: MAGAZINE
+  Shot:
+    ShotSound: ENTITY_BLAZE_HURT-3-2-0, ENTITY_IRONGOLEM_HURT-3-2-0, ENTITY_WITHER_SHOOT-3-2-0

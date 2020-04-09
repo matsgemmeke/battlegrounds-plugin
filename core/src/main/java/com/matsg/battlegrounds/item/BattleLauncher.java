@@ -17,12 +17,14 @@ import com.matsg.battlegrounds.util.BattleSound;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.Event;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
 public class BattleLauncher extends BattleFirearm implements Launcher {
 
+    private double damageAmplifier;
     private double launchSpeed;
     private LaunchSystem launchSystem;
     private Lethal lethal;
@@ -46,13 +48,21 @@ public class BattleLauncher extends BattleFirearm implements Launcher {
             int cooldown,
             int reloadDuration,
             double accuracy,
-            double accuracyAmplifier
+            double accuracyAmplifier,
+            double damageAmplifier
     ) {
         super(metadata, itemStack, internals, taskRunner, eventDispatcher, FirearmType.LAUNCHER, piercableMaterials, reloadSystem,
                 reloadSound, shootSound, magazine, ammo, maxAmmo, cooldown, reloadDuration, accuracy, accuracyAmplifier);
+        this.damageAmplifier = damageAmplifier;
         this.launchSpeed = launchSpeed;
         this.launchSystem = launchSystem;
         this.lethal = lethal;
+    }
+
+    public Launcher clone() {
+        BattleLauncher launcher = (BattleLauncher) super.clone();
+        launcher.launchSystem.setWeapon(launcher);
+        return launcher;
     }
 
     public double getLaunchSpeed() {
@@ -76,12 +86,12 @@ public class BattleLauncher extends BattleFirearm implements Launcher {
     }
 
     private void inflictDamage(Location location, double range) {
-        for (BattleEntity entity : context.getNearbyEntities(location, gamePlayer.getTeam(), range)) {
+        for (BattleEntity entity : context.getNearbyEnemies(location, gamePlayer.getTeam(), range)) {
             if (entity == null || entity == gamePlayer || entity.getBukkitEntity().isDead()) {
                 continue;
             }
 
-            double damage = lethal.getDamage(Hitbox.TORSO, gamePlayer.getLocation().distance(location));
+            double damage = lethal.getDamage(Hitbox.TORSO, gamePlayer.getLocation().distance(location)) / damageAmplifier;
             int pointsPerKill = 50;
 
             Event event;
@@ -113,14 +123,19 @@ public class BattleLauncher extends BattleFirearm implements Launcher {
         }
     }
 
-    public void onLeftClick() {
+    public boolean isInUse() {
+        return shooting || reloading;
+    }
+
+    public void onLeftClick(PlayerInteractEvent event) {
         if (reloading || shooting || ammo.getValue() <= 0 || magazine.getValue() >= magazineSize.getValue()) {
             return;
         }
         reload(getReloadDuration());
+        event.setCancelled(true);
     }
 
-    public void onRightClick() {
+    public void onRightClick(PlayerInteractEvent event) {
         if (reloading || shooting) {
             return;
         }
@@ -131,9 +146,8 @@ public class BattleLauncher extends BattleFirearm implements Launcher {
             return;
         }
         shoot();
+        event.setCancelled(true);
     }
-
-    public void onSwap() { }
 
     public void shoot() {
         shooting = true;

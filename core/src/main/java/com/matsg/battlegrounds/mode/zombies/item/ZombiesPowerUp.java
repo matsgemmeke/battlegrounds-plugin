@@ -13,6 +13,7 @@ import java.util.List;
 public class ZombiesPowerUp extends BattleItem implements PowerUp {
 
     private boolean active;
+    private boolean droppable;
     private int duration;
     private List<Item> droppedItems;
     private PowerUpEffect effect;
@@ -23,6 +24,7 @@ public class ZombiesPowerUp extends BattleItem implements PowerUp {
         this.effect = effect;
         this.powerUpManager = powerUpManager;
         this.active = false;
+        this.droppable = true;
         this.droppedItems = new ArrayList<>();
         this.duration = 0;
     }
@@ -53,6 +55,14 @@ public class ZombiesPowerUp extends BattleItem implements PowerUp {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public boolean isDroppable() {
+        return droppable;
+    }
+
+    public void setDroppable(boolean droppable) {
+        this.droppable = droppable;
     }
 
     public PowerUp clone() {

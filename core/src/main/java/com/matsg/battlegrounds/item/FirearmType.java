@@ -13,7 +13,8 @@ public enum FirearmType implements ItemType {
     LIGHT_MACHINE_GUN("item-type-light-machine-gun", ItemSlot.FIREARM_PRIMARY, 1, Bullet.class, 1, false),
     SHOTGUN("item-type-shotgun", ItemSlot.FIREARM_PRIMARY, 5, Bullet.class, 1, false),
     SNIPER_RIFLE("item-type-sniper-rifle", ItemSlot.FIREARM_PRIMARY, 1, Bullet.class, 5, true),
-    SUBMACHINE_GUN("item-type-submachine-gun", ItemSlot.FIREARM_PRIMARY,1, Bullet.class, 1, false);
+    SUBMACHINE_GUN("item-type-submachine-gun", ItemSlot.FIREARM_PRIMARY,1, Bullet.class, 1, false),
+    WONDER_WEAPON("item-type-wonder-weapon", ItemSlot.FIREARM_PRIMARY,1, Bullet.class, 1, false);
 
     public static FirearmType[] GUNS = new FirearmType[] { ASSAULT_RIFLE, HANDGUN, LIGHT_MACHINE_GUN, SHOTGUN, SNIPER_RIFLE, SUBMACHINE_GUN };
 

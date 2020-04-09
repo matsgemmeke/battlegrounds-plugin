@@ -22,6 +22,7 @@ public class LoadoutFactory {
      * @param secondaryAttachments the secondary firearm attachments
      * @param game the game to assign the weapons to
      * @param gamePlayer the player to assign the weapons to
+     * @param droppable whether items in the loadout should be droppable
      * @return a new loadout instance containing the given weapons
      */
     public Loadout make(
@@ -34,27 +35,32 @@ public class LoadoutFactory {
             Attachment[] primaryAttachments,
             Attachment[] secondaryAttachments,
             Game game,
-            GamePlayer gamePlayer
+            GamePlayer gamePlayer,
+            boolean droppable
     ) {
         if (primary != null) {
+            primary.setDroppable(droppable);
             primary.setGame(game);
             primary.setGamePlayer(gamePlayer);
             primary.setItemSlot(ItemSlot.FIREARM_PRIMARY);
         }
 
         if (secondary != null) {
+            secondary.setDroppable(droppable);
             secondary.setGame(game);
             secondary.setGamePlayer(gamePlayer);
             secondary.setItemSlot(ItemSlot.FIREARM_SECONDARY);
         }
 
         if (equipment != null) {
+            equipment.setDroppable(droppable);
             equipment.setGame(game);
             equipment.setGamePlayer(gamePlayer);
             equipment.setItemSlot(ItemSlot.EQUIPMENT);
         }
 
         if (meleeWeapon != null) {
+            meleeWeapon.setDroppable(droppable);
             meleeWeapon.setGame(game);
             meleeWeapon.setGamePlayer(gamePlayer);
             meleeWeapon.setItemSlot(ItemSlot.MELEE_WEAPON);

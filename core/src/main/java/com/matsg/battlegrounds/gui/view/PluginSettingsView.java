@@ -51,7 +51,7 @@ public class PluginSettingsView implements View {
                     )
                     .setLore(
                             translator.translate(TranslationKey.VIEW_PLUGIN_SETTINGS_GAME_ARENA.getPath(),
-                                    new Placeholder("bg_arena", game.getArena().getName())
+                                    new Placeholder("bg_arena", game.getArena() != null ? game.getArena().getName() : "N/A")
                             ),
                             translator.translate(TranslationKey.VIEW_PLUGIN_SETTINGS_GAME_GAMEMODE.getPath(),
                                     new Placeholder("bg_gamemode", game.getGameMode().getName())

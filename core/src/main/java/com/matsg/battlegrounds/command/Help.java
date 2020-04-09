@@ -31,14 +31,14 @@ public class Help extends Command {
             Player player = (Player) sender;
 
             for (Command subCommand : getCommands(player, false)) {
-                internals.sendJSONMessage(player, " ● /" + subCommand.getUsage(), "/" + ChatColor.GRAY + subCommand.getUsage(), subCommand.getDescription());
+                internals.sendJSONMessage(player, " ● /" + subCommand.getUsage(), "/" + subCommand.getUsage(), subCommand.getDescription());
             }
 
             sender.sendMessage(" ");
 
             for (Command subCommand : getCommands(player, true)) {
                 if (player.hasPermission(subCommand.getPermissionNode())) {
-                    internals.sendJSONMessage(player, " ● /" + subCommand.getUsage(), "/" + ChatColor.GRAY + subCommand.getUsage(), subCommand.getDescription());
+                    internals.sendJSONMessage(player, " ● /" + subCommand.getUsage(), "/" + subCommand.getUsage(), subCommand.getDescription());
                 }
             }
         } else {

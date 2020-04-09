@@ -7,10 +7,11 @@ import com.matsg.battlegrounds.api.game.ArenaComponent;
 import com.matsg.battlegrounds.api.game.ComponentWrapper;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.Interactable;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
+
+import java.util.Arrays;
 
 public class ComponentInteractHandler implements EventHandler<PlayerInteractEvent> {
 
@@ -30,13 +31,18 @@ public class ComponentInteractHandler implements EventHandler<PlayerInteractEven
         Player player = event.getPlayer();
         Game game = plugin.getGameManager().getGame(player);
 
-        if (game == null) {
+        if (game == null || !game.getState().isInProgress()) {
             return;
         }
 
         GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
 
+        boolean canInteract = Arrays.stream(gamePlayer.getLoadout().getWeapons()).noneMatch(w -> w != null && w.isInUse());
         boolean interactionHappened = false;
+
+        if (!canInteract) {
+            return;
+        }
 
         for (ComponentWrapper componentWrapper : game.getComponentWrappers()) {
             ArenaComponent component = componentWrapper.getComponent(block.getLocation());

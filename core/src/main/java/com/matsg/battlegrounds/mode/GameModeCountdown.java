@@ -11,7 +11,6 @@ import com.matsg.battlegrounds.util.EnumTitle;
 
 public class GameModeCountdown extends Countdown {
 
-    private boolean cancelled;
     private Game game;
     private int countdown;
     private Translator translator;
@@ -20,28 +19,17 @@ public class GameModeCountdown extends Countdown {
         this.game = game;
         this.translator = translator;
         this.countdown = countdown;
-        this.cancelled = false;
-    }
-
-    public void cancel() {
-        cancelled = true;
-
-        for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
-            gamePlayer.getPlayer().teleport(game.getLobby());
-        }
-
-        game.getPlayerManager().broadcastMessage(translator.translate(TranslationKey.COUNTDOWN_CANCELLED.getPath()));
-
-        super.cancel();
     }
 
     public void run() {
-        if (cancelled) {
-            cancel();
-            return;
-        }
-
         if (game.getArena() == null || game.getPlayerManager().getPlayers().size() < game.getConfiguration().getMinPlayers()) {
+            for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
+                if (game.getLobby() != null) {
+                    gamePlayer.getPlayer().teleport(game.getLobby());
+                }
+            }
+
+            game.getPlayerManager().broadcastMessage(translator.translate(TranslationKey.COUNTDOWN_CANCELLED.getPath()));
             game.stop();
             cancel();
             return;

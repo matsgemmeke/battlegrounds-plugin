@@ -15,12 +15,21 @@ public class FullyAutomatic implements FireMode {
         this.taskRunner = taskRunner;
     }
 
+    private FullyAutomatic(int rateOfFire, TaskRunner taskRunner, Firearm firearm) {
+        this(rateOfFire, taskRunner);
+        this.firearm = firearm;
+    }
+
     public Firearm getWeapon() {
         return firearm;
     }
 
     public void setWeapon(Firearm firearm) {
         this.firearm = firearm;
+    }
+
+    public FireMode clone() {
+        return new FullyAutomatic(rateOfFire, taskRunner, firearm);
     }
 
     public void shoot() {

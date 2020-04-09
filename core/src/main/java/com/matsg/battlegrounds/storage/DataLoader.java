@@ -135,51 +135,55 @@ public class DataLoader {
                 );
 
                 for (String gameModeType : config.getStringList("gamemodes")) {
-                    try {
-                        GameMode gameMode = gameModeFactory.make(game, GameModeType.valueOf(gameModeType.toUpperCase()));
+                    GameMode gameMode = gameModeFactory.make(game, GameModeType.valueOf(gameModeType.toUpperCase()));
 
-                        game.getGameModeList().add(gameMode);
-                    } catch (IllegalArgumentException e) {
-                        plugin.getLogger().severe("Invalid gamemode type \"" + gameModeType + "\"");
-                    }
+                    game.getGameModeList().add(gameMode);
                 }
 
                 GameMode gameMode = game.getGameModeList().get(new Random().nextInt(game.getGameModeList().size()));
-                gameMode.onCreate();
 
                 game.setConfiguration(configuration);
-                game.setGameMode(gameMode);
-                gameMode.loadData(game.getArena());
+                game.activateGameMode(gameMode);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        // Set the game joining signs
-        try {
-            for (Game game : plugin.getGameManager().getGames()) {
-                int id = game.getId();
+        // Set the game lobbies
+        for (Game game : plugin.getGameManager().getGames()) {
+            int id = game.getId();
 
-                if (game.getDataFile().getString("sign") == null) {
-                    logger.warning("No join sign was found for game " + id);
-                    continue;
-                }
-
-                Location location = game.getDataFile().getLocation("sign");
-                BlockState state = location.getBlock().getState();
-
-                if (!(state instanceof Sign)) {
-                    logger.warning("The sign of game " + id + " was corrupted!");
-                    continue;
-                }
-
-                GameSign sign = new BattleGameSign(game, (Sign) state, translator, plugin.getBattlegroundsConfig());
-
-                game.setGameSign(sign);
-                sign.update();
+            if (game.getDataFile().getString("lobby") == null) {
+                logger.warning("No lobby was found for game " + id);
+                continue;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+            Location lobby = game.getDataFile().getLocation("lobby");
+
+            game.setLobby(lobby);
+        }
+
+        // Set the game joining signs
+        for (Game game : plugin.getGameManager().getGames()) {
+            int id = game.getId();
+
+            if (game.getDataFile().getString("sign") == null) {
+                logger.warning("No join sign was found for game " + id);
+                continue;
+            }
+
+            Location location = game.getDataFile().getLocation("sign");
+            BlockState state = location.getBlock().getState();
+
+            if (!(state instanceof Sign)) {
+                logger.warning("The sign of game " + id + " was corrupted!");
+                continue;
+            }
+
+            GameSign sign = new BattleGameSign(game, (Sign) state, translator, plugin.getBattlegroundsConfig());
+
+            game.setGameSign(sign);
+            sign.update();
         }
 
         logger.info("Loaded " + plugin.getGameManager().getGames().size() + " game(s) from the cache");

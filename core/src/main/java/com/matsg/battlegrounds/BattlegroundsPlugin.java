@@ -57,7 +57,6 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
             startPlugin();
         } catch (StartupFailedException e) {
             getLogger().severe("An error occurred while enabling Battlegrounds v" + getDescription().getVersion());
-            e.printStackTrace();
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
@@ -137,10 +136,10 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
             }
 
             String filePath = getDataFolder().getPath() + "/items";
-            ItemConfig attachmentConfig = new AttachmentConfig(filePath, getResource("attachments.yml"));
-            ItemConfig equipmentConfig = new EquipmentConfig(filePath, getResource("equipment.yml"));
-            ItemConfig firearmConfig = new FirearmConfig(filePath, getResource("guns.yml"));
-            ItemConfig meleeWeaponConfig = new MeleeWeaponConfig(filePath, getResource("melee_weapons.yml"));
+            ItemConfig attachmentConfig = new AttachmentConfig(filePath, getResource("items/attachments.yml"));
+            ItemConfig equipmentConfig = new EquipmentConfig(filePath, getResource("items/equipment.yml"));
+            ItemConfig firearmConfig = new FirearmConfig(filePath, getResource("items/guns.yml"));
+            ItemConfig meleeWeaponConfig = new MeleeWeaponConfig(filePath, getResource("items/melee_weapons.yml"));
 
             FireModeFactory fireModeFactory = new FireModeFactory(taskRunner);
             IgnitionSystemFactory ignitionSystemFactory = new IgnitionSystemFactory(taskRunner);
@@ -277,6 +276,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
         bgCommand.addSubCommand(new SetLobby(translator, gameManager));
         bgCommand.addSubCommand(new SetMainLobby(translator, cache));
         bgCommand.addSubCommand(new Settings(translator, viewFactory));
+        bgCommand.addSubCommand(new Wand(translator));
         bgCommand.addSubCommand(new Help(translator, bgCommand.getSubCommands(), internals));
 
         Command loadoutCommand = new LoadoutCommand(translator, levelConfig, playerStorage, viewFactory, config.loadoutCreationLevel);

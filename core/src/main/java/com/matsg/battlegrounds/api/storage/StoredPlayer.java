@@ -1,8 +1,7 @@
 package com.matsg.battlegrounds.api.storage;
 
-import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.entity.OfflineGamePlayer;
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 
 import java.util.Collection;
 import java.util.Map;
@@ -20,9 +19,9 @@ public interface StoredPlayer extends OfflineGamePlayer, Comparable<StoredPlayer
     /**
      * Creates statistic attributes holding default values.
      *
-     * @param player the Player instance of the player to be registered
+     * @param player the instance of the player to be registered
      */
-    void createDefaultAttributes(Player player);
+    void createDefaultAttributes(OfflinePlayer player);
 
     /**
      * Gets a loadout setup based on the given number identifier.

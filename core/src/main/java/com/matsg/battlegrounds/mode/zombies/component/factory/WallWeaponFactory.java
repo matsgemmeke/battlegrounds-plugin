@@ -42,6 +42,8 @@ public class WallWeaponFactory {
         itemFrame.setItem(weapon.getItemStack());
         itemFrame.setRotation(Rotation.COUNTER_CLOCKWISE_45);
 
+        weapon.setDroppable(false);
+
         return new ZombiesWallWeapon(id, game, itemFrame, weapon, price, internals, translator, viewFactory);
     }
 }

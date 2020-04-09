@@ -14,7 +14,6 @@ public class PlayerKickEventHandler implements EventHandler<PlayerKickEvent> {
         this.plugin = plugin;
     }
 
-    @Override
     public void handle(PlayerKickEvent event) {
         Player player = event.getPlayer();
         Game game = plugin.getGameManager().getGame(player);

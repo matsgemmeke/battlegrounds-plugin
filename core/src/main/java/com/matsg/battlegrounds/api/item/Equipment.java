@@ -3,7 +3,7 @@ package com.matsg.battlegrounds.api.item;
 import com.matsg.battlegrounds.api.util.Sound;
 import org.bukkit.entity.Item;
 
-public interface Equipment extends Weapon, DamageSource, Droppable {
+public interface Equipment extends Weapon, DamageSource {
 
     int getAmount();
 

@@ -56,6 +56,20 @@ public interface Mob extends BattleEntity {
     void setMovementSpeed(double movementSpeed);
 
     /**
+     * Gets the amount of ticks between target navigation updates.
+     *
+     * @return the navigation target update interval
+     */
+    int getTargetUpdateInterval();
+
+    /**
+     * Sets the amount of ticks between target navigation updates.
+     *
+     * @param targetUpdateInterval the navigation target update interval
+     */
+    void setTargetUpdateInterval(int targetUpdateInterval);
+
+    /**
      * Gets whether the mob receives knockback upon attacks.
      *
      * @return whether the mob receives knockback physics
@@ -103,7 +117,7 @@ public interface Mob extends BattleEntity {
     void resetDefaultPathfinderGoals();
 
     /**
-     * Sets the target of the mob.
+     * Sets the target location of the mob.
      *
      * @param location the target location
      */

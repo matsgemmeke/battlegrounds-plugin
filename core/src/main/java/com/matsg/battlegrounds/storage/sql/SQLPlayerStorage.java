@@ -6,6 +6,7 @@ import com.matsg.battlegrounds.api.storage.PlayerStorage;
 import com.matsg.battlegrounds.api.entity.OfflineGamePlayer;
 import com.matsg.battlegrounds.api.storage.StoredPlayer;
 import com.matsg.battlegrounds.storage.DefaultLoadouts;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.sql.*;
@@ -76,7 +77,7 @@ public class SQLPlayerStorage implements PlayerStorage {
         return null;
     }
 
-    public StoredPlayer registerPlayer(Player player) {
+    public StoredPlayer registerPlayer(OfflinePlayer player) {
         try {
             connection = openConnection();
 
@@ -95,7 +96,7 @@ public class SQLPlayerStorage implements PlayerStorage {
         return getStoredPlayer(player.getUniqueId());
     }
 
-    public StoredPlayer updatePlayer(Player player) {
+    public StoredPlayer updatePlayer(OfflinePlayer player) {
         UUID uuid = player.getUniqueId();
         StoredPlayer storedPlayer = getStoredPlayer(uuid);
         storedPlayer.updateName(player.getName());

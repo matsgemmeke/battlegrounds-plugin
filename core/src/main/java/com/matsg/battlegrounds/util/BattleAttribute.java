@@ -14,9 +14,9 @@ public class BattleAttribute<T> implements GenericAttribute<T> {
         this.valueObject = valueObject;
     }
 
-    public GenericAttribute clone() {
+    public GenericAttribute<T> clone() {
         try {
-            BattleAttribute attribute = (BattleAttribute) super.clone();
+            BattleAttribute<T> attribute = (BattleAttribute) super.clone();
             attribute.valueObject = valueObject.copy();
             return attribute;
         } catch (CloneNotSupportedException e) {

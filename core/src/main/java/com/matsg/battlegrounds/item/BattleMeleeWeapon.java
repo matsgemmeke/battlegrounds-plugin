@@ -6,12 +6,9 @@ import com.matsg.battlegrounds.api.entity.BattleEntity;
 import com.matsg.battlegrounds.api.event.EventDispatcher;
 import com.matsg.battlegrounds.api.event.GamePlayerDamageEntityEvent;
 import com.matsg.battlegrounds.api.event.GamePlayerKillEntityEvent;
-import com.matsg.battlegrounds.api.item.ItemMetadata;
-import com.matsg.battlegrounds.api.item.ItemType;
-import com.matsg.battlegrounds.api.item.MeleeWeapon;
+import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.Hitbox;
-import com.matsg.battlegrounds.api.item.Transaction;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.util.BattleSound;
 import org.bukkit.Effect;
@@ -19,6 +16,9 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.event.Event;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
+import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -28,10 +28,14 @@ import java.util.List;
 
 public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
 
-    private boolean throwing, throwable;
+    private boolean droppable;
+    private boolean throwing;
+    private boolean throwable;
     private double damage;
     private EventDispatcher eventDispatcher;
-    private int amount, cooldown, maxAmount;
+    private int amount;
+    private int cooldown;
+    private int maxAmount;
     private ItemType itemType;
     private List<Item> droppedItems;
 
@@ -53,6 +57,7 @@ public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
         this.damage = damage;
         this.eventDispatcher = eventDispatcher;
         this.itemType = itemType;
+        this.droppable = true;
         this.droppedItems = new ArrayList<>();
         this.maxAmount = amount;
         this.throwable = throwable;
@@ -95,6 +100,14 @@ public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
         return itemType;
     }
 
+    public boolean isDroppable() {
+        return droppable;
+    }
+
+    public void setDroppable(boolean droppable) {
+        this.droppable = droppable;
+    }
+
     public boolean isThrowable() {
         return throwable;
     }
@@ -105,9 +118,12 @@ public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
 
     public double damage(BattleEntity entity) {
         double damage = this.damage;
+        double throwablePenalty = 2.0;
+
         if (throwable) {
-            damage /= 2;
+            damage /= throwablePenalty;
         }
+
         return damage(entity, damage);
     }
 
@@ -132,7 +148,20 @@ public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
     }
 
     public void handleTransaction(Transaction transaction) {
+        this.context = transaction.getGame().getGameMode();
+        this.game = transaction.getGame();
         this.gamePlayer = transaction.getGamePlayer();
+        this.itemSlot = ItemSlot.fromSlot(transaction.getSlot());
+
+        amount = maxAmount;
+        game.getItemRegistry().addItem(this);
+        gamePlayer.getLoadout().setMeleeWeapon(this);
+
+        update();
+    }
+
+    public boolean isInUse() {
+        return throwing;
     }
 
     public boolean isRelated(ItemStack itemStack) {
@@ -148,7 +177,9 @@ public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
         return true;
     }
 
-    public void onLeftClick() { }
+    public void onLeftClick(PlayerInteractEvent event) {
+        event.setCancelled(true);
+    }
 
     public boolean onPickUp(GamePlayer gamePlayer, Item itemEntity) {
         if (this.gamePlayer != gamePlayer) {
@@ -164,16 +195,17 @@ public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
         return true;
     }
 
-    public void onRightClick() {
+    public void onRightClick(PlayerInteractEvent event) {
         if (throwing || !throwable || amount < 0) {
             return;
         }
         shoot();
+        event.setCancelled(true);
     }
 
-    public void onSwap() { }
+    public void onSwap(PlayerSwapHandItemsEvent event) { }
 
-    public void onSwitch() { }
+    public void onSwitch(PlayerItemHeldEvent event) { }
 
     public void remove() {
         super.remove();
@@ -183,6 +215,10 @@ public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
     }
 
     public void resetState() {
+        amount = maxAmount;
+    }
+
+    public void resupply() {
         amount = maxAmount;
     }
 
@@ -204,7 +240,7 @@ public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
         taskRunner.runTaskTimer(new BukkitRunnable() {
             Location location;
             public void run() {
-                BattleEntity[] entities = context.getNearbyEntities(item.getLocation(), gamePlayer.getTeam(), 2.0);
+                BattleEntity[] entities = context.getNearbyEnemies(item.getLocation(), gamePlayer.getTeam(), 2.0);
 
                 if (entities.length > 0) {
                     BattleEntity entity = entities[0];
@@ -214,7 +250,7 @@ public class BattleMeleeWeapon extends BattleWeapon implements MeleeWeapon {
                     }
 
                     item.remove();
-                    damage(gamePlayer, damage);
+                    damage(entity, damage);
                     cancel();
                 }
                 if (location != null && item.getLocation().equals(location)) {

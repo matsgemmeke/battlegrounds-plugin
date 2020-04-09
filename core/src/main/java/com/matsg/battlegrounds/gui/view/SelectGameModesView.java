@@ -90,17 +90,18 @@ public class SelectGameModesView implements View {
                     game.getConfiguration().getGameModeTypes().add(gameModeType.toString());
                     game.getConfiguration().saveConfiguration(game.getDataFile());
                     game.getGameModeList().add(gameMode);
-                    game.setGameMode(gameMode);
+                    game.activateGameMode(gameMode);
                 } else if (event.getClick() == ClickType.RIGHT && selected && game.getGameModeList().size() > 1) {
                     game.getConfiguration().getGameModeTypes().remove(gameModeType.toString());
                     game.getConfiguration().saveConfiguration(game.getDataFile());
                     game.getGameModeList().remove(game.getGameMode(gameMode.getClass()));
 
                     if (game.getGameMode().getClass() == gameMode.getClass()) {
-                        game.setGameMode(game.getGameModeList().get(0));
+                        game.activateGameMode(game.getGameModeList().get(0));
                     }
                 }
 
+                game.getGameSign().update();
                 pane.clear();
                 populateGameModes(pane);
                 gui.update();

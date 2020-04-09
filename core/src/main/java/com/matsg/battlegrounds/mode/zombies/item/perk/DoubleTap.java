@@ -3,6 +3,7 @@ package com.matsg.battlegrounds.mode.zombies.item.perk;
 import com.matsg.battlegrounds.api.item.DamageSource;
 import com.matsg.battlegrounds.api.item.Firearm;
 import com.matsg.battlegrounds.mode.zombies.item.PerkEffect;
+import com.matsg.battlegrounds.mode.zombies.item.PerkEffectType;
 import org.bukkit.Color;
 
 public class DoubleTap extends PerkEffect {
@@ -14,7 +15,7 @@ public class DoubleTap extends PerkEffect {
     private Firearm[] firearms;
 
     public DoubleTap(String displayName) {
-        super(displayName, Color.fromRGB(250, 125, 0));
+        super(PerkEffectType.DOUBLE_TAP, displayName, Color.fromRGB(250, 125, 0));
         this.firearms = new Firearm[MAX_NUMBER_OF_FIREARMS];
     }
 

@@ -11,12 +11,12 @@ import com.matsg.battlegrounds.api.item.Weapon;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 
-public class GeneralDeathHandler implements EventHandler<GamePlayerDeathEvent> {
+public class DefaultDeathEventHandler implements EventHandler<GamePlayerDeathEvent> {
 
     private Game game;
     private GameMode gameMode;
 
-    public GeneralDeathHandler(Game game, GameMode gameMode) {
+    public DefaultDeathEventHandler(Game game, GameMode gameMode) {
         this.game = game;
         this.gameMode = gameMode;
     }

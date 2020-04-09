@@ -6,12 +6,22 @@ public class PerRoundReload implements ReloadSystem {
 
     private Firearm firearm;
 
+    public PerRoundReload() { }
+
+    private PerRoundReload(Firearm firearm) {
+        this.firearm = firearm;
+    }
+
     public Firearm getWeapon() {
         return firearm;
     }
 
     public void setWeapon(Firearm firearm) {
         this.firearm = firearm;
+    }
+
+    public ReloadSystem clone() {
+        return new PerRoundReload(firearm);
     }
 
     public void reload() {

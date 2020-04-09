@@ -116,7 +116,7 @@ public class ZombiesPerkMachine implements PerkMachine {
 
     public boolean onInteract(GamePlayer gamePlayer, Block block) {
         // In case the perk machine is locked or the player has too many perks or the player already has bought the perk, it does not accept interactions
-        if (locked || perkManager.getPerkCount(gamePlayer) >= MAX_NUMBER_PERKS || perkManager.hasPerkEffect(gamePlayer, perk.getEffect())) {
+        if (locked || perkManager.getPerkCount(gamePlayer) >= MAX_NUMBER_PERKS || perkManager.hasPerkEffect(gamePlayer, perk.getEffect().getType())) {
             return false;
         }
 

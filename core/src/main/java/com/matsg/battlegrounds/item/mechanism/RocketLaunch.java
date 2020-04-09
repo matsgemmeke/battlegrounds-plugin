@@ -44,8 +44,7 @@ public class RocketLaunch implements LaunchSystem {
                     internals.spawnColoredParticle(direction, "REDSTONE", Float.MAX_VALUE, Float.MAX_VALUE, Float.MAX_VALUE);
 
                     Team team = launcher.getGamePlayer().getTeam();
-
-                    BattleEntity[] entities = launcher.getContext().getNearbyEntities(direction, team, range);
+                    BattleEntity[] entities = launcher.getContext().getNearbyEnemies(direction, team, range);
 
                     if (entities.length >= 1 || direction.getBlock().getType().isSolid()) {
                         launcher.explode(direction);

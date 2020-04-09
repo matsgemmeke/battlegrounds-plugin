@@ -8,14 +8,23 @@ import org.bukkit.Location;
 public interface WeaponContext {
 
     /**
-     * Gets nearby entities that can be hit by a player's weapon.
+     * Gets nearby entities that are hostile towards a certain team.
      *
      * @param location the location of the player
      * @param team the team of the player
      * @param range the range to find entities in
      * @return the nearby entities in the context
      */
-    BattleEntity[] getNearbyEntities(Location location, Team team, double range);
+    BattleEntity[] getNearbyEnemies(Location location, Team team, double range);
+
+    /**
+     * Gets nearby entities that are present in the context.
+     *
+     * @param location the location
+     * @param range the maximum location range to find entities in
+     * @return the nearby entities in the context
+     */
+    BattleEntity[] getNearbyEntities(Location location, double range);
 
     /**
      * Gets whether a blood effect is displayed on a certain entity type in the context.

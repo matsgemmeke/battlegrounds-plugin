@@ -4,7 +4,7 @@ import com.matsg.battlegrounds.TaskRunner;
 import com.matsg.battlegrounds.InternalsProvider;
 import com.matsg.battlegrounds.api.item.ItemMetadata;
 import com.matsg.battlegrounds.api.item.Tactical;
-import com.matsg.battlegrounds.api.item.TacticalEffect;
+import com.matsg.battlegrounds.item.mechanism.TacticalEffect;
 import com.matsg.battlegrounds.api.entity.Hitbox;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.item.mechanism.IgnitionSystem;
@@ -27,7 +27,9 @@ public class BattleTactical extends BattleEquipment implements Tactical {
             Sound[] explodeSound,
             TacticalEffect effect,
             int amount,
+            int maxAmount,
             int cooldown,
+            int duration,
             int ignitionTime,
             double longRange,
             double midRange,
@@ -35,8 +37,13 @@ public class BattleTactical extends BattleEquipment implements Tactical {
             double velocity
     ) {
         super(metadata, itemStack, internals, taskRunner, EquipmentType.TACTICAL, ignitionSystem, explodeSound, amount,
-                cooldown, ignitionTime, longRange, midRange, shortRange, velocity);
+                maxAmount, cooldown, ignitionTime, longRange, midRange, shortRange, velocity);
+        this.duration = duration;
         this.effect = effect;
+    }
+
+    public int getDuration() {
+        return duration;
     }
 
     public TacticalEffect getEffect() {
@@ -59,8 +66,10 @@ public class BattleTactical extends BattleEquipment implements Tactical {
         this.effect = effect;
     }
 
-    public Tactical clone() {
-        return (Tactical) super.clone();
+    public BattleTactical clone() {
+        BattleTactical tactical = (BattleTactical) super.clone();
+        tactical.effect.setWeapon(tactical);
+        return tactical;
     }
 
     public double getDamage(Hitbox hitbox, double distance) {
@@ -68,8 +77,7 @@ public class BattleTactical extends BattleEquipment implements Tactical {
     }
 
     public void ignite(Item item) {
-        effect.igniteItem(item);
-        effect.applyEffect(item.getLocation());
+        effect.applyEffect(item);
     }
 
     public void setLongDamage(double longDamage) { }

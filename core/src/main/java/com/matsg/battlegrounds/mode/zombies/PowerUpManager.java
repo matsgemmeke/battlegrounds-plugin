@@ -10,9 +10,9 @@ public interface PowerUpManager {
 
     void clear();
 
-    boolean contains(PowerUpEffect powerUpEffect);
-
     void dropPowerUp(PowerUp powerUp, Location location);
+
+    boolean exists(PowerUpEffect powerUpEffect);
 
     int getPowerUpCount();
 

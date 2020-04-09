@@ -3,6 +3,8 @@ package com.matsg.battlegrounds.mode.zombies;
 import com.matsg.battlegrounds.FactoryCreationException;
 import com.matsg.battlegrounds.InternalsProvider;
 import com.matsg.battlegrounds.api.entity.BattleEntityType;
+import com.matsg.battlegrounds.api.entity.Hellhound;
+import com.matsg.battlegrounds.api.entity.Zombie;
 import com.matsg.battlegrounds.api.game.ComponentContainer;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.mode.zombies.component.Section;
@@ -25,19 +27,20 @@ public class WaveFactory {
     public Wave make(Game game, BattleEntityType entityType, int round, int mobCount) {
         double attackDamage = config.getMobAttackDamage();
         double followRange = config.getMobFollowRange();
+        int targetUpdateInterval = config.getTargetUpdateInterval();
         float health;
 
         Wave wave;
 
         if (round < 10) {
             // Up until round 10, the health has a linear increase
-            health = (float) (5.0 + 10.0 * round);
+            health = (float) (65.0 + 10.0 * round);
         } else {
             // From round 10 onwards, the health increases exponentially
-            health = 95.0F;
+            health = 155.0F;
 
             for (int i = 0; i < round - 9; i++) {
-                health *= 1.1F;
+                health *= 1.05F;
             }
         }
 
@@ -48,7 +51,10 @@ public class WaveFactory {
                 wave = new HellhoundWave(round, mobCount, attackDamage, followRange, hellhoundHealth);
 
                 for (int i = 0; i < mobCount; i++) {
-                    wave.getMobs().add(internals.makeHellhound(game, plugin));
+                    Hellhound hellhound = internals.makeHellhound(game, plugin);
+                    hellhound.setTargetUpdateInterval(targetUpdateInterval);
+
+                    wave.getMobs().add(hellhound);
                 }
 
                 break;
@@ -58,7 +64,10 @@ public class WaveFactory {
                 wave = new ZombiesWave(round, mobCount, attackDamage, followRange, zombieHealth);
 
                 for (int i = 0; i < mobCount; i++) {
-                    wave.getMobs().add(internals.makeZombie(game, plugin));
+                    Zombie zombie = internals.makeZombie(game, plugin);
+                    zombie.setTargetUpdateInterval(targetUpdateInterval);
+
+                    wave.getMobs().add(zombie);
                 }
 
                 break;

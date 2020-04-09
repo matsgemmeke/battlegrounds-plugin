@@ -63,7 +63,10 @@ public class CreateArena extends Command {
 
         game.getDataFile().save();
 
-        arena.setActive(game.getArena() == null);
+        if (game.getArena() == null) {
+            arena.setActive(true);
+            game.setArena(arena);
+        }
 
         player.sendMessage(createMessage(TranslationKey.ARENA_CREATE,
                 new Placeholder("bg_game", id),

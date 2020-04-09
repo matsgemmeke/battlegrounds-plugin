@@ -32,7 +32,9 @@ public class BattleLethal extends BattleEquipment implements Lethal {
             TaskRunner taskRunner,
             EventDispatcher eventDispatcher,
             IgnitionSystem ignitionSystem,
+            Sound[] ignitionSound,
             int amount,
+            int maxAmount,
             int cooldown,
             int ignitionTime,
             double longDamage,
@@ -41,19 +43,18 @@ public class BattleLethal extends BattleEquipment implements Lethal {
             double midRange,
             double shortDamage,
             double shortRange,
-            double velocity,
-            Sound[] ignitionSound
+            double velocity
     ) {
         super(metadata, itemStack, internals, taskRunner, EquipmentType.LETHAL, ignitionSystem, ignitionSound, amount,
-                cooldown, ignitionTime, longRange, midRange, shortRange, velocity);
+                maxAmount, cooldown, ignitionTime, longRange, midRange, shortRange, velocity);
         this.eventDispatcher = eventDispatcher;
         this.longDamage = longDamage;
         this.midDamage = midDamage;
         this.shortDamage = shortDamage;
     }
 
-    public Lethal clone() {
-        return (Lethal) super.clone();
+    public BattleLethal clone() {
+        return (BattleLethal) super.clone();
     }
 
     public double getLongDamage() {
@@ -84,6 +85,10 @@ public class BattleLethal extends BattleEquipment implements Lethal {
         displayCircleEffect(location, 3, "EXPLOSION_LARGE", 1, 6);
         inflictDamage(location);
         inflictUserDamage(location);
+
+        for (Sound sound : ignitionSound) {
+            sound.play(game, location);
+        }
     }
 
     public double getDamage(Hitbox hitbox, double distance) {
@@ -103,12 +108,14 @@ public class BattleLethal extends BattleEquipment implements Lethal {
 
     public void ignite(Item item) {
         explode(item.getLocation());
+        droppedItems.remove(item);
+        item.remove();
     }
 
     private void inflictDamage(Location location) {
-        for (BattleEntity entity : context.getNearbyEntities(location, gamePlayer.getTeam(), longRange)) {
+        for (BattleEntity entity : context.getNearbyEnemies(location, gamePlayer.getTeam(), longRange)) {
             if (entity != null && !entity.getBukkitEntity().isDead()) {
-                double damage = getDistanceDamage(gamePlayer.getLocation().distance(location) / 5);
+                double damage = getDistanceDamage(entity.getLocation().distance(location));
                 int pointsPerKill = 50;
 
                 Event event;

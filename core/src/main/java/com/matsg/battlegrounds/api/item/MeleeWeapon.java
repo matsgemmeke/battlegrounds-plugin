@@ -2,7 +2,7 @@ package com.matsg.battlegrounds.api.item;
 
 import com.matsg.battlegrounds.api.entity.BattleEntity;
 
-public interface MeleeWeapon extends Weapon, Droppable {
+public interface MeleeWeapon extends Weapon {
 
     int getAmount();
 

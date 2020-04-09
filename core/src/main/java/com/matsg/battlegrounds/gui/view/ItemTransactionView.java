@@ -8,7 +8,6 @@ import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.item.Transaction;
 import com.matsg.battlegrounds.api.item.TransactionItem;
 import com.matsg.battlegrounds.api.util.Sound;
@@ -16,7 +15,6 @@ import com.matsg.battlegrounds.item.ItemStackBuilder;
 import com.matsg.battlegrounds.util.BattleSound;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.function.Consumer;
@@ -26,6 +24,7 @@ public class ItemTransactionView implements View {
     public Gui gui;
     private Consumer<Transaction> onTransactionComplete;
     private Game game;
+    private GamePlayer gamePlayer;
     private int points;
     private int slot;
     private ItemStack itemStack;
@@ -34,6 +33,11 @@ public class ItemTransactionView implements View {
 
     public ItemTransactionView setGame(Game game) {
         this.game = game;
+        return this;
+    }
+
+    public ItemTransactionView setGamePlayer(GamePlayer gamePlayer) {
+        this.gamePlayer = gamePlayer;
         return this;
     }
 
@@ -80,8 +84,6 @@ public class ItemTransactionView implements View {
 
                 pane.addItem(new GuiItem(itemStack, event -> {
                     HumanEntity entity = event.getWhoClicked();
-                    GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer((Player) entity);
-
                     entity.closeInventory();
 
                     for (Sound sound : BattleSound.ITEM_EQUIP) {

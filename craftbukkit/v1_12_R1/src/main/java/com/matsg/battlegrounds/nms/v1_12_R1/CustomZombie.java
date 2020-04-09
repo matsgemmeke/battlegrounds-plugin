@@ -24,6 +24,7 @@ public class CustomZombie extends EntityZombie implements Zombie {
     private boolean spawned;
     private Creature entity;
     private Game game;
+    private int targetUpdateInterval;
     private Plugin plugin;
 
     public CustomZombie(Game game, Plugin plugin) {
@@ -50,6 +51,14 @@ public class CustomZombie extends EntityZombie implements Zombie {
 
     public void setHostile(boolean hostile) {
         this.hostile = hostile;
+    }
+
+    public int getTargetUpdateInterval() {
+        return targetUpdateInterval;
+    }
+
+    public void setTargetUpdateInterval(int targetUpdateInterval) {
+        this.targetUpdateInterval = targetUpdateInterval;
     }
 
     public boolean isSpawned() {
@@ -118,7 +127,7 @@ public class CustomZombie extends EntityZombie implements Zombie {
         goalSelector.a(4, new PathfinderGoalRandomStroll(this, 1.0));
         goalSelector.a(5, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, (float) 30.0));
         targetSelector.a(6, new PathfinderGoalMoveTowardsTarget(this, 10.0, (float) 1.0));
-        targetSelector.a(7, new PathfinderGoalTargetPlayer(game, this, plugin));
+        targetSelector.a(7, new PathfinderGoalTargetPlayer(game, this, plugin, targetUpdateInterval));
     }
 
     public void setAttackDamage(double damage) {

@@ -31,7 +31,9 @@ public class ZombiesPowerUpManager implements PowerUpManager {
         powerUp.setActive(true);
         powerUp.getEffect().activate(powerUpEffect -> {
             removePowerUp(powerUp);
-            displayPowerUpTitle(powerUp, EnumTitle.POWERUP_DEACTIVATE);
+            if (powerUp.getEffect().getDuration() > 0) {
+                displayPowerUpTitle(powerUp, EnumTitle.POWERUP_DEACTIVATE);
+            }
         });
 
         displayPowerUpTitle(powerUp, EnumTitle.POWERUP_ACTIVATE);
@@ -40,11 +42,7 @@ public class ZombiesPowerUpManager implements PowerUpManager {
     }
 
     public void clear() {
-        this.powerUps.clear();
-    }
-
-    public boolean contains(PowerUpEffect powerUpEffect) {
-        return getPowerUp(powerUpEffect) != null;
+        powerUps.clear();
     }
 
     public void dropPowerUp(PowerUp powerUp, Location location) {
@@ -71,14 +69,16 @@ public class ZombiesPowerUpManager implements PowerUpManager {
         }, 400, 10);
     }
 
+    public boolean exists(PowerUpEffect powerUpEffect) {
+        return getPowerUp(powerUpEffect) != null;
+    }
+
     public int getPowerUpCount() {
         return powerUps.size();
     }
 
     public double getPowerUpDamage(double damage) {
         for (PowerUp powerUp : powerUps) {
-            System.out.println(powerUp.getEffect());
-            System.out.println(powerUp.isActive());
             if (powerUp.isActive()) {
                 damage = powerUp.getEffect().modifyDamage(damage);
             }
@@ -96,7 +96,7 @@ public class ZombiesPowerUpManager implements PowerUpManager {
     }
 
     public boolean isActive(PowerUpEffect powerUpEffect) {
-        return (contains(powerUpEffect)) && (getPowerUp(powerUpEffect).isActive());
+        return (exists(powerUpEffect)) && (getPowerUp(powerUpEffect).isActive());
     }
 
     public void removePowerUp(PowerUp powerUp) {

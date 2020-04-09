@@ -43,20 +43,6 @@ public interface Game {
     void setConfiguration(GameConfiguration configuration);
 
     /**
-     * Gets the current countdown of the game.
-     *
-     * @return the countdown of the game or null if the game is not in its starting state
-     */
-    Countdown getCountdown();
-
-    /**
-     * Sets the countdown of the game.
-     *
-     * @param countdown the new game countdown
-     */
-    void setCountdown(Countdown countdown);
-
-    /**
      * Gets the arena of the game with a certain name. Returns null if there is no arena with such name.
      *
      * @param name the name of the arena
@@ -84,13 +70,6 @@ public interface Game {
      * @return the game's gamemode list
      */
     List<GameMode> getGameModeList();
-
-    /**
-     * Sets the active gamemode of the game.
-     *
-     * @param gameMode the gamemode to activate
-     */
-    void setGameMode(GameMode gameMode);
 
     /**
      * Gets the game joining sign of this game.
@@ -170,6 +149,13 @@ public interface Game {
     TimeControl getTimeControl();
 
     /**
+     * Activates a gamemode instance and makes it ready for use.
+     *
+     * @param gameMode the gamemode to activate
+     */
+    void activateGameMode(GameMode gameMode);
+
+    /**
      * Gets the first available component id in the game.
      *
      * @return the first available id
@@ -197,14 +183,19 @@ public interface Game {
     void rollback();
 
     /**
-     * Starts the countdown which prepares the arena and players to start the game.
-     */
-    void startCountdown();
-
-    /**
      * Starts the game.
      */
     void startGame();
+
+    /**
+     * Starts the countdown which prepares the arena and players to start the game.
+     */
+    void startGameModeCountdown();
+
+    /**
+     * Starts the lobby countdown.
+     */
+    void startLobbyCountdown();
 
     /**
      * Stops the game when the gamemode has ended or the game is unable to continue.

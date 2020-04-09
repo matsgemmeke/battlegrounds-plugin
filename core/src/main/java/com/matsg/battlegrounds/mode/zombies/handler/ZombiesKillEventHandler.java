@@ -12,6 +12,8 @@ import com.matsg.battlegrounds.api.entity.Mob;
 import com.matsg.battlegrounds.api.event.EventHandler;
 import com.matsg.battlegrounds.api.event.GamePlayerKillEntityEvent;
 import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.mode.zombies.component.Barricade;
+import com.matsg.battlegrounds.mode.zombies.component.Section;
 import com.matsg.battlegrounds.mode.zombies.item.PowerUp;
 import com.matsg.battlegrounds.mode.zombies.Zombies;
 import com.matsg.battlegrounds.mode.zombies.item.factory.PowerUpFactory;
@@ -56,8 +58,8 @@ public class ZombiesKillEventHandler implements EventHandler<GamePlayerKillEntit
         Hitbox hitbox = event.getHitbox();
         Mob mob = (Mob) event.getEntity();
 
-        mob.getBukkitEntity().setCustomName(game.getMobManager().getHealthBar(mob));
         mob.setHealth(0);
+        mob.getBukkitEntity().setCustomName(game.getMobManager().getHealthBar(mob));
 
         gamePlayer.setKills(gamePlayer.getKills() + 1);
 
@@ -94,7 +96,7 @@ public class ZombiesKillEventHandler implements EventHandler<GamePlayerKillEntit
                 int duration = zombies.getConfig().getPowerUpDuration() * 20; // Convert seconds to ticks
 
                 powerUp = powerUpFactory.make(effectType, duration);
-            } while (!powerUp.getEffect().isApplicableForActivation());
+            } while (!powerUp.getEffect().isApplicableForActivation() || zombies.getPowerUpManager().exists(powerUp.getEffect()));
 
             zombies.getPowerUpManager().dropPowerUp(powerUp, mob.getBukkitEntity().getLocation());
         }
@@ -103,8 +105,7 @@ public class ZombiesKillEventHandler implements EventHandler<GamePlayerKillEntit
 
         taskRunner.runTaskLater(new BukkitRunnable() {
             public void run() {
-                game.getMobManager().getMobs().remove(mob);
-                mob.remove();
+                zombies.removeMob(mob);
 
                 double maxMovementSpeed = 0.35;
 

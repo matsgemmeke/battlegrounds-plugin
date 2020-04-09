@@ -80,7 +80,7 @@ public class BattleGamePlayer implements GamePlayer {
     }
 
     public float getHealth() {
-        return (float) player.getHealth();
+        return (float) player.getHealth() * 5; // Convert player hearts (20) to full health (100)
     }
 
     public void setHealth(float health) {
@@ -215,13 +215,13 @@ public class BattleGamePlayer implements GamePlayer {
             return 0.0;
         }
 
-        double finalHealth = player.getHealth() - damage;
+        double finalHealth = (getHealth() - damage) / 5; // Divide by 5 to convert to hearts value
 
         player.damage(0.01); // Create fake damage animation
         player.setHealth(finalHealth > 0.0 ? finalHealth : 0); // Set the health to 0 if the damage is greater than the health
         player.setLastDamageCause(null);
 
-        return player.getHealth();
+        return getHealth();
     }
 
     public boolean isHostileTowards(GamePlayer gamePlayer) {

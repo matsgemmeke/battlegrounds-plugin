@@ -47,7 +47,7 @@ public class GrenadeLaunch implements LaunchSystem {
                 Location location = item.getLocation();
                 Team team = gamePlayer.getTeam();
 
-                BattleEntity[] entities = launcher.getContext().getNearbyEntities(direction, team, range);
+                BattleEntity[] entities = launcher.getContext().getNearbyEnemies(direction, team, range);
 
                 if (entities.length >= 1 || location.getBlock().getRelative(BlockFace.DOWN).getType().isSolid()) {
                     launcher.explode(location);

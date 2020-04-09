@@ -4,7 +4,7 @@ import com.matsg.battlegrounds.api.entity.OfflineGamePlayer;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.storage.StatisticContext;
 import com.matsg.battlegrounds.api.storage.StoredPlayer;
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 
 import java.sql.*;
 import java.util.*;
@@ -24,7 +24,7 @@ public class SQLPlayerRecord implements StoredPlayer {
             fetchInfo();
             fetchStatistics();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new SQLPlayerStorageException("Could not fetch data of database record for player uuid " + uuid.toString());
         }
     }
 
@@ -98,7 +98,7 @@ public class SQLPlayerRecord implements StoredPlayer {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new SQLPlayerStorageException("Could not save statistic attributes of player uuid " + uuid.toString());
         }
         return this;
     }
@@ -113,7 +113,7 @@ public class SQLPlayerRecord implements StoredPlayer {
         return name.compareTo(o.getName());
     }
 
-    public void createDefaultAttributes(Player player) {
+    public void createDefaultAttributes(OfflinePlayer player) {
         this.uuid = player.getUniqueId();
         this.name = player.getName();
 
@@ -125,7 +125,7 @@ public class SQLPlayerRecord implements StoredPlayer {
             ps.execute();
             ps.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new SQLPlayerStorageException("Could not insert new database record for player uuid " + uuid.toString());
         }
     }
 
@@ -162,9 +162,8 @@ public class SQLPlayerRecord implements StoredPlayer {
 
             return loadoutSetup;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new SQLPlayerStorageException("Could not retrieve loadout setup of player uuid " + uuid.toString());
         }
-        return null;
     }
 
     public Collection<Map<String, String>> getLoadoutSetups() {
@@ -176,7 +175,10 @@ public class SQLPlayerRecord implements StoredPlayer {
     }
 
     public int getStatisticAttribute(StatisticContext context) {
-        int result = 0;
+        if (context.getStatisticName() == null) {
+            throw new SQLPlayerStorageException("Could not retrieve null statistic attribute from player uuid " + uuid.toString());
+        }
+
         try {
             PreparedStatement ps = connection.prepareStatement("SELECT * " +
                     "FROM `battlegrounds_statistic` " +
@@ -194,6 +196,7 @@ public class SQLPlayerRecord implements StoredPlayer {
                 ps.setNull(2, Types.VARCHAR);
             }
 
+            int result = 0;
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
@@ -202,17 +205,16 @@ public class SQLPlayerRecord implements StoredPlayer {
 
             rs.close();
             ps.close();
+
+            return result;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new SQLPlayerStorageException("Could not retrieve statistic attribute " + context.getStatisticName() + " from player uuid " + uuid.toString());
         }
-        return result;
     }
 
     public void saveLoadout(int loadoutNr, Map<String, String> loadoutSetup) {
-        PreparedStatement ps;
-
         try {
-            ps = connection.prepareStatement("SELECT * " +
+            PreparedStatement ps = connection.prepareStatement("SELECT * " +
                     "FROM `battlegrounds_loadout` " +
                     "WHERE player_uuid = ? AND loadout_nr = ?;"
             );
@@ -258,7 +260,7 @@ public class SQLPlayerRecord implements StoredPlayer {
 
             ps.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new SQLPlayerStorageException("Could not save loadout from player uuid " + uuid.toString());
         }
     }
 
@@ -274,7 +276,7 @@ public class SQLPlayerRecord implements StoredPlayer {
             ps.setString(2, uuid.toString());
             ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new SQLPlayerStorageException("Could not update data record of player uuid " + uuid.toString());
         }
     }
 

@@ -8,7 +8,7 @@ public interface GameState extends ItemRepresentable {
      * @param action the action type performed
      * @return whether the action is allowed
      */
-    boolean isAllowed(Action action);
+    boolean isAllowed(GameAction action);
 
     /**
      * Gets whether the game state is in progress.

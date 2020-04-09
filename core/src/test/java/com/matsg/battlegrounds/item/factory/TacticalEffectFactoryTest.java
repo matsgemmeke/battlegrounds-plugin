@@ -1,7 +1,7 @@
 package com.matsg.battlegrounds.item.factory;
 
 import com.matsg.battlegrounds.TaskRunner;
-import com.matsg.battlegrounds.api.item.TacticalEffect;
+import com.matsg.battlegrounds.item.mechanism.TacticalEffect;
 import com.matsg.battlegrounds.item.mechanism.BlindnessEffect;
 import com.matsg.battlegrounds.item.mechanism.NoiseEffect;
 import com.matsg.battlegrounds.item.mechanism.SmokeEffect;

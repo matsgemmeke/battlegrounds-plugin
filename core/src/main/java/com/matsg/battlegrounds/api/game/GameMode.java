@@ -2,7 +2,7 @@ package com.matsg.battlegrounds.api.game;
 
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.item.WeaponContext;
-import org.bukkit.inventory.Inventory;
+import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
@@ -103,12 +103,12 @@ public interface GameMode extends ComponentWrapper, WeaponContext {
     Objective getAchievedObjective();
 
     /**
-     * Gets the respawn point of a player.
+     * Gets the respawn location for a player.
      *
      * @param gamePlayer the player to get a respawn point of.
-     * @return a respawn point as a spawn component
+     * @return the player's respawn location
      */
-    Spawn getRespawnPoint(GamePlayer gamePlayer);
+    Location getRespawnLocation(GamePlayer gamePlayer);
 
     /**
      * Gets a list of the gamemode's teams, sorted by their performance.
@@ -116,14 +116,6 @@ public interface GameMode extends ComponentWrapper, WeaponContext {
      * @return a sorted list of the gamemode's teams
      */
     List<Team> getSortedTeams();
-
-    /**
-     * Gets the team of a player. Returns null if the player is not assigned to a team.
-     *
-     * @param gamePlayer the player to get the team of
-     * @return the player's team or null if the player is not assigned to a team.
-     */
-    Team getTeam(GamePlayer gamePlayer);
 
     /**
      * Gets the team by a certain id.
@@ -160,6 +152,13 @@ public interface GameMode extends ComponentWrapper, WeaponContext {
      * @param gamePlayer the player to remove
      */
     void removePlayer(GamePlayer gamePlayer);
+
+    /**
+     * Respawns a player in the gamemode context.
+     *
+     * @param gamePlayer the player to respawn
+     */
+    void respawnPlayer(GamePlayer gamePlayer);
 
     /**
      * Spreads players over the spawns in the game's arena.

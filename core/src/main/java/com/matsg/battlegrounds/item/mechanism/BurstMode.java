@@ -17,12 +17,23 @@ public class BurstMode implements FireMode {
         this.taskRunner = taskRunner;
     }
 
+    private BurstMode(int rateOfFire, int burst, TaskRunner taskRunner, Firearm firearm) {
+        this.rateOfFire = rateOfFire;
+        this.burst = burst;
+        this.taskRunner = taskRunner;
+        this.firearm = firearm;
+    }
+
     public Firearm getWeapon() {
         return firearm;
     }
 
     public void setWeapon(Firearm firearm) {
         this.firearm = firearm;
+    }
+
+    public FireMode clone() {
+        return new BurstMode(rateOfFire, burst, taskRunner, firearm);
     }
 
     public void shoot() {

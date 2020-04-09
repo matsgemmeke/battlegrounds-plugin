@@ -1,5 +1,5 @@
 main: com.matsg.battlegrounds.BattlegroundsPlugin
-name: ${project.name}
+name: Battlegrounds
 version: ${project.version}
 author: Mats9799
 commands:

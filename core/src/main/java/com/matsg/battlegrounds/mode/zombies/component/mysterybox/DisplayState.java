@@ -7,6 +7,7 @@ import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.api.item.Firearm;
 import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.item.Transaction;
 import com.matsg.battlegrounds.api.item.Weapon;
@@ -71,9 +72,9 @@ public class DisplayState implements MysteryBoxState {
 
         ItemSlot itemSlot = weapon.getType().getDefaultItemSlot();
 
-        if (itemSlot == ItemSlot.FIREARM_PRIMARY &&
-                (gamePlayer.getLoadout().getSecondary() == null || gamePlayer.getPlayer().getInventory().getHeldItemSlot() == 1)) {
-            itemSlot = ItemSlot.FIREARM_SECONDARY;
+        // Because the player has two firearm slots, choose the item slot based on the player's loadout state
+        if (weapon instanceof Firearm) {
+            itemSlot = gamePlayer.getLoadout().getSecondary() != null && gamePlayer.getPlayer().getInventory().getHeldItemSlot() != 1 ? ItemSlot.FIREARM_PRIMARY : ItemSlot.FIREARM_SECONDARY;
         }
 
         // Execute the logic of the transaction view

@@ -5,9 +5,6 @@ import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.Hellhound;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.Obstacle;
-import com.matsg.battlegrounds.mode.zombies.Zombies;
-import com.matsg.battlegrounds.mode.zombies.component.MobSpawn;
-import com.matsg.battlegrounds.mode.zombies.component.Section;
 import com.matsg.battlegrounds.util.MobSpawnException;
 import com.matsg.battlegrounds.util.ReflectionUtils;
 import net.minecraft.server.v1_12_R1.*;
@@ -27,6 +24,7 @@ public class CustomWolf extends EntityWolf implements Hellhound {
     private boolean spawned;
     private Creature entity;
     private Game game;
+    private int targetUpdateInterval;
     private Plugin plugin;
 
     public CustomWolf(Game game, Plugin plugin) {
@@ -47,16 +45,20 @@ public class CustomWolf extends EntityWolf implements Hellhound {
         clearPathfinderGoals();
     }
 
-    public CustomWolf(World world) {
-        super(world);
-    }
-
     public BattleEntityType getEntityType() {
         return entityType;
     }
 
     public void setHostile(boolean hostile) {
         this.hostile = hostile;
+    }
+
+    public int getTargetUpdateInterval() {
+        return targetUpdateInterval;
+    }
+
+    public void setTargetUpdateInterval(int targetUpdateInterval) {
+        this.targetUpdateInterval = targetUpdateInterval;
     }
 
     public boolean isSpawned() {
@@ -125,7 +127,7 @@ public class CustomWolf extends EntityWolf implements Hellhound {
         goalSelector.a(4, new PathfinderGoalRandomStroll(this, 1.0));
         goalSelector.a(5, new PathfinderGoalLookAtPlayer(this, EntityHuman.class, (float) 30.0));
         targetSelector.a(6, new PathfinderGoalMoveTowardsTarget(this, 10.0, (float) 1.0));
-        targetSelector.a(7, new PathfinderGoalTargetPlayer(game, this, plugin));
+        targetSelector.a(7, new PathfinderGoalTargetPlayer(game, this, plugin, targetUpdateInterval));
     }
 
     public void setAttackDamage(double damage) {

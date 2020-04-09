@@ -2,7 +2,7 @@ package com.matsg.battlegrounds.item.mechanism;
 
 import com.matsg.battlegrounds.TaskRunner;
 import com.matsg.battlegrounds.api.item.Tactical;
-import com.matsg.battlegrounds.api.item.TacticalEffect;
+import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.util.XMaterial;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -31,9 +31,7 @@ public class SmokeEffect implements TacticalEffect {
         this.tactical = tactical;
     }
 
-    public void applyEffect(Location location) { }
-
-    public void igniteItem(Item item) {
+    public void applyEffect(Item item) {
         List<Block> blocks = getCircleBlocks(item.getLocation(), (int) tactical.getLongRange(), false);
         List<BlockState> blockStates = new ArrayList<>();
 
@@ -45,6 +43,10 @@ public class SmokeEffect implements TacticalEffect {
                 blockStates.add(block.getState());
                 block.setType(XMaterial.LEGACY_CROPS.parseMaterial());
             }
+        }
+
+        for (Sound sound : tactical.getIgnitionSound()) {
+            sound.play(tactical.getGame(), item.getLocation());
         }
 
         taskRunner.runTaskLater(new BukkitRunnable() {

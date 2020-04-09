@@ -9,14 +9,18 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class PathfinderGoalTargetPlayer extends PathfinderGoal {
 
+    private static final int RUNNABLE_DELAY = 0;
     private Game game;
+    private GamePlayer currentTarget;
+    private int period;
     private Mob mob;
     private Plugin plugin;
 
-    public PathfinderGoalTargetPlayer(Game game, Mob mob, Plugin plugin) {
+    public PathfinderGoalTargetPlayer(Game game, Mob mob, Plugin plugin, int period) {
         this.game = game;
         this.mob = mob;
         this.plugin = plugin;
+        this.period = period;
     }
 
     public boolean a() {
@@ -34,10 +38,12 @@ public class PathfinderGoalTargetPlayer extends PathfinderGoal {
 
                 GamePlayer gamePlayer = game.getPlayerManager().getNearestPlayer(mob.getBukkitEntity().getLocation());
 
-                if (gamePlayer != null && mob.isHostileTowards(gamePlayer)) {
-                    mob.setTarget(gamePlayer.getLocation());
+                if (gamePlayer != null && currentTarget != gamePlayer && mob.isHostileTowards(gamePlayer)) {
+                    currentTarget = gamePlayer;
+
+                    mob.setTarget(gamePlayer.getPlayer().getLocation());
                 }
             }
-        }.runTaskTimer(plugin, 0, 100);
+        }.runTaskTimer(plugin, RUNNABLE_DELAY, period);
     }
 }

@@ -34,7 +34,7 @@ public class TriggerIgnition implements IgnitionSystem {
                 if (game == null || gamePlayer == null || !equipment.getDroppedItems().contains(item)) {
                     return;
                 }
-                if (equipment.getContext().getNearbyEntities(item.getLocation(), gamePlayer.getTeam(), equipment.getLongRange()).length >= 1) {
+                if (equipment.getContext().getNearbyEnemies(item.getLocation(), gamePlayer.getTeam(), equipment.getLongRange()).length >= 1) {
                     for (Sound sound : equipment.getIgnitionSound()) {
                         sound.play(game, item.getLocation());
                     }

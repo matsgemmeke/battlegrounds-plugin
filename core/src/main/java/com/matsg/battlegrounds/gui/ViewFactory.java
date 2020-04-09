@@ -7,5 +7,5 @@ import java.util.function.Consumer;
 
 public interface ViewFactory {
 
-    <T extends View> T make(@NotNull Class<T> viewClass, @NotNull Consumer<T> configure);
+    <T extends View> View make(@NotNull Class<T> viewClass, @NotNull Consumer<T> configure);
 }

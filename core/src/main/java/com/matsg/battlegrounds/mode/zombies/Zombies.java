@@ -7,10 +7,7 @@ import com.matsg.battlegrounds.InternalsProvider;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.api.entity.*;
 import com.matsg.battlegrounds.api.Translator;
-import com.matsg.battlegrounds.api.event.EventChannel;
-import com.matsg.battlegrounds.api.event.GameEndEvent;
-import com.matsg.battlegrounds.api.event.GamePlayerDamageEntityEvent;
-import com.matsg.battlegrounds.api.event.GamePlayerKillEntityEvent;
+import com.matsg.battlegrounds.api.event.*;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.storage.CacheYaml;
@@ -106,6 +103,9 @@ public class Zombies extends AbstractGameMode {
         ));
         plugin.getEventDispatcher().registerEventChannel(GamePlayerDamageEntityEvent.class, new EventChannel<>(
                 new ZombiesDamageEventHandler(this, internals, translator)
+        ));
+        plugin.getEventDispatcher().registerEventChannel(GamePlayerDeathEvent.class, new EventChannel<>(
+                new GamePlayerDeathEventHandler(game, this)
         ));
         plugin.getEventDispatcher().registerEventChannel(GamePlayerKillEntityEvent.class, new EventChannel<>(
                 new ZombiesKillEventHandler(this, internals, powerUpFactory, taskRunner, translator)
@@ -256,8 +256,8 @@ public class Zombies extends AbstractGameMode {
         return Collections.unmodifiableList(list);
     }
 
-    public Mob[] getNearbyEntities(Location location, Team team, double range) {
-        List<Mob> list = new ArrayList<>();
+    public BattleEntity[] getNearbyEnemies(Location location, Team team, double range) {
+        List<BattleEntity> list = new ArrayList<>();
 
         for (Entity entity : location.getWorld().getNearbyEntities(location, range, range, range)) {
             Mob mob = game.getMobManager().findMob(entity);
@@ -266,11 +266,31 @@ public class Zombies extends AbstractGameMode {
             }
         }
 
-        return list.toArray(new Mob[list.size()]);
+        return list.toArray(new BattleEntity[list.size()]);
     }
 
-    public Spawn getRespawnPoint(GamePlayer gamePlayer) {
-        return null;
+    public BattleEntity[] getNearbyEntities(Location location, double range) {
+        List<BattleEntity> list = new ArrayList<>();
+
+        for (Entity entity : location.getWorld().getNearbyEntities(location, range, range, range)) {
+            Mob mob = game.getMobManager().findMob(entity);
+            if (mob != null && !mob.getBukkitEntity().isDead()) {
+                list.add(mob);
+            }
+
+            if (entity instanceof Player) {
+                GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer((Player) entity);
+                if (gamePlayer != null) {
+                    list.add(gamePlayer);
+                }
+            }
+        }
+
+        return list.toArray(new BattleEntity[list.size()]);
+    }
+
+    public Location getRespawnLocation(GamePlayer gamePlayer) {
+        return gamePlayer.getLocation();
     }
 
     public GameScoreboard getScoreboard() {
@@ -323,7 +343,11 @@ public class Zombies extends AbstractGameMode {
         MeleeWeapon meleeWeapon = defaultLoadout.get("melee-weapon") != null ? plugin.getMeleeWeaponFactory().make(defaultLoadout.get("melee-weapon")) : null;
 
         if (primary != null) {
-            primary.setAmmo(config.getDefaultMagazines() * primary.getMagazineSize());
+            primary.setAmmo(config.getDefaultPrimaryMagazines() * primary.getMagazineSize());
+        }
+
+        if (equipment != null) {
+            equipment.setAmount(config.getDefaultEquipmentAmount());
         }
 
         ItemStack barricadeTool = new ItemStackBuilder(XMaterial.OAK_FENCE.parseMaterial())
@@ -340,7 +364,8 @@ public class Zombies extends AbstractGameMode {
                 new Attachment[0],
                 new Attachment[0],
                 game,
-                gamePlayer
+                gamePlayer,
+                false
         );
 
         gamePlayer.getPlayer().getInventory().setItem(ItemSlot.MISCELLANEOUS.getSlot(), barricadeTool);
@@ -367,6 +392,19 @@ public class Zombies extends AbstractGameMode {
         return false;
     }
 
+    public void removeMob(Mob mob) {
+        // Remove the mob from the mob manager
+        game.getMobManager().getMobs().remove(mob);
+        // Remove references of the mob in arena components
+        for (Section section : sectionContainer.getAll()) {
+            for (Barricade barricade : section.getBarricadeContainer().getAll()) {
+                barricade.getMobs().remove(mob);
+            }
+        }
+        // Remove the mob itself
+        mob.remove();
+    }
+
     public void removePlayer(GamePlayer gamePlayer) {
         team.removePlayer(gamePlayer);
     }
@@ -386,7 +424,10 @@ public class Zombies extends AbstractGameMode {
         startWave(config.getStartingRound());
 
         MysteryBox mysteryBox = getRandomMysteryBox();
-        mysteryBox.setState(new MovingState(game, null, internals, taskRunner, translator));
+
+        if (mysteryBox != null) {
+            mysteryBox.setState(new MovingState(game, null, internals, taskRunner, translator));
+        }
 
         for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
             Title title = EnumTitle.ZOMBIES_START.getTitle();
@@ -486,6 +527,10 @@ public class Zombies extends AbstractGameMode {
 
         for (Section section : sectionContainer.getAll()) {
             mysteryBoxes.addAll(section.getMysteryBoxContainer().getAll());
+        }
+
+        if (mysteryBoxes.size() <= 0) {
+            return null;
         }
 
         return mysteryBoxes.get(random.nextInt(mysteryBoxes.size()));

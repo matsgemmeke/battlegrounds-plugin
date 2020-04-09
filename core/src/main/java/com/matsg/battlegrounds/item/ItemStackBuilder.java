@@ -84,7 +84,7 @@ public class ItemStackBuilder {
 	public ItemStackBuilder setUnbreakable(boolean unbreakable) {
 		try {
 			meta.setUnbreakable(unbreakable);
-		} catch (Exception e) {
+		} catch (NoSuchMethodError e) {
 			meta.spigot().setUnbreakable(unbreakable);
 		}
 		return this;

@@ -24,6 +24,8 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -113,14 +115,15 @@ public class BattleGun extends BattleFirearm implements Gun {
 
     public Gun clone() {
         BattleGun gun = (BattleGun) super.clone();
-        gun.burstRounds = gun.getAttribute("shot-burstrounds");
-        gun.fireMode = gun.getAttribute("shot-firemode");
-        gun.fireRate = gun.getAttribute("shot-firerate");
-        gun.scope = gun.getAttribute("scope-use");
-        gun.scopeNightVision = gun.getAttribute("scope-nightvision");
-        gun.scopeZoom = gun.getAttribute("scope-zoom");
-        gun.spread = gun.getAttribute("shot-spread");
-        gun.suppressed = gun.getAttribute("shot-suppressed");
+        gun.burstRounds = getAttribute("shot-burstrounds").clone();
+        gun.fireMode = getAttribute("shot-firemode").clone();
+        gun.fireMode.getValue().setWeapon(gun);
+        gun.fireRate = getAttribute("shot-firerate").clone();
+        gun.scope = getAttribute("scope-use").clone();
+        gun.scopeNightVision = getAttribute("scope-nightvision").clone();
+        gun.scopeZoom = getAttribute("scope-zoom").clone();
+        gun.spread = getAttribute("shot-spread").clone();
+        gun.suppressed = getAttribute("shot-suppressed").clone();
         return gun;
     }
 
@@ -142,6 +145,10 @@ public class BattleGun extends BattleFirearm implements Gun {
 
     public DamageSource getProjectile() {
         return bullet;
+    }
+
+    public boolean isScoped() {
+        return scoped;
     }
 
     public void addAttachments() {
@@ -196,7 +203,7 @@ public class BattleGun extends BattleFirearm implements Gun {
     }
 
     private void inflictDamage(Location location, double range) {
-        BattleEntity[] entities = context.getNearbyEntities(location, gamePlayer.getTeam(), range);
+        BattleEntity[] entities = context.getNearbyEnemies(location, gamePlayer.getTeam(), range);
 
         if (entities.length <= 0) {
             return;
@@ -210,11 +217,12 @@ public class BattleGun extends BattleFirearm implements Gun {
 
         hits++;
 
-        if (entity.getBukkitEntity().isDead()) {
+        Location entityLocation = entity.getLocation();
+
+        if (entity.getBukkitEntity().isDead() || location.getY() - entityLocation.getY() > Hitbox.MAX_ENTITY_HEIGHT) {
             return;
         }
 
-        Location entityLocation = entity.getLocation();
         Hitbox hitbox = Hitbox.getHitbox(entityLocation.getY(), location.getY());
 
         double damage = bullet.getDamage(hitbox, entityLocation.distance(gamePlayer.getLocation())) / damageAmplifier;
@@ -234,7 +242,11 @@ public class BattleGun extends BattleFirearm implements Gun {
         eventDispatcher.dispatchExternalEvent(event);
     }
 
-    public void onLeftClick() {
+    public boolean isInUse() {
+        return scoped || shooting || reloading;
+    }
+
+    public void onLeftClick(PlayerInteractEvent event) {
         if (scope.getValue() && scoped) {
             setScoped(false);
             return;
@@ -243,9 +255,10 @@ public class BattleGun extends BattleFirearm implements Gun {
             return;
         }
         reload(reloadDuration.getValue());
+        event.setCancelled(true);
     }
 
-    public void onRightClick() {
+    public void onRightClick(PlayerInteractEvent event) {
         if (reloading || shooting) {
             return;
         }
@@ -260,6 +273,7 @@ public class BattleGun extends BattleFirearm implements Gun {
             return;
         }
         shoot();
+        event.setCancelled(true);
     }
 
     public void onSwap() {
@@ -286,6 +300,12 @@ public class BattleGun extends BattleFirearm implements Gun {
         }
         toggled = !toggled;
         update();
+    }
+
+    public void onSwitch(PlayerItemHeldEvent event) {
+        if (scoped) {
+            setScoped(false);
+        }
     }
 
     public void playShotSound(Entity entity) {
@@ -321,7 +341,7 @@ public class BattleGun extends BattleFirearm implements Gun {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 1000, 1));
             }
             cooldown(1);
-            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, -scopeZoom.getValue())); // Zoom effect
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, scopeZoom.getValue())); // Zoom effect
             player.getInventory().setHelmet(new ItemStack(Material.PUMPKIN));
         } else {
             BattleSound.GUN_SCOPE[0].play(game, player.getLocation(), (float) 0.75);
@@ -329,7 +349,7 @@ public class BattleGun extends BattleFirearm implements Gun {
 
             player.getInventory().setHelmet(null);
             player.removePotionEffect(PotionEffectType.NIGHT_VISION);
-            player.removePotionEffect(PotionEffectType.SPEED); // Restore zoom effect
+            player.removePotionEffect(PotionEffectType.SLOW); // Restore zoom effect
         }
     }
 

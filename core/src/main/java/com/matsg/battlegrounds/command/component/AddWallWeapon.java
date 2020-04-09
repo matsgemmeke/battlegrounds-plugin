@@ -1,5 +1,6 @@
 package com.matsg.battlegrounds.command.component;
 
+import com.matsg.battlegrounds.ItemNotFoundException;
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.Translator;
@@ -62,9 +63,11 @@ public class AddWallWeapon extends ComponentCommand {
             return;
         }
 
-        Weapon weapon = itemFinder.findWeapon(args[5]);
+        Weapon weapon;
 
-        if (weapon == null) {
+        try {
+            weapon = itemFinder.findWeapon(args[5]);
+        } catch (ItemNotFoundException e) {
             player.sendMessage(translator.translate(TranslationKey.INVALID_WEAPON.getPath(), new Placeholder("bg_weapon", args[5])));
             return;
         }
@@ -90,11 +93,13 @@ public class AddWallWeapon extends ComponentCommand {
 
         itemFrame.setItem(weapon.getItemStack());
 
+        weapon.setDroppable(false);
+
         game.getDataFile().setLocation("arena." + arena.getName() + ".component." + componentId + ".location", itemFrame.getLocation(), true);
         game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".price", price);
         game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".section", section.getName());
         game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".type", "wallweapon");
-        game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".weapon", weapon.getMetadata().getName());
+        game.getDataFile().set("arena." + arena.getName() + ".component." + componentId + ".weapon", weapon.getMetadata().getId());
         game.getDataFile().save();
 
         player.sendMessage(translator.translate(TranslationKey.ITEMCHEST_ADD.getPath(),

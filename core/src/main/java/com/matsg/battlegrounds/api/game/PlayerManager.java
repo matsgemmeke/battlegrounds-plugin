@@ -133,14 +133,6 @@ public interface PlayerManager {
     boolean removePlayer(GamePlayer gamePlayer);
 
     /**
-     * Handles a player respawn.
-     *
-     * @param gamePlayer the player to respawn
-     * @param spawn the spawn location
-     */
-    void respawnPlayer(GamePlayer gamePlayer, Spawn spawn);
-
-    /**
      * Sets a player visible to other players.
      *
      * @param gamePlayer the player

@@ -36,6 +36,6 @@ public class PlayerItemHeldEventHandler implements EventHandler<PlayerItemHeldEv
             return;
         }
 
-        weapon.onSwitch(gamePlayer);
+        weapon.onSwitch(gamePlayer, event);
     }
 }

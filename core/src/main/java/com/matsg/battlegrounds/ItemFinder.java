@@ -27,10 +27,10 @@ public class ItemFinder {
         String filePath = plugin.getDataFolder().getPath() + "/items";
 
         try {
-            this.attachmentConfig = new AttachmentConfig(filePath, plugin.getResource("attachments.yml"));
-            this.equipmentConfig = new EquipmentConfig(filePath, plugin.getResource("equipment.yml"));
-            this.firearmConfig = new FirearmConfig(filePath, plugin.getResource("guns.yml"));
-            this.meleeWeaponConfig = new MeleeWeaponConfig(filePath, plugin.getResource("melee_weapons.yml"));
+            this.attachmentConfig = new AttachmentConfig(filePath, plugin.getResource("items/attachments.yml"));
+            this.equipmentConfig = new EquipmentConfig(filePath, plugin.getResource("items/equipment.yml"));
+            this.firearmConfig = new FirearmConfig(filePath, plugin.getResource("items/guns.yml"));
+            this.meleeWeaponConfig = new MeleeWeaponConfig(filePath, plugin.getResource("items/melee_weapons.yml"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -80,6 +80,6 @@ public class ItemFinder {
         if (meleeWeaponConfig.getItemList().contains(id)) {
             return plugin.getMeleeWeaponFactory().make(id);
         }
-        return null;
+        throw new ItemNotFoundException("Cannot find item by the id of \"" + id + "\"");
     }
 }

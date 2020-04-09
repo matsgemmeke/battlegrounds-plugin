@@ -148,7 +148,8 @@ public class SelectLoadoutView implements View {
                     primaryAttachments.toArray(new Attachment[primaryAttachments.size()]),
                     secondaryAttachments.toArray(new Attachment[secondaryAttachments.size()]),
                     game,
-                    gamePlayer
+                    gamePlayer,
+                    true
             );
 
             int levelUnlocked = levelConfig.getLevelUnlocked(loadout.getName());
@@ -173,12 +174,13 @@ public class SelectLoadoutView implements View {
                         player.closeInventory();
                         return;
                     }
-                    if (gamePlayer.getLoadout() == null || game.getTimeControl().getTime() <= 10) {
+
+                    if (gamePlayer.getLoadout() != null || game.getTimeControl().getTime() > 10) {
                         String actionBar = translator.translate(TranslationKey.CHANGE_LOADOUT.getPath());
-                        internals.sendActionBar(gamePlayer.getPlayer(), actionBar);
-                        return;
+                        internals.sendActionBar(player, actionBar);
                     }
-                    game.getPlayerManager().changeLoadout(gamePlayer, loadout.clone());
+
+                    game.getPlayerManager().changeLoadout(gamePlayer, loadout);
                     gamePlayer.setSelectedLoadout(loadout);
                     player.closeInventory();
                 } else {
@@ -191,7 +193,7 @@ public class SelectLoadoutView implements View {
     private ItemStack getLoadoutItemStack(Loadout loadout) {
         for (Weapon weapon : loadout.getWeapons()) {
             if (weapon != null && weapon.getItemStack() != null) {
-                return weapon.getItemStack();
+                return weapon.getItemStack().clone();
             }
         }
         return new ItemStack(Material.BARRIER);

@@ -13,7 +13,6 @@ import java.util.List;
 
 public class LobbyCountdown extends Countdown {
 
-    private boolean cancelled;
     private Game game;
     private int countdown;
     private List<Integer> display;
@@ -24,7 +23,6 @@ public class LobbyCountdown extends Countdown {
         this.game = game;
         this.translator = translator;
         this.countdown = countdown;
-        this.cancelled = false;
         this.display = new ArrayList<>();
         this.scoreboard = new LobbyScoreboard(game);
 
@@ -34,18 +32,13 @@ public class LobbyCountdown extends Countdown {
     }
 
     public void run() {
-        if (cancelled) {
-            cancel();
-            return;
-        }
-
         if (game.getArena() == null || game.getPlayerManager().getPlayers().size() < game.getConfiguration().getMinPlayers()) {
             game.stop();
             return;
         }
 
         if (countdown <= 0) {
-            game.startCountdown();
+            game.startGameModeCountdown();
             cancel();
             return;
         }

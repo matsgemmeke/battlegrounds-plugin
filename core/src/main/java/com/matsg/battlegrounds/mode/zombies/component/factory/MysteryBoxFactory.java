@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.mode.zombies.component.factory;
 
 import com.matsg.battlegrounds.InternalsProvider;
+import com.matsg.battlegrounds.ItemNotFoundException;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.ItemFinder;
@@ -40,7 +41,17 @@ public class MysteryBoxFactory {
         List<Weapon> weaponList = new ArrayList<>();
 
         for (String weaponId : config.getMysteryBoxWeapons()) {
-            weaponList.add(itemFinder.findWeapon(weaponId));
+            Weapon weapon;
+
+            try {
+                weapon = itemFinder.findWeapon(weaponId);
+            } catch (ItemNotFoundException e) {
+                continue;
+            }
+
+            weapon.setDroppable(false);
+
+            weaponList.add(weapon);
         }
 
         Weapon[] weapons = weaponList.toArray(new Weapon[weaponList.size()]);

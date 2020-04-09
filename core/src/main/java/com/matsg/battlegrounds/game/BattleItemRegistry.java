@@ -86,14 +86,6 @@ public class BattleItemRegistry implements ItemRegistry {
         return list;
     }
 
-    public void interact(GamePlayer gamePlayer, Item item, Action action) {
-        if (action == Action.LEFT_CLICK_AIR || action == Action.LEFT_CLICK_BLOCK) {
-            item.onLeftClick(gamePlayer);
-        } else if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
-            item.onRightClick(gamePlayer);
-        }
-    }
-
     public void removeItem(Item item) {
         items.remove(item);
     }

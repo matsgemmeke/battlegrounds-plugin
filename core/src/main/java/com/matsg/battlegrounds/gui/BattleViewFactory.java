@@ -36,7 +36,7 @@ public class BattleViewFactory implements ViewFactory {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends View> T make(@NotNull Class<T> viewClass, @NotNull Consumer<T> configure) {
+    public <T extends View> View make(@NotNull Class<T> viewClass, @NotNull Consumer<T> configure) {
         if (viewClass == ArenaSettingsView.class) {
             T view = (T) new ArenaSettingsView()
                     .setTranslator(plugin.getTranslator());
@@ -179,6 +179,7 @@ public class BattleViewFactory implements ViewFactory {
                     .setFirearmFactory(plugin.getFirearmFactory())
                     .setInternals(internals)
                     .setLevelConfig(plugin.getLevelConfig())
+                    .setMeleeWeaponFactory(plugin.getMeleeWeaponFactory())
                     .setPlayerStorage(plugin.getPlayerStorage())
                     .setTaskRunner(taskRunner)
                     .setTranslator(plugin.getTranslator());

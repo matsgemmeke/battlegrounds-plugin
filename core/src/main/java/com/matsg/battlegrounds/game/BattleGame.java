@@ -42,6 +42,7 @@ public class BattleGame implements Game {
     private PlayerStorage playerStorage;
     private TaskRunner taskRunner;
     private TimeControl timeControl;
+    private Translator translator;
 
     public BattleGame(
             int id,
@@ -63,6 +64,7 @@ public class BattleGame implements Game {
         this.mobManager = mobManager;
         this.playerStorage = playerStorage;
         this.taskRunner = taskRunner;
+        this.translator = translator;
         this.arenaList = new ArrayList<>();
         this.gameModeList = new ArrayList<>();
         this.playerManager = new BattlePlayerManager(this, levelConfig, playerStorage, taskRunner, translator);
@@ -102,16 +104,6 @@ public class BattleGame implements Game {
 
     public GameMode getGameMode() {
         return gameMode;
-    }
-
-    public void setGameMode(GameMode gameMode) {
-        if (this.gameMode != null) {
-            this.gameMode.setActive(false);
-            this.gameMode.onDisable();
-        }
-        this.gameMode = gameMode;
-        this.gameMode.setActive(true);
-        this.gameMode.onEnable();
     }
 
     public List<GameMode> getGameModeList() {
@@ -163,16 +155,27 @@ public class BattleGame implements Game {
         return timeControl;
     }
 
+    public void activateGameMode(GameMode gameMode) {
+        if (this.gameMode != null) {
+            this.gameMode.setActive(false);
+            this.gameMode.onDisable();
+        }
+        this.gameMode = gameMode;
+        this.gameMode.setActive(true);
+        this.gameMode.onEnable();
+    }
+
     public int findAvailableComponentId() {
         int i = 1;
 
         while (true) {
-            boolean available = false;
+            boolean available = true;
 
             // Check if the gamemodes contain components with the same id.
             for (GameMode gameMode : gameModeList) {
-                if (gameMode.getComponent(i) == null) {
-                    available = true;
+                if (gameMode.getComponent(i) != null) {
+                    available = false;
+                    break;
                 }
             }
 
@@ -229,7 +232,7 @@ public class BattleGame implements Game {
         }
     }
 
-    public void startCountdown() {
+    public void startGameModeCountdown() {
         // Check whether the player spawning logic was executed correctly. If not, cancel the countdown
         if (!gameMode.spawnPlayers(playerManager.getPlayers())) {
             return;
@@ -253,6 +256,17 @@ public class BattleGame implements Game {
         gameMode.start();
         timeControl.start();
         eventDispatcher.dispatchExternalEvent(new GameStartEvent(this));
+    }
+
+    public void startLobbyCountdown() {
+        int countdownLength = configuration.getLobbyCountdown();
+        int[] displayNumbers = new int[] { 60, 45, 30, 15, 10, 5 };
+        int delay = 0;
+        int period = 20;
+
+        Countdown countdown = new LobbyCountdown(this, translator, countdownLength, displayNumbers);
+
+        taskRunner.runTaskTimer(countdown, delay, period);
     }
 
     public void stop() {
@@ -333,12 +347,11 @@ public class BattleGame implements Game {
                         gameMode = gameModeList.get(random.nextInt(gameModeList.size()));
                     } while (BattleGame.this.gameMode == gameMode);
 
-                    setGameMode(gameMode);
+                    activateGameMode(gameMode);
                 }
 
                 rollback();
 
-                gameMode.loadData(arena);
                 itemRegistry.clear();
                 playerManager.getPlayers().clear();
 

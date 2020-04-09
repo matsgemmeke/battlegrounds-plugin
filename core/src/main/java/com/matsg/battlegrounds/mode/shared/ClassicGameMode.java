@@ -1,9 +1,11 @@
 package com.matsg.battlegrounds.mode.shared;
 
+import com.matsg.battlegrounds.TaskRunner;
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.api.Translator;
+import com.matsg.battlegrounds.api.entity.BattleEntity;
 import com.matsg.battlegrounds.api.entity.BattleEntityType;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.event.GameEndEvent;
@@ -28,8 +30,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Abstract class for classic gamemodes which are to be played in a default
@@ -37,10 +41,20 @@ import java.util.Collections;
  */
 public abstract class ClassicGameMode extends AbstractGameMode {
 
+    private TaskRunner taskRunner;
     private ViewFactory viewFactory;
 
-    public ClassicGameMode(Battlegrounds plugin, GameModeType gameModeType, Game game, SpawningBehavior spawningBehavior, Translator translator, ViewFactory viewFactory) {
+    public ClassicGameMode(
+            Battlegrounds plugin,
+            GameModeType gameModeType,
+            Game game,
+            SpawningBehavior spawningBehavior,
+            TaskRunner taskRunner,
+            Translator translator,
+            ViewFactory viewFactory
+    ) {
         super(plugin, gameModeType, game, translator, spawningBehavior);
+        this.taskRunner = taskRunner;
         this.viewFactory = viewFactory;
     }
 
@@ -57,30 +71,63 @@ public abstract class ClassicGameMode extends AbstractGameMode {
     }
 
     public ArenaComponent getComponent(int id) {
+        // Classic game modes have no additional components by default
         return null;
     }
 
     public ArenaComponent getComponent(Location location) {
+        // Classic game modes have no additional components by default
         return null;
     }
 
     public Collection<ArenaComponent> getComponents() {
+        // Classic game modes have no additional components by default
         return Collections.EMPTY_SET;
     }
 
     public int getComponentCount() {
+        // Classic game modes have no additional components by default
         return 0;
     }
 
-    public GamePlayer[] getNearbyEntities(Location location, Team team, double range) {
-        return game.getPlayerManager().getNearbyEnemyPlayers(team, location, range);
+    public BattleEntity[] getNearbyEnemies(Location location, Team team, double range) {
+        List<BattleEntity> list = new ArrayList<>();
+        for (Entity entity : game.getArena().getWorld().getNearbyEntities(location, range, range, range)) {
+            if (entity instanceof Player) {
+                GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer((Player) entity);
+                if (gamePlayer != null && gamePlayer.getTeam() != team) {
+                    list.add(gamePlayer);
+                }
+            }
+        }
+        return list.toArray(new BattleEntity[list.size()]);
     }
+
+    public BattleEntity[] getNearbyEntities(Location location, double range) {
+        List<BattleEntity> list = new ArrayList<>();
+        for (Entity entity : game.getArena().getWorld().getNearbyEntities(location, range, range, range)) {
+            if (entity instanceof Player) {
+                GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer((Player) entity);
+                if (gamePlayer != null) {
+                    list.add(gamePlayer);
+                }
+            }
+        }
+        return list.toArray(new BattleEntity[list.size()]);
+    }
+
+    public Location getRespawnLocation(GamePlayer gamePlayer) {
+        Spawn spawn = getRespawnPoint(gamePlayer);
+        return spawn.getLocation();
+    }
+
+    public abstract Spawn getRespawnPoint(GamePlayer gamePlayer);
 
     public boolean hasBloodEffectDisplay(BattleEntityType entityType) {
         return plugin.getBattlegroundsConfig().getDisplayBloodEffect(entityType.toString());
     }
 
-    protected abstract Countdown makeCountdown();
+    public abstract Countdown makeCountdown();
 
     public void preparePlayer(GamePlayer gamePlayer) {
         super.preparePlayer(gamePlayer);
@@ -109,6 +156,18 @@ public abstract class ClassicGameMode extends AbstractGameMode {
         game.getItemRegistry().addItem(selectLoadout);
         gamePlayer.getItems().add(selectLoadout);
         player.getInventory().setItem(ItemSlot.MISCELLANEOUS.getSlot(), selectLoadout.getItemStack());
+    }
+
+    public void respawnPlayer(GamePlayer gamePlayer) {
+        if (gamePlayer.getSelectedLoadout() != null && !gamePlayer.getLoadout().equals(gamePlayer.getSelectedLoadout())) {
+            game.getPlayerManager().changeLoadout(gamePlayer, gamePlayer.getSelectedLoadout().clone());
+        }
+
+        Spawn spawn = getRespawnPoint(gamePlayer);
+        spawn.setOccupant(gamePlayer);
+
+        // Wait 5 seconds before resetting the spawn state
+        taskRunner.runTaskLater(() -> spawn.setOccupant(null), 100);
     }
 
     public Countdown startCountdown() {

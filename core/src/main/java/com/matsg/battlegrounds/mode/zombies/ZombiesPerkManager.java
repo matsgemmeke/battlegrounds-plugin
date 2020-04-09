@@ -3,6 +3,7 @@ package com.matsg.battlegrounds.mode.zombies;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.mode.zombies.item.Perk;
 import com.matsg.battlegrounds.mode.zombies.item.PerkEffect;
+import com.matsg.battlegrounds.mode.zombies.item.PerkEffectType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,13 +47,13 @@ public class ZombiesPerkManager implements PerkManager {
         return playerPerks.get(gamePlayer).size();
     }
 
-    public boolean hasPerkEffect(GamePlayer gamePlayer, PerkEffect effect) {
+    public boolean hasPerkEffect(GamePlayer gamePlayer, PerkEffectType effectType) {
         if (!playerPerks.containsKey(gamePlayer)) {
             return false;
         }
 
         for (Perk perk : playerPerks.get(gamePlayer)) {
-            if (perk.getEffect().equals(effect)) {
+            if (perk.getEffect().getType().equals(effectType)) {
                 return true;
             }
         }
@@ -65,6 +66,16 @@ public class ZombiesPerkManager implements PerkManager {
             return;
         }
 
+        perk.getEffect().remove();
+
         playerPerks.get(gamePlayer).remove(perk);
+    }
+
+    public void removePerks(GamePlayer gamePlayer) {
+        for (Perk perk : playerPerks.get(gamePlayer)) {
+            perk.getEffect().remove();
+        }
+
+        playerPerks.remove(gamePlayer);
     }
 }

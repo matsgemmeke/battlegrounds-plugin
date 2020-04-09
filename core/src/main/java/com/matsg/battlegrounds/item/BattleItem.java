@@ -1,11 +1,14 @@
 package com.matsg.battlegrounds.item;
 
+import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.item.Item;
 import com.matsg.battlegrounds.api.item.ItemMetadata;
 import com.matsg.battlegrounds.api.util.GenericAttribute;
 import com.matsg.battlegrounds.api.item.ItemSlot;
-import com.matsg.battlegrounds.api.entity.GamePlayer;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
+import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -91,13 +94,13 @@ public abstract class BattleItem implements Item {
         return null;
     }
 
-    public void onLeftClick(GamePlayer gamePlayer) { }
+    public void onLeftClick(GamePlayer gamePlayer, PlayerInteractEvent event) { }
 
-    public void onRightClick(GamePlayer gamePlayer) { }
+    public void onRightClick(GamePlayer gamePlayer, PlayerInteractEvent event) { }
 
-    public void onSwap(GamePlayer gamePlayer) { }
+    public void onSwap(GamePlayer gamePlayer, PlayerSwapHandItemsEvent event) { }
 
-    public void onSwitch(GamePlayer gamePlayer) { }
+    public void onSwitch(GamePlayer gamePlayer, PlayerItemHeldEvent event) { }
 
     public void remove() { }
 

@@ -1,7 +1,7 @@
 package com.matsg.battlegrounds.api.storage;
 
 import com.matsg.battlegrounds.api.entity.OfflineGamePlayer;
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 
 import java.util.List;
 import java.util.UUID;
@@ -45,7 +45,7 @@ public interface PlayerStorage {
      * @param player the player to be registered.
      * @return the new player record converted to a stored player object.
      */
-    StoredPlayer registerPlayer(Player player);
+    StoredPlayer registerPlayer(OfflinePlayer player);
 
     /**
      * Updates a player's record attributes.
@@ -53,5 +53,5 @@ public interface PlayerStorage {
      * @param player the player to update its record for.
      * @return the updated player record.
      */
-    StoredPlayer updatePlayer(Player player);
+    StoredPlayer updatePlayer(OfflinePlayer player);
 }

@@ -6,12 +6,22 @@ public class SemiAutomatic implements FireMode {
 
     private Firearm firearm;
 
+    public SemiAutomatic() { }
+
+    private SemiAutomatic(Firearm firearm) {
+        this.firearm = firearm;
+    }
+
     public Firearm getWeapon() {
         return firearm;
     }
 
     public void setWeapon(Firearm firearm) {
         this.firearm = firearm;
+    }
+
+    public FireMode clone() {
+        return new SemiAutomatic(firearm);
     }
 
     public void shoot() {

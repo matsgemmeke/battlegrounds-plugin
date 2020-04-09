@@ -10,6 +10,7 @@ import com.matsg.battlegrounds.api.storage.ItemConfig;
 import com.matsg.battlegrounds.item.*;
 import com.matsg.battlegrounds.item.mechanism.IgnitionSystem;
 import com.matsg.battlegrounds.item.mechanism.IgnitionSystemType;
+import com.matsg.battlegrounds.item.mechanism.TacticalEffect;
 import com.matsg.battlegrounds.item.mechanism.TacticalEffectType;
 import com.matsg.battlegrounds.util.BattleSound;
 import org.bukkit.ChatColor;
@@ -63,7 +64,7 @@ public class EquipmentFactory implements ItemFactory<Equipment> {
         // Global equipment attributes
         ItemMetadata metadata = new ItemMetadata(id, section.getString("DisplayName"), section.getString("Description"));
         ItemStack itemStack = new ItemStackBuilder(Material.valueOf(material[0]))
-                .setDisplayName(metadata.getName())
+                .setDisplayName(ChatColor.WHITE + metadata.getName())
                 .setDurability(Short.valueOf(material[1]))
                 .setLore(lore)
                 .build();
@@ -82,7 +83,9 @@ public class EquipmentFactory implements ItemFactory<Equipment> {
                         taskRunner,
                         eventDispatcher,
                         ignitionSystem,
-                        AttributeValidator.shouldBeHigherThan(section.getInt("Amount"), 0),
+                        BattleSound.parseSoundArray(section.getString("Sound")),
+                        AttributeValidator.shouldBeHigherThan(section.getInt("Amount.Supply"), 0),
+                        AttributeValidator.shouldBeHigherThan(section.getInt("Amount.Max"), 0),
                         AttributeValidator.shouldBeHigherThan(section.getInt("Cooldown"), 0),
                         ignitionTime,
                         AttributeValidator.shouldEqualOrBeHigherThan(section.getDouble("Range.Long.Damage"), 0.0),
@@ -91,8 +94,7 @@ public class EquipmentFactory implements ItemFactory<Equipment> {
                         AttributeValidator.shouldEqualOrBeHigherThan(section.getDouble("Range.Medium.Distance"), 0.0),
                         AttributeValidator.shouldEqualOrBeHigherThan(section.getDouble("Range.Short.Damage"), 0.0),
                         AttributeValidator.shouldEqualOrBeHigherThan(section.getDouble("Range.Short.Distance"), 0.0),
-                        AttributeValidator.shouldEqualOrBeHigherThan(section.getDouble("Velocity"), 0.0),
-                        BattleSound.parseSoundArray(section.getString("Sound"))
+                        AttributeValidator.shouldEqualOrBeHigherThan(section.getDouble("Velocity"), 0.0)
                 );
 
                 ignitionSystem.setWeapon(lethal);
@@ -120,8 +122,10 @@ public class EquipmentFactory implements ItemFactory<Equipment> {
                         ignitionSystem,
                         BattleSound.parseSoundArray(section.getString("Sound")),
                         tacticalEffect,
-                        AttributeValidator.shouldBeHigherThan(section.getInt("Amount"), 0),
+                        AttributeValidator.shouldBeHigherThan(section.getInt("Amount.Supply"), 0),
+                        AttributeValidator.shouldBeHigherThan(section.getInt("Amount.Max"), 0),
                         AttributeValidator.shouldBeHigherThan(section.getInt("Cooldown"), 0),
+                        AttributeValidator.shouldBeHigherThan(section.getInt("Duration"), 0),
                         ignitionTime,
                         AttributeValidator.shouldEqualOrBeHigherThan(section.getDouble("Range.Long.Distance"), 0.0),
                         AttributeValidator.shouldEqualOrBeHigherThan(section.getDouble("Range.Medium.Distance"), 0.0),

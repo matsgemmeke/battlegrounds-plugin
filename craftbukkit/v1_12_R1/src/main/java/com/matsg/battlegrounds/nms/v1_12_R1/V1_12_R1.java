@@ -37,8 +37,8 @@ public class V1_12_R1 implements InternalsProvider {
         int wolfId = EntityType.WOLF.getTypeId(), zombieId = EntityType.ZOMBIE.getTypeId();
         String wolfKey = "CustomWolf", zombieKey = "CustomZombie";
 
-        EntityTypes.b.a(zombieId, new net.minecraft.server.v1_12_R1.MinecraftKey(zombieKey), CustomZombie.class);
-        EntityTypes.b.a(wolfId, new net.minecraft.server.v1_12_R1.MinecraftKey(wolfKey), CustomWolf.class);
+        EntityTypes.b.a(zombieId, new MinecraftKey(zombieKey), CustomZombie.class);
+        EntityTypes.b.a(wolfId, new MinecraftKey(wolfKey), CustomWolf.class);
     }
 
     public void sendActionBar(Player player, String message) {

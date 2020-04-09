@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.mode.zombies.item.perk;
 
 import com.matsg.battlegrounds.mode.zombies.item.PerkEffect;
+import com.matsg.battlegrounds.mode.zombies.item.PerkEffectType;
 import org.bukkit.Color;
 
 public class QuickRevive extends PerkEffect {
@@ -9,7 +10,7 @@ public class QuickRevive extends PerkEffect {
     private static final float NORMAL_REVIVE_SPEED = 10.0f;
 
     public QuickRevive(String displayName) {
-        super(displayName, Color.fromRGB(50, 150, 200));
+        super(PerkEffectType.QUICK_REVIVE, displayName, Color.fromRGB(50, 150, 200));
     }
 
     public void apply() {
