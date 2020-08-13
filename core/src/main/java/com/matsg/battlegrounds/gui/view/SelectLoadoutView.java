@@ -155,7 +155,7 @@ public class SelectLoadoutView implements View {
             int levelUnlocked = levelConfig.getLevelUnlocked(loadout.getName());
             boolean locked = levelUnlocked > levelConfig.getLevel(playerStorage.getStoredPlayer(gamePlayer.getUUID()).getExp());
 
-            String displayName = locked ? translator.translate(TranslationKey.ITEM_LOCKED.getPath(), new Placeholder("bg_level", levelConfig.getLevelUnlocked(loadout.getName()))) : ChatColor.WHITE + loadout.getName();
+            String displayName = locked ? translator.translate(TranslationKey.VIEW_ITEM_LOCKED.getPath(), new Placeholder("bg_level", levelConfig.getLevelUnlocked(loadout.getName()))) : ChatColor.WHITE + loadout.getName();
 
             ItemStack itemStack = new ItemStackBuilder(locked ? new ItemStack(Material.BARRIER) : getLoadoutItemStack(loadout))
                     .addItemFlags(ItemFlag.values())
@@ -175,14 +175,16 @@ public class SelectLoadoutView implements View {
                         return;
                     }
 
+                    gamePlayer.setSelectedLoadout(loadout);
+                    player.closeInventory();
+
                     if (gamePlayer.getLoadout() != null || game.getTimeControl().getTime() > 10) {
-                        String actionBar = translator.translate(TranslationKey.CHANGE_LOADOUT.getPath());
+                        String actionBar = translator.translate(TranslationKey.ACTIONBAR_CHANGE_LOADOUT.getPath());
                         internals.sendActionBar(player, actionBar);
+                        return;
                     }
 
                     game.getPlayerManager().changeLoadout(gamePlayer, loadout);
-                    gamePlayer.setSelectedLoadout(loadout);
-                    player.closeInventory();
                 } else {
                     event.setCancelled(true);
                 }

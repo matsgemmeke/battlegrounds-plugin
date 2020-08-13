@@ -4,6 +4,7 @@ import com.matsg.battlegrounds.api.game.SpawnOccupant;
 import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.item.Item;
 import com.matsg.battlegrounds.api.item.Loadout;
+import com.matsg.battlegrounds.api.item.Weapon;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -159,6 +160,15 @@ public interface GamePlayer extends BattleEntity, OfflineGamePlayer, SpawnOccupa
      * @return the amount of exp the player has after the given exp was added
      */
     int addExp(int exp);
+
+    /**
+     * Gets a weapon from a certain slot in the player's inventory. Returns null if
+     * the given inventory slot does not contain a weapon.
+     *
+     * @param slot the inventory slot
+     * @return the weapon which is in the given inventory slot
+     */
+    // Weapon getWeaponFromSlot(int slot);
 
     /**
      * Refreshes the player's current effect.

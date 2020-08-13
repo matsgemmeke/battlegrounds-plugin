@@ -132,7 +132,7 @@ public class SelectAttachmentView implements View {
     private ItemStack getLockedItemStack(Attachment attachment) {
         return new ItemStackBuilder(Material.BARRIER)
                 .addItemFlags(ItemFlag.values())
-                .setDisplayName(translator.translate(TranslationKey.ITEM_LOCKED.getPath(), new Placeholder("bg_level", levelConfig.getLevelUnlocked(attachment.getMetadata().getId()))))
+                .setDisplayName(translator.translate(TranslationKey.VIEW_ITEM_LOCKED.getPath(), new Placeholder("bg_level", levelConfig.getLevelUnlocked(attachment.getMetadata().getId()))))
                 .setUnbreakable(true)
                 .build();
     }

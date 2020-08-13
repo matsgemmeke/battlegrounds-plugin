@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.event.handler;
 
 import com.matsg.battlegrounds.api.Battlegrounds;
+import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent.DeathCause;
 import com.matsg.battlegrounds.api.event.EventHandler;
@@ -35,6 +36,8 @@ public class PlayerDeathEventHandler implements EventHandler<PlayerDeathEvent> {
             return; // Only notify the game of death events the game should handle
         }
 
-        plugin.getEventDispatcher().dispatchExternalEvent(new GamePlayerDeathEvent(game, game.getPlayerManager().getGamePlayer(player), deathCause));
+        GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
+
+        plugin.getEventDispatcher().dispatchExternalEvent(new GamePlayerDeathEvent(game, gamePlayer, deathCause));
     }
 }

@@ -159,7 +159,7 @@ public abstract class ClassicGameMode extends AbstractGameMode {
     }
 
     public void respawnPlayer(GamePlayer gamePlayer) {
-        if (gamePlayer.getSelectedLoadout() != null && !gamePlayer.getLoadout().equals(gamePlayer.getSelectedLoadout())) {
+        if (gamePlayer.getSelectedLoadout() != null) {
             game.getPlayerManager().changeLoadout(gamePlayer, gamePlayer.getSelectedLoadout().clone());
         }
 
@@ -193,16 +193,18 @@ public abstract class ClassicGameMode extends AbstractGameMode {
     public void stop() {
         Objective objective = getAchievedObjective();
 
-        for (Team team : teams) {
-            Result result = Result.getResult(team, getSortedTeams());
-            if (result != null) {
-                for (GamePlayer gamePlayer : team.getPlayers()) {
-                    String resultText = translator.translate(result.getTranslationKey().getPath());
+        if (objective != null) {
+            for (Team team : teams) {
+                Result result = Result.getResult(team, getSortedTeams());
+                if (result != null) {
+                    for (GamePlayer gamePlayer : team.getPlayers()) {
+                        String resultText = translator.translate(result.getTranslationKey().getPath());
 
-                    Title title = objective.getTitle().clone();
-                    title.setTitleText(translator.createSimpleMessage(title.getTitleText(), new Placeholder("bg_result", resultText)));
-                    title.setSubText(translator.createSimpleMessage(title.getSubText(), new Placeholder("bg_result", resultText)));
-                    title.send(gamePlayer.getPlayer());
+                        Title title = objective.getTitle().clone();
+                        title.setTitleText(translator.createSimpleMessage(title.getTitleText(), new Placeholder("bg_result", resultText)));
+                        title.setSubText(translator.createSimpleMessage(title.getSubText(), new Placeholder("bg_result", resultText)));
+                        title.send(gamePlayer.getPlayer());
+                    }
                 }
             }
         }

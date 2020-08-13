@@ -4,6 +4,7 @@ import com.matsg.battlegrounds.api.entity.*;
 import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.item.Item;
 import com.matsg.battlegrounds.api.item.Loadout;
+import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.util.GenericAttribute;
 import com.matsg.battlegrounds.item.modifier.FloatAttributeModifier;
 import com.matsg.battlegrounds.util.BattleAttribute;
@@ -222,6 +223,15 @@ public class BattleGamePlayer implements GamePlayer {
         player.setLastDamageCause(null);
 
         return getHealth();
+    }
+
+    public Weapon getWeaponFromSlot(int slot) {
+        for (Weapon weapon : loadout.getWeapons()) {
+            if (player.getInventory().first(weapon.getItemStack()) == slot) {
+                return weapon;
+            }
+        }
+        return null;
     }
 
     public boolean isHostileTowards(GamePlayer gamePlayer) {

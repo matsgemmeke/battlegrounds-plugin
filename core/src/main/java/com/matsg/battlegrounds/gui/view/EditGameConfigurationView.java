@@ -28,7 +28,7 @@ public class EditGameConfigurationView implements View {
         return this;
     }
 
-    public void backButtonClick(InventoryClickEvent event) {
+    public void cancelClick(InventoryClickEvent event) {
         previousView.openInventory(event.getWhoClicked());
     }
 

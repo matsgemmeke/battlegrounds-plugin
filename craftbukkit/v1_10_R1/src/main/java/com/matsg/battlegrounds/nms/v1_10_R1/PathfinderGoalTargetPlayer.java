@@ -41,7 +41,7 @@ public class PathfinderGoalTargetPlayer extends PathfinderGoal {
                 if (gamePlayer != null && currentTarget != gamePlayer && mob.isHostileTowards(gamePlayer)) {
                     currentTarget = gamePlayer;
 
-                    mob.setTarget(gamePlayer.getPlayer().getLocation());
+                    mob.setTarget(gamePlayer.getPlayer());
                 }
             }
         }.runTaskTimer(plugin, RUNNABLE_DELAY, period);

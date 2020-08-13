@@ -12,6 +12,7 @@ import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftLivingEntity;
 import org.bukkit.entity.Creature;
+import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.plugin.Plugin;
 
@@ -152,6 +153,15 @@ public class CustomZombie extends EntityZombie implements Zombie {
 
     public void setMovementSpeed(double speed) {
         getAttributeInstance(GenericAttributes.MOVEMENT_SPEED).setValue(speed);
+    }
+
+    public void setTarget(Entity entity) {
+        Creature creature = (Creature) bukkitEntity;
+        Location location = entity.getLocation();
+
+        creature.setTarget(null);
+
+        getNavigation().a(navigation.a(location.getX(), location.getY(), location.getZ()), 1.0D);
     }
 
     public void setTarget(Location location) {

@@ -33,6 +33,7 @@ import com.matsg.battlegrounds.util.EnumTitle;
 import com.matsg.battlegrounds.util.XMaterial;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.entity.Bat;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -119,20 +120,13 @@ public class Zombies extends AbstractGameMode {
     }
 
     public void onDisable() {
-        Arena arena = game.getArena();
-        // Remove all instances of mob entities
-        for (Entity entity : arena.getWorld().getEntities()) {
-            Mob mob = game.getMobManager().findMob(entity);
-            if (mob != null) {
-                mob.remove();
-            }
-        }
         for (Section section : sectionContainer.getAll()) {
             for (MysteryBox mysteryBox : section.getMysteryBoxContainer().getAll()) {
                 mysteryBox.getState().remove();
             }
         }
 
+        removeMobs();
         perkManager.clear();
         powerUpManager.clear();
     }
@@ -405,8 +399,22 @@ public class Zombies extends AbstractGameMode {
         mob.remove();
     }
 
+    public void removeMobs() {
+        // Remove all instances of mob entities
+        for (Entity entity : game.getArena().getWorld().getEntities()) {
+            Mob mob = game.getMobManager().findMob(entity);
+            if (mob != null) {
+                removeMob(mob);
+            }
+        }
+    }
+
     public void removePlayer(GamePlayer gamePlayer) {
         team.removePlayer(gamePlayer);
+    }
+
+    public void respawnPlayer(GamePlayer gamePlayer) {
+        // TODO Handle player deaths
     }
 
     public void start() {
@@ -486,9 +494,17 @@ public class Zombies extends AbstractGameMode {
             EnumTitle.ZOMBIES_GAME_OVER.send(player, new Placeholder("bg_round", wave.getRound()));
         }
 
+        if (wave != null && wave.isRunning()) {
+            wave.setRunning(false);
+        }
+
         perkManager.clear();
 
         team = new BattleTeam(1, "Players", null, ChatColor.WHITE);
+
+        taskRunner.runTaskLater(() -> {
+            removeMobs();
+        }, 200);
     }
 
     public void tick() {

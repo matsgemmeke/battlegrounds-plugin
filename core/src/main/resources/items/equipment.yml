@@ -54,6 +54,7 @@ SEMTEX:
   Amount:
     Max: 4
     Supply: 2
+  Cooldown: 20
   Description: Powerful frag grenade. Detonates shortly after ignition, causing splash damage to the enemy.
   DisplayName: Semtex
   EquipmentType: LETHAL

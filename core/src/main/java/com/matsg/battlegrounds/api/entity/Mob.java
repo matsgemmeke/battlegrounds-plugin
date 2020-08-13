@@ -2,6 +2,7 @@ package com.matsg.battlegrounds.api.entity;
 
 import com.matsg.battlegrounds.api.game.Obstacle;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 
 /**
  * Represents a hostile entity that appears in a game of the Battlegrounds plugin.
@@ -115,6 +116,13 @@ public interface Mob extends BattleEntity {
      * Resets the mob's current pathfinder goals
      */
     void resetDefaultPathfinderGoals();
+
+    /**
+     * Sets the target entity of the mob.
+     *
+     * @param entity the target entity
+     */
+    void setTarget(Entity entity);
 
     /**
      * Sets the target location of the mob.

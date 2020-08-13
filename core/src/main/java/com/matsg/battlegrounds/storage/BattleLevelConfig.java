@@ -59,15 +59,19 @@ public class BattleLevelConfig extends AbstractYaml implements LevelConfig {
         return list;
     }
 
-    public int getLevelUnlocked(String object) {
+    public int getLevelUnlocked(String weaponId) {
         for (Level level : getLevelCollection()) {
             for (String unlock : level.unlocks) {
-                if (unlock.equals(object)) {
+                if (unlock.equals(weaponId)) {
                     return level.level;
                 }
             }
         }
         return -1;
+    }
+
+    public boolean isUnlockable(String weaponId) {
+        return getLevelUnlocked(weaponId) > -1;
     }
 
     private class Level {

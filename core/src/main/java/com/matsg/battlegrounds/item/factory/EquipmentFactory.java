@@ -134,6 +134,7 @@ public class EquipmentFactory implements ItemFactory<Equipment> {
                 );
 
                 ignitionSystem.setWeapon(tactical);
+                tacticalEffect.setWeapon(tactical);
 
                 return tactical;
             } catch (ValidationFailedException e) {

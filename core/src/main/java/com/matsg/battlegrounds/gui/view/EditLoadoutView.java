@@ -8,6 +8,7 @@ import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.Placeholder;
+import com.matsg.battlegrounds.api.storage.LevelConfig;
 import com.matsg.battlegrounds.api.storage.PlayerStorage;
 import com.matsg.battlegrounds.gui.ViewFactory;
 import com.matsg.battlegrounds.item.ItemStackBuilder;
@@ -29,6 +30,7 @@ public class EditLoadoutView implements View {
     public Gui gui;
     private Consumer<Loadout> updateLoadout;
     private ItemFinder itemFinder;
+    private LevelConfig levelConfig;
     private Loadout loadout;
     private PlayerStorage playerStorage;
     private Translator translator;
@@ -38,6 +40,11 @@ public class EditLoadoutView implements View {
 
     public EditLoadoutView setItemFinder(ItemFinder itemFinder) {
         this.itemFinder = itemFinder;
+        return this;
+    }
+
+    public EditLoadoutView setLevelConfig(LevelConfig levelConfig) {
+        this.levelConfig = levelConfig;
         return this;
     }
 
@@ -133,7 +140,10 @@ public class EditLoadoutView implements View {
                 pane.addItem(new GuiItem(itemStack, event -> {
                     if (event.getClick() == ClickType.LEFT) {
                         if (weapon.getType().hasSubTypes()) {
-                            List<Weapon> weapons = itemFinder.findAllWeapons().stream().filter(w -> w.getType().hasSubTypes() && w.getType().getDefaultItemSlot() == itemSlot).collect(Collectors.toList());
+                            List<Weapon> weapons = itemFinder.findAllWeapons().stream().filter(w -> w.getType().hasSubTypes()
+                                    && w.getType().getDefaultItemSlot() == itemSlot
+                                    && levelConfig.isUnlockable(w.getMetadata().getId())
+                            ).collect(Collectors.toList());
 
                             View view = viewFactory.make(SelectWeaponTypeView.class, instance -> {
                                 instance.setLoadout(loadout);
@@ -142,7 +152,9 @@ public class EditLoadoutView implements View {
                             });
                             view.openInventory(event.getWhoClicked());
                         } else {
-                            List<Weapon> weapons = itemFinder.findAllWeapons().stream().filter(w -> !w.getType().hasSubTypes()).collect(Collectors.toList());
+                            List<Weapon> weapons = itemFinder.findAllWeapons().stream().filter(w -> !w.getType().hasSubTypes()
+                                    && levelConfig.isUnlockable(w.getMetadata().getId())
+                            ).collect(Collectors.toList());
 
                             View view = viewFactory.make(SelectWeaponView.class, instance -> {
                                 instance.setLoadout(loadout);
@@ -185,7 +197,7 @@ public class EditLoadoutView implements View {
     }
 
     private String getItemName(Item item) {
-        return item != null ? item.getMetadata().getName() : translator.translate(TranslationKey.NONE_SELECTED.getPath());
+        return item != null ? item.getMetadata().getName() : translator.translate(TranslationKey.VIEW_NONE_SELECTED.getPath());
     }
 
     private ItemStack getItemStack(Weapon weapon) {

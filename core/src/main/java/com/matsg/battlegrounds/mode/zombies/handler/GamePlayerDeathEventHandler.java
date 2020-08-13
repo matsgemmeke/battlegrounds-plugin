@@ -1,6 +1,7 @@
 package com.matsg.battlegrounds.mode.zombies.handler;
 
 import com.matsg.battlegrounds.api.entity.GamePlayer;
+import com.matsg.battlegrounds.api.entity.PlayerEffect;
 import com.matsg.battlegrounds.api.entity.PlayerState;
 import com.matsg.battlegrounds.api.event.EventHandler;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent;
@@ -30,6 +31,11 @@ public class GamePlayerDeathEventHandler implements EventHandler<GamePlayerDeath
 
         gamePlayer.setState(PlayerState.SPECTATING);
         gamePlayer.getState().apply(game, gamePlayer);
+
+        // Reset perk effects
+        for (PlayerEffect effect : gamePlayer.getEffects()) {
+            effect.remove();
+        }
 
         if (game.getPlayerManager().getLivingPlayers().length <= 0) {
             game.stop();

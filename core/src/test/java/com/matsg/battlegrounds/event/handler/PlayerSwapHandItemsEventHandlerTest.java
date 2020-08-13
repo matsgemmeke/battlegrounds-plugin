@@ -85,7 +85,7 @@ public class PlayerSwapHandItemsEventHandlerTest {
         PlayerSwapHandItemsEventHandler eventHandler = new PlayerSwapHandItemsEventHandler(plugin);
         eventHandler.handle(event);
 
-        verify(item, times(1)).onSwap(gamePlayer);
+        verify(item, times(1)).onSwap(gamePlayer, event);
         verify(playerManager, times(2)).getGamePlayer(player);
 
         assertTrue(event.isCancelled());

@@ -41,7 +41,7 @@ public class LoadoutFactoryTest {
     @Test
     public void makeLoadoutWithoutWeapons() {
         LoadoutFactory loadoutFactory = new LoadoutFactory();
-        Loadout loadout = loadoutFactory.make(1, "loadout", null, null, null, null, new Attachment[0], new Attachment[0], game, gamePlayer);
+        Loadout loadout = loadoutFactory.make(1, "loadout", null, null, null, null, new Attachment[0], new Attachment[0], game, gamePlayer, false);
 
         assertEquals(1, loadout.getLoadoutNr());
         assertEquals("loadout", loadout.getName());
@@ -56,7 +56,7 @@ public class LoadoutFactoryTest {
         ItemSlot itemSlot = ItemSlot.FIREARM_PRIMARY;
 
         LoadoutFactory loadoutFactory = new LoadoutFactory();
-        Loadout loadout = loadoutFactory.make(1, "loadout", primary, null, null, null, new Attachment[0], new Attachment[0], game, gamePlayer);
+        Loadout loadout = loadoutFactory.make(1, "loadout", primary, null, null, null, new Attachment[0], new Attachment[0], game, gamePlayer, false);
 
         verify(primary, times(1)).setGame(game);
         verify(primary, times(1)).setGamePlayer(gamePlayer);
@@ -70,7 +70,7 @@ public class LoadoutFactoryTest {
         ItemSlot itemSlot = ItemSlot.FIREARM_SECONDARY;
 
         LoadoutFactory loadoutFactory = new LoadoutFactory();
-        Loadout loadout = loadoutFactory.make(1, "loadout", null, secondary, null, null, new Attachment[0], new Attachment[0], game, gamePlayer);
+        Loadout loadout = loadoutFactory.make(1, "loadout", null, secondary, null, null, new Attachment[0], new Attachment[0], game, gamePlayer, false);
 
         verify(secondary, times(1)).setGame(game);
         verify(secondary, times(1)).setGamePlayer(gamePlayer);
@@ -84,7 +84,7 @@ public class LoadoutFactoryTest {
         ItemSlot itemSlot = ItemSlot.EQUIPMENT;
 
         LoadoutFactory loadoutFactory = new LoadoutFactory();
-        Loadout loadout = loadoutFactory.make(1, "loadout", null, null, equipment, null, new Attachment[0], new Attachment[0], game, gamePlayer);
+        Loadout loadout = loadoutFactory.make(1, "loadout", null, null, equipment, null, new Attachment[0], new Attachment[0], game, gamePlayer, false);
 
         verify(equipment, times(1)).setGame(game);
         verify(equipment, times(1)).setGamePlayer(gamePlayer);
@@ -98,7 +98,7 @@ public class LoadoutFactoryTest {
         ItemSlot itemSlot = ItemSlot.MELEE_WEAPON;
 
         LoadoutFactory loadoutFactory = new LoadoutFactory();
-        Loadout loadout = loadoutFactory.make(1, "loadout", null, null, null, meleeWeapon, new Attachment[0], new Attachment[0], game, gamePlayer);
+        Loadout loadout = loadoutFactory.make(1, "loadout", null, null, null, meleeWeapon, new Attachment[0], new Attachment[0], game, gamePlayer, false);
 
         verify(meleeWeapon, times(1)).setGame(game);
         verify(meleeWeapon, times(1)).setGamePlayer(gamePlayer);
@@ -116,7 +116,7 @@ public class LoadoutFactoryTest {
         when(primary.getAttachments()).thenReturn(list);
 
         LoadoutFactory loadoutFactory = new LoadoutFactory();
-        loadoutFactory.make(1, "loadout", primary, null, null, meleeWeapon, attachments, new Attachment[0], game, gamePlayer);
+        loadoutFactory.make(1, "loadout", primary, null, null, meleeWeapon, attachments, new Attachment[0], game, gamePlayer, false);
 
         assertEquals(1, list.size());
     }
@@ -130,7 +130,7 @@ public class LoadoutFactoryTest {
         when(secondary.getAttachments()).thenReturn(list);
 
         LoadoutFactory loadoutFactory = new LoadoutFactory();
-        loadoutFactory.make(1, "loadout", null, secondary, null, meleeWeapon, new Attachment[0], attachments, game, gamePlayer);
+        loadoutFactory.make(1, "loadout", null, secondary, null, meleeWeapon, new Attachment[0], attachments, game, gamePlayer, false);
 
         assertEquals(1, list.size());
     }

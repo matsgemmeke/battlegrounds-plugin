@@ -83,7 +83,7 @@ public class PlayerItemHeldEventHandlerTest {
         eventHandler.handle(event);
 
         verify(playerManager, times(2)).getGamePlayer(player);
-        verify(weapon, times(0)).onSwitch(gamePlayer);
+        verify(weapon, times(0)).onSwitch(gamePlayer, event);
 
         assertFalse(event.isCancelled());
     }
@@ -97,7 +97,7 @@ public class PlayerItemHeldEventHandlerTest {
         eventHandler.handle(event);
 
         verify(playerManager, times(2)).getGamePlayer(player);
-        verify(weapon, times(1)).onSwitch(gamePlayer);
+        verify(weapon, times(1)).onSwitch(gamePlayer, event);
 
         assertFalse(event.isCancelled());
     }

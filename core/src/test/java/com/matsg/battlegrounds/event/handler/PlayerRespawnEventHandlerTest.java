@@ -4,10 +4,8 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.PlayerManager;
-import com.matsg.battlegrounds.api.game.Spawn;
 import com.matsg.battlegrounds.api.game.GameMode;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
-import com.matsg.battlegrounds.game.ArenaSpawn;
 import com.matsg.battlegrounds.entity.BattleGamePlayer;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -58,17 +56,17 @@ public class PlayerRespawnEventHandlerTest {
         GameMode gameMode = mock(GameMode.class);
 
         GamePlayer gamePlayer = new BattleGamePlayer(player, null);
-        Spawn spawn = new ArenaSpawn(1, new Location(mock(World.class), 0, 0, 0), 1);
+        Location location = new Location(mock(World.class), 0, 0, 0);
 
         when(game.getGameMode()).thenReturn(gameMode);
-        when(gameMode.getRespawnPoint(gamePlayer)).thenReturn(spawn);
+        when(gameMode.getRespawnLocation(gamePlayer)).thenReturn(location);
         when(playerManager.getGamePlayer(player)).thenReturn(gamePlayer);
 
         PlayerRespawnEventHandler eventHandler = new PlayerRespawnEventHandler(plugin);
         eventHandler.handle(event);
 
-        verify(playerManager, times(1)).respawnPlayer(gamePlayer, spawn);
+        verify(gameMode, times(1)).respawnPlayer(gamePlayer);
 
-        assertEquals(spawn.getLocation(), event.getRespawnLocation());
+        assertEquals(location, event.getRespawnLocation());
     }
 }

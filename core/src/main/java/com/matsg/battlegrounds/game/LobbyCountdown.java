@@ -34,6 +34,7 @@ public class LobbyCountdown extends Countdown {
     public void run() {
         if (game.getArena() == null || game.getPlayerManager().getPlayers().size() < game.getConfiguration().getMinPlayers()) {
             game.stop();
+            cancel();
             return;
         }
 

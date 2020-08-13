@@ -64,6 +64,7 @@ public class BattleViewFactory implements ViewFactory {
         if (viewClass == EditLoadoutView.class) {
             T view = (T) new EditLoadoutView()
                     .setItemFinder(itemFinder)
+                    .setLevelConfig(plugin.getLevelConfig())
                     .setPlayerStorage(plugin.getPlayerStorage())
                     .setTranslator(plugin.getTranslator())
                     .setViewFactory(this);

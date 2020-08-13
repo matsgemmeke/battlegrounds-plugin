@@ -12,8 +12,6 @@ import com.matsg.battlegrounds.api.entity.Mob;
 import com.matsg.battlegrounds.api.event.EventHandler;
 import com.matsg.battlegrounds.api.event.GamePlayerKillEntityEvent;
 import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.mode.zombies.component.Barricade;
-import com.matsg.battlegrounds.mode.zombies.component.Section;
 import com.matsg.battlegrounds.mode.zombies.item.PowerUp;
 import com.matsg.battlegrounds.mode.zombies.Zombies;
 import com.matsg.battlegrounds.mode.zombies.item.factory.PowerUpFactory;

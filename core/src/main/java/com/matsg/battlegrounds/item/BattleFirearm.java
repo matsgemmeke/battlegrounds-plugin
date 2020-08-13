@@ -24,6 +24,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -448,9 +449,16 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
                 .setDisplayName(ChatColor.WHITE + metadata.getName() + "  " + magazine.getValue() + "/" + ammo.getValue())
                 .setUnbreakable(true)
                 .build();
+
         if (gamePlayer != null) {
-            gamePlayer.getPlayer().getInventory().setItem(itemSlot.getSlot(), itemStack);
+            Inventory inventory = gamePlayer.getPlayer().getInventory();
+
+            if (inventory.contains(itemStack)) {
+                int slot = inventory.first(itemStack);
+                inventory.setItem(slot, itemStack);
+            }
         }
+
         return gamePlayer != null;
     }
 }

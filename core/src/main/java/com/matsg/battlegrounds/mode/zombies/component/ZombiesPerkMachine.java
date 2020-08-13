@@ -156,6 +156,7 @@ public class ZombiesPerkMachine implements PerkMachine {
 
         View view = viewFactory.make(ItemTransactionView.class, instance -> {
             instance.setGame(game);
+            instance.setGamePlayer(gamePlayer);
             instance.setItem(perk);
             instance.setItemStack(perk.getItemStack());
             instance.setOnTransactionComplete(onTransactionComplete);

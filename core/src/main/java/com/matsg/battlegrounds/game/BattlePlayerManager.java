@@ -106,7 +106,7 @@ public class BattlePlayerManager implements PlayerManager {
     public void changeLoadout(GamePlayer gamePlayer, Loadout loadout) {
         Loadout current = gamePlayer.getLoadout();
 
-        if (current != null && current.equals(loadout)) {
+        if (current != null) {
             clearLoadout(current);
         }
 

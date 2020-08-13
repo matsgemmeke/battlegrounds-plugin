@@ -4,6 +4,7 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.entity.BattleEntity;
 import com.matsg.battlegrounds.api.event.EventHandler;
 import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.api.game.GameAction;
 import com.matsg.battlegrounds.api.item.ItemSlot;
 import com.matsg.battlegrounds.api.item.MeleeWeapon;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
@@ -28,6 +29,11 @@ public class EntityDamageByEntityEventHandler implements EventHandler<EntityDama
         Game game = plugin.getGameManager().getGame(player);
 
         if (game == null) {
+            return;
+        }
+
+        if (!game.getState().isAllowed(GameAction.USE_WEAPON)) {
+            event.setCancelled(true);
             return;
         }
 

@@ -61,7 +61,8 @@ public class GamePlayerDeathEvent extends Event {
         DROWNING(2, "game-death-drowning", DamageCause.DROWNING),
         FALLING(3, "game-death-falling", DamageCause.FALL),
         PLAYER_KILL(4, "game-death-player-kill"),
-        SUICIDE(5, "game-death-suicide", DamageCause.SUICIDE);
+        SUICIDE(5, "game-death-suicide", DamageCause.SUICIDE),
+        MOB_KILL(6, "game-death-mob-kill", DamageCause.ENTITY_ATTACK);
 
         private DamageCause[] damageCause;
         private int id;

@@ -1,6 +1,9 @@
 package com.matsg.battlegrounds.item.mechanism;
 
 import com.matsg.battlegrounds.TaskRunner;
+import com.matsg.battlegrounds.api.entity.BattleEntity;
+import com.matsg.battlegrounds.api.entity.BattleEntityType;
+import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.item.Tactical;
 import com.matsg.battlegrounds.api.util.Sound;
 import com.matsg.battlegrounds.util.XMaterial;
@@ -9,6 +12,8 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Item;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -37,6 +42,15 @@ public class SmokeEffect implements TacticalEffect {
 
         tactical.getDroppedItems().remove(item);
         item.remove();
+
+//        PotionEffect potionEffect = new PotionEffect(PotionEffectType.BLINDNESS, 100, 1);
+//
+//        for (BattleEntity entity : tactical.getContext().getNearbyEntities(item.getLocation(), tactical.getLongRange())) {
+//            if (entity.getEntityType() == BattleEntityType.PLAYER) {
+//                GamePlayer gamePlayer = (GamePlayer) entity;
+//                gamePlayer.getPlayer().addPotionEffect(potionEffect);
+//            }
+//        }
 
         for (Block block : blocks) {
             if (block.getType() == Material.AIR) {

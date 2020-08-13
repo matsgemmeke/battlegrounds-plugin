@@ -91,7 +91,8 @@ public class EquipmentFactoryTest {
 
     @Test
     public void makeLethal() {
-        when(section.getInt("Amount")).thenReturn(1);
+        when(section.getInt("Amount.Max")).thenReturn(1);
+        when(section.getInt("Amount.Supply")).thenReturn(1);
         when(section.getInt("Cooldown")).thenReturn(1);
         when(section.getString("EquipmentType")).thenReturn("LETHAL");
         when(section.getInt("IgnitionTime")).thenReturn(1);
@@ -114,7 +115,8 @@ public class EquipmentFactoryTest {
 
     @Test
     public void makeTactical() {
-        when(section.getInt("Amount")).thenReturn(1);
+        when(section.getInt("Amount.Max")).thenReturn(1);
+        when(section.getInt("Amount.Supply")).thenReturn(1);
         when(section.getInt("Cooldown")).thenReturn(1);
         when(section.getInt("Duration")).thenReturn(1);
         when(section.getString("Effect")).thenReturn("BLINDNESS");

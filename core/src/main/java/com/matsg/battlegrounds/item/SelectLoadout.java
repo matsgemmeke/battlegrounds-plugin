@@ -8,6 +8,7 @@ import com.matsg.battlegrounds.gui.view.SelectLoadoutView;
 import com.matsg.battlegrounds.gui.view.View;
 import com.matsg.battlegrounds.item.factory.LoadoutFactory;
 import org.bukkit.Material;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 public class SelectLoadout extends BattleItem {
 
@@ -36,11 +37,11 @@ public class SelectLoadout extends BattleItem {
         view.openInventory(gamePlayer.getPlayer());
     }
 
-    public void onLeftClick(GamePlayer gamePlayer) {
+    public void onLeftClick(GamePlayer gamePlayer, PlayerInteractEvent event) {
         onClick(gamePlayer);
     }
 
-    public void onRightClick(GamePlayer gamePlayer) {
+    public void onRightClick(GamePlayer gamePlayer, PlayerInteractEvent event) {
         onClick(gamePlayer);
     }
 

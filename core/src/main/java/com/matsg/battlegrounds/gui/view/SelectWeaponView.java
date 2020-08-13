@@ -104,7 +104,7 @@ public class SelectWeaponView implements View {
     private ItemStack getLockedItemStack(Weapon weapon) {
         return new ItemStackBuilder(Material.BARRIER)
                 .addItemFlags(ItemFlag.values())
-                .setDisplayName(translator.translate(TranslationKey.ITEM_LOCKED.getPath(), new Placeholder("bg_level", levelConfig.getLevelUnlocked(weapon.getMetadata().getId()))))
+                .setDisplayName(translator.translate(TranslationKey.VIEW_ITEM_LOCKED.getPath(), new Placeholder("bg_level", levelConfig.getLevelUnlocked(weapon.getMetadata().getId()))))
                 .setUnbreakable(true)
                 .build();
     }
