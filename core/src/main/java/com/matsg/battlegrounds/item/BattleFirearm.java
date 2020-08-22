@@ -452,11 +452,7 @@ public abstract class BattleFirearm extends BattleWeapon implements Firearm {
 
         if (gamePlayer != null) {
             Inventory inventory = gamePlayer.getPlayer().getInventory();
-
-            if (inventory.contains(itemStack)) {
-                int slot = inventory.first(itemStack);
-                inventory.setItem(slot, itemStack);
-            }
+            inventory.setItem(itemSlot.getSlot(), itemStack);
         }
 
         return gamePlayer != null;

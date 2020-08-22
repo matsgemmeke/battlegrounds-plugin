@@ -46,6 +46,7 @@ public class BattleGame implements Game {
 
     public BattleGame(
             int id,
+            CacheYaml cache,
             CacheYaml dataFile,
             EventDispatcher eventDispatcher,
             GameState state,
@@ -67,7 +68,7 @@ public class BattleGame implements Game {
         this.translator = translator;
         this.arenaList = new ArrayList<>();
         this.gameModeList = new ArrayList<>();
-        this.playerManager = new BattlePlayerManager(this, levelConfig, playerStorage, taskRunner, translator);
+        this.playerManager = new BattlePlayerManager(this, cache, levelConfig, playerStorage, translator);
     }
 
     public Arena getArena() {

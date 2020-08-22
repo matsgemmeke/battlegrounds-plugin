@@ -25,6 +25,7 @@ public class GameFactory {
     }
 
     public Game make(int id) {
+        CacheYaml cache = plugin.getBattlegroundsCache();
         EventDispatcher eventDispatcher = plugin.getEventDispatcher();
         LevelConfig levelConfig = plugin.getLevelConfig();
         PlayerStorage playerStorage = plugin.getPlayerStorage();
@@ -43,6 +44,7 @@ public class GameFactory {
 
         return new BattleGame(
                 id,
+                cache,
                 dataFile,
                 eventDispatcher,
                 gameState,

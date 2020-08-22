@@ -74,6 +74,7 @@ public class ZombiesPerkManager implements PerkManager {
     public void removePerks(GamePlayer gamePlayer) {
         for (Perk perk : playerPerks.get(gamePlayer)) {
             perk.getEffect().remove();
+            perk.remove();
         }
 
         playerPerks.remove(gamePlayer);

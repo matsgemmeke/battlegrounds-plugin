@@ -4,13 +4,28 @@ import com.matsg.battlegrounds.api.game.SpawnOccupant;
 import com.matsg.battlegrounds.api.game.Team;
 import com.matsg.battlegrounds.api.item.Item;
 import com.matsg.battlegrounds.api.item.Loadout;
-import com.matsg.battlegrounds.api.item.Weapon;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
 public interface GamePlayer extends BattleEntity, OfflineGamePlayer, SpawnOccupant, Comparable<GamePlayer> {
+
+    /**
+     * Gets the down state of the player. Returns null if the player is not downed.
+     *
+     * @return the player down state
+     */
+    @Nullable
+    DownState getDownState();
+
+    /**
+     * Sets the down state of the player.
+     *
+     * @param downState the player down state
+     */
+    void setDownState(@Nullable DownState downState);
 
     /**
      * Gets the effects casted on the player.

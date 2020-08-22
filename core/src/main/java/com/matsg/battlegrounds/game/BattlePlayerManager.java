@@ -5,45 +5,44 @@ import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.entity.PlayerState;
 import com.matsg.battlegrounds.api.entity.SavedInventory;
-import com.matsg.battlegrounds.api.storage.LevelConfig;
-import com.matsg.battlegrounds.api.storage.StatisticContext;
-import com.matsg.battlegrounds.api.storage.StoredPlayer;
+import com.matsg.battlegrounds.api.storage.*;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
-import com.matsg.battlegrounds.api.storage.PlayerStorage;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.gui.scoreboard.LobbyScoreboard;
 import com.matsg.battlegrounds.entity.BattleGamePlayer;
 import com.matsg.battlegrounds.entity.BattleSavedInventory;
+import com.matsg.battlegrounds.storage.LocationFormatException;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BattlePlayerManager implements PlayerManager {
 
+    private CacheYaml cache;
     private Game game;
     private LevelConfig levelConfig;
     private List<GamePlayer> players;
     private PlayerStorage playerStorage;
-    private TaskRunner taskRunner;
     private Translator translator;
 
     public BattlePlayerManager(
             Game game,
+            CacheYaml cache,
             LevelConfig levelConfig,
             PlayerStorage playerStorage,
-            TaskRunner taskRunner,
             Translator translator
     ) {
         this.game = game;
+        this.cache = cache;
         this.levelConfig = levelConfig;
         this.playerStorage = playerStorage;
-        this.taskRunner = taskRunner;
         this.translator = translator;
         this.players = new ArrayList<>();
     }
@@ -67,7 +66,10 @@ public class BattlePlayerManager implements PlayerManager {
     public GamePlayer addPlayer(Player player) {
         SavedInventory savedInventory = new BattleSavedInventory(player, player.getInventory());
         GamePlayer gamePlayer = new BattleGamePlayer(player, savedInventory);
+
         Location lobby = game.getLobby();
+        Location returnLocation = getReturnLocation(gamePlayer);
+        Scoreboard scoreboard = new LobbyScoreboard(game).createScoreboard();
 
         players.add(gamePlayer);
 
@@ -79,8 +81,8 @@ public class BattlePlayerManager implements PlayerManager {
         game.getGameMode().addPlayer(gamePlayer);
         game.updateSign();
 
-        gamePlayer.getPlayer().setScoreboard(new LobbyScoreboard(game).createScoreboard());
-        gamePlayer.setReturnLocation(player.getLocation());
+        gamePlayer.getPlayer().setScoreboard(scoreboard);
+        gamePlayer.setReturnLocation(returnLocation);
         gamePlayer.setState(PlayerState.ACTIVE);
         gamePlayer.getState().apply(game, gamePlayer);
 
@@ -288,5 +290,18 @@ public class BattlePlayerManager implements PlayerManager {
 
         player.setExp(levelConfig.getExpBar(exp));
         player.setLevel(level);
+    }
+
+    private Location getReturnLocation(GamePlayer gamePlayer) {
+        Location returnLocation;
+
+        // Since the main lobby may not have been set up, the location lookup needs a try catch block
+        try {
+            returnLocation = cache.getLocation("mainlobby");
+        } catch (LocationFormatException e) {
+            returnLocation = gamePlayer.getLocation();
+        }
+
+        return returnLocation;
     }
 }

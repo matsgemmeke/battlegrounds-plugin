@@ -40,7 +40,7 @@ public class DefaultDeathEventHandler implements EventHandler<GamePlayerDeathEve
         if (weapon instanceof Firearm) {
             Location location = gamePlayer.getLocation();
             Item item = location.getWorld().dropItem(location, weapon.getItemStack());
-            ((Firearm) weapon).onDrop(gamePlayer, item);
+            weapon.onDrop(gamePlayer, item);
         }
     }
 }

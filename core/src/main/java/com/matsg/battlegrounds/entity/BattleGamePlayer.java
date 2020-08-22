@@ -12,12 +12,15 @@ import com.matsg.battlegrounds.util.data.FloatValueObject;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
 public class BattleGamePlayer implements GamePlayer {
 
     private BattleEntityType entityType;
+    @Nullable
+    private DownState downState;
     private GenericAttribute<Float> reviveDuration;
     private int deaths, exp, headshots, kills, lives, points;
     private List<Item> items;
@@ -54,6 +57,15 @@ public class BattleGamePlayer implements GamePlayer {
 
     public void setDeaths(int deaths) {
         this.deaths = deaths;
+    }
+
+    @Nullable
+    public DownState getDownState() {
+        return downState;
+    }
+
+    public void setDownState(@Nullable DownState downState) {
+        this.downState = downState;
     }
 
     public List<PlayerEffect> getEffects() {
