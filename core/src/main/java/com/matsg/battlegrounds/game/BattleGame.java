@@ -230,6 +230,10 @@ public class BattleGame implements Game {
             gamePlayer.getSavedInventory().restore(player);
             gamePlayer.setState(PlayerState.ACTIVE);
             gamePlayer.getState().apply(this, gamePlayer);
+
+            if (gamePlayer.getDownState() != null) {
+                gamePlayer.getDownState().dispose();
+            }
         }
     }
 

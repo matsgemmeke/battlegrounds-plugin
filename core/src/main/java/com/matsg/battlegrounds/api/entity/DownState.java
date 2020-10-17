@@ -38,6 +38,11 @@ public interface DownState {
     void setReviver(@Nullable GamePlayer reviver);
 
     /**
+     * Disposes of the down state's props.
+     */
+    void dispose();
+
+    /**
      * Starts the down state.
      */
     void run();

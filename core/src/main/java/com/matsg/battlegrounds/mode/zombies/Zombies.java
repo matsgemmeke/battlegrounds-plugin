@@ -106,7 +106,7 @@ public class Zombies extends AbstractGameMode {
                 new ZombiesDamageEventHandler(this, internals, translator)
         ));
         plugin.getEventDispatcher().registerEventChannel(GamePlayerDeathEvent.class, new EventChannel<>(
-                new GamePlayerDeathEventHandler(game, this, perkManager)
+                new GamePlayerDeathEventHandler(game, this, perkManager, internals, taskRunner, translator)
         ));
         plugin.getEventDispatcher().registerEventChannel(GamePlayerKillEntityEvent.class, new EventChannel<>(
                 new ZombiesKillEventHandler(this, internals, powerUpFactory, taskRunner, translator)

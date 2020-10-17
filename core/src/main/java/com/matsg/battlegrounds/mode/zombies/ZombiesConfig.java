@@ -1,6 +1,5 @@
 package com.matsg.battlegrounds.mode.zombies;
 
-import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.storage.BattleCacheYaml;
 import org.bukkit.Server;
 import org.bukkit.configuration.ConfigurationSection;
@@ -22,12 +21,16 @@ public class ZombiesConfig extends BattleCacheYaml {
     private double mobFollowRange;
     private double mobMaxHealth;
     private double powerUpChance;
+    private double reviveMaxDistance;
     private double spawnRate;
     private int defaultEquipmentAmount;
     private int defaultPoints;
     private int defaultPrimaryMagazines;
+    private int downDuration;
     private int mysteryBoxPrice;
     private int powerUpDuration;
+    private int quickReviveDuration;
+    private int reviveDuration;
     private int runningMobsRound;
     private int startingRound;
     private int targetUpdateInterval;
@@ -41,6 +44,7 @@ public class ZombiesConfig extends BattleCacheYaml {
         this.defaultEquipmentAmount = getInt("zombies-default-loadout.equipment-amount");
         this.defaultPoints = getInt("zombies-default-loadout.points");
         this.defaultPrimaryMagazines = getInt("zombies-default-loadout.primary-magazines");
+        this.downDuration = getInt("zombies-reviving.down-duration");
         this.hellhoundChance = getDouble("zombies-wave-hellhound-chance");
         this.hellhoundEnabled = getBoolean("zombies-wave-enable-hellhounds");
         this.hellhoundHealth = getDouble("zombies-wave-hellhound-health");
@@ -52,6 +56,9 @@ public class ZombiesConfig extends BattleCacheYaml {
         this.powerUpChance = getDouble("zombies-power-up-chance");
         this.powerUpDuration = getInt("zombies-power-up-duration");
         this.powerUpEffects = getStringList("zombies-power-up-effects");
+        this.quickReviveDuration = getInt("zombies-reviving.quick-revive-duration");
+        this.reviveDuration = getInt("zombies-reviving.revive-duration");
+        this.reviveMaxDistance = getDouble("zombies-reviving.max-distance");
         this.runningMobs = getBoolean("zombies-wave-running-mobs");
         this.runningMobsRound = getInt("zombies-wave-running-mobs-round");
         this.spawnRate = getDouble("zombies-wave-spawn-rate");
@@ -71,6 +78,10 @@ public class ZombiesConfig extends BattleCacheYaml {
 
     public int getDefaultPrimaryMagazines() {
         return defaultPrimaryMagazines;
+    }
+
+    public int getDownDuration() {
+        return downDuration;
     }
 
     public double getHellhoundChance() {
@@ -111,6 +122,18 @@ public class ZombiesConfig extends BattleCacheYaml {
 
     public List<String> getPowerUpEffects() {
         return powerUpEffects;
+    }
+
+    public int getQuickReviveDuration() {
+        return quickReviveDuration;
+    }
+
+    public int getReviveDuration() {
+        return reviveDuration;
+    }
+
+    public double getReviveMaxDistance() {
+        return reviveMaxDistance;
     }
 
     public int getRunningMobsRound() {

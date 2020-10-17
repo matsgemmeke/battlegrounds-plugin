@@ -38,18 +38,16 @@ public class PlayerMoveEventHandler implements EventHandler<PlayerMoveEvent> {
         Location from = event.getFrom(), to = event.getTo();
 
         // Check if there is an arena and whether the player has moved on the x or z axis
-        if (arena == null || game.getState().isAllowed(GameAction.MOVEMENT) || from.getX() == to.getX() && from.getZ() == to.getZ()) {
+        if (arena == null || from.getX() == to.getX() && from.getZ() == to.getZ()) {
             return;
         }
 
         // If the game is in progress and the player tries to leave the arena, send them back
-        if (game.getState().isInProgress()) {
-            if (arena.hasBorders() && !arena.contains(to)) {
-                player.teleport(from.add(from.toVector().subtract(to.toVector()).normalize()));
+        if (game.getState().isInProgress() && arena.hasBorders() && !arena.contains(to)) {
+            player.teleport(from.add(from.toVector().subtract(to.toVector()).normalize()));
 
-                String actionBar = translator.translate(TranslationKey.ACTIONBAR_LEAVE_ARENA.getPath());
-                internals.sendActionBar(player, actionBar);
-            }
+            String actionBar = translator.translate(TranslationKey.ACTIONBAR_LEAVE_ARENA.getPath());
+            internals.sendActionBar(player, actionBar);
             return;
         }
 
@@ -59,6 +57,11 @@ public class PlayerMoveEventHandler implements EventHandler<PlayerMoveEvent> {
         // If the player's state does not allow the player to move, send them back
         if (!gamePlayer.getState().canMove()) {
             player.teleport(from);
+            return;
+        }
+
+        // Don't return players to their spawns if the game has started
+        if (game.getState().isAllowed(GameAction.MOVEMENT)) {
             return;
         }
 

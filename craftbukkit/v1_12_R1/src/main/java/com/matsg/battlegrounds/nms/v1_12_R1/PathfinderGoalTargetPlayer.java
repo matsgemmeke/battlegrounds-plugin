@@ -2,6 +2,7 @@ package com.matsg.battlegrounds.nms.v1_12_R1;
 
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.Mob;
+import com.matsg.battlegrounds.api.entity.PlayerState;
 import com.matsg.battlegrounds.api.game.Game;
 import net.minecraft.server.v1_12_R1.PathfinderGoal;
 import org.bukkit.plugin.Plugin;
@@ -36,7 +37,7 @@ public class PathfinderGoalTargetPlayer extends PathfinderGoal {
                     return;
                 }
 
-                GamePlayer gamePlayer = game.getPlayerManager().getNearestPlayer(mob.getBukkitEntity().getLocation());
+                GamePlayer gamePlayer = game.getPlayerManager().getNearestPlayer(mob.getBukkitEntity().getLocation(), g -> g.getState() == PlayerState.ACTIVE);
 
                 if (gamePlayer != null && currentTarget != gamePlayer && mob.isHostileTowards(gamePlayer)) {
                     currentTarget = gamePlayer;

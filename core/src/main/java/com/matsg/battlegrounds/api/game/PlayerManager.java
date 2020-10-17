@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.Collection;
+import java.util.function.Predicate;
 
 public interface PlayerManager {
 
@@ -97,6 +98,15 @@ public interface PlayerManager {
     GamePlayer getNearestPlayer(Location location);
 
     /**
+     * Gets the nearest player from a location with a certain constraint.
+     *
+     * @param location the location to get the nearest player of
+     * @param constraint the player constraint
+     * @return the nearest player
+     */
+    GamePlayer getNearestPlayer(Location location, Predicate<GamePlayer> constraint);
+
+    /**
      * Gets the nearest player from a location within a certain range.
      *
      * @param location the location to get the nearest player of
@@ -104,6 +114,16 @@ public interface PlayerManager {
      * @return the nearest player or null if there are no players in the range
      */
     GamePlayer getNearestPlayer(Location location, double range);
+
+    /**
+     * Gets the nearest player from a location, within a certain range and with a certain constraint.
+     *
+     * @param location the location to get the nearest player of
+     * @param range the maximum distance between player and the location
+     * @param constraint the player constraint
+     * @return the nearest player
+     */
+    GamePlayer getNearestPlayer(Location location, double range, Predicate<GamePlayer> constraint);
 
     /**
      * Gets the nearest player from a certain from a location.

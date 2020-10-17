@@ -2,7 +2,6 @@ package com.matsg.battlegrounds.mode.zombies;
 
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.mode.zombies.item.Perk;
-import com.matsg.battlegrounds.mode.zombies.item.PerkEffect;
 import com.matsg.battlegrounds.mode.zombies.item.PerkEffectType;
 
 import java.util.ArrayList;
@@ -72,6 +71,11 @@ public class ZombiesPerkManager implements PerkManager {
     }
 
     public void removePerks(GamePlayer gamePlayer) {
+        // Players without perks are not registered in the hashmap, so we ignore those
+        if (!playerPerks.containsKey(gamePlayer)) {
+            return;
+        }
+
         for (Perk perk : playerPerks.get(gamePlayer)) {
             perk.getEffect().remove();
             perk.remove();

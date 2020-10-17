@@ -22,6 +22,7 @@ import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class BattlePlayerManager implements PlayerManager {
 
@@ -149,7 +150,7 @@ public class BattlePlayerManager implements PlayerManager {
     public GamePlayer[] getLivingPlayers() {
         List<GamePlayer> list = new ArrayList<>();
         for (GamePlayer gamePlayer : players) {
-            if (gamePlayer.getState().canInteract()) {
+            if (gamePlayer.getState().isAlive()) {
                 list.add(gamePlayer);
             }
         }
@@ -196,11 +197,20 @@ public class BattlePlayerManager implements PlayerManager {
         return getNearestPlayer(location, Double.MAX_VALUE);
     }
 
+    public GamePlayer getNearestPlayer(Location location, Predicate<GamePlayer> constraint) {
+        return getNearestPlayer(location, Double.MAX_VALUE, constraint);
+    }
+
     public GamePlayer getNearestPlayer(Location location, double range) {
+        return getNearestPlayer(location, range, gamePlayer -> true);
+    }
+
+    public GamePlayer getNearestPlayer(Location location, double range, Predicate<GamePlayer> constraint) {
         double distance = range;
         GamePlayer nearestPlayer = null;
         for (GamePlayer gamePlayer : getLivingPlayers()) {
             if (gamePlayer != null
+                    && constraint.test(gamePlayer)
                     && gamePlayer.getState().canInteract()
                     && location.getWorld() == gamePlayer.getPlayer().getWorld()
                     && location.distanceSquared(gamePlayer.getPlayer().getLocation()) < distance) {

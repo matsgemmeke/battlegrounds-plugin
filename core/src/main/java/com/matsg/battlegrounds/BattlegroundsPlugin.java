@@ -65,9 +65,7 @@ public class BattlegroundsPlugin extends JavaPlugin implements Battlegrounds {
     }
 
     public void onDisable() {
-        if (gameManager != null) {
-            gameManager.shutdown();
-        }
+        gameManager.shutdown();
     }
 
     public static Battlegrounds getPlugin() {

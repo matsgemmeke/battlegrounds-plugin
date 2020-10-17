@@ -79,6 +79,7 @@ public enum TranslationKey {
     GUN_PART_STOCK("item-gun-part-stock"),
     GUN_PART_UPPER_RAIL("item-gun-part-upper-rail"),
     HELP_MENU("command-help-menu"),
+    HOLOGRAM_REVIVE("game-hologram-revive"),
     IN_PROGRESS("game-in-progress"),
     INVALID_ARGUMENT_TYPE("command-invalid-arg-type"),
     INVALID_ARGUMENTS("command-invalid-args"),

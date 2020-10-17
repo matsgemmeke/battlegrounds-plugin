@@ -62,6 +62,17 @@ zombies-power-up-effects:
   - MAX_AMMO
   - NUKE
 
+# Reviving configurations
+zombies-reviving:
+  # The time a player will be downed before going into spectator mode in ticks
+  down-duration: 600
+  # The maximum distance a player can be from a downed player to revive them
+  max-distance: 2.0
+  # The time it takes for the quick revive perk to revive a player in ticks
+  quick-revive-duration: 160
+  # The time it takes to revive a player in ticks
+  revive-duration: 200
+
 # Scoreboard configurations
 zombies-scoreboard:
   # Set to false to disable scoreboards
