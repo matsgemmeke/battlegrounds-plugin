@@ -2,6 +2,7 @@ package com.matsg.battlegrounds.mode.zombies.handler;
 
 import com.matsg.battlegrounds.InternalsProvider;
 import com.matsg.battlegrounds.TaskRunner;
+import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.PlayerState;
@@ -12,6 +13,7 @@ import com.matsg.battlegrounds.entity.TimerDownState;
 import com.matsg.battlegrounds.mode.zombies.PerkManager;
 import com.matsg.battlegrounds.mode.zombies.Zombies;
 import com.matsg.battlegrounds.mode.zombies.item.PerkEffectType;
+import com.matsg.battlegrounds.util.EnumTitle;
 import org.bukkit.Location;
 
 public class GamePlayerDeathEventHandler implements EventHandler<GamePlayerDeathEvent> {
@@ -68,16 +70,23 @@ public class GamePlayerDeathEventHandler implements EventHandler<GamePlayerDeath
             game.stop();
         }
 
-        double maxDistance = zombies.getConfig().getReviveMaxDistance();
+        // Announce the player down
+        for (GamePlayer g : game.getPlayerManager().getPlayers()) {
+            EnumTitle.PLAYER_DOWNED.send(g.getPlayer(), new Placeholder("player_name", gamePlayer.getName()));
+        }
+
+        double maxRevivingDistance = zombies.getConfig().getReviveMaxDistance();
         int points = gamePlayer.getPoints() / 10;
         Location location = gamePlayer.getLocation();
 
         TimerDownState downState = new TimerDownState(game, gamePlayer, location, internals, taskRunner, translator, downDuration, reviveDuration);
-        downState.setMaxDistance(maxDistance);
+        downState.setMaxRevivingDistance(maxRevivingDistance);
         downState.setOnPlayerKill(this::onPlayerKill);
         downState.setPoints(points);
         downState.run();
 
+        // Skip the respawn screen
+        gamePlayer.getPlayer().spigot().respawn();
         gamePlayer.setDownState(downState);
         gamePlayer.setPoints(gamePlayer.getPoints() - points);
     }

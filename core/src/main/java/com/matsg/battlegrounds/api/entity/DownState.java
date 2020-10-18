@@ -23,6 +23,20 @@ public interface DownState {
     Location getLocation();
 
     /**
+     * Gets the maximum distance a reviving player can be from the downed player to revive them.
+     *
+     * @return the maximum reviving distance
+     */
+    double getMaxRevivingDistance();
+
+    /**
+     * Sets the maximum distance a reviving player can be from the downed player to revive them.
+     *
+     * @param maxRevivingDistance the maximum reviving distance
+     */
+    void setMaxRevivingDistance(double maxRevivingDistance);
+
+    /**
      * Gets the player who is reviving the downed player. Returns null if the downed player is not being revived.
      *
      * @return the player reviving the downed player

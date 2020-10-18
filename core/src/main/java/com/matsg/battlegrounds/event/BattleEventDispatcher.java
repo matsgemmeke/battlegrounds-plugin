@@ -2,7 +2,6 @@ package com.matsg.battlegrounds.event;
 
 import com.matsg.battlegrounds.api.event.EventDispatcher;
 import com.matsg.battlegrounds.api.event.EventChannel;
-import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginManager;
 

@@ -26,7 +26,7 @@ public class TimerDownState implements DownState {
 
     @Nullable
     private Consumer<GamePlayer> onPlayerKill;
-    private double maxDistance;
+    private double maxRevivingDistance;
     @NotNull
     private Game game;
     @NotNull
@@ -83,12 +83,12 @@ public class TimerDownState implements DownState {
         return location;
     }
 
-    public double getMaxDistance() {
-        return maxDistance;
+    public double getMaxRevivingDistance() {
+        return maxRevivingDistance;
     }
 
-    public void setMaxDistance(double maxDistance) {
-        this.maxDistance = maxDistance;
+    public void setMaxRevivingDistance(double maxRevivingDistance) {
+        this.maxRevivingDistance = maxRevivingDistance;
     }
 
     @Nullable
@@ -157,10 +157,18 @@ public class TimerDownState implements DownState {
                 }
 
                 // If the reviver moves too far away from the downed player, reset the reviving status
-                if (reviver != null && reviver.getLocation().distance(gamePlayer.getLocation()) > maxDistance) {
+                if (reviver != null && reviver.getLocation().distance(gamePlayer.getLocation()) > maxRevivingDistance) {
+                    // Send empty titles to clear the previous title
+                    internals.sendTitle(gamePlayer.getPlayer(), "", "", 0, 0, 0);
+                    internals.sendTitle(reviver.getPlayer(), "", "", 0, 0, 0);
+
                     reviver = null;
                     reviveTime = 0;
-                    internals.sendTitle(gamePlayer.getPlayer(), "", "", 0, 0, 0); // Send an empty title to clear the previous title
+                }
+
+                // If the reviver abandoned the downed player, reset the revive timer
+                if (reviver == null && reviveTime > 0) {
+                    reviveTime = 0;
                 }
 
                 // If the downed player was not revived after a period of time, kill the downed player
@@ -207,13 +215,11 @@ public class TimerDownState implements DownState {
             sound.play(game, location);
         }
 
-        gamePlayer.setPoints(gamePlayer.getPoints() + points);
-
         String actionBar = translator.translate(TranslationKey.ACTIONBAR_POINTS_INCREASE.getPath(), new Placeholder("bg_points", points));
-        internals.sendActionBar(gamePlayer.getPlayer(), actionBar);
+        internals.sendActionBar(reviver.getPlayer(), actionBar);
 
+        reviver.setPoints(reviver.getPoints() + points);
         game.updateScoreboard();
-
         hologram.remove();
     }
 }

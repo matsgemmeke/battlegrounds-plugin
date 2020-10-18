@@ -7,8 +7,8 @@ import org.bukkit.GameMode;
 public enum PlayerState {
 
     ACTIVE(0, true, ChatColor.WHITE, GameMode.SURVIVAL, true, true),
-    DOWNED(1, true, ChatColor.WHITE, GameMode.SURVIVAL, false, false),
-    SPECTATING(2, false, ChatColor.GRAY, GameMode.CREATIVE, false, true);
+    DOWNED(1, true, ChatColor.WHITE, GameMode.CREATIVE, false, false),
+    SPECTATING(2, false, ChatColor.GRAY, GameMode.SPECTATOR, false, true);
 
     private boolean alive, interact, move;
     private ChatColor chatColor;

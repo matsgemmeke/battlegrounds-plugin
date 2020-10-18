@@ -71,7 +71,7 @@ zombies-reviving:
   # The time it takes for the quick revive perk to revive a player in ticks
   quick-revive-duration: 160
   # The time it takes to revive a player in ticks
-  revive-duration: 200
+  revive-duration: 100
 
 # Scoreboard configurations
 zombies-scoreboard:
