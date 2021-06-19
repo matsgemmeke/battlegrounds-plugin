@@ -5,6 +5,7 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.InternalsProvider;
 import com.matsg.battlegrounds.api.Translator;
+import com.matsg.battlegrounds.api.entity.PlayerState;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.game.ArenaSpawn;
@@ -75,12 +76,12 @@ public class PlayerMoveEventHandlerTest {
     @Test
     public void playerMoveInArenaWhileInGame() {
         when(game.getState()).thenReturn(new InGameState());
+        when(gamePlayer.getState()).thenReturn(PlayerState.ACTIVE);
 
         PlayerMoveEventHandler eventHandler = new PlayerMoveEventHandler(plugin, internals, translator);
         eventHandler.handle(event);
 
         verify(player, times(0)).teleport(any(Location.class));
-        verify(playerManager, times(1)).getGamePlayer(player);
 
         assertFalse(event.isCancelled());
     }
@@ -90,6 +91,7 @@ public class PlayerMoveEventHandlerTest {
         event.setTo(new Location(world, 1000, 1000, 1000));
 
         when(game.getState()).thenReturn(new InGameState());
+        when(gamePlayer.getState()).thenReturn(PlayerState.ACTIVE);
 
         PlayerMoveEventHandler eventHandler = new PlayerMoveEventHandler(plugin, internals, translator);
         eventHandler.handle(event);
@@ -108,6 +110,7 @@ public class PlayerMoveEventHandlerTest {
         arena.getSpawnContainer().add(spawn);
 
         when(game.getState()).thenReturn(new StartingState());
+        when(gamePlayer.getState()).thenReturn(PlayerState.ACTIVE);
 
         PlayerMoveEventHandler eventHandler = new PlayerMoveEventHandler(plugin, internals, translator);
         eventHandler.handle(event);
@@ -123,6 +126,7 @@ public class PlayerMoveEventHandlerTest {
         Team team = new BattleTeam(1, "Team", null, null);
 
         when(game.getState()).thenReturn(new StartingState());
+        when(gamePlayer.getState()).thenReturn(PlayerState.ACTIVE);
         when(gamePlayer.getTeam()).thenReturn(team);
 
         PlayerMoveEventHandler eventHandler = new PlayerMoveEventHandler(plugin, internals, translator);

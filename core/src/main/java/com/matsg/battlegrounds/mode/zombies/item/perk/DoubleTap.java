@@ -40,7 +40,7 @@ public class DoubleTap extends PerkEffect {
         }
     }
 
-    public void remove() {
+    public void removePerk() {
         for (int i = 0; i <= firearms.length; i++) {
             if (firearms[i] != null) {
                 modifyDamageAttributes(firearms[i], FIREARM_DAMAGE_NERF);

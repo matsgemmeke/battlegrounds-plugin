@@ -17,7 +17,7 @@ public class StaminUp extends PerkEffect {
         gamePlayer.getPlayer().setWalkSpeed(BUFFED_WALK_SPEED);
     }
 
-    public void remove() {
+    public void removePerk() {
         gamePlayer.getPlayer().setWalkSpeed(NORMAL_WALK_SPEED);
     }
 }

@@ -60,4 +60,11 @@ public abstract class PerkEffect implements PlayerEffect {
     }
 
     public void refresh() { }
+
+    public void remove() {
+        gamePlayer.getPlayer().getInventory().remove(itemStack);
+        removePerk();
+    }
+
+    public abstract void removePerk();
 }

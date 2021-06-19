@@ -30,15 +30,22 @@ public class PlayerMoveEventHandler implements EventHandler<PlayerMoveEvent> {
         Player player = event.getPlayer();
         Game game = plugin.getGameManager().getGame(player);
 
-        if (game == null) {
+        if (game == null || game.getArena() == null) {
             return;
         }
 
         Arena arena = game.getArena();
+        GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
         Location from = event.getFrom(), to = event.getTo();
 
-        // Check if there is an arena and whether the player has moved on the x or z axis
-        if (arena == null || from.getX() == to.getX() && from.getZ() == to.getZ()) {
+        // Check if the player has moved on the x or z axis
+        if (from.getX() == to.getX() && from.getZ() == to.getZ()) {
+            return;
+        }
+
+        // If the player's state does not allow the player to move, send them back
+        if (!gamePlayer.getState().canMove() && from.getY() != to.getY()) {
+            player.teleport(from);
             return;
         }
 
@@ -51,14 +58,7 @@ public class PlayerMoveEventHandler implements EventHandler<PlayerMoveEvent> {
             return;
         }
 
-        GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
         Spawn spawn = arena.getSpawn(gamePlayer);
-
-        // If the player's state does not allow the player to move, send them back
-        if (!gamePlayer.getState().canMove()) {
-            player.teleport(from);
-            return;
-        }
 
         // Don't return players to their spawns if the game has started
         if (game.getState().isAllowed(GameAction.MOVEMENT)) {

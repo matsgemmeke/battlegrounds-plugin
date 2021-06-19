@@ -42,6 +42,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Zombies extends AbstractGameMode {
 
@@ -458,14 +459,16 @@ public class Zombies extends AbstractGameMode {
 
     public void startWave(int round) {
         if (round > 1) {
+            // Collect dead players and respawn them on new spawns
+            List<GamePlayer> deadPlayers = game.getPlayerManager().getPlayers().stream().filter(g -> g.getState() == PlayerState.SPECTATING).collect(Collectors.toList());
+            spawnPlayers(deadPlayers);
+
+            for (GamePlayer gamePlayer : deadPlayers) {
+                gamePlayer.setState(PlayerState.ACTIVE);
+                gamePlayer.getState().apply(game, gamePlayer);
+            }
+
             for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
-                if (!gamePlayer.getState().isAlive()) {
-                    game.getPlayerManager().setVisible(gamePlayer, true);
-
-                    gamePlayer.setState(PlayerState.ACTIVE);
-                    gamePlayer.getState().apply(game, gamePlayer);
-                }
-
                 Player player = gamePlayer.getPlayer();
                 player.setHealth(player.getMaxHealth());
 

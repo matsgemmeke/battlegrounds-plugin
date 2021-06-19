@@ -174,7 +174,6 @@ public class TimerDownState implements DownState {
                 // If the downed player was not revived after a period of time, kill the downed player
                 if (reviver == null && ++downTime > downDuration) {
                     cancel();
-                    gamePlayer.getPlayer().getInventory().clear();
                     gamePlayer.setState(PlayerState.SPECTATING);
                     gamePlayer.getState().apply(game, gamePlayer);
                     hologram.remove();

@@ -38,6 +38,10 @@ public class PlayerItemInteractHandler implements EventHandler<PlayerInteractEve
         GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
         Item item = game.getItemRegistry().getWeaponIgnoreMetadata(gamePlayer, itemStack);
 
+        if (!gamePlayer.getState().canInteract()) {
+            return;
+        }
+
         if (item == null && (item = game.getItemRegistry().getItemIgnoreMetadata(itemStack)) == null || !game.getState().isAllowed(GameAction.USE_WEAPON) && item instanceof Weapon) {
             return;
         }

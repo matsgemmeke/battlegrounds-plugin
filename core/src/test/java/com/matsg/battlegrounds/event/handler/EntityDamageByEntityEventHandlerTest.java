@@ -5,6 +5,7 @@ import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.entity.Mob;
 import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.api.game.GameState;
 import com.matsg.battlegrounds.api.game.MobManager;
 import com.matsg.battlegrounds.api.game.PlayerManager;
 import com.matsg.battlegrounds.api.item.Loadout;
@@ -12,6 +13,7 @@ import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.item.MeleeWeapon;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.entity.BattleGamePlayer;
+import com.matsg.battlegrounds.game.state.InGameState;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -81,9 +83,11 @@ public class EntityDamageByEntityEventHandlerTest {
 
     @Test
     public void entityDamageWithUnknownPlayerOrMob() {
+        GameState gameState = new InGameState();
         Player fakePlayer = mock(Player.class);
         EntityDamageByEntityEvent event = new EntityDamageByEntityEvent(player, fakePlayer, null, 10.0);
 
+        when(game.getState()).thenReturn(gameState);
         when(mobManager.findMob(fakePlayer)).thenReturn(null);
         when(playerManager.getGamePlayer(fakePlayer)).thenReturn(null);
         when(playerManager.getGamePlayer(player)).thenReturn(damager);
@@ -96,9 +100,11 @@ public class EntityDamageByEntityEventHandlerTest {
 
     @Test
     public void entityDamageWhenDamagerHasNoLoadout() {
+        GameState gameState = new InGameState();
         Mob mob = mock(Mob.class);
         EntityDamageByEntityEvent event = new EntityDamageByEntityEvent(player, entity, null, 10.0);
 
+        when(game.getState()).thenReturn(gameState);
         when(mobManager.findMob(entity)).thenReturn(mob);
         when(playerManager.getGamePlayer(player)).thenReturn(damager);
 
@@ -112,10 +118,12 @@ public class EntityDamageByEntityEventHandlerTest {
 
     @Test
     public void entityDamageWhenEntityIsNotHostile() {
+        GameState gameState = new InGameState();
         Loadout loadout = mock(Loadout.class);
         Mob mob = mock(Mob.class);
         EntityDamageByEntityEvent event = new EntityDamageByEntityEvent(player, entity, null, 10.0);
 
+        when(game.getState()).thenReturn(gameState);
         when(mob.isHostileTowards(damager)).thenReturn(false);
         when(mobManager.findMob(entity)).thenReturn(mob);
         when(playerManager.getGamePlayer(player)).thenReturn(damager);
@@ -130,6 +138,7 @@ public class EntityDamageByEntityEventHandlerTest {
 
     @Test
     public void entityDamageWhenWeaponIsNotInstanceOfMeleeWeapon() {
+        GameState gameState = new InGameState();
         ItemStack itemStack = new ItemStack(Material.AIR);
         Loadout loadout = mock(Loadout.class);
         Mob mob = mock(Mob.class);
@@ -137,6 +146,7 @@ public class EntityDamageByEntityEventHandlerTest {
 
         EntityDamageByEntityEvent event = new EntityDamageByEntityEvent(player, entity, null, 10.0);
 
+        when(game.getState()).thenReturn(gameState);
         when(loadout.getWeapon(itemStack)).thenReturn(weapon);
         when(mob.isHostileTowards(damager)).thenReturn(true);
         when(mobManager.findMob(entity)).thenReturn(mob);
@@ -153,6 +163,7 @@ public class EntityDamageByEntityEventHandlerTest {
 
     @Test
     public void entityDamageWithMeleeWeapon() {
+        GameState gameState = new InGameState();
         ItemStack itemStack = new ItemStack(Material.AIR);
         Loadout loadout = mock(Loadout.class);
         MeleeWeapon meleeWeapon = mock(MeleeWeapon.class);
@@ -160,6 +171,7 @@ public class EntityDamageByEntityEventHandlerTest {
 
         EntityDamageByEntityEvent event = new EntityDamageByEntityEvent(player, entity, null, 10.0);
 
+        when(game.getState()).thenReturn(gameState);
         when(loadout.getWeapon(itemStack)).thenReturn(meleeWeapon);
         when(mob.isHostileTowards(damager)).thenReturn(true);
         when(mobManager.findMob(entity)).thenReturn(mob);

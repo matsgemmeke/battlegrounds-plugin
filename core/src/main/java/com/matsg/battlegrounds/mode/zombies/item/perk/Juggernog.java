@@ -18,7 +18,7 @@ public class Juggernog extends PerkEffect {
         gamePlayer.getPlayer().setHealth(BUFFED_PLAYER_HEALTH);
     }
 
-    public void remove() {
+    public void removePerk() {
         gamePlayer.getPlayer().setHealth(NORMAL_PLAYER_HEALTH);
         gamePlayer.getPlayer().setMaxHealth(NORMAL_PLAYER_HEALTH);
     }

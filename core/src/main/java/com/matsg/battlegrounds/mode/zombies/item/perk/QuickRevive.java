@@ -17,7 +17,7 @@ public class QuickRevive extends PerkEffect {
         gamePlayer.setReviveDuration(BUFFED_REVIVE_SPEED);
     }
 
-    public void remove() {
+    public void removePerk() {
         gamePlayer.setReviveDuration(NORMAL_REVIVE_SPEED);
     }
 }

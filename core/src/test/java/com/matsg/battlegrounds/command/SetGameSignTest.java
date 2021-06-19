@@ -4,13 +4,10 @@ import com.matsg.battlegrounds.BattleGameManager;
 import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.Translator;
-import com.matsg.battlegrounds.api.game.Game;
-import com.matsg.battlegrounds.api.game.GameConfiguration;
-import com.matsg.battlegrounds.api.game.PlayerManager;
+import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.storage.BattlegroundsConfig;
 import com.matsg.battlegrounds.api.storage.CacheYaml;
 import com.matsg.battlegrounds.game.BattleGameConfiguration;
-import com.matsg.battlegrounds.api.game.GameState;
 import com.matsg.battlegrounds.game.state.InGameState;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -75,6 +72,7 @@ public class SetGameSignTest {
 
         CacheYaml dataFile = mock(CacheYaml.class);
         GameConfiguration configuration = BattleGameConfiguration.getDefaultConfiguration();
+        GameMode gameMode = mock(GameMode.class);
         GameState state = new InGameState();
         PlayerManager playerManager = mock(PlayerManager.class);
         Sign sign = mock(Sign.class);
@@ -85,6 +83,7 @@ public class SetGameSignTest {
         when(config.getGameSignLayout()).thenReturn(layout);
         when(game.getConfiguration()).thenReturn(configuration);
         when(game.getDataFile()).thenReturn(dataFile);
+        when(game.getGameMode()).thenReturn(gameMode);
         when(game.getPlayerManager()).thenReturn(playerManager);
         when(game.getState()).thenReturn(state);
         when(playerManager.getPlayers()).thenReturn(Collections.emptyList());

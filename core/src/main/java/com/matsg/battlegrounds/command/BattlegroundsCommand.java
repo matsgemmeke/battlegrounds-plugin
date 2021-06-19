@@ -50,7 +50,6 @@ public class BattlegroundsCommand extends Command {
             subCommand.execute(sender, args);
         } catch (Exception e) {
             sender.sendMessage(createMessage(TranslationKey.COMMAND_ERROR));
-            e.printStackTrace();
         }
     }
 }
