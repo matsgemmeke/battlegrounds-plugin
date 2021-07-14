@@ -22,15 +22,15 @@ public class DoubleTap extends PerkEffect {
     public void apply() {
         firearms = gamePlayer.getLoadout().getFirearms();
 
-        for (int i = 0; i <= firearms.length; i++) {
-            if (firearms[i] != null) {
-                modifyDamageAttributes(firearms[i], FIREARM_DAMAGE_BUFF);
+        for (Firearm firearm : firearms) {
+            if (firearm != null) {
+                modifyDamageAttributes(firearm, FIREARM_DAMAGE_BUFF);
             }
         }
     }
 
     public void refresh() {
-        for (int i = 0; i <= firearms.length; i++) {
+        for (int i = 0; i < firearms.length; i++) {
             Firearm firearm = gamePlayer.getLoadout().getFirearms()[i];
             // Check if the player had changed firearms and if so, apply the damage buff
             if (firearms[i] != firearm) {
@@ -41,9 +41,9 @@ public class DoubleTap extends PerkEffect {
     }
 
     public void removePerk() {
-        for (int i = 0; i <= firearms.length; i++) {
-            if (firearms[i] != null) {
-                modifyDamageAttributes(firearms[i], FIREARM_DAMAGE_NERF);
+        for (Firearm firearm : firearms) {
+            if (firearm != null) {
+                modifyDamageAttributes(firearm, FIREARM_DAMAGE_NERF);
             }
         }
     }

@@ -29,23 +29,27 @@ public class PlayerMoveEventHandler implements EventHandler<PlayerMoveEvent> {
     public void handle(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         Game game = plugin.getGameManager().getGame(player);
+        Location from = event.getFrom(), to = event.getTo();
 
-        if (game == null || game.getArena() == null) {
+        if (game == null || game.getArena() == null || to == null) {
             return;
         }
 
         Arena arena = game.getArena();
         GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
-        Location from = event.getFrom(), to = event.getTo();
 
-        // Check if the player has moved on the x or z axis
-        if (from.getX() == to.getX() && from.getZ() == to.getZ()) {
+        // If the player has a down state, do not allow the player to move
+        if (gamePlayer.getDownState() != null && hasChangedPosition(from, to)) {
+            Location returnLocation = gamePlayer.getDownState().getLocation().clone();
+            returnLocation.setPitch(player.getLocation().getPitch());
+            returnLocation.setYaw(player.getLocation().getYaw());
+
+            player.teleport(returnLocation);
             return;
         }
 
-        // If the player's state does not allow the player to move, send them back
-        if (!gamePlayer.getState().canMove() && from.getY() != to.getY()) {
-            player.teleport(from);
+        // Check if the player has not moved on the x or z axis
+        if (from.getX() == to.getX() && from.getZ() == to.getZ()) {
             return;
         }
 
@@ -73,5 +77,11 @@ public class PlayerMoveEventHandler implements EventHandler<PlayerMoveEvent> {
         location.setPitch(from.getPitch());
         location.setYaw(from.getYaw());
         player.teleport(location);
+    }
+
+    private boolean hasChangedPosition(Location from, Location to) {
+        return from.getX() != to.getX()
+                || from.getY() != to.getY()
+                || from.getZ() != to.getZ();
     }
 }

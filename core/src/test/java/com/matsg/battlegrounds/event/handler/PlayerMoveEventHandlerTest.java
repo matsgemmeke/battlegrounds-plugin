@@ -8,6 +8,7 @@ import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.entity.PlayerState;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
+import com.matsg.battlegrounds.entity.state.ActivePlayerState;
 import com.matsg.battlegrounds.game.ArenaSpawn;
 import com.matsg.battlegrounds.game.BattleArena;
 import com.matsg.battlegrounds.game.BattleTeam;
@@ -75,8 +76,11 @@ public class PlayerMoveEventHandlerTest {
 
     @Test
     public void playerMoveInArenaWhileInGame() {
-        when(game.getState()).thenReturn(new InGameState());
-        when(gamePlayer.getState()).thenReturn(PlayerState.ACTIVE);
+        GameState gameState = new InGameState();
+        PlayerState playerState = new ActivePlayerState();
+
+        when(game.getState()).thenReturn(gameState);
+        when(gamePlayer.getState()).thenReturn(playerState);
 
         PlayerMoveEventHandler eventHandler = new PlayerMoveEventHandler(plugin, internals, translator);
         eventHandler.handle(event);
@@ -88,10 +92,13 @@ public class PlayerMoveEventHandlerTest {
 
     @Test
     public void playerMoveOutsideArenaWhileInGame() {
+        GameState gameState = new InGameState();
+        PlayerState playerState = new ActivePlayerState();
+
         event.setTo(new Location(world, 1000, 1000, 1000));
 
-        when(game.getState()).thenReturn(new InGameState());
-        when(gamePlayer.getState()).thenReturn(PlayerState.ACTIVE);
+        when(game.getState()).thenReturn(gameState);
+        when(gamePlayer.getState()).thenReturn(playerState);
 
         PlayerMoveEventHandler eventHandler = new PlayerMoveEventHandler(plugin, internals, translator);
         eventHandler.handle(event);
@@ -104,13 +111,15 @@ public class PlayerMoveEventHandlerTest {
 
     @Test
     public void playerMoveInArenaWhileCountdown() {
+        GameState gameState = new StartingState();
+        PlayerState playerState = new ActivePlayerState();
         Spawn spawn = new ArenaSpawn(1, new Location(world, 50, 50, 50), 1);
         spawn.setOccupant(gamePlayer);
 
         arena.getSpawnContainer().add(spawn);
 
-        when(game.getState()).thenReturn(new StartingState());
-        when(gamePlayer.getState()).thenReturn(PlayerState.ACTIVE);
+        when(game.getState()).thenReturn(gameState);
+        when(gamePlayer.getState()).thenReturn(playerState);
 
         PlayerMoveEventHandler eventHandler = new PlayerMoveEventHandler(plugin, internals, translator);
         eventHandler.handle(event);
@@ -123,10 +132,12 @@ public class PlayerMoveEventHandlerTest {
 
     @Test
     public void playerMoveInArenaWhileCountdownNoSpawn() {
+        GameState gameState = new StartingState();
+        PlayerState playerState = new ActivePlayerState();
         Team team = new BattleTeam(1, "Team", null, null);
 
-        when(game.getState()).thenReturn(new StartingState());
-        when(gamePlayer.getState()).thenReturn(PlayerState.ACTIVE);
+        when(game.getState()).thenReturn(gameState);
+        when(gamePlayer.getState()).thenReturn(playerState);
         when(gamePlayer.getTeam()).thenReturn(team);
 
         PlayerMoveEventHandler eventHandler = new PlayerMoveEventHandler(plugin, internals, translator);

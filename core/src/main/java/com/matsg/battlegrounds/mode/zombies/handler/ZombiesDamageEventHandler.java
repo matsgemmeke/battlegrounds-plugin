@@ -5,20 +5,27 @@ import com.matsg.battlegrounds.InternalsProvider;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
+import com.matsg.battlegrounds.api.entity.Hitbox;
 import com.matsg.battlegrounds.api.entity.Mob;
+import com.matsg.battlegrounds.api.event.EventDispatcher;
 import com.matsg.battlegrounds.api.event.EventHandler;
 import com.matsg.battlegrounds.api.event.GamePlayerDamageEntityEvent;
+import com.matsg.battlegrounds.api.event.GamePlayerKillEntityEvent;
 import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.mode.zombies.Zombies;
+import org.bukkit.event.Event;
 
 public class ZombiesDamageEventHandler implements EventHandler<GamePlayerDamageEntityEvent> {
 
+    private EventDispatcher eventDispatcher;
     private InternalsProvider internals;
     private Translator translator;
     private Zombies zombies;
 
-    public ZombiesDamageEventHandler(Zombies zombies, InternalsProvider internals, Translator translator) {
+    public ZombiesDamageEventHandler(Zombies zombies, EventDispatcher eventDispatcher, InternalsProvider internals, Translator translator) {
         this.zombies = zombies;
+        this.eventDispatcher = eventDispatcher;
         this.internals = internals;
         this.translator = translator;
     }
@@ -33,7 +40,21 @@ public class ZombiesDamageEventHandler implements EventHandler<GamePlayerDamageE
         Mob mob = (Mob) event.getEntity();
 
         double damage = zombies.getPowerUpManager().getPowerUpDamage(event.getDamage());
-        int points = 10; // Points per hit constant
+
+        // Create a new kill event if the damage was modified
+        if (damage > mob.getHealth()) {
+            Weapon weapon = event.getWeapon();
+            Hitbox hitbox = event.getHitbox();
+            int points = hitbox.getPoints();
+
+            Event killEvent = new GamePlayerKillEntityEvent(game, gamePlayer, mob, weapon, hitbox, points);
+
+            eventDispatcher.dispatchExternalEvent(killEvent);
+            return;
+        }
+
+        int pointsConst = 10; // Points per hit constant
+        int points = zombies.getPowerUpManager().getPowerUpPoints(pointsConst);
 
         mob.damage(damage);
         mob.getBukkitEntity().setCustomName(game.getMobManager().getHealthBar(mob));

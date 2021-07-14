@@ -148,13 +148,6 @@ public interface GamePlayer extends BattleEntity, OfflineGamePlayer, SpawnOccupa
     PlayerState getState();
 
     /**
-     * Sets the plater's current state
-     *
-     * @param playerState the player state
-     */
-    void setState(PlayerState playerState);
-
-    /**
      * Gets the team the player is on.
      *
      * @return the player's team
@@ -175,6 +168,13 @@ public interface GamePlayer extends BattleEntity, OfflineGamePlayer, SpawnOccupa
      * @return the amount of exp the player has after the given exp was added
      */
     int addExp(int exp);
+
+    /**
+     * Changes the player's current state and applies it to the player.
+     *
+     * @param playerState the player state
+     */
+    void changeState(PlayerState playerState);
 
     /**
      * Gets a weapon from a certain slot in the player's inventory. Returns null if

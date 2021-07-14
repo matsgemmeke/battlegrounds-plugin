@@ -90,12 +90,7 @@ public class ItemTransactionView implements View {
                         sound.play(game, entity.getLocation());
                     }
 
-                    Transaction transaction = new Transaction();
-                    transaction.setGame(game);
-                    transaction.setGamePlayer(gamePlayer);
-                    transaction.setItem(item);
-                    transaction.setPoints(points);
-                    transaction.setSlot(slot);
+                    Transaction transaction = new Transaction(game, gamePlayer, item, points, slot);
 
                     item.handleTransaction(transaction);
 

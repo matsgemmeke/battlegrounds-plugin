@@ -8,6 +8,7 @@ import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameMode;
 import com.matsg.battlegrounds.api.item.Firearm;
 import com.matsg.battlegrounds.api.item.Weapon;
+import com.matsg.battlegrounds.entity.state.SpectatingPlayerState;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 
@@ -31,8 +32,9 @@ public class DefaultDeathEventHandler implements EventHandler<GamePlayerDeathEve
         gamePlayer.setLives(gamePlayer.getLives() - 1);
 
         if (gamePlayer.getLives() <= 0) {
-            gamePlayer.setState(PlayerState.SPECTATING);
-            gamePlayer.getState().apply(game, gamePlayer);
+            PlayerState playerState = new SpectatingPlayerState(game, gamePlayer, gamePlayer.getPlayer().getGameMode());
+
+            gamePlayer.changeState(playerState);
         }
 
         Weapon weapon = gamePlayer.getLoadout().getWeapon(gamePlayer.getPlayer().getItemInHand());

@@ -19,7 +19,7 @@ public class BattleGameConfiguration implements GameConfiguration {
 
     public static BattleGameConfiguration getDefaultConfiguration() {
         return new BattleGameConfiguration(
-                Arrays.asList("FREE_FOR_ALL", "TEAM_DEATHMATCH"),
+                new ArrayList<>(Arrays.asList("FREE_FOR_ALL", "TEAM_DEATHMATCH")),
                 12,
                 2,
                 60

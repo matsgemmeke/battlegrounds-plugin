@@ -43,7 +43,7 @@ public class MaxAmmo implements PowerUpEffect {
     }
 
     public void activate(Consumer<PowerUpEffect> callback) {
-        for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
+        for (GamePlayer gamePlayer : game.getPlayerManager().getActivePlayers()) {
             Loadout loadout = gamePlayer.getLoadout();
 
             for (Firearm firearm : loadout.getFirearms()) {

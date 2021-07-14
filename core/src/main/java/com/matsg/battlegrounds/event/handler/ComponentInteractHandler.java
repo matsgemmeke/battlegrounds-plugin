@@ -7,6 +7,7 @@ import com.matsg.battlegrounds.api.game.ArenaComponent;
 import com.matsg.battlegrounds.api.game.ComponentWrapper;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.Interactable;
+import com.matsg.battlegrounds.api.item.Loadout;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -36,8 +37,9 @@ public class ComponentInteractHandler implements EventHandler<PlayerInteractEven
         }
 
         GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
+        Loadout loadout = gamePlayer.getLoadout();
 
-        boolean canInteract = Arrays.stream(gamePlayer.getLoadout().getWeapons()).noneMatch(w -> w != null && w.isInUse());
+        boolean canInteract = loadout != null && Arrays.stream(loadout.getWeapons()).noneMatch(w -> w != null && w.isInUse());
         boolean interactionHappened = false;
 
         if (!canInteract) {
@@ -54,7 +56,8 @@ public class ComponentInteractHandler implements EventHandler<PlayerInteractEven
         }
 
         if (interactionHappened) {
-            game.updateScoreboard(); // Only update the scoreboard if an interaction has taken place
+            // Only update the scoreboard if an interaction has taken place
+            game.updateScoreboard();
         }
 
         event.setCancelled(interactionHappened);

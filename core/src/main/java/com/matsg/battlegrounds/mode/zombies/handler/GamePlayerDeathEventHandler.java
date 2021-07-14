@@ -2,14 +2,18 @@ package com.matsg.battlegrounds.mode.zombies.handler;
 
 import com.matsg.battlegrounds.InternalsProvider;
 import com.matsg.battlegrounds.TaskRunner;
+import com.matsg.battlegrounds.TranslationKey;
 import com.matsg.battlegrounds.api.Placeholder;
 import com.matsg.battlegrounds.api.Translator;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
+import com.matsg.battlegrounds.api.entity.Mob;
 import com.matsg.battlegrounds.api.entity.PlayerState;
 import com.matsg.battlegrounds.api.event.EventHandler;
 import com.matsg.battlegrounds.api.event.GamePlayerDeathEvent;
 import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.entity.TimerDownState;
+import com.matsg.battlegrounds.entity.state.DownedPlayerState;
 import com.matsg.battlegrounds.mode.zombies.PerkManager;
 import com.matsg.battlegrounds.mode.zombies.Zombies;
 import com.matsg.battlegrounds.mode.zombies.item.PerkEffectType;
@@ -48,12 +52,9 @@ public class GamePlayerDeathEventHandler implements EventHandler<GamePlayerDeath
 
         GamePlayer gamePlayer = event.getGamePlayer();
 
-        if (gamePlayer.getState() != PlayerState.ACTIVE) {
+        if (!gamePlayer.getState().isAlive() || !gamePlayer.getState().canInteract()) {
             return;
         }
-
-        gamePlayer.setState(PlayerState.DOWNED);
-        gamePlayer.getState().apply(game, gamePlayer);
 
         int downDuration = zombies.getConfig().getDownDuration();
         int reviveDuration;
@@ -66,8 +67,13 @@ public class GamePlayerDeathEventHandler implements EventHandler<GamePlayerDeath
 
         perkManager.removePerks(gamePlayer);
 
-        if (game.getPlayerManager().getLivingPlayers().length <= 0) {
+        // Skip the respawn screen
+        gamePlayer.getPlayer().spigot().respawn();
+
+        // Stop the game when the  player is the last one alive
+        if (game.getPlayerManager().getActivePlayers().length <= 1) {
             game.stop();
+            return;
         }
 
         // Announce the player down
@@ -75,9 +81,17 @@ public class GamePlayerDeathEventHandler implements EventHandler<GamePlayerDeath
             EnumTitle.PLAYER_DOWNED.send(g.getPlayer(), new Placeholder("player_name", gamePlayer.getName()));
         }
 
+        // Remove the target assignment from the mobs
+        for (Mob mob : game.getMobManager().getMobs()) {
+            mob.resetDefaultPathfinderGoals();
+        }
+
         double maxRevivingDistance = zombies.getConfig().getReviveMaxDistance();
-        int points = gamePlayer.getPoints() / 10;
+        // Round the points to the nearest 10
+        int points = (int) (Math.round((double) gamePlayer.getPoints() / (double) 100) * 10);
         Location location = gamePlayer.getLocation();
+
+        internals.sendActionBar(gamePlayer.getPlayer(), translator.translate(TranslationKey.ACTIONBAR_POINTS_DECREASE.getPath(), new Placeholder("bg_points", points)));
 
         TimerDownState downState = new TimerDownState(game, gamePlayer, location, internals, taskRunner, translator, downDuration, reviveDuration);
         downState.setMaxRevivingDistance(maxRevivingDistance);
@@ -85,13 +99,24 @@ public class GamePlayerDeathEventHandler implements EventHandler<GamePlayerDeath
         downState.setPoints(points);
         downState.run();
 
-        // Skip the respawn screen
-        gamePlayer.getPlayer().spigot().respawn();
+        PlayerState playerState = new DownedPlayerState(gamePlayer, gamePlayer.getPlayer().getWalkSpeed());
+        gamePlayer.changeState(playerState);
+
         gamePlayer.setDownState(downState);
         gamePlayer.setPoints(gamePlayer.getPoints() - points);
+
+        game.updateScoreboard();
     }
 
     private void onPlayerKill(GamePlayer gamePlayer) {
-        System.out.println(gamePlayer.getName());
+        gamePlayer.getPlayer().getInventory().clear();
+
+        // Remove the player's current loadout from the game
+        for (Weapon weapon : gamePlayer.getLoadout().getWeapons()) {
+            game.getItemRegistry().removeItem(weapon);
+        }
+
+        // Reset the player state and restore default items
+        zombies.prepareDefaultLoadout(gamePlayer);
     }
 }

@@ -11,6 +11,14 @@ public class Transaction {
     private int slot;
     private TransactionItem item;
 
+    public Transaction(Game game, GamePlayer gamePlayer, TransactionItem item, int points, int slot) {
+        this.game = game;
+        this.gamePlayer = gamePlayer;
+        this.item = item;
+        this.points = points;
+        this.slot = slot;
+    }
+
     /**
      * Gets the game in which the transaction took place.
      *
@@ -18,15 +26,6 @@ public class Transaction {
      */
     public Game getGame() {
         return game;
-    }
-
-    /**
-     * Sets the game in which the transaction took place.
-     *
-     * @param game the game
-     */
-    public void setGame(Game game) {
-        this.game = game;
     }
 
     /**
@@ -39,30 +38,12 @@ public class Transaction {
     }
 
     /**
-     * Sets the player who makes the transaction.
-     *
-     * @param gamePlayer the player of the transaction
-     */
-    public void setGamePlayer(GamePlayer gamePlayer) {
-        this.gamePlayer = gamePlayer;
-    }
-
-    /**
      * Gets the item of the transaction.
      *
      * @return the transaction item
      */
     public TransactionItem getItem() {
         return item;
-    }
-
-    /**
-     * Sets the item of the transaction.
-     *
-     * @param item the transaction item
-     */
-    public void setItem(TransactionItem item) {
-        this.item = item;
     }
 
     /**
@@ -75,29 +56,11 @@ public class Transaction {
     }
 
     /**
-     * Sets the amount of points involved in the transaction.
-     *
-     * @param points the amount of points
-     */
-    public void setPoints(int points) {
-        this.points = points;
-    }
-
-    /**
      * Gets the inventory slot to which the transaction item will be transferred to.
      *
      * @return the transaction inventory slot
      */
     public int getSlot() {
         return slot;
-    }
-
-    /**
-     * Sets the inventory slot to which the transaction item will be transferred to.
-     *
-     * @param slot the transaction inventory slot
-     */
-    public void setSlot(int slot) {
-        this.slot = slot;
     }
 }

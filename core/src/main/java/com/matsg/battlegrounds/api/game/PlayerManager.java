@@ -48,6 +48,13 @@ public interface PlayerManager {
     void clearPlayer(GamePlayer gamePlayer);
 
     /**
+     * Gets the currently active players.
+     *
+     * @return an array containing all active players
+     */
+    GamePlayer[] getActivePlayers();
+
+    /**
      * Gets the GamePlayer instance of a player
      *
      * @param player the player to get the GamePlayer instance of
@@ -58,7 +65,7 @@ public interface PlayerManager {
     /**
      * Gets the currently living players.
      *
-     * @return an array containing all active players
+     * @return an array containing all living players
      */
     GamePlayer[] getLivingPlayers();
 

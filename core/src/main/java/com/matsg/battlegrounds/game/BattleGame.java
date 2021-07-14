@@ -11,6 +11,7 @@ import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.game.GameMode;
 import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
+import com.matsg.battlegrounds.entity.state.ActivePlayerState;
 import com.matsg.battlegrounds.game.state.WaitingState;
 import com.matsg.battlegrounds.gui.scoreboard.LobbyScoreboard;
 import org.bukkit.Bukkit;
@@ -228,8 +229,7 @@ public class BattleGame implements Game {
             player.teleport(gamePlayer.getReturnLocation());
 
             gamePlayer.getSavedInventory().restore(player);
-            gamePlayer.setState(PlayerState.ACTIVE);
-            gamePlayer.getState().apply(this, gamePlayer);
+            gamePlayer.getState().remove();
 
             if (gamePlayer.getDownState() != null) {
                 gamePlayer.getDownState().dispose();
@@ -289,11 +289,6 @@ public class BattleGame implements Game {
         }
 
         for (GamePlayer gamePlayer : playerManager.getPlayers()) {
-            Player player = gamePlayer.getPlayer();
-            player.setAllowFlight(true);
-            player.setGameMode(org.bukkit.GameMode.CREATIVE);
-            player.setHealth(20.0);
-
             Loadout loadout = gamePlayer.getLoadout();
 
             if (loadout != null && loadout.getPrimary() != null) {

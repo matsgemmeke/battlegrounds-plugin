@@ -59,15 +59,14 @@ public class ZombiesKillEventHandler implements EventHandler<GamePlayerKillEntit
         mob.setHealth(0);
         mob.getBukkitEntity().setCustomName(game.getMobManager().getHealthBar(mob));
 
+        int points = zombies.getPowerUpManager().getPowerUpPoints(event.getPoints());
+
         gamePlayer.setKills(gamePlayer.getKills() + 1);
+        gamePlayer.setPoints(gamePlayer.getPoints() + points);
 
         if (hitbox == Hitbox.HEAD) {
             gamePlayer.setHeadshots(gamePlayer.getHeadshots() + 1);
         }
-
-        int points = zombies.getPowerUpManager().getPowerUpPoints(event.getPoints());
-
-        gamePlayer.setPoints(gamePlayer.getPoints() + points);
 
         String actionBar = translator.translate(TranslationKey.ACTIONBAR_POINTS_INCREASE.getPath(), new Placeholder("bg_points", points));
         internals.sendActionBar(gamePlayer.getPlayer(), actionBar);

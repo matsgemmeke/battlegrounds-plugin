@@ -43,7 +43,6 @@ public class BattleGamePlayer implements GamePlayer {
         this.items = new ArrayList<>();
         this.kills = 0;
         this.lives = 0;
-        this.playerState = PlayerState.ACTIVE;
         this.reviveDuration = new BattleAttribute<>("revive-duration", new FloatValueObject(10.0f));
     }
 
@@ -188,10 +187,6 @@ public class BattleGamePlayer implements GamePlayer {
         return playerState;
     }
 
-    public void setState(PlayerState playerState) {
-        this.playerState = playerState;
-    }
-
     public Team getTeam() {
         return team;
     }
@@ -211,6 +206,14 @@ public class BattleGamePlayer implements GamePlayer {
     public int addExp(int exp) {
         this.exp += exp;
         return this.exp;
+    }
+
+    public void changeState(PlayerState playerState) {
+        if (this.playerState != null) {
+            this.playerState.remove();
+        }
+        this.playerState = playerState;
+        playerState.apply();
     }
 
     public int compareTo(GamePlayer gamePlayer) {

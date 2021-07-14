@@ -143,10 +143,6 @@ public class CustomZombie extends EntityZombie implements Zombie {
         attribute.a(modifier);
     }
 
-    public void setHealth(float health) {
-        entity.setHealth(health);
-    }
-
     public void setKnockback(boolean knockback) {
         getAttributeInstance(GenericAttributes.c).setValue(!knockback ? 1 : 0);
     }

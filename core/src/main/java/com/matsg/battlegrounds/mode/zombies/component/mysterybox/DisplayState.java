@@ -83,13 +83,9 @@ public class DisplayState implements MysteryBoxState {
         }
 
         int points = 0; // Since the player already paid to open the mystery box, the transaction is free
+        int slot = itemSlot.getSlot();
 
-        Transaction transaction = new Transaction();
-        transaction.setGame(game);
-        transaction.setGamePlayer(gamePlayer);
-        transaction.setItem(weapon);
-        transaction.setPoints(points);
-        transaction.setSlot(itemSlot.getSlot());
+        Transaction transaction = new Transaction(game, gamePlayer, weapon, points, slot);
 
         weapon.handleTransaction(transaction);
 

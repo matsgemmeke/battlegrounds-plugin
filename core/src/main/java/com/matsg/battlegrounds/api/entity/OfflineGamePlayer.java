@@ -3,7 +3,7 @@ package com.matsg.battlegrounds.api.entity;
 import java.util.UUID;
 
 /**
- * Represents a player the may or may not be online.
+ * Represents a player that may or may not be online.
  */
 public interface OfflineGamePlayer {
 

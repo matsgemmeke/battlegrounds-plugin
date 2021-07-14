@@ -47,6 +47,7 @@ public class EntityDamageByEntityEventHandler implements EventHandler<EntityDama
         }
 
         if (entity == null
+                || !gamePlayer.getState().canInteract()
                 || gamePlayer.getLoadout() == null
                 || !entity.isHostileTowards(gamePlayer)
                 || !(gamePlayer.getLoadout().getWeapon(itemStack) instanceof MeleeWeapon)) {

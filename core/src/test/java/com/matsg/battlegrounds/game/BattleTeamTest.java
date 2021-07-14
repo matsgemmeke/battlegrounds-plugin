@@ -2,12 +2,18 @@ package com.matsg.battlegrounds.game;
 
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.PlayerState;
+import com.matsg.battlegrounds.api.game.Game;
+import com.matsg.battlegrounds.api.game.PlayerManager;
 import com.matsg.battlegrounds.entity.BattleGamePlayer;
+import com.matsg.battlegrounds.entity.state.ActivePlayerState;
+import com.matsg.battlegrounds.entity.state.SpectatingPlayerState;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
+import org.bukkit.entity.Player;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class BattleTeamTest {
 
@@ -114,11 +120,19 @@ public class BattleTeamTest {
 
     @Test
     public void findLivingPlayersInTeam() {
-        GamePlayer gamePlayerOne = new BattleGamePlayer(null, null);
-        GamePlayer gamePlayerTwo = new BattleGamePlayer(null, null);
+        Game game = mock(Game.class);
+        Player player = mock(Player.class);
+        PlayerManager playerManager = mock(PlayerManager.class);
 
-        gamePlayerOne.setState(PlayerState.ACTIVE);
-        gamePlayerTwo.setState(PlayerState.SPECTATING);
+        GamePlayer gamePlayerOne = new BattleGamePlayer(null, null);
+        GamePlayer gamePlayerTwo = new BattleGamePlayer(player, null);
+        PlayerState activeState = new ActivePlayerState();
+        PlayerState spectatingState = new SpectatingPlayerState(game, gamePlayerTwo, null);
+
+        when(game.getPlayerManager()).thenReturn(playerManager);
+
+        gamePlayerOne.changeState(activeState);
+        gamePlayerTwo.changeState(spectatingState);
 
         BattleTeam team = new BattleTeam(1, null, null, null);
         team.addPlayer(gamePlayerOne);

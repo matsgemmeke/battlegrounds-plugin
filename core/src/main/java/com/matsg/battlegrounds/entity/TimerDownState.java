@@ -10,6 +10,8 @@ import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.entity.PlayerState;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.util.Sound;
+import com.matsg.battlegrounds.entity.state.ActivePlayerState;
+import com.matsg.battlegrounds.entity.state.SpectatingPlayerState;
 import com.matsg.battlegrounds.util.Hologram;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -133,7 +135,8 @@ public class TimerDownState implements DownState {
     }
 
     public void run() {
-        hologram = new Hologram(location);
+        // Create a hologram with a cloned location so the instance remains untouched
+        hologram = new Hologram(location.clone());
 
         taskRunner.runTaskTimer(new BukkitRunnable() {
             public void run() {
@@ -150,17 +153,16 @@ public class TimerDownState implements DownState {
                 hologram.update();
 
                 // If the reviver has stood close to the downed player for a period of time, revive the downed player
-                if (reviver != null && ++reviveTime > reviveDuration) {
+                if (reviver != null && ++reviveTime > reviveDuration * reviver.getReviveDuration()) {
                     cancel();
+                    clearTitles(gamePlayer, reviver);
                     revive(gamePlayer);
                     return;
                 }
 
                 // If the reviver moves too far away from the downed player, reset the reviving status
                 if (reviver != null && reviver.getLocation().distance(gamePlayer.getLocation()) > maxRevivingDistance) {
-                    // Send empty titles to clear the previous title
-                    internals.sendTitle(gamePlayer.getPlayer(), "", "", 0, 0, 0);
-                    internals.sendTitle(reviver.getPlayer(), "", "", 0, 0, 0);
+                    clearTitles(gamePlayer, reviver);
 
                     reviver = null;
                     reviveTime = 0;
@@ -174,8 +176,12 @@ public class TimerDownState implements DownState {
                 // If the downed player was not revived after a period of time, kill the downed player
                 if (reviver == null && ++downTime > downDuration) {
                     cancel();
-                    gamePlayer.setState(PlayerState.SPECTATING);
-                    gamePlayer.getState().apply(game, gamePlayer);
+
+                    PlayerState playerState = new SpectatingPlayerState(game, gamePlayer, gamePlayer.getPlayer().getGameMode());
+
+                    gamePlayer.changeState(playerState);
+                    gamePlayer.setDownState(null);
+
                     hologram.remove();
 
                     if (onPlayerKill != null) {
@@ -184,6 +190,11 @@ public class TimerDownState implements DownState {
                 }
             }
         }, TIMER_DELAY, TIMER_PERIOD);
+    }
+
+    private void clearTitles(GamePlayer gamePlayer, GamePlayer reviver) {
+        internals.sendTitle(gamePlayer.getPlayer(), "", "", 0, 0, 0);
+        internals.sendTitle(reviver.getPlayer(), "", "", 0, 0, 0);
     }
 
     private String getHologramText(long downTime, long downDuration) {
@@ -206,9 +217,10 @@ public class TimerDownState implements DownState {
     }
 
     private void revive(GamePlayer gamePlayer) {
+        PlayerState playerState = new ActivePlayerState();
+
+        gamePlayer.changeState(playerState);
         gamePlayer.setDownState(null);
-        gamePlayer.setState(PlayerState.ACTIVE);
-        gamePlayer.getState().apply(game, gamePlayer);
 
         if (sound != null) {
             sound.play(game, location);

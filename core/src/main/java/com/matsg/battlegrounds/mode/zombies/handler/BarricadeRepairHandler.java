@@ -39,7 +39,7 @@ public class BarricadeRepairHandler implements EventHandler<BlockPlaceEvent> {
         Player player = event.getPlayer();
         GamePlayer gamePlayer = game.getPlayerManager().getGamePlayer(player);
 
-        if (gamePlayer == null) {
+        if (gamePlayer == null || !gamePlayer.getState().canInteract()) {
             return;
         }
 

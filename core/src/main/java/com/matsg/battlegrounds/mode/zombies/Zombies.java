@@ -11,6 +11,8 @@ import com.matsg.battlegrounds.api.event.*;
 import com.matsg.battlegrounds.api.game.*;
 import com.matsg.battlegrounds.api.item.*;
 import com.matsg.battlegrounds.api.storage.CacheYaml;
+import com.matsg.battlegrounds.entity.state.ActivePlayerState;
+import com.matsg.battlegrounds.entity.state.SpectatingPlayerState;
 import com.matsg.battlegrounds.game.BattleComponentContainer;
 import com.matsg.battlegrounds.game.BattleTeam;
 import com.matsg.battlegrounds.gui.ViewFactory;
@@ -32,8 +34,8 @@ import com.matsg.battlegrounds.util.BattleSound;
 import com.matsg.battlegrounds.util.EnumTitle;
 import com.matsg.battlegrounds.util.XMaterial;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.entity.Bat;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -97,25 +99,26 @@ public class Zombies extends AbstractGameMode {
     }
 
     public void onCreate() {
+        EventDispatcher eventDispatcher = plugin.getEventDispatcher();
         PowerUpFactory powerUpFactory = new PowerUpFactory(plugin, game, this, internals, taskRunner, translator);
 
         // Register gamemode specific event handlers
-        plugin.getEventDispatcher().registerEventChannel(BlockPlaceEvent.class, new EventChannel<>(
+        eventDispatcher.registerEventChannel(BlockPlaceEvent.class, new EventChannel<>(
                 new BarricadeRepairHandler(game, this, internals, translator)
         ));
-        plugin.getEventDispatcher().registerEventChannel(GamePlayerDamageEntityEvent.class, new EventChannel<>(
-                new ZombiesDamageEventHandler(this, internals, translator)
+        eventDispatcher.registerEventChannel(GamePlayerDamageEntityEvent.class, new EventChannel<>(
+                new ZombiesDamageEventHandler(this, eventDispatcher, internals, translator)
         ));
-        plugin.getEventDispatcher().registerEventChannel(GamePlayerDeathEvent.class, new EventChannel<>(
+        eventDispatcher.registerEventChannel(GamePlayerDeathEvent.class, new EventChannel<>(
                 new GamePlayerDeathEventHandler(game, this, perkManager, internals, taskRunner, translator)
         ));
-        plugin.getEventDispatcher().registerEventChannel(GamePlayerKillEntityEvent.class, new EventChannel<>(
+        eventDispatcher.registerEventChannel(GamePlayerKillEntityEvent.class, new EventChannel<>(
                 new ZombiesKillEventHandler(this, internals, powerUpFactory, taskRunner, translator)
         ));
-        plugin.getEventDispatcher().registerEventChannel(PlayerInteractEntityEvent.class, new EventChannel<>(
+        eventDispatcher.registerEventChannel(PlayerInteractEntityEvent.class, new EventChannel<>(
                 new WallWeaponInteractHandler(game, this)
         ));
-        plugin.getEventDispatcher().registerEventChannel(PlayerMoveEvent.class, new EventChannel<>(
+        eventDispatcher.registerEventChannel(PlayerMoveEvent.class, new EventChannel<>(
                 new BarricadePlayerPassHandler(game, this)
         ));
     }
@@ -328,14 +331,15 @@ public class Zombies extends AbstractGameMode {
         dataLoader.load();
     }
 
-    public void preparePlayer(GamePlayer gamePlayer) {
-        super.preparePlayer(gamePlayer);
-
+    public void prepareDefaultLoadout(GamePlayer gamePlayer) {
         Map<String, String> defaultLoadout = config.getDefaultLoadout();
+        String defaultPrimary = defaultLoadout.get("primary");
+        String defaultEquipment = defaultLoadout.get("equipment");
+        String defaultMeleeWeapon = defaultLoadout.get("melee-weapon");
 
-        Firearm primary = defaultLoadout.get("primary") != null ? plugin.getFirearmFactory().make(defaultLoadout.get("primary")) : null;
-        Equipment equipment = defaultLoadout.get("equipment") != null ? plugin.getEquipmentFactory().make(defaultLoadout.get("equipment")) : null;
-        MeleeWeapon meleeWeapon = defaultLoadout.get("melee-weapon") != null ? plugin.getMeleeWeaponFactory().make(defaultLoadout.get("melee-weapon")) : null;
+        Firearm primary = defaultPrimary != null ? plugin.getFirearmFactory().make(defaultPrimary) : null;
+        Equipment equipment = defaultEquipment != null ? plugin.getEquipmentFactory().make(defaultEquipment) : null;
+        MeleeWeapon meleeWeapon = defaultMeleeWeapon != null ? plugin.getMeleeWeaponFactory().make(defaultMeleeWeapon) : null;
 
         if (primary != null) {
             primary.setAmmo(config.getDefaultPrimaryMagazines() * primary.getMagazineSize());
@@ -365,8 +369,14 @@ public class Zombies extends AbstractGameMode {
 
         gamePlayer.getPlayer().getInventory().setItem(ItemSlot.MISCELLANEOUS.getSlot(), barricadeTool);
         gamePlayer.setLoadout(loadout);
-        gamePlayer.setPoints(config.getDefaultPoints());
         loadout.updateInventory();
+    }
+
+    public void preparePlayer(GamePlayer gamePlayer) {
+        super.preparePlayer(gamePlayer);
+        prepareDefaultLoadout(gamePlayer);
+
+        gamePlayer.setPoints(config.getDefaultPoints());
     }
 
     public boolean removeComponent(ArenaComponent component) {
@@ -415,7 +425,7 @@ public class Zombies extends AbstractGameMode {
     }
 
     public void respawnPlayer(GamePlayer gamePlayer) {
-        if (gamePlayer.getState() != PlayerState.ACTIVE) {
+        if (!gamePlayer.getState().isAlive()) {
             return;
         }
     }
@@ -460,12 +470,13 @@ public class Zombies extends AbstractGameMode {
     public void startWave(int round) {
         if (round > 1) {
             // Collect dead players and respawn them on new spawns
-            List<GamePlayer> deadPlayers = game.getPlayerManager().getPlayers().stream().filter(g -> g.getState() == PlayerState.SPECTATING).collect(Collectors.toList());
+            List<GamePlayer> deadPlayers = game.getPlayerManager().getPlayers().stream().filter(g -> !g.getState().isAlive()).collect(Collectors.toList());
             spawnPlayers(deadPlayers);
 
             for (GamePlayer gamePlayer : deadPlayers) {
-                gamePlayer.setState(PlayerState.ACTIVE);
-                gamePlayer.getState().apply(game, gamePlayer);
+                PlayerState playerState = new ActivePlayerState();
+
+                gamePlayer.changeState(playerState);
             }
 
             for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
@@ -494,7 +505,15 @@ public class Zombies extends AbstractGameMode {
 
     public void stop() {
         for (GamePlayer gamePlayer : game.getPlayerManager().getPlayers()) {
+            DownState downState = gamePlayer.getDownState();
             Player player = gamePlayer.getPlayer();
+
+            if (downState != null) {
+                downState.dispose();
+            }
+
+            PlayerState playerState = new SpectatingPlayerState(game, gamePlayer, GameMode.SURVIVAL);
+            gamePlayer.changeState(playerState);
 
             EnumTitle.ZOMBIES_GAME_OVER.send(player, new Placeholder("bg_round", wave.getRound()));
         }

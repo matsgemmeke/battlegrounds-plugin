@@ -22,13 +22,15 @@ import java.util.function.Consumer;
 
 public class ZombiesPerkMachine implements PerkMachine {
 
-    private static final int MAX_NUMBER_PERKS = 4;
+    private static final int MAX_NUMBER_PERKS = 3;
 
     private boolean locked;
     private Game game;
-    private int id, maxBuys, price;
+    private int id;
+    private int maxBuys;
+    private int price;
     private InternalsProvider internals;
-    private Map<GamePlayer, Integer> buys;
+    private Map<GamePlayer, Integer> purchases;
     private Perk perk;
     private PerkManager perkManager;
     private Sign sign;
@@ -58,8 +60,8 @@ public class ZombiesPerkMachine implements PerkMachine {
         this.internals = internals;
         this.translator = translator;
         this.viewFactory = viewFactory;
-        this.buys = new HashMap<>();
         this.locked = true;
+        this.purchases = new HashMap<>();
     }
 
     public int getId() {
@@ -115,22 +117,24 @@ public class ZombiesPerkMachine implements PerkMachine {
     }
 
     public boolean onInteract(GamePlayer gamePlayer, Block block) {
-        // In case the perk machine is locked or the player has too many perks or the player already has bought the perk, it does not accept interactions
+        // In case the perk machine is locked or the player has too many perks or the player already has bought the perk, reject the interaction
         if (locked || perkManager.getPerkCount(gamePlayer) >= MAX_NUMBER_PERKS || perkManager.hasPerkEffect(gamePlayer, perk.getEffect().getType())) {
             return false;
         }
 
         Player player = gamePlayer.getPlayer();
 
-        // If the player does not have enough points they can not buy the perk
+        // Reject the interaction when the player does not have enough points
         if (gamePlayer.getPoints() < price) {
             String actionBar = translator.translate(TranslationKey.ACTIONBAR_UNSUFFICIENT_POINTS.getPath());
             internals.sendActionBar(player, actionBar);
             return true;
         }
 
-        // If the player has bought the perk too many times they can not buy the perk
-        if (buys.containsKey(gamePlayer) && buys.get(gamePlayer) > maxBuys) {
+        int purchaseCount = purchases.getOrDefault(gamePlayer, 0);
+
+        // Reject the interaction when the player has bought the perk too many times
+        if (purchaseCount > maxBuys) {
             String actionBar = translator.translate(TranslationKey.ACTIONBAR_PERKMACHINE_SOLD_OUT.getPath());
             internals.sendActionBar(player, actionBar);
             return true;
@@ -139,16 +143,21 @@ public class ZombiesPerkMachine implements PerkMachine {
         int slot = perkManager.getPerkCount(gamePlayer) + 4;
 
         Consumer<Transaction> onTransactionComplete = transaction -> {
+            // Add the perk purchase to the purchase count
+            purchases.put(gamePlayer, purchaseCount + 1);
             // Subtract perk price from player points
             gamePlayer.setPoints(gamePlayer.getPoints() - transaction.getPoints());
             // Add the perk item to the registry
             game.getItemRegistry().addItem(perk);
-            // Update player score
+            // Update player score on the scoreboard
             game.updateScoreboard();
             // Assign the player to the perk effect instance
             perk.getEffect().setGamePlayer(gamePlayer);
             // Register perk purchase to the perk manager
             perkManager.addPerk(gamePlayer, perk);
+            // Send the player an action bar displaying the deducted amount of points
+            String actionBar = translator.translate(TranslationKey.ACTIONBAR_POINTS_DECREASE.getPath(), new Placeholder("bg_points", transaction.getPoints()));
+            internals.sendActionBar(gamePlayer.getPlayer(), actionBar);
         };
 
         // A new perk is given out, so make a clone of the original in the perk machine

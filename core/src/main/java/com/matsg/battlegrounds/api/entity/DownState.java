@@ -4,6 +4,9 @@ import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Describes the state of a player when they are downed.
+ */
 public interface DownState {
 
     /**
@@ -15,7 +18,7 @@ public interface DownState {
     GamePlayer getGamePlayer();
 
     /**
-     * Gets the location where the downed player was downed.
+     * Gets the location where the downed player is downed.
      *
      * @return the location of the downed player.
      */

@@ -18,6 +18,8 @@ import org.bukkit.block.Sign;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
 
@@ -127,14 +129,16 @@ public class DataLoader {
         try {
             for (Game game : plugin.getGameManager().getGames()) {
                 ConfigurationSection config = game.getDataFile().getConfigurationSection("config");
-                GameConfiguration configuration = new BattleGameConfiguration(
-                        config.getStringList("gamemodes"),
-                        config.getInt("maxplayers"),
-                        config.getInt("minplayers"),
-                        config.getInt("lobbycountdown")
-                );
 
-                for (String gameModeType : config.getStringList("gamemodes")) {
+                List<String> gameModeTypes = config.getStringList("gamemodes");
+                int maxPlayers = config.getInt("maxplayers");
+                int minPlayers = config.getInt("minplayers");
+                int lobbyCountdown = config.getInt("lobbycountdown");
+
+                GameConfiguration configuration = new BattleGameConfiguration(gameModeTypes, maxPlayers, minPlayers, lobbyCountdown);
+
+                // Instantiate a GameMode instance for each gamemode type
+                for (String gameModeType : gameModeTypes) {
                     GameMode gameMode = gameModeFactory.make(game, GameModeType.valueOf(gameModeType.toUpperCase()));
 
                     game.getGameModeList().add(gameMode);

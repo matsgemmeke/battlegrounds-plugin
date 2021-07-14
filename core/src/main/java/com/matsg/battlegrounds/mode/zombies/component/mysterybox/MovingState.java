@@ -55,6 +55,12 @@ public class MovingState implements MysteryBoxState {
             int time = 0;
 
             public void run() {
+                // Check if the game has ended during the task timer and if so, cancel the task
+                if (!game.getState().isInProgress()) {
+                    cancel();
+                    return;
+                }
+
                 if (time == BOX_MOVE_DISAPPEAR_DELAY) {
                     if (currentBox != null) {
                         currentBox.getLeftSide().getWorld().strikeLightningEffect(currentBox.getItemDropLocation());

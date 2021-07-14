@@ -4,6 +4,7 @@ import com.matsg.battlegrounds.BattleGameManager;
 import com.matsg.battlegrounds.api.Battlegrounds;
 import com.matsg.battlegrounds.api.GameManager;
 import com.matsg.battlegrounds.api.entity.Mob;
+import com.matsg.battlegrounds.api.entity.PlayerState;
 import com.matsg.battlegrounds.api.game.Game;
 import com.matsg.battlegrounds.api.game.GameState;
 import com.matsg.battlegrounds.api.game.MobManager;
@@ -13,6 +14,7 @@ import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.item.MeleeWeapon;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.entity.BattleGamePlayer;
+import com.matsg.battlegrounds.entity.state.ActivePlayerState;
 import com.matsg.battlegrounds.game.state.InGameState;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -48,6 +50,9 @@ public class EntityDamageByEntityEventHandlerTest {
         this.damager = new BattleGamePlayer(player, null);
         this.gameManager = new BattleGameManager();
 
+        PlayerState playerState = new ActivePlayerState();
+
+        damager.changeState(playerState);
         gameManager.getGames().add(game);
 
         when(game.getMobManager()).thenReturn(mobManager);

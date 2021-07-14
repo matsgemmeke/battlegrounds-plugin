@@ -11,6 +11,7 @@ import com.matsg.battlegrounds.api.item.Loadout;
 import com.matsg.battlegrounds.api.item.Weapon;
 import com.matsg.battlegrounds.api.entity.GamePlayer;
 import com.matsg.battlegrounds.api.Placeholder;
+import com.matsg.battlegrounds.entity.state.ActivePlayerState;
 import com.matsg.battlegrounds.gui.scoreboard.LobbyScoreboard;
 import com.matsg.battlegrounds.entity.BattleGamePlayer;
 import com.matsg.battlegrounds.entity.BattleSavedInventory;
@@ -82,10 +83,11 @@ public class BattlePlayerManager implements PlayerManager {
         game.getGameMode().addPlayer(gamePlayer);
         game.updateSign();
 
+        PlayerState playerState = new ActivePlayerState();
+
+        gamePlayer.changeState(playerState);
         gamePlayer.getPlayer().setScoreboard(scoreboard);
         gamePlayer.setReturnLocation(returnLocation);
-        gamePlayer.setState(PlayerState.ACTIVE);
-        gamePlayer.getState().apply(game, gamePlayer);
 
         updateExpBar(gamePlayer);
 
@@ -138,6 +140,16 @@ public class BattlePlayerManager implements PlayerManager {
         }
     }
 
+    public GamePlayer[] getActivePlayers() {
+        List<GamePlayer> list = new ArrayList<>();
+        for (GamePlayer gamePlayer : players) {
+            if (gamePlayer.getState().isAlive() && gamePlayer.getState().canMove()) {
+                list.add(gamePlayer);
+            }
+        }
+        return list.toArray(new GamePlayer[list.size()]);
+    }
+
     public GamePlayer getGamePlayer(Player player) {
         for (GamePlayer gamePlayer : players) {
             if (gamePlayer.getPlayer() == player) {
@@ -160,7 +172,7 @@ public class BattlePlayerManager implements PlayerManager {
     public GamePlayer[] getLivingPlayers(Team team) {
         List<GamePlayer> list = new ArrayList<>();
         for (GamePlayer gamePlayer : players) {
-            if (gamePlayer.getState().canInteract() && gamePlayer.getTeam() == team) {
+            if (gamePlayer.getState().isAlive() && gamePlayer.getTeam() == team) {
                 list.add(gamePlayer);
             }
         }
@@ -249,9 +261,10 @@ public class BattlePlayerManager implements PlayerManager {
                 new Placeholder("bg_players", players.size()),
                 new Placeholder("bg_maxplayers", game.getConfiguration().getMaxPlayers())));
 
+        PlayerState playerState = new ActivePlayerState();
+
+        gamePlayer.changeState(playerState);
         gamePlayer.getSavedInventory().restore(gamePlayer.getPlayer());
-        gamePlayer.setState(PlayerState.ACTIVE);
-        gamePlayer.getState().apply(game, gamePlayer);
         gamePlayer.getPlayer().setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
         gamePlayer.getPlayer().teleport(gamePlayer.getReturnLocation());
 
